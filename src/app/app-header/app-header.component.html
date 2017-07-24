@@ -1,0 +1,32 @@
+<header role="banner" class="container navbar navbar-default">
+  <div class="container-fluid">
+    <div class="logoContainer">
+      <a href="http://www.peerbuds.com" class="brand" aria-label="Peerbuds Homepage"><img src="/assets/images/pb_logo.png">
+      </a>
+    </div>
+    <div class="middle">
+      <li class="header-search-box">
+        <input type="text" name="search" id="headerSearch" class="form-control header-search" placeholder="Search" />
+      </li>
+    </div>
+    <div class="">
+      <nav>
+        <ul class="rightMenu">
+          <!--<li><button class="link"><div class="wrapper"><div class="content"><span>Teach</span></div></div></button></li>-->
+          <li class="wrapper dropdown">
+            <div class="content">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teach<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Create a workshop</a></li>
+                <li><a href="#">Create an experience</a></li>
+                <li><a href="#">Create sessions</a></li>
+              </ul>
+            </div>
+          </li>
+          <li><a class="link" [routerLink]="['/login']"><div class="wrapper"><div class="content"><span>Sign Up</span></div></div></a></li>
+          <li><a class="link" [routerLink]="['/login']"><div class="wrapper"><div class="content"><span>Log In</span></div></div></a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
