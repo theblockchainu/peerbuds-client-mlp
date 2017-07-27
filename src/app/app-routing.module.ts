@@ -8,22 +8,28 @@ import { HomeModule } from './home/home.module';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
+import { ExperienceOnboardingComponent } from './experience-wizard/experience-wizard.component';
 
 const routes: Routes = [
-  // Default landing page for peerbuds.com
-  {
-    path: '',
-    component: DefaultComponent,
-    pathMatch: 'full'
-  },
-  // Signup Local page
-  // { path: 'signup', component: SignupComponent },
-  // Login Page
-  { path: 'login', component: LoginComponent },
-  // Learner Onboarding
-  { path: 'onboarding', component: OnboardingComponent },
-  // Page for No Content
-  // { path: '**', component: NoContentComponent }
+// Default landing page for peerbuds.com
+{
+  path: '',
+  component: DefaultComponent,
+  pathMatch: 'full'
+},
+// Signup Local page
+// { path: 'signup', component: SignupComponent },
+// Login Page
+{ path: 'login',  component: LoginComponent },
+// Learner Onboarding
+{ path: 'onboarding', component: OnboardingComponent },
+{
+  path: 'experience',
+  component: ExperienceOnboardingComponent,
+  pathMatch: 'full'
+},
+// Page for No Content
+{ path: '**', component: NoContentComponent }
 ];
 
 @NgModule({
