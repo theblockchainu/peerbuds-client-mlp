@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import { AppConfig } from '../../app.config';
 
 @Injectable()
-export class LanguagepickerService {
+export class LanguagePickerService {
 
     constructor(private http: Http, private config: AppConfig
           , private route: ActivatedRoute, public router: Router) {
