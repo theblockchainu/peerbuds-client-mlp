@@ -1,0 +1,374 @@
+<div [formGroup]="itenaryForm">
+
+  <div class="row">
+    <div class="form-group col-xs-3">
+      <label>Date</label>
+      <input type="date" class="form-control" formControlName="date">
+    </div>
+  </div>
+  <div *ngIf="itenaryForm.value.date">
+    <div class="row">
+      <button type="button" class=" col-md-3 btn btn-primary" (click)="addContent('online');onlineModal.show()">+Online</button>
+      <div bsModal #onlineModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">Online Content</h4>
+            </div>
+            <div class="modal-body">
+              <div *ngIf="lastIndex>-1">
+                <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
+                  <div class="row">
+                    <div class="col-sm-12 margin-bottom-30">
+                      <div class="form-group">
+                        <label>Title:</label>
+                        <input type="text" class="form-control" formControlName="title">
+                      </div>
+
+                      <div class="form-inline" formGroupName="schedule">
+                        <label>Start Time:</label>
+                        <input type="time" class="form-control" formControlName="startTime">
+
+                        <label>End Time:</label>
+                        <input type="time" class="form-control" formControlName="endTime">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Upload a photo:</label>
+                        <div class="upload-image-section imageHolder">
+                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="display-block">What We'll do</label>
+                        <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
+                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                      </div>
+                      <!-- <div formArrayName="itemsProvided">
+                                      <div *ngFor="let items of itemsProvided.controls; let i=index">
+  
+                                          <div class="panel-body" [formGroupName]="i">
+  
+                                          </div>
+                                      </div>
+                                  </div> -->
+                      <div class="form-group">
+                        <label class="display-block">Need to know (optional)</label>
+                        <textarea class="form-control" maxlength="500" formControlName="prerequisites"></textarea>
+                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                      </div>
+                      <div class="form-group">
+                        <label class="display-block">Add suplimental material</label> upload
+                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                      </div>
+
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-success" (click)="saveNew(onlineModal)">Add</button>
+                  <button type="button" class="btn btn-danger" (click)="removeContentForm(lastIndex,onlineModal)">Discard</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class=" col-md-3 btn btn-primary" (click)="addContent('video');videoModal.show()">+Video</button>
+      <div bsModal #videoModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">Video Content</h4>
+            </div>
+            <div class="modal-body">
+              <div *ngIf="lastIndex>-1">
+                <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
+                  <div class="row">
+                    <div class="col-sm-12 margin-bottom-30">
+                      <div class="form-group">
+                        <label>Video Title:</label>
+                        <input type="text" class="form-control" formControlName="title">
+                      </div>
+                      <div class="form-group">
+                        <label class="display-block">What it's about</label>
+                        <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
+                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Upload Video:</label>
+                        <div class="upload-image-section imageHolder">
+                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="display-block">Add suplimental material</label> upload
+                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                      </div>
+
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-success" (click)="saveNew(videoModal)">Save</button>
+                  <button type="button" class="btn btn-danger" (click)="removeContentForm(lastIndex,videoModal)">Discard</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class=" col-md-3 btn btn-primary" (click)="addContent('project');projectModal.show()">+Project</button>
+      <div bsModal #projectModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">Project Content</h4>
+            </div>
+            <div class="modal-body">
+              <div *ngIf="lastIndex>-1">
+                <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
+                  <div class="row">
+
+                    <div class="col-sm-12 margin-bottom-30">
+                      <div class="form-group">
+                        <label>Project Title:</label>
+                        <input type="text" class="form-control" formControlName="title">
+                      </div>
+
+                      <div class="form-inline" formGroupName="schedule">
+                        <label>Deadline</label>
+                        <input type="date" class="form-control" formControlName="endDay">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Upload a photo/video that best describes this content:</label>
+                        <div class="upload-image-section imageHolder">
+                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="display-block">What We'll do</label>
+                        <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
+                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="display-block">Need to know (optional)</label>
+                        <textarea class="form-control" maxlength="500" formControlName="prerequisites"></textarea>
+                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                      </div>
+                      <div class="form-group">
+                        <label class="display-block">Add suplimental material</label> upload
+                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                      </div>
+
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-success" (click)="saveNew(projectModal)">Add</button>
+                  <button type="button" class="btn btn-danger" (click)="removeContentForm(lastIndex,projectModal)">Discard</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div formArrayName="contents">
+      <div *ngFor="let Content of itenaryForm.controls.contents.controls; let i=index" class="panel panel-default">
+        <div class="panel-heading">
+          <span>Content {{i + 1}}</span>
+          <span class="glyphicon glyphicon-remove pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)"></span>
+        </div>
+        <div>
+          <div class="panel-body">
+            <span class="glyphicon glyphicon-edit pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="editContent(i,onlineEditModal,videoEditModal,projectEditModal)"></span>
+
+            <div class="col-md-5">
+              <div class="row">{{Content.value.title}}</div>
+              <div class="row"></div>
+            </div>
+            <div class="col-md-5">{{Content.value.description}}</div>
+            <div class="col-md-2 pull-right">
+              <span class="label label-warning" [hidden]="!Content.value.pending">Pending</span>
+              <span class="label label-success" [hidden]="Content.value.pending">Success</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div bsModal #onlineEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Online Edit Content</h4>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="editIndex>-1">
+            <form [formGroup]="tempForm">
+              <div class="row">
+                <div class="col-sm-12 margin-bottom-30">
+                  <div class="form-group">
+                    <label>Title:</label>
+                    <input type="text" class="form-control" formControlName="title">
+                  </div>
+
+                  <div class="form-inline" formGroupName="schedule">
+                    <label>Start Time:</label>
+                    <input type="time" class="form-control" formControlName="startTime">
+
+                    <label>End Time:</label>
+                    <input type="time" class="form-control" formControlName="endTime">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Upload a photo:</label>
+                    <div class="upload-image-section imageHolder">
+                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="display-block">What We'll do</label>
+                    <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
+                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                  </div>
+                  <!-- <div formArrayName="itemsProvided">
+                              <div *ngFor="let items of itemsProvided.controls; let i=index">
+  
+                                  <div class="panel-body" [formGroupName]="i">
+  
+                                  </div>
+                              </div>
+                          </div> -->
+                  <div class="form-group">
+                    <label class="display-block">Need to know (optional)</label>
+                    <textarea class="form-control" maxlength="500" formControlName="prerequisites"></textarea>
+                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                  </div>
+                  <div class="form-group">
+                    <label class="display-block">Add suplimental material</label> upload
+                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                  </div>
+
+                </div>
+              </div>
+              <button type="button" class="btn btn-success" (click)="saveTemp(onlineEditModal)">Save</button>
+              <button type="button" class="btn btn-warning" (click)="onlineEditModal.hide()">Cancel</button>
+              <button type="button" class="btn btn-danger pull-right" (click)="removeContent(editIndex);onlineEditModal.hide()">Delete</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div bsModal #videoEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Video Content</h4>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="editIndex>-1">
+            <form [formGroup]="tempForm">
+              <div class="row">
+                <div class="col-sm-12 margin-bottom-30">
+                  <div class="form-group">
+                    <label>Video Title:</label>
+                    <input type="text" class="form-control" formControlName="title">
+                  </div>
+                  <div class="form-group">
+                    <label class="display-block">What it's about</label>
+                    <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
+                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Upload Video:</label>
+                    <div class="upload-image-section imageHolder">
+                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="display-block">Add suplimental material</label> upload
+                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                  </div>
+
+                </div>
+              </div>
+              <button type="button" class="btn btn-success" (click)="saveTemp(videoEditModal)">Save</button>
+              <button type="button" class="btn btn-danger" (click)="videoEditModal.hide()">Discard</button>
+              <button type="button" class="btn btn-danger pull-right" (click)="removeContent(editIndex);videoEditModal.hide()">Delete</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div bsModal #projectEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Project Content</h4>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="editIndex>-1">
+            <form [formGroup]="tempForm">
+              <div class="row">
+
+                <div class="col-sm-12 margin-bottom-30">
+                  <div class="form-group">
+                    <label>Project Title:</label>
+                    <input type="text" class="form-control" formControlName="title">
+                  </div>
+
+                  <div class="form-inline" formGroupName="schedule">
+                    <label>Deadline</label>
+                    <input type="date" class="form-control" formControlName="endDay">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Upload a photo/video that best describes this content:</label>
+                    <div class="upload-image-section imageHolder">
+                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="display-block">What We'll do</label>
+                    <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
+                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="display-block">Need to know (optional)</label>
+                    <textarea class="form-control" maxlength="500" formControlName="prerequisites"></textarea>
+                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                  </div>
+                  <div class="form-group">
+                    <label class="display-block">Add suplimental material</label> upload
+                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                  </div>
+
+                </div>
+              </div>
+              <button type="button" class="btn btn-success" (click)="saveTemp(projectEditModal)">Save</button>
+              <button type="button" class="btn btn-danger" (click)="projectEditModal.hide()">Discard</button>
+              <button type="button" class="btn btn-danger pull-right" (click)="removeContent(editIndex);projectEditModal.hide()">Delete</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
