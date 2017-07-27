@@ -13,7 +13,8 @@ import { NoContentComponent } from './no-content/no-content.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
-import { ExperienceOnboardingComponent } from './experience-wizard/experience-wizard.component';
+// import { ExperienceOnboardingComponent } from './experience-wizard/experience-wizard.component';
+import { ExperienceWizardModule } from "./experience-wizard/experience-wizard.module";
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 
@@ -32,8 +33,7 @@ import { HomeModule } from "./home/home.module";
     AppHeaderComponent,
     AppFooterComponent,
     SignupComponent,
-    OnboardingComponent,
-    ExperienceOnboardingComponent
+    OnboardingComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +43,8 @@ import { HomeModule } from "./home/home.module";
     AppRoutingModule,
     WorkshopWizardRoutingModule,
     WorkshopWizardModule,
-    HomeModule
+    HomeModule,
+    ExperienceWizardModule
   ],
   providers: [
     AppConfig,

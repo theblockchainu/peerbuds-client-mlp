@@ -3,16 +3,15 @@ import {
   OnInit,
   Input
 } from '@angular/core';
-import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
-import { AuthenticationService } from '../_services/authentication/authentication.service';
-import { LanguagePickerService } from '../_services/languagepicker/languagepicker.service';
-
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
 
 import {
   Http, URLSearchParams, Headers, Response, BaseRequestOptions
   , RequestOptions, RequestOptionsArgs
 } from '@angular/http';
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../../app.config';
 import { CookieService } from 'angular2-cookie/core';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -21,15 +20,15 @@ import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router
 import * as moment from 'moment';
 
 @Component({
-  selector: 'experience-wizard',
+  selector: 'experience-create',
   // We need to tell Angular's Dependency Injection which providers are in our app.
   providers: [],
   // Our list of styles in our component. We may add more to compose many styles together
-  styleUrls: ['./experience-wizard.component.scss'],
+  styleUrls: ['./experience-create.component.scss'],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
-  templateUrl: './experience-wizard.component.html'
+  templateUrl: './experience-create.component.html'
 })
-export class ExperienceOnboardingComponent implements OnInit {
+export class ExperienceCreateComponent implements OnInit {
   // Set our default values
   public localState = { value: '' };
   public countries: any[];
@@ -140,11 +139,11 @@ export class ExperienceOnboardingComponent implements OnInit {
       currency: '',
       cancellationPolicy: '',
       ageLimit: '',
+      aboutHost: ''
     });
 
     this.timeline = this._fb.group({
       calendar: this._fb.group({
-        aboutHost: '',
         startDate: '',
         endDate: ''
       }),
