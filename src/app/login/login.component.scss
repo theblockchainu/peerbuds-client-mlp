@@ -1,0 +1,18 @@
+
+.signup-box {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+
+    &.drop-shadow{
+	    box-shadow:0 0 10px #ccc;
+    }
+    label{
+        font-weight:normal;
+        color:#666;
+        font-size:14px;
+    }
+}
+.login-section {
+    margin: 50px 0;
+}
