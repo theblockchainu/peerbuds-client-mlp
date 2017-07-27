@@ -18,6 +18,9 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
 
 import { AlertService } from './_services/alert/alert.service';
 import { AuthenticationService } from './_services/authentication/authentication.service';
+import { WorkshopWizardRoutingModule } from './workshop-wizard/workshop-wizard-routing.module';
+import { WorkshopWizardModule } from "./workshop-wizard/workshop-wizard.module";
+import { HomeModule } from "./home/home.module";
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { AuthenticationService } from './_services/authentication/authentication
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    WorkshopWizardRoutingModule,
+    WorkshopWizardModule,
+    HomeModule
   ],
   providers: [
     AppConfig,

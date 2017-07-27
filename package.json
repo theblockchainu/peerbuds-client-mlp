@@ -66,6 +66,7 @@
     "@angular/platform-browser-dynamic": "^4.3.1",
     "@angular/router": "^4.3.1",
     "angular2-cookie": "^1.2.6",
+    "angular2-image-upload": "^0.6.6",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
     "http-server": "^0.10.0",
