@@ -33,6 +33,18 @@ export class AuthenticationService {
      return this.isLoginSubject.asObservable();
     }
 
+    public getCookie(key: string) {
+      return this._cookieService.get(key);
+    }
+
+    public setCookie(key: string, value: string) {
+      this._cookieService.put(key, value);
+    }
+
+    public removeCookie(key: string) {
+      this._cookieService.remove(key);
+    }
+
     /**
     *  Login the user then tell all the subscribers about the new status
     */
@@ -56,7 +68,6 @@ export class AuthenticationService {
                  }, (err) => {
                      console.log('Error: ' + err);
            });
-      // return responseStatus;
 
     }
 
@@ -64,8 +75,18 @@ export class AuthenticationService {
     * Log out the user then tell all the subscribers about the new status
     */
     logout() : void {
-      localStorage.removeItem('token');
-      this.isLoginSubject.next(false);
+      //localStorage.removeItem('token');
+
+      if (this.getCookie(this.key)) {
+            this.http.get(this.config.apiUrl + '/auth/logout', {})
+                .map((res: Response) => {
+                    console.log('Logged out from server');
+                    this.removeCookie(this.key);
+                    this.removeCookie('userId');
+                    this.isLoginSubject.next(false);
+                    this.router.navigate(['/login']);
+                }).subscribe();
+        }
     }
 
     /**

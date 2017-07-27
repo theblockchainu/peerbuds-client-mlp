@@ -17,7 +17,7 @@ const routes: Routes = [
   pathMatch: 'full'
 },
 // Signup Local page
-{ path: 'signup', component: SignupComponent },
+// { path: 'signup', component: SignupComponent },
 // Login Page
 { path: 'login',  component: LoginComponent },
 // Learner Onboarding

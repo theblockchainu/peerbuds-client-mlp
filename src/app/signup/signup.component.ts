@@ -30,6 +30,7 @@ export class SignupComponent implements OnInit {
   }
 
   public submit() {
+    alert("I m submitting");
     // form.submit();
   }
 
