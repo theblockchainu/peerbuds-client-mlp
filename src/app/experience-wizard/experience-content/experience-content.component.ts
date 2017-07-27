@@ -1,155 +1,236 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { Http, Response, } from '@angular/http';
 
 import { AppConfig } from '../../app.config';
-import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { AuthenticationService } from "../../_services/authentication/authentication.service";
+import { CountryPickerService } from "../../_services/countrypicker/countrypicker.service";
+import { LanguagePickerService } from "../../_services/languagepicker/languagepicker.service";
+import {
+  Http, URLSearchParams, Headers, Response, BaseRequestOptions
+  , RequestOptions, RequestOptionsArgs
+} from '@angular/http';
 
 import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
-  selector: 'app-experience-content',
+  selector: 'experience-content',
   templateUrl: './experience-content.component.html',
   styleUrls: ['./experience-content.component.scss']
 })
 export class ExperienceContentComponent implements OnInit {
-    // we will pass in address from App component
-    @Input('group')
-    public itenaryForm: FormGroup;
-    @Input('itenaryId')
-    public itenaryId: Number;
+  @Input("itenary")
+  public myForm: FormGroup;
 
-    public contentObject: FormGroup;
+  @Input("collectionId")
+  public collectionId: string;
 
-    @Output()
-    triggerSave: EventEmitter<any> = new EventEmitter<any>();
+  @Input()
+  public calendar: any;
 
-    public tempForm: FormGroup;
-    public modal: ModalModule;
-    public lastIndex: number;
-    public dontAllow: true;
-    public editIndex: number;
-    public countries: any[];
-    constructor(
-        private _fb: FormBuilder, private http: Http, private config: AppConfig,
-        private countryPickerService: CountryPickerService
-    ) {
-        this.countryPickerService.getCountries()
-            .subscribe((countries) => this.countries = countries);
-    }
+  constructor(
+      public authenticationService: AuthenticationService,
+      private http: Http, private config: AppConfig,
+      private _fb: FormBuilder
+  ) {
+  }
 
-    ngOnInit() {
-        this.contentObject = this._fb.group({
-            id: [''],
-            title: [''],
-            type: [''],
-            description: [''],
-            supplementUrls: this._fb.array([
-                ['']
-            ]),
-            requireRSVP: [''],
-            itemsProvided: this._fb.array([
-                ['']
-            ]),
-            notes: [''],
-            imageUrl: [''],
-            prerequisites: [''],
-            schedule: this._fb.group({
-                startDay: [''],
-                endDay: [''],
-                startTime: [''],
-                endTime: ['']
-            }),
-            location: this._fb.group({
-                location_name: [''],
-                country: [''],
-                street_address: [''],
-                apt_suite: [''],
-                city: [''],
-                state: [''],
-                zip: [''],
-                map_lat: [''],
-                map_lng: ['']
-            }),
-            pending: ['']
-        });
+  ngOnInit() {
+      this.myForm.addControl("itenary", this._fb.array([this.initItenary()]));
+  }
 
-        const contentArray = <FormArray>this.itenaryForm.controls['contents'];
-        contentArray.push(this.contentObject);
+  initItenary() {
+      return this._fb.group({
+          date: [''],
+          contents: this._fb.array([])
+      });
+  }
 
-    }
+  addItenary() {
+      const itenaries = <FormArray>this.myForm.controls['itenary'];
+      itenaries.push(this.initItenary());
+  }
 
+  removeItenary(i: number) {
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Accept', 'application/json');
+      let options = new RequestOptions({ headers: headers, withCredentials: true });
 
+      const itenaries = <FormArray>this.myForm.controls.itenary;
+      const itenaryGroup = <FormGroup>itenaries.controls[i];
+      const contents = <Array<any>>itenaryGroup.value.contents;
 
-    imageUploaded(event) {
-        let file = event.src;
-        let fileName = event.file.name;
-        let fileType = event.file.type;
-        let formData = new FormData();
+      let deleteIndex = 0;
 
-        formData.append('file', event.file);
+      while (deleteIndex != contents.length) {
 
-        this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-            .map((response: Response) => {
-                let mediaResponse = response.json();
-                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                contentForm.controls['imageUrl'].setValue(mediaResponse.url);
-            })
-            .subscribe(); // data => console.log('response', data)
-    }
+          this.http.delete(this.config.apiUrl + '/api/contents/' + contents[deleteIndex].id, options)
+              .map((response: Response) => {
+                  console.log(response);
+              })
+              .subscribe();
+          deleteIndex++;
+      }
+      itenaries.removeAt(i);
+  }
 
+  save(myForm: FormGroup) {
+      console.log(myForm.value);
+  }
+  /**
+     * numberOfdays
+    */
+  public numberOfdays(currentDate, startDate) {
+      let current = moment(currentDate);
+      let start = moment(startDate);
+      return current.diff(start, 'days');
+  }
 
-    editContent(listIndex: number, onlineEditModal: ModalDirective, videoEditModal: ModalDirective, projectEditModal: ModalDirective) {
-        this.editIndex = listIndex;
-        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        const contentForm = <FormGroup>contentsFArray.controls[listIndex];
-        this.tempForm = _.cloneDeep(contentForm);
-        let contentType = contentForm.value.type;
-        let editModal: ModalDirective;
-        switch (contentType) {
-            case "online":
-                editModal = onlineEditModal
-                break;
-            case "project":
-                editModal = projectEditModal;
-                break;
-            case "video":
-                editModal = videoEditModal;
-                break;
-            default:
-                break;
-        }
-        editModal.show();
-    }
+  saveTriggered(event, i) {
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Accept', 'application/json');
+      let options = new RequestOptions({ headers: headers, withCredentials: true });
+
+      if (event.action == "add") {
+          let itenaryObj = this.myForm.value.itenary[i];
+          let scheduleDate = itenaryObj.date;
+          let contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
+          let schedule = contentObj.schedule;
+          let location = contentObj.location;
+
+          delete contentObj.id;
+          delete contentObj.schedule;
+          delete contentObj.pending;
+          delete contentObj.location;
 
 
-    saveTemp(modal: ModalDirective) {
-        let contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        let contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
-        contentForm.setValue(this.tempForm.value);
+          let startTimeArr = schedule.startTime.toString().split(':');
+          let startHour = startTimeArr[0];
+          let startMin = startTimeArr[1];
+          schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
 
-        this.triggerSave.emit({
-            action: "update",
-            value: this.editIndex
-        });
-        modal.hide();
-        console.log("updated!");
-    }
+          let endTimeArr = schedule.endTime.toString().split(':');
+          let endHour = endTimeArr[0];
+          let endMin = endTimeArr[1];
+          schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
 
-    mapClicked(event) {
-        const location = <FormGroup>this.contentObject.controls.location;
-        location.controls.map_lat.setValue(event.lat);
-        location.controls.map_lng.setValue(event.lng);
-    }
 
-    save() {
-        this.triggerSave.emit({
-            action: "add",
-            value: 0
-        });
-        console.log("saved!");
-    }
+          schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
+          schedule.endDay = 0;
+          console.log(schedule);
+
+          this.http.post(this.config.apiUrl + '/api/collections/' + this.collectionId + '/contents', contentObj, options)
+              .map((response: Response) => {
+                  let contentId = response.json().id;
+                  const itenary = <FormArray>this.myForm.controls.itenary;
+                  const form = <FormGroup>itenary.controls[i];
+                  const contentsArray = <FormArray>form.controls.contents;
+                  const contentGroup = <FormGroup>contentsArray.controls[event.value];
+                  contentGroup.controls.id.setValue(contentId);
+
+                  this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, options)
+                      .map((response: Response) => {
+                          if (response.status == 200) {
+                              const itenary = <FormArray>this.myForm.controls.itenary;
+                              const form = <FormGroup>itenary.controls[i];
+                              const contentsArray = <FormArray>form.controls.contents;
+                              const contentGroup = <FormGroup>contentsArray.controls[event.value];
+                              contentGroup.controls.pending.setValue(false);
+                          }
+                          console.log(response);
+                      })
+                      .subscribe();
+
+                  this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, options)
+                      .map((response: Response) => {
+                          if (response.status == 200) {
+                              const itenary = <FormArray>this.myForm.controls.itenary;
+                              const form = <FormGroup>itenary.controls[i];
+                              const contentsArray = <FormArray>form.controls.contents;
+                              const contentGroup = <FormGroup>contentsArray.controls[event.value];
+                              contentGroup.controls.pending.setValue(false);
+                          }
+                          console.log(response);
+                      })
+                      .subscribe();
+              })
+              .subscribe();
+
+      } else if (event.action == "update") {
+          const itenary = <FormArray>this.myForm.controls.itenary;
+          const form = <FormGroup>itenary.controls[i];
+          const contentsArray = <FormArray>form.controls.contents;
+          const contentGroup = <FormGroup>contentsArray.controls[event.value];
+          contentGroup.controls.pending.setValue(true);
+
+          let itenaryObj = this.myForm.value.itenary[i];
+          let scheduleDate = itenaryObj.date;
+          let contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
+          let schedule = contentObj.schedule;
+          let contentId = contentObj.id;
+          let location = contentObj.location;
+
+          delete contentObj.id;
+          delete contentObj.schedule;
+          delete contentObj.pending;
+          delete contentObj.location;
+
+          let startTimeArr = schedule.startTime.toString().split(':');
+          let startHour = startTimeArr[0];
+          let startMin = startTimeArr[1];
+          schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
+
+          let endTimeArr = schedule.endTime.toString().split(':');
+          let endHour = endTimeArr[0];
+          let endMin = endTimeArr[1];
+          schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
+
+          schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
+          schedule.endDay = 0;
+          console.log(schedule);
+
+
+          this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, options)
+              .map((response: Response) => {
+                  this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, options)
+                      .map((response: Response) => {
+                          if (response.status == 200) {
+                              contentGroup.controls.pending.setValue(false);
+                          }
+                          console.log(response);
+                      })
+                      .subscribe();
+                  this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, options)
+                      .map((response: Response) => {
+                          if (response.status == 200) {
+                              contentGroup.controls.pending.setValue(false);
+                          }
+                          console.log(response);
+                      })
+                      .subscribe();
+              })
+              .subscribe();
+      } else if (event.action = "delete") {
+          const itenaryObj = this.myForm.value.itenary[i];
+          const scheduleDate = itenaryObj.date;
+          const contentObj = itenaryObj.contents[event.value];
+          let contentId = contentObj.id;
+          this.http.delete(this.config.apiUrl + '/api/contents/' + contentId, options)
+              .map((response: Response) => {
+                  console.log(response);
+                  const itenary = <FormArray>this.myForm.controls.itenary;
+                  const form = <FormGroup>itenary.controls[i];
+                  const contentsArray = <FormArray>form.controls.contents;
+                  contentsArray.removeAt(event.value);
+              })
+              .subscribe();
+      }
+      else {
+          console.log("unhandledEvent Triggered");
+      }
+  }
 
 }

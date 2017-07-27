@@ -7,7 +7,7 @@ import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-experience-view',
+  selector: 'experience-view',
   templateUrl: './experience-view.component.html',
   styleUrls: ['./experience-view.component.scss']
 })

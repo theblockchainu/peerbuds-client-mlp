@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ExperienceOnboardingComponent } from './experience-wizard.component';
+import { ExperienceCreateComponent } from './experience-create/experience-create.component';
 
 const routes: Routes = [
   {
     path: 'experience',
-    component: ExperienceOnboardingComponent
+    component: ExperienceCreateComponent
   }
 ];
 

@@ -9,7 +9,6 @@ import { AuthenticationService } from "../_services/authentication/authenticatio
 import { CountryPickerService } from "../_services/countrypicker/countrypicker.service";
 import { LanguagePickerService } from "../_services/languagepicker/languagepicker.service";
 
-
 import { WorkshopWizardRoutingModule } from './workshop-wizard-routing.module';
 import { CreateWorkshopComponent } from './create-workshop/create-workshop.component';
 import { WorkshopContentComponent } from './workshop-content/workshop-content.component';
