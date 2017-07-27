@@ -17,14 +17,15 @@
             <div class="content">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teach<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Create a workshop</a></li>
-                <li><a href="#">Create an experience</a></li>
-                <li><a href="#">Create sessions</a></li>
+                <li><a [routerLink]="['/onboarding-workshop']">Create a Workshop</a></li>
+                <li><a [routerLink]="['/onboarding-experience']">Create an Experience</a></li>
+                <li><a [routerLink]="['/onboarding-session']">Create Sessions</a></li>
               </ul>
             </div>
           </li>
-          <li><a class="link" [routerLink]="['/login']"><div class="wrapper"><div class="content"><span>Sign Up</span></div></div></a></li>
-          <li><a class="link" [routerLink]="['/login']"><div class="wrapper"><div class="content"><span>Log In</span></div></div></a></li>
+          <li><a *ngIf="!(isLoggedIn | async)" class="link" href="/signup.html"><div class="wrapper"><div class="content"><span>Sign Up</span></div></div></a></li>
+          <li><a *ngIf="!(isLoggedIn | async)" class="link" [routerLink]="['/login']"><div class="wrapper"><div class="content"><span>Log In</span></div></div></a></li>
+          <li><a *ngIf="(isLoggedIn | async)" class="link" (click)="authService.logout()"><div class="wrapper"><div class="content"><span>Log Out</span></div></div></a></li>
         </ul>
       </nav>
     </div>
