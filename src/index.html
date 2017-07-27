@@ -3,12 +3,39 @@
 <head>
   <meta charset="utf-8">
   <title>PeerbudsClient</title>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="/">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+
+        <!-- base url -->
+        <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+        <!-- bootstrap css -->
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
   <app-root></app-root>
+
+  <!-- Google Analytics: change UA-71073175-1 to be your site's ID -->
+  <script>
+    (function (A, n, g, u, l, a, r) {
+    A.GoogleAnalyticsObject = r; A[l] = A[l] || function () {
+      (A[l].q = A[l].q || []).push(arguments)
+}, A[l].l = 1 * new Date(); a = n.createElement(g),
+      r = n.getElementsByTagName(g)[0]; a.async = 1; a.src = u; r.parentNode.insertBefore(a, r)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-71073175-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
 </body>
 </html>
