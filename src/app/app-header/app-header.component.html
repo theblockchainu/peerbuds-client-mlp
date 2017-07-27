@@ -23,7 +23,7 @@
               </ul>
             </div>
           </li>
-          <li><a *ngIf="!(isLoggedIn | async)" class="link" [routerLink]="['/signup']"><div class="wrapper"><div class="content"><span>Sign Up</span></div></div></a></li>
+          <li><a *ngIf="!(isLoggedIn | async)" class="link" href="/signup.html"><div class="wrapper"><div class="content"><span>Sign Up</span></div></div></a></li>
           <li><a *ngIf="!(isLoggedIn | async)" class="link" [routerLink]="['/login']"><div class="wrapper"><div class="content"><span>Log In</span></div></div></a></li>
           <li><a *ngIf="(isLoggedIn | async)" class="link" (click)="authService.logout()"><div class="wrapper"><div class="content"><span>Log Out</span></div></div></a></li>
         </ul>
