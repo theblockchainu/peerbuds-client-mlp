@@ -8,6 +8,7 @@ import { AuthenticationService } from "../../_services/authentication/authentica
 import { CountryPickerService } from "../../_services/countrypicker/countrypicker.service";
 import { LanguagePickerService } from "../../_services/languagepicker/languagepicker.service";
 import { CollectionService } from '../../_services/collection/collection.service';
+import { StepEnum } from '../StepEnum';
 
 import {
   Http, URLSearchParams, Headers, Response, BaseRequestOptions
@@ -59,8 +60,8 @@ export class CreateWorkshopComponent implements OnInit {
   workshopImage1Pending: Boolean;
   workshopImage2Pending: Boolean;
 
-  public step = 1;
-  public max = 13;
+  public step = 0;
+  public max = 11;
   public learnerType_array = {
     learner_type: [{ id: 'auditory', display: 'Auditory' }
       , { id: 'visual', display: 'Visual' }
@@ -99,6 +100,13 @@ export class CreateWorkshopComponent implements OnInit {
   }
 
   public ngOnInit() {
+
+    this.activatedRoute.params.subscribe((params: { step: string }) => {
+      //this.step = StepEnum[params.step];
+    });
+    /*if(!this.currentStep) {
+      //handle error when user is entering an incorrect step.
+    }*/
 
     this.profileImagePending = true;
     this.workshopVideoPending = true;
@@ -178,12 +186,6 @@ export class CreateWorkshopComponent implements OnInit {
 
     this.currencies = ["USD", "INR", "GBP"]
 
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-      if (params.step) {
-        this.step = params.step;
-      }
-    });
-
     this.contentGroup = new FormGroup({});
 
     if(!this.workshopId) {
@@ -198,7 +200,8 @@ export class CreateWorkshopComponent implements OnInit {
     this.returnUrl = 'home';
   }
 
-  assignWorkshop(data) {
+  private assignWorkshop(data) {
+    console.log(data);
     delete data.id;
     delete data.type;
     delete data.prerequisites;
@@ -208,12 +211,14 @@ export class CreateWorkshopComponent implements OnInit {
     data.imageUrls = [];
     delete data.created;
     delete data.modified;
-    //console.log(data);
+    console.log(data);
     this.workshopObject = data;
-    /*setTimeout(()=>{
-        this.workshop.setValue(data);
-   },3000);*/
+      /*setTimeout(()=>{
+          this.workshop.setValue(data);
+     },3000);*/
     this.workshop.setValue(data);
+    this.step = data.stage;
+    this.router.navigate(['createWorkshop', this.workshopId, this.step]);
 
   }
 
@@ -343,7 +348,8 @@ export class CreateWorkshopComponent implements OnInit {
       this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body, options)
         .map((response: Response) => {
           this.step++;
-          this.workshopStepUpdate()
+          this.workshopStepUpdate();
+          this.router.navigate(['createWorkshop', this.workshopId, this.step]);
         })
         .subscribe();
     }
@@ -381,7 +387,8 @@ export class CreateWorkshopComponent implements OnInit {
     this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId, body, options)
       .map((response: Response) => {
         this.step++;
-        this.workshopStepUpdate()
+        this.workshopStepUpdate();
+        this.router.navigate(['createWorkshop', this.workshopId, this.step]);
       })
       .subscribe();
   }
@@ -408,6 +415,7 @@ export class CreateWorkshopComponent implements OnInit {
         .map((response: Response) => {
           this.step++;
           this.workshopStepUpdate();
+          this.router.navigate(['createWorkshop', this.workshopId, this.step]);
         })
         .subscribe();
     } else {
@@ -418,6 +426,7 @@ export class CreateWorkshopComponent implements OnInit {
   }
 
   public submitInterests(interests) {
+    this.step++;
     let topicArray = [];
     this.interests.forEach((topic) => {
       /* this.http.put(this.config.apiUrl +  '/api/peers/'
@@ -430,7 +439,6 @@ export class CreateWorkshopComponent implements OnInit {
         + '/topics/rel/' + topicArray, {})
         .map((response: Response) => { }).subscribe();
     }
-    this.step++;
 
   }
 
@@ -461,6 +469,7 @@ export class CreateWorkshopComponent implements OnInit {
    * goto(toggleStep)  */
   public goto(toggleStep) {
     this.step = toggleStep;
+    this.router.navigate(['createWorkshop', this.workshopId, +toggleStep]);
   }
 
 

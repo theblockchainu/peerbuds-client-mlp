@@ -6,7 +6,21 @@ const routes: Routes = [
 {
   path: 'createWorkshop', component: CreateWorkshopComponent
 },
-{ path: 'createWorkshop/:id', component: CreateWorkshopComponent },
+// { path: 'createWorkshop/:id', component: CreateWorkshopComponent },
+{
+  path: 'createWorkshop/:id',
+  children: [
+    {
+      path: '',
+      component: CreateWorkshopComponent,
+      pathMatch: 'full'
+    },
+    {
+      path: ':step',
+      component: CreateWorkshopComponent
+    }
+  ]
+},
 {
   path: 'workshop', component: ListWorkshopComponent
 }
