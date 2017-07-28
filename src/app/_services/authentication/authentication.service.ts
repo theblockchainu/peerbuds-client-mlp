@@ -94,6 +94,6 @@ export class AuthenticationService {
      * @returns {boolean}
      */
     private hasToken() : boolean {
-      return !!localStorage.getItem('token');
+      return !!this.getCookie(this.key);
     }
 }
