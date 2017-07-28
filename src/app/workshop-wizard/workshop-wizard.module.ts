@@ -33,13 +33,8 @@ import { FileUploadModule } from 'primeng/primeng';
     ModalModule.forRoot(),
     RatingModule.forRoot(),
     TabsModule.forRoot(),
-<<<<<<< HEAD
     BsDropdownModule.forRoot(),
     FileUploadModule
-=======
-    BsDropdownModule.forRoot()//,
-    // MultiselectAutocompleteModule
->>>>>>> origin/develop
   ],
   declarations: [CreateWorkshopComponent, WorkshopContentComponent, ContentViewComponent, ListWorkshopComponent],
   providers: [
