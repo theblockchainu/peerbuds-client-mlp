@@ -8,6 +8,7 @@ import { HomeModule } from './home/home.module';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
+import { UploadDocsComponent } from './verification/upload-docs/upload-docs.component';
 
 const routes: Routes = [
 // Default landing page for peerbuds.com
@@ -22,6 +23,8 @@ const routes: Routes = [
 { path: 'login',  component: LoginComponent },
 // Learner Onboarding
 { path: 'onboarding', component: OnboardingComponent },
+// identity vertification
+{ path: 'identity-verification', component: UploadDocsComponent },
 // Page for No Content
 { path: '**', component: NoContentComponent }
 ];
