@@ -5,10 +5,10 @@
                 <form name="form" #f="ngForm" ngNoForm [formGroup]="loginForm" action="http://localhost:3000/signup?returnTo=%23/onboarding" method="POST" novalidate>
                     <!--(ngSubmit)="f.form.valid && login()" -->
                     <div class="margin-bottom-20">
-                        <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=%23"><i class="fa fa-facebook"></i> Login with Facebook</a>
+                        <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=%23/onboarding"><i class="fa fa-facebook"></i> Login with Facebook</a>
                     </div>
                     <div class="margin-bottom-20">
-                        <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=%23"><i class="fa fa-google"></i> Login with Gmail</a>
+                        <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=%23/onboarding"><i class="fa fa-google"></i> Login with Gmail</a>
                     </div>
                     <div class="position-relative margin-bottom-20 text-center">
                         <div class="or-seperator-vertical"></div>
