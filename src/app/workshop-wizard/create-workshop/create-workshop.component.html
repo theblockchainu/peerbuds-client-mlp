@@ -283,7 +283,10 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader">Are you open for appointments?</div>
-              <appointment-calendar></appointment-calendar>
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <appointment-calendar></appointment-calendar>
+                <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+              </form>
             </div>
           </div>
         </div>
@@ -326,11 +329,6 @@
           </div>
         </div>
         <div class="clearfix"></div>
-        <!--<div class="margin-20">
-          <pre>{{workshop.value | json}}</pre>
-          
-        </div>-->
-        <pre>{{timeline.value | json}}</pre>
       </div>
     </div>
   </div>
