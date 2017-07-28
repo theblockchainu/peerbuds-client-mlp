@@ -56,7 +56,7 @@ export class ContentViewComponent implements OnInit {
   initContent() {
     return this._fb.group({
       id: [''],
-      title: [''],
+      title: ['', [Validators.required, Validators.minLength(10)]],
       type: [''],
       description: [''],
       supplementUrls: this._fb.array([]),

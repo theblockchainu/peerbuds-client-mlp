@@ -1,48 +1,70 @@
 <div class="position-relative">
   <!--class="position-relative"-->
   <!-- content starts here-->
-  <div class="navbar navbar-fixed-left">
+  <div class="navbar navbar-fixed-left" style="padding-left:20px">
     <ul class="nav navbar-nav">
-      <li><strong>About</strong> </li>
-      <li (click)=goto(1)>Your photo </li>
-      <li (click)=goto(2)>Your Bio </li>
-      <li (click)=goto(3)>Language </li>
-      <li (click)=goto(4)>Topic Category </li>
+      <li><strong>The Basics</strong> </li>
+      <!--<li (click)=goto(1)>Your photo </li>-->
+      <li (click)=goto(1)>Topics </li>
+      <li (click)=goto(2)>Language </li>
+      <li (click)=goto(3)>Your Bio </li>
       <hr>
-      <li><strong>Workshop</strong> </li>
-      <li (click)=goto(5)>Workshop Title </li>
+      <li><strong>Workshop Page</strong> </li>
+      <li (click)=goto(5)>Title &amp; Headline </li>
       <!--headliner-->
-      <li (click)=goto(6)>What We'll Teach </li>
-      <li (click)=goto(7)>Who should come </li>
-      <li (click)=goto(8)>How many learners? </li>
-      <li (click)=goto(9)>Workshop Photos </li>
-      <li (click)=goto(10)>Timeline </li>
+      <li (click)=goto(6)>Description </li>
+      <li (click)=goto(7)>Requirements </li>
+      <li (click)=goto(8)>Seats </li>
+      <li (click)=goto(9)>Photos </li>
+      <li (click)=goto(10)>Price &amp; Cancellation Policy </li>
       <!-- <li>Session Dates </li> -->
       <hr>
-      <li><strong>Finishing Touches</strong> </li>
+      <li><strong>Workshop Itinerary</strong> </li>
       <!-- <li>Seats Available </li> -->
       <!-- <li>Age requirements </li> -->
-      <li (click)=goto(11)>Apointments </li>
-      <li (click)=goto(12)>Payment </li>
-      <li (click)=goto(13)>Review and Submit </li>
+      <li (click)=goto(11)>Select Dates </li>
+      <hr>
+      <li (click)=goto(12) [class.disabled]="stage!=12">Review and Submit </li>
 
     </ul>
   </div>
   <div class="container">
     <div id="content" class="onboarding-content">
+      <div style="float:right;margin-top:-40px"><button type="button">Save &amp; Exit</button></div>
+      <br/>
+      <!--Disclaimer-->
+      <div class="onboarding step-0" [hidden]="step!=0">
+        <div class="row">
+          <div class="col-sm-7">
+            <h1 class="title">Peerbuds Workshop Guidelines</h1>
+            <p>We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines
+              towards their content.
+            </p>
+            <ul style="margin-top:30px;list-style:none">
+              <li>1. Respect Others</li>
+              <li>2. Respect Others</li>
+              <li>3. Respect Others</li>
+              <li>4. Respect Others</li>
+            </ul>
+            <div style="margin-top:100px;">
+              <a (click)="goto(1)">I agree, lets create a workshop</a>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-10 col-md-offset-1" [hidden]="step==0">
           <progressbar [max]="max" [value]="step">
             <span style="color:white; white-space:nowrap;">{{step}} / {{max}}</span>
           </progressbar>
         </div>
       </div>
       <div class="container-fluid clearfix">
-        <div class="onboarding step-1" [hidden]="step!=1">
+
+        <!--<div class="onboarding step-1" [hidden]="step!=1">
           <div class="row">
             <div class="col-sm-7">
               <h1 class="title">Let people know who you are</h1>
-              <!--[routerLink]="['/login']"-->
               <div class="stepHeader">Upload the happiest photo of yourself</div>
               <form [formGroup]="profile" (ngSubmit)="submitProfile(profile)" novalidate>
                 <span class="label label-warning" [hidden]="!profileImagePending">Pending</span>
@@ -53,60 +75,23 @@
                     (onRemove)="profileImageRemoved($event)"></image-upload>
 
                 </div>
-
-                <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                </div>
               </form>
 
             </div>
-            <!-- onboarding ends here-->
           </div>
-        </div>
+        </div>-->
         <!-- step 1 ends here -->
-        <div class="onboarding step-2" [hidden]="step!=2">
+
+        <!-- step 1 starts here -->
+        <div class="onboarding step-1" [hidden]="step!=1">
           <div class="row">
-            <div class="col-sm-7">
-              <h1 class="title">Tell us your bio</h1>
-              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="row">
-                  <div class="col-sm-12 margin-bottom-30">
-                    <div class="form-group">
-                      <label class="display-block">Give us a short description about yourself</label>
-                      <textarea class="form-control" maxlength="500" formControlName="aboutHost"></textarea>
-                      <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
-                    </div>
-                  </div>
-                </div>
-                <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- step 2 ends here -->
-        <div class="onboarding step-3" [hidden]="step!=3">
-          <div class="row">
-            <div class="col-sm-7">
-              <h1 class="title">What languages are it going to be in</h1>
-              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="row">
-                  <div class="col-sm-12 margin-bottom-30">
-                    <div class="row">
-                      <select class="form-control" formControlName="language">
-                      <option [value]="">--Select--</option>
-                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>
-                    </select>
-                    </div>
-                  </div>
-                </div>
-                <button class="onboarding-btn btn btn-lg btn-default " type="Submit">Next</button>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- step 3 ends here -->
-        <div class="onboarding step-4" [hidden]="step!=4">
-          <div class="row">
-            <div class="col-sm-7">
-              <div class="stepHeader">What topic catagory is this Workshop? </div>
+            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+              <div class="stepHeader">What topics does this Workshop cover?</div>
+              <span>Select topic that this workshop covers</span>
+              <br/>
               <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
@@ -133,12 +118,85 @@
                     </div>
                   </div>
                 </div>
-                <button class="onboarding-btn btn btn-lg btn-default">Next</button>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:10px" type="Submit">Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding step-2" [hidden]="step!=2">
+          <div class="row">
+            <div class="col-sm-7">
+              <h1 class="title">Which language will you host in?</h1>
+              <p>Youʼll write your descriptions in this language and guests will expect you to speak it during workshops.</p>
+              <br/>
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <div style="margin-top:30px;margin-bottom:10px;">Select Language</div>
+                <div class="row">
+                  <div class="col-sm-12 margin-bottom-30">
+                    <div class="row">
+                      <select class="form-control" formControlName="language">
+                      <option [value]="">--Select--</option>
+                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>
+                    </select>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(1)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
               </form>
             </div>
           </div>
         </div>
         <!-- step 4 ends here  -->
+        <div class="onboarding step-3" [hidden]="step!=3">
+          <div class="row">
+            <div class="col-sm-12">
+              <h1 class="title">Introduce yourself as a Host</h1>
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <div class="row">
+                  <div class="col-sm-8 margin-bottom-30" style="float:left">
+                    <div class="form-group">
+                      <label class="display-block">Why are you the best person to host this Experience?</label>
+                      <br/>
+                      <textarea class="form-control" maxlength="500" formControlName="aboutHost"></textarea>
+                      <span class="text-right text-grey display-block margin-top-5">max. 200 chars</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-3" style="margin-left:20px">
+                    <p>Here is a sample description
+                      <br/>"I am a recent graduate that enjoys reading"
+                    </p>
+                  </div>
+                </div>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(2)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!--Disclaimer-->
+        <div class="onboarding step-4" [hidden]="step!=4">
+          <div class="row">
+            <div class="col-sm-7">
+              <h1 class="title">Create the page learners will see</h1>
+              <p>Write in a clear, straightforward and friendly way.We will give you tips on when to show off your personality
+                and be more descriptive.
+              </p>
+              <br/>
+              <div style="margin-top:100px;">
+                <a (click)="goto(5)">Continue</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- step 2 ends here -->
         <div class="onboarding step-5" [hidden]="step!=5">
           <div class="row">
             <div class="col-sm-12">
@@ -146,18 +204,26 @@
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="form-group">
-                      <label class="display-block">Name to Your workshop</label>
+                      <label class="display-block">Title Your Workshop</label>
+                      <p>Make it sweet and simple</p>
+                      <br/>
                       <input type="text" class="form-control" formControlName="title" />
                     </div>
                   </div>
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="form-group">
-                      <label class="display-block">Give a descriptive one liner sentence</label>
+                      <label class="display-block">Headline</label>
+                      <p>Explain your workshop in short and descriptive sentence.</p>
+                      <p>It should give an insight to learners of what they will do.</p>
+                      <br/>
                       <input type="text" class="form-control" formControlName="headline" />
                     </div>
                   </div>
                 </div>
-                <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(4)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
               </form>
             </div>
           </div>
@@ -169,13 +235,17 @@
               <div class="row">
                 <div class="col-sm-12 margin-bottom-30">
                   <div class="form-group">
-                    <label class="display-block">What we’ll teach</label>
+                    <label class="display-block">What’s the workshop about?</label>
+                    <p>Give a detailed description to learners of what they will do in this workshop</p>
                     <textarea class="form-control" maxlength="200" formControlName="description"></textarea>
-                    <span class="text-right text-grey display-block margin-top-5">max. 200 chars</span>
+                    <span class="text-right text-grey display-block margin-top-5">max. 800 chars</span>
                   </div>
                 </div>
               </div>
-              <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+              <div style="margin-top:100px;">
+                <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(5)>Back</button>
+                <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+              </div>
             </form>
           </div>
         </div>
@@ -184,12 +254,13 @@
           <div class="row">
             <div class="col-sm-12">
               <h1 class="title">Who should come</h1>
+              <p>Start with level of difficulty</p>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="col-sm-12 margin-bottom-30">
                   <select class="form-control" formControlName="difficultyLevel">
                       <option [value]="">--Select--</option>
                       <option *ngFor="let d of difficulties" [value]="d">{{d}} </option>
-              </select>
+                  </select>
                 </div>
                 <div class="col-sm-12 margin-bottom-30">
                   <div class="form-group">
@@ -198,7 +269,10 @@
                     <span class="text-right text-grey display-block margin-top-5">max. 5000 chars</span>
                   </div>
                 </div>
-                <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(6)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
               </form>
             </div>
           </div>
@@ -209,10 +283,13 @@
             <div class="col-sm-7">
               <div class="stepHeader">How many learners? </div>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="col-sm-12 margin-bottom-30">
-                  <input type="number" formControlName="maxSpots">
+                <div class="col-sm-12 margin-bottom-30" style="margin-top:20px">
+                  <input type="number" formControlName="maxSpots" min="1" max="1000">
                 </div>
-                <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                <div style="padding-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(7)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
               </form>
             </div>
           </div>
@@ -221,9 +298,9 @@
         <div class="onboarding step-9" [hidden]="step!=9">
 
           <div class="row">
-            <div class="col-sm-7">
+            <div class="col-sm-10">
               <div class="stepHeader">Showcase your workshop</div>
-              <div class="row">
+              <div class="row" style="margin-left:20px;margin-top:15px;">
                 <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)" novalidate>
                   <div class="row">
                     <div class="col-md-8">
@@ -242,7 +319,10 @@
                   </div>
                   <div class="row">
                     <div class="col-md-4">
-                      <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                      <div style="margin-top:100px;">
+                        <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(8)>Back</button>
+                        <button class="onboarding-btn btn btn-lg btn-default" style="float:right;" type="Submit">Next</button>
+                      </div>
                     </div>
                   </div>
                 </form>
@@ -272,7 +352,10 @@
                 </div>
                 <div class="row">
                   <div class="col-md-4 col-md-offset-8">
-                    <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                    <div style="margin-top:100px;">
+                      <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(9)>Back</button>
+                      <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -285,7 +368,10 @@
               <div class="stepHeader">Are you open for appointments?</div>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <appointment-calendar></appointment-calendar>
-                <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(10)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
               </form>
             </div>
           </div>
@@ -310,7 +396,10 @@
                       <option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}} </option>
                 </select>
                 </div>
-                <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(11)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
               </form>
             </div>
           </div>
@@ -321,10 +410,10 @@
               <div class="stepHeader">Review and submit</div>
               <button (click)="submitForReview()"> Submit for Review</button>
 
-              <div class="margin-20">
+              <!--<div class="margin-20">
                 <pre>{{workshop.value | json}}</pre>
                 <pre>{{timeline.value | json}}</pre>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>
