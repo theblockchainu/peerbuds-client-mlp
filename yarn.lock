@@ -273,6 +273,10 @@ angular2-cookie@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/angular2-cookie/-/angular2-cookie-1.2.6.tgz#8fa845531e777adb042fe2f339c0040f6ddbf09d"
 
+angular2-image-upload@^0.6.6:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/angular2-image-upload/-/angular2-image-upload-0.6.6.tgz#1a9ed2612adf5ad8dd0f2b1a7df31fe9988893d8"
+
 ansi-escapes@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-2.0.0.tgz#5bae52be424878dd9783e8910e3fc2922e83c81b"
@@ -4637,6 +4641,10 @@ pretty-error@^2.0.2:
   dependencies:
     renderkid "^2.0.1"
     utila "~0.4"
+
+primeng@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-4.1.2.tgz#d34fc168ee3a999d28720b97c01a385c00de59c7"
 
 private@~0.1.5:
   version "0.1.7"

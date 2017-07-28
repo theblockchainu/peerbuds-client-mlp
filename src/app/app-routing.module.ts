@@ -26,7 +26,7 @@ const routes: Routes = [
 // identity vertification
 { path: 'identity-verification', component: UploadDocsComponent },
 // Page for No Content
-{ path: '**', component: NoContentComponent }
+// { path: '**', component: NoContentComponent }
 ];
 
 @NgModule({

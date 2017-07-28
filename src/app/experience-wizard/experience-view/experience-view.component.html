@@ -1,0 +1,74 @@
+<form [formGroup]="itenaryForm" class="form-group">
+    <label>Date:</label>
+    <input type="date" class="form-control" formControlName="date">
+</form>
+<form [formGroup]="contentObject">
+    <div class="row">
+        <div class="col-sm-12 margin-bottom-30">
+            <div class="form-inline" formGroupName="schedule">
+                <label>Start Time:</label>
+                <input type="time" class="form-control" formControlName="startTime">
+                <label>End Time:</label>
+                <input type="time" class="form-control" formControlName="endTime">
+            </div>
+            <div class="form-group">
+                <label>Title:</label>
+                <input type="text" class="form-control" formControlName="title">
+            </div>
+            <div class="form-group">
+                <label>Upload a photo for this day:</label>
+                <div class="upload-image-section imageHolder">
+                    <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="display-block">What We'll do</label>
+                <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
+                <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+            </div>
+            <div class="form-group">
+                <label class="display-block">Need to know (optional)</label>
+                <textarea class="form-control" maxlength="500" formControlName="prerequisites"></textarea>
+                <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+            </div>
+
+            <div class="form-group" formGroupName="location">
+                <div class="form-group">
+                    <label>Location Name:</label>
+                    <input type="text" class="form-control" formControlName="location_name">
+                </div>
+                <div class="form-group">
+                    <label>Country:</label>
+                    <input type="text" class="form-control" formControlName="country">
+                </div>
+                <div class="form-group">
+                    <label>Street Address:</label>
+                    <input type="text" class="form-control" formControlName="location_name">
+                </div>
+                <div class="form-group">
+                    <label>Aprt/suite (optional):</label>
+                    <input type="text" class="form-control" formControlName="apt_suite">
+                </div>
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" class="form-control" formControlName="city">
+                </div>
+                <div class="form-group">
+                    <label>State:</label>
+                    <input type="text" class="form-control" formControlName="state">
+                </div>
+                <div class="form-group">
+                    <label>Zip:</label>
+                    <input type="text" class="form-control" formControlName="zip">
+                </div>
+                <div class="form-group">
+                    <label>Map Pin:</label>
+                    <!--<app-the-map (getMarker)="mapClicked($event)"></app-the-map>-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <button type="button" class="btn btn-success" (click)="save()">Save</button>
+    <!-- <button type="button" class="btn btn-danger" (click)="removeContentForm()">Discard</button>  -->
+</form>
