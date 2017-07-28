@@ -29,7 +29,7 @@ import * as moment from 'moment';
 export class CreateWorkshopComponent implements OnInit {
   //Getting workshop id from url
   private workshopId: string;
-  private workshopObject: any;
+  private workshopObject = {};
 
   // Set our default values
   public localState = { value: '' };
@@ -89,7 +89,9 @@ export class CreateWorkshopComponent implements OnInit {
       .subscribe((languages) => this.languagesArray = languages);
     // this.getProfile();
     this.getTopics();
-
+    this.activatedRoute.params.subscribe(params => {
+        this.workshopId = params["id"];
+    });
   }
 
   public selected(event) {
@@ -183,23 +185,41 @@ export class CreateWorkshopComponent implements OnInit {
     });
 
     this.contentGroup = new FormGroup({});
-    this.activatedRoute.params.subscribe(params => {
-        this.workshopId = params["id"];
-    });
+
     if(!this.workshopId) {
       this.createWorkshop();
     }
     else {
-      this.workshopObject = this._collectionService.getCollectionDetails(this.workshopId);
-      setTimeout(this.assignWorkshop, 2000);
+      this._collectionService.getCollectionDetails(this.workshopId).subscribe(res => this.assignWorkshop(res),
+            err => console.log("error"),
+            () => console.log('Completed!'));
     }
 
     this.returnUrl = 'home';
   }
 
-  assignWorkshop() {
-    console.log(this.workshopObject);
-    // this.workshop.setValue(workshopObject);
+  assignWorkshop(data) {
+    delete data.id;
+    delete data.type;
+    delete data.prerequisites;
+    let languageArray = data.language;
+    data.language = languageArray[0];
+    delete data.imageUrls;
+    data.imageUrls = [];
+    delete data.created;
+    delete data.modified;
+    //console.log(data);
+    this.workshopObject = data;
+    /*setTimeout(()=>{
+        this.workshop.setValue(data);
+   },3000);*/
+    this.workshop.setValue(data);
+
+  }
+
+  public ngAfterContentChecked() {
+    // console.log(this.workshopObject);
+    // this.workshop.setValue(this.workshopObject);
   }
 
   initAddress() {
