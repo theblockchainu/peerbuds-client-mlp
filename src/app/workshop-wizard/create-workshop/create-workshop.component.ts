@@ -1,3 +1,4 @@
+import 'rxjs/add/operator/switchMap';
 import {
   Component,
   OnInit,
@@ -6,6 +7,8 @@ import {
 import { AuthenticationService } from "../../_services/authentication/authentication.service";
 import { CountryPickerService } from "../../_services/countrypicker/countrypicker.service";
 import { LanguagePickerService } from "../../_services/languagepicker/languagepicker.service";
+import { CollectionService } from '../../_services/collection/collection.service';
+
 import {
   Http, URLSearchParams, Headers, Response, BaseRequestOptions
   , RequestOptions, RequestOptionsArgs
@@ -24,6 +27,10 @@ import * as moment from 'moment';
   styleUrls: ['./create-workshop.component.scss']
 })
 export class CreateWorkshopComponent implements OnInit {
+  //Getting workshop id from url
+  private workshopId: string;
+  private workshopObject: any;
+
   // Set our default values
   public localState = { value: '' };
   public countries: any[];
@@ -35,7 +42,6 @@ export class CreateWorkshopComponent implements OnInit {
   public interest1: FormGroup;
   public workshop: FormGroup;
   public selectedTopic: FormGroup;
-  public workshopId: string;
   public key = 'access_token';
   public timeline: FormGroup;
   public returnUrl: string;
@@ -67,13 +73,14 @@ export class CreateWorkshopComponent implements OnInit {
   // TypeScript public modifiers
   constructor(
     public router: Router,
-    public authenticationService: AuthenticationService,
+    private activatedRoute: ActivatedRoute,
     private http: Http, private config: AppConfig,
+    public authenticationService: AuthenticationService,
     private languagePickerService: LanguagePickerService,
     private _cookieService: CookieService,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
-    private activatedRoute: ActivatedRoute,
+    public _collectionService: CollectionService
   ) {
     this.getCookieValue('userId');
     this.countryPickerService.getCountries()
@@ -176,10 +183,23 @@ export class CreateWorkshopComponent implements OnInit {
     });
 
     this.contentGroup = new FormGroup({});
-
-    this.createWorkshop();
+    this.activatedRoute.params.subscribe(params => {
+        this.workshopId = params["id"];
+    });
+    if(!this.workshopId) {
+      this.createWorkshop();
+    }
+    else {
+      this.workshopObject = this._collectionService.getCollectionDetails(this.workshopId);
+      setTimeout(this.assignWorkshop, 2000);
+    }
 
     this.returnUrl = 'home';
+  }
+
+  assignWorkshop() {
+    console.log(this.workshopObject);
+    // this.workshop.setValue(workshopObject);
   }
 
   initAddress() {
@@ -432,4 +452,3 @@ export class CreateWorkshopComponent implements OnInit {
   }
 
 }
-

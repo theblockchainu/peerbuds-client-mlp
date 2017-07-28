@@ -13,6 +13,10 @@ import { WorkshopWizardRoutingModule } from './workshop-wizard-routing.module';
 import { CreateWorkshopComponent } from './create-workshop/create-workshop.component';
 import { WorkshopContentComponent } from './workshop-content/workshop-content.component';
 import { ContentViewComponent } from './content-view/content-view.component';
+import { ListWorkshopComponent } from './list-workshop/list-workshop.component';
+
+
+//import { MultiselectAutocompleteModule } from './utilityComponents/multiselect-autocomplete/module';
 
 
 
@@ -27,9 +31,10 @@ import { ContentViewComponent } from './content-view/content-view.component';
     ModalModule.forRoot(),
     RatingModule.forRoot(),
     TabsModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot()//,
+    // MultiselectAutocompleteModule
   ],
-  declarations: [CreateWorkshopComponent, WorkshopContentComponent, ContentViewComponent],
+  declarations: [CreateWorkshopComponent, WorkshopContentComponent, ContentViewComponent, ListWorkshopComponent],
   providers: [
     AuthenticationService,
     CountryPickerService,
