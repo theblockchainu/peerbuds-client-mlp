@@ -49,18 +49,13 @@ export class CollectionService {
     return collections;
   }
 
-  public getCollectionDetails(id: string) {
+  public getCollectionDetails(id: string){
     let collection = {};
-    this.http
+    return this.http
              .get(this.config.apiUrl + '/api/collections/' + id)
-             .map((response: Response) => {
-               // login successful if there's a jwt token in the response
-               collection = response.json();
-             }, (err) => {
+             .map((response: Response) => response.json(), (err) => {
                  console.log('Error: ' + err);
-              }).subscribe();
-
-    return collection;
+              });
 
   }
 
