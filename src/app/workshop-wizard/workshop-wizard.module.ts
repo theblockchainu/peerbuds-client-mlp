@@ -14,6 +14,8 @@ import { CreateWorkshopComponent } from './create-workshop/create-workshop.compo
 import { WorkshopContentComponent } from './workshop-content/workshop-content.component';
 import { ContentViewComponent } from './content-view/content-view.component';
 
+import { FileUploadModule } from 'primeng/primeng';
+
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { ContentViewComponent } from './content-view/content-view.component';
     ModalModule.forRoot(),
     RatingModule.forRoot(),
     TabsModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    FileUploadModule
   ],
   declarations: [CreateWorkshopComponent, WorkshopContentComponent, ContentViewComponent],
   providers: [
