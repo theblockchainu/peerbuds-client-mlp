@@ -27,6 +27,9 @@ export class ContentViewComponent implements OnInit {
   public dontAllow: true;
   public editIndex: number;
   public countries: any[];
+  public filesToUpload: number;
+  public filesUploaded: number;
+
   constructor(
     private _fb: FormBuilder, private http: Http, private config: AppConfig,
     private countryPickerService: CountryPickerService
@@ -56,13 +59,9 @@ export class ContentViewComponent implements OnInit {
       title: [''],
       type: [''],
       description: [''],
-      supplementUrls: this._fb.array([
-        ['']
-      ]),
+      supplementUrls: this._fb.array([]),
       requireRSVP: [''],
-      itemsProvided: this._fb.array([
-        ['']
-      ]),
+      itemsProvided: this._fb.array([]),
       notes: [''],
       imageUrl: [''],
       prerequisites: [''],
@@ -76,24 +75,14 @@ export class ContentViewComponent implements OnInit {
     });
   }
 
-  // location: this._fb.group({
-  //     location_name: [''],
-  //     country: [''],
-  //     street_address: [''],
-  //     apt_suite: [''],
-  //     city: [''],
-  //     state: [''],
-  //     zip: [''],
-  //     map_lat: [''],
-  //     map_lng: ['']
-  // })
-
   removeContentForm(i: number, modal: ModalDirective) {
     console.log("Discarding Form Content");
     const control = <FormArray>this.itenaryForm.controls['contents'];
     control.removeAt(i);
     this.resetIndex();
     modal.hide();
+    this.resetProgressBar();
+
   }
 
   removeContent(i: number) {
@@ -103,7 +92,7 @@ export class ContentViewComponent implements OnInit {
       value: i
     });
     console.log("removed!");
-
+    this.resetProgressBar();
     this.resetIndex();
   }
   addIndex() {
@@ -114,11 +103,12 @@ export class ContentViewComponent implements OnInit {
     this.lastIndex--;
   }
 
-  imageUploaded(event) {
+  imageUploadNew(event) {
     let file = event.src;
     let fileName = event.file.name;
     let fileType = event.file.type;
     let formData = new FormData();
+    console.log(event);
 
     formData.append('file', event.file);
 
@@ -132,6 +122,24 @@ export class ContentViewComponent implements OnInit {
       .subscribe(); // data => console.log('response', data)
   }
 
+  imageUploadUpdate(event) {
+    let file = event.src;
+    let fileName = event.file.name;
+    let fileType = event.file.type;
+    let formData = new FormData();
+    console.log(event);
+
+    formData.append('file', event.file);
+
+    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
+      .map((response: Response) => {
+        let mediaResponse = response.json();
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
+        contentForm.controls['imageUrl'].setValue(mediaResponse.url);
+      })
+      .subscribe(); // data => console.log('response', data)
+  }
 
   editContent(listIndex: number, onlineEditModal: ModalDirective, videoEditModal: ModalDirective, projectEditModal: ModalDirective) {
     this.editIndex = listIndex;
@@ -154,7 +162,7 @@ export class ContentViewComponent implements OnInit {
         break;
     }
     editModal.show();
-    // editModal.onHidden.subscribe(() => {
+    // editModal.onHide.subscribe(() => {
     // });
   }
 
@@ -170,6 +178,8 @@ export class ContentViewComponent implements OnInit {
     });
     modal.hide();
     console.log("updated!");
+    this.resetProgressBar();
+
   }
 
   saveNew(modal: ModalDirective) {
@@ -179,8 +189,89 @@ export class ContentViewComponent implements OnInit {
       value: this.lastIndex
     });
     console.log("saved!");
-
+    this.resetProgressBar();
     modal.hide();
+  }
+
+  resetProgressBar() {
+    delete this.filesToUpload;
+    delete this.filesUploaded;
+  }
+
+  uploadNew(event) {
+    console.log(event.files);
+    this.filesToUpload = event.files.length;
+    this.filesUploaded = 0;
+    for (let fileIndex in event.files) {
+      let file = event.files[fileIndex];
+      console.log(file);
+      file.src = file.objectURL.changingThisBreaksApplicationSecurity;
+      let formData = new FormData();
+      formData.append('file', file);
+      this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
+        .map((response: Response) => {
+          let responseObj = response.json();
+          const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+          const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+          const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+          supplementUrls.reset();
+          supplementUrls.push(this._fb.control(responseObj.url));
+          this.filesUploaded++;
+        })
+        .subscribe();
+    }
+
+  }
+
+  uploadEdit(event) {
+    this.filesToUpload = event.files.length;
+    this.filesUploaded = 0;
+    for (let fileIndex in event.files) {
+      let file = event.files[fileIndex];
+      console.log(file);
+      file.src = file.objectURL.changingThisBreaksApplicationSecurity;
+      let formData = new FormData();
+      formData.append('file', file);
+      let attachments: Array<any>;
+      this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
+        .map((response: Response) => {
+          let responseObj = response.json();
+          const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+          const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
+          const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+          supplementUrls.reset();
+          supplementUrls.push(this._fb.control(responseObj.url));
+        })
+        .subscribe();
+    }
+
+  }
+
+  resetNewUrls(event) {
+    console.log(event);
+    const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+    const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+    const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+    supplementUrls.reset();
+    this.resetProgressBar();
+  }
+
+  resetEditUrls(event) {
+    const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+    const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
+    const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+    supplementUrls.reset();
+    this.resetProgressBar();
+  }
+
+  itemNewRemoved(event) {
+    delete this.filesToUpload;
+    this.filesUploaded = 0;
+  }
+
+  itemEditRemoved(event) {
+    delete this.filesToUpload;
+    this.filesUploaded = 0;
   }
 
 }

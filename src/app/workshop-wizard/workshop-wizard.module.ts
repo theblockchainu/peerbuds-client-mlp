@@ -18,6 +18,8 @@ import { ListWorkshopComponent } from './list-workshop/list-workshop.component';
 
 //import { MultiselectAutocompleteModule } from './utilityComponents/multiselect-autocomplete/module';
 
+import { FileUploadModule } from 'primeng/primeng';
+
 
 
 @NgModule({
@@ -31,8 +33,8 @@ import { ListWorkshopComponent } from './list-workshop/list-workshop.component';
     ModalModule.forRoot(),
     RatingModule.forRoot(),
     TabsModule.forRoot(),
-    BsDropdownModule.forRoot()//,
-    // MultiselectAutocompleteModule
+    BsDropdownModule.forRoot(),
+    FileUploadModule
   ],
   declarations: [CreateWorkshopComponent, WorkshopContentComponent, ContentViewComponent, ListWorkshopComponent],
   providers: [

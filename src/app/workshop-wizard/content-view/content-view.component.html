@@ -37,7 +37,7 @@
                       <div class="form-group">
                         <label>Upload a photo:</label>
                         <div class="upload-image-section imageHolder">
-                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploadNew($event)"></image-upload>
                         </div>
                       </div>
                       <div class="form-group">
@@ -45,24 +45,24 @@
                         <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
                         <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                       </div>
-                      <!-- <div formArrayName="itemsProvided">
-                                      <div *ngFor="let items of itemsProvided.controls; let i=index">
-  
-                                          <div class="panel-body" [formGroupName]="i">
-  
-                                          </div>
-                                      </div>
-                                  </div> -->
                       <div class="form-group">
                         <label class="display-block">Need to know (optional)</label>
                         <textarea class="form-control" maxlength="500" formControlName="prerequisites"></textarea>
                         <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                       </div>
                       <div class="form-group">
-                        <label class="display-block">Add suplimental material</label> upload
-                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                        <label class="display-block">Add suplimental material</label>
+                        <div *ngIf="filesToUpload">
+                          <progressbar [max]="filesToUpload" [value]="filesUploaded">
+                            <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
+                          </progressbar>
+                        </div>
+                        <div *ngIf="!filesToUpload">
+                          Click Upload!
+                        </div>
+                        <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadNew($event)" multiple="multiple" maxFileSize="10000000"
+                          (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
                       </div>
-
                     </div>
                   </div>
                   <button type="button" class="btn btn-success" (click)="saveNew(onlineModal)">Add</button>
@@ -100,12 +100,21 @@
                       <div class="form-group">
                         <label>Upload Video:</label>
                         <div class="upload-image-section imageHolder">
-                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploadNew($event)"></image-upload>
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="display-block">Add suplimental material</label> upload
-                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                        <label class="display-block">Add suplimental material</label>
+                        <div *ngIf="filesToUpload">
+                          <progressbar [max]="filesToUpload" [value]="filesUploaded">
+                            <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
+                          </progressbar>
+                        </div>
+                        <div *ngIf="!filesToUpload">
+                          Click Upload!
+                        </div>
+                        <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadNew($event)" multiple="multiple" maxFileSize="10000000"
+                          (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
                       </div>
 
                     </div>
@@ -146,7 +155,7 @@
                       <div class="form-group">
                         <label>Upload a photo/video that best describes this content:</label>
                         <div class="upload-image-section imageHolder">
-                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                          <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploadUpdate($event)"></image-upload>
                         </div>
                       </div>
                       <div class="form-group">
@@ -161,10 +170,18 @@
                         <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                       </div>
                       <div class="form-group">
-                        <label class="display-block">Add suplimental material</label> upload
-                        <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                        <label class="display-block">Add suplimental material</label>
+                        <div *ngIf="filesToUpload">
+                          <progressbar [max]="filesToUpload" [value]="filesUploaded">
+                            <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
+                          </progressbar>
+                        </div>
+                        <div *ngIf="!filesToUpload">
+                          Click Upload!
+                        </div>
+                        <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadNew($event)" multiple="multiple" maxFileSize="10000000"
+                          (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
                       </div>
-
                     </div>
                   </div>
                   <button type="button" class="btn btn-success" (click)="saveNew(projectModal)">Add</button>
@@ -229,7 +246,7 @@
                   <div class="form-group">
                     <label>Upload a photo:</label>
                     <div class="upload-image-section imageHolder">
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploadUpdate($event)"></image-upload>
                     </div>
                   </div>
                   <div class="form-group">
@@ -237,22 +254,23 @@
                     <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
                     <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                   </div>
-                  <!-- <div formArrayName="itemsProvided">
-                              <div *ngFor="let items of itemsProvided.controls; let i=index">
-  
-                                  <div class="panel-body" [formGroupName]="i">
-  
-                                  </div>
-                              </div>
-                          </div> -->
                   <div class="form-group">
                     <label class="display-block">Need to know (optional)</label>
                     <textarea class="form-control" maxlength="500" formControlName="prerequisites"></textarea>
                     <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                   </div>
                   <div class="form-group">
-                    <label class="display-block">Add suplimental material</label> upload
-                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                    <label class="display-block">Add suplimental material</label>
+                    <div *ngIf="filesToUpload">
+                      <progressbar [max]="filesToUpload" [value]="filesUploaded">
+                        <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                        </span>
+                      </progressbar>
+                    </div>
+                    <div *ngIf="!filesToUpload">
+                      Click Upload!
+                    </div>
+                    <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadEdit($event)" multiple="multiple" maxFileSize="10000000"
+                      (onClear)="resetEditUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
                   </div>
 
                 </div>
@@ -293,14 +311,22 @@
                   <div class="form-group">
                     <label>Upload Video:</label>
                     <div class="upload-image-section imageHolder">
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploadUpdate($event)"></image-upload>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="display-block">Add suplimental material</label> upload
-                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                    <label class="display-block">Add suplimental material</label>
+                    <div *ngIf="filesToUpload">
+                      <progressbar [max]="filesToUpload" [value]="filesUploaded">
+                        <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                        </span>
+                      </progressbar>
+                    </div>
+                    <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadEdit($event)" multiple="multiple" maxFileSize="10000000"
+                      (onClear)="resetEditUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
                   </div>
-
+                  <div *ngIf="!filesToUpload">
+                    Click Upload!
+                  </div>
                 </div>
               </div>
               <button type="button" class="btn btn-success" (click)="saveTemp(videoEditModal)">Save</button>
@@ -340,7 +366,7 @@
                   <div class="form-group">
                     <label>Upload a photo/video that best describes this content:</label>
                     <div class="upload-image-section imageHolder">
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploaded($event)"></image-upload>
+                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="imageUploadUpdate($event)"></image-upload>
                     </div>
                   </div>
                   <div class="form-group">
@@ -355,8 +381,17 @@
                     <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                   </div>
                   <div class="form-group">
-                    <label class="display-block">Add suplimental material</label> upload
-                    <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
+                    <label class="display-block">Add suplimental material</label>
+                    <div *ngIf="filesToUpload">
+                      <progressbar [max]="filesToUpload" [value]="filesUploaded">
+                        <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                        </span>
+                      </progressbar>
+                    </div>
+                    <div *ngIf="!filesToUpload">
+                      Click Upload!
+                    </div>
+                    <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadEdit($event)" multiple="multiple" maxFileSize="10000000"
+                      (onClear)="resetEditUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
                   </div>
 
                 </div>
