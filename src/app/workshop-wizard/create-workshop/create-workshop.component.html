@@ -30,21 +30,20 @@
   </div>
   <div class="container">
     <div id="content" class="onboarding-content">
-      <div style="float:right;margin-top:-40px"><button type="button">Save &amp; Exit</button></div>
+      <div style="float:right;margin-top:-40px"><button type="button" (click)="saveandexit()">Save &amp; Exit</button></div>
       <br/>
       <!--Disclaimer-->
       <div class="onboarding step-0" [hidden]="step!=0">
         <div class="row">
           <div class="col-sm-7">
             <h1 class="title">Peerbuds Workshop Guidelines</h1>
-            <p>We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines
-              towards their content.
+            <p>We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines towards their content.
             </p>
             <ul style="margin-top:30px;list-style:none">
-              <li>1. Respect Others</li>
-              <li>2. Respect Others</li>
-              <li>3. Respect Others</li>
-              <li>4. Respect Others</li>
+                <li>1. Respect Others</li>
+                <li>2. Respect Others</li>
+                <li>3. Respect Others</li>
+                <li>4. Respect Others</li>
             </ul>
             <div style="margin-top:100px;">
               <a (click)="goto(1)">I agree, lets create a workshop</a>
@@ -167,7 +166,7 @@
                       <span class="text-right text-grey display-block margin-top-5">max. 200 chars</span>
                     </div>
                   </div>
-                  <div class="col-sm-3" style="margin-left:20px">
+                  <div  class="col-sm-3" style="margin-left:20px">
                     <p>Here is a sample description
                       <br/>"I am a recent graduate that enjoys reading"
                     </p>
@@ -236,7 +235,8 @@
                 <div class="col-sm-12 margin-bottom-30">
                   <div class="form-group">
                     <label class="display-block">What’s the workshop about?</label>
-                    <p>Give a detailed description to learners of what they will do in this workshop</p>
+                    <p>Give a detailed description to learners of what they will do
+                       in this workshop</p>
                     <textarea class="form-control" maxlength="200" formControlName="description"></textarea>
                     <span class="text-right text-grey display-block margin-top-5">max. 800 chars</span>
                   </div>
@@ -418,6 +418,11 @@
           </div>
         </div>
         <div class="clearfix"></div>
+        <!--<div class="margin-20">
+          <pre>{{workshop.value | json}}</pre>
+
+        </div>-->
+        <!--<pre>{{timeline.value | json}}</pre>-->
       </div>
     </div>
   </div>

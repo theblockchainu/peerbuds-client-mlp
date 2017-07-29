@@ -13,7 +13,7 @@ import { AppConfig } from '../../app.config';
 @Injectable()
 export class CollectionService {
   public key = 'userId';
-  private userId;
+  private userId ;
 
   constructor(private http: Http, private config: AppConfig,
               private _cookieService: CookieService,
@@ -24,27 +24,32 @@ export class CollectionService {
   }
 
   private getCookieValue(key: string) {
-    let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-    this.userId = cookieValue[1];
+    let cookie = this._cookieService.get(key);
+    if(cookie) {
+      let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
+      this.userId = cookieValue[1];
+    }
     return this.userId;
   }
 
   public getCollection(type: string) {
     let collections = [];
-    this.http
-             .get(this.config.apiUrl + '/api/peers/' + this.userId + '/collections')
-             .map((response: Response) => {
-               // login successful if there's a jwt token in the response
-               let responseObj = response.json();
-               console.log(response.json());
-               responseObj.forEach((res) =>
-                {
-                 if(res.type==type)
-                  collections.push(res);
-                });
-             }, (err) => {
-                 console.log('Error: ' + err);
-              }).subscribe();
+    if(this.userId) {
+      this.http
+               .get(this.config.apiUrl + '/api/peers/' + this.userId + '/collections')
+               .map((response: Response) => {
+                 // login successful if there's a jwt token in the response
+                 let responseObj = response.json();
+                 console.log(response.json());
+                 responseObj.forEach((res) =>
+                  {
+                   if(res.type==type)
+                    collections.push(res);
+                  });
+               }, (err) => {
+                   console.log('Error: ' + err);
+                }).subscribe();
+              }
 
     return collections;
   }
