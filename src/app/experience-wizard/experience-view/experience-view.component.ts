@@ -76,8 +76,7 @@ export class ExperienceViewComponent implements OnInit {
 
         const contentArray = <FormArray>this.itenaryForm.controls['contents'];
         contentArray.push(this.contentObject);
-        console.log(this.itenaryForm);
-
+        this.lastIndex = 0;
     }
 
 
@@ -93,6 +92,9 @@ export class ExperienceViewComponent implements OnInit {
         this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
             .map((response: Response) => {
                 let mediaResponse = response.json();
+                console.log(this.itenaryForm);
+                console.log(this.lastIndex);
+
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 contentForm.controls['imageUrl'].setValue(mediaResponse.url);
