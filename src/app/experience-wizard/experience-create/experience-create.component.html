@@ -1,8 +1,7 @@
 <div class="position-relative">
   <!--class="position-relative"-->
   <!-- content starts here-->
-  <div class="navbar navbar-inverse navbar-fixed-left">
-    <a class="navbar-brand" href="#">Brand</a>
+  <div class="navbar navbar-fixed-left">
     <ul class="nav navbar-nav">
       <li><strong>About</strong> </li>
       <li (click)=goto(1)>Your photo </li>
@@ -228,8 +227,8 @@
               <div class="stepHeader">Showcase your experience</div>
               <div class="row">
                 <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)" novalidate>
-                  <div class="col-md-8">
-                    <div class="row">
+                  <div class="row">
+                    <div class="col-md-8">
                       <div class="stepHeader">Upload Video</div>
                       <span class="label label-warning" [hidden]="!experienceVideoPending">Pending</span>
                       <span class="label label-success" [hidden]="experienceVideoPending">Success</span>
@@ -287,7 +286,7 @@
             <div class="col-sm-12">
               <div class="stepHeader">Are you open for appointments?</div>
               <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-
+                <appointment-calendar></appointment-calendar>
                 <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
               </form>
             </div>
@@ -327,10 +326,10 @@
           </div>
         </div>
         <div class="clearfix"></div>
-        <div class="margin-20">
+        <!-- <div class="margin-20">
           <pre>{{experience.value | json}}</pre>
           <pre>{{timeline.value | json}}</pre>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
