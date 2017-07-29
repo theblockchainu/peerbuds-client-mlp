@@ -8,6 +8,7 @@ import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsMod
 import { AuthenticationService } from "../_services/authentication/authentication.service";
 import { CountryPickerService } from "../_services/countrypicker/countrypicker.service";
 import { LanguagePickerService } from "../_services/languagepicker/languagepicker.service";
+// import { AuthGuardService } from '../_services/auth-guard/auth-guard.service';
 
 import { WorkshopWizardRoutingModule } from './workshop-wizard-routing.module';
 import { CreateWorkshopComponent } from './create-workshop/create-workshop.component';
@@ -40,7 +41,8 @@ import { FileUploadModule } from 'primeng/primeng';
   providers: [
     AuthenticationService,
     CountryPickerService,
-    LanguagePickerService
+    LanguagePickerService // ,
+    // AuthGuardService
   ]
 })
 export class WorkshopWizardModule { }

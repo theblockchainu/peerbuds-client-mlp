@@ -8,6 +8,8 @@ import { AuthenticationService } from "../../_services/authentication/authentica
 import { CountryPickerService } from "../../_services/countrypicker/countrypicker.service";
 import { LanguagePickerService } from "../../_services/languagepicker/languagepicker.service";
 import { CollectionService } from '../../_services/collection/collection.service';
+
+import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 import { StepEnum } from '../StepEnum';
 
 import {
@@ -475,9 +477,15 @@ export class CreateWorkshopComponent implements OnInit {
 
   submitForReview() {
     console.log("Submitted!");
-
+    this.returnUrl = 'workshop';
     this.router.navigate([this.returnUrl]);
 
+  }
+
+  saveandexit() {
+    
+    this.returnUrl = 'workshop';
+    this.router.navigate([this.returnUrl]);
   }
 
 }
