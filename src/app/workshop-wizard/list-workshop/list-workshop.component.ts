@@ -22,6 +22,10 @@ export class ListWorkshopComponent implements OnInit {
 
   ngOnInit() {
     this.workshops = this._collectionService.getCollection('workshop');
+    if(!this.workshops) {
+      this.router.navigate(['/login']);
+
+    }
   }
 
   public onSelect(workshop) {
