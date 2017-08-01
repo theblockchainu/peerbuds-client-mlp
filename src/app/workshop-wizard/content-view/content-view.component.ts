@@ -106,30 +106,23 @@ export class ContentViewComponent implements OnInit {
   }
 
   imageUploadNew(event) {
-    const file = event.src;
-    const fileName = event.file.name;
-    const fileType = event.file.type;
-    this.mediaUploader.upload(file)
-      .map((mediaResponse: Response) => {
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-        contentForm.controls['imageUrl'].setValue(mediaResponse.url);
-      })
-      .subscribe(); // data => console.log('response', data)
+        contentForm.controls['imageUrl'].setValue(responseObj.url);
+      }).subscribe();
+    }// data => console.log('response', data)
   }
 
   imageUploadUpdate(event) {
-    const file = event.src;
-    const fileName = event.file.name;
-    const fileType = event.file.type;
-    const formData = new FormData();
-    this.mediaUploader.upload(file)
-      .map((mediaResponse: Response) => {
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
-        contentForm.controls['imageUrl'].setValue(mediaResponse.url);
-      })
-      .subscribe(); // data => console.log('response', data)
+        contentForm.controls['imageUrl'].setValue(responseObj.url);
+      }).subscribe();
+    }
   }
 
   editContent(listIndex: number, onlineEditModal: ModalDirective, videoEditModal: ModalDirective, projectEditModal: ModalDirective) {

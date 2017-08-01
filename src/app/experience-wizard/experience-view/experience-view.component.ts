@@ -4,6 +4,7 @@ import { Http, Response, } from '@angular/http';
 import { AppConfig } from '../../app.config';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { ModalModule, ModalDirective } from 'ngx-bootstrap';
+import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -32,7 +33,8 @@ export class ExperienceViewComponent implements OnInit {
     public countries: any[];
     constructor(
         private _fb: FormBuilder, private http: Http, private config: AppConfig,
-        private countryPickerService: CountryPickerService
+        private countryPickerService: CountryPickerService,
+        private mediaUploader: MediaUploaderService
     ) {
         this.countryPickerService.getCountries()
             .subscribe((countries) => this.countries = countries);
@@ -82,24 +84,13 @@ export class ExperienceViewComponent implements OnInit {
 
 
     imageUploaded(event) {
-        let file = event.src;
-        let fileName = event.file.name;
-        let fileType = event.file.type;
-        let formData = new FormData();
-
-        formData.append('file', event.file);
-
-        this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-            .map((response: Response) => {
-                let mediaResponse = response.json();
-                console.log(this.itenaryForm);
-                console.log(this.lastIndex);
-
+        for (const file of event.files) {
+            this.mediaUploader.upload(file).map((responseObj: Response) => {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                contentForm.controls['imageUrl'].setValue(mediaResponse.url);
-            })
-            .subscribe(); // data => console.log('response', data)
+                contentForm.controls['imageUrl'].setValue(responseObj.url);
+            }).subscribe();
+        }// data => console.log('response', data)
     }
 
 
@@ -108,11 +99,11 @@ export class ExperienceViewComponent implements OnInit {
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         const contentForm = <FormGroup>contentsFArray.controls[listIndex];
         this.tempForm = _.cloneDeep(contentForm);
-        let contentType = contentForm.value.type;
+        const contentType = contentForm.value.type;
         let editModal: ModalDirective;
         switch (contentType) {
             case "online":
-                editModal = onlineEditModal
+                editModal = onlineEditModal;
                 break;
             case "project":
                 editModal = projectEditModal;

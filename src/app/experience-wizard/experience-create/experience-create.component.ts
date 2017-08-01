@@ -12,10 +12,11 @@ import {
   , RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { AppConfig } from '../../app.config';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
+import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 // import { Profile } from './interfaces/profile.interface';
 import * as moment from 'moment';
 
@@ -77,6 +78,7 @@ export class ExperienceCreateComponent implements OnInit {
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
     private activatedRoute: ActivatedRoute,
+    private mediaUploader: MediaUploaderService
   ) {
     this.getCookieValue('userId');
     this.countryPickerService.getCountries()
@@ -197,20 +199,12 @@ export class ExperienceCreateComponent implements OnInit {
   }
 
   public profileImageUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-
-    formData.append('file', event.file);
-
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
-        this.profile.controls['picture_url'].setValue(mediaResponse.url);
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
+        this.profile.controls['picture_url'].setValue(responseObj.url);
         this.profileImagePending = false;
-      })
-      .subscribe(); // data => console.log('response', data)
+      }).subscribe();
+    }
   }
 
   profileImageRemoved(event) {
@@ -236,32 +230,20 @@ export class ExperienceCreateComponent implements OnInit {
   }
 
   experienceImageUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-    formData.append('file', event.file);
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
-        this.addUrl(mediaResponse.url);
-      })
-      .subscribe(); // data => console.log('response', data)
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
+        this.addUrl(responseObj.url);
+      }).subscribe();
+    }
   }
 
   experienceVideoUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-    formData.append('file', event.file);
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
-        this.experience.controls['videoUrl'].setValue(mediaResponse.url);
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
+        this.experience.controls['videoUrl'].setValue(responseObj.url);
         this.experienceVideoPending = false;
-      })
-      .subscribe(); // data => console.log('response', data)
+      }).subscribe();
+    }
   }
 
 

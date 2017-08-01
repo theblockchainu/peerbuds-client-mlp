@@ -12,7 +12,7 @@ import {
   Http, URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { AppConfig } from '../../app.config';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
@@ -85,7 +85,7 @@ export class CreateWorkshopComponent implements OnInit {
     private countryPickerService: CountryPickerService,
     public _collectionService: CollectionService,
     public requestHeaderService: RequestHeaderService,
-    private mediaUploaderService: MediaUploaderService
+    private mediaUploader: MediaUploaderService
   ) {
     this.getCookieValue('userId');
     this.countryPickerService.getCountries()
@@ -193,6 +193,9 @@ export class CreateWorkshopComponent implements OnInit {
     delete data.modified;
     delete data.createdAt;
     delete data.updatedAt;
+    delete data.isApproved;
+    delete data.isCanceled;
+    delete data.status;
     console.log(data);
     this.workshopObject = data;
     /*setTimeout(()=>{
@@ -227,44 +230,30 @@ export class CreateWorkshopComponent implements OnInit {
 
   public addUrl(value: String) {
     const control = <FormArray>this.workshop.controls['imageUrls'];
-    // push the value from stepTextArea to array
-    switch (control.length) {
-      case 0:
-        this.workshopImage1Pending = false;
-        break;
-      case 1:
-        this.workshopImage2Pending = false;
-        break;
-      default:
-        break;
-    }
     this.workshopImage1Pending = false;
     control.push(new FormControl(value));
   }
 
-  workshopImageUploaded(event) {
-    const file = event.src;
-    const fileName = event.file.name;
-    const fileType = event.file.type;
-    this.mediaUploaderService.upload(file)
-      .map((mediaResponse: Response) => {
-        this.addUrl(mediaResponse.url);
-      })
-      .subscribe();
-  }
-
-  workshopVideoUploaded(event) {
-    const file = event.src;
-    const fileName = event.file.name;
-    const fileType = event.file.type;
-    this.mediaUploaderService.upload(file)
-      .map((mediaResponse: Response) => {
-        this.workshop.controls['videoUrl'].setValue(mediaResponse.url);
+  uploadVideo(event) {
+    console.log(event.files);
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
+        this.workshop.controls['videoUrl'].setValue(responseObj.url);
         this.workshopVideoPending = false;
-      })
-      .subscribe();
+      }).subscribe();
+    }
   }
 
+  uploadImages(event) {
+    console.log(event.files);
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
+        this.addUrl(responseObj.url);
+        this.workshopVideoPending = false;
+      }).subscribe();
+    }
+    this.workshopImage1Pending = false;
+  }
 
   public changeInterests(topic: any) {
     const index = this.interests.indexOf(topic);

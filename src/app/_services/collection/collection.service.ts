@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 

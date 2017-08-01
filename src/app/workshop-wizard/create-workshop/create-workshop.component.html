@@ -282,14 +282,13 @@
                       <div class="stepHeader">Upload Video</div>
                       <span class="label label-warning" [hidden]="!workshopVideoPending">Pending</span>
                       <span class="label label-success" [hidden]="workshopVideoPending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Video'" [dropBoxMessage]="''" (onFileUploadFinish)="workshopVideoUploaded($event)"></image-upload>
+                      <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000" auto="true"
+                        chooseLabel="Browse"></p-fileUpload>
                       <div class="stepHeader">Upload Images</div>
                       <span class="label label-warning" [hidden]="!workshopImage1Pending">Pending</span>
                       <span class="label label-success" [hidden]="workshopImage1Pending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="workshopImageUploaded($event)"></image-upload>
-                      <span class="label label-warning" [hidden]="!workshopImage2Pending">Pending</span>
-                      <span class="label label-success" [hidden]="workshopImage2Pending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="workshopImageUploaded($event)"></image-upload>
+                      <p-fileUpload #fubauto name="image" multiple="multiple" customUpload="true" (uploadHandler)="uploadImages($event)" maxFileSize="10000000"
+                        auto="true" chooseLabel="Browse"></p-fileUpload>
                     </div>
                   </div>
                   <div class="row">
