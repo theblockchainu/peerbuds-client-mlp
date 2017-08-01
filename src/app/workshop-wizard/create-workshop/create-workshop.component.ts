@@ -1,36 +1,35 @@
 import 'rxjs/add/operator/switchMap';
-import {
-  Component,
-  OnInit,
-  Input
-} from '@angular/core';
-import { AuthenticationService } from "../../_services/authentication/authentication.service";
-import { CountryPickerService } from "../../_services/countrypicker/countrypicker.service";
-import { LanguagePickerService } from "../../_services/languagepicker/languagepicker.service";
-import { CollectionService } from '../../_services/collection/collection.service';
+import { Component, OnInit, Input } from '@angular/core';
 
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
+import { CollectionService } from '../../_services/collection/collection.service';
 import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 import { StepEnum } from '../StepEnum';
 
 import {
-  Http, URLSearchParams, Headers, Response, BaseRequestOptions
-  , RequestOptions, RequestOptionsArgs
+  Http, URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { AppConfig } from '../../app.config';
 import { CookieService } from 'angular2-cookie/core';
-import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
+import {
+  FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
+} from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-// import { Profile } from './interfaces/profile.interface';
+import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import * as moment from 'moment';
+import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 
 @Component({
-  selector: 'create-workshop',
+  selector: 'app-create-workshop',
   templateUrl: './create-workshop.component.html',
   styleUrls: ['./create-workshop.component.scss']
 })
+
 export class CreateWorkshopComponent implements OnInit {
-  //Getting workshop id from url
+  // Getting workshop id from url
   private workshopId: string;
   private workshopObject = {};
 
@@ -39,9 +38,7 @@ export class CreateWorkshopComponent implements OnInit {
   public countries: any[];
   public languagesArray: any[];
   public placeholderStringTopic = 'Search for a topic or enter a new one';
-  // public profile: Profile;
   public userId: string;
-  public profile: FormGroup;
   public interest1: FormGroup;
   public workshop: FormGroup;
   public selectedTopic: FormGroup;
@@ -56,6 +53,7 @@ export class CreateWorkshopComponent implements OnInit {
   public contentComplete = false;
   public currencies = [];
 
+  private options;
 
   profileImagePending: Boolean;
   workshopVideoPending: Boolean;
@@ -73,17 +71,21 @@ export class CreateWorkshopComponent implements OnInit {
   public selectedLanguages = [];
   public suggestedTopics = [];
   public interests = [];
+
   // TypeScript public modifiers
   constructor(
     public router: Router,
     private activatedRoute: ActivatedRoute,
-    private http: Http, private config: AppConfig,
+    private http: Http,
+    private config: AppConfig,
     public authenticationService: AuthenticationService,
     private languagePickerService: LanguagePickerService,
     private _cookieService: CookieService,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
-    public _collectionService: CollectionService
+    public _collectionService: CollectionService,
+    public requestHeaderService: RequestHeaderService,
+    private mediaUploaderService: MediaUploaderService
   ) {
     this.getCookieValue('userId');
     this.countryPickerService.getCountries()
@@ -93,18 +95,17 @@ export class CreateWorkshopComponent implements OnInit {
     // this.getProfile();
     this.getTopics();
     this.activatedRoute.params.subscribe(params => {
-        this.workshopId = params["id"];
+      this.workshopId = params['id'];
     });
+    this.options = requestHeaderService.getOptions();
   }
 
   public selected(event) {
     this.selectedLanguages = event;
   }
-
   public ngOnInit() {
-
     this.activatedRoute.params.subscribe((params: { step: string }) => {
-      //this.step = StepEnum[params.step];
+      // this.step = StepEnum[params.step];
     });
     /*if(!this.currentStep) {
       //handle error when user is entering an incorrect step.
@@ -114,28 +115,6 @@ export class CreateWorkshopComponent implements OnInit {
     this.workshopVideoPending = true;
     this.workshopImage1Pending = true;
     this.workshopImage2Pending = true;
-    this.profile = new FormGroup({
-      first_name: new FormControl(''),
-      last_name: new FormControl(''),
-      picture_url: new FormControl(''),
-      headline: new FormControl(''),
-      languages: new FormArray([
-        new FormControl('')
-      ]),
-      location: new FormControl(''),
-      experience_type: new FormControl(''),
-      // learner_type: new FormControl(''),
-      learner_type: new FormArray([]),
-      // this.learnerType_array.learner_type.map(type => new FormControl(type))
-      portfolio_url: new FormControl(''),
-      is_teacher: new FormControl('false'),
-      description: new FormControl(''),
-      education: new FormControl(''),
-      work_experience: new FormControl(''),
-      custom_url: new FormControl(''),
-      profile_video: new FormControl('')
-    });
-
     this.interest1 = new FormGroup({});
 
     this.workshop = this._fb.group({
@@ -172,31 +151,30 @@ export class CreateWorkshopComponent implements OnInit {
 
     this.selectedTopic = new FormGroup({});
 
-    this.difficulties = ["Beginner", "Intermediate", "Advanced"];
+    this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
     this.cancellationPolicies = [{
       value: 1,
-      text: "24 Hours"
+      text: '24 Hours'
     }, {
       value: 3,
-      text: "3 Days"
+      text: '3 Days'
     },
     {
       value: 7,
-      text: "1 Week"
+      text: '1 Week'
     }];
 
 
-    this.currencies = ["USD", "INR", "GBP"]
+    this.currencies = ['USD', 'INR', 'GBP'];
 
     this.contentGroup = new FormGroup({});
 
-    if(!this.workshopId) {
+    if (!this.workshopId) {
       this.createWorkshop();
-    }
-    else {
+    } else {
       this._collectionService.getCollectionDetails(this.workshopId).subscribe(res => this.assignWorkshop(res),
-            err => console.log("error"),
-            () => console.log('Completed!'));
+        err => console.log('error'),
+        () => console.log('Completed!'));
     }
 
     this.returnUrl = 'home';
@@ -207,27 +185,29 @@ export class CreateWorkshopComponent implements OnInit {
     delete data.id;
     delete data.type;
     delete data.prerequisites;
-    let languageArray = data.language;
+    const languageArray = data.language;
     data.language = languageArray[0];
     delete data.imageUrls;
     data.imageUrls = [];
     delete data.created;
     delete data.modified;
+    delete data.createdAt;
+    delete data.updatedAt;
     console.log(data);
     this.workshopObject = data;
-      /*setTimeout(()=>{
-          this.workshop.setValue(data);
-     },3000);*/
+    /*setTimeout(()=>{
+        this.workshop.setValue(data);
+   },3000);*/
     this.workshop.setValue(data);
     this.step = data.stage;
     this.router.navigate(['createWorkshop', this.workshopId, this.step]);
 
   }
 
-  public ngAfterContentChecked() {
-    // console.log(this.workshopObject);
-    // this.workshop.setValue(this.workshopObject);
-  }
+  // public ngAfterContentChecked() {
+  //   // console.log(this.workshopObject);
+  //   // this.workshop.setValue(this.workshopObject);
+  // }
 
   initAddress() {
     // initialize our address
@@ -239,32 +219,10 @@ export class CreateWorkshopComponent implements OnInit {
   public workshopStepUpdate() {
     if (this.workshop.value.stage < this.step) {
       this.workshop.patchValue({
-        "stage": this.step
+        'stage': this.step
       });
     }
 
-  }
-
-  public profileImageUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-
-    formData.append('file', event.file);
-
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
-        this.profile.controls['picture_url'].setValue(mediaResponse.url);
-        this.profileImagePending = false;
-      })
-      .subscribe(); // data => console.log('response', data)
-  }
-
-  profileImageRemoved(event) {
-    this.profile.controls['picture_url'].reset();
-    this.profileImagePending = true;
   }
 
   public addUrl(value: String) {
@@ -285,92 +243,45 @@ export class CreateWorkshopComponent implements OnInit {
   }
 
   workshopImageUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-    formData.append('file', event.file);
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
+    const file = event.src;
+    const fileName = event.file.name;
+    const fileType = event.file.type;
+    this.mediaUploaderService.upload(file)
+      .map((mediaResponse: Response) => {
         this.addUrl(mediaResponse.url);
       })
-      .subscribe(); // data => console.log('response', data)
+      .subscribe();
   }
 
   workshopVideoUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-    formData.append('file', event.file);
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
+    const file = event.src;
+    const fileName = event.file.name;
+    const fileType = event.file.type;
+    this.mediaUploaderService.upload(file)
+      .map((mediaResponse: Response) => {
         this.workshop.controls['videoUrl'].setValue(mediaResponse.url);
         this.workshopVideoPending = false;
       })
-      .subscribe(); // data => console.log('response', data)
+      .subscribe();
   }
 
-
-  public changeLearnerType(type: any) {
-    let currentTypeControls: FormArray = this.profile.get('learner_type') as FormArray;
-    let index = currentTypeControls.value.indexOf(type);
-    if (index > -1) {
-      currentTypeControls.removeAt(index);
-    } else {
-      currentTypeControls.push(new FormControl(type));
-    } // Otherwise add this type.
-  }
 
   public changeInterests(topic: any) {
-    let index = this.interests.indexOf(topic);
+    const index = this.interests.indexOf(topic);
     if (index > -1) {
       this.interests.splice(index, 1); // If the user currently uses this topic, remove it.
     } else {
       this.interests.push(topic); // Otherwise add this topic.
     }
   }
-
-  // languages = this.profile._value.languages.split(',');
-  public submitProfile(event) {
-    let body = this.profile.value;
-    let learner_Type;
-    let languages;
-    learner_Type = this.profile.value.learner_type.map((type) => type.id);
-    // body.languages = languages;
-    body.languages = this.selectedLanguages;
-    body.learner_type = learner_Type;
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
-    if (this.step < 3) {
-      this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body, options)
-        .map((response: Response) => {
-          this.step++;
-          this.workshopStepUpdate();
-          this.router.navigate(['createWorkshop', this.workshopId, this.step]);
-        })
-        .subscribe();
-    }
-  }
-
-
-
   /**
    * createWorkshop
    */
   public createWorkshop() {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
-    var body = {
-      "type": "workshop"
+    const body = {
+      'type': 'workshop'
     };
-    this.http.post(this.config.apiUrl + '/api/peers/' + this.userId + '/collections', body, options)
+    this.http.post(this.config.apiUrl + '/api/peers/' + this.userId + '/collections', body, this.options)
       .map((response: Response) => {
         this.workshopId = response.json().id;
       })
@@ -379,14 +290,10 @@ export class CreateWorkshopComponent implements OnInit {
   }
 
   public submitWorkshop(data) {
-    var body = data.value;
-    var currentLanguage = body.language;
+    const body = data.value;
+    const currentLanguage = body.language;
     body.language = [currentLanguage];
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
-    this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId, body, options)
+    this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId, body, this.options)
       .map((response: Response) => {
         this.step++;
         this.workshopStepUpdate();
@@ -401,19 +308,15 @@ export class CreateWorkshopComponent implements OnInit {
    * numberOfdays
   */
   public numberOfdays(currentDate, startDate) {
-    let current = moment(currentDate);
-    let start = moment(startDate);
+    const current = moment(currentDate);
+    const start = moment(startDate);
     return current.diff(start, 'days');
   }
 
   public submitTimeline(data: FormGroup) {
-    var body = data.value.calendar;
+    const body = data.value.calendar;
     if (body.startDate && body.endDate) {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('Accept', 'application/json');
-      let options = new RequestOptions({ headers: headers, withCredentials: true });
-      this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, options)
+      this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, this.options)
         .map((response: Response) => {
           this.step++;
           this.workshopStepUpdate();
@@ -421,7 +324,7 @@ export class CreateWorkshopComponent implements OnInit {
         })
         .subscribe();
     } else {
-      console.log("Enter Date!");
+      console.log('Enter Date!');
     }
 
 
@@ -429,7 +332,7 @@ export class CreateWorkshopComponent implements OnInit {
 
   public submitInterests(interests) {
     this.step++;
-    let topicArray = [];
+    const topicArray = [];
     this.interests.forEach((topic) => {
       /* this.http.put(this.config.apiUrl +  '/api/peers/'
           + this.userId + '/topics/rel/' + topic.id)
@@ -445,18 +348,9 @@ export class CreateWorkshopComponent implements OnInit {
   }
 
   private getCookieValue(key: string) {
-    let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
+    const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
     this.userId = cookieValue[1];
     return this.userId;
-  }
-
-  private getProfile() {
-    let reqObject = { where: { userId: this.getCookieValue('userId') } };
-    return this.http.get(this.config.apiUrl + '/api/profiles?filter='
-      + encodeURIComponent(JSON.stringify(reqObject)))
-      .map((response: Response) => {
-        this.profile.controls['id'].setValue(response.json()[0].id);
-      }).subscribe(); // data => console.log('response', data)
   }
 
   private getTopics() {
@@ -476,14 +370,14 @@ export class CreateWorkshopComponent implements OnInit {
 
 
   submitForReview() {
-    console.log("Submitted!");
+    console.log('Submitted!');
     this.returnUrl = 'workshop';
     this.router.navigate([this.returnUrl]);
 
   }
 
   saveandexit() {
-    
+
     this.returnUrl = 'workshop';
     this.router.navigate([this.returnUrl]);
   }

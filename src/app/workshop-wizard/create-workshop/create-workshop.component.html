@@ -37,13 +37,14 @@
         <div class="row">
           <div class="col-sm-7">
             <h1 class="title">Peerbuds Workshop Guidelines</h1>
-            <p>We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines towards their content.
+            <p>We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines
+              towards their content.
             </p>
             <ul style="margin-top:30px;list-style:none">
-                <li>1. Respect Others</li>
-                <li>2. Respect Others</li>
-                <li>3. Respect Others</li>
-                <li>4. Respect Others</li>
+              <li>1. Respect Others</li>
+              <li>2. Respect Others</li>
+              <li>3. Respect Others</li>
+              <li>4. Respect Others</li>
             </ul>
             <div style="margin-top:100px;">
               <a (click)="goto(1)">I agree, lets create a workshop</a>
@@ -59,31 +60,6 @@
         </div>
       </div>
       <div class="container-fluid clearfix">
-
-        <!--<div class="onboarding step-1" [hidden]="step!=1">
-          <div class="row">
-            <div class="col-sm-7">
-              <h1 class="title">Let people know who you are</h1>
-              <div class="stepHeader">Upload the happiest photo of yourself</div>
-              <form [formGroup]="profile" (ngSubmit)="submitProfile(profile)" novalidate>
-                <span class="label label-warning" [hidden]="!profileImagePending">Pending</span>
-                <span class="label label-success" [hidden]="profileImagePending">Success</span>
-                <div class="upload-image-section imageHolder">
-
-                  <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="profileImageUploaded($event)"
-                    (onRemove)="profileImageRemoved($event)"></image-upload>
-
-                </div>
-                <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
-                </div>
-              </form>
-
-            </div>
-          </div>
-        </div>-->
-        <!-- step 1 ends here -->
-
         <!-- step 1 starts here -->
         <div class="onboarding step-1" [hidden]="step!=1">
           <div class="row">
@@ -166,7 +142,7 @@
                       <span class="text-right text-grey display-block margin-top-5">max. 200 chars</span>
                     </div>
                   </div>
-                  <div  class="col-sm-3" style="margin-left:20px">
+                  <div class="col-sm-3" style="margin-left:20px">
                     <p>Here is a sample description
                       <br/>"I am a recent graduate that enjoys reading"
                     </p>
@@ -235,8 +211,7 @@
                 <div class="col-sm-12 margin-bottom-30">
                   <div class="form-group">
                     <label class="display-block">What’s the workshop about?</label>
-                    <p>Give a detailed description to learners of what they will do
-                       in this workshop</p>
+                    <p>Give a detailed description to learners of what they will do in this workshop</p>
                     <textarea class="form-control" maxlength="200" formControlName="description"></textarea>
                     <span class="text-right text-grey display-block margin-top-5">max. 800 chars</span>
                   </div>

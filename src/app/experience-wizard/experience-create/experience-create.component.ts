@@ -20,7 +20,7 @@ import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router
 import * as moment from 'moment';
 
 @Component({
-  selector: 'experience-create',
+  selector: 'app-experience-create',
   // We need to tell Angular's Dependency Injection which providers are in our app.
   providers: [],
   // Our list of styles in our component. We may add more to compose many styles together
@@ -83,9 +83,7 @@ export class ExperienceCreateComponent implements OnInit {
       .subscribe((countries) => this.countries = countries);
     this.languagePickerService.getLanguages()
       .subscribe((languages) => this.languagesArray = languages);
-    // this.getProfile();
     this.getTopics();
-
   }
 
   public selected(event) {

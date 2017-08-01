@@ -12,17 +12,17 @@ import { CollectionService } from '../../_services/collection/collection.service
 })
 export class ListWorkshopComponent implements OnInit {
 
-  public workshops:any[];
+  public workshops: any[];
 
   constructor(
     private route: ActivatedRoute,
     public router: Router,
     public _collectionService: CollectionService) {
-    }
+  }
 
   ngOnInit() {
     this.workshops = this._collectionService.getCollection('workshop');
-    if(!this.workshops) {
+    if (!this.workshops) {
       this.router.navigate(['/login']);
 
     }
