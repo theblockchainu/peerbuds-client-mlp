@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@agm/core@^1.0.0-beta.0":
+  version "1.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@agm/core/-/core-1.0.0-beta.0.tgz#5ca53f0efa321e1e24c7ba3a6be72f96bccf82a4"
+
 "@angular/animations@^4.3.1":
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-4.3.1.tgz#1f7e0bb803efc21c608246e6765a1c647f3d1a5f"
@@ -3815,6 +3819,10 @@ ng-router-loader@^2.1.0:
   dependencies:
     loader-utils "^0.2.16"
     recast "^0.11.20"
+
+ng4-geoautocomplete@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/ng4-geoautocomplete/-/ng4-geoautocomplete-0.0.9.tgz#0f14eaeb365ea63607d7d291a5905b1eb47d253c"
 
 ngc-webpack@^3.0.0:
   version "3.0.0"

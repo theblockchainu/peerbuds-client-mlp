@@ -21,6 +21,9 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
 
 import { AlertService } from './_services/alert/alert.service';
 import { AuthenticationService } from './_services/authentication/authentication.service';
+import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
+import { AuthService } from './_services/auth/auth.service';
+
 import { CollectionService } from './_services/collection/collection.service';
 import { WorkshopWizardRoutingModule } from './workshop-wizard/workshop-wizard-routing.module';
 import { WorkshopWizardModule } from "./workshop-wizard/workshop-wizard.module";
@@ -54,7 +57,9 @@ import { HomeModule } from "./home/home.module";
     CookieService,
     AlertService,
     AuthenticationService,
-    CollectionService
+    CollectionService,
+    AuthGuardService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

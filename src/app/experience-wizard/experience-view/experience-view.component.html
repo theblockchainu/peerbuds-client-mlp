@@ -1,4 +1,4 @@
-<form [formGroup]="itenaryForm" class="form-group">
+<form [formGroup]="itenaryForm" class="form-inline">
     <label>Date:</label>
     <input type="date" class="form-control" formControlName="date">
 </form>
@@ -31,44 +31,26 @@
                 <textarea class="form-control" maxlength="500" formControlName="prerequisites"></textarea>
                 <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
             </div>
-
-            <div class="form-group" formGroupName="location">
-                <div class="form-group">
-                    <label>Location Name:</label>
-                    <input type="text" class="form-control" formControlName="location_name">
-                </div>
-                <div class="form-group">
-                    <label>Country:</label>
-                    <input type="text" class="form-control" formControlName="country">
-                </div>
-                <div class="form-group">
-                    <label>Street Address:</label>
-                    <input type="text" class="form-control" formControlName="location_name">
-                </div>
-                <div class="form-group">
-                    <label>Aprt/suite (optional):</label>
-                    <input type="text" class="form-control" formControlName="apt_suite">
-                </div>
-                <div class="form-group">
-                    <label>City</label>
-                    <input type="text" class="form-control" formControlName="city">
-                </div>
-                <div class="form-group">
-                    <label>State:</label>
-                    <input type="text" class="form-control" formControlName="state">
-                </div>
-                <div class="form-group">
-                    <label>Zip:</label>
-                    <input type="text" class="form-control" formControlName="zip">
-                </div>
-                <div class="form-group">
-                    <label>Map Pin:</label>
-                    <!--<app-the-map (getMarker)="mapClicked($event)"></app-the-map>-->
-                </div>
+            <div class="form-group">
+                Location:
+                <button type="button" class="btn" (click)="locationModal.show()"> Add Location</button>
             </div>
-
         </div>
     </div>
     <button type="button" class="btn btn-success" (click)="save()">Save</button>
-    <!-- <button type="button" class="btn btn-danger" (click)="removeContentForm()">Discard</button>  -->
 </form>
+<div bsModal #locationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Location Content</h4>
+            </div>
+            <div *ngIf="itenaryForm.controls.contents">
+                <div class="modal-body">
+                    <app-location [location]="itenaryForm.controls.contents.controls[0].controls.location"></app-location>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

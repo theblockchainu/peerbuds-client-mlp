@@ -56,6 +56,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.0",
     "@angular/animations": "^4.3.1",
     "@angular/common": "^4.3.1",
     "@angular/compiler": "^4.3.1",
@@ -71,6 +72,7 @@
     "core-js": "^2.4.1",
     "http-server": "^0.10.0",
     "ng-router-loader": "^2.1.0",
+    "ng4-geoautocomplete": "^0.0.9",
     "ngx-bootstrap": "^1.8.0",
     "primeng": "^4.1.2",
     "rxjs": "^5.4.2",

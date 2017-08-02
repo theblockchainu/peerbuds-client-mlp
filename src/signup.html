@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>PeerbudsClient</title>
+    <title>Peerbuds Client</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -201,29 +201,56 @@
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
+            $.validator.addMethod("check_date_of_birth", function(value, element) {
+
+                var day = $("#birthDay").val();
+                var month = $("#birthMonth").val();
+                var year = $("#birthYear").val();
+                var age =  18;
+
+                var mydate = new Date();
+                var mydate2 = mydate;
+                mydate.setFullYear(year, month-1, day);
+                var currdate = new Date();
+                currdate.setFullYear(currdate.getFullYear() - age);
+                return currdate > mydate2;
+
+            }, "You must be at least 18 years of age.");
+
             $("#signupForm").validate({
                 rules: {
-                    firstName: "required",
-                    lastName: "required",
+                    first_name: "required",
+                    last_name: "required",
                     email: {
                         required: true,
                         email: true
                     },
-                    password: "required"
+                    password: "required",
+                    birthMonth: "required",
+                    birthDay: "required",
+                    birthYear: {
+                        required: true,
+                        check_date_of_birth: true
+                    }
                 },
                 messages: {
-                    firstName: "Please enter your first name",
-                    lastName: "Please enter your last name",
+                    first_name: "Please enter your first name",
+                    last_name: "Please enter your last name",
                     email: {
                         required: "Please enter email address",
                         email: "Please enter a valid email address"
                     },
-                    password: "Please enter password"
+                    password: "Please enter password",
+                    birthMonth: "Please select a month",
+                    birthDay: "Please select a date",
+                    birthYear: {
+                        required: "Please select a year"
+                    },
                 },
                 errorPlacement: function (error, element) {
-                    if (element.attr("name") == "firstName")
+                    if (element.attr("name") == "first_name")
                         error.insertAfter(".input-group-first-name");
-                    else if (element.attr("name") == "lastName")
+                    else if (element.attr("name") == "last_name")
                         error.insertAfter(".input-group-last-name");
                     else if (element.attr("name") == "email")
                         error.insertAfter(".input-group-email");
@@ -231,49 +258,59 @@
                         error.insertAfter(".input-group-password");
                     else
                         error.insertAfter(element);
+                },
+                success: function () {
+                  //$('.error').hide();
                 }
             });
+            //Load year
+            var presentYear = new Date().getFullYear();
+            var maxYear = presentYear;
+            var period = 100;
+            for (var i = maxYear ; i >= maxYear - 100; i--){
+                $("#birthYear").append(new Option(i, i));
+            }
+
+            //Load MONTH
+            for (var i = 1 ; i <= 31 ; i++){
+                var newI;
+                if(i < 10) {
+                  newI = '0' + i;
+                }
+                $("#birthDay").append(new Option(i, newI));
+            }
+
         });
         function signupEmail() {
             $(".signupEmail").removeClass("hide");
             $(".btnSignupEmail").addClass("hide");
+        }
+        function signup(){
+
+            if($('#promoOptIn').prop('checked')) {
+                $('#promoOptIn').val(true);
+            }
+            else
+                $('#promoOptIn').val(false);
+            $('#dob').val($('#birthYear').val()+"-"+$('#birthMonth').val()+"-"+$('#birthDay').val());
+            $('#signupForm').submit();
         }
     </script>
 
 </head>
 
 <body>
-    <!--<div class="col-md-6 col-md-offset-3">
-      <h2>Register</h2>
-      <form name="form" action="http://localhost:3000/signup?returnTo=onboarding" method="POST">
-          <div class="form-group">
-              <label for="email">Email</label>
-              <input type="text" class="form-control" name="email" required />
-          </div>
-          <div class="form-group">
-              <label for="username">Username</label>
-              <input type="text" class="form-control" name="username" required />
-          </div>
-          <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" name="password" required />
-          </div>
-          <div class="form-group">
-              <button type="submit" class="btn btn-primary" type="submit">Register</button>
-              <a href="/login" class="btn btn-link">Cancel</a>
-          </div>
-      </form>
-  </div>-->
     <div class="login-section" id="content">
         <div class="container">
             <div class="col-md-6 col-md-offset-3 position-relative">
                 <div class="signup-box drop-shadow">
-                    <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=onboarding" method="POST">
+                    <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification" method="POST">
+                        <input type="hidden" name= "dob" id="dob" value="" required/>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=%23"><i class="fa fa-facebook"></i> Sign up with Facebook</a>
+                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=identity-verification"><i class="fa fa-facebook"></i> Sign up with Facebook</a>
                         </div>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=%23"><i class="fa fa-google"></i> Sign up with Google</a>
+                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=identity-verification"><i class="fa fa-google"></i> Sign up with Google</a>
                         </div>
                         <div class="position-relative margin-bottom-20 text-center">
                             <div class="or-seperator-vertical"></div>
@@ -289,13 +326,13 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-first-name">
-                                    <input type="text" class="form-control" name="firstName" placeholder="First Name" />
+                                    <input type="text" class="form-control" name="first_name" placeholder="First Name" />
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-last-name">
-                                    <input type="text" class="form-control" name="lastName" placeholder="Last Name" />
+                                    <input type="text" class="form-control" name="last_name" placeholder="Last Name" />
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                 </div>
                             </div>
@@ -315,90 +352,40 @@
                                 <label><strong>Birthday</strong></label><br>
                                 <p class="fs-13">To sign up, you must be 18 or older. Other people won't see your birthday.</p>
                                 <div class="row">
-                                    <div class="col-sm-5">
-                                        <select class="form-control" name="birthMonth">
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="birthMonth" id="birthMonth">
                                             <option value="" selected>Month</option>
-                                            <option value="January">January</option>
-                                            <option value="February">February</option>
-                                            <option value="March">March</option>
-                                            <option value="April">April</option>
-                                            <option value="May">May</option>
-                                            <option value="June">June</option>
-                                            <option value="July">July</option>
-                                            <option value="August">August</option>
-                                            <option value="September">September</option>
-                                            <option value="October">October</option>
-                                            <option value="November">November</option>
-                                            <option value="December">December</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" name="birthDay">
-                                            <option value="" selected>Day</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                            <option value="11">11</option>
-                                            <option value="12">12</option>
-                                            <option value="13">13</option>
-                                            <option value="14">14</option>
-                                            <option value="15">15</option>
-                                            <option value="16">16</option>
-                                            <option value="17">17</option>
-                                            <option value="18">18</option>
-                                            <option value="19">19</option>
-                                            <option value="20">20</option>
-                                            <option value="21">21</option>
-                                            <option value="22">22</option>
-                                            <option value="23">23</option>
-                                            <option value="24">24</option>
-                                            <option value="25">25</option>
-                                            <option value="26">26</option>
-                                            <option value="27">27</option>
-                                            <option value="28">28</option>
-                                            <option value="29">29</option>
-                                            <option value="30">30</option>
-                                            <option value="31">31</option>
+                                            <option value="01">January</option>
+                                            <option value="02">February</option>
+                                            <option value="03">March</option>
+                                            <option value="04">April</option>
+                                            <option value="05">May</option>
+                                            <option value="06">June</option>
+                                            <option value="07">July</option>
+                                            <option value="08">August</option>
+                                            <option value="09">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-4">
-                                        <select class="form-control" name="birthYear">
+                                        <select class="form-control" name="birthDay" id="birthDay">
+                                            <option value="" selected>Day</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="birthYear" id="birthYear">
                                             <option value="" selected>Year</option>
-                                            <option value="1999">1999</option>
-                                            <option value="2000">2000</option>
-                                            <option value="2001">2001</option>
-                                            <option value="2002">2002</option>
-                                            <option value="2003">2003</option>
-                                            <option value="2004">2004</option>
-                                            <option value="2005">2005</option>
-                                            <option value="2006">2006</option>
-                                            <option value="2007">2007</option>
-                                            <option value="2008">2008</option>
-                                            <option value="2009">2009</option>
-                                            <option value="2010">2010</option>
-                                            <option value="2011">2011</option>
-                                            <option value="2012">2012</option>
-                                            <option value="2013">2013</option>
-                                            <option value="2014">2014</option>
-                                            <option value="2015">2015</option>
-                                            <option value="2016">2016</option>
-                                            <option value="2017">2017</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox"> I'd like to receive coupons, promotions, surveys, and updates via email about Peerbuds and its partners.</label>
+                                <label><input type="checkbox" class="form-control" name="promoOptIn" id="promoOptIn"/> I'd like to receive coupons, promotions, surveys, and updates via email about Peerbuds and its partners.</label>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" type="submit">Register</button>
+                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Signup</button>
                                 <a href="/login" class="btn btn-link">Cancel</a>
                             </div>
                         </div>

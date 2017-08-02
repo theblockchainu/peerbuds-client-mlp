@@ -7,9 +7,9 @@ import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'experience-view',
-  templateUrl: './experience-view.component.html',
-  styleUrls: ['./experience-view.component.scss']
+    selector: 'experience-view',
+    templateUrl: './experience-view.component.html',
+    styleUrls: ['./experience-view.component.scss']
 })
 
 export class ExperienceViewComponent implements OnInit {
@@ -76,7 +76,7 @@ export class ExperienceViewComponent implements OnInit {
 
         const contentArray = <FormArray>this.itenaryForm.controls['contents'];
         contentArray.push(this.contentObject);
-
+        this.lastIndex = 0;
     }
 
 
@@ -92,6 +92,9 @@ export class ExperienceViewComponent implements OnInit {
         this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
             .map((response: Response) => {
                 let mediaResponse = response.json();
+                console.log(this.itenaryForm);
+                console.log(this.lastIndex);
+
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 contentForm.controls['imageUrl'].setValue(mediaResponse.url);
@@ -149,6 +152,10 @@ export class ExperienceViewComponent implements OnInit {
             value: 0
         });
         console.log("saved!");
+    }
+
+    addLocation(modal: ModalDirective) {
+        modal.show();
     }
 
 }

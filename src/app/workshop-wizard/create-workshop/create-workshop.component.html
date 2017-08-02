@@ -30,7 +30,7 @@
   </div>
   <div class="container">
     <div id="content" class="onboarding-content">
-      <div style="float:right;margin-top:-40px"><button type="button">Save &amp; Exit</button></div>
+      <div style="float:right;margin-top:-40px"><button type="button" (click)="saveandexit()">Save &amp; Exit</button></div>
       <br/>
       <!--Disclaimer-->
       <div class="onboarding step-0" [hidden]="step!=0">
@@ -185,7 +185,8 @@
           <div class="row">
             <div class="col-sm-7">
               <h1 class="title">Create the page learners will see</h1>
-              <p>Write in a clear, straightforward and friendly way.We will give you tips on when to show off your personality and be more descriptive.
+              <p>Write in a clear, straightforward and friendly way.We will give you tips on when to show off your personality
+                and be more descriptive.
               </p>
               <br/>
               <div style="margin-top:100px;">
@@ -365,8 +366,8 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader">Are you open for appointments?</div>
-              <div>Placeholder for Calendar in Angular 4</div>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <appointment-calendar></appointment-calendar>
                 <div style="margin-top:100px;">
                   <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(10)>Back</button>
                   <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>

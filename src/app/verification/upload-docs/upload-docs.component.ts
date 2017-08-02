@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { Http } from '@angular/http';
 import { AppConfig } from '../../app.config';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-docs',
@@ -11,7 +12,8 @@ import { AppConfig } from '../../app.config';
 export class UploadDocsComponent implements OnInit {
 
   public step = 1;
-  constructor() { }
+  constructor(
+    public router: Router) { }
 
   ngOnInit() {
   }
@@ -20,7 +22,11 @@ export class UploadDocsComponent implements OnInit {
     this.step = p;
   }
   verifyEmail(){
-    alert("Email verifciation.");
+    alert("Email verification.");
+  }
+
+  redirectToOnboarding() {
+    this.router.navigate(['onboarding']);
   }
 
 }
