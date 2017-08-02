@@ -1,0 +1,29 @@
+<div style="margin:20px;" class="login-section" id="content">
+  <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6 col-md-offset-3 position-relative" >
+    <div style="display:inline;float:left;width:70%">
+      <h2>Welcome Back</h2>
+      <p>Keep track of and edit all your experiences.</p>
+    </div>
+    <div style="margin-top:20px" class="col-md-offset-1">
+      <button class="btn btn-default" [routerLink]="['/createExperience']">New Experience</button>
+    </div>
+  </div>
+  <div style="margin-top:50px;" class="col-sm-8 col-lg-8 col-md-8 col-md-offset-3">
+    <div style="float: left !important;
+      margin-right: 24px !important;
+      border: 1px solid #dbdbdb !important;margin-bottom:24px;" *ngFor="let workshop of workshops">
+      <div style="background: #ffffff !important;
+    width: 300px !important;
+    padding: 48px !important;
+    min-height: 250px !important;">
+        <span class="">{{ experience.title || 'No Title' }} </span>
+        <div style="margin-top:20px">
+          <button class="btn btn-default" type="button" (click)="onSelect(experience)">Edit Experience</button>
+        </div>
+        <p style="margin-top:20px">
+          <a (click)="showFinishingTouch(experience)">Click here to set additional information</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

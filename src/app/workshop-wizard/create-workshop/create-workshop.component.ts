@@ -63,7 +63,7 @@ export class CreateWorkshopComponent implements OnInit {
   workshopImage2Pending: Boolean;
 
   public step = 0;
-  public max = 11;
+  public max = 12;
   public learnerType_array = {
     learner_type: [{ id: 'auditory', display: 'Auditory' }
       , { id: 'visual', display: 'Visual' }
@@ -206,7 +206,11 @@ export class CreateWorkshopComponent implements OnInit {
     delete data.type;
     delete data.prerequisites;
     let languageArray = data.language;
-    data.language = languageArray[0];
+    let lang: string;
+    if(languageArray.length != 0)
+      lang = languageArray[0];
+    else lang = '';
+    data.language =  lang;
     delete data.imageUrls;
     data.imageUrls = [];
     delete data.created;
