@@ -194,8 +194,6 @@ export class ExperienceCreateComponent implements OnInit {
 
     if(!this.experienceId) {
       this.createExperience();
-      this.step=0;
-      this.router.navigate(['createExperience', this.experienceId, this.step]);
     }
     else {
       this._collectionService.getCollectionDetails(this.experienceId).subscribe(res => this.assignExperience(res),
