@@ -16,6 +16,7 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
+import { ProfileModule } from './profile/profile.module';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
     WorkshopWizardModule,
     ExperienceWizardModule,
     OnboardingModule,
-    VerificationModule
+    VerificationModule,
+    ProfileModule
   ],
   bootstrap: [AppComponent]
 })

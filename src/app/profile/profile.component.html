@@ -1,0 +1,519 @@
+<div id="content" class="profile-setion">
+  <div class="container-fluid">
+    <div class="profile-headings">
+      <div class="pull-left">
+        <div class="title">Hey, I am {{profile.first_name}}</div>
+        <div class="sub-title">UX/UI Designer <a class="text-grey text-underline bullet">www.janshoen.com</a></div>
+      </div>
+      <div class="pull-right margin-top-20">
+        <span class="online-status online" title="Online"></span>
+        <button class="btn btn-default" title="Message"><i class="fa fa-envelope"></i></button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="row margin-top-50">
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="profile-image-big col-sm-4">
+            <img src="{{profile.picture_url}}" alt="image" />
+          </div>
+          <div class="col-sm-5">
+            <div class="profile-image-right-content">
+              <span>{{profile.languages}}</span>
+              <span>{{profile.location}}</span>
+            </div>
+            <div class="profile-image-right-content">
+              <span>Ratings</span>
+              <span>Karma</span>
+            </div>
+          </div>
+        </div>
+        <div class="seperate-section">
+          <div class="row">
+            <div class="col-sm-3">
+              <strong>About me</strong>
+            </div>
+            <div class="col-sm-9">
+              <p class="fs-14 text-grey lh-28">{{profile.description}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="seperate-section">
+          <div class="row">
+            <div class="col-sm-3">
+              <strong>What I teach</strong>
+            </div>
+            <div class="col-sm-9">
+              <div class="margin-bottom-50">
+                <h3>Web Design</h3>
+                <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et rutrum leo. Sed efficitur tortor sed eros
+                  vehicula, ac gravida urna euismod. Donec justo lacus, dictum et mi non, tristique dignissim neque. </p>
+              </div>
+              <div class="margin-bottom-50">
+                <h3>UI/UX Design</h3>
+                <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et rutrum leo. Sed efficitur tortor sed eros
+                  vehicula, ac gravida urna euismod. Donec justo lacus, dictum et mi non, tristique dignissim neque. </p>
+              </div>
+              <div>
+                <h3>Web Design</h3>
+                <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et rutrum leo. Sed efficitur tortor sed eros
+                  vehicula, ac gravida urna euismod. Donec justo lacus, dictum et mi non, tristique dignissim neque. </p>
+              </div>
+              <a href="#">More</a>
+            </div>
+          </div>
+        </div>
+        <div class="seperate-section">
+          <div class="row">
+            <div class="col-sm-3">
+              <strong>Resume</strong>
+            </div>
+            <div class="col-sm-9">
+              <div class="margin-bottom-50">
+                <div class="resume-thumb"></div>
+                <div class="display-inline-block fs-14">
+                  <p class="fw-bold">Work Experience</p>
+                  <p>
+                    <span>Illustrator</span>
+                    <span class="bullet">Fireworks</span>
+                  </p>
+                  <p>2013 - Present</p>
+                </div>
+              </div>
+              <div>
+                <div class="resume-thumb"></div>
+                <div class="display-inline-block fs-14">
+                  <p class="fw-bold">Education</p>
+                  <p>
+                    <span>Bachelor</span>
+                    <span class="bullet">Graphic Design</span>
+                  </p>
+                  <p>University of Toronto</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="seperate-section padding-bottom-0">
+          <div class="margin-bottom-30">
+            <p class="fw-bold">Reviews</p>
+            <span class="text-grey">From Learners</span>
+          </div>
+          <div class="review-section">
+            <img src="http://lorempixel.com/35/35/people/1" class="review-thumb thumb-circle" />
+            <div class="review-content">
+              <h3 class="review-title">Leah Carlston</h3>
+              <rating [(ngModel)]="rate" [readonly]="isReadonly"></rating> <span class="display-inline-block fs-14">{{rate}}</span>
+              <!--<div class="review-rating"></div> <span class="display-inline-block fs-14">4.5</span>-->
+              <div class="review-desc">He is a good teacher. Learned lots from him. He is always ready to provide you with any extra help you might
+                need. I would recommend others to take this course. <i class="fa fa-quote-right fs-15"></i></div>
+            </div>
+          </div>
+          <div class="review-section">
+            <img src="http://lorempixel.com/35/35/people/2" class="review-thumb thumb-circle" />
+            <div class="review-content">
+              <h3 class="review-title">Leah Carlston</h3>
+              <rating [(ngModel)]="rate" [readonly]="isReadonly"></rating> <span class="display-inline-block fs-14">{{rate}}</span>
+              <!--<div class="review-rating"></div> <span class="display-inline-block fs-14">4.5</span>-->
+              <div class="review-desc">He is a good teacher. Learned lots from him. He is always ready to provide you with any extra help you might
+                need. I would recommend others to take this course. <i class="fa fa-quote-right fs-15"></i></div>
+            </div>
+          </div>
+          <div class="review-all">
+            <a href="#">See all</a>
+          </div>
+        </div>
+        <div class="seperate-section padding-bottom-0">
+          <div class="margin-bottom-30">
+            <span class="text-grey">From Teachers</span>
+          </div>
+          <div class="review-section">
+            <img src="http://lorempixel.com/35/35/people/1" class="review-thumb thumb-circle" />
+            <div class="review-content">
+              <h3 class="review-title">Leah Carlston</h3>
+              <rating [(ngModel)]="rate" [readonly]="isReadonly"></rating> <span class="display-inline-block fs-14">{{rate}}</span>
+              <!--<div class="review-rating"></div> <span class="display-inline-block fs-14">4.5</span>-->
+              <div class="review-desc">He is a good teacher. Learned lots from him. He is always ready to provide you with any extra help you might
+                need. I would recommend others to take this course. <i class="fa fa-quote-right fs-15"></i></div>
+            </div>
+          </div>
+          <div class="review-section">
+            <img src="http://lorempixel.com/35/35/people/2" class="review-thumb thumb-circle" />
+            <div class="review-content">
+              <h3 class="review-title">Leah Carlston</h3>
+              <rating [(ngModel)]="rate" [readonly]="isReadonly"></rating> <span class="display-inline-block fs-14">{{rate}}</span>
+              <!--<div class="review-rating"></div> <span class="display-inline-block fs-14">4.5</span>-->
+              <div class="review-desc">He is a good teacher. Learned lots from him. He is always ready to provide you with any extra help you might
+                need. I would recommend others to take this course. <i class="fa fa-quote-right fs-15"></i></div>
+            </div>
+          </div>
+          <div class="review-all">
+            <a href="#">See all</a>
+          </div>
+        </div>
+        <div class="seperate-section">
+          <div class="row">
+            <div class="col-sm-3">Interested in</div>
+            <div class="col-sm-9">
+              <div class="interested-category">
+                <span>Photography</span>
+                <span>Architecture</span>
+                <span>Videography</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="seperate-section">
+          <div class="row">
+            <div class="col-sm-3">Learning journey</div>
+            <div class="col-sm-9">
+              <div class="learning-journey">
+                <p>
+                  <span class="lj-thumb"></span> 3 Sessions
+                </p>
+                <p>
+                  <span class="lj-thumb"></span> 3 Workshops
+                </p>
+                <p>
+                  <span class="lj-thumb"></span> 1 Experience
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pCommunities">
+          <h3 class="margin-bottom-20">
+            What Yuri is teaching
+            <div class="pull-right">
+              <select class="form-control pCommunities-select">
+                                <option value="Photography">Photography</option>
+                                <option value="Architecture">Architecture</option>
+                                <option value="Videography">Videography</option>
+                            </select>
+              <a href="#" class="fs-13 fw-bold text-grey">See all</a>
+            </div>
+          </h3>
+          <ul class="pCommunitiesUl clearfix">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+        <div class="pCommunities">
+          <h3 class="margin-bottom-20">
+            What Yuri is learning
+            <div class="pull-right">
+              <select class="form-control pCommunities-select">
+                                <option value="Projects">Projects</option>
+                                <option value="Projects 1">Projects 1</option>
+                                <option value="Projects 2">Projects 2</option>
+                            </select>
+              <a href="#" class="fs-13 fw-bold text-grey">See all</a>
+            </div>
+          </h3>
+          <ul class="pCommunitiesUl clearfix">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+        <div class="pCommunities">
+          <h3 class="margin-bottom-20">Communities</h3>
+          <ul class="pCommunitiesUl clearfix">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="sidebar-right">
+          <div class="sidebar-box">
+            <h3>Teaching</h3>
+            <div class="sidebar-section" (click)="bookSessionModal.show()">
+              <div class="section-thumb display-inline-block margin-right-20 vertical-align-top"></div>
+              <div class="display-inline-block">
+                <div class="heading">Session</div>
+                <div class="desc">Book a session</div>
+              </div>
+            </div>
+            <div class="sidebar-section" (click)="editSessionModal.show()">
+              <div class="section-thumb display-inline-block margin-right-20 vertical-align-top"></div>
+              <div class="display-inline-block">
+                <div class="heading">3 Workshops</div>
+                <div class="desc">See dates</div>
+              </div>
+            </div>
+            <div class="sidebar-section">
+              <div class="section-thumb display-inline-block margin-right-20 vertical-align-top"></div>
+              <div class="display-inline-block">
+                <div class="heading">1 Experience</div>
+                <div class="desc">See dates</div>
+              </div>
+            </div>
+            <div class="sidebar-details">
+              <span class="display-block text-grey">2 people are looking at his profile now</span>
+              <span class="display-block text-grey">53 others have looked at this in the past</span>
+            </div>
+          </div>
+          <div class="sidebar-bottom">
+            <label class="radio-inline">
+                            <input type="radio" name="sidebarBookmark" id="sidebarBookmark" value="bookmark"> Bookmark
+                        </label>
+            <div class="social-icons">
+              <label class="fw-normal">Share</label>
+              <span class="icon-span"></span>
+              <span class="icon-span"></span>
+              <span class="icon-span"></span>
+            </div>
+          </div>
+          <div class="sidebar-bottom hide">
+            <h4 class="text-grey text-upper margin-bottom-10">I'm Interested In</h4>
+            <div class="interested-tags">
+              <span class="tag">Architecture</span>
+              <span class="tag">Photography</span>
+              <span class="tag">Videography</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="similarPeers">
+      <h2 class="similar-peers-head">Similar Peers</h2>
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="similar-peers-col">
+            <img src="https://uinames.com/api/photos/female/9.jpg" class="img-responsive" alt="image" />
+            <div class="peers-name">Donna Allen</div>
+            <div class="peers-topic">Film Industry</div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="similar-peers-col">
+            <img src="https://uinames.com/api/photos/male/40.jpg" class="img-responsive" alt="image" />
+            <div class="peers-name">Stephen Bradley</div>
+            <div class="peers-topic">Film Industry</div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="similar-peers-col">
+            <img src="https://uinames.com/api/photos/male/10.jpg" class="img-responsive" alt="image" />
+            <div class="peers-name">Justin Willis</div>
+            <div class="peers-topic">Film Industry</div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="similar-peers-col">
+            <img src="https://uinames.com/api/photos/female/16.jpg" class="img-responsive" alt="image" />
+            <div class="peers-name">Olivia Bradley</div>
+            <div class="peers-topic">Film Industry</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- book session modal start -->
+<div class="modal fade" bsModal #bookSessionModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="bookSessionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <!--<perfect-scrollbar [config]="PsConfig" [scrollIndicators]="true">-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="bookSessionModal.hide()">&times;</button>
+        <h4 class="modal-title">Book a session</h4>
+      </div>
+      <div class="modal-body">
+        <span class="fs-20">Package</span>
+        <form name="bookSessionForm" novalidate>
+          <div class="row seperate-section">
+            <div class="col-sm-6">
+              <label class="display-block">
+                            <input type="radio" name="package" value="first"> 2 Session (1 hour each)
+                        </label>
+              <label class="display-block">
+                            <input type="radio" name="package" value="second"> 3 Session (1 hour each)
+                        </label>
+              <label class="display-block">
+                            <input type="radio" name="package" value="trial"> Trial (15 min.)
+                        </label>
+            </div>
+            <div class="col-sm-6">
+              <label class="fw-bold display-block">$30</label>
+              <label class="fw-bold display-block">$50</label>
+              <label class="display-block">Free</label>
+            </div>
+          </div>
+          <div class="seperate-section hide">
+            <div class="fs-20 margin-bottom-20">Select time</div>
+          </div>
+          <div class="seperate-section">
+            <div class="fs-20 margin-bottom-20">What topic you want to learn?</div>
+            <select class="form-control" name="topic">
+                        <option value="Science">Science</option>
+                        <option value="Academic">Academic</option>
+                        <option value="Design">Design</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Marketing">Marketing</option>
+                    </select>
+          </div>
+          <div class="margin-top-30">
+            <div class="fs-20 margin-bottom-20">Notes for teacher</div>
+            <textarea class="form-control" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mattis, leo non posuere ultricies, purus metus ullamcorper orci, sed semper ex risus quis nisl.</textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-continue" (click)="bookSessionModal.hide(); bookSessionJoinModal.show()">Continue</button>
+      </div>
+    </div>
+    <!--</perfect-scrollbar>-->
+  </div>
+</div>
+<!-- book session modal end -->
+<!-- book session join modal start -->
+<div class="modal fade" bsModal #bookSessionJoinModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="bookSessionJoinModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!--<perfect-scrollbar [config]="config">-->
+      <div class="modal-body">
+        <div class="slider-section">
+          <div class="session-slider-wrapper">
+            <div class="session-slider">
+              <div class="slides">
+                <div class="slides-content">
+                  <img src="http://lorempixel.com/200/200/business/1/" alt="slide1">
+                </div>
+              </div>
+              <div class="slides slidePrev">
+                <div class="slides-content">
+                  <img src="http://lorempixel.com/200/200/business/2/" alt="slide1">
+                </div>
+              </div>
+              <div class="slides active">
+                <div class="slides-content">
+                  <img src="http://lorempixel.com/240/240/business/3/" alt="slide2">
+                </div>
+              </div>
+              <div class="slides">
+                <div class="slides-content">
+                  <img src="http://lorempixel.com/200/200/business/4/" alt="slide3">
+                </div>
+              </div>
+              <div class="slides">
+                <div class="slides-content">
+                  <img src="http://lorempixel.com/200/200/business/5/" alt="slide3">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="position-relative" style="top:270px;">
+          <button type="button" class="close" aria-label="Close" (click)="bookSessionJoinModal.hide()">&times;</button>
+          <div class="session-join-thumb"></div>
+          <div class="session-join-content">
+            <h3>Sessions</h3>
+            <div class="seperate-section">
+              <button class="btn btn-default session-join-btn">Join</button>
+              <span class="display-inline-block margin-bottom-5">Session 1</span>
+              <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
+              <div class="session-list-box" *ngIf="showHideSession">
+                <div class="session-list">
+                  <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
+                  <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+                  <span class="display-inline-block">10.00 - 16.00</span>
+                </div>
+                <div class="session-list">
+                  <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
+                  <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+                  <span class="display-inline-block">10.00 - 16.00</span>
+                </div>
+              </div>
+              <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(1);">{{showHideSession ? "Hide schedule" : "Show schedule"}}
+                            <i class="fa fa-angle-up" *ngIf="showHideSession"></i>
+                            <i class="fa fa-angle-down" *ngIf="!showHideSession"></i>
+                        </a>
+            </div>
+            <div class="seperate-section">
+              <button class="btn btn-default session-join-btn">Join</button>
+              <span class="display-inline-block margin-bottom-5">Session 2</span>
+              <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
+              <div class="session-list-box" *ngIf="showHideSession2">
+                <div class="session-list">
+                  <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
+                  <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+                  <span class="display-inline-block">10.00 - 16.00</span>
+                </div>
+              </div>
+              <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(2);">{{showHideSession2 ? "Hide schedule" : "Show schedule"}}
+                            <i class="fa fa-angle-up" *ngIf="showHideSession2"></i>
+                            <i class="fa fa-angle-down" *ngIf="!showHideSession2"></i>
+                        </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--</perfect-scrollbar>-->
+    </div>
+  </div>
+</div>
+<!-- book session join modal end -->
+<!-- edit session modal start -->
+<div class="modal fade" bsModal #editSessionModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="editSessionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" aria-label="Close" (click)="editSessionModal.hide()">&times;</button>
+        <div class="edit-session-content">
+          <h3>Sessions</h3>
+          <div class="seperate-section">
+            <div class="session-join-btn">
+              <button class="btn btn-primary">Edit</button>
+              <button class="btn btn-link">Remove</button>
+            </div>
+            <span class="display-inline-block margin-bottom-5">Session 1</span>
+            <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
+            <div class="session-list-box" *ngIf="showHideSession">
+              <div class="session-list">
+                <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
+                <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+                <span class="display-inline-block">10.00 - 16.00</span>
+              </div>
+              <div class="session-list">
+                <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
+                <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+                <span class="display-inline-block">10.00 - 16.00</span>
+              </div>
+            </div>
+            <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(1);">{{showHideSession ? "Hide schedule" : "Show schedule"}}
+                            <i class="fa fa-angle-up" *ngIf="showHideSession"></i>
+                            <i class="fa fa-angle-down" *ngIf="!showHideSession"></i>
+                        </a>
+          </div>
+          <div class="seperate-section">
+            <div class="session-join-btn">
+              <button class="btn btn-primary">Edit</button>
+              <button class="btn btn-link">Remove</button>
+            </div>
+            <span class="display-inline-block margin-bottom-5">Session 2</span>
+            <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
+            <div class="session-list-box" *ngIf="showHideSession2">
+              <div class="session-list">
+                <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
+                <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+                <span class="display-inline-block">10.00 - 16.00</span>
+              </div>
+            </div>
+            <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(2);">{{showHideSession2 ? "Hide schedule" : "Show schedule"}}
+                            <i class="fa fa-angle-up" *ngIf="showHideSession2"></i>
+                            <i class="fa fa-angle-down" *ngIf="!showHideSession2"></i>
+                        </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- edit session modal end -->

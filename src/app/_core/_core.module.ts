@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AlertService } from '../_services/alert/alert.service';
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProfileService } from '../_services/profile/profile.service';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CookieService,
     AlertService,
     AuthenticationService,
+    ProfileService
   ]
 })
 export class CoreModule {
