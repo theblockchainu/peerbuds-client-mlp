@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
-import { CollectionService } from '../../_services/collection/collection.service';
+import { ProfileService } from '../../_services/profile/profile.service';
 
 @Component({
   selector: 'app-upload-docs',
@@ -27,7 +27,7 @@ export class UploadDocsComponent implements OnInit {
     public router: Router,
     private mediaUploader: MediaUploaderService,
     private _fb: FormBuilder,
-    public _collectionService: CollectionService,
+    public _profileService: ProfileService,
     private http: Http,
     private config: AppConfig) {
     }
@@ -41,7 +41,7 @@ export class UploadDocsComponent implements OnInit {
     this.otp = this._fb.group({
       inputOTP: ['']
     });
-    this._collectionService.getPeerNode()
+    this._profileService.getPeerNode()
         .subscribe((res) => this.email = res.email);
   }
 
@@ -53,12 +53,12 @@ export class UploadDocsComponent implements OnInit {
   }
 
   public resendOTP() {
-    this._collectionService.sendVerifyEmail()
+    this._profileService.sendVerifyEmail()
         .subscribe((res) => this.otp.controls['inputOTP'].setValue(res.verificationToken));
   }
 
   verifyEmail(){
-    this._collectionService.confirmEmail(this.otp.controls['inputOTP'].value, 'onboarding')
+    this._profileService.confirmEmail(this.otp.controls['inputOTP'].value, 'onboarding')
         .subscribe((res) => this.success = res);
   }
 
