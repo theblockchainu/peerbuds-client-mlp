@@ -64,4 +64,30 @@ export class CollectionService {
 
   }
 
+  public getPeerNode() {
+    return this.http
+               .get(this.config.apiUrl + '/api/peers/' + this.userId)
+               .map((response: Response) => response.json(), (err) => {
+                   console.log('Error: ' + err);
+                });
+  }
+
+  public sendVerifyEmail() {
+    return this.http
+               .get(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId)
+               .map((response: Response) => response.json(), (err) => {
+                   console.log('Error: ' + err);
+                });
+
+  }
+
+  public confirmEmail(inputToken: string, redirect: string) {
+    return this.http
+               .get(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect)
+               .map((response: Response) => response.json(), (err) => {
+                   console.log('Error: ' + err);
+                });
+
+  }
+
 }
