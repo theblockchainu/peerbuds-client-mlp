@@ -10,7 +10,6 @@ const routes: Routes = [
 {
   path: 'createWorkshop', component: CreateWorkshopComponent
 },
-// { path: 'createWorkshop/:id', component: CreateWorkshopComponent },
 {
   path: 'createWorkshop/:id',
   children: [

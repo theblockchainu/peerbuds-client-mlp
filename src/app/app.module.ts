@@ -6,13 +6,14 @@ import { CoreModule } from './_core/_core.module';
 import { ExperienceWizardModule } from './experience-wizard/experience-wizard.module';
 import { WorkshopWizardModule } from './workshop-wizard/workshop-wizard.module';
 import { HomeModule } from './home/home.module';
+import { VerificationModule } from './verification/verification.module';
+import { OnboardingModule } from './onboarding/onboarding.module';
 
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
-import { OnboardingComponent } from './onboarding/onboarding.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 
@@ -24,8 +25,7 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
     NoContentComponent,
     LoginComponent,
     AppHeaderComponent,
-    AppFooterComponent,
-    OnboardingComponent
+    AppFooterComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +34,8 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
     HomeModule,
     WorkshopWizardModule,
     ExperienceWizardModule,
+    OnboardingModule,
+    VerificationModule
   ],
   bootstrap: [AppComponent]
 })

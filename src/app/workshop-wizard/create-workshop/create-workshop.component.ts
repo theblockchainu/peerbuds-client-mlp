@@ -23,7 +23,7 @@ import * as moment from 'moment';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 
 @Component({
-  selector: 'app-create-workshop',
+  selector: 'create-workshop',
   templateUrl: './create-workshop.component.html',
   styleUrls: ['./create-workshop.component.scss']
 })
@@ -61,7 +61,7 @@ export class CreateWorkshopComponent implements OnInit {
   workshopImage2Pending: Boolean;
 
   public step = 0;
-  public max = 11;
+  public max = 12;
   public learnerType_array = {
     learner_type: [{ id: 'auditory', display: 'Auditory' }
       , { id: 'visual', display: 'Visual' }
@@ -147,8 +147,6 @@ export class CreateWorkshopComponent implements OnInit {
       contentGroup: this._fb.group({})
     });
 
-
-
     this.selectedTopic = new FormGroup({});
 
     this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
@@ -185,8 +183,12 @@ export class CreateWorkshopComponent implements OnInit {
     delete data.id;
     delete data.type;
     delete data.prerequisites;
-    const languageArray = data.language;
-    data.language = languageArray[0];
+    let languageArray = data.language;
+    let lang: string;
+    if(languageArray.length != 0)
+      lang = languageArray[0];
+    else lang = '';
+    data.language =  lang;
     delete data.imageUrls;
     data.imageUrls = [];
     delete data.created;

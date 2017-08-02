@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { OnboardingRoutingModule } from './onboarding-routing.module';
+import { OnboardingComponent } from './onboarding.component';
 
 @NgModule({
   imports: [
     CommonModule,
     OnboardingRoutingModule
   ],
-  declarations: []
+  declarations: [OnboardingComponent]
 })
 export class OnboardingModule { }

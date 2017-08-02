@@ -6,6 +6,9 @@ import {
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+
+import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 
 import {
   Http, URLSearchParams, Headers, Response, BaseRequestOptions
@@ -21,7 +24,7 @@ import { MediaUploaderService } from '../../_services/mediaUploader/media-upload
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-experience-create',
+  selector: 'experience-create',
   // We need to tell Angular's Dependency Injection which providers are in our app.
   providers: [],
   // Our list of styles in our component. We may add more to compose many styles together
@@ -30,6 +33,9 @@ import * as moment from 'moment';
   templateUrl: './experience-create.component.html'
 })
 export class ExperienceCreateComponent implements OnInit {
+  //Getting experience id from url
+  private experienceObject = {};
+
   // Set our default values
   public localState = { value: '' };
   public countries: any[];
@@ -44,6 +50,7 @@ export class ExperienceCreateComponent implements OnInit {
   public experienceId: string;
   public key = 'access_token';
   public timeline: FormGroup;
+  public returnUrl: string;
 
   public contentGroup: FormGroup;
 
@@ -78,6 +85,8 @@ export class ExperienceCreateComponent implements OnInit {
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
     private activatedRoute: ActivatedRoute,
+    public _collectionService: CollectionService,
+    public router: Router,
     private mediaUploader: MediaUploaderService
   ) {
     this.getCookieValue('userId');
@@ -86,6 +95,10 @@ export class ExperienceCreateComponent implements OnInit {
     this.languagePickerService.getLanguages()
       .subscribe((languages) => this.languagesArray = languages);
     this.getTopics();
+    this.activatedRoute.params.subscribe(params => {
+        this.experienceId = params["id"];
+    });
+
   }
 
   public selected(event) {
@@ -179,7 +192,41 @@ export class ExperienceCreateComponent implements OnInit {
 
     this.contentGroup = new FormGroup({});
 
-    this.createExperience();
+    if(!this.experienceId) {
+      this.createExperience();
+      this.step=0;
+      this.router.navigate(['createExperience', this.experienceId, this.step]);
+    }
+    else {
+      this._collectionService.getCollectionDetails(this.experienceId).subscribe(res => this.assignExperience(res),
+            err => console.log("error"),
+            () => console.log('Completed!'));
+    }
+  }
+  private assignExperience(data) {
+    console.log(data);
+    delete data.id;
+    delete data.type;
+    delete data.prerequisites;
+    let languageArray = data.language;
+    let lang: string;
+    if(languageArray.length != 0)
+      lang = languageArray[0];
+    else lang = '';
+    data.language =  lang;
+    delete data.imageUrls;
+    data.imageUrls = [];
+    delete data.created;
+    delete data.modified;
+    console.log(data);
+    this.experienceObject = data;
+      /*setTimeout(()=>{
+          this.workshop.setValue(data);
+     },3000);*/
+    this.experience.setValue(data);
+    this.step = data.stage;
+    this.router.navigate(['createExperience', this.experienceId, this.step]);
+
   }
 
   initAddress() {
@@ -375,8 +422,11 @@ export class ExperienceCreateComponent implements OnInit {
   }
 
   private getCookieValue(key: string) {
-    let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-    this.userId = cookieValue[1];
+    let cookie = this._cookieService.get(key);
+    if(cookie) {
+      let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
+      this.userId = cookieValue[1];
+    }
     return this.userId;
   }
 
@@ -401,11 +451,14 @@ export class ExperienceCreateComponent implements OnInit {
    * goto(toggleStep)  */
   public goto(toggleStep) {
     this.step = toggleStep;
+    this.router.navigate(['createExperience', this.experienceId, this.step]);
   }
 
 
   submitForReview() {
     console.log("Submitted!");
+    this.returnUrl = 'experience';
+    this.router.navigate([this.returnUrl]);
 
   }
 

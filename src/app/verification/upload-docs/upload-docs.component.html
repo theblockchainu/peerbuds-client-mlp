@@ -1,0 +1,75 @@
+<div class="verification-section" id="content">
+  <div class="container">
+    <div class="col-md-8 col-md-offset-2 position-relative">
+      <div class="verification-box drop-shadow">
+        <div class="step-1" [hidden]="step!=1">
+          <div class="section-header">Confirm your identity</div>
+          <p>To make sure that this is your account, we need you to send us a photo or scanned copy of an item in group one
+            from this list of ID's.</p>
+          <p>Some of the item that we can use to confirm your identity include:</p>
+          <ul>
+            <li>Passport</li>
+            <li>Driver license</li>
+            <li>Marriage Certificate</li>
+            <li>National ID card</li>
+          </ul>
+          <p>Keep in mind that anything you directly upload here is encrypted and stored securely.</p>
+          <div class="bottom-section clearfix">
+            <div class="pull-right">
+              <button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
+              <button class="btn btn-primary" (click)="continue(2)">Continue</button>
+            </div>
+          </div>
+        </div> <!-- step 1 ends -->
+        <div class="step-2" [hidden]="step!=2">
+          <div class="section-header">Confirm your identity</div>
+          <p class="fs-16 fw-bold">To upload a photo or scan of an ID:</p>
+          <ol>
+            <li>Coverup anything we don't need to see on your ID, like your address or Social Security number</li>
+            <li>Scan or take a close-up photo of your ID so that the information on it can be easily read</li>
+            <li>Click "Choose file" below to upload your ID</li>
+          </ol>
+          <p><input type="file" name="uploadId"></p>
+          <div class="checkbox">
+            <label class="check" style="position:relative;"><input type="checkbox"><i></i> I've attached an ID from group one in the Help Center article below</label>
+          </div>
+          <div class="bottom-section clearfix">
+            <div class="pull-right">
+              <button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
+              <button class="btn btn-primary" (click)="continue(3)">Continue</button>
+            </div>
+          </div>
+        </div> <!-- step 2 ends -->
+        <div class="step-3" [hidden]="step!=3">
+          <div class="section-header">How can we reach you securely?</div>
+          <p>Please let us know how we can reach you by email. To help keep your Facebook account secure, make sure only you can log into this email address.</p>
+          <div class="form-group">
+            <label class="inline">Email address:</label>
+            <input type="text" class="form-control display-inline-block email-address-input" />
+          </div>
+          <div class="bottom-section clearfix">
+            <div class="pull-right">
+              <button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
+              <button class="btn btn-primary" (click)="continue(4)">Continue</button>
+            </div>
+          </div>
+        </div> <!-- step 3 ends -->
+        <div class="step-4" [hidden]="step!=4">
+          <div class="section-header">Enter the OTP sent to your email</div>
+          <p>We have sent to 4 digit code to your email address. Please enter this code or click the link in your email to verify your email address. Users on peerbuds need to verify their email IDs to receive notifications and updates from the platform.</p>
+          <div class="form-group">
+            <label class="display-block margin-bottom-0"><strong>OTP</strong></label>
+            <input type="text" class="form-control display-inline-block otp-input" /><br>
+            <a href="javascript:;" class="fs-13 text-grey display-inline-block margin-top-5">Resend code?</a>
+          </div>
+          <div class="bottom-section clearfix">
+            <div class="pull-right">
+              <a class="btn btn-link" [routerLink]="['/onboarding']">Skip for later</a>
+              <button class="btn btn-primary" (click)="verifyEmail();">Verify Email</button>
+            </div>
+          </div>
+        </div> <!-- step 4 ends -->
+      </div>
+    </div>
+  </div>
+</div>

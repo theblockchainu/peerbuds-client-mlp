@@ -9,6 +9,7 @@ import { ExperienceWizardRoutingModule } from './experience-wizard-routing.modul
 import { ExperienceCreateComponent } from './experience-create/experience-create.component';
 import { ExperienceContentComponent } from './experience-content/experience-content.component';
 import { ExperienceViewComponent } from './experience-view/experience-view.component';
+import { ListExperienceComponent } from './list-experience/list-experience.component';
 import { LocationComponent } from './location/location.component';
 import { AppointmentCalendarComponent } from "./appointment-calendar/appointment-calendar.component";
 
@@ -28,7 +29,8 @@ import { AppointmentCalendarComponent } from "./appointment-calendar/appointment
     ExperienceContentComponent,
     ExperienceViewComponent,
     LocationComponent,
-    AppointmentCalendarComponent
+    AppointmentCalendarComponent,
+    ListExperienceComponent
   ],
   providers: []
 })

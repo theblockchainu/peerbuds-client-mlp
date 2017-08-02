@@ -1,0 +1,67 @@
+<div class="position-relative">
+  <div id="content" class="onboarding-content">
+    <div class="container-fluid">
+      <div class="onboarding step-1" [hidden]="step!=1">
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+            <div class="welcome-box text-center">
+              <h1 class="title">Welcome to Peerbuds</h1>
+              <p class="margin-top-50 margin-bottom-50">You are entering a blockchain based community where peers can teach and learn from one another, while earning</p>
+              <p class="margin-bottom-70">Your account is still under review and will soon be approved. Meanwhile, you can discover learning content
+                on the platform.</p>
+              <div class="checkbox">
+                <label class="check" style="position:relative;"><input type="checkbox" (change)="goToNext($event)"><i></i> Yes, thats me</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="onboarding step-2" [hidden]="step!=2">
+        <div class="row">
+          <div class="col-sm-8 col-sm-offset-2">
+            <div class="text-center margin-bottom-50">
+              <p class="fw-bold margin-bottom-50">What topics are you passionate about learning?</p>
+              <div class="title">What are your interests?</div>
+              <div class="text-grey fs-13">Choose any three topics to continue</div>
+            </div>
+            <!--<form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
+              <div class="row">
+                <div class="col-sm-12 margin-bottom-30">
+                  <div class="row">
+                    <div class="col-sm-8"><input type="text" class="form-control input-topic" placeholder="{{ placeholderStringTopic }}" />
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="text-right text-grey fs-14">Sync social</div>
+                    </div>
+                  </div>
+                  <div class="row margin-top-30">
+                    <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
+                      <div class="lookingFor interest">
+                        <label class="check">
+                            <input type="checkbox"
+                                    (change)="changeInterests(topic)">
+                                    <i></i>
+                          </label>
+                        <div class="lookingFor-thumb">
+                          <i class="topic.id"></i>
+                        </div>
+                        <span class="lookingForTitle">{{ topic.name }} - {{topic.type}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a href="javascript:;" class="onboarding-btn btn btn-lg btn-default" (click)="goToNext(3)">Next</a>
+            </form>-->
+          </div>
+        </div>
+      </div>
+      <div class="onboarding step-3" [hidden]="step!=3">
+        <div class="text-center">
+            <p class="margin-bottom-50">YOU'RE NOW READY TO TEACH AND LEARN ANYTHING YOUR HEART DESIRES</p>
+            <a [routerLink]="['/homefeed']" class="btn btn-default btn-start-explore">Start Exploring</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
