@@ -67,5 +67,13 @@ export class ProfileService {
                 });
 
   }
+
+  public getSocialIdentities() {
+    return this.http
+               .get(this.config.apiUrl + '/api/peers/' + this.userId)
+               .map((response: Response) => response.json(), (err) => {
+                   console.log('Error: ' + err);
+                });
+  }
   /* Signup Verification Methods Ends*/
 }
