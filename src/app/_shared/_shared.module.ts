@@ -12,7 +12,7 @@ import { LanguagePickerService } from '../_services/languagepicker/languagepicke
 import { AppointmentService } from '../_services/appointment/appointment.service';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
 import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.service';
-
+import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -30,7 +30,8 @@ import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.
     LanguagePickerService,
     AppointmentService,
     RequestHeaderService,
-    MediaUploaderService
+    MediaUploaderService,
+    CookieUtilsService
   ],
   exports: [
     CommonModule,

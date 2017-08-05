@@ -4,10 +4,11 @@ import { SharedModule } from '../_shared/_shared.module';
 
 import { WorkshopWizardRoutingModule } from './workshop-wizard-routing.module';
 
-import { CreateWorkshopComponent } from './create-workshop/create-workshop.component';
+import { WorkshopEditComponent } from './workshop-edit/workshop-edit.component';
+
 import { WorkshopContentComponent } from './workshop-content/workshop-content.component';
 import { ContentViewComponent } from './content-view/content-view.component';
-import { ListWorkshopComponent } from './list-workshop/list-workshop.component';
+import { WorkshopConsoleComponent } from './workshop-console/workshop-console.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 
 @NgModule({
@@ -16,10 +17,10 @@ import { AppointmentCalendarComponent } from './appointment-calendar/appointment
     WorkshopWizardRoutingModule
   ],
   declarations: [
-    CreateWorkshopComponent,
+    WorkshopEditComponent,
     WorkshopContentComponent,
     ContentViewComponent,
-    ListWorkshopComponent,
+    WorkshopConsoleComponent,
     AppointmentCalendarComponent],
   providers: [
   ]

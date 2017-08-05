@@ -8,16 +8,16 @@ import { MediaUploaderService } from '../../_services/mediaUploader/media-upload
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'experience-view',
+    selector: 'app-experience-view',
     templateUrl: './experience-view.component.html',
     styleUrls: ['./experience-view.component.scss']
 })
 
 export class ExperienceViewComponent implements OnInit {
     // we will pass in address from App component
-    @Input('group')
+    @Input()
     public itenaryForm: FormGroup;
-    @Input('itenaryId')
+    @Input()
     public itenaryId: Number;
 
     public contentObject: FormGroup;
@@ -102,13 +102,13 @@ export class ExperienceViewComponent implements OnInit {
         const contentType = contentForm.value.type;
         let editModal: ModalDirective;
         switch (contentType) {
-            case "online":
+            case 'online':
                 editModal = onlineEditModal;
                 break;
-            case "project":
+            case 'project':
                 editModal = projectEditModal;
                 break;
-            case "video":
+            case 'video':
                 editModal = videoEditModal;
                 break;
             default:
@@ -119,16 +119,16 @@ export class ExperienceViewComponent implements OnInit {
 
 
     saveTemp(modal: ModalDirective) {
-        let contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        let contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
         contentForm.setValue(this.tempForm.value);
 
         this.triggerSave.emit({
-            action: "update",
+            action: 'update',
             value: this.editIndex
         });
         modal.hide();
-        console.log("updated!");
+        console.log('updated!');
     }
 
     mapClicked(event) {
@@ -139,10 +139,10 @@ export class ExperienceViewComponent implements OnInit {
 
     save() {
         this.triggerSave.emit({
-            action: "add",
+            action: 'add',
             value: 0
         });
-        console.log("saved!");
+        console.log('saved!');
     }
 
     addLocation(modal: ModalDirective) {

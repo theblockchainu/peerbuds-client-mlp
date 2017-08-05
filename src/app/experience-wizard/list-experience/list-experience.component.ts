@@ -12,22 +12,28 @@ import { CollectionService } from '../../_services/collection/collection.service
 })
 export class ListExperienceComponent implements OnInit {
 
-  public experiences:any[];
+  public experiences: any[];
 
   constructor(
     private route: ActivatedRoute,
     public router: Router,
     public _collectionService: CollectionService) {
-    }
+  }
 
   ngOnInit() {
-    this.experiences = this._collectionService.getCollection('experience');
-    if(!this.experiences) {
+    this._collectionService.getCollection('experience', function (err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        this.experiences = result;
+      }
+    });
+    if (!this.experiences) {
       this.router.navigate(['/login']);
 
     }
   }
-
+s
   public onSelect(experience) {
     this.router.navigate(['/createExperience', experience.id]);
   }

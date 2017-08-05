@@ -52,6 +52,7 @@ export class ContentViewComponent implements OnInit {
     contentObject.controls.type.setValue(contentType);
     contentObject.controls.pending.setValue(true);
     contentArray.push(contentObject);
+    console.log(contentObject);
     this.addIndex();
   }
 
@@ -167,7 +168,6 @@ export class ContentViewComponent implements OnInit {
   }
 
   saveNew(modal: ModalDirective) {
-
     this.triggerSave.emit({
       action: 'add',
       value: this.lastIndex
