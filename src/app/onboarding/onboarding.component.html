@@ -24,26 +24,42 @@
               <div class="title">What are your interests?</div>
               <div class="text-grey fs-13">Choose any three topics to continue</div>
             </div>
-            <!--<form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
+
+            <!--<multiselect-autocomplete (selectedOutput)="selected($event)" [list]="countries" [multiSelect]=false></multiselect-autocomplete>-->
+            <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
               <div class="row">
                 <div class="col-sm-12 margin-bottom-30">
                   <div class="row">
-                    <div class="col-sm-8"><input type="text" class="form-control input-topic" placeholder="{{ placeholderStringTopic }}" />
+                    <div class="col-sm-8">
+                      <multiselect-autocomplete (selectedOutput)="selected($event)" [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic></multiselect-autocomplete>
                     </div>
                     <div class="col-sm-4">
-                      <div class="text-right text-grey fs-14">Sync social</div>
+                      <a class="text-right text-grey fs-14" (click)="socialModal.show()">Social</a>
+                      <div bsModal #socialModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title pull-left">Social Status</h4>
+                            </div>
+                            <div class="modal-body">
+                              <app-socialsync></app-socialsync>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="row margin-top-30">
                     <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
                       <div class="lookingFor interest">
                         <label class="check">
-                            <input type="checkbox"
+                            <input type="checkbox" id={{topic.id}}
                                     (change)="changeInterests(topic)">
                                     <i></i>
                           </label>
                         <div class="lookingFor-thumb">
-                          <i class="topic.id"></i>
+                          <i class={{topic.id}}></i>
                         </div>
                         <span class="lookingForTitle">{{ topic.name }} - {{topic.type}}</span>
                       </div>
@@ -52,7 +68,7 @@
                 </div>
               </div>
               <a href="javascript:;" class="onboarding-btn btn btn-lg btn-default" (click)="goToNext(3)">Next</a>
-            </form>-->
+            </form>
           </div>
         </div>
       </div>
