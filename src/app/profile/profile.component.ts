@@ -10,18 +10,39 @@ import { ProfileService } from '../_services/profile/profile.service';
 })
 export class ProfileComponent implements OnInit {
 
-  public profile:any = {};
+  public profile: any = {};
+  public socialProfile: any = [];
+  public interestTopics: any = [];
+  public max = 5;
+  public rate = 5;
+  public isReadonly = true;
 
-  constructor(private config: AppConfig, public profileService: ProfileService ) { }
+  constructor(private config: AppConfig, public profileService: ProfileService) { }
 
   ngOnInit() {
     this.getProfile();
+    this.getSocialProfiles();
+    this.getInterestTopics();
   }
 
   getProfile() {
-    this.profileService.getProfile().subscribe( profile => {
+    this.profileService.getProfile().subscribe(profile => {
       this.profile = profile;
     });
   }
 
+  getSocialProfiles() {
+    this.profileService.socialProfiles().subscribe(socialProfile => {
+      this.socialProfile = socialProfile;
+      this.socialProfile.forEach(thisProfile => {
+        thisProfile.profile = JSON.parse(thisProfile.profile);
+      });
+    });
+  }
+
+  getInterestTopics() {
+    this.profileService.interestTopics().subscribe(interestTopics => {
+      this.interestTopics = interestTopics;
+    });
+  }
 }

@@ -3,7 +3,7 @@ import {
   Http, Headers, Response, BaseRequestOptions, RequestOptions
   , RequestOptionsArgs
 } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -25,20 +25,38 @@ export class ProfileService {
   }
 
   private getCookieValue(key: string) {
-    let cookie = this._cookieService.get(key);
+    const cookie = this._cookieService.get(key);
     if (cookie) {
-      let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
+      const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
       this.userId = cookieValue[1];
     }
     return this.userId;
   }
 
   public getProfile() {
-    let profile = {};
+    const profile = {};
     if (this.userId) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profile')
         .map((response: Response) => response.json()
         );
     }
   }
-} 
+
+  public socialProfiles(){
+    const socialProfile = [];
+    if (this.userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities')
+        .map((response: Response) => response.json()
+        );
+    }
+  }
+
+  public interestTopics(){
+    const interestTopics = [];
+    if (this.userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/topics')
+        .map((response: Response) => response.json()
+        );
+    }
+  }
+}

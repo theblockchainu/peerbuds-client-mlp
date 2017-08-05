@@ -1,28 +1,27 @@
 // component css goes here
-.profile-headings{
-    &{
-        border-bottom:1px solid #ccc;
-        padding-bottom:20px;
-    }
-    .title{
-        margin-top:0;
-        margin-bottom:15px;
-        font-size:38px;
-        font-weight:400;
-        line-height: 0.8;
-    }
-    .sub-title{
-        color:#666;
-        font-size:0.8750em;
-    }
-    .online-status{
+.title{
+    margin-top:0!important;
+    margin-bottom:15px;
+    font-size:28px;
+    font-weight:400;
+    line-height: 0.8;
+}
+.sub-title{
+    color:#666;
+    font-size:0.8750em;
+}
+.heading{
+    color:#4a4a4a;
+    margin:0 0 20px 0;
+    font-size:1.2500em
+}
+.online-status{
         &{
             width:10px;
             height:10px;
             display:inline-block;
             border-radius:50%;
             background-color:#ccc;
-            margin-right:15px;
         }
         &.online{
             background-color: #7ed321;
@@ -31,9 +30,7 @@
             background-color: #bbb;
         }
     }
-}
 .bullet{
-    margin-right:17px;
     display:inline-block;
     position:relative;
     padding-left: 30px;
@@ -75,36 +72,59 @@
 }
 .sidebar-right{
     .sidebar-box{
-        padding:20px;
-        border:1px solid #bbb;
-        h3{
-            margin:0 0 30px 0;
+        .sidebar-tabs{
+            list-style: none;
+            width:100%;
+            border:1px solid #ccc!important;
+            border-radius:4px;
+            height: 40px;
+            padding:0;
+            margin-bottom:30px;
+            li{
+                float:left;
+                width:33.33%;
+                text-align: center;
+                padding:10px 0;
+                a{
+                    border-right:1px solid #ccc;
+                    color:#999;
+                    width:100%;
+                    display:inline-block;
+                }
+                &.active{
+                    background-color:#33bd9e;
+                    a{
+                        color:#fff;
+                    }
+                }
+                &:last-child{
+                    a{
+                        border-right:none;
+                    }
+                }
+            }
         }
         .sidebar-section{
             &{
-                margin-bottom:50px;
+                margin-bottom:25px;
+                padding-bottom:25px;
+                border-bottom:1px solid #ccc;
                 cursor:pointer;
             }
             &:hover{
                 opacity: 0.8;
             }
-            .section-thumb{
-                width:50px;
-                height:50px;
-                border:1px solid #999;
-                background-color:#ccc;
-            }
             .heading{
                 font-size:18px;
                 margin-bottom:10px;
+                font-weight:bold;
             }
             .desc{
-                font-size:0.8750em;
+                //font-size:0.8750em;
+                color:#999;
             }
         }
         .sidebar-details{
-            border-top:1px solid #ccc;
-            padding:15px 0 0;
             text-align: center;
             font-size:0.8750em;
             color:#666;
@@ -120,25 +140,7 @@
             font-size:0.8750em;
             padding:0 15px;
         }
-        .social-icons{
-            &{
-                float:right;
-            }
-            label{ padding-right:10px;}
-            .icon-span{
-                &{
-                    background-color:#ccc;
-                    width:10px;
-                    height:10px;
-                    border-radius:50%;
-                    display: inline-block;
-                    margin-right:2px;
-                }
-                &:last-child{
-                    margin-right:0;
-                }
-            }
-        }
+        
         .interested-tags{
             .tag{
                 display: inline-block;
@@ -151,73 +153,162 @@
     }
     
 }
+.social-icons{
+    &{
+        display: inline-block;
+        margin-right:5px;
+        width:25px;
+        height: 25px;
+        line-height: 20px;
+        text-align: center;
+        border:1px solid #06d6a0;
+        border-radius: 50%;
+        color:#06d6a0;
+    }
+    i{
+        vertical-align: middle;
+        padding-top:3px;
+        font-size:14px;
+    }
+}
+.btn-book{
+    background-color:#ff5b5f;
+    border-color:#ff5b5f;
+    color:#fff;
+    padding:10px 30px;
+    &:hover, &:active, &:focus, &:active:after{
+        background-color: #ff888b!important;
+        border-color:#ff888b!important;
+    }
+}
+.interest{
+    span{
+        display: inline-block;
+        margin:0 5px 10px 0;
+        background-color:#f8f8f8;
+        padding:0 18px;
+        height: 30px;
+        font-size:14px;
+        line-height: 30px;
+        border-radius: 30px;
+        color:#666;
+    }
+    .more{
+        color:#06d6a0;
+        display:block;
+        text-align: center;
+        margin-top:10px;
+    }
+}
+.read-more{
+    color:#06d6a0;
+}
+.text-green{
+    color:#06d6a0;
+}
+.what-i-teach{
+    margin-bottom:30px;
+    &:last-child{
+        margin-bottom:0;
+    }
+    .topic{
+        font-weight: bold;
+        margin-bottom:10px;
+    }
+}
 .seperate-section{
     &{
         border-bottom:1px solid #ccc;
         padding:30px 0;
     }
-    h3{
-        margin:0;
-    }
     .section-description{
-        font-size:0.8750em;
-        color:#666;
+        color:#999;
         line-height: 28px;
     }
-    .resume-thumb{
-        display:inline-block;
-        width:35px;
-        height:35px;
-        margin-right:20px;
-        background-color:#999;
-        vertical-align: top;
-    }
-}
-.review-section{
-    margin-bottom:30px;
-    &:last-child{margin-bottom:0;}
-    .review-thumb{
-        width:35px;
-        height:35px;
-        position:absolute;
-    }
-    .review-content{
-        &{
-            padding-left:45px;
-            font-size:0.8125em;
+    .resume-list{
+        margin-bottom:30px;
+        &:last-child{
+            margin-bottom:0;
         }
-        .review-title{
-            margin:0;
-        }
-        .review-rating{
-           // background:url("../../images/star.svg") repeat-x scroll 0 0 / 12px;
-            height:12px;
-            width:60px;
-            display: inline-block;
-        }
-        .review-desc{
-            color:#999;
-            position:relative;
-            padding-left:15px;
-            &:before{
-                display:inline-block;
-                position:absolute;
-                content:"\f10d";
-                font-size:0.7500em;
-                font-family: "FontAwesome";
-                top:0;
-                left:0;
+        .resume-thumb{
+            display:inline-block;
+            width:35px;
+            height:35px;
+            margin-right:20px;
+            vertical-align: top;
+            i{
+                font-size:35px;
+                color:#bbb;
             }
         }
     }
+}
+.review-section{
+    margin-bottom:40px;
+    &:last-child{margin-bottom:0;}
+    .review-thumb{
+        width:62px;
+        height:62px;
+        margin-right:15px;
+    }
+    .review-title{
+        margin:0;
+        font-size:18px;
+        display: inline-block;
+    }
+    .review-content{
+        &{
+            color:#999;
+            margin-top:15px
+        }
+        .review-desc{
+            line-height: 28px;
+        }
+        .review-bottom{
+            font-size:14px;
+            margin-top:15px;
+        }
+    }
+}
+rating{
+    color:#33bd9e;
+    font-size:16px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 14px;
+    margin-left:10px;
 }
 .review-all{
     border-top:1px solid #ccc;
     text-align:center;
     a{
-        color:#666;
-        font-weight:600;
+        color:#06d6a0;
         line-height:34px;
+    }
+}
+.border-bottom{
+    border-bottom:1px solid #ccc;
+}
+.full-section{
+    margin-top:50px;
+    .section-dropdown{
+        width:150px;
+        height:auto;
+        display:inline-block;
+        margin-right:10px;
+    }
+    .full-section-list{
+        font-size:13px;
+        color:#999;
+        line-height: 18px;
+        .section-head{
+            font-size:16px;
+            color:#333;
+            margin:15px 0 10px;
+        }
+        .section-des{
+            margin-bottom:10px;
+        }
     }
 }
 .interested-category{
@@ -268,7 +359,7 @@
         margin: 0;
         padding:0;
         li{
-            width: calc(33.33% - 15px);
+            width: calc(25% - 15px);
             height: 15vw;
             float: left;
             margin-right: 22px;
