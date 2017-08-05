@@ -3,6 +3,11 @@ import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@ang
 import { Http } from '@angular/http';
 import { AppConfig } from '../app.config';
 
+import { ModalModule, ModalDirective } from 'ngx-bootstrap';
+import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
+import { ContentService } from '../_services/content/content.service';
+import _ from 'lodash';
+
 @Component({
   selector: 'onboarding',
   templateUrl: './onboarding.component.html',
@@ -11,27 +16,39 @@ import { AppConfig } from '../app.config';
 export class OnboardingComponent implements OnInit {
 
   public userId: string;
-  public placeholderStringTopic = 'Search for a topic or enter a new one';
+  public placeholderStringTopic = 'Search for a topic ';
   public step = 1;
-  public learnerType_array = {
-    learner_type: [{ id: 'auditory', display: 'Auditory' }
-      , { id: 'visual', display: 'Visual' }
-      , { id: 'read-write', display: 'Read & Write' }
-      , { id: 'kinesthetic', display: 'Kinesthetic' }]
-  };
   public suggestedTopics = [];
   public interests = [];
   public interest1: FormGroup;
+  public countries: any[];
+  public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
+  public createTopicURL = 'http://localhost:3000/api/topics';
 
   constructor(
     private http: Http, private config: AppConfig,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private countryPickerService: CountryPickerService,
+    private _contentService: ContentService
   ) {
     this.interest1 = new FormGroup({
+    });
+    this.countryPickerService.getCountries()
+        .subscribe((countries) => this.countries = countries);
+    this._contentService.getTopics()
+        .subscribe((suggestions) => this.suggestedTopics = suggestions);
+  }
 
+  public selected(event) {
+    this.interests = event;
+    this.interests.forEach((topic) => {
+      /*let selected = _.filter(this.suggestedTopics, (item) => {
+                return item.id = topic.id;
+          });*/
+      //document.getElementById("#" + topic.id).checked = true;
     });
   }
-  
+
   public ngOnInit() {
 
   }

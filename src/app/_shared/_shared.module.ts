@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule } from 'ngx-bootstrap';
 import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, CheckboxModule } from 'primeng/primeng';
+import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
+import { SocialSyncModule } from './socialsync/socialsync.module';
 
 
 import { CollectionService } from '../_services/collection/collection.service';
@@ -12,6 +14,7 @@ import { LanguagePickerService } from '../_services/languagepicker/languagepicke
 import { AppointmentService } from '../_services/appointment/appointment.service';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
 import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.service';
+import { ContentService } from '../_services/content/content.service';
 
 @NgModule({
   imports: [
@@ -30,7 +33,8 @@ import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.
     LanguagePickerService,
     AppointmentService,
     RequestHeaderService,
-    MediaUploaderService
+    MediaUploaderService,
+    ContentService
   ],
   exports: [
     CommonModule,
@@ -45,7 +49,9 @@ import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.
     ScheduleModule,
     DialogModule,
     CalendarModule,
-    CheckboxModule
+    CheckboxModule,
+    MultiselectAutocompleteModule,
+    SocialSyncModule
   ]
 })
 export class SharedModule { }
