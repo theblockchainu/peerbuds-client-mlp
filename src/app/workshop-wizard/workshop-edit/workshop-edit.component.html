@@ -112,9 +112,9 @@
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="row">
-                      <select class="form-control" formControlName="language">
-                      <option [value]="">--Select--</option>
-                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>
+                      <select class="form-control" formArrayName="language">
+                       <option [value]="">--Select--</option>
+                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>                      
                     </select>
                     </div>
                   </div>
@@ -308,6 +308,49 @@
         <div class="onboarding step-10" [hidden]="step!=10">
           <div class="row">
             <div class="col-sm-12">
+              <div class="stepHeader">What is the price of the workshop?</div>
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <div class="col-sm-12 margin-bottom-30">
+                  Price:
+                  <input type="number" formControlName="price">
+                  <select formControlName="cancellationPolicy">
+                        <option *ngFor="let c of currencies" [value]="c">{{c}} </option>
+                  </select>
+                </div>
+
+                <div class="col-sm-12 margin-bottom-30">
+                  Cancellation Policy:
+                  <select class="form-control" formControlName="cancellationPolicy">
+                        <option [value]="">--Select--</option>
+                        <option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}} </option>
+                  </select>
+                </div>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(11)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="onboarding step-11" [hidden]="step!=11">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="stepHeader">Add content to your Workshop</div>
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <p>Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
+                  see this before they sign up for your workshop.</p>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(10)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="onboarding step-12" [hidden]="step!=12">
+          <div class="row">
+            <div class="col-sm-12">
               <div class="stepHeader">What days are your workshop?</div>
               <form [formGroup]="timeline" (ngSubmit)="submitTimeline(timeline)" novalidate>
                 <div formGroupName="calendar">
@@ -321,8 +364,8 @@
                   </div>
                 </div>
                 <div class="row" *ngIf="timeline.controls.calendar.value.endDate && timeline.controls.calendar.value.endDate">
-                  <workshop-content [itenary]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value">
-                  </workshop-content>
+                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value">
+                  </app-workshop-content>
                 </div>
                 <div class="row">
                   <div class="col-md-4 col-md-offset-8">
@@ -336,67 +379,20 @@
             </div>
           </div>
         </div>
-        <div class="onboarding step-11" [hidden]="step!=11">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="stepHeader">Are you open for appointments?</div>
-              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <appointment-calendar></appointment-calendar>
-                <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(10)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="onboarding step-12" [hidden]="step!=12">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="stepHeader">What is the price of the workshop?</div>
-              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="col-sm-12 margin-bottom-30">
-                  Price:
-                  <input type="number" formControlName="price">
-                  <select formControlName="cancellationPolicy">
-                      <option *ngFor="let c of currencies" [value]="c">{{c}} </option>
-                </select>
-                </div>
-
-                <div class="col-sm-12 margin-bottom-30">
-                  Cancellation Policy:
-                  <select class="form-control" formControlName="cancellationPolicy">
-                      <option [value]="">--Select--</option>
-                      <option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}} </option>
-                </select>
-                </div>
-                <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(11)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
         <div class="onboarding step-13" [hidden]="step!=13">
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader">Review and submit</div>
-              <button (click)="submitForReview()"> Submit for Review</button>
-
-              <!--<div class="margin-20">
-                <pre>{{workshop.value | json}}</pre>
-                <pre>{{timeline.value | json}}</pre>
-              </div>-->
+              <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox> <label>You meet our standard</label>
+              <br>
+              <p-checkbox name="groupname" value="val2" [(ngModel)]="selectedValues"></p-checkbox><label>You meet our standard</label>
+              <br>
+              <button (click)="submitForReview()" class="btn btn-lg btn-success pull-right" [disabled]="selectedValues.length!==2"> Submit for Review</button>
             </div>
           </div>
         </div>
         <div class="clearfix"></div>
-        <!--<div class="margin-20">
-          <pre>{{workshop.value | json}}</pre>
 
-        </div>-->
-        <!--<pre>{{timeline.value | json}}</pre>-->
       </div>
     </div>
   </div>
