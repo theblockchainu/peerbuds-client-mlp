@@ -30,20 +30,21 @@
   </div>
   <div class="container">
     <div id="content" class="onboarding-content">
-      <div style="float:right;margin-top:-40px"><button type="button" (click)="saveandexit()">Save &amp; Exit</button></div>
+      <div style="float:right;margin-top:-40px"><button type="button" class="btn btn-lg btn-default" (click)="saveandexit()">Save &amp; Exit</button></div>
       <br/>
       <!--Disclaimer-->
       <div class="onboarding step-0" [hidden]="step!=0">
         <div class="row">
           <div class="col-sm-7">
             <h1 class="title">Peerbuds Workshop Guidelines</h1>
-            <p>We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines towards their content.
+            <p>We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines
+              towards their content.
             </p>
             <ul style="margin-top:30px;list-style:none">
-                <li>1. Respect Others</li>
-                <li>2. Respect Others</li>
-                <li>3. Respect Others</li>
-                <li>4. Respect Others</li>
+              <li>1. Respect Others</li>
+              <li>2. Respect Others</li>
+              <li>3. Respect Others</li>
+              <li>4. Respect Others</li>
             </ul>
             <div style="margin-top:100px;">
               <a (click)="goto(1)">I agree, lets create a workshop</a>
@@ -59,31 +60,6 @@
         </div>
       </div>
       <div class="container-fluid clearfix">
-
-        <!--<div class="onboarding step-1" [hidden]="step!=1">
-          <div class="row">
-            <div class="col-sm-7">
-              <h1 class="title">Let people know who you are</h1>
-              <div class="stepHeader">Upload the happiest photo of yourself</div>
-              <form [formGroup]="profile" (ngSubmit)="submitProfile(profile)" novalidate>
-                <span class="label label-warning" [hidden]="!profileImagePending">Pending</span>
-                <span class="label label-success" [hidden]="profileImagePending">Success</span>
-                <div class="upload-image-section imageHolder">
-
-                  <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="profileImageUploaded($event)"
-                    (onRemove)="profileImageRemoved($event)"></image-upload>
-
-                </div>
-                <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="Submit">Next</button>
-                </div>
-              </form>
-
-            </div>
-          </div>
-        </div>-->
-        <!-- step 1 ends here -->
-
         <!-- step 1 starts here -->
         <div class="onboarding step-1" [hidden]="step!=1">
           <div class="row">
@@ -136,9 +112,9 @@
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="row">
-                      <select class="form-control" formControlName="language">
-                      <option [value]="">--Select--</option>
-                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>
+                      <select class="form-control" formArrayName="language">
+                       <option [value]="">--Select--</option>
+                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>                      
                     </select>
                     </div>
                   </div>
@@ -166,7 +142,7 @@
                       <span class="text-right text-grey display-block margin-top-5">max. 200 chars</span>
                     </div>
                   </div>
-                  <div  class="col-sm-3" style="margin-left:20px">
+                  <div class="col-sm-3" style="margin-left:20px">
                     <p>Here is a sample description
                       <br/>"I am a recent graduate that enjoys reading"
                     </p>
@@ -235,8 +211,7 @@
                 <div class="col-sm-12 margin-bottom-30">
                   <div class="form-group">
                     <label class="display-block">What’s the workshop about?</label>
-                    <p>Give a detailed description to learners of what they will do
-                       in this workshop</p>
+                    <p>Give a detailed description to learners of what they will do in this workshop</p>
                     <textarea class="form-control" maxlength="200" formControlName="description"></textarea>
                     <span class="text-right text-grey display-block margin-top-5">max. 800 chars</span>
                   </div>
@@ -307,14 +282,13 @@
                       <div class="stepHeader">Upload Video</div>
                       <span class="label label-warning" [hidden]="!workshopVideoPending">Pending</span>
                       <span class="label label-success" [hidden]="workshopVideoPending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Video'" [dropBoxMessage]="''" (onFileUploadFinish)="workshopVideoUploaded($event)"></image-upload>
+                      <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000" auto="true"
+                        chooseLabel="Browse"></p-fileUpload>
                       <div class="stepHeader">Upload Images</div>
                       <span class="label label-warning" [hidden]="!workshopImage1Pending">Pending</span>
                       <span class="label label-success" [hidden]="workshopImage1Pending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="workshopImageUploaded($event)"></image-upload>
-                      <span class="label label-warning" [hidden]="!workshopImage2Pending">Pending</span>
-                      <span class="label label-success" [hidden]="workshopImage2Pending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="workshopImageUploaded($event)"></image-upload>
+                      <p-fileUpload #fubauto name="image" multiple="multiple" customUpload="true" (uploadHandler)="uploadImages($event)" maxFileSize="10000000"
+                        auto="true" chooseLabel="Browse"></p-fileUpload>
                     </div>
                   </div>
                   <div class="row">
@@ -334,6 +308,49 @@
         <div class="onboarding step-10" [hidden]="step!=10">
           <div class="row">
             <div class="col-sm-12">
+              <div class="stepHeader">What is the price of the workshop?</div>
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <div class="col-sm-12 margin-bottom-30">
+                  Price:
+                  <input type="number" formControlName="price">
+                  <select formControlName="cancellationPolicy">
+                        <option *ngFor="let c of currencies" [value]="c">{{c}} </option>
+                  </select>
+                </div>
+
+                <div class="col-sm-12 margin-bottom-30">
+                  Cancellation Policy:
+                  <select class="form-control" formControlName="cancellationPolicy">
+                        <option [value]="">--Select--</option>
+                        <option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}} </option>
+                  </select>
+                </div>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(11)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="onboarding step-11" [hidden]="step!=11">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="stepHeader">Add content to your Workshop</div>
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <p>Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
+                  see this before they sign up for your workshop.</p>
+                <div style="margin-top:100px;">
+                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(10)>Back</button>
+                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="onboarding step-12" [hidden]="step!=12">
+          <div class="row">
+            <div class="col-sm-12">
               <div class="stepHeader">What days are your workshop?</div>
               <form [formGroup]="timeline" (ngSubmit)="submitTimeline(timeline)" novalidate>
                 <div formGroupName="calendar">
@@ -347,8 +364,8 @@
                   </div>
                 </div>
                 <div class="row" *ngIf="timeline.controls.calendar.value.endDate && timeline.controls.calendar.value.endDate">
-                  <workshop-content [itenary]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value">
-                  </workshop-content>
+                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value">
+                  </app-workshop-content>
                 </div>
                 <div class="row">
                   <div class="col-md-4 col-md-offset-8">
@@ -362,67 +379,20 @@
             </div>
           </div>
         </div>
-        <div class="onboarding step-11" [hidden]="step!=11">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="stepHeader">Are you open for appointments?</div>
-              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <appointment-calendar></appointment-calendar>
-                <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(10)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="onboarding step-12" [hidden]="step!=12">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="stepHeader">What is the price of the workshop?</div>
-              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="col-sm-12 margin-bottom-30">
-                  Price:
-                  <input type="number" formControlName="price">
-                  <select formControlName="cancellationPolicy">
-                      <option *ngFor="let c of currencies" [value]="c">{{c}} </option>
-                </select>
-                </div>
-
-                <div class="col-sm-12 margin-bottom-30">
-                  Cancellation Policy:
-                  <select class="form-control" formControlName="cancellationPolicy">
-                      <option [value]="">--Select--</option>
-                      <option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}} </option>
-                </select>
-                </div>
-                <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(11)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
         <div class="onboarding step-13" [hidden]="step!=13">
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader">Review and submit</div>
-              <button (click)="submitForReview()"> Submit for Review</button>
-
-              <!--<div class="margin-20">
-                <pre>{{workshop.value | json}}</pre>
-                <pre>{{timeline.value | json}}</pre>
-              </div>-->
+              <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox> <label>You meet our standard</label>
+              <br>
+              <p-checkbox name="groupname" value="val2" [(ngModel)]="selectedValues"></p-checkbox><label>You meet our standard</label>
+              <br>
+              <button (click)="submitForReview()" class="btn btn-lg btn-success pull-right" [disabled]="selectedValues.length!==2"> Submit for Review</button>
             </div>
           </div>
         </div>
         <div class="clearfix"></div>
-        <!--<div class="margin-20">
-          <pre>{{workshop.value | json}}</pre>
 
-        </div>-->
-        <!--<pre>{{timeline.value | json}}</pre>-->
       </div>
     </div>
   </div>

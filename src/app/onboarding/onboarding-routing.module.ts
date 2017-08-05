@@ -4,19 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { OnboardingComponent } from './onboarding.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: OnboardingComponent,
-    children: [
-      {
-        path: '',
-        //canActivateChild: [AuthGuard],
-        /* children: [
-          { path: '', component: IndexComponent }
-        ]*/
-      }
-    ]
-  }
+  // Learner Onboarding
+  { path: 'onboarding', component: OnboardingComponent },
 ];
 
 @NgModule({

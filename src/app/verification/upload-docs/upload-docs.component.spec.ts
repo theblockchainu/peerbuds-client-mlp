@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateWorkshopComponent } from './create-workshop.component';
+import { UploadDocsComponent } from './upload-docs.component';
 
-describe('CreateWorkshopComponent', () => {
-  let component: CreateWorkshopComponent;
-  let fixture: ComponentFixture<CreateWorkshopComponent>;
+describe('UploadDocsComponent', () => {
+  let component: UploadDocsComponent;
+  let fixture: ComponentFixture<UploadDocsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateWorkshopComponent ]
+      declarations: [ UploadDocsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateWorkshopComponent);
+    fixture = TestBed.createComponent(UploadDocsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
