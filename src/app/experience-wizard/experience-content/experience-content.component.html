@@ -11,7 +11,7 @@
                             <span class="glyphicon glyphicon-remove pull-right" (click)="removeItenary(i)"></span>
                         </div>
                         <div class="panel-body" [formGroupName]="i">
-                            <experience-view [group]="myForm.controls.itenary.controls[i]" [itenaryId]="i" (triggerSave)="saveTriggered($event,i)"></experience-view>
+                            <app-experience-view [itenaryForm]="myForm.controls.itenary.controls[i]" [itenaryId]="i" (triggerSave)="saveTriggered($event,i)"></app-experience-view>
                         </div>
                     </div>
                 </div>

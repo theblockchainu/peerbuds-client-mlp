@@ -824,9 +824,26 @@ input {
 	overflow:hidden;
 	display:inline-block;
 }
-.btn-default:focus, .btn-primary:focus{
+.form-control {
+    height: 40px;
+}
+.form-control:focus {
 	outline:none;
-	box-shadow:none;
+	outline-color: transparent;
+}
+.form-control[readonly]{
+	background-color:inherit!important;
+}
+/* btn styles */
+.btn{
+	&{
+		height:40px;
+		padding:9px 20px;
+	}
+	&:focus{
+		outline:none;
+		box-shadow:none;
+	}
 }
 .btn-primary{
 	background-color: #fff;
@@ -837,6 +854,73 @@ input {
 	background-color: #e5e5e5!important;
 	border-color:#333!important;
 	color:#333!important;
+}
+.btn-social {
+	&{
+		color: #fff;
+		display: block;
+		padding: 10px 20px;
+		position: relative;
+		font-size: 15px;
+		font-weight: 500;
+		border-radius: 4px;
+		text-align: center;
+		height:50px;
+		line-height: 29px;
+	}
+	i {
+		border-right: 1px solid rgba(255, 255, 255, 0.2);
+		font-size: 20px;
+		left: 16px;
+		padding-right: 15px;
+		position: absolute;
+		top: 15px;
+		&.fa-google{
+			border-right-color:#999;
+		}
+	}
+}
+.btn-fb {
+    background-color: #3B5999;
+}
+.btn-fb:hover{
+	background-color:#324B80;
+}
+.btn-ggl {
+    background-color: #fff;
+	color:#333;
+	border:1px solid #999;
+}
+.btn-ggl:hover{
+	background-color:#dd3723;
+}
+.btn-fb:active,.btn-fb:focus, .btn-fb:hover, .btn-ggl:active,.btn-ggl:focus, .btn-ggl:hover {
+    color: #fff!important;
+    text-decoration: none;
+	border-color:transparent;
+}
+.or-seperator-vertical {
+    border-bottom: 1px solid rgba(199,199,199,0.5);
+    content: "";
+    display: inline-block;
+    left: 0;
+    position: absolute;
+    top: 17px;
+    width: 100%;
+}
+.round-or-text {
+    border-radius: 24px;
+    color: #fff;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    width: 50px;
+    font-size:20px;
+}
+.or-text-vertical {
+    background-color: #fff;
+    color: rgba(74,74,74,0.5);
+    position: relative;
 }
 /* ----- Model Box CSS ----- */
 .modal {

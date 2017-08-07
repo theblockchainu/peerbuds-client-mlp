@@ -11,15 +11,13 @@
               <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.itenary.controls.length > 1" (click)="removeItenary(i)"></span>
             </div>
             <div class="panel-body" [formGroupName]="i">
-              <itenary [group]="myForm.controls.itenary.controls[i]" [itenaryId]="i" (triggerSave)="saveTriggered($event,i)"></itenary>
+              <app-itenary [itenaryForm]="myForm.controls.itenary.controls[i]" [itenaryId]="i" (triggerSave)="saveTriggered($event,i)"></app-itenary>
             </div>
           </div>
         </div>
 
         <div class="margin-20">
-          <a (click)="addItenary()" style="cursor: default">
-                      Add another Itenary +
-                  </a>
+          <a (click)="addItenary()" style="cursor: default">Add another Itenary +</a>
         </div>
       </form>
     </div>

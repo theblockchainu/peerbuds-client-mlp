@@ -273,14 +273,6 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angular2-cookie@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/angular2-cookie/-/angular2-cookie-1.2.6.tgz#8fa845531e777adb042fe2f339c0040f6ddbf09d"
-
-angular2-image-upload@^0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/angular2-image-upload/-/angular2-image-upload-0.6.6.tgz#1a9ed2612adf5ad8dd0f2b1a7df31fe9988893d8"
-
 ansi-escapes@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-2.0.0.tgz#5bae52be424878dd9783e8910e3fc2922e83c81b"
@@ -3837,6 +3829,10 @@ ngx-bootstrap@^1.8.0:
   resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-1.8.0.tgz#7482365e9a2cb04dc93296592771a9e4591c9fad"
   dependencies:
     moment "2.18.1"
+
+ngx-cookie-service@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/ngx-cookie-service/-/ngx-cookie-service-1.0.7.tgz#35d433b775a5a2a808c54975f4faf500acc52f68"
 
 no-case@^2.2.0:
   version "2.3.1"

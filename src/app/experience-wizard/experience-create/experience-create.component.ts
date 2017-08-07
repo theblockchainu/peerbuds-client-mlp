@@ -6,16 +6,20 @@ import {
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+
+import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 
 import {
   Http, URLSearchParams, Headers, Response, BaseRequestOptions
   , RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { AppConfig } from '../../app.config';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
+import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 // import { Profile } from './interfaces/profile.interface';
 import * as moment from 'moment';
 
@@ -29,6 +33,9 @@ import * as moment from 'moment';
   templateUrl: './experience-create.component.html'
 })
 export class ExperienceCreateComponent implements OnInit {
+  //Getting experience id from url
+  private experienceObject = {};
+
   // Set our default values
   public localState = { value: '' };
   public countries: any[];
@@ -43,6 +50,7 @@ export class ExperienceCreateComponent implements OnInit {
   public experienceId: string;
   public key = 'access_token';
   public timeline: FormGroup;
+  public returnUrl: string;
 
   public contentGroup: FormGroup;
 
@@ -77,14 +85,19 @@ export class ExperienceCreateComponent implements OnInit {
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
     private activatedRoute: ActivatedRoute,
+    public _collectionService: CollectionService,
+    public router: Router,
+    private mediaUploader: MediaUploaderService
   ) {
     this.getCookieValue('userId');
     this.countryPickerService.getCountries()
       .subscribe((countries) => this.countries = countries);
     this.languagePickerService.getLanguages()
       .subscribe((languages) => this.languagesArray = languages);
-    // this.getProfile();
     this.getTopics();
+    this.activatedRoute.params.subscribe(params => {
+        this.experienceId = params["id"];
+    });
 
   }
 
@@ -179,7 +192,39 @@ export class ExperienceCreateComponent implements OnInit {
 
     this.contentGroup = new FormGroup({});
 
-    this.createExperience();
+    if(!this.experienceId) {
+      this.createExperience();
+    }
+    else {
+      this._collectionService.getCollectionDetails(this.experienceId).subscribe(res => this.assignExperience(res),
+            err => console.log("error"),
+            () => console.log('Completed!'));
+    }
+  }
+  private assignExperience(data) {
+    console.log(data);
+    delete data.id;
+    delete data.type;
+    delete data.prerequisites;
+    let languageArray = data.language;
+    let lang: string;
+    if(languageArray.length != 0)
+      lang = languageArray[0];
+    else lang = '';
+    data.language =  lang;
+    delete data.imageUrls;
+    data.imageUrls = [];
+    delete data.created;
+    delete data.modified;
+    console.log(data);
+    this.experienceObject = data;
+      /*setTimeout(()=>{
+          this.workshop.setValue(data);
+     },3000);*/
+    this.experience.setValue(data);
+    this.step = data.stage;
+    this.router.navigate(['createExperience', this.experienceId, this.step]);
+
   }
 
   initAddress() {
@@ -199,20 +244,12 @@ export class ExperienceCreateComponent implements OnInit {
   }
 
   public profileImageUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-
-    formData.append('file', event.file);
-
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
-        this.profile.controls['picture_url'].setValue(mediaResponse.url);
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
+        this.profile.controls['picture_url'].setValue(responseObj.url);
         this.profileImagePending = false;
-      })
-      .subscribe(); // data => console.log('response', data)
+      }).subscribe();
+    }
   }
 
   profileImageRemoved(event) {
@@ -238,32 +275,20 @@ export class ExperienceCreateComponent implements OnInit {
   }
 
   experienceImageUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-    formData.append('file', event.file);
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
-        this.addUrl(mediaResponse.url);
-      })
-      .subscribe(); // data => console.log('response', data)
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
+        this.addUrl(responseObj.url);
+      }).subscribe();
+    }
   }
 
   experienceVideoUploaded(event) {
-    let file = event.src;
-    let fileName = event.file.name;
-    let fileType = event.file.type;
-    let formData = new FormData();
-    formData.append('file', event.file);
-    this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData)
-      .map((response: Response) => {
-        let mediaResponse = response.json();
-        this.experience.controls['videoUrl'].setValue(mediaResponse.url);
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map((responseObj: Response) => {
+        this.experience.controls['videoUrl'].setValue(responseObj.url);
         this.experienceVideoPending = false;
-      })
-      .subscribe(); // data => console.log('response', data)
+      }).subscribe();
+    }
   }
 
 
@@ -395,8 +420,11 @@ export class ExperienceCreateComponent implements OnInit {
   }
 
   private getCookieValue(key: string) {
-    let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-    this.userId = cookieValue[1];
+    let cookie = this._cookieService.get(key);
+    if(cookie) {
+      let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
+      this.userId = cookieValue[1];
+    }
     return this.userId;
   }
 
@@ -421,11 +449,14 @@ export class ExperienceCreateComponent implements OnInit {
    * goto(toggleStep)  */
   public goto(toggleStep) {
     this.step = toggleStep;
+    this.router.navigate(['createExperience', this.experienceId, this.step]);
   }
 
 
   submitForReview() {
     console.log("Submitted!");
+    this.returnUrl = 'experience';
+    this.router.navigate([this.returnUrl]);
 
   }
 

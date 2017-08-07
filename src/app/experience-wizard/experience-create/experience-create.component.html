@@ -50,8 +50,8 @@
                 <span class="label label-success" [hidden]="profileImagePending">Success</span>
                 <div class="upload-image-section imageHolder">
 
-                  <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="profileImageUploaded($event)"
-                    (onRemove)="profileImageRemoved($event)"></image-upload>
+                  <p-fileUpload #fubauto name="iamge" customUpload="true" (uploadHandler)="profileImageUploaded($event)" (onClear)="profileImageRemoved($event)"
+                    maxFileSize="10000000" auto="true" chooseLabel="Browse"></p-fileUpload>
 
                 </div>
 
@@ -232,14 +232,13 @@
                       <div class="stepHeader">Upload Video</div>
                       <span class="label label-warning" [hidden]="!experienceVideoPending">Pending</span>
                       <span class="label label-success" [hidden]="experienceVideoPending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Video'" [dropBoxMessage]="''" (onFileUploadFinish)="experienceVideoUploaded($event)"></image-upload>
+                      <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="experienceVideoUploaded($event)" maxFileSize="10000000"
+                        auto="true" chooseLabel="Browse"></p-fileUpload>
                       <div class="stepHeader">Upload Images</div>
                       <span class="label label-warning" [hidden]="!experienceImage1Pending">Pending</span>
                       <span class="label label-success" [hidden]="experienceImage1Pending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="experienceImageUploaded($event)"></image-upload>
-                      <span class="label label-warning" [hidden]="!experienceImage2Pending">Pending</span>
-                      <span class="label label-success" [hidden]="experienceImage2Pending">Success</span>
-                      <image-upload [max]="1" [buttonCaption]="'Upload Image'" [dropBoxMessage]="''" (onFileUploadFinish)="experienceImageUploaded($event)"></image-upload>
+                      <p-fileUpload #fubauto name="image" multiple="multiple" customUpload="true" (uploadHandler)="experienceImageUploaded($event)"
+                        maxFileSize="10000000" auto="true" chooseLabel="Browse"></p-fileUpload>
                     </div>
                   </div>
                   <div class="row">

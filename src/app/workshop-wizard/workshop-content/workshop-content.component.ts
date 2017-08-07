@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 
@@ -9,10 +9,10 @@ import {
 import { AppConfig } from '../../app.config';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import * as moment from 'moment';
-
+import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 
 @Component({
-  selector: 'workshop-content',
+  selector: 'app-workshop-content',
   // We need to tell Angular's Dependency Injection which providers are in our app.
   providers: [],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
@@ -22,25 +22,27 @@ import * as moment from 'moment';
 })
 
 export class WorkshopContentComponent implements OnInit {
-  @Input("itenary")
+  @Input()
   public myForm: FormGroup;
 
-  @Input("collectionId")
+  @Input()
   public collectionId: string;
 
   @Input()
   public calendar: any;
 
+  private options;
   constructor(
     public authenticationService: AuthenticationService,
     private http: Http, private config: AppConfig,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private requestHeaders: RequestHeaderService
   ) {
-
+    this.options = requestHeaders.getOptions();
   }
 
   ngOnInit() {
-    this.myForm.addControl("itenary", this._fb.array([this.initItenary()]));
+    this.myForm.addControl('itenary', this._fb.array([this.initItenary()]));
   }
   initItenary() {
     return this._fb.group({
@@ -55,10 +57,6 @@ export class WorkshopContentComponent implements OnInit {
   }
 
   removeItenary(i: number) {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
 
     const itenaries = <FormArray>this.myForm.controls.itenary;
     const itenaryGroup = <FormGroup>itenaries.controls[i];
@@ -66,9 +64,8 @@ export class WorkshopContentComponent implements OnInit {
 
     let deleteIndex = 0;
 
-    while (deleteIndex != contents.length) {
-
-      this.http.delete(this.config.apiUrl + '/api/contents/' + contents[deleteIndex].id, options)
+    while (deleteIndex !== contents.length) {
+      this.http.delete(this.config.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.options)
         .map((response: Response) => {
           console.log(response);
         })
@@ -85,60 +82,61 @@ export class WorkshopContentComponent implements OnInit {
      * numberOfdays
     */
   public numberOfdays(currentDate, startDate) {
-    let current = moment(currentDate);
-    let start = moment(startDate);
+    const current = moment(currentDate);
+    const start = moment(startDate);
     return current.diff(start, 'days');
   }
 
   saveTriggered(event, i) {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
-
-    if (event.action == "add") {
-      let itenaryObj = this.myForm.value.itenary[i];
-      let scheduleDate = itenaryObj.date;
-      let contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
-      let schedule = contentObj.schedule;
+    console.log(this.myForm);
+    if (event.action === 'add') {
+      const itenaryObj = this.myForm.value.itenary[i];
+      const scheduleDate = itenaryObj.date;
+      const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
+      const schedule = contentObj.schedule;
+      delete schedule.id;
       delete contentObj.id;
       delete contentObj.schedule;
       delete contentObj.pending;
-
-      if (contentObj.type == "project") {
-        let endDay = new Date(schedule.endDay);
+      if (contentObj.type === 'project' || contentObj.type === 'video') {
+        const endDay = new Date(schedule.endDay);
         schedule.endDay = endDay;
-      } if (contentObj.type = "online") {
-        let startTimeArr = schedule.startTime.toString().split(':');
-        let startHour = startTimeArr[0];
-        let startMin = startTimeArr[1];
+        schedule.startTime = null;
+        schedule.endTime = null;
+      } else if (contentObj.type === 'online') {
+        const startTimeArr = schedule.startTime.toString().split(':');
+        const startHour = startTimeArr[0];
+        const startMin = startTimeArr[1];
         schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
 
-        let endTimeArr = schedule.endTime.toString().split(':');
-        let endHour = endTimeArr[0];
-        let endMin = endTimeArr[1];
+        const endTimeArr = schedule.endTime.toString().split(':');
+        const endHour = endTimeArr[0];
+        const endMin = endTimeArr[1];
         schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
+      } else if (contentObj.type === 'video') {
+
       }
+
       schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
       schedule.endDay = 0;
       console.log(schedule);
-      this.http.post(this.config.apiUrl + '/api/collections/' + this.collectionId + '/contents', contentObj, options)
+      this.http.post(this.config.apiUrl + '/api/collections/' + this.collectionId + '/contents', contentObj, this.options)
         .map((response: Response) => {
-          let contentId = response.json().id;
+          const contentId = response.json().id;
           const itenary = <FormArray>this.myForm.controls.itenary;
           const form = <FormGroup>itenary.controls[i];
           const contentsArray = <FormArray>form.controls.contents;
           const contentGroup = <FormGroup>contentsArray.controls[event.value];
           contentGroup.controls.id.setValue(contentId);
 
-          this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, options)
-            .map((response: Response) => {
-              if (response.status == 200) {
-                const itenary = <FormArray>this.myForm.controls.itenary;
-                const form = <FormGroup>itenary.controls[i];
-                const contentsArray = <FormArray>form.controls.contents;
-                const contentGroup = <FormGroup>contentsArray.controls[event.value];
-                contentGroup.controls.pending.setValue(false);
+          this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
+            .map((resp: Response) => {
+              if (resp.status === 200) {
+                const Itenary = <FormArray>this.myForm.controls.itenary;
+                const Form = <FormGroup>Itenary.controls[i];
+                const ContentsArray = <FormArray>Form.controls.contents;
+                const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
+                ContentGroup.controls.pending.setValue(false);
               }
               console.log(response);
             })
@@ -146,57 +144,58 @@ export class WorkshopContentComponent implements OnInit {
         })
         .subscribe();
 
-    } else if (event.action == "update") {
+    } else if (event.action === 'update') {
       const itenary = <FormArray>this.myForm.controls.itenary;
       const form = <FormGroup>itenary.controls[i];
       const contentsArray = <FormArray>form.controls.contents;
       const contentGroup = <FormGroup>contentsArray.controls[event.value];
       contentGroup.controls.pending.setValue(true);
 
-      let itenaryObj = this.myForm.value.itenary[i];
-      let scheduleDate = itenaryObj.date;
-      let contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
-      let schedule = contentObj.schedule;
-      let contentId = contentObj.id;
+      const itenaryObj = this.myForm.value.itenary[i];
+      const scheduleDate = itenaryObj.date;
+      const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
+      const schedule = contentObj.schedule;
+      delete schedule.id;
+      const contentId = contentObj.id;
       delete contentObj.id;
       delete contentObj.schedule;
       delete contentObj.pending;
-
-      if (contentObj.type == "project") {
-        let endDay = new Date(schedule.endDay);
+      if (contentObj.type === 'project') {
+        const endDay = new Date(schedule.endDay);
         schedule.endDay = endDay;
-      } if (contentObj.type = "online") {
-        let startTimeArr = schedule.startTime.toString().split(':');
-        let startHour = startTimeArr[0];
-        let startMin = startTimeArr[1];
+      }
+      if (contentObj.type === 'online') {
+        const startTimeArr = schedule.startTime.toString().split(':');
+        const startHour = startTimeArr[0];
+        const startMin = startTimeArr[1];
         schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
 
-        let endTimeArr = schedule.endTime.toString().split(':');
-        let endHour = endTimeArr[0];
-        let endMin = endTimeArr[1];
+        const endTimeArr = schedule.endTime.toString().split(':');
+        const endHour = endTimeArr[0];
+        const endMin = endTimeArr[1];
         schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
       }
       schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
       schedule.endDay = 0;
       console.log(schedule);
-      this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, options)
+      this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, this.options)
         .map((response: Response) => {
-          this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, options)
-            .map((response: Response) => {
-              if (response.status == 200) {
+          this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
+            .map((resp: Response) => {
+              if (resp.status === 200) {
                 contentGroup.controls.pending.setValue(false);
               }
-              console.log(response);
+              console.log(resp);
             })
             .subscribe();
         })
         .subscribe();
-    } else if (event.action = "delete") {
+    } else if (event.action = 'delete') {
       const itenaryObj = this.myForm.value.itenary[i];
       const scheduleDate = itenaryObj.date;
       const contentObj = itenaryObj.contents[event.value];
-      let contentId = contentObj.id;
-      this.http.delete(this.config.apiUrl + '/api/contents/' + contentId, options)
+      const contentId = contentObj.id;
+      this.http.delete(this.config.apiUrl + '/api/contents/' + contentId, this.options)
         .map((response: Response) => {
           console.log(response);
           const itenary = <FormArray>this.myForm.controls.itenary;
@@ -205,9 +204,8 @@ export class WorkshopContentComponent implements OnInit {
           contentsArray.removeAt(event.value);
         })
         .subscribe();
-    }
-    else {
-      console.log("unhandledEvent Triggered");
+    } else {
+      console.log('unhandledEvent Triggered');
     }
   }
 
