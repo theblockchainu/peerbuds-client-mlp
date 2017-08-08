@@ -53,6 +53,32 @@ export class CollectionService {
     }
   }
 
+  public getCollections(options: any, cb) {
+    const collections = [];
+    const type = options.type;
+    if (this.userId) {
+      this.http
+        .get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections')
+        .map((response: Response) => {
+          const responseObj = response.json();
+          console.log(response.json());
+          responseObj.forEach((res) => {
+            this.http.get(this.config.apiUrl + '/api/collections/' + res.id + '/calendar')
+              .map((calendarData: Response) => {
+                const calendar = calendarData.json();
+                if (res.type === type) {
+                  collections.push(res);
+                }
+              }).subscribe();
+
+          });
+          cb(null, collections);
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
   public getCollectionDetails(id: string) {
     return this.http
       .get(this.config.apiUrl + '/api/collections/' + id)

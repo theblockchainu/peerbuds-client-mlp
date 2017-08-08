@@ -40,9 +40,12 @@ export class WorkshopEditComponent implements OnInit {
   public localState = { value: '' };
   public countries: any[];
   public languagesArray: any[];
-  public placeholderStringTopic;
   public userId: string;
   public selectedValues: string[] = [];
+
+  public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
+  public createTopicURL = 'http://localhost:3000/api/topics';
+  public placeholderStringTopic = 'Search for a topic ';
 
 
   public difficulties = [];
@@ -95,6 +98,7 @@ export class WorkshopEditComponent implements OnInit {
       title: '',
       stage: '',
       language: this._fb.array([]),
+      selectedLanguage: '',
       headline: '',
       description: '',
       difficultyLevel: '',
@@ -247,7 +251,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public getContents(cb) {
-    this.http.get(this.config.apiUrl + '/api/collections/' + this.workshopId + '/contents?filter[include]=schedules').map(
+    this.http.get(this.config.apiUrl + '/api/collections/' + this.workshopId + '/contents?filter={"include":"schedules"}').map(
       (res: any) => {
         const itenaries = {};
         for (const contentObj of res) {
@@ -334,7 +338,11 @@ export class WorkshopEditComponent implements OnInit {
     data = this._collectionService.sanitize(data);
     for (const property in data) {
       if (data.hasOwnProperty(property)) {
+        if (property === 'language') {
+          this.workshop.controls.selectedLanguage.patchValue(data.language[0]);
+        }
         this.workshop.controls[property].patchValue(data[property]);
+
       }
     }
   }
@@ -392,9 +400,15 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public submitWorkshop(data) {
+    const lang = <FormArray>this.workshop.controls.language;
+    lang.removeAt(0);
+    lang.push(this._fb.control(data.value.selectedLanguage));
+
     const body = data.value;
-    const currentLanguage = body.language;
-    body.language = [currentLanguage];
+    delete body.selectedLanguage;
+
+    console.log(body);
+
     this._collectionService.patchCollection(this.workshopId, body).map(
       (response) => {
         this.step++;
@@ -440,21 +454,11 @@ export class WorkshopEditComponent implements OnInit {
 
   }
 
-  public submitInterests(interests) {
+  public submitInterests() {
+    console.log(this.selectedLanguages);
     this.step++;
-    const topicArray = [];
-    this.interests.forEach((topic) => {
-      /* this.http.put(this.config.apiUrl +  '/api/peers/'
-          + this.userId + '/topics/rel/' + topic.id)
-                .map((response: Response) => {} ).subscribe();*/
-      topicArray.push(topic.id);
-    });
-    if (topicArray.length !== 0) {
-      this.http.put(this.config.apiUrl + '/api/peers/' + this.userId
-        + '/topics/rel/' + topicArray, {})
-        .map((response: Response) => { }).subscribe();
-    }
-
+    this.workshopStepUpdate();
+    this.router.navigate(['editWorkshop', this.workshopId, this.step]);
   }
   /**
    * goto(toggleStep)  */
@@ -466,11 +470,38 @@ export class WorkshopEditComponent implements OnInit {
 
   submitForReview() {
     console.log('Submitted!');
-    this.router.navigate(['workshop']);
+    this.router.navigate(['workshop-console']);
   }
 
   saveandexit() {
-    this.router.navigate(['workshop']);
+    console.log(this.step);
+
+    if (this.step == 12) {
+      const data = this.timeline;
+      const body = data.value.calendar;
+      console.log(body);
+      if (body.startDate && body.endDate) {
+        this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, this.options)
+          .map((response) => {
+            this.router.navigate(['workshop-console']);
+          })
+          .subscribe();
+      } else {
+        console.log('Enter Date!');
+      }
+
+    } else {
+      const data = this.workshop;
+      const lang = <FormArray>this.workshop.controls.language;
+      lang.removeAt(0);
+      lang.push(this._fb.control(data.value.selectedLanguage));
+      const body = data.value;
+      delete body.selectedLanguage;
+      this._collectionService.patchCollection(this.workshopId, body).map(
+        (response) => {
+          this.router.navigate(['workshop-console']);
+        }).subscribe();
+    }
   }
 
 }
