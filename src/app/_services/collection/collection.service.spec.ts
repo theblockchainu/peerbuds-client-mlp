@@ -5,7 +5,7 @@ import { CollectionService } from './collection.service';
 describe('CollectionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WorkshopService]
+      providers: [CollectionService]
     });
   });
 
