@@ -1,7 +1,7 @@
 <!--<header role="banner" class="container navbar navbar-default">
   <div class="container-fluid">
     <div class="logoContainer">
-      <a href="http://www.peerbuds.com" class="brand" aria-label="Peerbuds Homepage"><img src="/assets/images/pb_logo.png">
+      <a href="http://localhost:8080" class="brand" aria-label="Peerbuds Homepage"><img src="/assets/images/pb_logo.png">
       </a>
     </div>
     <div class="middle">
@@ -16,18 +16,37 @@
             <div class="content">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teach<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a [routerLink]="['/workshop']">Create a Workshop</a></li>
+                <li><a [routerLink]="['/workshop-console']">Create a Workshop</a></li>
                 <li><a [routerLink]="['/experience']">Create an Experience</a></li>
               </ul>
             </div>
           </li>
-          <li><a *ngIf="!(isLoggedIn | async)" class="link" href="/signup.html"><div class="wrapper"><div class="content"><span>Sign Up</span></div></div></a></li>
-          <li><a *ngIf="!(isLoggedIn | async)" class="link" [routerLink]="['/login']"><div class="wrapper"><div class="content"><span>Log In</span></div></div></a></li>
-          <li><a *ngIf="(isLoggedIn | async)" class="link" (click)="authService.logout()"><div class="wrapper"><div class="content"><span>Log Out</span></div></div></a></li>
+          <li>
+            <a *ngIf="!(isLoggedIn | async)" class="link" href="/signup.html">
+              <div class="wrapper">
+                <div class="content"><span>Sign Up</span></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a *ngIf="!(isLoggedIn | async)" class="link" [routerLink]="['/login']">
+              <div class="wrapper">
+                <div class="content"><span>Log In</span></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a *ngIf="(isLoggedIn | async)" class="link" (click)="authService.logout()">
+              <div class="wrapper">
+                <div class="content"><span>Log Out</span></div>
+              </div>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
   </div>
+<<<<<<< HEAD
 </header>-->
 
 <header class="header navbar navbar-default">
@@ -125,3 +144,6 @@
   </div>
 </header>
 <!-- Header ends here -->
+=======
+</header>
+>>>>>>> 815f202bf1b3aab3187bdfa0519d0a62a696eea5
