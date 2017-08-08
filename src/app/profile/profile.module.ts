@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { SharedModule } from '../_shared/_shared.module';
 import { ProfileComponent } from './profile.component';
 

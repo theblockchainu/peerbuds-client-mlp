@@ -4,7 +4,7 @@
 	.header-left.navbar-nav > li {
 	    margin-right: 20px;
 	}
-	.header-search-box{width:calc(100% - 140px);}
+	// .header-search-box{width:calc(100% - 140px);}
 	.sLink{
 		display:block;
 		margin:-10px 0 0 -20px;
@@ -12,14 +12,14 @@
 	.navbar-left{
 		width:calc(100% - 393px);
 	}
-	.header-right li:first-child{display:none!important;}
+	// .header-right li:first-child{display:none!important;}
 }
 
 @media (min-width: 768px){
 	.brand{
 		margin-left: 15px;
-		margin-top:10px;
-		width:225px;
+		// margin-top:10px;
+		// width:225px;
 	}
 }
 @media (max-width: 767px){
@@ -270,8 +270,8 @@
     width: 14.285714285714285714285714285714%;
     *width: 14.285714285714285714285714285714%;
   }
-	.brand{
-		margin: 15px;
-	}
+	// .brand{
+	// 	margin: 15px;
+	// }
 
 }
