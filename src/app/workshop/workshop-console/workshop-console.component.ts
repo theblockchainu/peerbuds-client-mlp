@@ -22,7 +22,7 @@ export class WorkshopConsoleComponent implements OnInit {
 
   ngOnInit() {
     this.loaded = false;
-    this._collectionService.getCollection('workshop', (err, result) => {
+    this._collectionService.getCollections({ type: 'workshop', include: ['calendar'] }, (err, result) => {
       if (err) {
         console.log(err);
       } else {
@@ -33,7 +33,7 @@ export class WorkshopConsoleComponent implements OnInit {
   }
 
   public onSelect(workshop) {
-    this.router.navigate(['/createWorkshop', workshop.id]);
+    this.router.navigate(['/editWorkshop/', workshop.id, 0]);
   }
 
   public showFinishingTouch(workshop) {
@@ -47,6 +47,13 @@ export class WorkshopConsoleComponent implements OnInit {
     this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
       this.router.navigate(['editWorkshop', workshopObject.id, 0]);
     });
+  }
+
+  /**
+   * viewWorkshop
+   */
+  public viewWorkshop(workshop) {
+    this.router.navigate(['workshop', workshop.id]);
   }
 
 }

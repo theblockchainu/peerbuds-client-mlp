@@ -22,9 +22,9 @@
       <li><strong>Workshop Itinerary</strong> </li>
       <!-- <li>Seats Available </li> -->
       <!-- <li>Age requirements </li> -->
-      <li (click)=goto(11)>Select Dates </li>
+      <li (click)=goto(12)>Select Dates </li>
       <hr>
-      <li (click)=goto(12) [class.disabled]="stage!=12">Review and Submit </li>
+      <li (click)=goto(13) [class.disabled]="stage!=12">Review and Submit </li>
 
     </ul>
   </div>
@@ -67,36 +67,36 @@
               <div class="stepHeader">What topics does this Workshop cover?</div>
               <span>Select topic that this workshop covers</span>
               <br/>
-              <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
-                <div class="row">
-                  <div class="col-sm-12 margin-bottom-30">
-                    <div class="row">
-                      <div class="col-sm-10">
-                        MULTISELECT AUTOCOMPLETE PLACEHOLDER
-                      </div>
-                      <div class="col-sm-12 margin-top-30">
-                        <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
-                      </div>
-                      <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
-                        <div class="lookingFor interest">
-                          <label class="check">
+              <div class="row">
+                <div class="col-sm-12 margin-bottom-30">
+                  <div class="row">
+                    <div class="col-sm-10">
+                      <multiselect-autocomplete (selectedOutput)="selected($event)" [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL
+                        [title]=placeholderStringTopic></multiselect-autocomplete>
+                    </div>
+                    <div class="col-sm-12 margin-top-30">
+                      <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
+                    </div>
+                    <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
+                      <div class="lookingFor interest">
+                        <label class="check">
                             <input type="checkbox"
                                     (change)="changeInterests(topic)">
                                     <i></i>
                           </label>
-                          <div class="lookingFor-thumb">
-                            <i class="topic.id"></i>
-                          </div>
-                          <span class="lookingForTitle">{{ topic.name }} - {{topic.type}}</span>
+                        <div class="lookingFor-thumb">
+                          <i class="topic.id"></i>
                         </div>
+                        <span class="lookingForTitle">{{ topic.name }} - {{topic.type}}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:10px" type="Submit">Next</button>
-                </div>
-              </form>
+              </div>
+              <div style="margin-top:100px;">
+                <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(0)>Back</button>
+                <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:10px" (click)=submitInterests()>Next</button>
+              </div>
             </div>
           </div>
         </div>
@@ -112,8 +112,7 @@
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="row">
-                      <select class="form-control" formArrayName="language">
-                       <option [value]="">--Select--</option>
+                      <select class="form-control" formControlName="selectedLanguage">
                       <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>                      
                     </select>
                     </div>

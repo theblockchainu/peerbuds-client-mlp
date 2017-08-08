@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
 
 import { ExperienceWizardModule } from './experience-wizard/experience-wizard.module';
-import { WorkshopWizardModule } from './workshop-wizard/workshop-wizard.module';
+import { WorkshopModule } from './workshop/workshop.module';
 import { HomeModule } from './home/home.module';
 import { VerificationModule } from './verification/verification.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
@@ -33,7 +33,7 @@ import { ProfileModule } from './profile/profile.module';
     AppRoutingModule,
     CoreModule,
     HomeModule,
-    WorkshopWizardModule,
+    WorkshopModule,
     ExperienceWizardModule,
     OnboardingModule,
     VerificationModule,
