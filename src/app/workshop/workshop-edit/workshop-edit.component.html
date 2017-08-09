@@ -1,11 +1,11 @@
 <div id="wrapper" style="margin:100px auto;">
-    <div class="overlay"></div>
+  <div class="overlay"></div>
  
-    <left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></left-sidebar>
-    <!-- Page Content -->
-    <div class="container" style="margin-left:400px;z-index:5;">
-    <div id="content" class="onboarding-content">
-      <div style="float:right;margin-top:-40px"><button type="button" class="btn btn-secondary" (click)="saveandexit()">Save &amp; Exit</button></div>
+  <left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></left-sidebar>
+  <!-- Page Content -->
+  <div class="container col-sm-10 col-md-10 col-lg-10 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+    <div id="content" class="row onboarding-content">
+      <div style="margin-top:-40px;" class="col-md-4 col-md-offset-10"><button type="button" class="btn btn-secondary" (click)="saveandexit()">Save &amp; Exit</button></div>
       <br/>
       <!--Disclaimer-->
       <div class="onboarding step-1" [hidden]="step!=1">
@@ -27,13 +27,13 @@
           </div>
         </div>
       </div>
-      <div class="row hide">
+      <!--<div class="row hide">
         <div class="col-md-10 col-md-offset-1" [hidden]="step==1">
           <progressbar [max]="max" [value]="step">
             <span style="color:white; white-space:nowrap;">{{step}} / {{max}}</span>
           </progressbar>
         </div>
-      </div>
+      </div>-->
       <div class="container-fluid clearfix">
         <!-- step 1 starts here -->
         <div class="onboarding step-2" [hidden]="step!=2">
@@ -95,7 +95,7 @@
                 </select>
                 <div style="margin-top:100px;">
                   <button class="btn btn-link" type="button" (click)=goto(2)>Back</button>
-                  <button class="obtn btn-success btn-continue pull-right" style="float:right;margin-right:50px" type="Submit">Continue</button>
+                  <button class="obtn btn-success btn-continue pull-right" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
@@ -173,7 +173,7 @@
                 </div>
                 <div style="margin-top:100px;">
                   <button class="btn btn-link" type="button" (click)=goto(5)>Back</button>
-                  <button class="btn btn-success btn-continue" style="float:right;margin-right:50px" type="Submit">Continue</button>
+                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
@@ -195,7 +195,7 @@
               </div>
               <div style="margin-top:100px;">
                 <button class="btn btn-link" type="button" (click)=goto(6)>Back</button>
-                <button class="btn btn-success btn-continue" style="float:right;margin-right:50px" type="Submit">Continue</button>
+                <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
               </div>
             </form>
           </div>
@@ -222,7 +222,7 @@
                 </div>
                 <div style="margin-top:100px;">
                   <button class="btn btn-link" type="button" (click)=goto(7)>Back</button>
-                  <button class="btn btn-success btn-continue" style="float:right;margin-right:50px" type="Submit">Continue</button>
+                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
@@ -239,7 +239,7 @@
                 </div>
                 <div style="padding-top:100px;">
                   <button class="btn btn-link" type="button" (click)=goto(8)>Back</button>
-                  <button class="btn btn-success btn-continue" style="float:right;margin-right:50px" type="Submit">Continue</button>
+                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
@@ -303,7 +303,7 @@
                     </div>
                     <div style="margin-top:100px;">
                       <button class="btn btn-link" type="button" (click)=goto(10)>Back</button>
-                      <button class="btn btn-success btn-continue" style="float:right;margin-right:50px" type="Submit">Continue</button>
+                      <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                     </div>
                   </form>
                 </div>
@@ -318,7 +318,7 @@
                       see this before they sign up for your workshop.</p>
                     <div style="margin-top:100px;">
                       <button class="btn btn-link" type="button" (click)=goto(11)>Back</button>
-                      <button class="btn btn-success btn-continue" style="float:right;margin-right:50px" type="Submit">Continue</button>
+                      <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                     </div>
                   </form>
                 </div>
@@ -344,10 +344,10 @@
                       </app-workshop-content>
                     </div>
                     <div class="row">
-                      <div class="col-md-4 col-md-offset-8">
+                      <div class="col-md-4 col-md-offset-6">
                         <div style="margin-top:100px;">
                           <button class="btn btn-link" type="button" (click)=goto(12)>Back</button>
-                          <button class="btn btn-success btn-continue" style="float:right;margin-right:50px" type="Submit">Continue</button>
+                          <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                         </div>
                       </div>
                     </div>
