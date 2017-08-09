@@ -1,4 +1,4 @@
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top col-sm-2 col-md-2 col-lg-2" id="sidebar-wrapper" role="navigation">
         <ul class="nav sidebar-nav">
             <span *ngFor="let title of sidebarMenuItems">
                 <li [ngClass]="{'sidebar-brand' : true, 'disabled' : title.title == 'Review & Submit' && step != 14}" *ngIf="title.visible" >
