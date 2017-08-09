@@ -21,6 +21,9 @@ import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router
 import * as moment from 'moment';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+
+import { SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
+
 @Component({
   selector: 'app-workshop-edit',
   templateUrl: './workshop-edit.component.html',
@@ -28,6 +31,9 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 })
 
 export class WorkshopEditComponent implements OnInit {
+  public sidebarFilePath:string = 'assets/menu/workshop-static-left-sidebar-menu.json';
+  sidebarMenuItems;
+
   public interest1: FormGroup;
   public workshop: FormGroup;
   public selectedTopic: FormGroup;
@@ -61,12 +67,14 @@ export class WorkshopEditComponent implements OnInit {
   workshopImage1Pending: Boolean;
   workshopImage2Pending: Boolean;
 
-  public step = 0;
-  public max = 12;
+  public step = 1;
+  public max = 14;
   public learnerType_array;
   public selectedLanguages = [];
   public suggestedTopics = [];
   public interests = [];
+
+  public days;
 
   // TypeScript public modifiers
   constructor(
@@ -144,8 +152,6 @@ export class WorkshopEditComponent implements OnInit {
     this.initializeWorkshop();
 
     this.initializeTimeLine();
-
-    console.log(this.timeline);
 
   }
 
@@ -333,6 +339,35 @@ export class WorkshopEditComponent implements OnInit {
   public selected(event) {
     this.selectedLanguages = event;
   }
+
+  public daysCollection(event) {
+    this.days = event;
+    /*
+    "submenu" : [
+            {
+                "title" : "Select Dates",
+                "step" : 13,
+                "active" : false,
+                "visible" : true 
+            }],
+    */
+    this.sidebarMenuItems[2]['submenu'] = [];
+    this.days.controls.forEach(function(item, index) {
+      let index2 = +index + 1;
+      this.sidebarMenuItems[2]['submenu'].push({"title": "Day " + index2,
+                                                "step" : 13+ '_'+ index2,
+                                                "active" : false,
+                                                "visible" : true
+                                                });
+    }, this);
+    }
+
+  
+
+  public getMenuArray(event) {
+    this.sidebarMenuItems = event;
+  }
+
 
   private initializeFormValues(data) {
     data = this._collectionService.sanitize(data);

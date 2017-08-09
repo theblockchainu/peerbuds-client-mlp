@@ -40,106 +40,128 @@
               <div class="wrapper">
                 <div class="content"><span>Log Out</span></div>
               </div>
+            </li>
+            <li>
+              <a *ngIf="!(isLoggedIn | async)" class="link" href="/signup.html">
+                <div class="wrapper">
+                  <div class="content"><span>Sign Up</span></div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a *ngIf="!(isLoggedIn | async)" class="link" [routerLink]="['/login']">
+                <div class="wrapper">
+                  <div class="content"><span>Log In</span></div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a *ngIf="(isLoggedIn | async)" class="link" (click)="authService.logout()">
+                <div class="wrapper">
+                  <div class="content"><span>Log Out</span></div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>-->
+<div class="header-container">
+  <header class="header navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-left">
+        <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>-->
+        <a href="http://www.peerbuds.com" class="brand" aria-label="Peerbuds Homepage">
+          <img src="/assets/images/pb_logo.png" alt="logo">
+        </a>
+        <div class="header-search-box">
+          <input type="text" name="search" id="headerSearch" class="form-control header-search" placeholder="Search people, topic..."
+          />
+        </div>
+      </div>
+      <!-- navbar header ends -->
+      <nav id="navbar" class="navbar-collapse collaps nav-full">
+        <ul class="nav navbar-nav navbar-right header-right">
+          <li class="dropdown" *ngIf="(isLoggedIn | async)">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Teach <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Dashboard</a></li>
+              <li><a [routerLink]="['/history']">Transaction History</a></li>
+              <li><a [routerLink]="['/session']">Create Sessions</a></li>
+              <li><a [routerLink]="['/workshop-console']">Create a Workshop</a></li>
+              <li><a [routerLink]="['/experience']">Create an Experience</a></li>
+              <li><a [routerLink]="['/teaching']">Teaching</a></li>
+              <li><a [routerLink]="['/calendar']">Calendar</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" *ngIf="(isLoggedIn | async)">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Journey <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a [routerLink]="analytic">Analytics</a></li>
+              <li><a [routerLink]="['/history']">Transaction History</a></li>
+              <li><a [routerLink]="['/session']">Sessions</a></li>
+              <li><a [routerLink]="['/workshop-console']">Workshops</a></li>
+              <li><a [routerLink]="['/experience']">Experiences</a></li>
+              <li><a [routerLink]="['/calendar']">Calendar</a></li>
+            </ul>
+          </li>
+          <li class="position-relative notificationContainerLI unread" *ngIf="(isLoggedIn | async)">
+            <a id="notificationsLink" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-bell"></i>
+            <span id="notificationCount"  class="badgeContainer badge res-badge noBadgeCount"></span>
+        </a>
+            <div class="notificationsDiv dropdown-menu notification-sub-box">
+              <ul id="notificationsUL"></ul>
+              <div class="noNotiExists">
+                <div class="notificationLiContent">
+                  <span class="text-grey conDesc">No notifications</span>
+                </div>
+              </div>
+              <div class='seeAllLi hide'><a class='seeAllAnc' href="${baseUrl}/notifications/all-notifications">See All</a></div>
+            </div>
+          </li>
+          <li *ngIf="!(isLoggedIn | async)"><a class="link" href="/signup.html">Sign Up</a></li>
+          <li *ngIf="!(isLoggedIn | async)"><a class="link" [routerLink]="['/login']">Log In</a></li>
+          <li *ngIf="(isLoggedIn | async)">
+            <a href="#" id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div class="circle-thumb pull-left">
+                <img src="{{ profile.picture_url }}" alt="User" class="thumb-35">
+              </div>
+              <span class="pull-right">{{ profile.first_name }} <span class="caret"></span> </span>
             </a>
+            <ul class="dropdown-menu pull-right user-header-dropdown" aria-labelledby="dLabel">
+              <li role="editProfile">
+                <a role="menuitem" tabindex="-1" href="#">
+                  <i class="fa fa-pencil-square-o icon-dd" aria-hidden="true"></i> Edit profile
+                </a>
+              </li>
+              <li role="accountSetting">
+                <a role="menuitem" tabindex="-1" href="#">
+                  <i class="fa fa-cog icon-dd" aria-hidden="true"></i> Account Settings
+                </a>
+              </li>
+              <li role="bookmarks">
+                <a role="menuitem" tabindex="-1" href="#">
+                  <i class="fa fa-bookmark icon-dd" aria-hidden="true"></i> Bookmarks
+                </a>
+              </li>
+              <li role="logOut">
+                <a role="menuitem" tabindex="-1" href="javascript:;" (click)="authService.logout()">
+                  <i class="fa fa-sign-out icon-dd" aria-hidden="true"></i> Log Out
+              </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>
     </div>
-  </div>
-</header>-->
-
-<header class="header navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-left">
-      <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>-->
-      <a href="http://www.peerbuds.com" class="brand" aria-label="Peerbuds Homepage">
-        <img src="/assets/images/pb_logo.png" alt="logo">
-      </a>
-      <div class="header-search-box">
-        <input type="text" name="search" id="headerSearch" class="form-control header-search" placeholder="Search people, topic..."
-        />
-      </div>
-    </div>
-    <!-- navbar header ends -->
-    <nav id="navbar" class="navbar-collapse collaps nav-full">
-      <ul class="nav navbar-nav navbar-right header-right">
-        <li class="dropdown" *ngIf="(isLoggedIn | async)">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Teach <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Dashboard</a></li>
-            <li><a [routerLink]="['/history']">Transaction History</a></li>
-            <li><a [routerLink]="['/session']">Create Sessions</a></li>
-            <li><a [routerLink]="['/workshop']">Create a Workshops</a></li>
-            <li><a [routerLink]="['/experience']">Create an Experiences</a></li>
-            <li><a [routerLink]="['/teaching']">Teaching</a></li>
-            <li><a [routerLink]="['/calendar']">Calendar</a></li>
-          </ul>
-        </li>
-        <li class="dropdown" *ngIf="(isLoggedIn | async)">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Journey <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a [routerLink]="analytic">Analytics</a></li>
-            <li><a [routerLink]="['/history']">Transaction History</a></li>
-            <li><a [routerLink]="['/session']">Sessions</a></li>
-            <li><a [routerLink]="['/workshop']">Workshops</a></li>
-            <li><a [routerLink]="['/experience']">Experiences</a></li>
-            <li><a [routerLink]="['/calendar']">Calendar</a></li>
-          </ul>
-        </li>
-        <li class="position-relative notificationContainerLI unread" *ngIf="(isLoggedIn | async)">
-          <a id="notificationsLink" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-		    	<i class="fa fa-bell"></i>
-		    	<span id="notificationCount"  class="badgeContainer badge res-badge noBadgeCount"></span>
-		 	</a>
-          <div class="notificationsDiv dropdown-menu notification-sub-box">
-            <ul id="notificationsUL"></ul>
-            <div class="noNotiExists">
-              <div class="notificationLiContent">
-                <span class="text-grey conDesc">No notifications</span>
-              </div>
-            </div>
-            <div class='seeAllLi hide'><a class='seeAllAnc' href="${baseUrl}/notifications/all-notifications">See All</a></div>
-          </div>
-        </li>
-        <li *ngIf="!(isLoggedIn | async)"><a class="link" href="/signup.html">Sign Up</a></li>
-        <li *ngIf="!(isLoggedIn | async)"><a class="link" [routerLink]="['/login']">Log In</a></li>
-        <li *ngIf="(isLoggedIn | async)">
-          <a href="#" id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <div class="circle-thumb pull-left">
-              <img src="{{ profile.picture_url }}" alt="User" class="thumb-35">
-            </div>
-            <span class="pull-right">{{ profile.first_name }} <span class="caret"></span> </span>
-          </a>
-          <ul class="dropdown-menu pull-right user-header-dropdown" aria-labelledby="dLabel">
-            <li role="editProfile">
-              <a role="menuitem" tabindex="-1" href="#">
-            		<i class="fa fa-pencil-square-o icon-dd" aria-hidden="true"></i> Edit profile
-            	</a>
-            </li>
-            <li role="accountSetting">
-              <a role="menuitem" tabindex="-1" href="#">
-            		<i class="fa fa-cog icon-dd" aria-hidden="true"></i> Account Settings
-            	</a>
-            </li>
-            <li role="bookmarks">
-              <a role="menuitem" tabindex="-1" href="#">
-            		<i class="fa fa-bookmark icon-dd" aria-hidden="true"></i> Bookmarks
-            	</a>
-            </li>
-            <li role="logOut">
-              <a role="menuitem" tabindex="-1" href="javascript:;" (click)="authService.logout()">
-					      <i class="fa fa-sign-out icon-dd" aria-hidden="true"></i> Log Out
-				    </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
+  </header>
+<div>
 <!-- Header ends here -->

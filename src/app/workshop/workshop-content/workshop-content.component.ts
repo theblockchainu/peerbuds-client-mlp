@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, forwardRef, ElementRef, Inject, EventEmitter
+        , HostBinding, HostListener, Output} from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 
@@ -31,6 +32,9 @@ export class WorkshopContentComponent implements OnInit {
   @Input()
   public calendar: any;
 
+  @Output()
+  days = new EventEmitter<any>();
+
   private options;
   constructor(
     public authenticationService: AuthenticationService,
@@ -54,6 +58,7 @@ export class WorkshopContentComponent implements OnInit {
   addItenary() {
     const itenaries = <FormArray>this.myForm.controls['itenary'];
     itenaries.push(this.initItenary());
+    this.days.emit(itenaries);
   }
 
   removeItenary(i: number) {
@@ -73,6 +78,7 @@ export class WorkshopContentComponent implements OnInit {
       deleteIndex++;
     }
     itenaries.removeAt(i);
+    this.days.emit(itenaries);
   }
 
   save(myForm: FormGroup) {
