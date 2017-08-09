@@ -1,0 +1,20 @@
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            <span *ngFor="let title of sidebarMenuItems">
+                <li [ngClass]="{'sidebar-brand' : true, 'disabled' : title.title == 'Review & Submit' && step != 14}" *ngIf="title.visible" >
+                    <a (click)=goto(title.step) [class.active]="title.step == step">{{title.title}}</a>
+                </li>
+                <span *ngFor="let submenu of title.submenu">
+                    <li class="childItem">
+                        <a *ngIf="submenu.visible" [style.pointer-events]= "title.title == 'Review & Submit' && step != 14 ? 'none' : 'visible'" (click)=goto(submenu.step) [class.active]="submenu.step == step">{{submenu.title}}</a>
+                    </li>
+                </span>
+            </span>
+        </ul>
+    </nav>
+    <!--<div id="page-content-wrapper">
+        <button type="button" class="hamburger is-closed" (click)="toggleMenu123()" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+                    <span class="hamb-bottom"></span>
+        </button>-->

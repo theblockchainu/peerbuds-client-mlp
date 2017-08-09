@@ -1,0 +1,98 @@
+[
+    {
+        "title" : "The Basics",
+        "active": true,
+        "step" : 1,
+        "submenu" : [
+            {
+                "title" : "Topics",
+                "step" : 2,
+                "active" : false,
+                "visible" : true  
+            }
+            ,{
+                "title" : "Language",
+                "step" : 3,
+                "active" : false ,
+                "visible" : true 
+            }
+            ,{
+                "title" : "About The Host",
+                "step" : 4,
+                "active" : false ,
+                "visible" : true 
+            }
+        ],
+        "visible" : true 
+    },
+    {
+        "title" : "Workshop Page",
+        "active": false,
+        "step" : 5,
+        "submenu" : [
+            {
+                "title" : "Title & Headline",
+                "step" : 6,
+                "active" : false,
+                "visible" : true  
+            }
+            ,{
+                "title" : "Description",
+                "step" : 7,
+                "active" : false,
+                "visible" : true  
+            }
+            ,{
+                "title" : "Requirements",
+                "step" : 8,
+                "active" : false,
+                "visible" : true  
+            }
+            ,{
+                "title" : "Seats",
+                "step" : 9,
+                "active" : false,
+                "visible" : true  
+            }
+            ,{
+                "title" : "Photos",
+                "step" : 10,
+                "active" : false,
+                "visible" : true  
+            }
+            ,{
+                "title" : "Price & Cancellation Policy",
+                "step" : 11,
+                "active" : false,
+                "visible" : true  
+            }
+        ],
+        "visible" : true 
+    },
+    {
+        "title" : "Workshop Iterinary",
+        "active": false,
+        "step" : 12,
+        "submenu" : [
+            {
+                "title" : "Select Dates",
+                "step" : 13,
+                "active" : false,
+                "visible" : true 
+            }],
+        "visible" : true 
+        
+    },
+    {
+        "title" : "Review & Submit",
+        "active": false,
+        "step" : 14,
+        "visible" : true
+    },
+    {
+        "title" : "Finishing Touches",
+        "active":false,
+        "step" : 15,
+        "visible" : false
+    }
+]

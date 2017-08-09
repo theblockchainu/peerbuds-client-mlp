@@ -6,6 +6,7 @@ import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsMod
 import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, CheckboxModule } from 'primeng/primeng';
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
+import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
 
 
 import { CollectionService } from '../_services/collection/collection.service';
@@ -16,6 +17,7 @@ import { RequestHeaderService } from '../_services/requestHeader/request-header.
 import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ContentService } from '../_services/content/content.service';
+import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
 
 @NgModule({
   imports: [
@@ -36,7 +38,8 @@ import { ContentService } from '../_services/content/content.service';
     RequestHeaderService,
     MediaUploaderService,
     CookieUtilsService,
-    ContentService
+    ContentService,
+    LeftSidebarService
   ],
   exports: [
     CommonModule,
@@ -53,7 +56,8 @@ import { ContentService } from '../_services/content/content.service';
     CalendarModule,
     CheckboxModule,
     MultiselectAutocompleteModule,
-    SocialSyncModule
+    SocialSyncModule,
+    LeftSidebarModule
   ]
 })
 export class SharedModule { }
