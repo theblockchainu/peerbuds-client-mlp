@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { AppConfig } from '../app.config';
 import { ProfileService } from '../_services/profile/profile.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +24,7 @@ export class ProfileComponent implements OnInit {
   public defaultProfileUrl = '/assets/images/default-user.jpg';
   public defaultImageUrl = 'http://lorempixel.com/350/250/city/9';
   public calendars: any = [];
+  public showHideSession = true;
 
   constructor(private config: AppConfig, public profileService: ProfileService) { }
 
@@ -65,6 +67,12 @@ export class ProfileComponent implements OnInit {
             this.rate += review.score;
           });
         }
+
+        // if (collection.calendars && collection.calendars.length) {
+        //   collection.calendars.forEach(calendar => {
+        //     collection.contents.scheduleDate = collection.startDate;
+        //   });
+        // }
 
         // store owned collection into separate array
         if (collection.type === 'session') {

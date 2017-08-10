@@ -185,7 +185,7 @@
                   <p class="text-grey lh-24 margin-bottom-20">{{ experience.description != '' ? experience.description : 'No Description' }}</p>
                 </div>
                 <div class="sidebar-details">
-                  <button class="btn btn-success btn-book" (click)="seeDatesModal.show()">See dates</button>
+                  <button class="btn btn-success btn-book" (click)="seeDatesExperienceModal.show()">See dates</button>
                 </div>
               </tab>
               <tab heading="Workshop" [hidden]="!workshops">
@@ -195,7 +195,7 @@
                   <p class="text-grey lh-24 margin-bottom-20">{{ workshop.description != '' ? workshop.description : 'No Description' }}</p>
                 </div>
                 <div class="sidebar-details">
-                  <button class="btn btn-success btn-book" (click)="seeDatesModal.show()">See dates</button>
+                  <button class="btn btn-success btn-book" (click)="seeDatesWorkshopModal.show()">See dates</button>
                 </div>
               </tab>
             </tabset>
@@ -207,7 +207,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-10 col-sm-offset-1">
+      <div class="col-sm-10 col-sm-offset-1" [hidden]="!(peer.collections).length">
         <div class="row full-section">
           <div class="col-sm-12">
             <h3 class="margin-bottom-20">
@@ -358,10 +358,9 @@
 </div>-->
 
     <!-- book session modal start -->
-    <div class="modal fade" bsModal #bookSessionModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+    <div class="modal fade" bsModal #bookSessionModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
       aria-labelledby="bookSessionModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-        <!--<perfect-scrollbar [config]="PsConfig" [scrollIndicators]="true">-->
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" aria-label="Close" (click)="bookSessionModal.hide()">&times;</button>
@@ -394,12 +393,12 @@
               <div class="seperate-section">
                 <div class="fs-20 margin-bottom-20">What topic you want to learn?</div>
                 <select class="form-control" name="topic">
-                        <option value="Science">Science</option>
-                        <option value="Academic">Academic</option>
-                        <option value="Design">Design</option>
-                        <option value="Gaming">Gaming</option>
-                        <option value="Marketing">Marketing</option>
-                    </select>
+                    <option value="Science">Science</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Design">Design</option>
+                    <option value="Gaming">Gaming</option>
+                    <option value="Marketing">Marketing</option>
+                </select>
               </div>
               <div class="margin-top-30">
                 <div class="fs-20 margin-bottom-20">Notes for teacher</div>
@@ -411,17 +410,15 @@
             <button type="button" class="btn btn-success btn-continue" (click)="bookSessionModal.hide(); bookSessionJoinModal.show()">Continue</button>
           </div>
         </div>
-        <!--</perfect-scrollbar>-->
       </div>
     </div>
     <!-- book session modal end -->
 
     <!-- book session join modal start -->
-    <div class="modal fade" bsModal #bookSessionJoinModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+    <div class="modal fade" bsModal #bookSessionJoinModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
       aria-labelledby="bookSessionJoinModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <!--<perfect-scrollbar [config]="config">-->
           <div class="modal-body">
             <!--<div class="slider-section">
               <div class="session-slider-wrapper">
@@ -456,75 +453,48 @@
             </div>-->
             <div class="position-relative">
               <button type="button" class="close" aria-label="Close" (click)="bookSessionJoinModal.hide()">&times;</button>
-              <div class="session-join-thumb"></div>
               <div class="session-join-content">
-                <h3>Sessions</h3>
-                <div class="seperate-section">
-                  <button class="btn btn-default session-join-btn">Join</button>
-                  <span class="display-inline-block margin-bottom-5">Session 1</span>
-                  <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
-                  <div class="session-list-box" *ngIf="showHideSession">
-                    <div class="session-list">
-                      <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
-                      <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
-                      <span class="display-inline-block">10.00 - 16.00</span>
-                    </div>
-                    <div class="session-list">
-                      <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
-                      <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
-                      <span class="display-inline-block">10.00 - 16.00</span>
+                <h3 class="session-head">When can you attend?</h3>
+                <div class="seperate-section" *ngFor="let session of sessions">
+                  <div *ngFor="let calendar of session.calendars">
+                    <button class="btn btn-success session-join-btn">Choose Dates</button>
+                    <div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
+                    <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="toggleSession(1);">View schedule</a>
+                    <div class="session-list-box">
+                      <div class="session-list" *ngFor="let content of session.contents">
+                        <span class="display-inline-block margin-bottom-10">{{ calendar.startDate | date: 'EEE, MMM dd' }}</span><br>
+                        <span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
+                      </div>
                     </div>
                   </div>
-                  <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(1);">{{showHideSession ? "Hide schedule" : "Show schedule"}}
-                            <i class="fa fa-angle-up" *ngIf="showHideSession"></i>
-                            <i class="fa fa-angle-down" *ngIf="!showHideSession"></i>
-                        </a>
-                </div>
-                <div class="seperate-section">
-                  <button class="btn btn-default session-join-btn">Join</button>
-                  <span class="display-inline-block margin-bottom-5">Session 2</span>
-                  <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
-                  <div class="session-list-box" *ngIf="showHideSession2">
-                    <div class="session-list">
-                      <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
-                      <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
-                      <span class="display-inline-block">10.00 - 16.00</span>
-                    </div>
-                  </div>
-                  <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(2);">{{showHideSession2 ? "Hide schedule" : "Show schedule"}}
-                            <i class="fa fa-angle-up" *ngIf="showHideSession2"></i>
-                            <i class="fa fa-angle-down" *ngIf="!showHideSession2"></i>
-                        </a>
                 </div>
               </div>
             </div>
           </div>
-          <!--</perfect-scrollbar>-->
         </div>
       </div>
     </div>
     <!-- book session join modal end -->
 
-    <!-- see dates modal start -->
-    <div class="modal fade" bsModal #seeDatesModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="seeDatesModalModalLabel"
+    <!-- see dates workshop modal start -->
+    <div class="modal fade" bsModal #seeDatesWorkshopModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog" aria-labelledby="seeDatesModalModalLabel"
       aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
             <div class="position-relative">
-              <button type="button" class="close" aria-label="Close" (click)="seeDatesModal.hide()">&times;</button>
+              <button type="button" class="close" aria-label="Close" (click)="seeDatesWorkshopModal.hide()">&times;</button>
               <div class="session-join-content">
                 <h3 class="session-head">When can you attend?</h3>
                 <div class="seperate-section" *ngFor="let workshop of workshops">
                   <div *ngFor="let calendar of workshop.calendars">
                     <button class="btn btn-success session-join-btn">Choose Dates</button>
-                    <div class="fs-18 margin-bottom-20">{{ calendar.startDate }} - {{ calendar.endDate }}</div>
-                    <!--<div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>-->
-                    <a class="display-inline-block margin-bottom-10" href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(1);">View schedule</a>
+                    <div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
+                    <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="toggleSession(1);">View schedule</a>
                     <div class="session-list-box">
                       <div class="session-list" *ngFor="let content of workshop.contents">
-                        <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
-                        <span class="display-inline-block">{{ content.schedules[0].startTime }} - {{ content.schedules[0].endTime }}</span>
+                        <span class="display-inline-block margin-bottom-10">{{ calendar.startDate | date: 'EEE, MMM dd' }}</span><br>
+                        <span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
                       </div>
                     </div>
                   </div>
@@ -551,10 +521,41 @@
         </div>
       </div>
     </div>
-    <!-- see dates modal end -->
+    <!-- see dates workshop modal end -->
+
+    <!-- see dates experience modal start -->
+    <div class="modal fade" bsModal #seeDatesExperienceModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog" aria-labelledby="seeDatesModalModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="position-relative">
+              <button type="button" class="close" aria-label="Close" (click)="seeDatesExperienceModal.hide()">&times;</button>
+              <div class="session-join-content">
+                <h3 class="session-head">When can you attend?</h3>
+                <div class="seperate-section" *ngFor="let experience of experiences">
+                  <div *ngFor="let calendar of experience.calendars">
+                    <button class="btn btn-success session-join-btn">Choose Dates</button>
+                    <div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
+                    <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="toggleSession(1);">View schedule</a>
+                    <div class="session-list-box">
+                      <div class="session-list" *ngFor="let content of experience.contents">
+                        <span class="display-inline-block margin-bottom-10">{{ calendar.startDate | date: 'EEE, MMM dd' }}</span><br>
+                        <span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- see dates experience modal end -->
 
     <!-- edit session modal start -->
-    <div class="modal fade" bsModal #editSessionModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+    <div class="modal fade" bsModal #editSessionModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
       aria-labelledby="editSessionModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
