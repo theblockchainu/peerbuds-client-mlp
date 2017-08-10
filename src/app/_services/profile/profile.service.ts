@@ -34,6 +34,19 @@ export class ProfileService {
     return this.userId;
   }
 
+  public getPeer() {
+    const peer = {};
+    if (this.userId) {
+      const options = `{"where": "","order": "","limit": "",
+      "include": ["profiles", "topicsLearning","topicsTeaching",
+      {"collections":{"reviews": {"peer": "profiles"}}},
+      {"ownedCollections":[{"reviews":{"peer":"profiles"}},
+      "calendars",{"contents":"schedules"}]},"communities","identities"]}`;
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
+        .map((response: Response) => response.json());
+    }
+  }
+
   public getProfile() {
     const profile = {};
     if (this.userId) {

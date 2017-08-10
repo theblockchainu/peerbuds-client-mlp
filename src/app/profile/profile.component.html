@@ -3,11 +3,12 @@
     <div class="row">
       <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
         <div class="profile-image-big">
-          <img src="{{profile.picture_url}}" alt="image" />
+          <img [src]="(peer.profiles[0].picture_url != undefined) ? peer.profiles[0].picture_url : defaultProfileUrl" alt="image" class="border-radius-2"
+          />
         </div>
         <div class="seperate-section text-center">
-          <div class="title dot-dot">{{profile.first_name}} {{profile.last_name}}</div>
-          <div class="sub-title dot-dot">{{profile.headline}}</div>
+          <div class="title dot-dot">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
+          <div class="sub-title dot-dot">{{peer.profiles[0].headline}}</div>
           <div class="margin-top-10">
             <button class="btn btn-default" title="Message">Message</button>
             <span class="online-status online margin-left-15" title="Online"></span>
@@ -18,13 +19,13 @@
           <div class="text-center fs-20 text-grey margin-top-15">3.045k</div>
         </div>
         <div class="seperate-section fs-14">
-          <div class="text-grey margin-bottom-10"><i class="fa fa-microphone margin-right-10"></i> {{profile.languages}}</div>
-          <div class="text-grey"><i class="fa fa-map-marker margin-right-10"></i> {{profile.location}}</div>
+          <div class="text-grey margin-bottom-10"><i class="fa fa-microphone margin-right-10"></i> {{peer.profiles[0].languages}}</div>
+          <div class="text-grey"><i class="fa fa-map-marker margin-right-10"></i> {{peer.profiles[0].location}}</div>
         </div>
         <div class="seperate-section">
           <div class="fs-18 fw-bold margin-bottom-20">Social Profiles</div>
           <div class="social-profiles">
-            <a class="social-icons" href="{{social.profile._json.url}}" target="_blank" *ngFor="let social of socialProfile" title="{{social.profile._json.url}}">
+            <a class="social-icons" href="{{social.profile._json.url}}" target="_blank" *ngFor="let social of peer.identities" title="{{social.profile._json.url}}">
               <i *ngIf="social.provider=='google'" class="fa fa-google-plus"></i>
               <i *ngIf="social.provider=='facebook'" class="fa fa-facebook"></i>
               <i *ngIf="social.provider=='behance'" class="fa fa-behance"></i>
@@ -36,7 +37,7 @@
         <div class="seperate-section">
           <div class="fs-18 fw-bold margin-bottom-20">Interest</div>
           <div class="interest">
-            <span *ngFor="let topic of interestTopics">{{topic.name}}</span>
+            <span *ngFor="let topic of peer.topicsTeaching">{{ topic.name }}</span>
             <a href="javascript:;" class="more">+more</a>
           </div>
         </div>
@@ -45,7 +46,7 @@
       <div class="col-sm-5">
         <div class="seperate-section padding-top-0">
           <h3 class="heading">About me</h3>
-          <p class="text-grey lh-28 margin-bottom-0">{{profile.description}}</p>
+          <p class="text-grey lh-28 margin-bottom-0">{{peer.profiles[0].description}}</p>
         </div>
         <div class="seperate-section">
           <h3 class="heading">What I teach</h3>
@@ -97,9 +98,9 @@
             </div>
             <span>From Learners</span>
           </div>
-          <div class="review-section" *ngFor="let review of allReviews">
-            <img src="http://lorempixel.com/62/62/people/1" class="review-thumb thumb-circle" />
-            <div class="review-title">{{ review.reviewer.username }}</div>
+          <div class="review-section" *ngFor="let review of reviews">
+            <img src="{{review.reviewer.picture_url}}" class="review-thumb thumb-circle" />
+            <div class="review-title">{{ review.reviewer.first_name }}</div>
             <div class="review-content">
               <div class="review-desc">{{ review.description }}</div>
               <div class="review-bottom">
@@ -151,7 +152,7 @@
         <div class="sidebar-right">
           <div class="sidebar-box">
             <tabset>
-              <tab heading="Session" customClass="sidebar-tabs">
+              <tab heading="Session" customClass="sidebar-tabs" [hidden]="!sessions">
                 <div class="sidebar-section margin-top-30">
                   <div class="display-inline-block">
                     <div class="heading">Trial</div>
@@ -177,28 +178,24 @@
                   <button class="btn btn-success btn-book" (click)="bookSessionModal.show()">Book</button>
                 </div>
               </tab>
-              <tab heading="Experience">
-                <div class="sidebar-section margin-top-30">
+              <tab heading="Experience" [hidden]="!experiences">
+                <div class="sidebar-section margin-top-30" *ngFor="let experience of experiences">
                   <img class="img-responsive" src="http://lorempixel.com/350/250/city/9">
-                  <div class="text-black margin-bottom-10 margin-top-15 fw-bold">Lightening in photography</div>
-                  <p class="text-grey lh-24">Now is your chance to create your own master template in reason. And not just any template btw, your grand
-                    master <a href="javascript:;" class="read-more">...read more</a></p>
+                  <div class="text-black margin-bottom-10 margin-top-15 fw-bold">{{ experience.title != '' ? experience.title : 'No Title' }}</div>
+                  <p class="text-grey lh-24 margin-bottom-20">{{ experience.description != '' ? experience.description : 'No Description' }}</p>
                 </div>
                 <div class="sidebar-details">
-                  <button class="btn btn-success btn-book">See dates</button>
+                  <button class="btn btn-success btn-book" (click)="seeDatesModal.show()">See dates</button>
                 </div>
               </tab>
-              <tab heading="Workshop">
-                <div class="sidebar-section margin-top-30">
-                  <div class="sidebar-section margin-top-30">
-                    <img class="img-responsive" src="http://lorempixel.com/350/250/city/9" title="image">
-                    <div class="text-black margin-bottom-10 margin-top-15 fw-bold">Lightening in photography</div>
-                    <p class="text-grey lh-24">Now is your chance to create your own master template in reason. And not just any template btw, your
-                      grand master <a href="javascript:;" class="read-more">...read more</a></p>
-                  </div>
-                  <div class="sidebar-details">
-                    <button class="btn btn-success btn-book">See dates</button>
-                  </div>
+              <tab heading="Workshop" [hidden]="!workshops">
+                <div class="sidebar-section margin-top-30" *ngFor="let workshop of workshops">
+                  <img class="img-responsive" src="http://lorempixel.com/350/250/city/9" title="image">
+                  <div class="text-black margin-bottom-10 margin-top-15 fw-bold">{{ workshop.title != '' ? workshop.title : 'No Title' }}</div>
+                  <p class="text-grey lh-24 margin-bottom-20">{{ workshop.description != '' ? workshop.description : 'No Description' }}</p>
+                </div>
+                <div class="sidebar-details">
+                  <button class="btn btn-success btn-book" (click)="seeDatesModal.show()">See dates</button>
                 </div>
               </tab>
             </tabset>
@@ -217,25 +214,28 @@
               Learning Journey
               <div class="pull-right">
                 <select class="form-control section-dropdown">
-                <option value="Workshop">Workshop</option>
-                <option value="Experience">Experience</option>
-            </select>
+                  <option value="Workshop">Workshop</option>
+                  <option value="Experience">Experience</option>
+                </select>
                 <a href="#" class="fs-13 text-grey">See all</a>
               </div>
             </h3>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-3" *ngFor="let joinedCollection of peer.collections">
             <div class="full-section-list">
               <img src="http://lorempixel.com/250/250/business/1/" alt="image" class="section-image img-responsive border-radius-5" />
-              <div class="section-head dot-dot">How to make home made pasta</div>
-              <div class="section-des"><strong>$12</strong> Lorem ipsum dolor sit amit. Lorem ipsum dolor sit amit. Lorem... <a href="javascript:;"
-                  class="text-black">see details</a></div>
+              <div class="section-head dot-dot">{{ joinedCollection.title }}</div>
+              <div class="section-des"><strong>{{ joinedCollection.currency }} {{ joinedCollection.price }}</strong> {{ joinedCollection.description
+                }}
+                <a href="javascript:;" class="text-black" [hidden]="(joinedCollection.description).length <= 127">...see details</a>
+              </div>
               <div class="section-rating">
-                <span>307 reviews</span>
+                <rating [(ngModel)]="joinedCollection.rate" [readonly]="isReadonly" class="margin-right-10" style="margin-left:0;"></rating>
+                <span>{{ joinedCollection.reviews.length }} reviews</span>
               </div>
             </div>
           </div>
-          <div class="col-sm-3">
+          <!--<div class="col-sm-3">
             <div class="full-section-list">
               <img src="http://lorempixel.com/250/250/business/2/" alt="image" class="section-image img-responsive border-radius-5" />
               <div class="section-head dot-dot">How to make home made pasta</div>
@@ -267,7 +267,7 @@
                 <span>307 reviews</span>
               </div>
             </div>
-          </div>
+          </div>-->
         </div>
         <!-- learning journey row ends -->
 
@@ -415,6 +415,7 @@
       </div>
     </div>
     <!-- book session modal end -->
+
     <!-- book session join modal start -->
     <div class="modal fade" bsModal #bookSessionJoinModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
       aria-labelledby="bookSessionJoinModalLabel" aria-hidden="true">
@@ -422,7 +423,7 @@
         <div class="modal-content">
           <!--<perfect-scrollbar [config]="config">-->
           <div class="modal-body">
-            <div class="slider-section">
+            <!--<div class="slider-section">
               <div class="session-slider-wrapper">
                 <div class="session-slider">
                   <div class="slides">
@@ -452,8 +453,8 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="position-relative" style="top:270px;">
+            </div>-->
+            <div class="position-relative">
               <button type="button" class="close" aria-label="Close" (click)="bookSessionJoinModal.hide()">&times;</button>
               <div class="session-join-thumb"></div>
               <div class="session-join-content">
@@ -503,6 +504,55 @@
       </div>
     </div>
     <!-- book session join modal end -->
+
+    <!-- see dates modal start -->
+    <div class="modal fade" bsModal #seeDatesModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="seeDatesModalModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="position-relative">
+              <button type="button" class="close" aria-label="Close" (click)="seeDatesModal.hide()">&times;</button>
+              <div class="session-join-content">
+                <h3 class="session-head">When can you attend?</h3>
+                <div class="seperate-section" *ngFor="let workshop of workshops">
+                  <div *ngFor="let calendar of workshop.calendars">
+                    <button class="btn btn-success session-join-btn">Choose Dates</button>
+                    <div class="fs-18 margin-bottom-20">{{ calendar.startDate }} - {{ calendar.endDate }}</div>
+                    <!--<div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>-->
+                    <a class="display-inline-block margin-bottom-10" href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(1);">View schedule</a>
+                    <div class="session-list-box">
+                      <div class="session-list" *ngFor="let content of workshop.contents">
+                        <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+                        <span class="display-inline-block">{{ content.schedules[0].startTime }} - {{ content.schedules[0].endTime }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--<div class="seperate-section">
+                  <button class="btn btn-success session-join-btn">Choose Dates</button>
+                  <span class="display-inline-block margin-bottom-5">Session 2</span>
+                  <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
+                  <div class="session-list-box" *ngIf="showHideSession2">
+                    <div class="session-list">
+                      <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
+                      <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+                      <span class="display-inline-block">10.00 - 16.00</span>
+                    </div>
+                  </div>
+                  <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(2);">{{showHideSession2 ? "Hide schedule" : "Show schedule"}}
+                      <i class="fa fa-angle-up" *ngIf="showHideSession2"></i>
+                      <i class="fa fa-angle-down" *ngIf="!showHideSession2"></i>
+                  </a>
+                </div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- see dates modal end -->
+
     <!-- edit session modal start -->
     <div class="modal fade" bsModal #editSessionModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
       aria-labelledby="editSessionModalLabel" aria-hidden="true">

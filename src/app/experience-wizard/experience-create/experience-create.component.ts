@@ -340,20 +340,18 @@ export class ExperienceCreateComponent implements OnInit {
    * createExperience
    */
   public createExperience() {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
-    var body = {
-      "type": "experience"
-    };
-    this.http.post(this.config.apiUrl + '/api/peers/' + this.userId + '/collections', body, options)
-      .map((response: Response) => {
-        this.experienceId = response.json().id;
-      })
-      .subscribe();
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  const options = new RequestOptions({ headers: headers, withCredentials: true });
+  const body = {
+    'type': 'experience'
+  };
+  this._collectionService.postCollection('experience').subscribe((experienceObject) => {
+    this.router.navigate(['create-experience', experienceObject.id, 0]);
+  });
 
-  }
+}
 
   public submitExperience(data) {
     var body = data.value;

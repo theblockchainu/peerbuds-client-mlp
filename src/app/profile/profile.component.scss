@@ -426,8 +426,12 @@ textarea{
 }
 .session-join-content{
     &{
-        padding-left:90px;
         font-family: "ProximaNovaRegular";
+    }
+    .session-head{
+        margin-bottom:0;
+        padding-bottom:15px;
+        border-bottom:1px solid #ccc;
     }
     .session-list{
         font-size:0.8125em;
@@ -439,7 +443,7 @@ textarea{
 }
 .session-join-btn{
     position:absolute;
-    right:10%;
+    right:0;
     padding:10px 30px;
 }
 .edit-session-content{
