@@ -17,6 +17,9 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
+import 'hammerjs';
 
 
 @NgModule({
@@ -37,7 +40,13 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
     ExperienceWizardModule,
     OnboardingModule,
     VerificationModule,
-    ProfileModule
+    ProfileModule,
+    BrowserAnimationsModule,
+    MdCardModule,
+    MdButtonModule,
+    MdMenuModule,
+    MdToolbarModule,
+    MdIconModule
   ],
   bootstrap: [AppComponent]
 })

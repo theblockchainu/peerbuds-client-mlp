@@ -53,26 +53,13 @@ export class CollectionService {
     }
   }
 
-  public getCollections(options: any, cb) {
-    const collections = [];
-    const type = options.type;
+  public getOwnedCollections(options: any, cb) {
     if (this.userId) {
       this.http
-        .get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections')
-        .map((response: Response) => {
-          const responseObj = response.json();
+        .get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections?' + 'filter=' + options)
+        .map((response) => {
           console.log(response.json());
-          responseObj.forEach((res) => {
-            this.http.get(this.config.apiUrl + '/api/collections/' + res.id + '/calendar')
-              .map((calendarData: Response) => {
-                const calendar = calendarData.json();
-                if (res.type === type) {
-                  collections.push(res);
-                }
-              }).subscribe();
-
-          });
-          cb(null, collections);
+          cb(null, response.json());
         }, (err) => {
           cb(err);
         }).subscribe();

@@ -171,10 +171,8 @@ input {
 	}
 }
 .header-search-box{
-	float:left;
-	position:relative;
-	margin-left:20px;
-	width:calc(100% - 75px );
+	flex: 1 1 auto;
+  margin-left: 30px;
 
 	.header-search{
 		border-radius: 0;
@@ -187,17 +185,6 @@ input {
 			outline:none;
 			box-shadow: none;
 		}
-	}
-	&:before{
-		display:inline-block;
-		position:absolute;
-		content:"";
-		top:12px;
-		left:10px;
-		width:20px;
-		height:20px;
-		background:url("assets/images/search.svg") no-repeat scroll 0 0 / 20px ;
-		z-index: 10;
 	}
 }
 .notificationContainerLI.unread::before {
@@ -234,11 +221,13 @@ input {
 }
 .circle-thumb{
 	@include thumb(34);
-	border-radius: 50%;
-	background-color: #fff;
-	position:relative;
-	top:-7px;
-	right:10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #eee;
+  margin-left: -9px;
+  display: inline-block;
+  border: 3px solid #ffffff;
 }
 
 /* user header dropdown */
