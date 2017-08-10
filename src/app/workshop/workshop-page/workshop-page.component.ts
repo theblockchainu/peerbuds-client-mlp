@@ -105,7 +105,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   gotoEdit() {
-    this.router.navigate(['editWorkshop', this.workshopId, 0]);
+    this.router.navigate(['editWorkshop', this.workshopId, 1]);
   }
 
   public parseCalendar(workshop: any) {
@@ -123,7 +123,7 @@ export class WorkshopPageComponent implements OnInit {
    * changeDates
    */
   public changeDates() {
-    this.router.navigate(['editWorkshop', this.workshopId, 12]);
+    this.router.navigate(['editWorkshop', this.workshopId, 13]);
   }
   /**
    * joinGroupChat

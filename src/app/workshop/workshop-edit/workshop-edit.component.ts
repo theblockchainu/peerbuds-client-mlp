@@ -332,7 +332,6 @@ export class WorkshopEditComponent implements OnInit {
     this.http.get(this.config.searchUrl + '/api/search/topics')
       .map((response: any) => {
         this.suggestedTopics = response.slice(0, 10);
-
       }).subscribe();
 
     this.profileImagePending = true;
