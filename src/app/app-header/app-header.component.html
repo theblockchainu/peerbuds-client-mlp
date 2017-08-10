@@ -152,10 +152,10 @@
                   <i class="fa fa-bookmark icon-dd" aria-hidden="true"></i> Bookmarks
                 </a>
               </li>
-              <li role="logOut">
-                <a role="menuitem" tabindex="-1" href="javascript:;" (click)="authService.logout()">
+              <li role="logout">
+                <a role="menuitem" tabindex="-1" *ngIf="(isLoggedIn | async)" (click)="authService.logout()">
                   <i class="fa fa-sign-out icon-dd" aria-hidden="true"></i> Log Out
-              </a>
+                </a>
               </li>
             </ul>
           </li>

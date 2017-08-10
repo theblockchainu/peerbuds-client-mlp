@@ -26,9 +26,10 @@ import _ from 'lodash';
     styleUrls: [ './multiselect-autocomplete.component.scss' ],
     templateUrl: './multiselect-autocomplete.component.html'
 })
-export class MultiselectAutocomplete {
+export class MultiselectAutocomplete { //implements ControlValueAccessor
   public query = '';
   public selected = [];
+  public removed = [];
   public filteredList = [];
   public elementRef;
   private options;
@@ -56,15 +57,39 @@ export class MultiselectAutocomplete {
   @Input('title')
   private title:string =  '';
 
+  @Input('preSelectedTopics')
+  private preselectedTopics:any = [];
+
+  @Input('maxSelection')
+  private maxSelection: number = -1;
+
   @Output()
   selectedOutput = new EventEmitter<any>();
+
+  @Output()
+  removedOutput = new EventEmitter<any>();
+
+
+  // writeValue(value: any) {
+  //   if (value !== undefined) {
+  //     this.selected = value;
+  //   }
+  // }
+  
+  // propagateChange = (_: any) => {};
+
+  // registerOnChange(fn) {
+  //   this.propagateChange = fn;
+  // }
+
+  // registerOnTouched() {}
+
 
   constructor(myElement: ElementRef,
               private http: Http,
               public requestHeaderService: RequestHeaderService) {
       this.elementRef = myElement;
       this.options = requestHeaderService.getOptions(); 
-      console.log(this.title);
       this.placeholderString = this.title;
   }
 
@@ -105,6 +130,9 @@ export class MultiselectAutocomplete {
                       let obj = {};
                       obj['id'] = item.id;
                       obj['name'] = item.name;
+                      obj['type'] = item.type;
+                      obj['createdAt'] = item.createdAt;
+                      obj['updatedAt'] = item.updatedAt;
                       this.filteredList.push(obj);
                     });
                     // if(this.filteredList.length === 0 && this.canCreate)
@@ -129,16 +157,28 @@ export class MultiselectAutocomplete {
   }
 
   private select(item) {
+    debugger;
+    if(this.selected.length >= this.maxSelection && this.maxSelection != -1)
+    {
+      this.query = '';
+      this.filteredList = [];
+      return;
+    }
+    if(this.preselectedTopics.length != 0){
+      _.union(this.preselectedTopics, this.selected);
+    }
     this.selected.push(item);
     this.selectedOutput.emit(this.selected);
-    console.log(this.selected);
     this.query = '';
     this.filteredList = [];
   }
 
   private remove(item) {
+    debugger;
     this.selected.splice( this.selected.indexOf(item), 1);
+    this.removed.push(item);
     this.selectedOutput.emit(this.selected);
+    this.removedOutput.emit(this.removed);
   }
 
 }
