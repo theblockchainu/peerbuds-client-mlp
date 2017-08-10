@@ -589,7 +589,6 @@ export class WorkshopEditComponent implements OnInit {
             'type': 'user'
           };
     let topic;
-    debugger;
     this.http.post(this.config.apiUrl + '/api/topics', body)
               .map((res) => 
               {

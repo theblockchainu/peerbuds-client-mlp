@@ -33,7 +33,6 @@ export class AuthService {
   }
 
   logout(): void {
-    debugger;
     this.isLoggedIn = false;
   }
 }

@@ -157,7 +157,6 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   }
 
   private select(item) {
-    debugger;
     if(this.selected.length >= this.maxSelection && this.maxSelection != -1)
     {
       this.query = '';
@@ -174,7 +173,6 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   }
 
   private remove(item) {
-    debugger;
     this.selected.splice( this.selected.indexOf(item), 1);
     this.removed.push(item);
     this.selectedOutput.emit(this.selected);
