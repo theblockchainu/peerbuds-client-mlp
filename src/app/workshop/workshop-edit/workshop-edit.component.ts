@@ -1,26 +1,28 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-
-import { AuthenticationService } from '../../_services/authentication/authentication.service';
-import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
-import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
-import { CollectionService } from '../../_services/collection/collection.service';
-import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
-import { StepEnum } from '../StepEnum';
-
 import {
   URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import { AppConfig } from '../../app.config';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
+
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+
+
+import { StepEnum } from '../StepEnum';
+import { AppConfig } from '../../app.config';
+
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 
 import { SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
@@ -33,7 +35,7 @@ import _ from 'lodash';
 })
 
 export class WorkshopEditComponent implements OnInit {
-  public sidebarFilePath:string = 'assets/menu/workshop-static-left-sidebar-menu.json';
+  public sidebarFilePath = 'assets/menu/workshop-static-left-sidebar-menu.json';
   sidebarMenuItems;
 
   public interest1: FormGroup;
@@ -55,7 +57,7 @@ export class WorkshopEditComponent implements OnInit {
   public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
   public createTopicURL = 'http://localhost:3000/api/topics';
   public placeholderStringTopic = 'Search for a topic ';
-  public maxTopicMsg = "Choose max 3 related topics";
+  public maxTopicMsg = 'Choose max 3 related topics';
 
 
   public difficulties = [];
@@ -102,7 +104,7 @@ export class WorkshopEditComponent implements OnInit {
       this.step = params['step'];
     });
     this.userId = cookieUtilsService.getValue('userId');
-    this.options = requestHeaderService.getOptions(); 
+    this.options = requestHeaderService.getOptions();
   }
 
   public ngOnInit() {
@@ -112,7 +114,7 @@ export class WorkshopEditComponent implements OnInit {
 
     this.newTopic = this._fb.group({
       topicName: ['', Validators.requiredTrue]
-    })
+    });
 
     this.workshop = this._fb.group({
       // id: '',
@@ -330,7 +332,6 @@ export class WorkshopEditComponent implements OnInit {
     this.http.get(this.config.searchUrl + '/api/search/topics')
       .map((response: any) => {
         this.suggestedTopics = response.slice(0, 10);
-        
       }).subscribe();
 
     this.profileImagePending = true;
@@ -352,9 +353,9 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public selected(event) {
-    debugger;
-    if(this.interests.length >= 3) {
-      this.maxTopicMsg = "You can't select more than 3 topics. Please delete any existing one and then try to add.";
+
+    if (this.interests.length >= 3) {
+      this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
     }
     this.interests = event;
     this.suggestedTopics = event;
@@ -365,10 +366,9 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public removed(event) {
-    debugger;
-    if(this.removedInterests.length != 0)
-    {
-      let topicArray = [];
+
+    if (this.removedInterests.length !== 0) {
+      const topicArray = [];
       this.removedInterests.forEach((topic) => {
         /* this.http.put(this.config.apiUrl +  '/api/peers/'
             + this.userId + '/topics/rel/' + topic.id)
@@ -376,8 +376,8 @@ export class WorkshopEditComponent implements OnInit {
         topicArray.push(topic.id);
       });
       if (topicArray.length !== 0) {
-        this.http.delete(this.config.apiUrl +  '/api/peers/' + this.userId+ '/topics/rel/' + topicArray, this.options)
-                  .map((response) => { console.log(response);}).subscribe();
+        this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topics/rel/' + topicArray, this.options)
+          .map((response) => { console.log(response); }).subscribe();
       }
     }
   }
@@ -385,17 +385,18 @@ export class WorkshopEditComponent implements OnInit {
   public daysCollection(event) {
     this.days = event;
     this.sidebarMenuItems[2]['submenu'] = [];
-    this.days.controls.forEach(function(item, index) {
-      let index2 = +index + 1;
-      this.sidebarMenuItems[2]['submenu'].push({"title": "Day " + index2,
-                                                "step" : 13+ '_'+ index2,
-                                                "active" : false,
-                                                "visible" : true
-                                                });
+    this.days.controls.forEach(function (item, index) {
+      const index2 = +index + 1;
+      this.sidebarMenuItems[2]['submenu'].push({
+        'title': 'Day ' + index2,
+        'step': 13 + '_' + index2,
+        'active': false,
+        'visible': true
+      });
     }, this);
-    }
+  }
 
-  
+
 
   public getMenuArray(event) {
     this.sidebarMenuItems = event;
@@ -435,13 +436,16 @@ export class WorkshopEditComponent implements OnInit {
     const control = <FormArray>this.workshop.controls['imageUrls'];
     this.workshopImage1Pending = false;
     control.push(new FormControl(value));
+    console.log(this.workshop.controls['imageUrls'].value);
   }
 
   uploadVideo(event) {
     console.log(event.files);
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.workshop.controls['videoUrl'].setValue(responseObj.url);
+        this.workshop.controls['videoUrl'].setValue(this.config.apiUrl + responseObj.url);
+        console.log(this.workshop.controls['videoUrl'].value);
+
         this.workshopVideoPending = false;
       }).subscribe();
     }
@@ -452,7 +456,6 @@ export class WorkshopEditComponent implements OnInit {
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
         this.addUrl(responseObj.url);
-        this.workshopVideoPending = false;
       }).subscribe();
     }
     this.workshopImage1Pending = false;
@@ -520,22 +523,22 @@ export class WorkshopEditComponent implements OnInit {
 
   public submitInterests() {
     let body = {};
-    let topicArray = [];
+    const topicArray = [];
     this.interests.forEach((topic) => {
       /* this.http.put(this.config.apiUrl +  '/api/peers/'
           + this.userId + '/topics/rel/' + topic.id)
                 .map((response: Response) => {} ).subscribe();*/
       topicArray.push(topic.id);
-    }); 
+    });
     body = {
-      "targetIds" : topicArray
+      'targetIds': topicArray
     };
     if (topicArray.length !== 0) {
-      this.http.patch(this.config.apiUrl +  '/api/collections/' + this.workshopId+ '/topics/rel', body)
-                .map((response) => {
-                  this.step++;
-                  this.workshopStepUpdate();
-                  this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+      this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', body)
+        .map((response) => {
+          this.step++;
+          this.workshopStepUpdate();
+          this.router.navigate(['editWorkshop', this.workshopId, this.step]);
         }).subscribe();
     }
   }
@@ -583,22 +586,21 @@ export class WorkshopEditComponent implements OnInit {
     }
   }
 
-  AddNewTopic(data,modal) {
+  AddNewTopic(data, modal) {
     const body = {
-            'name' : data.value.topicName,
-            'type': 'user'
-          };
+      'name': data.value.topicName,
+      'type': 'user'
+    };
     let topic;
     this.http.post(this.config.apiUrl + '/api/topics', body)
-              .map((res) => 
-              {
-                topic = res;
-                topic.checked = true;
-                this.interests.push(topic);
-                this.suggestedTopics = _.union(this.suggestedTopics,this.interests);
-                modal.hide();
-              })
-              .subscribe();
+      .map((res) => {
+        topic = res;
+        topic.checked = true;
+        this.interests.push(topic);
+        this.suggestedTopics = _.union(this.suggestedTopics, this.interests);
+        modal.hide();
+      })
+      .subscribe();
   }
 
 }
