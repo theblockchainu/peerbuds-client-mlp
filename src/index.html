@@ -21,10 +21,17 @@
   <link rel="stylesheet" type="text/css" href="/assets/styles/themes/primeng.min.css" />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css' />
 
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js'></script>
+
+  <!-- emoji libs -->
+  <link href="/assets/lib/css/emoji.css" rel="stylesheet">
+  <!-- emoji end -->
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.2/web-animations.min.js"></script>
 </head>
 
@@ -33,21 +40,42 @@
   <script>
     if (window.location.hash && window.location.hash === "#_=_") {
       if (window.history && history.pushState) {
-          window.history.pushState("", document.title, window.location.pathname);
+        window.history.pushState("", document.title, window.location.pathname);
       } else {
-      // Prevent scrolling by storing the page's current scroll offset
-      var _scroll = {
+        // Prevent scrolling by storing the page's current scroll offset
+        var _scroll = {
           top: document.body.scrollTop,
           left: document.body.scrollLeft
-      };
-      window.location.hash = "";
-      // Restore the scroll offset, should be flicker free
-      document.body.scrollTop = _scroll.top;
-      document.body.scrollLeft = _scroll.left;
+        };
+        window.location.hash = "";
+        // Restore the scroll offset, should be flicker free
+        document.body.scrollTop = _scroll.top;
+        document.body.scrollLeft = _scroll.left;
       }
     }
   </script>
 
+  <!-- Begin emoji-picker JavaScript -->
+  <script src="/assets/lib/js/config.js"></script>
+  <script src="/assets/lib/js/util.js"></script>
+  <script src="/assets/lib/js/jquery.emojiarea.js"></script>
+  <script src="/assets/lib/js/emoji-picker.js"></script>
+  <!-- End emoji-picker JavaScript -->
+
+  <script>
+    $(function () {
+      // Initializes and creates emoji set from sprite sheet
+      window.emojiPicker = new EmojiPicker({
+        emojiable_selector: '[data-emojiable=true]',
+        assetsPath: '/assets/lib/img/',
+        popupButtonClasses: 'fa fa-smile-o'
+      });
+      // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+      // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+      // It can be called as many times as necessary; previously converted input fields will not be converted again
+      window.emojiPicker.discover();
+    });
+  </script>
   <!-- Google Analytics: change UA-71073175-1 to be your site's ID -->
   <script>
     (function (A, n, g, u, l, a, r) {

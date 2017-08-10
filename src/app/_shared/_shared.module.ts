@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule } from 'ngx-bootstrap';
-import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, CheckboxModule } from 'primeng/primeng';
+import { MdChipsModule } from '@angular/material';
+import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule, PopoverModule, } from 'ngx-bootstrap';
+import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, CheckboxModule, LightboxModule } from 'primeng/primeng';
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
@@ -27,7 +28,8 @@ import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.servi
     TabsModule.forRoot(),
     BsDropdownModule.forRoot(),
     FileUploadModule,
-    CommonModule
+    CommonModule,
+    PopoverModule.forRoot()
   ],
   declarations: [],
   providers: [
@@ -57,6 +59,9 @@ import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.servi
     CheckboxModule,
     MultiselectAutocompleteModule,
     SocialSyncModule,
+    PopoverModule,
+    LightboxModule,
+    MdChipsModule,
     LeftSidebarModule
   ]
 })
