@@ -1,26 +1,29 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-
-import { AuthenticationService } from '../../_services/authentication/authentication.service';
-import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
-import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
-import { CollectionService } from '../../_services/collection/collection.service';
-import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
-import { StepEnum } from '../StepEnum';
-
 import {
   URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import { AppConfig } from '../../app.config';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
+
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+
+
+import { StepEnum } from '../StepEnum';
+import { AppConfig } from '../../app.config';
+
+
 @Component({
   selector: 'app-workshop-edit',
   templateUrl: './workshop-edit.component.html',
@@ -367,13 +370,16 @@ export class WorkshopEditComponent implements OnInit {
     const control = <FormArray>this.workshop.controls['imageUrls'];
     this.workshopImage1Pending = false;
     control.push(new FormControl(value));
+    console.log(this.workshop.controls['imageUrls'].value);
   }
 
   uploadVideo(event) {
     console.log(event.files);
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.workshop.controls['videoUrl'].setValue(responseObj.url);
+        this.workshop.controls['videoUrl'].setValue(this.config.apiUrl + responseObj.url);
+        console.log(this.workshop.controls['videoUrl'].value);
+
         this.workshopVideoPending = false;
       }).subscribe();
     }
@@ -384,7 +390,6 @@ export class WorkshopEditComponent implements OnInit {
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
         this.addUrl(responseObj.url);
-        this.workshopVideoPending = false;
       }).subscribe();
     }
     this.workshopImage1Pending = false;
