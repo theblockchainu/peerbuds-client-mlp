@@ -33,7 +33,7 @@ export class WorkshopConsoleComponent implements OnInit {
   }
 
   public onSelect(workshop) {
-    this.router.navigate(['/editWorkshop/', workshop.id, 0]);
+    this.router.navigate(['/editWorkshop/', workshop.id, 1]);
   }
 
   public showFinishingTouch(workshop) {
@@ -45,7 +45,7 @@ export class WorkshopConsoleComponent implements OnInit {
    */
   public createWorkshop() {
     this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
-      this.router.navigate(['editWorkshop', workshopObject.id, 0]);
+      this.router.navigate(['editWorkshop', workshopObject.id, 1]);
     });
   }
 

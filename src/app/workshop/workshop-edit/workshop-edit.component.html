@@ -1,170 +1,187 @@
-<div class="position-relative">
-  <!--class="position-relative"-->
-  <!-- content starts here-->
-  <div class="navbar navbar-fixed-left" style="padding-left:20px">
-    <ul class="nav navbar-nav">
-      <li><strong>The Basics</strong> </li>
-      <!--<li (click)=goto(1)>Your photo </li>-->
-      <li (click)=goto(1)>Topics </li>
-      <li (click)=goto(2)>Language </li>
-      <li (click)=goto(3)>Your Bio </li>
-      <hr>
-      <li><strong>Workshop Page</strong> </li>
-      <li (click)=goto(5)>Title &amp; Headline </li>
-      <!--headliner-->
-      <li (click)=goto(6)>Description </li>
-      <li (click)=goto(7)>Requirements </li>
-      <li (click)=goto(8)>Seats </li>
-      <li (click)=goto(9)>Photos </li>
-      <li (click)=goto(10)>Price &amp; Cancellation Policy </li>
-      <!-- <li>Session Dates </li> -->
-      <hr>
-      <li><strong>Workshop Itinerary</strong> </li>
-      <!-- <li>Seats Available </li> -->
-      <!-- <li>Age requirements </li> -->
-      <li (click)=goto(12)>Select Dates </li>
-      <hr>
-      <li (click)=goto(13) [class.disabled]="stage!=12">Review and Submit </li>
+<div id="content">
+  <div class="overlay"></div>
 
-    </ul>
-  </div>
-  <div class="container">
-    <div id="content" class="onboarding-content">
-      <div style="float:right;margin-top:-40px"><button type="button" class="btn btn-lg btn-default" (click)="saveandexit()">Save &amp; Exit</button></div>
+  <left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></left-sidebar>
+  <!-- Page Content -->
+  <div class="container col-sm-10 col-md-10 col-lg-10 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+    <div class="content-container col-sm-10 col-md-10 col-lg-10">
+      <div style="margin-top:-40px;" class="col-md-4 col-md-offset-10"><button type="button" class="btn btn-secondary" (click)="saveandexit()">Save &amp; Exit</button></div>
       <br/>
       <!--Disclaimer-->
-      <div class="onboarding step-0" [hidden]="step!=0">
+      <div class="onboarding step-1" [hidden]="step!=1">
         <div class="row">
-          <div class="col-sm-7">
+          <div class="col-sm-6">
             <h1 class="title">Peerbuds Workshop Guidelines</h1>
-            <p>We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines
+            <p class="fs-18 text-grey lh-24">We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines
               towards their content.
             </p>
-            <ul style="margin-top:30px;list-style:none">
-              <li>1. Respect Others</li>
-              <li>2. Respect Others</li>
-              <li>3. Respect Others</li>
-              <li>4. Respect Others</li>
-            </ul>
-            <div style="margin-top:100px;">
-              <a (click)="goto(1)">I agree, lets create a workshop</a>
+            <ol class="guideline-points text-grey">
+              <li>Respect Others</li>
+              <li>Respect Others</li>
+              <li>Respect Others</li>
+              <li>Respect Others</li>
+            </ol>
+            <div class="margin-top-50">
+              <a href="javascript:;" (click)="goto(2)" class="text-agree"><i class="fa fa-check"></i> I agree, lets create a workshop</a>
             </div>
           </div>
         </div>
       </div>
+      <!--<div class="row hide">
+        <div class="col-md-10 col-md-offset-1" [hidden]="step==1">
+          <progressbar [max]="max" [value]="step">
+            <span style="color:white; white-space:nowrap;">{{step}} / {{max}}</span>
+          </progressbar>
+        </div>
+      </div>-->
       <div class="container-fluid clearfix">
         <!-- step 1 starts here -->
-        <div class="onboarding step-1" [hidden]="step!=1">
-          <div class="row">
-            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-              <div class="stepHeader">What topics does this Workshop cover?</div>
-              <span>Select topic that this workshop covers</span>
-              <br/>
-              <div class="row">
-                <div class="col-sm-12 margin-bottom-30">
-                  <div class="row">
-                    <div class="col-sm-10">
-                      <multiselect-autocomplete (selectedOutput)="selected($event)" [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL
-                        [title]=placeholderStringTopic></multiselect-autocomplete>
-                    </div>
-                    <div class="col-sm-12 margin-top-30">
-                      <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
-                    </div>
-                    <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
-                      <div class="lookingFor interest">
-                        <label class="check">
-                            <input type="checkbox"
-                                    (change)="changeInterests(topic)">
-                                    <i></i>
-                          </label>
-                        <div class="lookingFor-thumb">
-                          <i class="topic.id"></i>
-                        </div>
-                        <span class="lookingForTitle">{{ topic.name }} - {{topic.type}}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div style="margin-top:100px;">
-                <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(0)>Back</button>
-                <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:10px" (click)=submitInterests()>Next</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="onboarding step-2" [hidden]="step!=2">
           <div class="row">
-            <div class="col-sm-7">
-              <h1 class="title">Which language will you host in?</h1>
-              <p>Youʼll write your descriptions in this language and guests will expect you to speak it during workshops.</p>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+              <div class="title fw-bold">What topics does this Workshop cover?</div>
+              <p class="text-grey">Select topic that this workshop covers</p>
               <br/>
-              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div style="margin-top:30px;margin-bottom:10px;">Select Language</div>
+              <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="row">
-                      <select class="form-control" formControlName="selectedLanguage">
-                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>                      
-                    </select>
+                      <div class="col-sm-10">
+                        <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
+                          [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+                          [maxSelection]=maxTopics></multiselect-autocomplete>
+                        <!--formArrayName="interests"-->
+                      </div>
+                    </div>
+                    <div class="row">
+                      <span class="col-sm-4" style="padding-left: 30px;">{{maxTopicMsg}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 margin-top-30">
+                    <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="lookingFor interest">
+                      <div class="lookingFor-thumb" style="padding: 60px 60px;">
+                        <button class="btn btn-link" type="button" [disabled]="interests.length >= maxTopics" (click)="newTopicModal.show()">Add New Topic</button>
+                        <div bsModal #newTopicModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+                          aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title pull-left">Add New Topic</h4>
+                                <button type="button" class="close pull-right" aria-label="Close" (click)="newTopicModal.hide()">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                              </div>
+                              <div class="modal-body">
+                                <form [formGroup]="newTopic" (ngSubmit)="AddNewTopic(newTopic,newTopicModal)">
+                                  <label>Provide the Topic Name</label>
+                                  <input type="text" formControlName="topicName">
+                                  <div style="height:15px"></div>
+                                  <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
+                    <div class="lookingFor interest">
+                      <label class="check">
+                        <!-- <input type="checkbox" id={{topic.id}} [checked]="topic.checked"
+                                (change)="changeInterests(topic)">
+                                <i></i> -->
+                        <i *ngIf="topic.checked" class="fa fa-check fa-2x" style="color:green"></i>
+                      </label>
+                      <div class="lookingFor-thumb">
+                        <i class="topic.id"></i>
+                      </div>
+                      <span class="lookingForTitle captitalise">{{ topic.name }} - {{topic.type}}</span>
                     </div>
                   </div>
                 </div>
                 <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(1)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                  <button class="btn btn-link" type="button" (click)=goto(1)>Back</button>
+                  <button class="btn btn-success btn-continue pull-right" (click)=submitInterests() [disabled]="interests.length == 0">Continue</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding step-3" [hidden]="step!=3">
+          <div class="row">
+            <div class="col-sm-7">
+              <h1 class="title">Which language will you host in?</h1>
+              <p class="text-grey">Youʼll write your descriptions in this language and guests will expect you to speak it during workshops.</p>
+              <br/>
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <div class="text-grey margin-bottom-20">Select Language</div>
+                <select class="form-control" formArrayName="language">
+                      <option [value]="">--Select--</option>
+                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>                      
+                </select>
+                <div style="margin-top:100px;">
+                  <button class="btn btn-link" type="button" (click)=goto(2)>Back</button>
+                  <button class="btn btn-success btn-continue pull-right" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
         <!-- step 4 ends here  -->
-        <div class="onboarding step-3" [hidden]="step!=3">
+        <div class="onboarding step-4" [hidden]="step!=4">
           <div class="row">
             <div class="col-sm-12">
               <h1 class="title">Introduce yourself as a Host</h1>
+              <label class="display-block">Why are you the best person to host this Experience?</label>
+
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="row">
-                  <div class="col-sm-8 margin-bottom-30" style="float:left">
+                <div class="row margin-bottom-30 margin-top-30">
+                  <div class="col-sm-8">
                     <div class="form-group">
-                      <label class="display-block">Why are you the best person to host this Experience?</label>
-                      <br/>
-                      <textarea class="form-control" maxlength="500" formControlName="aboutHost"></textarea>
+                      <textarea class="form-control" maxlength="500" rows="10" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
                       <span class="text-right text-grey display-block margin-top-5">max. 200 chars</span>
                     </div>
                   </div>
-                  <div class="col-sm-3" style="margin-left:20px">
-                    <p>Here is a sample description
-                      <br/>"I am a recent graduate that enjoys reading"
+                  <div class="col-sm-3 margin-left-20">
+                    <p class="fs-14 text-dark-grey">
+                      <span class="fs-13 text-uppercase text-grey">Here is a sample description</span><br/> "I'm a recent
+                      graduate that enjoys reading, travelling and documenting my adventures. I'm currently trying to persue
+                      freelance photography. Looking farward to talk to like minded people."
                     </p>
                   </div>
                 </div>
-                <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(2)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                <div style="margin-top:50px;">
+                  <button class="btn btn-link" type="button" (click)=goto(3)>Back</button>
+                  <button class="btn btn-success btn-continue pull-right" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
         <!--Disclaimer-->
-        <div class="onboarding step-4" [hidden]="step!=4">
+        <div class="onboarding step-5" [hidden]="step!=5">
           <div class="row">
             <div class="col-sm-7">
               <h1 class="title">Create the page learners will see</h1>
-              <p>Write in a clear, straightforward and friendly way.We will give you tips on when to show off your personality
+              <p class="margin-top-30 lh-24">Write in a clear, straightforward and friendly way.We will give you tips on when to show off your personality
                 and be more descriptive.
               </p>
               <br/>
               <div style="margin-top:100px;">
-                <a (click)="goto(5)">Continue</a>
+                <a class="btn btn-success btn-continue" (click)="goto(6)">Continue</a>
               </div>
             </div>
           </div>
         </div>
         <!-- step 2 ends here -->
-        <div class="onboarding step-5" [hidden]="step!=5">
+        <div class="onboarding step-6" [hidden]="step!=6">
           <div class="row">
             <div class="col-sm-12">
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
@@ -188,15 +205,15 @@
                   </div>
                 </div>
                 <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(4)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                  <button class="btn btn-link" type="button" (click)=goto(5)>Back</button>
+                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
         <!-- step 5 ends here -->
-        <div class="onboarding step-6" [hidden]="step!=6">
+        <div class="onboarding step-7" [hidden]="step!=7">
           <div class="row">
             <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
               <div class="row">
@@ -210,14 +227,14 @@
                 </div>
               </div>
               <div style="margin-top:100px;">
-                <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(5)>Back</button>
-                <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                <button class="btn btn-link" type="button" (click)=goto(6)>Back</button>
+                <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
               </div>
             </form>
           </div>
         </div>
         <!-- step 6 ends here -->
-        <div class="onboarding step-7" [hidden]="step!=7">
+        <div class="onboarding step-8" [hidden]="step!=8">
           <div class="row">
             <div class="col-sm-12">
               <h1 class="title">Who should come</h1>
@@ -237,15 +254,15 @@
                   </div>
                 </div>
                 <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(6)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                  <button class="btn btn-link" type="button" (click)=goto(7)>Back</button>
+                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
         <!-- step 7 ends here -->
-        <div class="onboarding step-8" [hidden]="step!=8">
+        <div class="onboarding step-9" [hidden]="step!=9">
           <div class="row">
             <div class="col-sm-7">
               <div class="stepHeader">How many learners? </div>
@@ -254,15 +271,15 @@
                   <input type="number" formControlName="maxSpots" min="1" max="1000">
                 </div>
                 <div style="padding-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(7)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                  <button class="btn btn-link" type="button" (click)=goto(8)>Back</button>
+                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
         <!-- step 8 ends here -->
-        <div class="onboarding step-9" [hidden]="step!=9">
+        <div class="onboarding step-10" [hidden]="step!=10">
 
           <div class="row">
             <div class="col-sm-10">
@@ -286,8 +303,8 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div style="margin-top:100px;">
-                        <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(8)>Back</button>
-                        <button class="onboarding-btn btn btn-lg btn-default" style="float:right;" type="Submit">Next</button>
+                        <button class="btn btn-link" type="button" (click)=goto(9)>Back</button>
+                        <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                       </div>
                     </div>
                   </div>
@@ -297,7 +314,7 @@
           </div>
         </div>
         <!-- step 9 ends here -->
-        <div class="onboarding step-10" [hidden]="step!=10">
+        <div class="onboarding step-11" [hidden]="step!=11">
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader">What is the price of the workshop?</div>
@@ -306,26 +323,26 @@
                   Price:
                   <input type="number" formControlName="price">
                   <select formControlName="cancellationPolicy">
-                        <option *ngFor="let c of currencies" [value]="c">{{c}} </option>
-                  </select>
+                            <option *ngFor="let c of currencies" [value]="c">{{c}} </option>
+                      </select>
                 </div>
 
                 <div class="col-sm-12 margin-bottom-30">
                   Cancellation Policy:
                   <select class="form-control" formControlName="cancellationPolicy">
-                        <option [value]="">--Select--</option>
-                        <option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}} </option>
-                  </select>
+                            <option [value]="">--Select--</option>
+                            <option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}} </option>
+                      </select>
                 </div>
                 <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(11)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                  <button class="btn btn-link" type="button" (click)=goto(10)>Back</button>
+                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-        <div class="onboarding step-11" [hidden]="step!=11">
+        <div class="onboarding step-12" [hidden]="step!=12">
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader">Add content to your Workshop</div>
@@ -333,14 +350,14 @@
                 <p>Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
                   see this before they sign up for your workshop.</p>
                 <div style="margin-top:100px;">
-                  <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(10)>Back</button>
-                  <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                  <button class="btn btn-link" type="button" (click)=goto(11)>Back</button>
+                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-        <div class="onboarding step-12" [hidden]="step!=12">
+        <div class="onboarding step-13" [hidden]="step!=13">
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader">What days are your workshop?</div>
@@ -356,14 +373,15 @@
                   </div>
                 </div>
                 <div class="row" *ngIf="timeline.controls.calendar.value.endDate && timeline.controls.calendar.value.endDate">
-                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value">
+                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value"
+                    (days)="daysCollection($event)">
                   </app-workshop-content>
                 </div>
                 <div class="row">
-                  <div class="col-md-4 col-md-offset-8">
+                  <div class="col-md-4 col-md-offset-6">
                     <div style="margin-top:100px;">
-                      <button class="onboarding-btn btn btn-lg btn-default" type="button" (click)=goto(9)>Back</button>
-                      <button class="onboarding-btn btn btn-lg btn-default" style="float:right;margin-right:50px" type="Submit">Next</button>
+                      <button class="btn btn-link" type="button" (click)=goto(12)>Back</button>
+                      <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
                     </div>
                   </div>
                 </div>
@@ -371,7 +389,7 @@
             </div>
           </div>
         </div>
-        <div class="onboarding step-13" [hidden]="step!=13">
+        <div class="onboarding step-14" [hidden]="step!=14">
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader">Review and submit</div>
@@ -388,4 +406,6 @@
       </div>
     </div>
   </div>
+
+  <!-- </div>-->
 </div>

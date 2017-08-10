@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs/Rx';
+import { AuthService } from '../_services/auth/auth.service';
+import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
 
 @Component({
   selector: 'app-header',
@@ -8,13 +10,22 @@ import { Observable } from "rxjs";
   styleUrls: ['./app-header.component.scss']
 })
 export class AppHeaderComponent implements OnInit {
-  isLoggedIn : Observable<boolean>;
+  isLoggedIn: Observable<boolean>;
+  public profile: any = {};
+  public userType = '';
 
-  constructor(public authService : AuthenticationService) {
+  constructor(public authService: AuthenticationService, public requestHeaderService: RequestHeaderService ) {
     this.isLoggedIn = authService.isLoggedIn();
   }
 
   ngOnInit() {
+    this.getProfile();
+  }
+
+  getProfile() {
+    this.requestHeaderService.getProfile().subscribe(profile => {
+      this.profile = profile;
+    });
   }
 
 }

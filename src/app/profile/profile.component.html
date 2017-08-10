@@ -1,7 +1,7 @@
 <div id="content" class="profile-setion">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-2 col-sm-offset-1">
+      <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
         <div class="profile-image-big">
           <img src="{{profile.picture_url}}" alt="image" />
         </div>
@@ -97,38 +97,23 @@
             </div>
             <span>From Learners</span>
           </div>
-          <div class="review-section">
+          <div class="review-section" *ngFor="let review of allReviews">
             <img src="http://lorempixel.com/62/62/people/1" class="review-thumb thumb-circle" />
-            <div class="review-title">Alexis</div>
+            <div class="review-title">{{ review.reviewer.username }}</div>
             <div class="review-content">
-              <div class="review-desc">He is a good teacher. Learned lots from him. He is always ready to provide you with any extra help you might
-                need. I would recommend others to take this course.
-              </div>
+              <div class="review-desc">{{ review.description }}</div>
               <div class="review-bottom">
-                <span>Experience</span>
-                <span class="bullet">October 2016</span>
-                <span class="bullet"><a href="javascript:;" class="text-green">Lighting in photography</a></span>
+                <span>{{ review.collection.type }}</span>
+                <span class="bullet">{{ review.collection.createdAt | date: 'MMMM yyyy' }}</span>
+                <span class="bullet"><a href="javascript:;" class="text-green">{{ review.collection.title }}</a></span>
               </div>
             </div>
           </div>
-          <div class="review-section">
-            <img src="http://lorempixel.com/62/62/people/2" class="review-thumb thumb-circle" />
-            <div class="review-title">Lusi</div>
-            <div class="review-content">
-              <div class="review-desc">He is a good teacher. Learned lots from him. He is always ready to provide you with any extra help you might
-                need. I would recommend others to take this course.
-              </div>
-              <div class="review-bottom">
-                <span>Session</span>
-                <span class="bullet">October 2016</span>
-              </div>
-            </div>
-          </div>
-          <div class="review-all border-bottom">
+          <div class="review-all">
             <a href="javascript:;">See all 34 reviews</a>
           </div>
-          <div class="margin-top-30 margin-bottom-30">
-            <span>From Learners</span>
+          <!--<div class="margin-top-30 margin-bottom-30">
+            <span>From Teachers</span>
           </div>
           <div class="review-section">
             <img src="http://lorempixel.com/62/62/people/1" class="review-thumb thumb-circle" />
@@ -159,10 +144,10 @@
           </div>
           <div class="review-all">
             <a href="javascript:;">See all 34 reviews</a>
-          </div>
+          </div>-->
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-3" [hidden]="userType != 'teacher'">
         <div class="sidebar-right">
           <div class="sidebar-box">
             <tabset>
@@ -194,12 +179,26 @@
               </tab>
               <tab heading="Experience">
                 <div class="sidebar-section margin-top-30">
-                  Experience tab
+                  <img class="img-responsive" src="http://lorempixel.com/350/250/city/9">
+                  <div class="text-black margin-bottom-10 margin-top-15 fw-bold">Lightening in photography</div>
+                  <p class="text-grey lh-24">Now is your chance to create your own master template in reason. And not just any template btw, your grand
+                    master <a href="javascript:;" class="read-more">...read more</a></p>
+                </div>
+                <div class="sidebar-details">
+                  <button class="btn btn-success btn-book">See dates</button>
                 </div>
               </tab>
               <tab heading="Workshop">
                 <div class="sidebar-section margin-top-30">
-                  Workshop tab
+                  <div class="sidebar-section margin-top-30">
+                    <img class="img-responsive" src="http://lorempixel.com/350/250/city/9" title="image">
+                    <div class="text-black margin-bottom-10 margin-top-15 fw-bold">Lightening in photography</div>
+                    <p class="text-grey lh-24">Now is your chance to create your own master template in reason. And not just any template btw, your
+                      grand master <a href="javascript:;" class="read-more">...read more</a></p>
+                  </div>
+                  <div class="sidebar-details">
+                    <button class="btn btn-success btn-book">See dates</button>
+                  </div>
                 </div>
               </tab>
             </tabset>
@@ -272,7 +271,7 @@
         </div>
         <!-- learning journey row ends -->
 
-        <div class="row full-section">
+        <!--<div class="row full-section">
           <div class="col-sm-12">
             <h3 class="margin-bottom-20">
               Communities
@@ -314,7 +313,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>-->
         <!-- communities row ends -->
       </div>
     </div>

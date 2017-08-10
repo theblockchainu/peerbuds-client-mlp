@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
+// import { Response } from '@angular/http';
 
 @Injectable()
 export class ProfileService {
@@ -42,7 +43,7 @@ export class ProfileService {
     }
   }
 
-  public socialProfiles(){
+  public socialProfiles() {
     const socialProfile = [];
     if (this.userId) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities')
@@ -51,10 +52,13 @@ export class ProfileService {
     }
   }
 
-  public interestTopics(){
+  public interestTopics(topicsFor) {
     const interestTopics = [];
     if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/topics')
+
+      const topicsUrl = topicsFor === 'teacher' ? '/topicsTeaching' : '/topicsLearning' ;
+
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + topicsUrl)
         .map((response: Response) => response.json()
         );
     }
@@ -62,36 +66,86 @@ export class ProfileService {
   /* Signup Verification Methods Starts*/
   public getPeerNode() {
     return this.http
-               .get(this.config.apiUrl + '/api/peers/' + this.userId)
-               .map((response: Response) => response.json(), (err) => {
-                   console.log('Error: ' + err);
-                });
+      .get(this.config.apiUrl + '/api/peers/' + this.userId)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
   }
 
   public sendVerifyEmail() {
     return this.http
-               .get(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId)
-               .map((response: Response) => response.json(), (err) => {
-                   console.log('Error: ' + err);
-                });
+      .get(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
 
   }
 
   public confirmEmail(inputToken: string, redirect: string) {
     return this.http
-               .get(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect)
-               .map((response: Response) => response.json(), (err) => {
-                   console.log('Error: ' + err);
-                });
+      .get(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
 
   }
+  /* Signup Verification Methods Ends*/
 
   public getSocialIdentities() {
     return this.http
-               .get(this.config.apiUrl + '/api/peers/' + this.userId)
-               .map((response: Response) => response.json(), (err) => {
-                   console.log('Error: ' + err);
-                });
+      .get(this.config.apiUrl + '/api/peers/' + this.userId)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
   }
-  /* Signup Verification Methods Ends*/
+
+  /* get collections */
+  public getCollections() {
+    if (this.userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections')
+        .map((response: Response) => response.json(), (err) => {
+          console.log('Error: ' + err);
+        });
+    }
+  }
+
+  /* get reviews */
+  // public getReviews(res: Response) {
+  //   // if (this.userId) {
+  //     console.log(this.userId);
+  //     const collections = res.json();
+  //     const reviews: any = [];
+  //     console.log(collections);
+  //     collections.forEach(collection => {
+  //       this.http.get(this.config.apiUrl + '/api/collections/' + collection.id + '/reviews')
+  //         .map((revResponse) => {
+  //           console.log(revResponse);
+  //           reviews.push(revResponse.json());
+  //         });
+  //     });
+  //     console.log(reviews);
+  //     return reviews;
+  //   }
+  // // }
+  public getReviews(collectionId) {
+    if (this.userId) {
+      // console.log(collections);
+      // const reviews: any = [];
+      //  collections.forEach(collection => {
+      return this.http.get(this.config.apiUrl + '/api/collections/' + collectionId + '/reviews')
+        .map((response: Response) => response.json());
+    }
+  }
+  public getOwnedCollectionCount() {
+     if (this.userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections/count')
+      .map((response: Response) => response.json());
+    }
+  }
+   public getReviewer(reviewId) {
+     if (this.userId) {
+      return this.http.get(this.config.apiUrl + '/api/reviews/' + reviewId + '/peer')
+      .map((response: Response) => response.json());
+    }
+  }
 }
