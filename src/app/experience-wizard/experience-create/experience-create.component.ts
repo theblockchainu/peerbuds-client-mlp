@@ -96,7 +96,7 @@ export class ExperienceCreateComponent implements OnInit {
       .subscribe((languages) => this.languagesArray = languages);
     this.getTopics();
     this.activatedRoute.params.subscribe(params => {
-        this.experienceId = params["id"];
+      this.experienceId = params["id"];
     });
 
   }
@@ -192,13 +192,13 @@ export class ExperienceCreateComponent implements OnInit {
 
     this.contentGroup = new FormGroup({});
 
-    if(!this.experienceId) {
+    if (!this.experienceId) {
       this.createExperience();
     }
     else {
       this._collectionService.getCollectionDetails(this.experienceId).subscribe(res => this.assignExperience(res),
-            err => console.log("error"),
-            () => console.log('Completed!'));
+        err => console.log("error"),
+        () => console.log('Completed!'));
     }
   }
   private assignExperience(data) {
@@ -208,19 +208,19 @@ export class ExperienceCreateComponent implements OnInit {
     delete data.prerequisites;
     let languageArray = data.language;
     let lang: string;
-    if(languageArray.length != 0)
+    if (languageArray.length != 0)
       lang = languageArray[0];
     else lang = '';
-    data.language =  lang;
+    data.language = lang;
     delete data.imageUrls;
     data.imageUrls = [];
     delete data.created;
     delete data.modified;
     console.log(data);
     this.experienceObject = data;
-      /*setTimeout(()=>{
-          this.workshop.setValue(data);
-     },3000);*/
+    /*setTimeout(()=>{
+        this.workshop.setValue(data);
+   },3000);*/
     this.experience.setValue(data);
     this.step = data.stage;
     this.router.navigate(['createExperience', this.experienceId, this.step]);
@@ -347,11 +347,9 @@ export class ExperienceCreateComponent implements OnInit {
     var body = {
       "type": "experience"
     };
-    this.http.post(this.config.apiUrl + '/api/peers/' + this.userId + '/collections', body, options)
-      .map((response: Response) => {
-        this.experienceId = response.json().id;
-      })
-      .subscribe();
+    this._collectionService.postCollection('experience').subscribe((experienceObject) => {
+      this.router.navigate(['create-experience', experienceObject.id, 0]);
+    });
 
   }
 
@@ -421,7 +419,7 @@ export class ExperienceCreateComponent implements OnInit {
 
   private getCookieValue(key: string) {
     let cookie = this._cookieService.get(key);
-    if(cookie) {
+    if (cookie) {
       let cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
       this.userId = cookieValue[1];
     }
