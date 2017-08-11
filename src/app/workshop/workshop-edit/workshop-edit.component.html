@@ -64,7 +64,7 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="lookingFor interest">
-                      <div class="lookingFor-thumb" style="padding: 60px 60px;">
+                      <div class="lookingFor-thumb" style="padding:23%;">
                         <button class="btn btn-link" type="button" [disabled]="interests.length >= maxTopics" (click)="newTopicModal.show()">Add New Topic</button>
                         <div bsModal #newTopicModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
                           aria-labelledby="myModalLabel" aria-hidden="true">
@@ -122,13 +122,13 @@
               <br/>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="text-grey margin-bottom-20">Select Language</div>
-                <select class="form-control" formArrayName="language">
+                <select class="form-control" formArrayName="language" (change)="languageChange($event.target.value)">
                       <option [value]="">--Select--</option>
-                      <option *ngFor="let l of languagesArray" [value]="l.code">{{l.name}} </option>                      
+                      <option *ngFor="let l of languagesArray" [value]="l.name" [selected]="selectedLanguages == l.name">{{l.name}} </option>                      
                 </select>
                 <div style="margin-top:100px;">
                   <button class="btn btn-link" type="button" (click)=goto(2)>Back</button>
-                  <button class="btn btn-success btn-continue pull-right" style="float:right;" type="Submit">Continue</button>
+                  <button class="btn btn-success btn-continue pull-right" style="float:right;" type="Submit" [disabled]="!selectedLanguages">Continue</button>
                 </div>
               </form>
             </div>
@@ -147,6 +147,7 @@
                     <div class="form-group">
                       <textarea class="form-control" maxlength="500" rows="10" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
                       <span class="text-right text-grey display-block margin-top-5">max. 200 chars</span>
+      
                     </div>
                   </div>
                   <div class="col-sm-3 margin-left-20">
@@ -192,6 +193,8 @@
                       <p>Make it sweet and simple</p>
                       <br/>
                       <input type="text" class="form-control" formControlName="title" />
+                      <span class="text-grey margin-top-5">10 characters needed</span>
+                      <span class="text-right text-grey margin-top-5 col-md-offset-8">25 characters max</span>
                     </div>
                   </div>
                   <div class="col-sm-12 margin-bottom-30">
@@ -201,6 +204,8 @@
                       <p>It should give an insight to learners of what they will do.</p>
                       <br/>
                       <input type="text" class="form-control" formControlName="headline" />
+                      <span class="text-grey margin-top-5">10 characters needed</span>
+                      <span class="text-right text-grey  col-md-offset-8">25 characters max</span>
                     </div>
                   </div>
                 </div>

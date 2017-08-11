@@ -8,6 +8,10 @@ import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import * as Rx from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
 
@@ -77,10 +81,11 @@ export class WorkshopEditComponent implements OnInit {
   public step = 1;
   public max = 14;
   public learnerType_array;
-  public selectedLanguages = [];
+  public selectedLanguages;
   public suggestedTopics = [];
   public interests = [];
   public removedInterests = [];
+  public relTopics = [];
 
   public days;
 
@@ -105,9 +110,13 @@ export class WorkshopEditComponent implements OnInit {
     });
     this.userId = cookieUtilsService.getValue('userId');
     this.options = requestHeaderService.getOptions();
+
+    console.log("Inside constructor workshop");
   }
 
   public ngOnInit() {
+
+    console.log("Inside oninit workshop");
     this.interest1 = new FormGroup({
       // interests: this._fb.array([])
     });
@@ -124,7 +133,7 @@ export class WorkshopEditComponent implements OnInit {
       language: this._fb.array([]),
       selectedLanguage: '',
       headline: '',
-      description: '',
+      description: [null,Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])],
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
@@ -135,7 +144,7 @@ export class WorkshopEditComponent implements OnInit {
       currency: '',
       cancellationPolicy: '',
       ageLimit: '',
-      aboutHost: '',
+      aboutHost: '',//[null,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
       notes: '',
       // isApproved: '',
       approvedBy: '',
@@ -329,10 +338,15 @@ export class WorkshopEditComponent implements OnInit {
     this.languagePickerService.getLanguages()
       .subscribe((languages) => this.languagesArray = languages);
 
-    this.http.get(this.config.searchUrl + '/api/search/topics')
-      .map((response: any) => {
-        this.suggestedTopics = response.slice(0, 10);
-      }).subscribe();
+    if(this.interests.length == 0) {
+      this.http.get(this.config.searchUrl + '/api/search/topics')
+        .map((response: any) => {
+          this.suggestedTopics = response.slice(0, 10);
+        }).subscribe();
+    }
+    else {
+      this.suggestedTopics = this.interests;
+    }
 
     this.profileImagePending = true;
     this.workshopVideoPending = true;
@@ -340,16 +354,113 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private initializeWorkshop() {
+    console.log("Inside init workshop");
+    // if (this.workshopId) {
+    //   this._collectionService.getCollectionDetails(this.workshopId)
+    //     .subscribe(res => {
+    //       this.initializeFormValues(res);
+    //     },
+    //     err => console.log('error'),
+    //     () => console.log('Completed!'));
+    // } else {
+    //   console.log('NO COLLECTION');
+    // }
+    const query = {
+      'include': [
+        'topics',
+        'calendars',
+        { 'participants': [{ 'profiles': ['work'] }] },
+        { 'owners': ['profiles'] },
+        { 'contents': ['schedules'] }
+      ]
+    };
+
     if (this.workshopId) {
-      this._collectionService.getCollectionDetails(this.workshopId)
-        .subscribe(res => {
-          this.initializeFormValues(res);
+      this._collectionService.getCollectionDetail(this.workshopId, query)
+        .subscribe((res) => {
+          console.log(res);
+          // Topics
+          this.relTopics = _.uniqBy(res.topics, 'id');
+          this.interests = this.relTopics;
+          if(this.interests) {
+            this.suggestedTopics = this.interests;
+          }
+          // Language
+          if(res.language.length > 0) {
+            this.selectedLanguages = res.language[0];
+            this.workshop.controls.selectedLanguage.patchValue(res.language[0]);
+          }
+          // aboutHost TBD
+          this.workshop.controls.aboutHost.patchValue(res.aboutHost);
+
+          // Title
+          this.workshop.controls.title.patchValue(res.title);
+
+          // Headline
+          this.workshop.controls.headline.patchValue(res.headline);
+
+          // Description
+          this.workshop.controls.description.patchValue(res.description);
+
+          // Difficulty Level
+          this.workshop.controls.difficultyLevel.patchValue(res.difficultyLevel);
+
+          // Notes
+          this.workshop.controls.notes.patchValue(res.notes);
+
+          //Seats
+          this.workshop.controls.maxSpots.patchValue(res.maxSpots);
+
+          
+
+          //this.initializeFormValues(res);
+
+          //this.workshop = res;
+          // this.parseCalendar(this.workshop);
+
+          // const contents = [];
+          // const itenariesObj = {};
+          // this.workshop.contents.forEach(contentObj => {
+          //   contents.push(contentObj);
+          // });
+
+          // contents.forEach(contentObj => {
+          //   if (itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+          //     itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
+          //   } else {
+          //     itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
+          //   }
+          // });
+          // for (const key in itenariesObj) {
+          //   if (itenariesObj.hasOwnProperty(key)) {
+          //     const eventDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+          //     const itenary = {
+          //       startDay: key,
+          //       startDate: eventDate,
+          //       contents: itenariesObj[key]
+          //     };
+          //     this.itenaryArray.push(itenary);
+          //   }
+          // }
+
+          // this.itenaryArray.sort(function (a, b) {
+          //   return parseFloat(a.startDay) - parseFloat(b.startDay);
+          // });
+          // console.log(this.workshop);
+
         },
         err => console.log('error'),
         () => console.log('Completed!'));
+
     } else {
       console.log('NO COLLECTION');
     }
+  }
+
+  public languageChange(value) {
+    console.log(value);
+    this.selectedLanguages = value;;
+    this.workshop.controls.selectedLanguage.setValue(value);
   }
 
   public selected(event) {
@@ -366,17 +477,29 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public removed(event) {
-
+    let body = {};
+    let options;
+    this.removedInterests = event;
     if (this.removedInterests.length !== 0) {
       const topicArray = [];
       this.removedInterests.forEach((topic) => {
-        /* this.http.put(this.config.apiUrl +  '/api/peers/'
-            + this.userId + '/topics/rel/' + topic.id)
-                  .map((response: Response) => {} ).subscribe();*/
         topicArray.push(topic.id);
       });
+
+      body = {
+        'targetIds': topicArray
+      };
+
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Accept', 'application/json');
+      
+      options = new RequestOptions({
+        headers: headers,
+        body: body
+      })
       if (topicArray.length !== 0) {
-        this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topics/rel/' + topicArray, this.options)
+        this.http.delete(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', options)
           .map((response) => { console.log(response); }).subscribe();
       }
     }
@@ -404,16 +527,16 @@ export class WorkshopEditComponent implements OnInit {
 
 
   private initializeFormValues(data) {
-    data = this._collectionService.sanitize(data);
-    for (const property in data) {
-      if (data.hasOwnProperty(property)) {
-        if (property === 'language') {
-          this.workshop.controls.selectedLanguage.patchValue(data.language[0]);
-        }
-        this.workshop.controls[property].patchValue(data[property]);
+   // data = this._collectionService.sanitize(data);
+    // for (const property in data) {
+    //   if (data.hasOwnProperty(property)) {
+    //     if (property === 'language') {
+    //       this.workshop.controls.selectedLanguage.patchValue(data.language[0]);
+    //     }
+    //     this.workshop.controls[property].patchValue(data[property]);
 
-      }
-    }
+    //   }
+    // }
   }
 
   initAddress() {
@@ -471,10 +594,10 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public submitWorkshop(data) {
+    debugger;
     const lang = <FormArray>this.workshop.controls.language;
     lang.removeAt(0);
     lang.push(this._fb.control(data.value.selectedLanguage));
-
     const body = data.value;
     delete body.selectedLanguage;
 
@@ -509,7 +632,9 @@ export class WorkshopEditComponent implements OnInit {
     if (body.startDate && body.endDate) {
       this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, this.options)
         .map((response) => {
+          console.log(this.step);
           this.step++;
+          console.log(this.step);
           this.workshopStepUpdate();
           this.router.navigate(['editWorkshop', this.workshopId, this.step]);
         })
@@ -523,23 +648,45 @@ export class WorkshopEditComponent implements OnInit {
 
   public submitInterests() {
     let body = {};
-    const topicArray = [];
+    let topicArray = [];
     this.interests.forEach((topic) => {
-      /* this.http.put(this.config.apiUrl +  '/api/peers/'
-          + this.userId + '/topics/rel/' + topic.id)
-                .map((response: Response) => {} ).subscribe();*/
       topicArray.push(topic.id);
     });
+    this.relTopics.forEach((topic) => {
+      topicArray = _.without(topicArray,topic.id)
+    });
+    console.log(topicArray);
     body = {
       'targetIds': topicArray
     };
+
     if (topicArray.length !== 0) {
-      this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', body)
-        .map((response) => {
+      // this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', body)
+      //   .share()
+      //   .map((response) => {
+      //     this.step++;
+      //     this.workshopStepUpdate();
+      //     this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+      //   });
+      // patchRequest.subscribe((res) => {
+      //     this.step++;
+      //     this.workshopStepUpdate();
+      //     this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+      // })
+
+      let observable: Rx.Observable<any>;
+      observable = this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', body)
+                            .map(response => response).publishReplay().refCount();
+      observable.subscribe((res) => {
           this.step++;
           this.workshopStepUpdate();
           this.router.navigate(['editWorkshop', this.workshopId, this.step]);
-        }).subscribe();
+      });
+    }
+    else {
+          this.step++;
+          this.workshopStepUpdate();
+          this.router.navigate(['editWorkshop', this.workshopId, this.step]);
     }
   }
 
@@ -587,6 +734,8 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   AddNewTopic(data, modal) {
+    let tempArray = [];
+    tempArray = _.union(this.interests, tempArray);
     const body = {
       'name': data.value.topicName,
       'type': 'user'
@@ -596,8 +745,10 @@ export class WorkshopEditComponent implements OnInit {
       .map((res) => {
         topic = res;
         topic.checked = true;
-        this.interests.push(topic);
-        this.suggestedTopics = _.union(this.suggestedTopics, this.interests);
+        tempArray.push(topic);
+        this.interests = _.union(this.interests, tempArray);
+        console.log("CHanged");
+        this.suggestedTopics = this.interests;
         modal.hide();
       })
       .subscribe();
