@@ -132,7 +132,7 @@
           <li *ngIf="(isLoggedIn | async)">
             <a href="#" id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="circle-thumb pull-left">
-                <img src="{{ profile.picture_url }}" alt="User" class="thumb-35">
+                <img src="{{config.apiUrl+profile.picture_url }}" alt="User" class="thumb-35">
               </div>
               <span class="pull-right">{{ profile.first_name }} <span class="caret"></span> </span>
             </a>

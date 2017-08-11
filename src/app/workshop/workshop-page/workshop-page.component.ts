@@ -22,12 +22,13 @@ export class WorkshopPageComponent implements OnInit {
   public calendarDisplay = {};
   public booked = false;
   public chatForm: FormGroup;
+  public userType: string;
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
     private cookieUtilsService: CookieUtilsService,
     private _collectionService: CollectionService,
-    private appConfig: AppConfig,
+    private config: AppConfig,
     private _fb: FormBuilder) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
@@ -40,6 +41,29 @@ export class WorkshopPageComponent implements OnInit {
     this.initializeForms();
   }
 
+  private initializeUserType() {
+    if (this.workshop) {
+      for (const owner of this.workshop.owners) {
+        if (owner.id === this.userId) {
+          this.userType = 'teacher';
+          break;
+        }
+      }
+      if (!this.userType) {
+        for (const participant of this.workshop.participants) {
+          if (participant.id === this.userId) {
+            this.userType = 'participant';
+            break;
+          }
+        }
+      }
+      if (!this.userType) {
+        this.userType = 'public';
+      }
+      console.log('Welcome ' + this.userType);
+
+    }
+  }
   private initializeWorkshop() {
     const query = {
       'include': [
@@ -90,7 +114,12 @@ export class WorkshopPageComponent implements OnInit {
 
         },
         err => console.log('error'),
-        () => console.log('Completed!'));
+        () => {
+          console.log('Completed!');
+          this.initializeUserType();
+          this.calculateTotalHours();
+        });
+
 
     } else {
       console.log('NO COLLECTION');
@@ -114,9 +143,7 @@ export class WorkshopPageComponent implements OnInit {
       const endDate = moment(workshop.calendars[0].endDate);
       this.calendarDisplay['startDate'] = startDate.format('Do MMMM');
       this.calendarDisplay['endDate'] = endDate.format('Do MMMM');
-
     }
-
   }
 
   /**
@@ -162,6 +189,27 @@ export class WorkshopPageComponent implements OnInit {
    */
   public postMessage() {
     console.log(this.chatForm.value);
+  }
+
+  /**
+   * calculateTotalHours
+   */
+  public calculateTotalHours() {
+    let totalLength = 0;
+    this.workshop.contents.forEach(content => {
+      if (content.type === 'online') {
+        const startMoment = moment(content.schedules[0].startTime);
+        const endMoment = moment(content.schedules[0].endTime);
+        console.log(content.schedules[0].startTime + '  ' + content.schedules[0].endTime);
+        const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+        console.log(contentLength);
+        totalLength += parseInt(contentLength, 10);
+      } else if (content.type === 'video') {
+
+      }
+    });
+    console.log(totalLength);
+
   }
 
 }

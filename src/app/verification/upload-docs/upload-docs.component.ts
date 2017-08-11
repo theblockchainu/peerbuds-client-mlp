@@ -30,7 +30,7 @@ export class UploadDocsComponent implements OnInit {
     public _profileService: ProfileService,
     private http: Http,
     private config: AppConfig) {
-    }
+  }
 
   ngOnInit() {
     this.peer = this._fb.group({
@@ -42,11 +42,11 @@ export class UploadDocsComponent implements OnInit {
       inputOTP: ['']
     });
     this._profileService.getPeerNode()
-        .subscribe((res) => this.email = res.email);
+      .subscribe((res) => this.email = res.email);
   }
 
-  continue(p){
-    if(p === 4) {
+  continue(p) {
+    if (p === 4) {
       this.resendOTP();
     }
     this.step = p;
@@ -54,12 +54,12 @@ export class UploadDocsComponent implements OnInit {
 
   public resendOTP() {
     this._profileService.sendVerifyEmail()
-        .subscribe((res) => this.otp.controls['inputOTP'].setValue(res.verificationToken));
+      .subscribe((res) => this.otp.controls['inputOTP'].setValue(res.verificationToken));
   }
 
-  verifyEmail(){
+  verifyEmail() {
     this._profileService.confirmEmail(this.otp.controls['inputOTP'].value, 'onboarding')
-        .subscribe((res) => this.success = res);
+      .subscribe((res) => this.success = res);
   }
 
   redirectToOnboarding() {

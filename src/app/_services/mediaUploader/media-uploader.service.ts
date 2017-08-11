@@ -13,7 +13,7 @@ export class MediaUploaderService {
       file.objectURL = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
     }
     file.src = file.objectURL.changingThisBreaksApplicationSecurity;
-      console.log(file);
+    console.log(file);
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData);

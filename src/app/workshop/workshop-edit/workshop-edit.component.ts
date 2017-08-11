@@ -203,7 +203,7 @@ export class WorkshopEditComponent implements OnInit {
         for (const key in itenaries) {
           if (itenaries.hasOwnProperty(key)) {
             const itr: FormGroup = this.InitItenary();
-            itr.controls.date.setValue(this.calculatedDate(this.timeline.value.calendar.startDate, key));
+            itr.controls.date.patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, key));
             for (const contentObj of itenaries[key]) {
               const contentForm: FormGroup = this.InitContent();
               this.assignFormValues(contentForm, contentObj);
@@ -225,15 +225,13 @@ export class WorkshopEditComponent implements OnInit {
       if (value.hasOwnProperty(key) && form.controls[key]) {
         if (form.controls[key] instanceof FormGroup) {
           this.assignFormValues(<FormGroup>form.controls[key], value[key]);
-          console.log(form.controls[key].value);
         } else {
           if (key === 'startTime' || key === 'endTime') {
-            console.log(this.extractTime(value[key]));
-            form.controls[key].setValue(this.extractTime(value[key]));
+            form.controls[key].patchValue(this.extractTime(value[key]));
           } else if (key === 'startDay' || key === 'endDay') {
-            form.controls[key].setValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
+            form.controls[key].patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
           } else {
-            form.controls[key].setValue(value[key]);
+            form.controls[key].patchValue(value[key]);
           }
         }
       } else {
@@ -436,23 +434,19 @@ export class WorkshopEditComponent implements OnInit {
     const control = <FormArray>this.workshop.controls['imageUrls'];
     this.workshopImage1Pending = false;
     control.push(new FormControl(value));
-    console.log(this.workshop.controls['imageUrls'].value);
   }
 
   uploadVideo(event) {
     console.log(event.files);
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.workshop.controls['videoUrl'].setValue(this.config.apiUrl + responseObj.url);
-        console.log(this.workshop.controls['videoUrl'].value);
-
+        this.workshop.controls['videoUrl'].patchValue(responseObj.url);
         this.workshopVideoPending = false;
       }).subscribe();
     }
   }
 
   uploadImages(event) {
-    console.log(event.files);
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
         this.addUrl(responseObj.url);
@@ -507,7 +501,7 @@ export class WorkshopEditComponent implements OnInit {
   public submitTimeline(data: FormGroup) {
     const body = data.value.calendar;
     if (body.startDate && body.endDate) {
-      this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, this.options)
+      this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body)
         .map((response) => {
           this.step++;
           this.workshopStepUpdate();
@@ -552,7 +546,6 @@ export class WorkshopEditComponent implements OnInit {
 
 
   submitForReview() {
-    console.log('Submitted!');
     this.router.navigate(['workshop-console']);
   }
 
@@ -561,7 +554,6 @@ export class WorkshopEditComponent implements OnInit {
     if (this.step == 12) {
       const data = this.timeline;
       const body = data.value.calendar;
-      console.log(body);
       if (body.startDate && body.endDate) {
         this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, this.options)
           .map((response) => {
