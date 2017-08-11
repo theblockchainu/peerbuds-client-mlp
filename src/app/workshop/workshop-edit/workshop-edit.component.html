@@ -292,6 +292,33 @@
               <div class="row" style="margin-left:20px;margin-top:15px;">
                 <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)" novalidate>
                   <div class="row">
+                    <div id="video-demo-container">
+                      <button type="button" id="upload-button" (click)="uploadButton()">Select MP4 Video</button> 
+                      <input type="file" id="file-to-upload" accept="video/*" (change)="uploadCanvasVideo($event)"/>
+                      <video id="main-video" controls>
+                        <source type="video/mp4">
+                      </video>
+                      <canvas id="video-canvas"></canvas>
+                      <!-- <div id="thumbnail-container">
+                        Seek to <select id="set-video-seconds"></select> seconds <a id="get-thumbnail" href="#">Download Thumbnail</a>
+                      </div> -->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <!-- <div id="upload" class="drop-area">
+                        Upload File
+                      </div>
+                      <div id="thumbnail"></div> -->
+                      <div id="wrapper">       
+                        <input id="fileUpload" type="file" (change)="uploadImage1($event)"/><br />
+                        <div id="image-holder"> 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-top:40px">
                     <div class="col-md-8">
                       <div class="stepHeader">Upload Video</div>
                       <span class="label label-warning" [hidden]="!workshopVideoPending">Pending</span>

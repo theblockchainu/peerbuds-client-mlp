@@ -32,6 +32,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import { SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
 import _ from 'lodash';
 
+
 @Component({
   selector: 'app-workshop-edit',
   templateUrl: './workshop-edit.component.html',
@@ -89,6 +90,10 @@ export class WorkshopEditComponent implements OnInit {
 
   public days;
 
+  public _CANVAS;
+  public _VIDEO;
+  public _CTX;
+
   // TypeScript public modifiers
   constructor(
     public router: Router,
@@ -111,7 +116,6 @@ export class WorkshopEditComponent implements OnInit {
     this.userId = cookieUtilsService.getValue('userId');
     this.options = requestHeaderService.getOptions();
 
-    console.log("Inside constructor workshop");
   }
 
   public ngOnInit() {
@@ -177,7 +181,9 @@ export class WorkshopEditComponent implements OnInit {
     this.initializeWorkshop();
 
     this.initializeTimeLine();
-
+    
+    this._CANVAS = <HTMLCanvasElement> document.querySelector("#video-canvas");
+    this._VIDEO = document.querySelector("#main-video");
   }
 
   private extractDate(dateString: string) {
@@ -754,4 +760,139 @@ export class WorkshopEditComponent implements OnInit {
       .subscribe();
   }
 
+
+  public FileUpload(event) {
+    // debugger;
+    // event.preventDefault();
+    // if (event.target.files) {
+    //   Array.prototype.slice.call(event.target.files).forEach(function(file){
+    //     new FileUploadThumbnail({
+    //       maxWidth: 500,
+    //       maxHeight: 40,
+    //       file: file,
+    //       onSuccess: function(src){
+    //         debugger;
+    //         // document.getElementById('preview_image').src = src || '';
+    //       }
+    //     }).createThumbnail();
+    //   });
+    // }
+    // event.target.value = null;
+    // return false;
+    //document.getElementById('file').addEventListener('change', function(e) {
+      //e.preventDefault();
+      // if (e.target.files) {
+      //   Array.prototype.slice.call(e.target.files).forEach(function(file){
+      //     new FileUploadThumbnail({
+      //       maxWidth: 500,
+      //       maxHeight: 40,
+      //       file: file,
+      //       onSuccess: function(src){
+      //         document.getElementById('preview_image').src = src || '';
+      //       }
+      //     }).createThumbnail();
+      //   });
+      // }
+      // e.target.value = null;
+      //return false;
+    //});
+
+  }
+
+  uploadCanvasVideo(event) {
+    // Validate whether MP4
+    if(['video/'].indexOf(event.target.files[0].type) == -1) {
+        alert('Error : Only Video allowed');
+        return;
+    }
+
+    this._CTX = this._CANVAS.getContext("2d");
+    // Hide upload button
+   //  document.querySelector("#upload-button").style.display = 'none';
+
+    // Object Url as the video source
+    document.querySelector("#main-video source").setAttribute('src', URL.createObjectURL(event.target.files[0]));
+    // Load the video and show it
+    this._VIDEO.load();
+    // this._VIDEO.style.display = 'inline';
+    let self = this;
+
+    //this._VIDEO.onloadedmetadata = function(e){
+    this._VIDEO.addEventListener('loadedmetadata', function(e){
+        setTimeout(() => self.getMetadata(), 1000);
+        // self._CTX = self._CANVAS.getContext("2d");
+        // self._CANVAS.width = 150;//this.videoWidth;
+        // self._CANVAS.height = 100;//this.videoHeight;
+        // self._CTX.drawImage(this, 0, 0, self._CANVAS.width, self._CANVAS.height);
+      }, false);
+    }
+
+    getMetadata() {
+      console.log(new Date());
+      this._CANVAS.width = 150;//this.videoWidth;
+      this._CANVAS.height = 100;//this.videoHeight;
+      this._CTX.drawImage(this._VIDEO, 0, 0, this._CANVAS.width, this._CANVAS.height);
+
+    }
+
+    uploadImage1(event) {
+      if (event.target.files == null || event.target.files == undefined) {
+            document.write("This Browser has no support for HTML5 FileReader yet!");
+            return false;
+        }
+ 
+        for (var i = 0; i < event.target.files.length; i++) {
+            var file = event.target.files[i];
+            var imageType = /image.*/;
+ 
+            if (!file.type.match(imageType)) {
+                continue;
+ 
+            }
+ 
+            var reader = new FileReader();
+ 
+            if (reader != null) {
+ 
+                reader.onload = this.GetThumbnail;
+                reader.readAsDataURL(file);
+            }
+ 
+ 
+        }
+    }
+
+    GetThumbnail(e) {
+        var myCan = document.createElement('canvas');
+        var img = new Image();
+        img.src = e.target.result;
+        img.onload = function () {
+ 
+            myCan.id = "myTempCanvas";
+            var tsize = 100;
+            myCan.width = Number(tsize);
+            myCan.height = Number(tsize);
+            if (myCan.getContext) {
+                var cntxt = myCan.getContext("2d");
+                cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
+                var dataURL = myCan.toDataURL();
+ 
+ 
+                if (dataURL != null && dataURL != undefined) {
+                    var nImg = document.createElement('img');
+                    nImg.src = dataURL;
+                    document.getElementById('image-holder').appendChild(nImg);
+ 
+                }
+                else
+                    alert('unable to get context');
+ 
+            }
+ 
+        }
+ 
+    }
+
+
 }
+
