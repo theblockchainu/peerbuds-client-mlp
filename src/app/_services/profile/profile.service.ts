@@ -34,7 +34,7 @@ export class ProfileService {
     return this.userId;
   }
 
-  public getPeer() {
+  public getPeer(id) {
     const peer = {};
     if (this.userId) {
       const options = `{"where": "","order": "","limit": "",
@@ -42,7 +42,7 @@ export class ProfileService {
       {"collections":{"reviews": {"peer": "profiles"}}},
       {"ownedCollections":[{"reviews":{"peer":"profiles"}},
       "calendars",{"contents":"schedules"}]},"communities","identities"]}`;
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
+      return this.http.get(this.config.apiUrl + '/api/peers/' + id + '?filter=' + options)
         .map((response: Response) => response.json());
     }
   }
@@ -149,9 +149,9 @@ export class ProfileService {
         .map((response: Response) => response.json());
     }
   }
-  public getOwnedCollectionCount() {
+  public getOwnedCollectionCount(id) {
      if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections/count')
+      return this.http.get(this.config.apiUrl + '/api/peers/' + id + '/ownedCollections/count')
       .map((response: Response) => response.json());
     }
   }

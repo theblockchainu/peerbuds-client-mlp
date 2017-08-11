@@ -9,15 +9,15 @@
         <div class="seperate-section text-center">
           <div class="title dot-dot">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
           <div class="sub-title dot-dot">{{peer.profiles[0].headline}}</div>
-          <div class="margin-top-10">
+          <div class="margin-top-10" [hidden]="profileId === userId">
             <button class="btn btn-default" title="Message">Message</button>
             <span class="online-status online margin-left-15" title="Online"></span>
           </div>
         </div>
-        <div class="seperate-section">
+        <!--<div class="seperate-section">
           <div class="fs-18 fw-bold">Karma Earned <i class="fa fa-question-circle text-grey"></i></div>
           <div class="text-center fs-20 text-grey margin-top-15">3.045k</div>
-        </div>
+        </div>-->
         <div class="seperate-section fs-14">
           <div class="text-grey margin-bottom-10"><i class="fa fa-microphone margin-right-10"></i> {{peer.profiles[0].languages}}</div>
           <div class="text-grey"><i class="fa fa-map-marker margin-right-10"></i> {{peer.profiles[0].location}}</div>
@@ -174,7 +174,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="sidebar-details">
+                <div class="sidebar-details" [hidden]="profileId === userId">
                   <button class="btn btn-success btn-book" (click)="bookSessionModal.show()">Book</button>
                 </div>
               </tab>
@@ -184,7 +184,7 @@
                   <div class="text-black margin-bottom-10 margin-top-15 fw-bold">{{ experience.title != '' ? experience.title : 'No Title' }}</div>
                   <p class="text-grey lh-24 margin-bottom-20">{{ experience.description != '' ? experience.description : 'No Description' }}</p>
                 </div>
-                <div class="sidebar-details">
+                <div class="sidebar-details" [hidden]="profileId === userId">
                   <button class="btn btn-success btn-book" (click)="seeDatesExperienceModal.show()">See dates</button>
                 </div>
               </tab>
@@ -194,7 +194,7 @@
                   <div class="text-black margin-bottom-10 margin-top-15 fw-bold">{{ workshop.title != '' ? workshop.title : 'No Title' }}</div>
                   <p class="text-grey lh-24 margin-bottom-20">{{ workshop.description != '' ? workshop.description : 'No Description' }}</p>
                 </div>
-                <div class="sidebar-details">
+                <div class="sidebar-details" [hidden]="profileId === userId">
                   <button class="btn btn-success btn-book" (click)="seeDatesWorkshopModal.show()">See dates</button>
                 </div>
               </tab>
@@ -490,10 +490,10 @@
                   <div *ngFor="let calendar of workshop.calendars">
                     <button class="btn btn-success session-join-btn">Choose Dates</button>
                     <div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
-                    <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="toggleSession(1);">View schedule</a>
-                    <div class="session-list-box">
-                      <div class="session-list" *ngFor="let content of workshop.contents">
-                        <span class="display-inline-block margin-bottom-10">{{ calendar.startDate | date: 'EEE, MMM dd' }}</span><br>
+                    <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="showHideSession[$index] =! showHideSession[$index]">View schedule</a>
+                    <div class="session-list-box" [hidden]="showHideSession[$index]">
+                      <div class="session-list" *ngFor="let content of calendar.contents">
+                        <span class="display-inline-block margin-bottom-10">{{ content.schedules[0].startDate | date: 'EEE, MMM dd' }}</span><br>
                         <span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
                       </div>
                     </div>
@@ -539,8 +539,8 @@
                     <div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
                     <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="toggleSession(1);">View schedule</a>
                     <div class="session-list-box">
-                      <div class="session-list" *ngFor="let content of experience.contents">
-                        <span class="display-inline-block margin-bottom-10">{{ calendar.startDate | date: 'EEE, MMM dd' }}</span><br>
+                      <div class="session-list" *ngFor="let content of calendar.contents">
+                        <span class="display-inline-block margin-bottom-10">{{ content.schedules[0].startDate | date: 'EEE, MMM dd' }}</span><br>
                         <span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
                       </div>
                     </div>

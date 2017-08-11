@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { AppConfig } from '../app.config';
+import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
+import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ProfileService } from '../_services/profile/profile.service';
 import * as moment from 'moment';
 
@@ -10,11 +12,13 @@ import * as moment from 'moment';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-
+  public profileId: string;
   public userType = 'learner';
+  public userId: string;
   public peer: any = {};
   public reviews: any = [];
   public joinedCollectionReviews: any = [];
+  public collectionCalendarSchedules: any = [];
   public max = 5;
   public rate = 0;
   public isReadonly = true;
@@ -24,9 +28,17 @@ export class ProfileComponent implements OnInit {
   public defaultProfileUrl = '/assets/images/default-user.jpg';
   public defaultImageUrl = 'http://lorempixel.com/350/250/city/9';
   public calendars: any = [];
-  public showHideSession = true;
+  public showHideSession = false;
 
-  constructor(private config: AppConfig, public profileService: ProfileService) { }
+  constructor(private config: AppConfig,
+    public profileService: ProfileService,
+    private cookieUtilsService: CookieUtilsService,
+    private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.params.subscribe(params => {
+      this.profileId = params['profileId'];
+    });
+    this.userId = cookieUtilsService.getValue('userId');
+  }
 
   ngOnInit() {
     this.getUserType(this.setUserData.bind(this));
@@ -38,8 +50,8 @@ export class ProfileComponent implements OnInit {
 
   getPeer() {
     // console.log('in get peer');
-    this.profileService.getPeer().subscribe(peer => {
-      console.log('peer' + JSON.stringify(peer));
+    this.profileService.getPeer(this.profileId).subscribe(peer => {
+      // console.log('peer' + JSON.stringify(peer));
       this.peer = peer;
       this.peer.identities.forEach(identity => {
         identity.profile = JSON.parse(identity.profile);
@@ -68,11 +80,19 @@ export class ProfileComponent implements OnInit {
           });
         }
 
-        // if (collection.calendars && collection.calendars.length) {
-        //   collection.calendars.forEach(calendar => {
-        //     collection.contents.scheduleDate = collection.startDate;
-        //   });
-        // }
+        if (collection.calendars && collection.calendars.length) {
+          collection.calendars.forEach(calendar => {
+            if (collection.contents && collection.contents.length) {
+              calendar.contents = this.cloneObject(collection.contents);
+              calendar.contents.forEach(content => {
+                const startDate = moment(calendar.startDate).add(content.schedules[0].startDay, 'days');
+                const endDate = moment(startDate).add(content.schedules[0].endDay, 'days');
+                content.schedules[0].startDate = startDate;
+                content.schedules[0].endDate = endDate;
+              });
+            }
+          });
+        }
 
         // store owned collection into separate array
         if (collection.type === 'session') {
@@ -125,10 +145,35 @@ export class ProfileComponent implements OnInit {
         }
       });
     }
+
+    console.log('peer' + JSON.stringify(this.peer));
   }
 
+  // recursive function to clone an object. If a non object parameter
+  // is passed in, that parameter is returned and no recursion occurs.
+
+  cloneObject(obj) {
+    try {
+      if (obj === null || typeof obj !== 'object') {
+        return obj;
+      }
+
+      const temp = obj.constructor(); // give temp the original obj's
+      // constructor
+
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          temp[key] = this.cloneObject(obj[key]);
+        }
+      }
+
+      return temp;
+    } catch (e) {
+      console.log('In cloneObject catch ' + e);
+    }
+  }
   getUserType(setUserData) {
-    this.profileService.getOwnedCollectionCount().subscribe(collection_count => {
+    this.profileService.getOwnedCollectionCount(this.profileId).subscribe(collection_count => {
       if (collection_count.count > 0) {
         this.userType = 'teacher';
       }
