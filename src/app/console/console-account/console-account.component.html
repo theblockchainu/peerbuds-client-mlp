@@ -1,0 +1,30 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-3">
+    <md-list>
+      <md-list-item [routerLink]="'/console/account/notifications'" [class.bold]="isTabActive('notifications')">
+        Notifications
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/account/paymentmethods'" [class.bold]="isTabActive('paymentmethods')">
+        Payment Methods
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/account/payoutmethods'" [class.bold]="isTabActive('payoutmethods')">
+        Payout Methods
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/account/transactions'" [class.bold]="isTabActive('transactions')">
+        Transactions
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/account/privacy'" [class.bold]="isTabActive('privacy')">
+        Privacy
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/account/security'" [class.bold]="isTabActive('security')">
+        Security
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/account/settings'" [class.bold]="isTabActive('settings')">
+        Settings
+      </md-list-item>
+    </md-list>
+  </div>
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

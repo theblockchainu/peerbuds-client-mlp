@@ -1,0 +1,27 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-3">
+    <md-list>
+      <md-list-item [routerLink]="'/console/profile/edit'" [class.bold]="isTabActive('edit')">
+        Edit
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/profile/photos'" [class.bold]="isTabActive('photos')">
+        Photos
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/profile/topics'" [class.bold]="isTabActive('topics')">
+        Topics
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/profile/verification'" [class.bold]="isTabActive('verification')">
+        Verification
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/profile/reviews'" [class.bold]="isTabActive('reviews')">
+        Reviews
+      </md-list-item>
+      <md-list-item>
+        <button md-raised-button (click)="viewProfile()" color="primary">View Profile</button>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

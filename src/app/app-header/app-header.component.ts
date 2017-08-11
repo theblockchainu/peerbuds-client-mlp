@@ -9,6 +9,7 @@ import { RequestHeaderService } from '../_services/requestHeader/request-header.
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss']
 })
+
 export class AppHeaderComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
   public profile: any = {};

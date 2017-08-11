@@ -8,21 +8,31 @@ import { WorkshopEditComponent } from './workshop-edit/workshop-edit.component';
 
 import { WorkshopContentComponent } from './workshop-content/workshop-content.component';
 import { ContentViewComponent } from './content-view/content-view.component';
-import { WorkshopConsoleComponent } from './workshop-console/workshop-console.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { WorkshopPageComponent } from './workshop-page/workshop-page.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule } from '@angular/material';
+import 'hammerjs';
 
 
 @NgModule({
   imports: [
     SharedModule,
-    WorkshopRoutingModule
+    WorkshopRoutingModule,
+    BrowserAnimationsModule,
+    MdCardModule,
+    MdButtonModule,
+    MdMenuModule,
+    MdToolbarModule,
+    MdIconModule,
+    MdProgressBarModule,
+    MdListModule,
+    MdTabsModule
   ],
   declarations: [
     WorkshopEditComponent,
     WorkshopContentComponent,
     ContentViewComponent,
-    WorkshopConsoleComponent,
     AppointmentCalendarComponent,
     WorkshopPageComponent],
   providers: [
