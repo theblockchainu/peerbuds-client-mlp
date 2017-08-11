@@ -1,28 +1,32 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-
-import { AuthenticationService } from '../../_services/authentication/authentication.service';
-import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
-import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
-import { CollectionService } from '../../_services/collection/collection.service';
-import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
-import { StepEnum } from '../StepEnum';
-
 import {
   URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import { AppConfig } from '../../app.config';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
+
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 
+
+import { StepEnum } from '../StepEnum';
+import { AppConfig } from '../../app.config';
+
+import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
+
 import { SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-workshop-edit',
@@ -31,10 +35,11 @@ import { SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.servi
 })
 
 export class WorkshopEditComponent implements OnInit {
-  public sidebarFilePath:string = 'assets/menu/workshop-static-left-sidebar-menu.json';
+  public sidebarFilePath = 'assets/menu/workshop-static-left-sidebar-menu.json';
   sidebarMenuItems;
 
   public interest1: FormGroup;
+  public newTopic: FormGroup;
   public workshop: FormGroup;
   public selectedTopic: FormGroup;
   public timeline: FormGroup;
@@ -52,6 +57,7 @@ export class WorkshopEditComponent implements OnInit {
   public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
   public createTopicURL = 'http://localhost:3000/api/topics';
   public placeholderStringTopic = 'Search for a topic ';
+  public maxTopicMsg = 'Choose max 3 related topics';
 
 
   public difficulties = [];
@@ -59,6 +65,7 @@ export class WorkshopEditComponent implements OnInit {
   public contentComplete = false;
   public currencies = [];
   public key;
+  public maxTopics = 3;
 
   private options;
 
@@ -73,6 +80,7 @@ export class WorkshopEditComponent implements OnInit {
   public selectedLanguages = [];
   public suggestedTopics = [];
   public interests = [];
+  public removedInterests = [];
 
   public days;
 
@@ -88,17 +96,25 @@ export class WorkshopEditComponent implements OnInit {
     private countryPickerService: CountryPickerService,
     public _collectionService: CollectionService,
     private mediaUploader: MediaUploaderService,
-    private cookieUtilsService: CookieUtilsService
+    private cookieUtilsService: CookieUtilsService,
+    public requestHeaderService: RequestHeaderService
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
       this.step = params['step'];
     });
     this.userId = cookieUtilsService.getValue('userId');
+    this.options = requestHeaderService.getOptions();
   }
 
   public ngOnInit() {
-    this.interest1 = new FormGroup({});
+    this.interest1 = new FormGroup({
+      // interests: this._fb.array([])
+    });
+
+    this.newTopic = this._fb.group({
+      topicName: ['', Validators.requiredTrue]
+    });
 
     this.workshop = this._fb.group({
       // id: '',
@@ -187,7 +203,7 @@ export class WorkshopEditComponent implements OnInit {
         for (const key in itenaries) {
           if (itenaries.hasOwnProperty(key)) {
             const itr: FormGroup = this.InitItenary();
-            itr.controls.date.setValue(this.claculatedDate(this.timeline.value.calendar.startDate, key));
+            itr.controls.date.setValue(this.calculatedDate(this.timeline.value.calendar.startDate, key));
             for (const contentObj of itenaries[key]) {
               const contentForm: FormGroup = this.InitContent();
               this.assignFormValues(contentForm, contentObj);
@@ -215,7 +231,7 @@ export class WorkshopEditComponent implements OnInit {
             console.log(this.extractTime(value[key]));
             form.controls[key].setValue(this.extractTime(value[key]));
           } else if (key === 'startDay' || key === 'endDay') {
-            form.controls[key].setValue(this.claculatedDate(this.timeline.value.calendar.startDate, value[key]));
+            form.controls[key].setValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
           } else {
             form.controls[key].setValue(value[key]);
           }
@@ -313,9 +329,9 @@ export class WorkshopEditComponent implements OnInit {
     this.languagePickerService.getLanguages()
       .subscribe((languages) => this.languagesArray = languages);
 
-    this.http.get(this.config.apiUrl + '/api/topics')
+    this.http.get(this.config.searchUrl + '/api/search/topics')
       .map((response: any) => {
-        this.suggestedTopics = response;
+        this.suggestedTopics = response.slice(0, 10);
       }).subscribe();
 
     this.profileImagePending = true;
@@ -337,32 +353,50 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public selected(event) {
-    this.selectedLanguages = event;
+
+    if (this.interests.length >= 3) {
+      this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+    }
+    this.interests = event;
+    this.suggestedTopics = event;
+    this.suggestedTopics.map((obj) => {
+      obj.checked = 'true';
+      return obj;
+    });
+  }
+
+  public removed(event) {
+
+    if (this.removedInterests.length !== 0) {
+      const topicArray = [];
+      this.removedInterests.forEach((topic) => {
+        /* this.http.put(this.config.apiUrl +  '/api/peers/'
+            + this.userId + '/topics/rel/' + topic.id)
+                  .map((response: Response) => {} ).subscribe();*/
+        topicArray.push(topic.id);
+      });
+      if (topicArray.length !== 0) {
+        this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topics/rel/' + topicArray, this.options)
+          .map((response) => { console.log(response); }).subscribe();
+      }
+    }
   }
 
   public daysCollection(event) {
     this.days = event;
-    /*
-    "submenu" : [
-            {
-                "title" : "Select Dates",
-                "step" : 13,
-                "active" : false,
-                "visible" : true 
-            }],
-    */
     this.sidebarMenuItems[2]['submenu'] = [];
-    this.days.controls.forEach(function(item, index) {
-      let index2 = +index + 1;
-      this.sidebarMenuItems[2]['submenu'].push({"title": "Day " + index2,
-                                                "step" : 13+ '_'+ index2,
-                                                "active" : false,
-                                                "visible" : true
-                                                });
+    this.days.controls.forEach(function (item, index) {
+      const index2 = +index + 1;
+      this.sidebarMenuItems[2]['submenu'].push({
+        'title': 'Day ' + index2,
+        'step': 13 + '_' + index2,
+        'active': false,
+        'visible': true
+      });
     }, this);
-    }
+  }
 
-  
+
 
   public getMenuArray(event) {
     this.sidebarMenuItems = event;
@@ -402,13 +436,16 @@ export class WorkshopEditComponent implements OnInit {
     const control = <FormArray>this.workshop.controls['imageUrls'];
     this.workshopImage1Pending = false;
     control.push(new FormControl(value));
+    console.log(this.workshop.controls['imageUrls'].value);
   }
 
   uploadVideo(event) {
     console.log(event.files);
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.workshop.controls['videoUrl'].setValue(responseObj.url);
+        this.workshop.controls['videoUrl'].setValue(this.config.apiUrl + responseObj.url);
+        console.log(this.workshop.controls['videoUrl'].value);
+
         this.workshopVideoPending = false;
       }).subscribe();
     }
@@ -419,7 +456,6 @@ export class WorkshopEditComponent implements OnInit {
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
         this.addUrl(responseObj.url);
-        this.workshopVideoPending = false;
       }).subscribe();
     }
     this.workshopImage1Pending = false;
@@ -442,8 +478,6 @@ export class WorkshopEditComponent implements OnInit {
     const body = data.value;
     delete body.selectedLanguage;
 
-    console.log(body);
-
     this._collectionService.patchCollection(this.workshopId, body).map(
       (response) => {
         this.step++;
@@ -451,8 +485,6 @@ export class WorkshopEditComponent implements OnInit {
         this.router.navigate(['editWorkshop', this.workshopId, this.step]);
       }).subscribe();
   }
-
-
 
   /**
    * numberOfdays
@@ -464,9 +496,9 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   /**
-   * claculatedDate
+   * calculatedDate
   currenDate,day */
-  public claculatedDate(currenDate, day) {
+  public calculatedDate(currenDate, day) {
     const current = moment(currenDate);
     current.add(day, 'days');
     return current.format('YYYY-MM-DD');
@@ -490,11 +522,27 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public submitInterests() {
-    console.log(this.selectedLanguages);
-    this.step++;
-    this.workshopStepUpdate();
-    this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+    let body = {};
+    const topicArray = [];
+    this.interests.forEach((topic) => {
+      /* this.http.put(this.config.apiUrl +  '/api/peers/'
+          + this.userId + '/topics/rel/' + topic.id)
+                .map((response: Response) => {} ).subscribe();*/
+      topicArray.push(topic.id);
+    });
+    body = {
+      'targetIds': topicArray
+    };
+    if (topicArray.length !== 0) {
+      this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', body)
+        .map((response) => {
+          this.step++;
+          this.workshopStepUpdate();
+          this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+        }).subscribe();
+    }
   }
+
   /**
    * goto(toggleStep)  */
   public goto(toggleStep) {
@@ -509,7 +557,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   saveandexit() {
-    console.log(this.step);
 
     if (this.step == 12) {
       const data = this.timeline;
@@ -537,6 +584,23 @@ export class WorkshopEditComponent implements OnInit {
           this.router.navigate(['workshop-console']);
         }).subscribe();
     }
+  }
+
+  AddNewTopic(data, modal) {
+    const body = {
+      'name': data.value.topicName,
+      'type': 'user'
+    };
+    let topic;
+    this.http.post(this.config.apiUrl + '/api/topics', body)
+      .map((res) => {
+        topic = res;
+        topic.checked = true;
+        this.interests.push(topic);
+        this.suggestedTopics = _.union(this.suggestedTopics, this.interests);
+        modal.hide();
+      })
+      .subscribe();
   }
 
 }

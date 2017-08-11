@@ -75,6 +75,16 @@ export class CollectionService {
 
   }
 
+  public getCollectionDetail(id: string, param: any) {
+    const filter = JSON.stringify(param);
+    return this.http
+      .get(this.config.apiUrl + '/api/collections/' + id + '?filter=' + filter)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
+
   /**
    * postCollection
    */

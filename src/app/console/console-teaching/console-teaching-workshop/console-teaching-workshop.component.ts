@@ -1,26 +1,25 @@
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
+import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { CollectionService } from '../../_services/collection/collection.service';
-import {forEach} from "@angular/router/src/utils/collection";
+import { CollectionService } from '../../../_services/collection/collection.service';
 
 declare var moment: any;
 
 @Component({
-  selector: 'app-workshop-console',
-  templateUrl: './workshop-console.component.html',
-  styleUrls: ['./workshop-console.component.scss']
+  selector: 'app-console-teaching-workshop',
+  templateUrl: './console-teaching-workshop.component.html',
+  styleUrls: ['./console-teaching-workshop.component.scss']
 })
-export class WorkshopConsoleComponent implements OnInit {
+export class ConsoleTeachingWorkshopComponent implements OnInit {
 
   public workshops: any;
   public loaded: boolean;
   public now: Date;
   private outputResult: any;
+  public activeTab: string;
 
   constructor(
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     public router: Router,
     public _collectionService: CollectionService) {
   }
@@ -73,15 +72,6 @@ export class WorkshopConsoleComponent implements OnInit {
   }
 
   /**
-   * createWorkshop
-   */
-  public createWorkshop() {
-    this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
-      this.router.navigate(['editWorkshop', workshopObject.id, 1]);
-    });
-  }
-
-  /**
    * viewWorkshop
    */
   public viewWorkshop(workshop) {
@@ -122,7 +112,7 @@ export class WorkshopConsoleComponent implements OnInit {
         return diff + ' days ago';
       case diff >= 7 && diff < 30:
         return Math.floor(diff / 7) + ' weeks ago';
-      case diff >=30 && diff < 365:
+      case diff >= 30 && diff < 365:
         return Math.floor(diff / 30) + ' months ago';
       case diff >= 365:
         return Math.floor(diff / 365) + ' years ago';
@@ -243,16 +233,14 @@ export class WorkshopConsoleComponent implements OnInit {
         if (this.getCurrentCalendar(workshop.calendars).startDate > this.now) {
           return 0;
         }
-        else {
-          const totalContents = workshop.contents.length;
-          let pendingContents = 0;
-          workshop.contents.forEach((content) => {
-            if ( moment(this.getCurrentCalendar(workshop.calendars).startDate).add(content.schedules[0].startDay, 'days') > this.now) {
-              pendingContents++;
-            }
-          });
-          return ( 1 - (pendingContents / totalContents) ) * 100;
-        }
+        const totalContents = workshop.contents.length;
+        let pendingContents = 0;
+        workshop.contents.forEach((content) => {
+          if (moment(this.getCurrentCalendar(workshop.calendars).startDate).add(content.schedules[0].startDay, 'days') > this.now) {
+            pendingContents++;
+          }
+        });
+        return ( 1 - (pendingContents / totalContents) ) * 100;
       case 'submitted':
         return 100;
       case 'complete':

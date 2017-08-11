@@ -8,7 +8,6 @@ import { WorkshopEditComponent } from './workshop-edit/workshop-edit.component';
 
 import { WorkshopContentComponent } from './workshop-content/workshop-content.component';
 import { ContentViewComponent } from './content-view/content-view.component';
-import { WorkshopConsoleComponent } from './workshop-console/workshop-console.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { WorkshopPageComponent } from './workshop-page/workshop-page.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -34,7 +33,6 @@ import 'hammerjs';
     WorkshopEditComponent,
     WorkshopContentComponent,
     ContentViewComponent,
-    WorkshopConsoleComponent,
     AppointmentCalendarComponent,
     WorkshopPageComponent],
   providers: [

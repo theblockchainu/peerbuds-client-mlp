@@ -29,8 +29,8 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'experience', component: ListExperienceComponent,
-    canActivate: [AuthGuardService]
+    path: 'experience', component: ListExperienceComponent// ,
+    // canActivate: [AuthGuardService]
   }
 ];
 
