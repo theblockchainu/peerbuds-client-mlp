@@ -3,7 +3,7 @@ import { AuthenticationService } from '../_services/authentication/authenticatio
 import { Observable } from 'rxjs/Rx';
 import { AuthService } from '../_services/auth/auth.service';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
-
+import { AppConfig } from '../app.config';
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
@@ -15,7 +15,8 @@ export class AppHeaderComponent implements OnInit {
   public profile: any = {};
   public userType = '';
 
-  constructor(public authService: AuthenticationService, public requestHeaderService: RequestHeaderService ) {
+  constructor(public authService: AuthenticationService, public requestHeaderService: RequestHeaderService,
+    private config: AppConfig) {
     this.isLoggedIn = authService.isLoggedIn();
   }
 

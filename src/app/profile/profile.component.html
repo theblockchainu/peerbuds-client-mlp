@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
         <div class="profile-image-big">
-          <img src="{{profile.picture_url}}" alt="image" />
+          <img src="{{config.apiUrl+profile.picture_url}}" alt="image" />
         </div>
         <div class="seperate-section text-center">
           <div class="title dot-dot">{{profile.first_name}} {{profile.last_name}}</div>
