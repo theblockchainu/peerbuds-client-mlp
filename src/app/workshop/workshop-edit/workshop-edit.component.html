@@ -291,7 +291,7 @@
               <div class="stepHeader">Showcase your workshop</div>
               <div class="row" style="margin-left:20px;margin-top:15px;">
                 <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)" novalidate>
-                  <div class="row">
+                  <!-- <div class="row">
                     <div id="video-demo-container">
                       <button type="button" id="upload-button" (click)="uploadButton()">Select MP4 Video</button> 
                       <input type="file" id="file-to-upload" accept="video/*" (change)="uploadCanvasVideo($event)"/>
@@ -299,24 +299,20 @@
                         <source type="video/mp4">
                       </video>
                       <canvas id="video-canvas"></canvas>
-                      <!-- <div id="thumbnail-container">
+                      <div id="thumbnail-container">
                         Seek to <select id="set-video-seconds"></select> seconds <a id="get-thumbnail" href="#">Download Thumbnail</a>
-                      </div> -->
+                      </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-8">
-                      <!-- <div id="upload" class="drop-area">
-                        Upload File
-                      </div>
-                      <div id="thumbnail"></div> -->
                       <div id="wrapper">       
                         <input id="fileUpload" type="file" (change)="uploadImage1($event)"/><br />
                         <div id="image-holder"> 
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="row" style="margin-top:40px">
                     <div class="col-md-8">
@@ -324,12 +320,26 @@
                       <span class="label label-warning" [hidden]="!workshopVideoPending">Pending</span>
                       <span class="label label-success" [hidden]="workshopVideoPending">Success</span>
                       <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000" auto="true"
-                        chooseLabel="Browse"></p-fileUpload>
+                        chooseLabel="Browse">
+                      </p-fileUpload>
+                      <div class="ui-fileupload-row"  *ngIf="urlForVideo">
+                        <div>{{urlForVideo.split('/')[5]}}</div>
+                        <div><button icon="fa-close" pbutton="" type="button" (click)=deleteFromContainer(urlForVideo) ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                      </div>
+
+                      
                       <div class="stepHeader">Upload Images</div>
                       <span class="label label-warning" [hidden]="!workshopImage1Pending">Pending</span>
                       <span class="label label-success" [hidden]="workshopImage1Pending">Success</span>
                       <p-fileUpload #fubauto name="image" multiple="multiple" customUpload="true" (uploadHandler)="uploadImages($event)" maxFileSize="10000000"
                         auto="true" chooseLabel="Browse"></p-fileUpload>
+                      <div *ngIf="urlForImages.length">
+                        <div *ngFor="let file of urlForImages" class="ui-fileupload-row" >
+                          <div><img src="{{config.apiUrl+file}}" width="50"></div>
+                          <div>{{file.split('/')[5]}}</div>
+                          <div><button icon="fa-close" pbutton="" type="button" (click)=deleteFromContainer(file) ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="row">
@@ -354,7 +364,7 @@
                 <div class="col-sm-12 margin-bottom-30">
                   Price:
                   <input type="number" formControlName="price">
-                  <select formControlName="cancellationPolicy">
+                  <select formControlName="currency">
                             <option *ngFor="let c of currencies" [value]="c">{{c}} </option>
                       </select>
                 </div>

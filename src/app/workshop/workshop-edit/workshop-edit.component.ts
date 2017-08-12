@@ -94,6 +94,9 @@ export class WorkshopEditComponent implements OnInit {
   public _VIDEO;
   public _CTX;
 
+  public urlForVideo;
+  public urlForImages=[];
+
   // TypeScript public modifiers
   constructor(
     public router: Router,
@@ -385,41 +388,8 @@ export class WorkshopEditComponent implements OnInit {
       this._collectionService.getCollectionDetail(this.workshopId, query)
         .subscribe((res) => {
           console.log(res);
-          // Topics
-          this.relTopics = _.uniqBy(res.topics, 'id');
-          this.interests = this.relTopics;
-          if(this.interests) {
-            this.suggestedTopics = this.interests;
-          }
-          // Language
-          if(res.language.length > 0) {
-            this.selectedLanguages = res.language[0];
-            this.workshop.controls.selectedLanguage.patchValue(res.language[0]);
-          }
-          // aboutHost TBD
-          this.workshop.controls.aboutHost.patchValue(res.aboutHost);
-
-          // Title
-          this.workshop.controls.title.patchValue(res.title);
-
-          // Headline
-          this.workshop.controls.headline.patchValue(res.headline);
-
-          // Description
-          this.workshop.controls.description.patchValue(res.description);
-
-          // Difficulty Level
-          this.workshop.controls.difficultyLevel.patchValue(res.difficultyLevel);
-
-          // Notes
-          this.workshop.controls.notes.patchValue(res.notes);
-
-          //Seats
-          this.workshop.controls.maxSpots.patchValue(res.maxSpots);
-
           
-
-          //this.initializeFormValues(res);
+          this.initializeFormValues(res);
 
           //this.workshop = res;
           // this.parseCalendar(this.workshop);
@@ -532,17 +502,50 @@ export class WorkshopEditComponent implements OnInit {
   }
 
 
-  private initializeFormValues(data) {
-   // data = this._collectionService.sanitize(data);
-    // for (const property in data) {
-    //   if (data.hasOwnProperty(property)) {
-    //     if (property === 'language') {
-    //       this.workshop.controls.selectedLanguage.patchValue(data.language[0]);
-    //     }
-    //     this.workshop.controls[property].patchValue(data[property]);
+  private initializeFormValues(res) {
+    // Topics
+    this.relTopics = _.uniqBy(res.topics, 'id');
+    this.interests = this.relTopics;
+    if(this.interests) {
+      this.suggestedTopics = this.interests;
+    }
+    // Language
+    if(res.language.length > 0) {
+      this.selectedLanguages = res.language[0];
+      this.workshop.controls.selectedLanguage.patchValue(res.language[0]);
+    }
+    // aboutHost TBD
+    this.workshop.controls.aboutHost.patchValue(res.aboutHost);
 
-    //   }
-    // }
+    // Title
+    this.workshop.controls.title.patchValue(res.title);
+
+    // Headline
+    this.workshop.controls.headline.patchValue(res.headline);
+
+    // Description
+    this.workshop.controls.description.patchValue(res.description);
+
+    // Difficulty Level
+    this.workshop.controls.difficultyLevel.patchValue(res.difficultyLevel);
+
+    // Notes
+    this.workshop.controls.notes.patchValue(res.notes);
+
+    //Seats
+    this.workshop.controls.maxSpots.patchValue(res.maxSpots);
+
+    //Photos and Videos
+    this.workshop.controls['videoUrl'].setValue(res.videoUrl);
+    this.urlForVideo = res.videoUrl;
+    // <img src="{{config.apiUrl+content.imageUrl}}">
+    this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
+    this.urlForImages = res.imageUrls;
+
+    //Currency, Amount, Cancellation Policy
+    this.workshop.controls.price.patchValue(res.price);
+    this.workshop.controls.currency.patchValue(res.currency);
+    this.workshop.controls.cancellationPolicy.patchValue(res.cancellationPolicy);
   }
 
   initAddress() {
@@ -571,8 +574,9 @@ export class WorkshopEditComponent implements OnInit {
   uploadVideo(event) {
     console.log(event.files);
     for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.workshop.controls['videoUrl'].setValue(this.config.apiUrl + responseObj.url);
+      this.mediaUploader.upload(file).map((responseObj: Response) => {debugger;
+
+        this.workshop.controls['videoUrl'].setValue(responseObj.url);
         console.log(this.workshop.controls['videoUrl'].value);
 
         this.workshopVideoPending = false;
@@ -600,7 +604,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public submitWorkshop(data) {
-    debugger;
     const lang = <FormArray>this.workshop.controls.language;
     lang.removeAt(0);
     lang.push(this._fb.control(data.value.selectedLanguage));
@@ -761,44 +764,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
 
-  public FileUpload(event) {
-    // debugger;
-    // event.preventDefault();
-    // if (event.target.files) {
-    //   Array.prototype.slice.call(event.target.files).forEach(function(file){
-    //     new FileUploadThumbnail({
-    //       maxWidth: 500,
-    //       maxHeight: 40,
-    //       file: file,
-    //       onSuccess: function(src){
-    //         debugger;
-    //         // document.getElementById('preview_image').src = src || '';
-    //       }
-    //     }).createThumbnail();
-    //   });
-    // }
-    // event.target.value = null;
-    // return false;
-    //document.getElementById('file').addEventListener('change', function(e) {
-      //e.preventDefault();
-      // if (e.target.files) {
-      //   Array.prototype.slice.call(e.target.files).forEach(function(file){
-      //     new FileUploadThumbnail({
-      //       maxWidth: 500,
-      //       maxHeight: 40,
-      //       file: file,
-      //       onSuccess: function(src){
-      //         document.getElementById('preview_image').src = src || '';
-      //       }
-      //     }).createThumbnail();
-      //   });
-      // }
-      // e.target.value = null;
-      //return false;
-    //});
-
-  }
-
   uploadCanvasVideo(event) {
     // Validate whether MP4
     if(['video/'].indexOf(event.target.files[0].type) == -1) {
@@ -891,6 +856,11 @@ export class WorkshopEditComponent implements OnInit {
  
         }
  
+    }
+
+    deleteFromContainer(fileUrl) {
+      this.http.delete(this.config.apiUrl + fileUrl)
+          .map((response) => { console.log(response); }).subscribe();
     }
 
 
