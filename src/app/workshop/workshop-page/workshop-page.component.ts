@@ -23,6 +23,7 @@ export class WorkshopPageComponent implements OnInit {
   public booked = false;
   public chatForm: FormGroup;
   public userType: string;
+  public totalDuration: string;
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -208,8 +209,7 @@ export class WorkshopPageComponent implements OnInit {
 
       }
     });
-    console.log(totalLength);
-
+    this.totalDuration = totalLength.toString();
   }
 
 }
