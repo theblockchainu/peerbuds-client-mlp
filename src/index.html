@@ -17,21 +17,17 @@
   <!-- bootstrap css -->
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
   <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="/assets/styles/themes/bootstrap/theme.css" />
-  <link rel="stylesheet" type="text/css" href="/assets/styles/themes/primeng.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/styles/themes/bootstrap/theme.css" />
+  <link rel="stylesheet" type="text/css" href="assets/styles/themes/primeng.min.css" />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css' />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+  <script src="assets/js/moment.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js'></script>
-
-  <!-- emoji libs -->
-  <link href="/assets/lib/css/emoji.css" rel="stylesheet">
-  <!-- emoji end -->
-
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.2/web-animations.min.js"></script>
 </head>
 
@@ -53,28 +49,6 @@
         document.body.scrollLeft = _scroll.left;
       }
     }
-  </script>
-
-  <!-- Begin emoji-picker JavaScript -->
-  <script src="/assets/lib/js/config.js"></script>
-  <script src="/assets/lib/js/util.js"></script>
-  <script src="/assets/lib/js/jquery.emojiarea.js"></script>
-  <script src="/assets/lib/js/emoji-picker.js"></script>
-  <!-- End emoji-picker JavaScript -->
-
-  <script>
-    $(function () {
-      // Initializes and creates emoji set from sprite sheet
-      window.emojiPicker = new EmojiPicker({
-        emojiable_selector: '[data-emojiable=true]',
-        assetsPath: '/assets/lib/img/',
-        popupButtonClasses: 'fa fa-smile-o'
-      });
-      // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
-      // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
-      // It can be called as many times as necessary; previously converted input fields will not be converted again
-      window.emojiPicker.discover();
-    });
   </script>
   <!-- Google Analytics: change UA-71073175-1 to be your site's ID -->
   <script>

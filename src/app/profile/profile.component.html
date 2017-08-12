@@ -3,8 +3,7 @@
     <div class="row">
       <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
         <div class="profile-image-big">
-          <img [src]="(peer.profiles[0].picture_url != undefined) ? peer.profiles[0].picture_url : defaultProfileUrl" alt="image" class="border-radius-2"
-          />
+          <img src="{{config.apiUrl+profile.picture_url ? config.apiUrl+profile.picture_url: defaultProfileUrl}}" alt="image" />
         </div>
         <div class="seperate-section text-center">
           <div class="title dot-dot">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
