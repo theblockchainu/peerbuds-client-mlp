@@ -20,7 +20,7 @@
     </button>
     <button md-button [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)">
       <div class="circle-thumb">
-        <img src="{{ profile.picture_url }}" alt="A" class="thumb-35">
+        <img src="{{config.apiUrl+profile.picture_url }}" alt="A" class="thumb-35">
       </div>
     </button>
     <button md-button  href="/signup.html" *ngIf="!(isLoggedIn | async)">
@@ -48,7 +48,7 @@
   <button md-menu-item [routerLink]="['/console/teaching/workshops']">
     Create a Workshop
   </button>
-  <button md-menu-item [routerLink]="['/console/teaching/experience']">
+  <button md-menu-item [routerLink]="['/console/teaching/experiences']">
     Create an Experience
   </button>
   <button md-menu-item [routerLink]="['/calendar']">

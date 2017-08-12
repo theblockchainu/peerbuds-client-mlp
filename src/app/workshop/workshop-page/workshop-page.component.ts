@@ -24,6 +24,7 @@ export class WorkshopPageComponent implements OnInit {
   public chatForm: FormGroup;
   public userType: string;
   public totalDuration: string;
+  public modalContent: any;
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -210,6 +211,36 @@ export class WorkshopPageComponent implements OnInit {
       }
     });
     this.totalDuration = totalLength.toString();
+  }
+
+
+  /**
+   * openModal
+content:any   */
+  public openModal(content: any, viewOnlineContent: ModalDirective, viewVideoContent: ModalDirective, viewProjectContent: ModalDirective) {
+    this.modalContent = content;
+    console.log(this.modalContent);
+
+    switch (content.type) {
+      case 'online':
+        {
+          viewOnlineContent.show();
+          break;
+        }
+      case 'video':
+        {
+          viewVideoContent.show();
+          break;
+        }
+      case 'project':
+        {
+          viewProjectContent.show();
+          break;
+        }
+      default:
+        break;
+    }
+
   }
 
 }

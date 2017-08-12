@@ -18,7 +18,7 @@
               <ng-template #topicName>{{workshop.topics[0].name}}</ng-template>
               <ng-template #noTopicText>No Topics</ng-template>
               <ng-template #ongoingCard>
-                <md-card style="text-align: center; padding: 20px;" >
+                <md-card style="text-align: center; padding: 20px;">
                   <md-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
@@ -29,7 +29,7 @@
                     </div>
                     <div class="collectionParticipantImageCarousel">
                       <div class="circle-thumb" *ngFor="let participant of workshop.participants">
-                        <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                        <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
                       </div>
                     </div>
                     <div class="participantCount">
@@ -37,8 +37,9 @@
                     </div>
                     <div class="collectionTitle">{{ workshop.title || 'No Title' }} </div>
                     <md-progress-bar mode="determinate" value="{{getProgressValue(workshop)}}"></md-progress-bar>
-                    <div class="collectionSubtitle" >
-                      {{ calculateNumberOfDays(workshop.calendars[0]) }} Days | {{workshop.contents.length}} Parts | <span *ngIf="workshop.topics.length > 0; then topicName else noTopicText"></span>
+                    <div class="collectionSubtitle">
+                      {{ calculateNumberOfDays(workshop.calendars[0]) }} Days | {{workshop.contents.length}} Parts |
+                      <span *ngIf="workshop.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
                     <p class="upcomingEventLabel">
                       Up Next
@@ -47,7 +48,8 @@
                       {{ getUpcomingEvent(workshop).title }}
                     </div>
                     <div class="upcomingEventTime">
-                      {{ getUpcomingEvent(workshop).type + ' ' + getUpcomingEvent(workshop).fillerWord  + ' in ' +  getUpcomingEvent(workshop).timeToStart + ' Days' }}
+                      {{ getUpcomingEvent(workshop).type + ' ' + getUpcomingEvent(workshop).fillerWord + ' in ' + getUpcomingEvent(workshop).timeToStart
+                      + ' Days' }}
                     </div>
                   </md-card-content>
                   <md-card-actions *ngIf="getUpcomingEvent(workshop).hasStarted">
@@ -60,7 +62,7 @@
                 </md-card>
               </ng-template>
               <ng-template #upcomingCard>
-                <md-card style="text-align: center; padding: 20px;" >
+                <md-card style="text-align: center; padding: 20px;">
                   <md-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
@@ -71,7 +73,7 @@
                     </div>
                     <div class="collectionParticipantImageCarousel">
                       <div class="circle-thumb" *ngFor="let participant of workshop.participants">
-                        <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                        <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
                       </div>
                     </div>
                     <div class="participantCount">
@@ -84,8 +86,9 @@
                     <div class="lighterText">
                       Approved {{getDaysBetween(workshop.updatedAt, now)}}
                     </div>
-                    <div class="collectionSubtitle" >
-                      {{ calculateNumberOfDays(workshop.calendars[0]) }} Days | {{workshop.contents.length}} Parts | <span *ngIf="workshop.topics.length > 0; then topicName else noTopicText"></span>
+                    <div class="collectionSubtitle">
+                      {{ calculateNumberOfDays(workshop.calendars[0]) }} Days | {{workshop.contents.length}} Parts |
+                      <span *ngIf="workshop.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
                     <p class="upcomingEventLabel">
                       First Session
@@ -94,7 +97,8 @@
                       {{ getUpcomingEvent(workshop).title }}
                     </div>
                     <div class="upcomingEventTime">
-                      {{ getUpcomingEvent(workshop).type + ' ' + getUpcomingEvent(workshop).fillerWord  + ' in ' +  getUpcomingEvent(workshop).timeToStart + ' Days' }}
+                      {{ getUpcomingEvent(workshop).type + ' ' + getUpcomingEvent(workshop).fillerWord + ' in ' + getUpcomingEvent(workshop).timeToStart
+                      + ' Days' }}
                     </div>
                   </md-card-content>
                   <md-card-actions *ngIf="getUpcomingEvent(workshop).hasStarted">
@@ -125,12 +129,12 @@
         <div style="margin-top:30px;" class="col-md-12">
           <div class="row">
             <div *ngFor="let workshop of workshops.data" [ngSwitch]="workshop.status">
-              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'draft' || 'submitted'" >
+              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'draft' || 'submitted'">
                 <md-card style="text-align: center; padding: 20px;">
                   <md-card-content>
                     <div class="clearfix" style="text-align: right">
                       <div class="pull-right">
-                        <a md-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a md-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
@@ -156,6 +160,17 @@
 
                   </md-card-footer>
                 </md-card>
+                <md-menu #draftCardMenu>
+                  <button md-menu-item>
+                    Delete
+                  </button>
+                  <button md-menu-item>
+                    Message Students
+                  </button>
+                  <button md-menu-item (click)="view(workshop)">
+                    View Workshop
+                  </button>
+                </md-menu>
               </div>
             </div>
           </div>
@@ -171,7 +186,7 @@
         <div style="margin-top:30px;" class="col-md-12">
           <div class="row">
             <div *ngFor="let workshop of workshops.data" [ngSwitch]="workshop.status">
-              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete'" >
+              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete'">
                 <md-card style="text-align: center; padding: 20px;">
                   <md-card-content>
                     <div class="clearfix" style="text-align: right">

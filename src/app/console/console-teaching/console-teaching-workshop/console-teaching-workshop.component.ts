@@ -240,7 +240,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
             pendingContents++;
           }
         });
-        return ( 1 - (pendingContents / totalContents) ) * 100;
+        return (1 - (pendingContents / totalContents)) * 100;
       case 'submitted':
         return 100;
       case 'complete':
@@ -250,4 +250,10 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     }
   }
 
+  /**
+   * view
+workshop */
+  public view(workshop: any) {
+    this.router.navigate(['/workshop/', workshop.id]);
+  }
 }

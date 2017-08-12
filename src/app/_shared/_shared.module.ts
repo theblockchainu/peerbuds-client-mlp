@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MdChipsModule } from '@angular/material';
+import { MdChipsModule, MdDialogModule, MdMenuModule } from '@angular/material';
 import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule, PopoverModule, } from 'ngx-bootstrap';
 import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, CheckboxModule, LightboxModule } from 'primeng/primeng';
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
@@ -62,7 +62,9 @@ import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.servi
     PopoverModule,
     LightboxModule,
     MdChipsModule,
-    LeftSidebarModule
+    LeftSidebarModule,
+    MdDialogModule,
+    MdMenuModule
   ]
 })
 export class SharedModule { }

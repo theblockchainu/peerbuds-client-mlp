@@ -41,7 +41,7 @@
                       <a href="#">
                       Watch Explainer Video <i class="fa fa-play-circle" aria-hidden="true"></i>                      
                   </a>
-                      <!-- <video controls height="600" easing="ease-in" src="{{config.apiUrl+workshop.videoUrl}}"></video> -->
+                      <video controls height="600" easing="ease-in" src="{{config.apiUrl+workshop.videoUrl}}"></video>
                     </p-lightbox>
                   </h4>
                   <br>
@@ -86,9 +86,9 @@
                               <div class="row">
                                 <div class="col-md-8"> {{itenary.startDate}} </div>
                               </div>
-                              <div class="row" *ngFor="let content of itenary.contents">
-                                <div class="col-md-4">
-                                  <img src="{{config.apiUrl+content.imageUrl}}">
+                              <div class="row" *ngFor="let content of itenary.contents" (click)="openModal(content,viewOnlineContent,viewVideoContent,viewProjectContent)">
+                                <div class="col-md-4" style="object-fit:contain">
+                                  <img class="img-responsive" style="max-height:200px" src="{{config.apiUrl+content.imageUrl}}">
                                 </div>
                                 <div class="col-md-4">
                                   <div class="row">
@@ -166,10 +166,10 @@
                   </div>
                 </div>
                 <div>
-                  <a href="#"> View All Peers </a>
+                  <a (click)="viewAttendies.show()"> View All Peers </a>
                 </div>
               </div>
-              <!-- <video autoplay loop muted height="600" src="{{config.workshop.videoUrl}}"></video> -->
+              <!-- <video autoplay loop muted height="600" src="{{config.appiUrl+config.workshop.videoUrl}}"></video> -->
             </div>
           </div>
           <div class="row workshop-suggestions">
@@ -187,46 +187,13 @@
         </div>
         <div class="modal-body">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque urna id arcu aliquam, in iaculis nunc eleifend.
-            Proin gravida massa et magna viverra, rhoncus cursus urna rhoncus.
+            Are you sure you want to delete this workshop?
           </p>
           <button class="btn btn-danger btn-lg" (click)="deleteWorkshop()"> I Agree Delete Anyways</button>
         </div>
       </div>
     </div>
   </div>
-
-
-  <div bsModal #viewAttendies="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog  modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title pull-left">Attendies</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-2">
-
-            </div>
-            <div class="col-md-3">
-
-            </div>
-            <div class="col-md-3">
-
-            </div>
-            <div class="col-md-3">
-
-            </div>
-            <div class="col-md-1">
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div bsModal #cancelWorkshopModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog  modal-sm">
       <div class="modal-content">
@@ -244,4 +211,115 @@
     </div>
   </div>
 
+  <div bsModal #viewAttendies="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Attendies</h4>
+        </div>
+        <div class="modal-body" *ngIf="workshop">
+          <div class="row" *ngFor="let participant of workshop.participants">
+            <div *ngIf="participant.profiles">
+              <div class="col-md-2">
+                <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle" alt="dp">
+              </div>
+              <div class="col-md-3">
+                {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}
+              </div>
+              <div class="col-md-3">
+                <div *ngIf="participant.profiles[0].work">{{participant.profiles[0].work[0].position}}</div>
+              </div>
+              <div class="col-md-3">
+                <md-progress-bar [mode]="determinate" [value]="2">
+                </md-progress-bar>
+              </div>
+              <div class="col-md-1">
+                <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true" placement="right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                <ul class="dropdown-menu">
+                  <li><a>Message</a></li>
+                  <li><a>Remove</a></li>
+                  <li><a>Report</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div bsModal #viewOnlineContent="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+        <div class="modal-body" *ngIf="modalContent">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <img src="{{config.apiUrl+modalContent.imageUrl}}" alt="content Image">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h2>{{modalContent.title}}</h2>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h4>What we'll do</h4>
+                <br>
+                <p>
+                  {{modalContent.description}}
+                </p>
+                <div *ngIf="modalContent.notes">
+                  <hr>
+                  <h4>Need to know</h4>
+                  <br>
+                  <p>
+                    {{modalContent.notes}}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button class="btn btn-default"> Join </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div bsModal #viewVideoContent="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+        <div class="modal-body" *ngIf="modalContent">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <video controls src="{{config.apiUrl+modalContent.imageUrl}}">
+                </video>
+              </div>
+              <div class="col-md-12">
+                <h2>{{modalContent.title}}</h2>
+              </div>
+              <div class="col-md-12">
+                <p>{{modalContent.description}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div bsModal #viewProjectContent="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+        <div class="modal-body" *ngIf="modalContent">
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
