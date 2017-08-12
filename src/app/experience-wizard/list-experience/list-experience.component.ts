@@ -28,8 +28,13 @@ export class ListExperienceComponent implements OnInit {
         this.experiences = result;
       }
     });
+    // if (!this.experiences) {
+    //   this.router.navigate(['/login']);
+
+    // }
   }
-  
+
+
   public onSelect(experience) {
     this.router.navigate(['/createExperience', experience.id]);
   }

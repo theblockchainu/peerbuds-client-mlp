@@ -14,6 +14,7 @@ export class AppHeaderComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
   public profile: any = {};
   public userType = '';
+  public defaultProfileUrl = '/assets/images/default-user.jpg';
 
   constructor(public authService: AuthenticationService, public requestHeaderService: RequestHeaderService,
     private config: AppConfig) {

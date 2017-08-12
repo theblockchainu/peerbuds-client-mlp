@@ -67,14 +67,14 @@ input {
 }*/
 .header {
   width: auto;
-  height: 67px;
+  height: 80px;
   padding: 0;
   background-color: #fff;
   border-bottom: 1px solid #dfdfdf;
 
   &.navbar {
     margin-bottom: 0;
-    padding: 10px 0;
+    padding: 16px 0;
     font-family: 'ProximaNovaSemibold';
     font-size: 0.8750em;
   }
@@ -395,9 +395,7 @@ input {
 }
 
 #content{
-	margin-top:140px;
-	margin-bottom: 80px;
-	// padding:65px 0 80px;
+	padding:100px 0 80px;
 }
 
 /* ----- sidebar starts  ----- */
