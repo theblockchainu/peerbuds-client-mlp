@@ -7,16 +7,12 @@ import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-// Default landing page for peerbuds.com
-{
-  path: '',
-  component: DefaultComponent,
-  pathMatch: 'full'
-},
-// Login Page
-{ path: 'login',  component: LoginComponent },
-// Page for No Content
-// { path: '**', component: NoContentComponent }
+  { path: 'login',  component: LoginComponent },
+  {
+    path: '',
+    component: DefaultComponent,
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({

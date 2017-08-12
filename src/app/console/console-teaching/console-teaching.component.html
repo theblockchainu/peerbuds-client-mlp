@@ -1,0 +1,24 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-3">
+    <md-list>
+      <md-list-item [routerLink]="'/console/teaching/all'" [class.bold]="isTabActive('all')">
+        View All
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/teaching/workshops'" [class.bold]="isTabActive('workshops')">
+          Workshops
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/teaching/experiences'" [class.bold]="isTabActive('experiences')">
+        Experiences
+      </md-list-item>
+      <md-list-item [routerLink]="'/console/teaching/sessions'" [class.bold]="isTabActive('sessions')">
+        Sessions
+      </md-list-item>
+      <md-list-item>
+        <button md-raised-button (click)="createWorkshop()" color="primary">New Workshop</button>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

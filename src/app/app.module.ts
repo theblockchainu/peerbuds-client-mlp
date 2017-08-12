@@ -9,14 +9,17 @@ import { HomeModule } from './home/home.module';
 import { VerificationModule } from './verification/verification.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
 import { ProfileModule } from './profile/profile.module';
+import { ConsoleModule } from './console/console.module';
 
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
-import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
+import 'hammerjs';
 
 
 @NgModule({
@@ -26,18 +29,25 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
     NoContentComponent,
     LoginComponent,
     AppHeaderComponent,
-    AppFooterComponent,
+    AppFooterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     CoreModule,
     HomeModule,
     WorkshopModule,
     ExperienceWizardModule,
     OnboardingModule,
     VerificationModule,
-    ProfileModule
+    ProfileModule,
+    ConsoleModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MdCardModule,
+    MdButtonModule,
+    MdMenuModule,
+    MdToolbarModule,
+    MdIconModule
   ],
   bootstrap: [AppComponent]
 })
