@@ -140,12 +140,13 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
       return moment() < moment(element.startDay);
     });
     let fillerWord = '';
-    if (contents[0].type === 'online')
+    if (contents[0].type === 'online') {
       fillerWord = 'session';
-    else if (contents[0].type === 'video')
+    } else if (contents[0].type === 'video') {
       fillerWord = 'recording';
-    else if (contents[0].type === 'project')
+    } else if (contents[0].type === 'project') {
       fillerWord = 'submission';
+    }
     const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
     const timeToStart = contentStartDate.diff(moment(), 'days');
     contents[0].timeToStart = timeToStart;
@@ -240,7 +241,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
             pendingContents++;
           }
         });
-        return ( 1 - (pendingContents / totalContents) ) * 100;
+        return (1 - (pendingContents / totalContents)) * 100;
       case 'submitted':
         return 100;
       case 'complete':
