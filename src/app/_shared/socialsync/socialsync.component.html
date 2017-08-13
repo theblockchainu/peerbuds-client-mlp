@@ -7,12 +7,12 @@
     <span *ngIf="connectedIdentities.fb">Connected</span>
   </div>
 </div>
-<div class="row padTop">
+<div class="row padTop" *ngFor="let connectedIdentity of socialIdentitiesConnected">
   <div class="col-sm-6 col-md-6 col-lg-6">
     <span><img src="../../assets/images/gplus.png" style="width:50px;height:50px;"/></span>
   </div>
   <div class="col-sm-4 col-md-4 col-lg-4" style="line-height: 50px;vertical-align:middle;">
-    <span *ngIf="!connectedIdentities.fb"><a href="#">Connect</a></span>
-    <span *ngIf="connectedIdentities.fb">Connected</span>
+    <span *ngIf="!connectedIdentity.provider === 'google'"><a href="#">Connect</a></span>
+    <span *ngIf="connectedIdentity.provider === 'google'">Connected</span>
   </div>
 </div>

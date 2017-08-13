@@ -10,6 +10,7 @@ import { VerificationModule } from './verification/verification.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
 import { ProfileModule } from './profile/profile.module';
 import { ConsoleModule } from './console/console.module';
+import { SignupSocialModule } from './signup-social/signup-social.module';
 
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
@@ -47,7 +48,8 @@ import 'hammerjs';
     MdButtonModule,
     MdMenuModule,
     MdToolbarModule,
-    MdIconModule
+    MdIconModule,
+    SignupSocialModule
   ],
   bootstrap: [AppComponent]
 })
