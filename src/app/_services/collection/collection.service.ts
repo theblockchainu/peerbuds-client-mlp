@@ -129,5 +129,12 @@ export class CollectionService {
     return collection;
   }
 
+  /* Submit workshop for Review */
+  public submitForReview(id: string) {
+    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', this.options).map(
+      (response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+  } 
 
 }

@@ -46,10 +46,10 @@
     <button md-menu-item [routerLink]="['/session']">
       Enable Sessions
     </button>
-    <button md-menu-item [routerLink]="['/workshop-console']">
+    <button md-menu-item [routerLink]="['/console/teaching/workshops']">
       Create a Workshop
     </button>
-    <button md-menu-item [routerLink]="['/experience-console']">
+    <button md-menu-item [routerLink]="['/console/teaching/experience']">
       Create an Experience
     </button>
     <button md-menu-item [routerLink]="['/calendar']">
@@ -64,10 +64,10 @@
     <button md-menu-item [routerLink]="['/transactions']">
       Transaction History
     </button>
-    <button md-menu-item [routerLink]="['/workshop-console']">
+    <button md-menu-item [routerLink]="['/console/teaching/workshops']">
       Workshops
     </button>
-    <button md-menu-item [routerLink]="['/experience-console']">
+    <button md-menu-item [routerLink]="['/console/teaching/experience']">
       Experiences
     </button>
     <button md-menu-item [routerLink]="['/calendar']">
@@ -102,5 +102,21 @@
       Logout
     </button>
   </md-menu>
+
+  <md-menu #headerUserMenu>
+    <button md-menu-item [routerLink]="['/editProfile']">
+      Edit Profile
+    </button>
+    <button md-menu-item [routerLink]="['/settings']">
+      Account Settings
+    </button>
+    <button md-menu-item [routerLink]="['/bookmarks']">
+      Bookmarks
+    </button>
+    <button md-menu-item (click)="authService.logout()">
+      Logout
+    </button>
+  </md-menu>
+
 
 </div>

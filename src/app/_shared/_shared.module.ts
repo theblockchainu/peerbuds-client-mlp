@@ -8,6 +8,7 @@ import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, Checkbo
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
+import { FinishingTouchesModule } from '../finishing-touches/finishing-touches.module';
 
 
 import { CollectionService } from '../_services/collection/collection.service';
@@ -64,7 +65,8 @@ import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.servi
     MdChipsModule,
     LeftSidebarModule,
     DatepickerModule,
-    TimepickerModule
+    TimepickerModule,
+    FinishingTouchesModule
   ]
 })
 export class SharedModule { }

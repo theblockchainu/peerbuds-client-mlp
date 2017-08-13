@@ -320,11 +320,11 @@
                       <span class="label label-warning" [hidden]="!workshopVideoPending">Pending</span>
                       <span class="label label-success" [hidden]="workshopVideoPending">Success</span>
                       <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000" auto="true"
-                        chooseLabel="Browse">
+                        chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
                       </p-fileUpload>
                       <div class="ui-fileupload-row"  *ngIf="urlForVideo">
                         <div>{{urlForVideo.split('/')[5]}}</div>
-                        <div><button icon="fa-close" pbutton="" type="button" (click)=deleteFromContainer(urlForVideo) ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                        <div><button icon="fa-close" pbutton="" type="button" (click)="deleteFromContainer(urlForVideo, 'video')" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
                       </div>
 
                       
@@ -332,12 +332,12 @@
                       <span class="label label-warning" [hidden]="!workshopImage1Pending">Pending</span>
                       <span class="label label-success" [hidden]="workshopImage1Pending">Success</span>
                       <p-fileUpload #fubauto name="image" multiple="multiple" customUpload="true" (uploadHandler)="uploadImages($event)" maxFileSize="10000000"
-                        auto="true" chooseLabel="Browse"></p-fileUpload>
+                        auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)"></p-fileUpload>
                       <div *ngIf="urlForImages.length">
                         <div *ngFor="let file of urlForImages" class="ui-fileupload-row" >
                           <div><img src="{{config.apiUrl+file}}" width="50"></div>
                           <div>{{file.split('/')[5]}}</div>
-                          <div><button icon="fa-close" pbutton="" type="button" (click)=deleteFromContainer(file) ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                          <div><button icon="fa-close" pbutton="" type="button" (click)="deleteFromContainer(file, 'image')" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
                         </div>
                       </div>
                     </div>
@@ -434,18 +434,75 @@
         <div class="onboarding step-14" [hidden]="step!=14">
           <div class="row">
             <div class="col-sm-12">
-              <div class="stepHeader">Review and submit</div>
-              <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox> <label>You meet our standard</label>
-              <br>
-              <p-checkbox name="groupname" value="val2" [(ngModel)]="selectedValues"></p-checkbox><label>You meet our standard</label>
-              <br>
-              <button (click)="submitForReview()" class="btn btn-lg btn-success pull-right" [disabled]="selectedValues.length!==2"> Submit for Review</button>
+              <div class="stepHeader"><h2>Review and submit</h2></div>
+                <div style="margin-top:20px;">
+                <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox> <label>You meet our standard</label>
+                </div>
+                <div style="margin-top:20px;">
+                <p-checkbox name="groupname" value="val2" [(ngModel)]="selectedValues"></p-checkbox><label>You agree to our terms and conditions</label>
+                </div>
+                <button (click)="submitForReview(successModal);" class="btn btn-lg btn-success pull-right" [disabled]="selectedValues.length!==2"> Submit for Review</button>
+                <div bsModal #successModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+                  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div>
+                        <p>Your workshop has been submitted for review.</p>
+                        <p>You can add repeat dates for this workshop once it has been approved.</p> 
+                        </div>  
+                        <button type="button" class="btn btn-success" (click)="redirectToConsole(successModal)">OK</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
-        <div class="clearfix"></div>
+        <div class="onboarding step-16" [hidden]="step!=16">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="stepHeader"><h2>Do you want to provide your phone number to the learners?</h2></div>
+              <div style="margin-top:20px;"><label>Phone numbers make it easy for learners to reach out to you in case of urgent queries.</label></div>
+              <form [formGroup]="phoneDetails">
+                <div style="margin-top:20px;">
+                  <input type="radio" name="phone" value="1" style="-webkit-appearance:radio; margin-right:10px;" (click)="toggleChoice(1)">Yes
+                  <br/>
+                  <input type="text" formControlName= "phoneNo" class="col-sm-10 display-inline-block" style="height:40px" placeholder="+1"/>
+                  <button class="btn btn-primary btn-sm col-sm-1 col-sm-offset-1" (click)="submitPhoneNo()">Send</button>
+                  <p>We will send the confirmation code on Your mobile</p>
+                  <br/>
+                  <p>Type the 4 digit verification code</p>
+                  <input type="text" formControlName= "inputOTP" class="form-control display-inline-block" /><br>
+                </div>
+                <div style="margin-top:20px;">
+                  <input type="radio" name="phone" value="0" (click)="toggleChoice(0)" style="-webkit-appearance:radio; margin-right:10px;" >No, Thanks
+                </div>
+                <button (click)="takeToPayment" class="btn btn-lg btn-success pull-right" [disabled]="selectedOption==-1">Continue</button>
+              </form>
+            </div>
+          </div>
+        </div> 
+         <div class="onboarding step-17" [hidden]="step!=17">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="stepHeader"><h2>Connect Payment Option</h2></div>
+              <div style="margin-top:20px;"><label>Payment gateway stripe, etc</label>
+              </div>
+              <form [formGroup]="paymentInfo">
+                <div style="margin-top:20px;">
+                  <button type="button" class="btn btn-primary btn-lg">PayTM</button>
+                  <button type="button" class="btn btn-primary btn-lg">Stripe</button>
+                  <button type="button" class="btn btn-primary btn-lg">Paypal</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div> 
+      
 
       </div>
+      <div class="clearfix"></div>
     </div>
   </div>
 
