@@ -3,11 +3,12 @@ import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MdChipsModule } from '@angular/material';
-import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule, PopoverModule, } from 'ngx-bootstrap';
+import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule, PopoverModule, DatepickerModule, TimepickerModule} from 'ngx-bootstrap';
 import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, CheckboxModule, LightboxModule } from 'primeng/primeng';
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
+import { FinishingTouchesModule } from '../finishing-touches/finishing-touches.module';
 
 
 import { CollectionService } from '../_services/collection/collection.service';
@@ -19,6 +20,7 @@ import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ContentService } from '../_services/content/content.service';
 import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
+import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
 
 @NgModule({
   imports: [
@@ -41,7 +43,8 @@ import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.servi
     MediaUploaderService,
     CookieUtilsService,
     ContentService,
-    LeftSidebarService
+    LeftSidebarService,
+    CurrencypickerService
   ],
   exports: [
     CommonModule,
@@ -62,7 +65,10 @@ import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.servi
     PopoverModule,
     LightboxModule,
     MdChipsModule,
-    LeftSidebarModule
+    LeftSidebarModule,
+    DatepickerModule,
+    TimepickerModule,
+    FinishingTouchesModule
   ]
 })
 export class SharedModule { }

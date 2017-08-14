@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
   public defaultImageUrl = 'http://lorempixel.com/350/250/city/9';
   public calendars: any = [];
   public showHideSession = false;
+  public profile: any;
 
   constructor(private config: AppConfig,
     public profileService: ProfileService,
@@ -46,6 +47,12 @@ export class ProfileComponent implements OnInit {
 
   setUserData() {
     this.getPeer();
+  }
+
+  getProfile() {
+    this.profileService.getProfile().subscribe(profile => {
+      this.profile = profile[0];
+    });
   }
 
   getPeer() {

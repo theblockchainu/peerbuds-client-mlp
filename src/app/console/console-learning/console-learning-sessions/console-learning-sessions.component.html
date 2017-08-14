@@ -1,3 +1,191 @@
-<p>
-  console-learning-sessions works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="!loaded" class="center">
+      <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12" *ngIf="loaded">
+    <div #noContentView *ngIf="collections.data.length == 0" class="center" style="margin-top: 10%">
+      <div class="lightText">
+        You are not taking any sessions
+        <br><br>
+        Start by signing up for a <a color="default" [routerLink]="'/feed/peers'">Session </a>
+      </div>
+    </div>
+    <div style="display:inline;" *ngIf="collections.activeCount > 0">
+      <h2>Ongoing & Upcoming</h2>
+    </div>
+    <div class="row">
+      <div>
+        <div style="margin-top:20px;" class="col-md-12">
+          <div class="row">
+            <div *ngFor="let collection of collections.data" [ngSwitch]="collection.status">
+              <ng-template #topicName>{{collection.topics[0].name}}</ng-template>
+              <ng-template #noTopicText>No Topics</ng-template>
+              <ng-template #ongoingCard>
+                <md-card style="text-align: center; padding: 20px;" >
+                  <md-card-content>
+                    <div style="text-align: right">
+                      <div class="pull-right">
+                        <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                          <md-icon>more_vert</md-icon>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="collectionParticipantImageCarousel">
+                      <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
+                        <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                      </div>
+                    </div>
+                    <div class="teacherName">
+                      <span>{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}} </span>
+                    </div>
+                    <div class="teacherHeadline">
+                      <span>{{collection.owners[0].profiles[0].headline}} </span>
+                    </div>
+                    <div class="collectionTitle">{{ collection.title || 'No Title' }} </div>
+                    <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
+                    <div class="collectionSubtitle" >
+                      {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Parts | <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                    </div>
+                    <p class="upcomingEventLabel">
+                      Up Next
+                    </p>
+                    <div class="upcomingEventTitle">
+                      {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).title }}
+                    </div>
+                    <div class="upcomingEventTime">
+                      {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type + ' ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord  + ' in ' +  consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' Days' }}
+                    </div>
+                  </md-card-content>
+                  <md-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).hasStarted">
+                    <button md-raised-button (click)="onSelect(collection)">{{consoleLearningComponent.getLearnerUpcomingEvent(collection).upcomingEventButtonText}}</button>
+                  </md-card-actions>
+                  <br><br>
+                  <md-card-footer class="cardFooter">
+                    <button md-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
+                  </md-card-footer>
+                </md-card>
+              </ng-template>
+              <ng-template #upcomingCard>
+                <md-card style="text-align: center; padding: 20px;" >
+                  <md-card-content>
+                    <div style="text-align: right">
+                      <div class="pull-right">
+                        <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                          <md-icon>more_vert</md-icon>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="collectionParticipantImageCarousel">
+                      <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
+                        <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                      </div>
+                    </div>
+                    <div class="teacherName">
+                      <span>{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}} </span>
+                    </div>
+                    <div class="teacherHeadline">
+                      <span>{{collection.owners[0].profiles[0].headline}} </span>
+                    </div>
+                    <div class="collectionTitle">{{ collection.title || 'No Title' }} </div>
+                    <div class="lighterText">
+                      Booked {{consoleLearningComponent.getDaysBetween(collection.updatedAt, now)}}
+                    </div>
+                    <div class="collectionSubtitle" >
+                      {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Parts | <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                    </div>
+                    <p class="upcomingEventLabel">
+                      First Session
+                    </p>
+                    <div class="upcomingEventTitle">
+                      {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).title }}
+                    </div>
+                    <div class="upcomingEventTime">
+                      {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type + ' ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord  + ' in ' +  consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' Days' }}
+                    </div>
+                  </md-card-content>
+                  <md-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).hasStarted">
+                    <button md-raised-button (click)="onSelect(collection)">{{consoleLearningComponent.getLearnerUpcomingEvent(collection).upcomingEventButtonText}}</button>
+                  </md-card-actions>
+                  <br><br>
+                  <md-card-footer class="cardFooter">
+                    <button md-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
+                  </md-card-footer>
+                </md-card>
+              </ng-template>
+              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'active'">
+                <div *ngIf="consoleLearningComponent.getLearnerCalendar(collection).startDate > now; then ongoingCard else upcomingCard">
+                  <!--show card template here-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div style="display:inline;" *ngIf="collections.pastCount > 0">
+      <h2>Past</h2>
+    </div>
+    <div class="row">
+      <div>
+        <div style="margin-top:20px;" class="col-md-12">
+          <div class="row">
+            <div *ngFor="let collection of collections.data" [ngSwitch]="collection.status">
+              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete' || 'canceled'" >
+                <md-card style="text-align: center; padding: 20px;">
+                  <md-card-content>
+                    <div class="clearfix" style="text-align: right">
+                      <div class="pull-right">
+                        <a md-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                          <md-icon>more_vert</md-icon>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="collectionParticipantImageCarousel">
+                      <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
+                        <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                      </div>
+                    </div>
+                    <div class="teacherName">
+                      <span>{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}} </span>
+                    </div>
+                    <div class="teacherHeadline">
+                      <span>{{collection.owners[0].profiles[0].headline}} </span>
+                    </div>
+                    <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' }} </div>
+                    <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
+                    <div class="collectionSubtitle" >
+                      {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Parts | <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                    </div>
+                  </md-card-content>
+                  <md-card-actions>
+                    <button md-raised-button (click)="consoleLearningComponent.viewSession(collection)">View Details</button>
+                  </md-card-actions>
+                  <p class="upcomingEventLabel" *ngIf="consoleLearningComponent.peerHasReview(collection)">
+                    {{collection.owners[0].profiles[0].first_name}} gave you a review
+                  </p>
+                  <br><br>
+                  <md-card-footer class="cardFooter">
+                    <button md-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
+                  </md-card-footer>
+                </md-card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<md-menu #collectionCardMenu>
+  <button md-menu-item>
+    Cancel
+  </button>
+  <button md-menu-item>
+    Message Teacher
+  </button>
+</md-menu>

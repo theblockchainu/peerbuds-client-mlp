@@ -2,13 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   template:  `
-    <h3>Landing Page</h3>
-    <nav>
-      <!--<a routerLink="./" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
-      <a routerLink="./crises" routerLinkActive="active">Manage Crises</a>
-      <a routerLink="./heroes" routerLinkActive="active">Manage Heroes</a>-->
-    </nav>
+    <div style="text-align: center; margin-top: 10%">
+      Peerbuds HomeFeed
+    </div>
     <router-outlet></router-outlet>
   `
 })
