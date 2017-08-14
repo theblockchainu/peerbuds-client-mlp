@@ -34,9 +34,9 @@
         <img src="{{ profile.picture_url }}" alt="A" class="thumb-35">
       </div>
     </button>
-    <button md-button  href="/signup.html" *ngIf="!(isLoggedIn | async)">
+    <a md-button  href="/signup.html" *ngIf="!(isLoggedIn | async)">
       Sign Up
-    </button>
+    </a>
     <button md-button [routerLink]="['/login']" *ngIf="!(isLoggedIn | async)">
       Log In
     </button>
