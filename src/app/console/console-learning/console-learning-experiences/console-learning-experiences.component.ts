@@ -1,15 +1,68 @@
 import { Component, OnInit } from '@angular/core';
+import {ConsoleLearningComponent} from '../console-learning.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CollectionService} from '../../../_services/collection/collection.service';
 
 @Component({
   selector: 'app-console-learning-experiences',
   templateUrl: './console-learning-experiences.component.html',
-  styleUrls: ['./console-learning-experiences.component.scss']
+  styleUrls: ['./console-learning-experiences.component.scss', '../../console.component.scss']
 })
 export class ConsoleLearningExperiencesComponent implements OnInit {
 
-  constructor() { }
+  public collections: any;
+  public loaded: boolean;
+  public now: Date;
+  private outputResult: any;
+  public activeTab: string;
 
-  ngOnInit() {
+  constructor(
+    public activatedRoute: ActivatedRoute,
+    public consoleLearningComponent: ConsoleLearningComponent,
+    public _collectionService: CollectionService,
+    public router: Router
+  ) {
+    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+      console.log(urlSegment[0].path);
+      consoleLearningComponent.setActiveTab(urlSegment[0].path);
+    });
   }
 
+  ngOnInit() {
+    this.loaded = false;
+    this._collectionService.getParticipatingCollections('{ "relInclude": "calendarId", "where": {"type":"experience"}, "include": ["calendars", {"owners":"profiles"}, {"participants": "profiles"}, "topics", {"contents":"schedules"}, {"reviews":"peer"}] }', (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        let activeCount = 0, pastCount = 0;
+        this.outputResult = {};
+        this.outputResult['data'] = [];
+        this.outputResult.activeCount = 0;
+        this.outputResult.pastCount = 0;
+        result.forEach((resultItem) => {
+          switch (resultItem.status) {
+            case 'active':
+              activeCount++;
+              break;
+            case 'complete':
+              pastCount++;
+              break;
+            default:
+              break;
+          }
+          this.outputResult.data.push(resultItem);
+        });
+        this.outputResult.activeCount = activeCount;
+        this.outputResult.pastCount = pastCount;
+        this.collections = this.outputResult;
+        console.log(this.collections);
+        this.now = new Date();
+        this.loaded = true;
+      }
+    });
+  }
+
+  public onSelect(workshop) {
+    this.router.navigate(['/editWorkshop/', workshop.id, 1]);
+  }
 }

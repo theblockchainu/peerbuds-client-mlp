@@ -60,6 +60,10 @@ const routes: Routes = [{
         {
           path: 'sessions',
           component: ConsoleLearningSessionsComponent
+        },
+        {
+          path: '',
+          component: ConsoleLearningAllComponent
         }
       ]
     },
@@ -82,6 +86,10 @@ const routes: Routes = [{
         {
           path: 'sessions',
           component: ConsoleTeachingSessionComponent
+        },
+        {
+          path: '',
+          component: ConsoleTeachingAllComponent
         }
       ]
     },
@@ -108,6 +116,10 @@ const routes: Routes = [{
         {
           path: 'reviews',
           component: ConsoleProfileReviewsComponent
+        },
+        {
+          path: '',
+          component: ConsoleProfileEditComponent
         }
       ]
     },
@@ -142,6 +154,10 @@ const routes: Routes = [{
         {
           path: 'settings',
           component: ConsoleAccountSettingsComponent
+        },
+        {
+          path: '',
+          component: ConsoleAccountNotificationsComponent
         }
       ]
     }

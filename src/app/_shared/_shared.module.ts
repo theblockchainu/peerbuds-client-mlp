@@ -20,6 +20,7 @@ import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ContentService } from '../_services/content/content.service';
 import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
+import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.servi
     MediaUploaderService,
     CookieUtilsService,
     ContentService,
-    LeftSidebarService
+    LeftSidebarService,
+    CurrencypickerService
   ],
   exports: [
     CommonModule,

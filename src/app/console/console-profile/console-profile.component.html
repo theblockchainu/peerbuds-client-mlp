@@ -1,19 +1,19 @@
 <div class="row" style="margin-top: 20px;">
   <div class="col-md-3">
     <md-list>
-      <md-list-item [routerLink]="'/console/profile/edit'" [class.bold]="isTabActive('edit')">
+      <md-list-item [routerLink]="'/console/profile/edit'" [class.bold]="getActiveTab() === 'edit'">
         Edit
       </md-list-item>
-      <md-list-item [routerLink]="'/console/profile/photos'" [class.bold]="isTabActive('photos')">
+      <md-list-item [routerLink]="'/console/profile/photos'" [class.bold]="getActiveTab() === 'photos'">
         Photos
       </md-list-item>
-      <md-list-item [routerLink]="'/console/profile/topics'" [class.bold]="isTabActive('topics')">
+      <md-list-item [routerLink]="'/console/profile/topics'" [class.bold]="getActiveTab() === 'topics'">
         Topics
       </md-list-item>
-      <md-list-item [routerLink]="'/console/profile/verification'" [class.bold]="isTabActive('verification')">
+      <md-list-item [routerLink]="'/console/profile/verification'" [class.bold]="getActiveTab() === 'verification'">
         Verification
       </md-list-item>
-      <md-list-item [routerLink]="'/console/profile/reviews'" [class.bold]="isTabActive('reviews')">
+      <md-list-item [routerLink]="'/console/profile/reviews'" [class.bold]="getActiveTab() === 'reviews'">
         Reviews
       </md-list-item>
       <md-list-item>

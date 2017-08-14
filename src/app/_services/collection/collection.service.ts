@@ -10,11 +10,15 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
+
+declare var moment: any;
+
 @Injectable()
 export class CollectionService {
   public key = 'userId';
   private userId;
   public options;
+  public now: Date;
   constructor(private http: Http, private config: AppConfig,
     private _cookieService: CookieService,
     private route: ActivatedRoute,
@@ -22,6 +26,7 @@ export class CollectionService {
     private requestHeaderService: RequestHeaderService) {
     this.userId = this.getCookieValue(this.key);
     this.options = requestHeaderService.getOptions();
+    this.now = new Date();
   }
 
   private getCookieValue(key: string) {
@@ -57,6 +62,19 @@ export class CollectionService {
     if (this.userId) {
       this.http
         .get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections?' + 'filter=' + options)
+        .map((response) => {
+          console.log(response.json());
+          cb(null, response.json());
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
+  public getParticipatingCollections(options: any, cb) {
+    if (this.userId) {
+      this.http
+        .get(this.config.apiUrl + '/api/peers/' + this.userId + '/collections?' + 'filter=' + options)
         .map((response) => {
           console.log(response.json());
           cb(null, response.json());
@@ -136,5 +154,213 @@ export class CollectionService {
         console.log('Error: ' + err);
       });
   } 
+  /**
+   * Filter only complete collections
+   * @param collections
+   */
+  public filerCompleteCollections(collections: any) {
+    return collections.filter(collection => {
+      return collection.status === 'complete';
+    });
+  }
+
+  /**
+   * calculate number of days of a workshop
+   */
+  public calculateNumberOfDays(calendar) {
+    if (calendar === undefined) {
+      return 'No Calendar';
+    } else {
+      const a = moment(calendar.startDate);
+      const b = moment(calendar.endDate);
+      return b.diff(a, 'days');
+    }
+  }
+
+  /**
+   * Get difference in days
+   */
+  public getDaysBetween(startDate, endDate) {
+    const a = moment(startDate);
+    const b = moment(endDate);
+    const diff = b.diff(a, 'days');
+    switch (true) {
+      case diff === 0:
+        return 'today';
+      case diff === 1:
+        return 'yesterday';
+      case diff > 1 && diff < 7:
+        return diff + ' days ago';
+      case diff >= 7 && diff < 30:
+        return Math.floor(diff / 7) + ' weeks ago';
+      case diff >= 30 && diff < 365:
+        return Math.floor(diff / 30) + ' months ago';
+      case diff >= 365:
+        return Math.floor(diff / 365) + ' years ago';
+      default:
+        return diff + ' days ago';
+    }
+  }
+
+  /**
+   * Get the most upcoming content details
+   */
+  public getUpcomingEvent(collection) {
+    const contents = collection.contents;
+    const calendars = collection.calendars;
+    const currentCalendar = this.getCurrentCalendar(calendars);
+    contents.sort((a, b) => {
+      if (a.schedules[0].startDay < b.schedules[0].startDay) {
+        return -1;
+      }
+      if (a.schedules[0].startDay > b.schedules[0].startDay) {
+        return 1;
+      }
+      return 0;
+    }).filter((element, index) => {
+      return moment() < moment(element.startDay);
+    });
+    let fillerWord = '';
+    if (contents[0].type === 'online') {
+      fillerWord = 'session';
+    }
+    else if (contents[0].type === 'video') {
+      fillerWord = 'recording';
+    }
+    else if (contents[0].type === 'project'){
+      fillerWord = 'submission';
+    }
+    const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
+    const timeToStart = contentStartDate.diff(moment(), 'days');
+    contents[0].timeToStart = timeToStart;
+    contents[0].fillerWord = fillerWord;
+    contents[0].hasStarted = false;
+    return contents[0];
+  }
+
+  /**
+   * Get the current active calendar of this collection
+   * @param calendars
+   */
+  public getCurrentCalendar(calendars) {
+    calendars = calendars.sort((a, b) => {
+      if (moment(a.startDate) < moment(b.startDate)) {
+        return -1;
+      }
+      if (moment(a.startDate) > moment(b.startDate)) {
+        return 1;
+      }
+      return 0;
+    }).filter((element, index) => {
+      return moment() < moment(element.endDate);
+    });
+    return calendars[0];
+  }
+
+  /**
+   * Get the progress bar value of this workshop
+   * @param workshop
+   * @returns {number}
+   */
+  public getProgressValue(workshop) {
+    let value = 0;
+    switch (workshop.status) {
+      case 'draft':
+        if (workshop.title !== undefined && workshop.title.length > 0) {
+          value += 10;
+        }
+        if (workshop.headline !== undefined && workshop.headline.length > 0) {
+          value += 10;
+        }
+        if (workshop.description !== undefined && workshop.description.length > 0) {
+          value += 10;
+        }
+        if (workshop.videoUrls !== undefined && workshop.videoUrls.length > 0) {
+          value += 10;
+        }
+        if (workshop.imageUrls !== undefined && workshop.imageUrls.length > 0) {
+          value += 10;
+        }
+        if (workshop.price !== undefined && workshop.price.length > 0) {
+          value += 10;
+        }
+        if (workshop.aboutHost !== undefined && workshop.aboutHost.length > 0) {
+          value += 10;
+        }
+        if (workshop.cancellationPolicy !== undefined && workshop.cancellationPolicy.length > 0) {
+          value += 10;
+        }
+        if (workshop.contents !== undefined && workshop.contents.length > 0) {
+          value += 10;
+        }
+        if (workshop.topics !== undefined && workshop.topics.length > 0) {
+          value += 10;
+        }
+        return value;
+      case 'active':
+        if (this.getCurrentCalendar(workshop.calendars).startDate > this.now) {
+          return 0;
+        }
+        const totalContents = workshop.contents.length;
+        let pendingContents = 0;
+        workshop.contents.forEach((content) => {
+          if (moment(this.getCurrentCalendar(workshop.calendars).startDate).add(content.schedules[0].startDay, 'days') > this.now) {
+            pendingContents++;
+          }
+        });
+        return ( 1 - (pendingContents / totalContents) ) * 100;
+      case 'submitted':
+        return 100;
+      case 'complete':
+        return 100;
+      default:
+        return 0;
+    }
+  }
+
+  /**
+   * viewWorkshop
+   */
+  public viewWorkshop(collection) {
+    this.router.navigate(['workshop', collection.id]);
+  }
+
+  /**
+   * viewExperience
+   */
+  public viewExperience(collection) {
+    this.router.navigate(['experience', collection.id]);
+  }
+
+  /**
+   * viewSession
+   */
+  public viewSession(collection) {
+    this.router.navigate(['session', collection.id]);
+  }
+
+  /**
+   * Get text to show in action button of draft card
+   * @param status
+   * @returns {any}
+   */
+  public getDraftButtonText(status) {
+    switch (status) {
+      case 'draft':
+        return 'Continue Editing';
+      case 'submitted':
+        return 'Edit Details';
+      default:
+        return 'Continue Editing';
+    }
+  }
+
+  /**
+   * View all transactions for this teacher
+   */
+  public viewTransactions() {
+    this.router.navigate(['/console/account/transactions']);
+  }
+
 
 }

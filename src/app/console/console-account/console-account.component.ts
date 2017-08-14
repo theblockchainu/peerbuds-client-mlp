@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
+import {ConsoleComponent} from '../console.component';
 
 declare var moment: any;
 
@@ -19,9 +20,13 @@ export class ConsoleAccountComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
-    public _collectionService: CollectionService) {
-    console.log(activatedRoute.pathFromRoot.toString());
-    this.activeTab = 'all';
+    public _collectionService: CollectionService,
+    public consoleComponent: ConsoleComponent) {
+    activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
+      console.log(urlSegment[0].path);
+      consoleComponent.setActiveTab(urlSegment[0].path);
+    });
+    this.activeTab = 'notifications';
   }
 
   ngOnInit() {
@@ -42,8 +47,16 @@ export class ConsoleAccountComponent implements OnInit {
    * @param tabName
    * @returns {boolean}
    */
-  public isTabActive(tabName) {
-    return this.activeTab === tabName;
+  public getActiveTab() {
+    return this.activeTab;
+  }
+
+  /**
+   * Set activeTab value
+   * @param value
+   */
+  public setActiveTab(value) {
+    this.activeTab = value;
   }
 
 }
