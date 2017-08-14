@@ -139,7 +139,7 @@ export class WorkshopEditComponent implements OnInit {
 
     this.workshop = this._fb.group({
       // id: '',
-      type: '',
+      type: 'workshop',
       title: '',
       stage: '',
       language: this._fb.array([]),
