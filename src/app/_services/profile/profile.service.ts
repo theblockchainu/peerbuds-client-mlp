@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from "../requestHeader/request-header.service";
+import {RequestHeaderService} from '../requestHeader/request-header.service';
 // import { Response } from '@angular/http';
 
 @Injectable()
