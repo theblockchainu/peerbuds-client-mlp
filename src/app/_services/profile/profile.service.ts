@@ -65,12 +65,13 @@ export class ProfileService {
   }
 
   public getPeerProfile() {
-    if (this.userId) {
-      const options = '{"include": "profiles"}';
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
-        .map((response: Response) => response.json()
-        );
-    }
+    return this.userId;
+    // if (this.userId) {
+    //   const options = '{"include": "profiles"}';
+    //   return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
+    //     .map((response: Response) => response.json()
+    //     );
+    // }
   }
 
   public updatePeer(id: any, body: any) {

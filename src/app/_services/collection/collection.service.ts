@@ -149,7 +149,8 @@ export class CollectionService {
 
   /* Submit workshop for Review */
   public submitForReview(id: string) {
-    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', this.options).map(
+    debugger;
+    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', {}).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -360,6 +361,27 @@ export class CollectionService {
    */
   public viewTransactions() {
     this.router.navigate(['/console/account/transactions']);
+  }
+
+  public sendVerifySMS(phoneNo) {
+    const body = {
+    };
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo, body)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
+
+  public confirmSmsOTP(inputToken) {
+    const body = {};
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
   }
 
 

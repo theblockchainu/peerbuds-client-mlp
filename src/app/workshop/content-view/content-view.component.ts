@@ -107,7 +107,6 @@ export class ContentViewComponent implements OnInit {
   }
 
   imageUploadNew(event) {
-    debugger;
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -155,7 +154,6 @@ export class ContentViewComponent implements OnInit {
 
 
   saveTemp(modal: ModalDirective) {
-    debugger;
     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
     const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
     contentForm.patchValue(this.tempForm.value);
@@ -251,7 +249,6 @@ export class ContentViewComponent implements OnInit {
   itemNewRemoved(event) {
     delete this.filesToUpload;
     this.filesUploaded = 0;
-    debugger;
   }
 
   itemEditRemoved(event) {
@@ -280,7 +277,6 @@ export class ContentViewComponent implements OnInit {
     }
 
   triggerContentUpdate(form) {
-    debugger;
     const date = form.controls.date.value;
     let contentArray = <FormArray>form.controls['contents'].controls;
     for(var i = 0; i < contentArray.length; i++) {

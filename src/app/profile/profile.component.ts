@@ -57,8 +57,8 @@ export class ProfileComponent implements OnInit {
 
   getPeer() {
     // console.log('in get peer');
-    this.profileService.getPeer(this.profileId).subscribe(peer => {
-      // console.log('peer' + JSON.stringify(peer));
+    this.profileService.getPeer(this.profileId).subscribe((peer) => {
+      console.log('peer' + JSON.stringify(peer));
       this.peer = peer;
       this.peer.identities.forEach(identity => {
         identity.profile = JSON.parse(identity.profile);
@@ -153,7 +153,7 @@ export class ProfileComponent implements OnInit {
       });
     }
 
-    console.log('peer' + JSON.stringify(this.peer));
+    // console.log('peer' + JSON.stringify(this.peer));
   }
 
   // recursive function to clone an object. If a non object parameter
@@ -186,5 +186,6 @@ export class ProfileComponent implements OnInit {
       }
       setUserData();
     });
+        console.log(this.userType);
   }
 }

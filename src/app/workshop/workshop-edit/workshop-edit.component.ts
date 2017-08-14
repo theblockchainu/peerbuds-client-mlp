@@ -453,10 +453,15 @@ export class WorkshopEditComponent implements OnInit {
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
 
-          if(res.status == 'submitted') {
+          if(res.status == 'active') {
             this.sidebarMenuItems[3].visible = false;
             this.sidebarMenuItems[4].visible = true;
             this.sidebarMenuItems[4].active = true;
+
+            this.sidebarMenuItems[4].submenu[0].visible = true;
+            //this.sidebarMenuItems[4].submenu[0].active = true;
+            this.sidebarMenuItems[4].submenu[1].visible = true;
+            //this.sidebarMenuItems[4].submenu[1].active = true;
           }
 
         },
@@ -575,8 +580,10 @@ export class WorkshopEditComponent implements OnInit {
     this.workshop.controls['videoUrl'].setValue(res.videoUrl);
     this.urlForVideo = res.videoUrl;
     // <img src="{{config.apiUrl+content.imageUrl}}">
-    this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
-    this.urlForImages = res.imageUrls;
+    if(res.imageUrls && res.imageUrls.length>0) {
+      this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
+      this.urlForImages = res.imageUrls;
+    }
 
     //Currency, Amount, Cancellation Policy
     this.workshop.controls.price.patchValue(res.price);
@@ -750,6 +757,10 @@ export class WorkshopEditComponent implements OnInit {
                               if(this.workshop.controls.status.value == 'active') {
                                 this.sidebarMenuItems[4].visible = true;
                                 this.sidebarMenuItems[4].active = true;
+                                this.sidebarMenuItems[4].submenu[0].visible = true;
+                                //this.sidebarMenuItems[4].submenu[0].active = true;
+                                this.sidebarMenuItems[4].submenu[1].visible = true;
+                                //this.sidebarMenuItems[4].submenu[1].active = true;
                                 this.step = +this.step + 2;
                               }
                               modal.show();
@@ -958,6 +969,18 @@ export class WorkshopEditComponent implements OnInit {
 
     submitPhoneNo() {
       //Call the OTP service
+      // Post Workshop for review
+      this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value)
+                            .subscribe((res)=> {
+                                console.log("SmS sent");
+                                });
+    }
+
+    submitOTP() {
+      this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
+                            .subscribe((res)=> {
+                                console.log("Token Verified");
+                                });
     }
 
     takeToPayment() {

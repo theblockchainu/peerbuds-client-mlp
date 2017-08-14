@@ -98,13 +98,13 @@
                 "title" : "Phone Number",
                 "step" : 16,
                 "active" : false,
-                "visible" : true 
+                "visible" : false 
             },
             {
                 "title" : "Payments",
                 "step" : 17,
                 "active" : false,
-                "visible" : true 
+                "visible" : false 
             }
         ],
         "visible" : false

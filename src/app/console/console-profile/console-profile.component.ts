@@ -31,7 +31,8 @@ export class ConsoleProfileComponent implements OnInit {
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
     debugger;
-    this.profileId = _profileService.getPeerProfile().subscribe();
+    //_profileService.getPeerProfile().subscribe((res)=> { debugger;this.profileId = res.id;});
+    this.profileId = _profileService.getPeerProfile();
     this.activeTab = 'edit';
   }
 
