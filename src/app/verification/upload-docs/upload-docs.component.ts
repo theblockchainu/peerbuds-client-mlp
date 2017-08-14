@@ -54,7 +54,7 @@ export class UploadDocsComponent implements OnInit {
 
   public resendOTP() {
     this._profileService.sendVerifyEmail()
-      .subscribe((res) => this.otp.controls['inputOTP'].setValue(res.verificationToken));
+      .subscribe();
   }
 
   verifyEmail() {
