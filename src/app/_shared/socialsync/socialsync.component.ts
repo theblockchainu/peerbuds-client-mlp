@@ -28,15 +28,15 @@ export class SocialSyncComponent implements OnInit {
       .subscribe((response: Response) => {
         this.socialIdentitiesConnected = response;
 
-        // this.socialIdentitiesConnected.forEach(socialIdentity => {
-        //   if (socialIdentity[0].provider === 'google') {
-        //     this.connectedIdentities.google = true;
-        //   }
-        //   if (socialIdentity[0].provider === 'facebook') {
-        //     this.connectedIdentities.fb = true;
-        //   }
-        // });
-        // console.log(JSON.stringify(response));
+        this.socialIdentitiesConnected.forEach(socialIdentity => {
+          if (socialIdentity.provider === 'google') {
+            this.connectedIdentities.google = true;
+          }
+          if (socialIdentity.provider === 'facebook') {
+            this.connectedIdentities.fb = true;
+          }
+        });
+        // console.log(JSON.stringify(this.socialIdentitiesConnected));
 
       },
       (err) => {
