@@ -7,6 +7,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { AppConfig } from '../../app.config';
 import * as moment from 'moment';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-workshop-page',
@@ -24,6 +25,14 @@ export class WorkshopPageComponent implements OnInit {
   public chatForm: FormGroup;
   public userType: string;
   public totalDuration: string;
+  public modalContent: any;
+  public topicFix: any;
+  public messagingParticipant: any;
+  public messageForm: FormGroup;
+  public maxRating = 5;
+  public userRating: number;
+  public isReadonly = true;
+  public noOfReviews = 4;
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -71,8 +80,9 @@ export class WorkshopPageComponent implements OnInit {
         'topics',
         'calendars',
         { 'participants': [{ 'profiles': ['work'] }] },
-        { 'owners': ['profiles'] },
-        { 'contents': ['schedules'] }
+        { 'owners': [{ 'profiles': ['work'] }] },
+        { 'contents': ['schedules'] },
+        'reviews'
       ]
     };
 
@@ -119,6 +129,8 @@ export class WorkshopPageComponent implements OnInit {
           console.log('Completed!');
           this.initializeUserType();
           this.calculateTotalHours();
+          this.fixTopics();
+          this.calculateRating();
         });
 
 
@@ -127,10 +139,32 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
 
+  private calculateRating() {
+    let reviewScore = 0;
+    let totalScore = 0;
+    for (const reviewObject of this.workshop.reviews) {
+      reviewScore += reviewObject.score;
+      totalScore += 5;
+    }
+    this.userRating = totalScore / reviewScore;
+  }
+
+  private fixTopics() {
+    console.log(this.workshop.topics);
+    this.topicFix = _.uniqBy(this.workshop.topics, 'id');
+    console.log(this.topicFix);
+
+  }
+
   private initializeForms() {
     this.chatForm = this._fb.group({
       message: ['', Validators.required],
       announce: ''
+    });
+
+    this.messageForm = this._fb.group({
+      message: ['', Validators.required],
+      sent: ''
     });
   }
 
@@ -172,7 +206,7 @@ export class WorkshopPageComponent implements OnInit {
    */
   public deleteWorkshop() {
     this._collectionService.deleteCollection(this.workshopId).subscribe((response) => {
-      this.router.navigate(['workshop-console']);
+      this.router.navigate(['/console/teaching/workshops']);
     });
   }
 
@@ -201,9 +235,7 @@ export class WorkshopPageComponent implements OnInit {
       if (content.type === 'online') {
         const startMoment = moment(content.schedules[0].startTime);
         const endMoment = moment(content.schedules[0].endTime);
-        console.log(content.schedules[0].startTime + '  ' + content.schedules[0].endTime);
         const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
-        console.log(contentLength);
         totalLength += parseInt(contentLength, 10);
       } else if (content.type === 'video') {
 
@@ -212,4 +244,148 @@ export class WorkshopPageComponent implements OnInit {
     this.totalDuration = totalLength.toString();
   }
 
+
+  /**
+   * openModal
+content:any   */
+  public openModal(content: any, viewOnlineContent: ModalDirective, viewVideoContent: ModalDirective, viewProjectContent: ModalDirective) {
+    this.modalContent = content;
+    switch (content.type) {
+      case 'online':
+        {
+          viewOnlineContent.show();
+          break;
+        }
+      case 'video':
+        {
+          viewVideoContent.show();
+          break;
+        }
+      case 'project':
+        {
+          viewProjectContent.show();
+          break;
+        }
+      default:
+        break;
+    }
+
+  }
+
+  /**
+   * removeParticipant
+   */
+  public removeParticipant(participantId: string) {
+    this._collectionService.removeParticipant(this.workshopId, participantId).subscribe((response) => {
+      console.log('deleted');
+      this.initializeWorkshop();
+    });
+  }
+
+  /**
+   * isLive
+   */
+  public isLive(content: any) {
+    const startMoment = moment(this.workshop.calendars[0].startDate);
+    const endMoment = moment(this.workshop.calendars[0].startDate);
+    const currentMoment = moment();
+    startMoment.add(content.schedules[0].startDay, 'day');
+    endMoment.add(content.schedules[0].startDay, 'day');
+
+    const startTime = moment(content.schedules[0].startTime);
+    const endTime = moment(content.schedules[0].endTime);
+
+    startMoment.hours(startTime.hours());
+    startMoment.minutes(startTime.minutes());
+
+    endMoment.hours(endTime.hours());
+    endMoment.minutes(endTime.minutes());
+
+    if (currentMoment.isBetween(startMoment, endMoment)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * joinSession
+content:any   */
+  public joinSession(content: any) {
+    console.log('Joining Session');
+  }
+
+  /**
+   * timetoSession
+content:any   */
+  public timetoSession(content: any) {
+    const startMoment = moment(this.workshop.calendars[0].startDate);
+    const endMoment = moment(this.workshop.calendars[0].startDate);
+    const currentMoment = moment();
+    startMoment.add(content.schedules[0].startDay, 'day');
+    endMoment.add(content.schedules[0].startDay, 'day');
+
+    const startTime = moment(content.schedules[0].startTime);
+    const endTime = moment(content.schedules[0].endTime);
+
+    startMoment.hours(startTime.hours());
+    startMoment.minutes(startTime.minutes());
+
+    endMoment.hours(endTime.hours());
+    endMoment.minutes(endTime.minutes());
+
+    if (startMoment.diff(currentMoment) < 0) {
+      return endMoment.fromNow();
+    } else {
+      return startMoment.toNow();
+    }
+
+
+  }
+
+  /**
+   * messageParticipant
+   */
+  public messageParticipant(messageDialog: ModalDirective, participant: any) {
+    console.log(participant);
+    this.messagingParticipant = participant;
+    messageDialog.show();
+  }
+
+  /**
+   * sendMessage
+   */
+  public sendMessage() {
+    console.log(this.messageForm.value);
+    this.messageForm.reset();
+    console.log('sent');
+  }
+
+  public getContentCount(type: string) {
+    let count = 0;
+    for (const content of this.workshop.contents) {
+      if (content.type === type) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  /**
+   * getReadableDate
+   */
+  public getReadableDate(date: string) {
+    return moment(date).format('Do MMMM');
+  }
+
+  /**
+   * toggleReviews
+   */
+  public toggleReviews() {
+    if (this.noOfReviews === 4) {
+      this.noOfReviews = 100;
+    } else {
+      this.noOfReviews = 4;
+    }
+  }
 }
