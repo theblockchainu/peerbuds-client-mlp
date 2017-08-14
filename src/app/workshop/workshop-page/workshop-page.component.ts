@@ -7,6 +7,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { AppConfig } from '../../app.config';
 import * as moment from 'moment';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-workshop-page',
@@ -149,7 +150,10 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private fixTopics() {
-    //fixtopics
+    console.log(this.workshop.topics);
+    this.topicFix = _.uniqBy(this.workshop.topics, 'id');
+    console.log(this.topicFix);
+
   }
 
   private initializeForms() {
