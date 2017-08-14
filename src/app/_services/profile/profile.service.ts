@@ -64,6 +64,27 @@ export class ProfileService {
     }
   }
 
+  public getPeerProfile() {
+    if (this.userId) {
+      const options = '{"include": "profiles"}';
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
+        .map((response: Response) => response.json()
+        );
+    }
+  }
+
+  public updatePeer(id: any, body: any) {
+    if (this.userId) {
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId, body);
+    }
+  }
+  public updatePeerProfile(id, body: any) {
+    if (this.userId) {
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body);
+      // patch first_name, last_name, dob, promoOptIn into peers/id/profiles
+    }
+  }
+
   public socialProfiles() {
     const socialProfile = [];
     if (this.userId) {
@@ -77,7 +98,7 @@ export class ProfileService {
     const interestTopics = [];
     if (this.userId) {
 
-      const topicsUrl = topicsFor === 'teacher' ? '/topicsTeaching' : '/topicsLearning' ;
+      const topicsUrl = topicsFor === 'teacher' ? '/topicsTeaching' : '/topicsLearning';
 
       return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + topicsUrl)
         .map((response: Response) => response.json()
@@ -114,7 +135,7 @@ export class ProfileService {
 
   public getSocialIdentities() {
     return this.http
-      .get(this.config.apiUrl + '/api/peers/' + this.userId)
+      .get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities')
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -130,24 +151,6 @@ export class ProfileService {
     }
   }
 
-  /* get reviews */
-  // public getReviews(res: Response) {
-  //   // if (this.userId) {
-  //     console.log(this.userId);
-  //     const collections = res.json();
-  //     const reviews: any = [];
-  //     console.log(collections);
-  //     collections.forEach(collection => {
-  //       this.http.get(this.config.apiUrl + '/api/collections/' + collection.id + '/reviews')
-  //         .map((revResponse) => {
-  //           console.log(revResponse);
-  //           reviews.push(revResponse.json());
-  //         });
-  //     });
-  //     console.log(reviews);
-  //     return reviews;
-  //   }
-  // // }
   public getReviews(collectionId) {
     if (this.userId) {
       // console.log(collections);
@@ -158,15 +161,15 @@ export class ProfileService {
     }
   }
   public getOwnedCollectionCount(id) {
-     if (this.userId) {
+    if (this.userId) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + id + '/ownedCollections/count')
-      .map((response: Response) => response.json());
+        .map((response: Response) => response.json());
     }
   }
-   public getReviewer(reviewId) {
-     if (this.userId) {
+  public getReviewer(reviewId) {
+    if (this.userId) {
       return this.http.get(this.config.apiUrl + '/api/reviews/' + reviewId + '/peer')
-      .map((response: Response) => response.json());
+        .map((response: Response) => response.json());
     }
   }
 

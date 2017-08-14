@@ -151,6 +151,7 @@ export class WorkshopContentComponent implements OnInit {
         .subscribe();
 
     } else if (event.action === 'update') {
+      debugger;
       const itenary = <FormArray>this.myForm.controls.itenary;
       const form = <FormGroup>itenary.controls[i];
       const contentsArray = <FormArray>form.controls.contents;
@@ -171,18 +172,30 @@ export class WorkshopContentComponent implements OnInit {
         schedule.endDay = endDay;
       }
       if (contentObj.type === 'online') {
+        
+      }
+      debugger;
+      schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
+      schedule.endDay = 0;
+      if(schedule.startTime === '') {
+        schedule.startTime = new Date(0,0,0,1,0,0,0);
+      }
+      else {
         const startTimeArr = schedule.startTime.toString().split(':');
         const startHour = startTimeArr[0];
         const startMin = startTimeArr[1];
         schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
-
+      }
+      if(schedule.endTime === '') {
+        schedule.endTime = new Date(0,0,0,23,0,0,0);
+      }
+      else {
         const endTimeArr = schedule.endTime.toString().split(':');
         const endHour = endTimeArr[0];
         const endMin = endTimeArr[1];
         schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
       }
-      schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
-      schedule.endDay = 0;
+      console.log(contentId);
       console.log(schedule);
       this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, this.options)
         .map((response: Response) => {

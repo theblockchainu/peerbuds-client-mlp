@@ -3,11 +3,12 @@ import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MdChipsModule } from '@angular/material';
-import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule, PopoverModule, } from 'ngx-bootstrap';
+import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule, PopoverModule, DatepickerModule, TimepickerModule} from 'ngx-bootstrap';
 import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, CheckboxModule, LightboxModule } from 'primeng/primeng';
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
+import { FinishingTouchesModule } from '../finishing-touches/finishing-touches.module';
 
 
 import { CollectionService } from '../_services/collection/collection.service';
@@ -64,7 +65,10 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     PopoverModule,
     LightboxModule,
     MdChipsModule,
-    LeftSidebarModule
+    LeftSidebarModule,
+    DatepickerModule,
+    TimepickerModule,
+    FinishingTouchesModule
   ]
 })
 export class SharedModule { }
