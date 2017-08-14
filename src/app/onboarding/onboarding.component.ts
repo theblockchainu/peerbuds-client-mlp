@@ -34,9 +34,9 @@ export class OnboardingComponent implements OnInit {
     this.interest1 = new FormGroup({
     });
     this.countryPickerService.getCountries()
-        .subscribe((countries) => this.countries = countries);
+      .subscribe((countries) => this.countries = countries);
     this._contentService.getTopics()
-        .subscribe((suggestions) => this.suggestedTopics = suggestions);
+      .subscribe((suggestions) => this.suggestedTopics = suggestions);
   }
 
   public selected(event) {
@@ -52,16 +52,16 @@ export class OnboardingComponent implements OnInit {
   public ngOnInit() {
 
   }
-  goToNext(e){
+  goToNext(e) {
     //alert(e);
-    if(typeof e=="number"){
+    if (typeof e == "number") {
       this.step = e;
     }
-    else{
-        if(e.target.checked){
-          this.step = 2;
-          return;
-        }
+    else {
+      if (e.target.checked) {
+        this.step = 2;
+        return;
+      }
     }
   }
   public submitInterests(interests) {

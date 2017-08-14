@@ -23,6 +23,7 @@ export class AppHeaderComponent implements OnInit {
   private userId: string;
   private key = 'userId';
   public options: any[];
+  public defaultProfileUrl = '/assets/images/default-user.jpg';
 
   constructor(public authService: AuthenticationService,
               public requestHeaderService: RequestHeaderService,
