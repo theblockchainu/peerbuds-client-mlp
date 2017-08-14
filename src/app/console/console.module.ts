@@ -4,7 +4,8 @@ import { SharedModule } from '../_shared/_shared.module';
 import { ConsoleRoutingModule } from './console-routing.module';
 import { ConsoleComponent } from './console.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule, MdChipsModule, MdInputModule, MdSelectModule, MdSnackBarModule } from '@angular/material';
+import {RatingModule} from 'primeng/primeng';
 import 'hammerjs';
 import { ConsoleDashboardComponent } from './console-dashboard/console-dashboard.component';
 import { ConsoleInboxComponent } from './console-inbox/console-inbox.component';
@@ -39,6 +40,7 @@ import { ConsoleAccountSettingsComponent } from './console-account/console-accou
     SharedModule,
     ConsoleRoutingModule,
     BrowserAnimationsModule,
+    RatingModule,
     MdCardModule,
     MdButtonModule,
     MdMenuModule,
@@ -46,7 +48,11 @@ import { ConsoleAccountSettingsComponent } from './console-account/console-accou
     MdIconModule,
     MdProgressBarModule,
     MdListModule,
-    MdTabsModule
+    MdTabsModule,
+    MdChipsModule,
+    MdInputModule,
+    MdSelectModule,
+    MdSnackBarModule
   ],
   declarations: [
     ConsoleComponent,

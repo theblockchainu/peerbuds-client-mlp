@@ -18,7 +18,7 @@ import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule } from '@angular/material';
 import 'hammerjs';
 
 
@@ -47,7 +47,9 @@ import 'hammerjs';
     MdButtonModule,
     MdMenuModule,
     MdToolbarModule,
-    MdIconModule
+    MdIconModule,
+    MdAutocompleteModule,
+    MdInputModule
   ],
   bootstrap: [AppComponent]
 })

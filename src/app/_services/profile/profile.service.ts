@@ -11,18 +11,24 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
+import {RequestHeaderService} from "../requestHeader/request-header.service";
 // import { Response } from '@angular/http';
 
 @Injectable()
 export class ProfileService {
   public key = 'userId';
   private userId;
+  private options;
 
-  constructor(private http: Http, private config: AppConfig,
-    private _cookieService: CookieService,
-    private route: ActivatedRoute,
-    public router: Router) {
+  constructor(private http: Http,
+              private config: AppConfig,
+              private _cookieService: CookieService,
+              private route: ActivatedRoute,
+              public router: Router,
+              public _requestHeaderService: RequestHeaderService
+  ) {
     this.userId = this.getCookieValue(this.key);
+    this.options = this._requestHeaderService.getOptions();
   }
 
   private getCookieValue(key: string) {
@@ -37,8 +43,10 @@ export class ProfileService {
   public getProfile() {
     const profile = {};
     if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profile')
-        .map((response: Response) => response.json()
+      const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}]}, "work", "education"]}';
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter)
+        .map(
+          (response: Response) => response.json()
         );
     }
   }
@@ -147,5 +155,31 @@ export class ProfileService {
       return this.http.get(this.config.apiUrl + '/api/reviews/' + reviewId + '/peer')
       .map((response: Response) => response.json());
     }
+  }
+
+  public updateProfile(profile: any, cb: any) {
+    const sanitizedProfile = profile;
+    if (!(profile !== undefined && this.userId)) {
+      console.log('User not logged in');
+    } else {
+      this.http
+        .patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', this.sanitize(sanitizedProfile), this.options)
+        .map((response) => {
+          cb(null, response.json());
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
+  /**
+   * sanitize
+   */
+  private sanitize(newprofile: any) {
+    delete newprofile.id;
+    delete newprofile.peer;
+    delete newprofile.work;
+    delete newprofile.education;
+    return newprofile;
   }
 }

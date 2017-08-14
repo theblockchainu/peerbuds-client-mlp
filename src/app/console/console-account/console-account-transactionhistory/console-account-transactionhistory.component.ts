@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ConsoleAccountComponent} from '../console-account.component';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-console-account-transactionhistory',
@@ -7,7 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConsoleAccountTransactionhistoryComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public activatedRoute: ActivatedRoute,
+    public consoleAccountComponent: ConsoleAccountComponent
+  ) {
+    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+      console.log(urlSegment[0].path);
+      consoleAccountComponent.setActiveTab(urlSegment[0].path);
+    });
+  }
 
   ngOnInit() {
   }
