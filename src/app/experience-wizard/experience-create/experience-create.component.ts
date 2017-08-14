@@ -340,6 +340,7 @@ export class ExperienceCreateComponent implements OnInit {
    * createExperience
    */
   public createExperience() {
+
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
@@ -351,7 +352,7 @@ export class ExperienceCreateComponent implements OnInit {
       this.router.navigate(['create-experience', experienceObject.id, 0]);
     });
 
-  }
+}
 
   public submitExperience(data) {
     var body = data.value;

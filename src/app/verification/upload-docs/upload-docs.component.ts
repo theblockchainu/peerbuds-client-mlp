@@ -33,6 +33,7 @@ export class UploadDocsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.idProofImagePending = true;
     this.peer = this._fb.group({
       email: '',
       verificationIdUrl: ['', Validators.required]
@@ -53,13 +54,17 @@ export class UploadDocsComponent implements OnInit {
   }
 
   public resendOTP() {
-    this._profileService.sendVerifyEmail()
-      .subscribe((res) => this.otp.controls['inputOTP'].setValue(res.verificationToken));
+    this._profileService.sendVerifyEmail(this.peer.controls.email.value)
+      .subscribe();
   }
 
   verifyEmail() {
-    this._profileService.confirmEmail(this.otp.controls['inputOTP'].value, 'onboarding')
-      .subscribe((res) => this.success = res);
+    this._profileService.confirmEmail(this.otp.controls['inputOTP'].value)
+      .subscribe((res) => {
+        console.log(res);
+        this.success = res;
+        this.router.navigate(['onboarding']);
+      });
   }
 
   redirectToOnboarding() {

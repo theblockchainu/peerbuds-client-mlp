@@ -108,6 +108,20 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
     }
   }
 
+  ngOnChanges() {
+    console.log("ngChanges");
+    if(!!this.preselectedTopics){         
+        console.log(this.preselectedTopics);         
+    }
+    this.selected = _.union(this.preselectedTopics, this.selected);
+  }
+
+  ngViewInitChanges() {
+    console.log("View");
+    this.selected = _.union(this.preselectedTopics, this.selected);
+    console.log(this.selected);
+  }
+
   private filter() {
     if(!this.isMultiSelect) {
       if(this.filteredList.length != 0) {
@@ -164,7 +178,7 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
       return;
     }
     if(this.preselectedTopics.length != 0){
-      _.union(this.preselectedTopics, this.selected);
+      this.selected = _.union(this.preselectedTopics, this.selected);
     }
     this.selected.push(item);
     this.selectedOutput.emit(this.selected);

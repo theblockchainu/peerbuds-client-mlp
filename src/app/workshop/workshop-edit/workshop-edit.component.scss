@@ -132,3 +132,42 @@ label.check [type=checkbox]:checked + i, label.radiobox input[type=radio]:checke
 .captitalise {
     text-transform: capitalize;
 }
+
+#video-demo-container {
+	width: 400px;
+	margin: 40px auto;
+}
+
+#main-video {
+	display: none;
+	max-width: 400px;
+}
+
+
+#get-thumbnail {
+	display: none;
+}
+
+#video-canvas {
+	 display: block;
+}
+
+#upload-button {
+	width: 150px;
+	display: block;
+	margin: 20px auto;
+}
+
+.drop-area{
+  width:100px;
+  height:25px;
+  border: 1px solid #999;
+  text-align: center;
+  padding:10px;
+  cursor:pointer;
+}
+#thumbnail img{
+  width:100px;
+  height:100px;
+  margin:5px;
+}

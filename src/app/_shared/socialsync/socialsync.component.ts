@@ -11,24 +11,37 @@ import { ProfileService } from '../../_services/profile/profile.service';
 })
 export class SocialSyncComponent implements OnInit {
 
+  public socialIdentitiesConnected: any = [];
+
   private connectedIdentities = {
-    'fb' : false,
+    'fb': false,
     'google': false
-  }
+  };
 
   constructor(
-    private http: Http, 
+    private http: Http,
     private config: AppConfig,
     private _profileService: ProfileService) { }
 
   ngOnInit() {
     this._profileService.getSocialIdentities()
-        .subscribe((response: Response) => {
-                  //if(response)
-              }, 
-              (err) => {
-                        console.log('Error: ' + err);
-                });
+      .subscribe((response: Response) => {
+        this.socialIdentitiesConnected = response;
+
+        this.socialIdentitiesConnected.forEach(socialIdentity => {
+          if (socialIdentity.provider === 'google') {
+            this.connectedIdentities.google = true;
+          }
+          if (socialIdentity.provider === 'facebook') {
+            this.connectedIdentities.fb = true;
+          }
+        });
+        // console.log(JSON.stringify(this.socialIdentitiesConnected));
+
+      },
+      (err) => {
+        console.log('Error: ' + err);
+      });
   }
 
 }

@@ -49,8 +49,8 @@ export class ContentViewComponent implements OnInit {
     console.log('Adding Content');
     const contentArray = <FormArray>this.itenaryForm.controls['contents'];
     const contentObject = this.initContent();
-    contentObject.controls.type.setValue(contentType);
-    contentObject.controls.pending.setValue(true);
+    contentObject.controls.type.patchValue(contentType);
+    contentObject.controls.pending.patchValue(true);
     contentArray.push(contentObject);
     console.log(contentObject);
     this.addIndex();
@@ -107,11 +107,12 @@ export class ContentViewComponent implements OnInit {
   }
 
   imageUploadNew(event) {
+    debugger;
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-        contentForm.controls['imageUrl'].setValue(responseObj.url);
+        contentForm.controls['imageUrl'].patchValue(responseObj.url);
       }).subscribe();
     }// data => console.log('response', data)
   }
@@ -121,7 +122,7 @@ export class ContentViewComponent implements OnInit {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
-        contentForm.controls['imageUrl'].setValue(responseObj.url);
+        contentForm.controls['imageUrl'].patchValue(responseObj.url);
       }).subscribe();
     }
   }
@@ -131,6 +132,7 @@ export class ContentViewComponent implements OnInit {
     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
     const contentForm = <FormGroup>contentsFArray.controls[listIndex];
     this.tempForm = _.cloneDeep(contentForm);
+    //console.log(this.tempForm.controls['supplementUrls'][0]);
     const contentType = contentForm.value.type;
     let editModal: ModalDirective;
     switch (contentType) {
@@ -153,15 +155,30 @@ export class ContentViewComponent implements OnInit {
 
 
   saveTemp(modal: ModalDirective) {
+    debugger;
     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
     const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
-    contentForm.setValue(this.tempForm.value);
+    contentForm.patchValue(this.tempForm.value);
 
     this.triggerSave.emit({
       action: 'update',
       value: this.editIndex
     });
     modal.hide();
+    console.log('updated!');
+    this.resetProgressBar();
+
+  }
+
+  saveTempForEditDate(content, index) {
+
+    const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+    const contentForm = <FormGroup>contentsFArray.controls[index];
+    contentForm.patchValue(content);
+    this.triggerSave.emit({
+      action: 'update',
+      value: index
+    });
     console.log('updated!');
     this.resetProgressBar();
 
@@ -234,11 +251,43 @@ export class ContentViewComponent implements OnInit {
   itemNewRemoved(event) {
     delete this.filesToUpload;
     this.filesUploaded = 0;
+    debugger;
   }
 
   itemEditRemoved(event) {
     delete this.filesToUpload;
     this.filesUploaded = 0;
+    //this.deleteFromContainer(event);
   }
 
+  deleteFromContainer(fileUrl, fileType='') {
+    // debugger;
+    //   const fileurl = fileUrl;
+    //   fileUrl = _.replace(fileUrl,'download','files');
+    //   this.http.delete(this.config.apiUrl + fileUrl)
+    //       .map((response) => { console.log(response); 
+    //         if(fileType == 'supplement') {
+    //           this.tempForm.controls['supplementUrls'].patchValue('');
+    //         }
+    //         else if (fileType == 'image'){
+    //           let imageArr = this.tempForm.controls['imageUrl'];
+    //            imageArr= _.remove(imageArr, function(n) {
+    //             return n != fileurl;
+    //         });
+    //         this.tempForm.controls['imageUrl'].patchValue(imageArr);
+    //         }
+    //       }).subscribe();
+    }
+
+  triggerContentUpdate(form) {
+    debugger;
+    const date = form.controls.date.value;
+    let contentArray = <FormArray>form.controls['contents'].controls;
+    for(var i = 0; i < contentArray.length; i++) {
+      const type = contentArray[i].controls.type.value;
+      contentArray[i].controls.schedule.controls.startDay.patchValue(date);
+      contentArray[i].controls.schedule.controls.endDay.patchValue(date);
+      this.saveTempForEditDate(contentArray[i],i);
+    }
+  }
 }

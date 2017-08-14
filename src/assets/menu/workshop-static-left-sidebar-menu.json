@@ -93,6 +93,20 @@
         "title" : "Finishing Touches",
         "active":false,
         "step" : 15,
+        "submenu": [
+            {
+                "title" : "Phone Number",
+                "step" : 16,
+                "active" : false,
+                "visible" : true 
+            },
+            {
+                "title" : "Payments",
+                "step" : 17,
+                "active" : false,
+                "visible" : true 
+            }
+        ],
         "visible" : false
     }
 ]
