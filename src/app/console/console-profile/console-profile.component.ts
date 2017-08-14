@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
+import { ProfileService } from '../../_services/profile/profile.service';
 import {ConsoleComponent} from '../console.component';
 
 declare var moment: any;
@@ -17,16 +18,20 @@ export class ConsoleProfileComponent implements OnInit {
   public workshops: any;
   public loaded: boolean;
   public activeTab: string;
+  private profileId;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
     public _collectionService: CollectionService,
-    public consoleComponent: ConsoleComponent) {
+    public consoleComponent: ConsoleComponent,
+    public _profileService: ProfileService) {
     activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
+    debugger;
+    this.profileId = _profileService.getPeerProfile().subscribe();
     this.activeTab = 'edit';
   }
 
@@ -38,7 +43,7 @@ export class ConsoleProfileComponent implements OnInit {
    * createWorkshop
    */
   public viewProfile() {
-    this.router.navigate(['profile']);
+    this.router.navigate(['profile', this.profileId]);
   }
 
   /**

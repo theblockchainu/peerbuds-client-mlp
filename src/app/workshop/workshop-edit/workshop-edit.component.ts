@@ -162,7 +162,7 @@ export class WorkshopEditComponent implements OnInit {
       approvedBy: '',
       // isCanceled: '',
       canceledBy: '',
-      status: '',
+      status: 'draft',
       // createdAt: '',
       // updatedAt: ''
     });

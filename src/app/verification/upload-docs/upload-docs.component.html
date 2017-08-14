@@ -33,8 +33,8 @@
             <span class="label label-warning" [hidden]="!idProofImagePending">Pending</span>
             <span class="label label-success" [hidden]="idProofImagePending">Success</span>
             <div>
-              <p-fileUpload name="image" mode="basic" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-                auto="true" chooseLabel="Choose File"></p-fileUpload>
+              <p-fileUpload name="image" #idproof mode="basic" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+                chooseLabel="Choose File"></p-fileUpload>
             </div>
             <!--<p><input type="file" name="uploadId" required></p>-->
             <!--<div class="checkbox">
@@ -43,7 +43,7 @@
             <div class="bottom-section clearfix">
               <div class="pull-right">
                 <button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
-                <button class="btn btn-primary" (click)="continue(3)">Continue</button>
+                <button class="btn btn-primary" (click)="continue(3)" [disabled]="idProofImagePending">Continue</button>
               </div>
             </div>
           </form>
@@ -51,7 +51,7 @@
         <div class="step-3" [hidden]="step!=3">
           <form [formGroup]="peer">
             <div class="section-header">How can we reach you securely?</div>
-            <p>Please let us know how we can reach you by email. To help keep your Facebook account secure, make sure only you can log into this email address.</p>
+            <p>Please let us know how we can reach you by email. To help keep your Peerbuds account secure, make sure only you can log into this email address.</p>
             <div class="form-group">
               <label class="inline">Email address:</label>
               <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" />
