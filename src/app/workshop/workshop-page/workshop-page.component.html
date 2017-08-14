@@ -1,5 +1,4 @@
 <div id="content">
-
   <div *ngIf="workshop">
     <div class="container-fluid">
       <div class="row">
@@ -8,48 +7,54 @@
             <div class="col-md-8">
               <div class="row">
                 <div class="col-md-12">
-                  <h1> {{workshop.title}}</h1>
+                  <h1>{{workshop.title}}</h1>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" *ngIf="userType==='teacher'">
                   {{calendarDisplay.startDate}} - {{calendarDisplay.endDate}} {{totalDuration}} Hours . {{workshop.contents.length}} parts
                   <i class="fa fa-calendar" aria-hidden="true" (click)="changeDates()"> Change Dates</i>
+                </div>
+                <div class="col-md-12" *ngIf="userType==='public'">
+                  <p>{{itenaryArray.length}} days / {{totalDuration}} Hours . {{workshop.contents.length}} parts</p>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
-              <button type="button" class="btn btn-success btn-lg " (click)="joinGroupChat()">  Join Group Chat  </button>
-              <button type="button" class="btn btn-default btn-lg " (click)="gotoEdit()">  Edit  </button>
-
-              <template #popTemplate>
-                <button *ngIf="booked" type="button" class="btn btn-default btn-lg" (click)="cancelWorkshopModal.show()">  Cancel Workshop  </button>
-                <button *ngIf="!booked" type="button" class="btn btn-warning btn-lg" (click)="deleteWorkshopModal.show()">  Delete Workshop  </button>
-              </template>
-              <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true" [popover]="popTemplate" placement="right"></i>
+              <div class="row" *ngIf="userType==='teacher'">
+                <div class="col-md-11">
+                  <button type="button" class="btn btn-default pull-right" (click)="joinGroupChat()">  Join Group Chat  </button>
+                  <button type="button" class="btn btn-default pull-right" (click)="gotoEdit()">  Edit  </button>
+                </div>
+                <div class="col-md-1">
+                  <span class="glyphicon glyphicon-option-vertical" aria-hidden="true" placement="right" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false"></span>
+                  <ul class="dropdown-menu">
+                    <li *ngIf="booked"><a (click)="cancelWorkshopModal.show()">Cancel Workshop</a></li>
+                    <li *ngIf="!booked"><a (click)="deleteWorkshopModal.show()">Delete Workshop</a></li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
           <hr>
           <div class="row workshop-content">
-            <div class="col-md-8 left-content" style="overflow:scroll">
-              <div class="row">
+            <div class="col-md-8 left-content">
+              <div class="row About">
                 <div class="col-md-8">
                   <h3>About this Workshop</h3>
-                  <br>
-                  <h4>{{workshop.headline}}
+                  <h4 *ngIf="userType==='teacher' || userType==='participant'">{{workshop.headline}}
                     <p-lightbox type="content">
                       <a href="#">
                       Watch Explainer Video <i class="fa fa-play-circle" aria-hidden="true"></i>                      
-                  </a>
-                      <video controls height="600" easing="ease-in" src="{{config.apiUrl+workshop.videoUrl}}"></video>
+                      </a>
+                      <!-- <video controls height="600" easing="ease-in" src="{{config.apiUrl+workshop.videoUrl}}"></video> -->
                     </p-lightbox>
                   </h4>
-                  <br>
                   <p> {{workshop.description}} </p>
-                  <br>
                 </div>
               </div>
-              <div class="row">
+              <div class="row Topics">
                 <div class="col-md-8">
                   <md-chip-list>
                     <md-chip *ngFor="let topic of workshop.topics"> {{topic.name}} </md-chip>
@@ -57,7 +62,7 @@
                 </div>
               </div>
               <hr>
-              <div class="row" *ngIf="userType==='public' || userType==='participant'">
+              <div class="row Description" *ngIf="userType==='public' || userType==='participant'">
                 <div class="col-md-12">
                   <div class="row">
                     <div class="col-md-4">
@@ -70,14 +75,14 @@
                   </div>
                   <div class="row">
                     <div class="col-md-4">Cancellation Policy </div>
-                    <div class="col-md-8"> {{workshop.cancellationPolicy}} [[POLICY TYPE]] </div>
+                    <div class="col-md-8">Before {{workshop.cancellationPolicy}} days </div>
                   </div>
                 </div>
               </div>
               <hr>
-              <div class="row">
+              <div class="row Itenary">
                 <div class="featurette" id="about">
-                  <div class="container">
+                  <div class="col-md-12">
                     <div class="qa-message-list" id="wallmessages">
                       <div class="message-item" *ngFor="let itenary of itenaryArray">
                         <div class="message-inner">
@@ -102,6 +107,12 @@
                                       <p> {{content.description}} </p>
                                     </div>
                                   </div>
+                                  <div class="row" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant')">
+                                    <div class="col-md-12">
+                                      <button class="btn btn-default" *ngIf="isLive(content)" (click)="joinSession(content)">Join</button>
+                                      <button class="btn btn-default" *ngIf="!isLive(content)" [disabled]="true"> {{timetoSession(content)}} </button>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -113,21 +124,68 @@
                 </div>
               </div>
               <hr>
-              <div class="row">
+              <div class="row Discussion" *ngIf="userType==='teacher' || userType==='participant'">
                 <div class="col-md-12">
                   <h3>Discussion</h3>
                   <form [formGroup]="chatForm" (ngSubmit)="postMessage()">
                     <input type="text" formControlName="message" class="form-control" placeholder="Post your thoughts in this project">
                     <!-- <input type="checkbox" class="checkbox" formControlName="announce">Make announcement -->
-                    <button type="submit" [disabled]="!chatForm.valid" class="btn btn-success">Submit</button>
+                    <button type="submit" [disabled]="!chatForm.valid" class="btn btn-success pull-right">Submit</button>
                   </form>
                 </div>
                 <div class="col-md-12">
-                  [[REVIEWS]]
+                  <!-- [[DISSCUSSION]] -->
+                </div>
+              </div>
+              <div class="row Reviews">
+                <hr>
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4>Reviews ({{workshop.reviews.length}})</h4>
+                    <rating [(ngModel)]="userRating" [max]="maxRating" [readonly]="isReadonly"></rating>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-11 col-md-offset-1">
+                    <div class="row" *ngFor="let review of workshop.reviews;let i=index">
+                      <div class="col-md-12" [hidden]="i>noOfReviews">
+                        <div class="row">
+                          <div class="col-md-2">
+                            <img src="" alt="dp">
+                          </div>
+                          <div class="col-md-10">
+                            <div class="row">
+                              <div class="col-md-12">
+                                Anonymous
+                              </div>
+                              <div class="col-md-12">
+                                <p>{{getReadableDate(review.startDate)}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            {{review.description}}
+                          </div>
+                        </div>
+                        <br>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <hr>
+                        <a [hidden]="noOfReviews!==4" (click)="toggleReviews()">See all {{workshop.reviews.length}} reviews</a>
+                        <a [hidden]="noOfReviews===4" (click)="toggleReviews()">See fewer reviews</a>
+                        <hr>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <hr>
-              <div class="row" *ngIf="userType==='teacher'">
+              <div class="row Eligibility" *ngIf="userType==='teacher'">
                 <div class="col-md-8">
                   <div class="row">
                     <div class="col-md-4">
@@ -151,11 +209,11 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4 right-content">
-              <div class="row">
-                <h3>Attendeis</h3>
-                <div class="row" *ngFor="let participant of workshop.participants">
-                  <div *ngIf="participant.profiles">
+            <div class="col-md-3 col-md-offset-1 right-content">
+              <div class="row" *ngIf="userType==='teacher'">
+                <h3>Attendies</h3>
+                <div class="row" *ngFor="let participant of workshop.participants; let i=index">
+                  <div *ngIf="participant.profiles && i<4">
                     <div class="col-md-2">
                       <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle" alt="dp">
                     </div>
@@ -169,7 +227,97 @@
                   <a (click)="viewAttendies.show()"> View All Peers </a>
                 </div>
               </div>
-              <!-- <video autoplay loop muted height="600" src="{{config.appiUrl+config.workshop.videoUrl}}"></video> -->
+              <div class="row" *ngIf="userType==='public'">
+                <div class="row">
+                  <div class="col-md-12">
+                    <carousel>
+                      <slide>
+                        <video autoplay loop muted height="100%" class="center-block" src="{{config.apiUrl+workshop.videoUrl}}"></video>
+                      </slide>
+                      <slide *ngFor="let imageUrl of workshop.imageUrls">
+                        <img src="{{config.apiUrl+imageUrl}}" class="img-responsive center-block" style="max-height: 100%" alt="First slide">
+                      </slide>
+                    </carousel>
+                    <h4>
+                      {{workshop.headline}}
+                    </h4>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4>Taught By</h4>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <img src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}" class="img-circle">
+                      </div>
+                      <div class="col-md-9">
+                        <div class="row">
+                          <div class="col-md-12">
+                            {{workshop.owners[0].profiles[0].first_name +workshop.owners[0].profiles[0].last_name}}
+                          </div>
+                          <div class="col-md-12">
+                            {{workshop.owners[0].profiles[0].work[0].position}}
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p>{{workshop.aboutHost}}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p>Offered in {{workshop.language[0]}}</p>
+                      </div>
+                      <div class="col-md-12">
+                        {{getContentCount('project')}} Project
+                      </div>
+                      <div class="col-md-12">
+                        {{getContentCount('video')}} Recorded Videos
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <h3>{{workshop.currency+ workshop.price}}</h3>
+                      </div>
+                      <div class="col-md-6">
+                        <p>per person</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <rating [(ngModel)]="userRating" [max]="maxRating" [readonly]="isReadonly"></rating>
+                        <p> {{workshop.reviews.length}} Reviews</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <button class="btn btn-default">Dates</button>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <!-- <video autoplay loop muted height="600" src="{{config.apiUrl+workshop.videoUrl}}"></video> -->
+              <div class="row">
+                <div class="col-md-4">
+                  <a>Invite</a>
+                </div>
+                <div class="col-md-4">
+                  <span class="glyphicon glyphicon-bookmark" aria-hidden="true">Bookmark</span>
+                </div>
+                <div class="col-md-4">
+                  <i class="fa fa-linkedin" aria-hidden="true"></i>
+                  <i class="fa fa-twitter" aria-hidden="true"></i>
+                </div>
+              </div>
             </div>
           </div>
           <div class="row workshop-suggestions">
@@ -234,10 +382,11 @@
                 </md-progress-bar>
               </div>
               <div class="col-md-1">
-                <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true" placement="right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                <span class="glyphicon glyphicon-option-vertical" aria-hidden="true" placement="right" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false"></span>
                 <ul class="dropdown-menu">
-                  <li><a>Message</a></li>
-                  <li><a>Remove</a></li>
+                  <li><a (click)="messageParticipant(messageDialog,participant)">Message</a></li>
+                  <li><a (click)="removeParticipant(participant.id)">Remove</a></li>
                   <li><a>Report</a></li>
                 </ul>
               </div>
@@ -251,11 +400,11 @@
   <div bsModal #viewOnlineContent="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
       <div class="modal-content">
-        <div class="modal-body" *ngIf="modalContent">
-          <div class="container">
+        <div class="modal-body row" *ngIf="modalContent">
+          <div class="col-md-12">
             <div class="row">
-              <div class="col-md-12">
-                <img src="{{config.apiUrl+modalContent.imageUrl}}" alt="content Image">
+              <div class="col-md-8 col-md-offset-2 media">
+                <img class="img-responsive media-middle" src="{{config.apiUrl+modalContent.imageUrl}}" style="max-height: 600px" alt="content Image">
               </div>
             </div>
             <div class="row">
@@ -266,23 +415,22 @@
             <div class="row">
               <div class="col-md-12">
                 <h4>What we'll do</h4>
-                <br>
                 <p>
                   {{modalContent.description}}
                 </p>
                 <div *ngIf="modalContent.notes">
                   <hr>
                   <h4>Need to know</h4>
-                  <br>
                   <p>
                     {{modalContent.notes}}
                   </p>
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="modalContent.type==='online'">
               <div class="col-md-12">
-                <button class="btn btn-default"> Join </button>
+                <button class="btn btn-default" *ngIf="isLive(modalContent)" (click)="joinSession(modalContent)">Join</button>
+                <button class="btn btn-default" *ngIf="!isLive(modalContent)" [disabled]="true"> {{timetoSession(modalContent)}} </button>
               </div>
             </div>
           </div>
@@ -294,11 +442,11 @@
   <div bsModal #viewVideoContent="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
       <div class="modal-content">
-        <div class="modal-body" *ngIf="modalContent">
-          <div class="container">
+        <div class="modal-body row" *ngIf="modalContent">
+          <div class="col-md-12">
             <div class="row">
-              <div class="col-md-12">
-                <video controls src="{{config.apiUrl+modalContent.imageUrl}}">
+              <div class="col-md-8 col-md-offset-2 embed-responsive embed-responsive-16by9">
+                <video class="embed-responsive-item" controls src="{{config.apiUrl+modalContent.imageUrl}}">
                 </video>
               </div>
               <div class="col-md-12">
@@ -316,8 +464,57 @@
   <div bsModal #viewProjectContent="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
       <div class="modal-content">
-        <div class="modal-body" *ngIf="modalContent">
-
+        <div class="modal-body row" *ngIf="modalContent">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2 media">
+                <img class="img-responsive media-middle" src="{{config.apiUrl+modalContent.imageUrl}}" style="max-height: 600px" alt="content Image">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h2>{{modalContent.title}}</h2>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h4>What we'll do</h4>
+                <p>
+                  {{modalContent.description}}
+                </p>
+                <div *ngIf="modalContent.notes">
+                  <hr>
+                  <h4>Need to know</h4>
+                  <p>
+                    {{modalContent.notes}}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button *ngIf="userType==='participant'" class="btn btn-default pull-left">Submit Entree</button>
+                <button *ngIf="userType==='teacher'" class="btn btn-default pull-left">View Entries</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div bsModal #messageDialog="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+        <div class="modal-body row" *ngIf="messagingParticipant">
+          <div class="col-md-12">
+            <h4>Send message to {{messagingParticipant.profiles[0].first_name}}</h4>
+          </div>
+          <div class="col-md-12">
+            <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+              <input type="text" formControlName="message" class="form-control" placeholder="Type something to send...">
+              <button type="submit" [disabled]="!messageForm.valid" class="btn btn-success pull-right">Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

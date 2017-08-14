@@ -129,5 +129,12 @@ export class CollectionService {
     return collection;
   }
 
+  /**
+   * removeParticipant
+   */
+  public removeParticipant(collectionId: string, participantId: string) {
+    return this.http.delete(this.config.apiUrl +
+      '/api/collections/' + collectionId + '/participants/rel/' + participantId);
+  }
 
 }
