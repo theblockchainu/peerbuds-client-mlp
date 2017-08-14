@@ -10,8 +10,7 @@
     <div #noContentView *ngIf="collections.data.length == 0" class="center" style="margin-top: 10%">
       <div class="lightText">
         You are not teaching any workshop
-        <br><br>
-        Start by hosting an <a color="default" [routerLink]="'/editWorkshop'">Workshop </a>
+        <br><br> Start by hosting an <a color="default" [routerLink]="'/editWorkshop'">Workshop </a>
       </div>
     </div>
     <div style="display:inline;" *ngIf="collections.activeCount > 0">
@@ -25,18 +24,18 @@
               <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
               <ng-template #noTopicText>No Topics</ng-template>
               <ng-template #ongoingCard>
-                <md-card style="text-align: center; padding: 20px;" >
+                <md-card style="text-align: center; padding: 20px;">
                   <md-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
-                        <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
                     </div>
                     <div class="collectionParticipantImageCarousel">
-                      <div class="circle-thumb" *ngFor="let participant of collection.participants">
-                        <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                      <div class="circle-thumb" *ngFor="let participant of workshop.participants">
+                        <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
                       </div>
                     </div>
                     <div class="participantCount">
@@ -44,8 +43,9 @@
                     </div>
                     <div class="collectionTitle">{{ collection.title || 'No Title' }} </div>
                     <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar>
-                    <div class="collectionSubtitle" >
-                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts | <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                    <div class="collectionSubtitle">
+                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                      <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
                     <p class="upcomingEventLabel">
                       Up Next
@@ -54,9 +54,21 @@
                       {{ _collectionService.getUpcomingEvent(collection).title }}
                     </div>
                     <div class="upcomingEventTime">
-                      {{ _collectionService.getUpcomingEvent(collection).type + ' ' + _collectionService.getUpcomingEvent(collection).fillerWord  + ' in ' +  _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
+                      {{ _collectionService.getUpcomingEvent(collection).type + ' ' + _collectionService.getUpcomingEvent(collection).fillerWord
+                      + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
                     </div>
                   </md-card-content>
+                  <md-menu #ongoingCardMenu>
+                    <button md-menu-item>
+                      Delete
+                    </button>
+                    <button md-menu-item>
+                      Message Students
+                    </button>
+                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                      View Workshop
+                    </button>
+                  </md-menu>
                   <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
                     <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                   </md-card-actions>
@@ -67,18 +79,18 @@
                 </md-card>
               </ng-template>
               <ng-template #upcomingCard>
-                <md-card style="text-align: center; padding: 20px;" >
+                <md-card style="text-align: center; padding: 20px;">
                   <md-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
-                        <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
                     </div>
                     <div class="collectionParticipantImageCarousel">
-                      <div class="circle-thumb" *ngFor="let participant of collection.participants">
-                        <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                      <div class="circle-thumb" *ngFor="let participant of workshop.participants">
+                        <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
                       </div>
                     </div>
                     <div class="participantCount">
@@ -91,8 +103,9 @@
                     <div class="lighterText">
                       Approved {{_collectionService.getDaysBetween(collection.updatedAt, now)}}
                     </div>
-                    <div class="collectionSubtitle" >
-                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts | <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                    <div class="collectionSubtitle">
+                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                      <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
                     <p class="upcomingEventLabel">
                       First Session
@@ -101,9 +114,21 @@
                       {{ _collectionService.getUpcomingEvent(collection).title }}
                     </div>
                     <div class="upcomingEventTime">
-                      {{ _collectionService.getUpcomingEvent(collection).type + ' ' + _collectionService.getUpcomingEvent(collection).fillerWord  + ' in ' +  _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
+                      {{ _collectionService.getUpcomingEvent(collection).type + ' ' + _collectionService.getUpcomingEvent(collection).fillerWord
+                      + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
                     </div>
                   </md-card-content>
+                  <md-menu #upcomingCardMenu>
+                    <button md-menu-item>
+                      Delete
+                    </button>
+                    <button md-menu-item>
+                      Message Students
+                    </button>
+                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                      View Workshop
+                    </button>
+                  </md-menu>
                   <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
                     <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                   </md-card-actions>
@@ -132,12 +157,12 @@
         <div style="margin-top:20px;" class="col-md-12">
           <div class="row">
             <div *ngFor="let collection of collections.data" [ngSwitch]="collection.status">
-              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'draft' || 'submitted'" >
+              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'draft' || 'submitted'">
                 <md-card style="text-align: center; padding: 20px;">
                   <md-card-content>
                     <div class="clearfix" style="text-align: right">
                       <div class="pull-right">
-                        <a md-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a md-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
@@ -163,6 +188,17 @@
 
                   </md-card-footer>
                 </md-card>
+                <md-menu #draftCardMenu>
+                  <button md-menu-item>
+                    Delete
+                  </button>
+                  <button md-menu-item>
+                    Message Students
+                  </button>
+                  <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                    View Workshop
+                  </button>
+                </md-menu>
               </div>
             </div>
           </div>
@@ -180,12 +216,12 @@
             <div *ngFor="let collection of collections.data" [ngSwitch]="collection.status">
               <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
               <ng-template #noTopicText>No Topics</ng-template>
-              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete' || 'canceled'" >
+              <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete' || 'canceled'">
                 <md-card style="text-align: center; padding: 20px;">
                   <md-card-content>
                     <div class="clearfix" style="text-align: right">
                       <div class="pull-right">
-                        <a md-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a md-button [mdMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
@@ -200,13 +236,25 @@
                     </div>
                     <div class="collectionTitle">{{ collection.title || 'No Title' }} </div>
                     <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar>
-                    <div class="collectionSubtitle" >
-                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts | <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                    <div class="collectionSubtitle">
+                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                      <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
                     <div class="teachingRatingReminder" (click)="consoleTeachingComponent.showRateStudentsPopup()">
                       Rate your students now
                     </div>
                   </md-card-content>
+                  <md-menu #pastCardMenu>
+                    <button md-menu-item>
+                      Delete
+                    </button>
+                    <button md-menu-item>
+                      Message Students
+                    </button>
+                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                      View Workshop
+                    </button>
+                  </md-menu>
                   <md-card-actions>
                     <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">
                       View Details
