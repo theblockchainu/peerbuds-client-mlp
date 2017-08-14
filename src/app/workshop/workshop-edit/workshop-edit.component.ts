@@ -785,7 +785,7 @@ export class WorkshopEditComponent implements OnInit {
       if (body.startDate && body.endDate) {
         this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, this.options)
           .map((response) => {
-            this.router.navigate(['workshop-console']);
+            this.router.navigate(['console/teaching/workshops']);
           })
           .subscribe();
       } else {
@@ -801,7 +801,7 @@ export class WorkshopEditComponent implements OnInit {
       delete body.selectedLanguage;
       this._collectionService.patchCollection(this.workshopId, body).map(
         (response) => {
-          this.router.navigate(['workshop-console']);
+          this.router.navigate(['console/teaching/workshops']);
         }).subscribe();
     }
   }
