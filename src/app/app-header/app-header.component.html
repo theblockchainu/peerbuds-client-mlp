@@ -99,6 +99,9 @@
 </md-menu>
 
 <md-menu #headerUserMenu>
+  <button md-menu-item [routerLink]="['/profile', userId]">
+    {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
+  </button>
   <button md-menu-item [routerLink]="['/console/profile/edit']">
     Edit Profile
   </button>

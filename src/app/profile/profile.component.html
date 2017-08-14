@@ -1,9 +1,8 @@
 <div id="content" class="profile-setion">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
+    <div class="row" *ngIf="!loading">
+      <div class="col-sm-2" [ngClass]="(userType ==='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
         <div class="profile-image-big">
-          <img src="{{config.apiUrl+profile.picture_url ? config.apiUrl+profile.picture_url: defaultProfileUrl}}" alt="image" />
+          <img src="{{config.apiUrl + profile.picture_url ? config.apiUrl + profile.picture_url: defaultProfileUrl}}" alt="image" />
         </div>
         <div class="seperate-section text-center">
           <div class="title dot-dot">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
@@ -147,7 +146,7 @@
           </div>-->
         </div>
       </div>
-      <div class="col-sm-3" [hidden]="userType != 'teacher'">
+      <div class="col-sm-3" [hidden]="userType !== 'teacher'">
         <div class="sidebar-right">
           <div class="sidebar-box">
             <tabset>
@@ -316,9 +315,6 @@
         <!-- communities row ends -->
       </div>
     </div>
-
-
-
 
     <!--<div id="similarPeers">
       <h2 class="similar-peers-head">Similar Peers</h2>
@@ -611,3 +607,4 @@
       </div>
     </div>
     <!-- edit session modal end -->
+</div>

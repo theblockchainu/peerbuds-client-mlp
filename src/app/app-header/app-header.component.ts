@@ -20,7 +20,7 @@ export class AppHeaderComponent implements OnInit {
   public profile: any = {};
   public userType = '';
   public myControl = new FormControl('');
-  private userId: string;
+  public userId: string;
   private key = 'userId';
   public options: any[];
   public defaultProfileUrl = '/assets/images/default-user.jpg';

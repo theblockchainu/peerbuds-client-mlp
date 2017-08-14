@@ -190,7 +190,7 @@ export class WorkshopEditComponent implements OnInit {
     });
 
     this.paymentInfo = this._fb.group({
-      
+
     })
 
     this.initializeFormFields();
@@ -198,7 +198,7 @@ export class WorkshopEditComponent implements OnInit {
     this.initializeWorkshop();
 
     //this.initializeTimeLine();
-    
+
     this._CANVAS = <HTMLCanvasElement> document.querySelector("#video-canvas");
     this._VIDEO = document.querySelector("#main-video");
   }
@@ -449,7 +449,7 @@ export class WorkshopEditComponent implements OnInit {
       this._collectionService.getCollectionDetail(this.workshopId, query)
         .subscribe((res) => {
           console.log(res);
-          
+
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
 
@@ -504,7 +504,7 @@ export class WorkshopEditComponent implements OnInit {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       headers.append('Accept', 'application/json');
-      
+
       options = new RequestOptions({
         headers: headers,
         body: body
@@ -758,7 +758,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   redirectToConsole(modal: ModalDirective) {
-    modal.hide(); 
+    modal.hide();
     this.router.navigate(['console', 'teaching', 'workshops']);
   }
 
@@ -790,7 +790,7 @@ export class WorkshopEditComponent implements OnInit {
       delete body.selectedLanguage;
       this._collectionService.patchCollection(this.workshopId, body).map(
         (response) => {
-          this.router.navigate(['workshop-console']);
+          this.router.navigate(['/console/teaching/workshops']);
         }).subscribe();
     }
   }
@@ -858,25 +858,25 @@ export class WorkshopEditComponent implements OnInit {
             document.write("This Browser has no support for HTML5 FileReader yet!");
             return false;
         }
- 
+
         for (var i = 0; i < event.target.files.length; i++) {
             var file = event.target.files[i];
             var imageType = /image.*/;
- 
+
             if (!file.type.match(imageType)) {
                 continue;
- 
+
             }
- 
+
             var reader = new FileReader();
- 
+
             if (reader != null) {
- 
+
                 reader.onload = this.GetThumbnail;
                 reader.readAsDataURL(file);
             }
- 
- 
+
+
         }
     }
 
@@ -885,7 +885,7 @@ export class WorkshopEditComponent implements OnInit {
         var img = new Image();
         img.src = e.target.result;
         img.onload = function () {
- 
+
             myCan.id = "myTempCanvas";
             var tsize = 100;
             myCan.width = Number(tsize);
@@ -894,28 +894,28 @@ export class WorkshopEditComponent implements OnInit {
                 var cntxt = myCan.getContext("2d");
                 cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
                 var dataURL = myCan.toDataURL();
- 
- 
+
+
                 if (dataURL != null && dataURL != undefined) {
                     var nImg = document.createElement('img');
                     nImg.src = dataURL;
                     document.getElementById('image-holder').appendChild(nImg);
- 
+
                 }
                 else
                     alert('unable to get context');
- 
+
             }
- 
+
         }
- 
+
     }
 
     deleteFromContainer(fileUrl, fileType) {
       const fileurl = fileUrl;
       fileUrl = _.replace(fileUrl,'download','files');
       this.http.delete(this.config.apiUrl + fileUrl)
-          .map((response) => { console.log(response); 
+          .map((response) => { console.log(response);
             if(fileType == 'video') {
               this.urlForVideo = '';
               this.workshop.controls.videoUrl.patchValue('');
@@ -948,7 +948,7 @@ export class WorkshopEditComponent implements OnInit {
                       this.workshop.controls.imageUrls.patchValue(this.urlForImages);
                       }
                      }).subscribe();
- 
+
       }
     }
 
