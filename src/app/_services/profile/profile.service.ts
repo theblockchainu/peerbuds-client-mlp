@@ -115,8 +115,10 @@ export class ProfileService {
   }
 
   public sendVerifyEmail() {
+    const body = {
+    };
     return this.http
-      .get(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId)
+      .post(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId, body)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -124,8 +126,9 @@ export class ProfileService {
   }
 
   public confirmEmail(inputToken: string, redirect: string) {
+    const body = {};
     return this.http
-      .get(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect)
+      .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect, body)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
