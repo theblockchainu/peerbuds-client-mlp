@@ -10,6 +10,7 @@ import { VerificationModule } from './verification/verification.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
 import { ProfileModule } from './profile/profile.module';
 import { ConsoleModule } from './console/console.module';
+import { SignupSocialModule } from './signup-social/signup-social.module';
 
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
@@ -18,7 +19,7 @@ import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule } from '@angular/material';
 import 'hammerjs';
 
 
@@ -47,7 +48,10 @@ import 'hammerjs';
     MdButtonModule,
     MdMenuModule,
     MdToolbarModule,
-    MdIconModule
+    MdIconModule,
+    MdAutocompleteModule,
+    MdInputModule,
+    SignupSocialModule
   ],
   bootstrap: [AppComponent]
 })

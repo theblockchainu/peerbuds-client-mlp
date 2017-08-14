@@ -6,8 +6,19 @@ import { AuthGuardService } from '../_services/auth-guard/auth-guard.service';
 import { AuthService } from '../_services/auth/auth.service';
 
 const routes: Routes = [
+  // {
+  //   path: 'profile', component: ProfileComponent
+  // },
   {
-    path: 'profile', component: ProfileComponent
+    path: 'profile/:profileId',
+    children: [
+      {
+        path: '',
+        component: ProfileComponent,
+        pathMatch: 'full',
+        canActivateChild: [AuthGuardService]
+      }
+    ]
   },
 ];
 

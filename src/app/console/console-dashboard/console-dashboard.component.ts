@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ConsoleComponent} from '../console.component';
 
 @Component({
   selector: 'app-console-dashboard',
@@ -7,7 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConsoleDashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    activatedRoute: ActivatedRoute,
+    consoleComponent: ConsoleComponent
+  ) {
+    activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
+      console.log(urlSegment[0].path);
+      consoleComponent.setActiveTab(urlSegment[0].path);
+    });
+  }
 
   ngOnInit() {
   }

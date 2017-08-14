@@ -1,0 +1,22 @@
+.signup-box {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+}
+
+.signup-box.drop-shadow {
+    box-shadow: 0 0 10px #ccc;
+}
+
+.signup-box label {
+    font-weight: normal;
+    color: #666;
+    font-size: 14px;
+}
+
+.login-section {
+    margin: 50px 0;
+}
+.promoOptIn{
+    -webkit-appearance: checkbox;
+}

@@ -30,9 +30,10 @@ export class UploadDocsComponent implements OnInit {
     public _profileService: ProfileService,
     private http: Http,
     private config: AppConfig) {
-    }
+  }
 
   ngOnInit() {
+    this.idProofImagePending = true;
     this.peer = this._fb.group({
       email: '',
       verificationIdUrl: ['', Validators.required]
@@ -42,24 +43,28 @@ export class UploadDocsComponent implements OnInit {
       inputOTP: ['']
     });
     this._profileService.getPeerNode()
-        .subscribe((res) => this.email = res.email);
+      .subscribe((res) => this.email = res.email);
   }
 
-  continue(p){
-    if(p === 4) {
+  continue(p) {
+    if (p === 4) {
       this.resendOTP();
     }
     this.step = p;
   }
 
   public resendOTP() {
-    this._profileService.sendVerifyEmail()
-        .subscribe((res) => this.otp.controls['inputOTP'].setValue(res.verificationToken));
+    this._profileService.sendVerifyEmail(this.peer.controls.email.value)
+      .subscribe();
   }
 
-  verifyEmail(){
-    this._profileService.confirmEmail(this.otp.controls['inputOTP'].value, 'onboarding')
-        .subscribe((res) => this.success = res);
+  verifyEmail() {
+    this._profileService.confirmEmail(this.otp.controls['inputOTP'].value)
+      .subscribe((res) => {
+        console.log(res);
+        this.success = res;
+        this.router.navigate(['onboarding']);
+      });
   }
 
   redirectToOnboarding() {
