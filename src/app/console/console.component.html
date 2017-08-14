@@ -1,6 +1,6 @@
 <div class="login-section col-md-10 col-md-offset-1" style="margin-top: 3%" id="content">
   <nav md-tab-nav-bar>
-    <a md-tab-link [routerLink]="'/console/dashboard'" routerLinkActive #rla="routerLinkActive" [active]="getActiveTab() === 'dashboard'">
+    <a md-tab-link [routerLink]="'/console/dashboard'" [active]="getActiveTab() === 'dashboard'">
       Dashboard
     </a>
     <a md-tab-link [routerLink]="'/console/inbox'" [active]="getActiveTab() === 'inbox'">

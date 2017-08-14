@@ -5,7 +5,8 @@ import { CollectionService } from '../_services/collection/collection.service';
 import { AppConfig } from '../app.config';
 
 @Component({
-  templateUrl: './console.component.html'
+  templateUrl: './console.component.html',
+  styleUrls: ['./console.component.scss']
 })
 export class ConsoleComponent implements OnInit {
 
@@ -33,5 +34,13 @@ export class ConsoleComponent implements OnInit {
    */
   public getActiveTab() {
     return this.activeTab;
+  }
+
+  /**
+   * Set active tab
+   * @param value
+   */
+  public setActiveTab(value) {
+    this.activeTab = value;
   }
 }

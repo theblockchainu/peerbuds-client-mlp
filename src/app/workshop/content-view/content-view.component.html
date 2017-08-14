@@ -3,7 +3,7 @@
   <div class="row">
     <div class="form-group col-xs-3">
       <label>Date</label>
-      <input type="date" class="form-control" formControlName="date">
+      <input type="date" class="form-control" formControlName="date" (change)="triggerContentUpdate(itenaryForm)">
     </div>
   </div>
   <div *ngIf="itenaryForm.value.date">
@@ -52,7 +52,7 @@
                         <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                       </div>
                       <div class="form-group">
-                        <label class="display-block">Add suplimental material</label>
+                        <label class="display-block">Add supplimental material</label>
                         <div *ngIf="filesToUpload">
                           <progressbar [max]="filesToUpload" [value]="filesUploaded">
                             <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
@@ -106,7 +106,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="display-block">Add suplimental material</label>
+                        <label class="display-block">Add supplimental material</label>
                         <div *ngIf="filesToUpload">
                           <progressbar [max]="filesToUpload" [value]="filesUploaded">
                             <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
@@ -173,7 +173,7 @@
                         <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                       </div>
                       <div class="form-group">
-                        <label class="display-block">Add suplimental material</label>
+                        <label class="display-block">Add supplimental material</label>
                         <div *ngIf="filesToUpload">
                           <progressbar [max]="filesToUpload" [value]="filesUploaded">
                             <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
@@ -254,6 +254,14 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <div *ngIf="tempForm.controls['imageUrl']" class="ui-fileupload-row">
+                        <label>Uploaded photo:</label>
+                        <div><img src="{{config.apiUrl+tempForm.controls['imageUrl'].value}}" width="50"></div>
+                        <div>{{tempForm.controls['imageUrl'].value.split('/')[5]}}</div>
+                        <div><button icon="fa-close" pbutton="" type="button" (click)="deleteFromContainer(tempForm.controls['imageUrl'].value)" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                     </div>
+                  </div>
+                  <div class="form-group">
                     <label class="display-block">What We'll do</label>
                     <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
                     <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
@@ -264,7 +272,7 @@
                     <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                   </div>
                   <div class="form-group">
-                    <label class="display-block">Add suplimental material</label>
+                    <label class="display-block">Add supplimental material</label>
                     <div *ngIf="filesToUpload">
                       <progressbar [max]="filesToUpload" [value]="filesUploaded">
                         <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                        </span>
@@ -275,6 +283,16 @@
                     </div>
                     <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadEdit($event)" multiple="multiple" maxFileSize="10000000"
                       (onClear)="resetEditUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
+                  </div>
+                  <div class="form-group">
+                    <div *ngIf="tempForm.controls['supplementUrls'].length">
+                      <label>Uploaded Supplements:</label>
+                      <div *ngFor="let file of tempForm.controls['supplementUrls']" class="ui-fileupload-row" >
+                        <div>{{file}}<img src="{{config.apiUrl+file}}" width="50"></div>
+                        <div>{{file.value.split('/')[5]}}</div>
+                        <div><button icon="fa-close" pbutton="" type="button" (click)=deleteFromContainer(file) ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                      </div>
+                    </div>
                   </div>
 
                 </div>
@@ -319,8 +337,16 @@
                         auto="true" chooseLabel="Browse"></p-fileUpload>
                     </div>
                   </div>
+                  <div class="form-group">-{{tempForm.controls['imageUrl'].length}}
+                    <div *ngIf="tempForm.controls['imageUrl']" class="ui-fileupload-row">
+                        <label>Uploaded Video:</label>
+                        <div><img src="{{config.apiUrl+tempForm.controls['imageUrl'].value}}" width="50"></div>
+                        <div>{{tempForm.controls['imageUrl'].value.split('/')[5]}}</div>
+                        <div><button icon="fa-close" pbutton="" type="button" (click)="deleteFromContainer(tempForm.controls['imageUrl'].value)" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                     </div>
+                  </div>
                   <div class="form-group">
-                    <label class="display-block">Add suplimental material</label>
+                    <label class="display-block">Add supplimental material</label>
                     <div *ngIf="filesToUpload">
                       <progressbar [max]="filesToUpload" [value]="filesUploaded">
                         <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                        </span>
@@ -331,6 +357,16 @@
                   </div>
                   <div *ngIf="!filesToUpload">
                     Click Upload!
+                  </div>
+                  <div class="form-group">
+                    <div *ngIf="tempForm.controls['supplementUrls'].length">
+                      <label>Uploaded Supplements:</label>
+                      <div *ngFor="let file of tempForm.controls['supplementUrls']" class="ui-fileupload-row" >
+                        <div>{{file}}<img src="{{config.apiUrl+file}}" width="50"></div>
+                        <div>{{file.value.split('/')[5]}}</div>
+                        <div><button icon="fa-close" pbutton="" type="button" (click)=deleteFromContainer(file) ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -376,6 +412,14 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <div *ngIf="tempForm.controls['imageUrl']" class="ui-fileupload-row">
+                        <label>Uploaded photo:</label>
+                        <div><img src="{{config.apiUrl+tempForm.controls['imageUrl'].value}}" width="50"></div>
+                        <div>{{tempForm.controls['imageUrl'].value.split('/')[5]}}</div>
+                        <div><button icon="fa-close" pbutton="" type="button" (click)="deleteFromContainer(tempForm.controls['imageUrl'].value)" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                     </div>
+                  </div>
+                  <div class="form-group">
                     <label class="display-block">What We'll do</label>
                     <textarea class="form-control" maxlength="500" formControlName="description"></textarea>
                     <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
@@ -387,7 +431,7 @@
                     <span class="text-right text-grey display-block margin-top-5">max. 500 chars</span>
                   </div>
                   <div class="form-group">
-                    <label class="display-block">Add suplimental material</label>
+                    <label class="display-block">Add supplimental material</label>
                     <div *ngIf="filesToUpload">
                       <progressbar [max]="filesToUpload" [value]="filesUploaded">
                         <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                        </span>
@@ -398,6 +442,16 @@
                     </div>
                     <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadEdit($event)" multiple="multiple" maxFileSize="10000000"
                       (onClear)="resetEditUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
+                    <div class="form-group">
+                      <div *ngIf="tempForm.controls['supplementUrls'].length">
+                        <label>Uploaded Supplements:</label>
+                        <div *ngFor="let file of tempForm.controls['supplementUrls']" class="ui-fileupload-row" >
+                          <div>{{file}}<img src="{{config.apiUrl+file}}" width="50"></div>
+                          <div>{{file.value.split('/')[5]}}</div>
+                          <div><button icon="fa-close" pbutton="" type="button" (click)=deleteFromContainer(file) ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                 </div>

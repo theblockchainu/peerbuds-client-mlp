@@ -1,3 +1,78 @@
-<p>
-  console-profile-photos works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="!loaded" class="center">
+      <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12" *ngIf="loaded">
+    <div class="row">
+      <div>
+        <div style="margin-top:20px;" class="col-md-12">
+          <div class="row" style="margin-right: 20px;">
+            <div class="profilePhotoHeading">
+              Profile Photo
+            </div>
+            <div class="uploadContainer">
+              <div style="margin-bottom: 15px">
+                <md-icon color="#cccccc">cloud_upload</md-icon>
+              </div>
+              <div>
+                <button md-raised-button color="primary">
+                  Upload from computer
+                </button>
+              </div>
+              <br>
+              <div>
+                <button md-button>
+                  Upload from webcam
+                </button>
+              </div>
+            </div>
+            <div class="lighterText">
+              Clear frontal face are an important way for teachers and learners to know about each other.<br>
+              Its not much fun to teach a landscape. Please load a photo that clearly shows your face.
+            </div>
+
+            <hr>
+
+            <div class="profilePhotoHeading">
+              Profile Video
+            </div>
+            <div class="uploadContainer">
+              <div style="margin-bottom: 15px">
+                <md-icon color="#cccccc">cloud_upload</md-icon>
+              </div>
+              <div>
+                <button md-raised-button color="primary">
+                  Upload from computer
+                </button>
+              </div>
+              <br>
+              <div>
+                <button md-button>
+                  Upload from webcam
+                </button>
+              </div>
+            </div>
+            <div class="darkText">
+              Tell the community a bit about yourself
+            </div>
+            <div class="lighterText">
+              Start with your name and answer some of the following questions, or make up some of your own.
+
+              <ul>
+                <li>We love close-ups, but we suggest you sit at arm's length.</li>
+                <li>You've got 30 seconds so do your best to be concise.</li>
+                <li>Try to keep the light in front of you, not behind you.</li>
+                <li>Look into the camera to create that personal connection.</li>
+                <li>You'll get a chance to preview your video before it uploads.</li>
+
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
