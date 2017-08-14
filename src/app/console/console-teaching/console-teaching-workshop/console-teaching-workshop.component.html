@@ -28,7 +28,7 @@
                   <md-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
-                        <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
@@ -58,6 +58,17 @@
                       + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
                     </div>
                   </md-card-content>
+                  <md-menu #ongoingCardMenu>
+                    <button md-menu-item>
+                      Delete
+                    </button>
+                    <button md-menu-item>
+                      Message Students
+                    </button>
+                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                      View Workshop
+                    </button>
+                  </md-menu>
                   <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
                     <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                   </md-card-actions>
@@ -72,7 +83,7 @@
                   <md-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
-                        <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
@@ -107,6 +118,17 @@
                       + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
                     </div>
                   </md-card-content>
+                  <md-menu #upcomingCardMenu>
+                    <button md-menu-item>
+                      Delete
+                    </button>
+                    <button md-menu-item>
+                      Message Students
+                    </button>
+                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                      View Workshop
+                    </button>
+                  </md-menu>
                   <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
                     <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                   </md-card-actions>
@@ -173,7 +195,7 @@
                   <button md-menu-item>
                     Message Students
                   </button>
-                  <button md-menu-item (click)="view(workshop)">
+                  <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
                     View Workshop
                   </button>
                 </md-menu>
@@ -199,7 +221,7 @@
                   <md-card-content>
                     <div class="clearfix" style="text-align: right">
                       <div class="pull-right">
-                        <a md-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a md-button [mdMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
@@ -222,6 +244,17 @@
                       Rate your students now
                     </div>
                   </md-card-content>
+                  <md-menu #pastCardMenu>
+                    <button md-menu-item>
+                      Delete
+                    </button>
+                    <button md-menu-item>
+                      Message Students
+                    </button>
+                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                      View Workshop
+                    </button>
+                  </md-menu>
                   <md-card-actions>
                     <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">
                       View Details

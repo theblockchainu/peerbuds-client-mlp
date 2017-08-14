@@ -324,7 +324,7 @@ export class CollectionService {
   }
 
   /**
-   * viewWorkshop
+   *  Workshop
    */
   public viewWorkshop(collection) {
     this.router.navigate(['workshop', collection.id]);
