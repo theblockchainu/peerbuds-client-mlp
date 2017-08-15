@@ -3,6 +3,7 @@ import { AuthenticationService } from '../_services/authentication/authenticatio
 import { Observable } from 'rxjs/Rx';
 import { AuthService } from '../_services/auth/auth.service';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
+import { ProfileService } from '../_services/profile/profile.service';
 import {FormControl} from '@angular/forms';
 import {AppConfig} from '../app.config';
 import {Http} from '@angular/http';
@@ -29,7 +30,8 @@ export class AppHeaderComponent implements OnInit {
               public requestHeaderService: RequestHeaderService,
               private config: AppConfig,
               private http: Http,
-              private _cookieService: CookieService) {
+              private _cookieService: CookieService,
+              private _profileService: ProfileService) {
     this.isLoggedIn = authService.isLoggedIn();
     this.userId = this.getCookieValue(this.key);
   }
@@ -57,9 +59,11 @@ export class AppHeaderComponent implements OnInit {
   }
 
   getProfile() {
-    this.requestHeaderService.getProfile().subscribe(profile => {
-      this.profile = profile;
-    });
+    if(!this.isLoggedIn) {
+      this._profileService.getProfile().subscribe(profile => {
+        this.profile = profile;
+      });
+    }
   }
 
   public getAllSearchResults(query: any, cb) {

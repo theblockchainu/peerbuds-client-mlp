@@ -1,8 +1,9 @@
 <div id="content" class="profile-setion">
-    <div class="row" *ngIf="!loading">
-      <div class="col-sm-2" [ngClass]="(userType ==='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
+  <div class="">
+    <div class="row">
+      <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
         <div class="profile-image-big">
-          <img src="{{config.apiUrl + profile.picture_url ? config.apiUrl + profile.picture_url: defaultProfileUrl}}" alt="image" />
+           <img src="{{config.apiUrl+profile.picture_url ? config.apiUrl+profile.picture_url: defaultProfileUrl}}" alt="image" />
         </div>
         <div class="seperate-section text-center">
           <div class="title dot-dot">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
@@ -153,7 +154,7 @@
               <tab heading="Session" customClass="sidebar-tabs" [hidden]="!sessions">
                 <div class="sidebar-section margin-top-30">
                   <div class="display-inline-block">
-                    <div class="heading">Trial</div>
+                    <div class="heading">Trial {{userType}}</div>
                     <div class="desc">1 hour session</div>
                   </div>
                 </div>

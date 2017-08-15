@@ -63,7 +63,7 @@ export class SignupSocialComponent implements OnInit {
 
   // Load month and year
   loadMonthAndYear() {
-    for (let index = this.periodStarts; index <= this.maxYear; index++) {
+    for (let index = this.maxYear ; index >= this.periodStarts; index--) {
       // var element = array[index];
       this.birthYear.push(index);
     }

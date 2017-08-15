@@ -9,7 +9,7 @@
   <div *ngIf="itenaryForm.value.date">
     <div class="row">
       <button type="button" class=" col-md-3 btn btn-primary" (click)="addContent('online');onlineModal.show()">+Online</button>
-      <div bsModal #onlineModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+      <div bsModal #onlineModal="bs-modal" class="modal fade" [config]="{ keyboard: false, backdrop: false }"  tabindex="-1" role="dialog"
         aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -76,7 +76,7 @@
       </div>
 
       <button type="button" class=" col-md-3 btn btn-primary" (click)="addContent('video');videoModal.show()">+Video</button>
-      <div bsModal #videoModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+      <div bsModal #videoModal="bs-modal" class="modal fade" [config]="{ keyboard: false, backdrop: false }"  tabindex="-1" role="dialog"
         aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -131,7 +131,7 @@
       </div>
 
       <button type="button" class=" col-md-3 btn btn-primary" (click)="addContent('project');projectModal.show()">+Project</button>
-      <div bsModal #projectModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+      <div bsModal #projectModal="bs-modal" class="modal fade" [config]="{ keyboard: false, backdrop: false }"  tabindex="-1" role="dialog"
         aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">

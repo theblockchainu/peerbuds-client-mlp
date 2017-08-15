@@ -60,8 +60,8 @@ export class ProfileComponent implements OnInit {
 
   getPeer() {
     // console.log('in get peer');
-    this.profileService.getPeer(this.profileId).subscribe(peer => {
-      // console.log('peer' + JSON.stringify(peer));
+    this.profileService.getPeer(this.profileId).subscribe((peer) => {
+      console.log('peer' + JSON.stringify(peer));
       this.peer = peer;
       this.profile = peer.profiles[0];
       this.peer.identities.forEach(identity => {
@@ -157,6 +157,7 @@ export class ProfileComponent implements OnInit {
       });
     }
 
+    // console.log('peer' + JSON.stringify(this.peer));
     console.log('peer' + JSON.stringify(this.peer));
     this.loading = false;
   }
@@ -191,5 +192,6 @@ export class ProfileComponent implements OnInit {
       }
       setUserData();
     });
+        console.log(this.userType);
   }
 }

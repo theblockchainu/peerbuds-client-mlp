@@ -11,19 +11,19 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-first-name">
-                                    <input type="text" class="form-control" formControlName="first_name" readonly value="" />
+                                    <input type="text" class="form-control" formControlName="first_name"  value="" />
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-last-name">
-                                    <input type="text" class="form-control" formControlName="last_name" readonly value="" />
+                                    <input type="text" class="form-control" formControlName="last_name" value="" />
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-email">
-                                    <input type="text" class="form-control" formControlName="email" readonly value="" />
+                                    <input type="text" class="form-control" formControlName="email" value="" />
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                             <div class="checkbox">
-                                <label class="checkbox"><input class="promoOptIn" type="checkbox" formControlName="promoOptIn" [checked]="promoOptIn" (change)="promoOptIn = !promoOptIn" /> i'd like to receive promotional communications, including discuonts, surveys, inspiration, and love from Peerbuds via email, SMS, and phone.</label>
+                                <label class="checkbox"><input class="promoOptIn" type="checkbox" formControlName="promoOptIn" [checked]="promoOptIn" (change)="promoOptIn = !promoOptIn" /> I'd like to receive promotional communications, including discuonts, surveys, inspiration, and love from Peerbuds via email, SMS, and phone.</label>
                             </div>
                             <button type="submit" class="btn btn-success" [disabled]="!signupSocialForm.valid">Continue</button>
                         </div>

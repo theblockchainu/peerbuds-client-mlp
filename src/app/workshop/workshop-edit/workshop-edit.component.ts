@@ -100,7 +100,7 @@ export class WorkshopEditComponent implements OnInit {
   public _CTX;
 
   public urlForVideo;
-  public urlForImages=[];
+  public urlForImages= [];
 
   // TypeScript public modifiers
   constructor(
@@ -128,7 +128,7 @@ export class WorkshopEditComponent implements OnInit {
 
   public ngOnInit() {
 
-    console.log("Inside oninit workshop");
+    console.log('Inside oninit workshop');
     this.interest1 = new FormGroup({
       // interests: this._fb.array([])
     });
@@ -139,13 +139,13 @@ export class WorkshopEditComponent implements OnInit {
 
     this.workshop = this._fb.group({
       // id: '',
-      type: '',
+      type: 'workshop',
       title: '',
       stage: '',
       language: this._fb.array([]),
       selectedLanguage: '',
       headline: '',
-      description: [null,Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])],
+      description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])],
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
@@ -156,13 +156,13 @@ export class WorkshopEditComponent implements OnInit {
       currency: '',
       cancellationPolicy: '',
       ageLimit: '',
-      aboutHost: '',//[null,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
+      aboutHost: '', //[null,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
       notes: '',
       // isApproved: '',
       approvedBy: '',
       // isCanceled: '',
       canceledBy: '',
-      status: '',
+      status: 'draft',
       // createdAt: '',
       // updatedAt: ''
     });
@@ -191,7 +191,7 @@ export class WorkshopEditComponent implements OnInit {
 
     this.paymentInfo = this._fb.group({
 
-    })
+    });
 
     this.initializeFormFields();
 
@@ -199,8 +199,8 @@ export class WorkshopEditComponent implements OnInit {
 
     //this.initializeTimeLine();
 
-    this._CANVAS = <HTMLCanvasElement> document.querySelector("#video-canvas");
-    this._VIDEO = document.querySelector("#main-video");
+    this._CANVAS = <HTMLCanvasElement> document.querySelector('#video-canvas');
+    this._VIDEO = document.querySelector('#main-video');
   }
 
   private extractDate(dateString: string) {
@@ -224,7 +224,7 @@ export class WorkshopEditComponent implements OnInit {
     //   }
     // ).subscribe();
     if (res.calendars[0].startDate) {
-          let calendar = res.calendars[0];
+          const calendar = res.calendars[0];
           calendar['startDate'] = this.extractDate(calendar.startDate);
           calendar['endDate'] = this.extractDate(calendar.endDate);
           this._collectionService.sanitize(calendar);
@@ -236,7 +236,7 @@ export class WorkshopEditComponent implements OnInit {
   public initializeContentForm(res) {
     const contentGroup = <FormGroup>this.timeline.controls.contentGroup;
     const itenary = <FormArray>contentGroup.controls.itenary;
-    let itenaries = this.getContents(res.contents);
+    const itenaries = this.getContents(res.contents);
     // this.getContents((err, itenaries: any) => {
     //   if (err) {
     //     console.log(err);
@@ -286,8 +286,7 @@ export class WorkshopEditComponent implements OnInit {
             form.controls[key].patchValue(this.extractTime(value[key]));
           } else if (key === 'startDay' || key === 'endDay') {
             form.controls[key].patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
-          } else if(key === 'supplementUrls')
-          {
+          } else if (key === 'supplementUrls') {
             // form.controls[key] = value[key];
           }
           else {
@@ -343,7 +342,7 @@ export class WorkshopEditComponent implements OnInit {
     }
     this.sidebarMenuItems[2]['submenu'] = [];
     this.itenariesForMenu.forEach(function (item) {
-      let index = +item + 1;
+      const index = +item + 1;
       this.sidebarMenuItems[2]['submenu'].push({
         'title': 'Day ' + index,
         'step': 13 + '_' + index,
@@ -408,7 +407,7 @@ export class WorkshopEditComponent implements OnInit {
     this.languagePickerService.getLanguages()
       .subscribe((languages) => this.languagesArray = languages);
 
-    if(this.interests.length == 0) {
+    if (this.interests.length === 0) {
       this.http.get(this.config.searchUrl + '/api/search/topics')
         .map((response: any) => {
           this.suggestedTopics = response.slice(0, 10);
@@ -424,7 +423,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private initializeWorkshop() {
-    console.log("Inside init workshop");
+    console.log('Inside init workshop');
     // if (this.workshopId) {
     //   this._collectionService.getCollectionDetails(this.workshopId)
     //     .subscribe(res => {
@@ -453,10 +452,15 @@ export class WorkshopEditComponent implements OnInit {
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
 
-          if(res.status == 'submitted') {
+          if (res.status === 'active') {
             this.sidebarMenuItems[3].visible = false;
             this.sidebarMenuItems[4].visible = true;
             this.sidebarMenuItems[4].active = true;
+
+            this.sidebarMenuItems[4].submenu[0].visible = true;
+            //this.sidebarMenuItems[4].submenu[0].active = true;
+            this.sidebarMenuItems[4].submenu[1].visible = true;
+            //this.sidebarMenuItems[4].submenu[1].active = true;
           }
 
         },
@@ -470,7 +474,7 @@ export class WorkshopEditComponent implements OnInit {
 
   public languageChange(value) {
     console.log(value);
-    this.selectedLanguages = value;;
+    this.selectedLanguages = value;
     this.workshop.controls.selectedLanguage.setValue(value);
   }
 
@@ -508,7 +512,7 @@ export class WorkshopEditComponent implements OnInit {
       options = new RequestOptions({
         headers: headers,
         body: body
-      })
+      });
       if (topicArray.length !== 0) {
         this.http.delete(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', options)
           .map((response) => { console.log(response); }).subscribe();
@@ -542,11 +546,11 @@ export class WorkshopEditComponent implements OnInit {
     // Topics
     this.relTopics = _.uniqBy(res.topics, 'id');
     this.interests = this.relTopics;
-    if(this.interests) {
+    if (this.interests) {
       this.suggestedTopics = this.interests;
     }
     // Language
-    if(res.language && res.language.length > 0) {
+    if (res.language && res.language.length > 0) {
       this.selectedLanguages = res.language[0];
       this.workshop.controls.selectedLanguage.patchValue(res.language[0]);
     }
@@ -575,8 +579,10 @@ export class WorkshopEditComponent implements OnInit {
     this.workshop.controls['videoUrl'].setValue(res.videoUrl);
     this.urlForVideo = res.videoUrl;
     // <img src="{{config.apiUrl+content.imageUrl}}">
-    this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
-    this.urlForImages = res.imageUrls;
+    if (res.imageUrls && res.imageUrls.length > 0) {
+      this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
+      this.urlForImages = res.imageUrls;
+    }
 
     //Currency, Amount, Cancellation Policy
     this.workshop.controls.price.patchValue(res.price);
@@ -696,7 +702,7 @@ export class WorkshopEditComponent implements OnInit {
       topicArray.push(topic.id);
     });
     this.relTopics.forEach((topic) => {
-      topicArray = _.without(topicArray,topic.id)
+      topicArray = _.without(topicArray, topic.id);
     });
     console.log(topicArray);
     body = {
@@ -744,12 +750,16 @@ export class WorkshopEditComponent implements OnInit {
   submitForReview(modal: ModalDirective) {
     // Post Workshop for review
     this._collectionService.submitForReview(this.workshopId)
-                           .subscribe((res)=> {
+                           .subscribe((res) => {
                               this.sidebarMenuItems[3].visible = false;
                               //call to get status of workshop
-                              if(this.workshop.controls.status.value == 'active') {
+                              if (this.workshop.controls.status.value === 'active') {
                                 this.sidebarMenuItems[4].visible = true;
                                 this.sidebarMenuItems[4].active = true;
+                                this.sidebarMenuItems[4].submenu[0].visible = true;
+                                //this.sidebarMenuItems[4].submenu[0].active = true;
+                                this.sidebarMenuItems[4].submenu[1].visible = true;
+                                //this.sidebarMenuItems[4].submenu[1].active = true;
                                 this.step = +this.step + 2;
                               }
                               modal.show();
@@ -768,13 +778,13 @@ export class WorkshopEditComponent implements OnInit {
 
   saveandexit() {
 
-    if (this.step == 12) {
+    if (this.step === 12) {
       const data = this.timeline;
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
         this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, this.options)
           .map((response) => {
-            this.router.navigate(['workshop-console']);
+            this.router.navigate(['console/teaching/workshops']);
           })
           .subscribe();
       } else {
@@ -790,7 +800,7 @@ export class WorkshopEditComponent implements OnInit {
       delete body.selectedLanguage;
       this._collectionService.patchCollection(this.workshopId, body).map(
         (response) => {
-          this.router.navigate(['/console/teaching/workshops']);
+          this.router.navigate(['console/teaching/workshops']);
         }).subscribe();
     }
   }
@@ -809,7 +819,7 @@ export class WorkshopEditComponent implements OnInit {
         topic.checked = true;
         tempArray.push(topic);
         this.interests = _.union(this.interests, tempArray);
-        console.log("CHanged");
+        console.log('CHanged');
         this.suggestedTopics = this.interests;
         modal.hide();
       })
@@ -819,21 +829,21 @@ export class WorkshopEditComponent implements OnInit {
 
   uploadCanvasVideo(event) {
     // Validate whether MP4
-    if(['video/'].indexOf(event.target.files[0].type) == -1) {
+    if (['video/'].indexOf(event.target.files[0].type) === -1) {
         alert('Error : Only Video allowed');
         return;
     }
 
-    this._CTX = this._CANVAS.getContext("2d");
+    this._CTX = this._CANVAS.getContext('2d');
     // Hide upload button
    //  document.querySelector("#upload-button").style.display = 'none';
 
     // Object Url as the video source
-    document.querySelector("#main-video source").setAttribute('src', URL.createObjectURL(event.target.files[0]));
+    document.querySelector('#main-video source').setAttribute('src', URL.createObjectURL(event.target.files[0]));
     // Load the video and show it
     this._VIDEO.load();
     // this._VIDEO.style.display = 'inline';
-    let self = this;
+    const self = this;
 
     //this._VIDEO.onloadedmetadata = function(e){
     this._VIDEO.addEventListener('loadedmetadata', function(e){
@@ -847,28 +857,28 @@ export class WorkshopEditComponent implements OnInit {
 
     getMetadata() {
       console.log(new Date());
-      this._CANVAS.width = 150;//this.videoWidth;
-      this._CANVAS.height = 100;//this.videoHeight;
+      this._CANVAS.width = 150; //this.videoWidth;
+      this._CANVAS.height = 100; //this.videoHeight;
       this._CTX.drawImage(this._VIDEO, 0, 0, this._CANVAS.width, this._CANVAS.height);
 
     }
 
     uploadImage1(event) {
-      if (event.target.files == null || event.target.files == undefined) {
-            document.write("This Browser has no support for HTML5 FileReader yet!");
+      if (event.target.files == null || event.target.files === undefined) {
+            document.write('This Browser has no support for HTML5 FileReader yet!');
             return false;
         }
 
-        for (var i = 0; i < event.target.files.length; i++) {
-            var file = event.target.files[i];
-            var imageType = /image.*/;
+        for (let i = 0; i < event.target.files.length; i++) {
+            const file = event.target.files[i];
+            const imageType = /image.*/;
 
             if (!file.type.match(imageType)) {
                 continue;
 
             }
 
-            var reader = new FileReader();
+            const reader = new FileReader();
 
             if (reader != null) {
 
@@ -881,23 +891,23 @@ export class WorkshopEditComponent implements OnInit {
     }
 
     GetThumbnail(e) {
-        var myCan = document.createElement('canvas');
-        var img = new Image();
+        const myCan = document.createElement('canvas');
+        const img = new Image();
         img.src = e.target.result;
         img.onload = function () {
 
-            myCan.id = "myTempCanvas";
-            var tsize = 100;
+            myCan.id = 'myTempCanvas';
+            const tsize = 100;
             myCan.width = Number(tsize);
             myCan.height = Number(tsize);
             if (myCan.getContext) {
-                var cntxt = myCan.getContext("2d");
+                const cntxt = myCan.getContext('2d');
                 cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
-                var dataURL = myCan.toDataURL();
+                const dataURL = myCan.toDataURL();
 
 
-                if (dataURL != null && dataURL != undefined) {
-                    var nImg = document.createElement('img');
+                if (dataURL != null && dataURL !== undefined) {
+                    const nImg = document.createElement('img');
                     nImg.src = dataURL;
                     document.getElementById('image-holder').appendChild(nImg);
 
@@ -907,22 +917,22 @@ export class WorkshopEditComponent implements OnInit {
 
             }
 
-        }
+        };
 
     }
 
     deleteFromContainer(fileUrl, fileType) {
       const fileurl = fileUrl;
-      fileUrl = _.replace(fileUrl,'download','files');
+      fileUrl = _.replace(fileUrl, 'download', 'files');
       this.http.delete(this.config.apiUrl + fileUrl)
           .map((response) => { console.log(response);
-            if(fileType == 'video') {
+            if (fileType === 'video') {
               this.urlForVideo = '';
               this.workshop.controls.videoUrl.patchValue('');
             }
-            else if (fileType == 'image'){
+            else if (fileType === 'image') {
               this.urlForImages = _.remove(this.urlForImages, function(n) {
-                return n != fileurl;
+                return n !== fileurl;
               });
               this.workshop.controls.imageUrls.patchValue(this.urlForImages);
             }
@@ -931,19 +941,19 @@ export class WorkshopEditComponent implements OnInit {
     }
 
     deleteFromContainerArr(event, fileType) {
-      for (var i = 0; i < event.target.files.length; i++) {
-            var file = event.target.files[i];
+      for (let i = 0; i < event.target.files.length; i++) {
+            let file = event.target.files[i];
             const fileurl = file;
-            file = _.replace(file,'download','files');
+            file = _.replace(file, 'download', 'files');
             this.http.delete(this.config.apiUrl + file)
                      .map((response) => { console.log(response);
-                      if(fileType == 'video') {
+                      if (fileType === 'video') {
                         this.urlForVideo = '';
                         this.workshop.controls.videoUrl.patchValue('');
                       }
-                      else if (fileType == 'image'){
+                      else if (fileType === 'image') {
                         this.urlForImages = _.remove(this.urlForImages, function(n) {
-                          return n != fileurl;
+                          return n !== fileurl;
                       });
                       this.workshop.controls.imageUrls.patchValue(this.urlForImages);
                       }
@@ -958,6 +968,18 @@ export class WorkshopEditComponent implements OnInit {
 
     submitPhoneNo() {
       //Call the OTP service
+      // Post Workshop for review
+      this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value)
+                            .subscribe((res) => {
+                                console.log('SmS sent');
+                                });
+    }
+
+    submitOTP() {
+      this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
+                            .subscribe((res) => {
+                                console.log('Token Verified');
+                                });
     }
 
     takeToPayment() {

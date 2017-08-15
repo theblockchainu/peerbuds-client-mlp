@@ -50,7 +50,8 @@ import 'hammerjs';
     MdToolbarModule,
     MdIconModule,
     MdAutocompleteModule,
-    MdInputModule
+    MdInputModule,
+    SignupSocialModule
   ],
   bootstrap: [AppComponent]
 })
