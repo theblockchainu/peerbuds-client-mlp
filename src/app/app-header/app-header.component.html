@@ -116,16 +116,15 @@
 
 </div> -->
 
-<md-toolbar class="header-toolbar layout-row md-BlueGrey-theme" layout="row">
-  <div class="md-toolbar-tools"> 
-    <span class="pull-left">
+<md-toolbar class="layout-row" layout="row" color="white">
+    <span>
       <a href="#" class="brand" aria-label="Peerbuds Homepage">
             <img src="/assets/images/pb_logo.png" alt="logo">
       </a>
     </span>
-    <span class="header-search-box">
-      <md-input-container floatPlaceholder="never" class="pb-block lightText" *ngIf="(isLoggedIn | async)">
-        <input name="search" class="md-block" mdInput [formControl]="myControl" [mdAutocomplete]="auto" placeholder="Search people, topic...">
+    <span class="search-form">
+      <md-input-container floatPlaceholder="never" class="md-block" *ngIf="(isLoggedIn | async)">
+        <input name="search" class="md-block search-box" mdInput [formControl]="myControl" [mdAutocomplete]="auto" placeholder="Search people, topic...">
       </md-input-container>
       <md-autocomplete #auto="mdAutocomplete">
         <md-option *ngFor="let option of options" [value]="option">
@@ -138,7 +137,9 @@
         </md-option>
       </md-autocomplete>
     </span>
-    <span class="pull-right flex-5">
+    <!-- This fills the remaining space of the current row -->
+    <span class="example-spacer"></span>
+    <span>
       <button md-button [mdMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
         Teach
       </button>
@@ -160,7 +161,6 @@
         Log In
       </button>
     </span>
-  </div>
 </md-toolbar>
 
 <md-menu #headerTeachMenu>

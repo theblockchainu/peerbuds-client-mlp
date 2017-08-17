@@ -4111,8 +4111,8 @@ canvas {
 .signin-header {
     border-bottom: 4px solid #dedede;
     background: url(../images/background/bg_sky1.jpg) center/cover;
-    padding-bottom: 100px;
-    padding-top: 100px;
+    /* padding-bottom: 100px;
+    padding-top: 100px; */
     text-align: center;
     color: #fff;
     position: relative;
@@ -5996,14 +5996,66 @@ md-card.md-user-card .md-card-buttons__list ul li:last-child {
     width: 100%
 }
 
+/* Custom Changes */
+
 .center {
     text-align: center;
 }
 
-.vertical-middle {
+/* .vertical-middle {
     vertical-align: middle !important;
 }
 
 .vertical-bottom {
     vertical-align: bottom !important;
+} */
+
+md-input-container .mat-has-icon {
+    padding-right: 36px
 }
+
+md-input-container .mat-has-icon>label {
+    left: 36px
+}
+
+md-input-container.mat-block {
+    display: block
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.mat-white {
+    background-color: white;
+}
+
+.main-content {
+    min-height: 90vh;
+}
+
+/* .flex-60, .layout-row>.flex-60 {
+    -webkit-flex: 1 1 60%;
+    -ms-flex: 1 1 60%;
+    flex: 1 1 60%;
+    max-width: 60%;
+    max-height: 100%;
+    box-sizing: border-box;
+} */
+
+.search-box {
+  width: 100%;  
+  padding: .4rem;
+  background-color: #ffb;
+}
+
+.search-form {
+  margin: 0 1rem;  
+  flex-grow: 1; /* <-- THE SECRET SAUCE! */
+  min-width: 18rem;
+}
+
+.search-form .mat-input-container {
+    display: inline;
+}
+
