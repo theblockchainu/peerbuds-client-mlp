@@ -65,12 +65,13 @@ export class ProfileService {
   }
 
   public getPeerProfile() {
-    if (this.userId) {
-      const options = '{"include": "profiles"}';
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
-        .map((response: Response) => response.json()
-        );
-    }
+    return this.userId;
+    // if (this.userId) {
+    //   const options = '{"include": "profiles"}';
+    //   return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
+    //     .map((response: Response) => response.json()
+    //     );
+    // }
   }
 
   public updatePeer(id: any, body: any) {
@@ -114,19 +115,20 @@ export class ProfileService {
       });
   }
 
-  public sendVerifyEmail() {
+  public sendVerifyEmail(emailAddress) {
     const body = {
     };
     return this.http
-      .post(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId, body)
+      .post(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId + '&email=' + emailAddress, body)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
 
   }
 
-  public confirmEmail(inputToken: string, redirect: string) {
+  public confirmEmail(inputToken: string) {
     const body = {};
+    const redirect = 'onboarding';
     return this.http
       .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect, body)
       .map((response: Response) => response.json(), (err) => {
@@ -200,5 +202,9 @@ export class ProfileService {
     delete newprofile.work;
     delete newprofile.education;
     return newprofile;
+  }
+
+  getUserId() {
+    return this.getCookieValue(this.key);
   }
 }

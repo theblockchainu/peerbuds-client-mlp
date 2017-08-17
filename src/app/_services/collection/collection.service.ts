@@ -147,13 +147,21 @@ export class CollectionService {
     return collection;
   }
 
+  /**
+   * removeParticipant
+   */
+  public removeParticipant(collectionId: string, participantId: string) {
+    return this.http.delete(this.config.apiUrl +
+      '/api/collections/' + collectionId + '/participants/rel/' + participantId);
+  }
   /* Submit workshop for Review */
   public submitForReview(id: string) {
-    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', this.options).map(
+    debugger;
+    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', {}).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
-  } 
+  }
   /**
    * Filter only complete collections
    * @param collections
@@ -223,11 +231,9 @@ export class CollectionService {
     let fillerWord = '';
     if (contents[0].type === 'online') {
       fillerWord = 'session';
-    }
-    else if (contents[0].type === 'video') {
+    } else if (contents[0].type === 'video') {
       fillerWord = 'recording';
-    }
-    else if (contents[0].type === 'project'){
+    } else if (contents[0].type === 'project') {
       fillerWord = 'submission';
     }
     const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
@@ -308,7 +314,7 @@ export class CollectionService {
             pendingContents++;
           }
         });
-        return ( 1 - (pendingContents / totalContents) ) * 100;
+        return (1 - (pendingContents / totalContents)) * 100;
       case 'submitted':
         return 100;
       case 'complete':
@@ -319,7 +325,7 @@ export class CollectionService {
   }
 
   /**
-   * viewWorkshop
+   *  Workshop
    */
   public viewWorkshop(collection) {
     this.router.navigate(['workshop', collection.id]);
@@ -360,6 +366,27 @@ export class CollectionService {
    */
   public viewTransactions() {
     this.router.navigate(['/console/account/transactions']);
+  }
+
+  public sendVerifySMS(phoneNo) {
+    const body = {
+    };
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo, body)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
+
+  public confirmSmsOTP(inputToken) {
+    const body = {};
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
   }
 
 
