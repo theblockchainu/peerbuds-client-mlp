@@ -30,8 +30,10 @@ export class ProfileComponent implements OnInit {
   public calendars: any = [];
   public showHideSession = false;
   public profile: any;
+  public loading: boolean;
 
-  constructor(private config: AppConfig,
+  constructor(
+    public config: AppConfig,
     public profileService: ProfileService,
     private cookieUtilsService: CookieUtilsService,
     private activatedRoute: ActivatedRoute) {
@@ -39,6 +41,7 @@ export class ProfileComponent implements OnInit {
       this.profileId = params['profileId'];
     });
     this.userId = cookieUtilsService.getValue('userId');
+    this.loading = true;
   }
 
   ngOnInit() {
@@ -60,6 +63,7 @@ export class ProfileComponent implements OnInit {
     this.profileService.getPeer(this.profileId).subscribe((peer) => {
       console.log('peer' + JSON.stringify(peer));
       this.peer = peer;
+      this.profile = peer.profiles[0];
       this.peer.identities.forEach(identity => {
         identity.profile = JSON.parse(identity.profile);
       });
@@ -154,6 +158,8 @@ export class ProfileComponent implements OnInit {
     }
 
     // console.log('peer' + JSON.stringify(this.peer));
+    console.log('peer' + JSON.stringify(this.peer));
+    this.loading = false;
   }
 
   // recursive function to clone an object. If a non object parameter
