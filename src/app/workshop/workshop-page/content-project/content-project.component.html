@@ -1,0 +1,33 @@
+<div md-dialog-content class="container" *ngIf="data">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 media">
+      <img class="img-responsive media-middle" src="{{config.apiUrl+data.content.imageUrl}}" style="max-height: 600px" alt="content Image">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>{{data.content.title}}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h4>What we'll do</h4>
+      <p>
+        {{data.content.description}}
+      </p>
+      <div *ngIf="data.content.notes">
+        <hr>
+        <h4>Need to know</h4>
+        <p>
+          {{data.content.notes}}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button *ngIf="data.userType==='participant'" md-button class=" pull-left">Submit Entree</button>
+      <button *ngIf="data.userType==='teacher'" md-button class="pull-left">View Entries</button>
+    </div>
+  </div>
+</div>

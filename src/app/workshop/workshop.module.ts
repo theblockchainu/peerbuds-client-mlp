@@ -10,9 +10,10 @@ import { WorkshopContentComponent } from './workshop-content/workshop-content.co
 import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { WorkshopPageComponent } from './workshop-page/workshop-page.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule } from '@angular/material';
 import 'hammerjs';
+import { WorkshopPageModule } from './workshop-page/workshop-page.module';
 
 
 @NgModule({
@@ -20,22 +21,18 @@ import 'hammerjs';
     SharedModule,
     WorkshopRoutingModule,
     BrowserAnimationsModule,
-    MdCardModule,
-    MdButtonModule,
-    MdMenuModule,
-    MdToolbarModule,
-    MdIconModule,
-    MdProgressBarModule,
-    MdListModule,
-    MdTabsModule
+    WorkshopPageModule
   ],
   declarations: [
     WorkshopEditComponent,
     WorkshopContentComponent,
     ContentViewComponent,
     AppointmentCalendarComponent,
-    WorkshopPageComponent],
+    WorkshopPageComponent,
+
+  ],
   providers: [
-  ]
+  ],
+  bootstrap: []
 })
 export class WorkshopModule { }
