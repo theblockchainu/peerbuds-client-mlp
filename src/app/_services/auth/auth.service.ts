@@ -22,6 +22,10 @@ export class AuthService {
   getCookie(key: string): any {
     return this._cookieService.get(key);
   }
+  
+  removeCookie(key: string) {
+    this._cookieService.delete(key);
+  }
 
   login(): void {
     let userToken = this.getCookie('access_token');
@@ -33,6 +37,10 @@ export class AuthService {
   }
 
   logout(): void {
+    debugger;
     this.isLoggedIn = false;
+
+  
+
   }
 }

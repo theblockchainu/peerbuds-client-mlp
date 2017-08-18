@@ -29,7 +29,7 @@ import {ConsoleAccountSecurityComponent} from './console-account/console-account
 import {ConsoleAccountPrivacyComponent} from './console-account/console-account-privacy/console-account-privacy.component';
 import {ConsoleAccountSettingsComponent} from './console-account/console-account-settings/console-account-settings.component';
 const routes: Routes = [{
-  path: 'console',
+  path: '',
   component: ConsoleComponent,
   canActivate: [AuthGuardService],
   children: [
