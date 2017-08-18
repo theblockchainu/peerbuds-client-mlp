@@ -1,15 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CdkTableModule } from '@angular/cdk';
 
-import { MdChipsModule, MdDialogModule, MdMenuModule } from '@angular/material';
-import { ModalModule, RatingModule, BsDropdownModule, ProgressbarModule, TabsModule, PopoverModule, CarouselModule, DatepickerModule, TimepickerModule } from 'ngx-bootstrap';
-import { FileUploadModule, ScheduleModule, DialogModule, CalendarModule, CheckboxModule, LightboxModule } from 'primeng/primeng';
+import {
+  MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
+  MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
+  MdListModule, MdTabsModule, MdTableModule, MdInputModule
+} from '@angular/material';
+import {
+  ModalModule, RatingModule, BsDropdownModule, ProgressbarModule,
+  TabsModule, PopoverModule, CarouselModule, DatepickerModule, TimepickerModule
+} from 'ngx-bootstrap';
+import {
+  FileUploadModule, ScheduleModule, DialogModule, CalendarModule,
+  CheckboxModule, LightboxModule
+} from 'primeng/primeng';
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
 import { FinishingTouchesModule } from '../finishing-touches/finishing-touches.module';
-
 
 import { CollectionService } from '../_services/collection/collection.service';
 import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
@@ -71,7 +81,18 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     CarouselModule,
     DatepickerModule,
     TimepickerModule,
-    FinishingTouchesModule
+    FinishingTouchesModule,
+    MdCardModule,
+    MdButtonModule,
+    MdMenuModule,
+    MdToolbarModule,
+    MdIconModule,
+    MdProgressBarModule,
+    MdListModule,
+    MdTabsModule,
+    MdTableModule,
+    CdkTableModule,
+    MdInputModule
   ]
 })
 export class SharedModule { }
