@@ -154,7 +154,7 @@
       </button>
       <button md-button [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)">
         <div class="circle-thumb">
-          <img src="{{ config.apiUrl + profile.picture_url }}" alt="A" class="thumb-35">
+          <img src="{{ config.apiUrl + '/' + profile.picture_url }}" alt="A" class="thumb-35">
         </div>
       </button>
       <a md-button  href="/signup.html" *ngIf="!(isLoggedIn | async)">
@@ -222,6 +222,9 @@
   </md-menu>
 
   <md-menu #headerUserMenu>
+    <button md-menu-item [routerLink]="['/profile', userId]">
+      {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
+    </button>
     <button md-menu-item [routerLink]="['/console/profile/edit']">
       Edit Profile
     </button>

@@ -28,7 +28,7 @@ export class AppHeaderComponent implements OnInit {
 
   constructor(public authService: AuthenticationService,
               public requestHeaderService: RequestHeaderService,
-              private config: AppConfig,
+              public config: AppConfig,
               private http: Http,
               private _cookieService: CookieService,
               private _profileService: ProfileService) {
@@ -59,11 +59,9 @@ export class AppHeaderComponent implements OnInit {
   }
 
   getProfile() {
-    if(!this.isLoggedIn) {
-      this._profileService.getProfile().subscribe(profile => {
-        this.profile = profile;
-      });
-    }
+    this._profileService.getProfile().subscribe(profile => {
+      this.profile = profile[0];
+    });
   }
 
   public getAllSearchResults(query: any, cb) {
