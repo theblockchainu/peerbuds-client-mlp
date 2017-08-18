@@ -21,7 +21,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
     public router: Router,
     public _profileService: ProfileService,
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleProfileComponent.setActiveTab(urlSegment[0].path);
     });

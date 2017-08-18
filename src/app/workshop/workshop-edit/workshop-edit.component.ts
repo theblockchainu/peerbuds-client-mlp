@@ -118,6 +118,7 @@ export class WorkshopEditComponent implements OnInit {
     public requestHeaderService: RequestHeaderService
   ) {
     this.activatedRoute.params.subscribe(params => {
+      debugger;
       this.workshopId = params['workshopId'];
       this.step = params['step'];
     });
@@ -127,7 +128,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public ngOnInit() {
-
     console.log('Inside oninit workshop');
     this.interest1 = new FormGroup({
       // interests: this._fb.array([])

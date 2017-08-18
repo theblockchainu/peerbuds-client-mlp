@@ -169,7 +169,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   gotoEdit() {
-    this.router.navigate(['editWorkshop', this.workshopId, 1]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
   }
 
   public parseCalendar(workshop: any) {

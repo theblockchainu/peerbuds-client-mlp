@@ -13,7 +13,7 @@ export class ConsoleInboxComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleComponent: ConsoleComponent
   ) {
-    activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });

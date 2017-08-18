@@ -22,7 +22,7 @@ export class ConsoleTeachingComponent implements OnInit {
     public router: Router,
     public _collectionService: CollectionService,
     public consoleComponent: ConsoleComponent) {
-    activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
@@ -39,7 +39,7 @@ export class ConsoleTeachingComponent implements OnInit {
    */
   public createWorkshop() {
     this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
-      this.router.navigate(['editWorkshop', workshopObject.id, 1]);
+      this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
     });
   }
 
