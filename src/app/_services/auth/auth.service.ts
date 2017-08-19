@@ -22,25 +22,24 @@ export class AuthService {
   getCookie(key: string): any {
     return this._cookieService.get(key);
   }
-  
+
   removeCookie(key: string) {
     this._cookieService.delete(key);
   }
 
   login(): void {
-    let userToken = this.getCookie('access_token');
-    let userId = this.getCookie('userId');
+    const userToken = this.getCookie('access_token');
+    const userId = this.getCookie('userId');
     if (userToken && userId) {
-        // logged in so return true
-        this.isLoggedIn = true;
+      // logged in so return true
+      this.isLoggedIn = true;
     }
   }
 
   logout(): void {
-    debugger;
     this.isLoggedIn = false;
 
-  
+
 
   }
 }

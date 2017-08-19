@@ -12,8 +12,9 @@ const routes: Routes = [
     component: DefaultComponent,
     pathMatch: 'full'
   },
-  { path: 'login',  
-    component: LoginComponent 
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: 'signup-social',
