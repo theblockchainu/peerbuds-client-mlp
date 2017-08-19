@@ -1,0 +1,34 @@
+<div md-dialog-content class="container" *ngIf="data">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 media">
+      <img class="img-responsive media-middle" src="{{config.apiUrl+data.imageUrl}}" style="max-height: 600px" alt="content Image">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>{{data.title}}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h4>What we'll do</h4>
+      <p>
+        {{data.description}}
+      </p>
+      <div *ngIf="data.notes">
+        <hr>
+        <h4>Need to know</h4>
+        <p>
+          {{data.notes}}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button md-button *ngIf="!data.timetoSession" (click)="joinSession(modalContent)">Join</button>
+      <button md-button *ngIf="data.timetoSession" [disabled]="true"> {{data.timetoSession}} </button>
+    </div>
+  </div>
+
+</div>

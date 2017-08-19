@@ -26,7 +26,7 @@ export class ConsoleProfileComponent implements OnInit {
     public _collectionService: CollectionService,
     public consoleComponent: ConsoleComponent,
     public _profileService: ProfileService) {
-    activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });

@@ -22,7 +22,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
     public router: Router,
     public _collectionService: CollectionService
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleTeachingComponent.setActiveTab(urlSegment[0].path);
     });

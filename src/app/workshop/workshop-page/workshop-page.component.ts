@@ -2,12 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
-
+import { MdDialog } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { AppConfig } from '../../app.config';
 import * as moment from 'moment';
 import _ from 'lodash';
+
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { ViewParticipantsComponent } from './view-participants/view-participants.component';
+import { WorkshopVideoComponent } from './workshop-video/workshop-video.component';
+import { ContentOnlineComponent } from './content-online/content-online.component';
+import { ContentVideoComponent } from './content-video/content-video.component';
+import { ContentProjectComponent } from './content-project/content-project.component';
+import { MessageParticipantComponent } from './message-participant/message-participant.component';
 
 @Component({
   selector: 'app-workshop-page',
@@ -28,7 +36,7 @@ export class WorkshopPageComponent implements OnInit {
   public modalContent: any;
   public topicFix: any;
   public messagingParticipant: any;
-  public messageForm: FormGroup;
+
   public maxRating = 5;
   public userRating: number;
   public isReadonly = true;
@@ -39,7 +47,9 @@ export class WorkshopPageComponent implements OnInit {
     private cookieUtilsService: CookieUtilsService,
     private _collectionService: CollectionService,
     private config: AppConfig,
-    private _fb: FormBuilder) {
+    private _fb: FormBuilder,
+    private dialog: MdDialog
+  ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
     });
@@ -161,15 +171,10 @@ export class WorkshopPageComponent implements OnInit {
       message: ['', Validators.required],
       announce: ''
     });
-
-    this.messageForm = this._fb.group({
-      message: ['', Validators.required],
-      sent: ''
-    });
   }
 
   gotoEdit() {
-    this.router.navigate(['editWorkshop', this.workshopId, 1]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
   }
 
   public parseCalendar(workshop: any) {
@@ -244,44 +249,6 @@ export class WorkshopPageComponent implements OnInit {
     this.totalDuration = totalLength.toString();
   }
 
-
-  /**
-   * openModal
-content:any   */
-  public openModal(content: any, viewOnlineContent: ModalDirective, viewVideoContent: ModalDirective, viewProjectContent: ModalDirective) {
-    this.modalContent = content;
-    switch (content.type) {
-      case 'online':
-        {
-          viewOnlineContent.show();
-          break;
-        }
-      case 'video':
-        {
-          viewVideoContent.show();
-          break;
-        }
-      case 'project':
-        {
-          viewProjectContent.show();
-          break;
-        }
-      default:
-        break;
-    }
-
-  }
-
-  /**
-   * removeParticipant
-   */
-  public removeParticipant(participantId: string) {
-    this._collectionService.removeParticipant(this.workshopId, participantId).subscribe((response) => {
-      console.log('deleted');
-      this.initializeWorkshop();
-    });
-  }
-
   /**
    * isLive
    */
@@ -304,6 +271,7 @@ content:any   */
     if (currentMoment.isBetween(startMoment, endMoment)) {
       return true;
     } else {
+      this.timetoSession(content);
       return false;
     }
   }
@@ -315,51 +283,7 @@ content:any   */
     console.log('Joining Session');
   }
 
-  /**
-   * timetoSession
-content:any   */
-  public timetoSession(content: any) {
-    const startMoment = moment(this.workshop.calendars[0].startDate);
-    const endMoment = moment(this.workshop.calendars[0].startDate);
-    const currentMoment = moment();
-    startMoment.add(content.schedules[0].startDay, 'day');
-    endMoment.add(content.schedules[0].startDay, 'day');
 
-    const startTime = moment(content.schedules[0].startTime);
-    const endTime = moment(content.schedules[0].endTime);
-
-    startMoment.hours(startTime.hours());
-    startMoment.minutes(startTime.minutes());
-
-    endMoment.hours(endTime.hours());
-    endMoment.minutes(endTime.minutes());
-
-    if (startMoment.diff(currentMoment) < 0) {
-      return endMoment.fromNow();
-    } else {
-      return startMoment.toNow();
-    }
-
-
-  }
-
-  /**
-   * messageParticipant
-   */
-  public messageParticipant(messageDialog: ModalDirective, participant: any) {
-    console.log(participant);
-    this.messagingParticipant = participant;
-    messageDialog.show();
-  }
-
-  /**
-   * sendMessage
-   */
-  public sendMessage() {
-    console.log(this.messageForm.value);
-    this.messageForm.reset();
-    console.log('sent');
-  }
 
   public getContentCount(type: string) {
     let count = 0;
@@ -388,4 +312,98 @@ content:any   */
       this.noOfReviews = 4;
     }
   }
+
+  openDeleteDialog(action: string) {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: action
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'delete') {
+        this.deleteWorkshop();
+      } else if (result === 'cancel') {
+        this.cancelWorkshop();
+      } else {
+        console.log(result);
+      }
+    });
+  }
+
+  workshopVideoDialog() {
+    const dialogRef = this.dialog.open(WorkshopVideoComponent, {
+      data: this.config.apiUrl + this.workshop.videoUrl
+    });
+  }
+
+  viewParticipants() {
+    const dialogRef = this.dialog.open(ViewParticipantsComponent, {
+      data: this.workshop.participants,
+      width: '800px'
+    });
+  }
+
+  /**
+ * openDialog
+content:any   */
+  public openDialog(content: any) {
+    this.modalContent = content;
+    switch (content.type) {
+      case 'online':
+        {
+          const dialogRef = this.dialog.open(ContentOnlineComponent, {
+            data: content,
+            width: '800px'
+          });
+          break;
+        }
+      case 'video':
+        {
+          const dialogRef = this.dialog.open(ContentVideoComponent, {
+            data: content,
+            width: '800px'
+          }); break;
+        }
+      case 'project':
+        {
+          const dialogRef = this.dialog.open(ContentProjectComponent, {
+            data: {
+              content: content,
+              userType: this.userType
+            },
+            width: '800px'
+          }); break;
+        }
+      default:
+        break;
+    }
+
+  }
+
+  /**
+  * timetoSession
+content:any   */
+  public timetoSession(content: any) {
+    const startMoment = moment(this.workshop.calendars[0].startDate);
+    const endMoment = moment(this.workshop.calendars[0].startDate);
+    const currentMoment = moment();
+    startMoment.add(content.schedules[0].startDay, 'day');
+    endMoment.add(content.schedules[0].startDay, 'day');
+
+    const startTime = moment(content.schedules[0].startTime);
+    const endTime = moment(content.schedules[0].endTime);
+
+    startMoment.hours(startTime.hours());
+    startMoment.minutes(startTime.minutes());
+
+    endMoment.hours(endTime.hours());
+    endMoment.minutes(endTime.minutes());
+
+    if (startMoment.diff(currentMoment) < 0) {
+      content.timetoSession = endMoment.fromNow();
+    } else {
+      content.timetoSession = startMoment.toNow();
+    }
+  }
+
+
 }

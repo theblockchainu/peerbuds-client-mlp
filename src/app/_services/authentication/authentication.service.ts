@@ -78,7 +78,7 @@ export class AuthenticationService {
   */
   logout(): void {
     //localStorage.removeItem('token');
-
+    debugger;
     if (this.getCookie(this.key)) {
       this.http.get(this.config.apiUrl + '/auth/logout', {})
         .map((res: Response) => {

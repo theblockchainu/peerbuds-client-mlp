@@ -22,7 +22,7 @@ export class ConsoleProfileReviewsComponent implements OnInit {
     public _profileService: ProfileService,
     public _collectionService: CollectionService
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleProfileComponent.setActiveTab(urlSegment[0].path);
     });

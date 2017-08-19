@@ -22,7 +22,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
     public router: Router,
     public _collectionService: CollectionService
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
         consoleTeachingComponent.setActiveTab('all');
       } else {

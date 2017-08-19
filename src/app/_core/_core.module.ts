@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileService } from '../_services/profile/profile.service';
 
-
 @NgModule({
   imports: [
     CommonModule

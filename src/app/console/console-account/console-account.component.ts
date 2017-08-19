@@ -22,7 +22,7 @@ export class ConsoleAccountComponent implements OnInit {
     public router: Router,
     public _collectionService: CollectionService,
     public consoleComponent: ConsoleComponent) {
-    activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
