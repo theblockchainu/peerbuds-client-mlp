@@ -8,13 +8,16 @@ import { ContentOnlineComponent } from './content-online/content-online.componen
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
+import { WorkshopPageRoutingModule } from './workshop-page-routing.module';
+import { WorkshopPageComponent } from './workshop-page.component';
 
 @NgModule({
   imports: [
+    WorkshopPageRoutingModule,
     CommonModule,
     SharedModule
   ],
-  declarations: [DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent],
+  declarations: [WorkshopPageComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent],
   bootstrap: [DeleteDialogComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent]
 
 })
