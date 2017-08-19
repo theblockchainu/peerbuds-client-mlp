@@ -2977,7 +2977,7 @@ md-backdrop.md-sidenav-backdrop {
 
 .main-content {
     padding: 0;
-    background: #F5F5F5
+    background: #f7f7f7
 }
 
 .pull-right {
@@ -6025,10 +6025,12 @@ md-input-container.mat-block {
 
 .mat-white {
     background-color: white;
+    border-bottom: 4px solid #dedede;
 }
 
 .main-content {
     min-height: 90vh;
+    overflow-y: auto;
 }
 
 /* .flex-60, .layout-row>.flex-60 {
@@ -6047,12 +6049,66 @@ md-input-container.mat-block {
 }
 
 .search-form {
-  margin: 0 1rem;  
+  margin: 0 2rem;
   flex-grow: 1; /* <-- THE SECRET SAUCE! */
   min-width: 18rem;
 }
 
 .search-form .mat-input-container {
     display: inline;
+}
+
+.search-form .mat-input-underline {
+    display: none;
+}
+
+.mat-toolbar {
+    font: 400 16px/32px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.search-form .mat-input-wrapper {
+    padding-bottom: 0.69688em;
+}
+
+footer {
+    padding: 20px;
+}
+
+.bold {
+    font-weight:700;
+}
+
+.lightText {
+    color: #777777;
+}
+
+.lighterText {
+    color: #cccccc;
+}
+
+.center {
+    text-align: center;
+}
+
+.mat-list-item {
+   cursor: pointer;
+}
+
+.mat-list-item-focus {
+  outline: none;
+}
+
+.pb-block {
+    display: block !important;
+}
+
+.circle-thumb{
+   width: 40px;
+   height: 40px;
+   border-radius: 50%;
+   /* background-color: #eee; */
+   margin-left: -9px;
+   display: inline-block;
+   border: 3px solid #ffffff;
 }
 

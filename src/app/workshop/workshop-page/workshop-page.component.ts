@@ -193,7 +193,7 @@ export class WorkshopPageComponent implements OnInit {
    * changeDates
    */
   public changeDates() {
-    this.router.navigate(['editWorkshop', this.workshopId, 13]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', 13]);
   }
   /**
    * joinGroupChat

@@ -68,7 +68,7 @@ export class ConsoleTeachingSessionComponent implements OnInit {
   }
 
   public onSelect(workshop) {
-    this.router.navigate(['/editWorkshop/', workshop.id, 1]);
+    this.router.navigate(['workshop', workshop.id, 'edit', 1]);
   }
 
 }

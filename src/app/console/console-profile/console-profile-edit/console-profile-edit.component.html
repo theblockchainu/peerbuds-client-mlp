@@ -105,7 +105,6 @@
                   <input mdInput name="work_end" type="date"  placeholder="End Date" [(ngModel)]="profile.work[index].endDate">
                   <md-error>This field is required</md-error>
                 </md-input-container>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another Peerbuds user. This is how we can all get in touch.</md-hint>
               </div>
 
               <div *ngFor="let edu of profile.education; let index = index">
@@ -125,7 +124,6 @@
                   <input mdInput name="edu_end" type="text"  placeholder="End Year" [(ngModel)]="profile.education[index].endYear">
                   <md-error>This field is required</md-error>
                 </md-input-container>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another Peerbuds user. This is how we can all get in touch.</md-hint>
               </div>
 
               <md-input-container style="margin-bottom: 20px">

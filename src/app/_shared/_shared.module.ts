@@ -16,6 +16,9 @@ import {
   FileUploadModule, ScheduleModule, DialogModule, CalendarModule,
   CheckboxModule, LightboxModule, RatingModule
 } from 'primeng/primeng';
+
+import { CalendarModule } from 'angular-calendar';
+
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
@@ -40,7 +43,8 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     BsDropdownModule.forRoot(),
     FileUploadModule,
     CommonModule,
-    PopoverModule.forRoot()
+    PopoverModule.forRoot(),
+    CalendarModule.forRoot()
   ],
   declarations: [],
   providers: [

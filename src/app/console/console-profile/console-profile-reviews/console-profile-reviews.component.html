@@ -19,7 +19,7 @@
                 <div class="review-section" *ngFor="let review of profile.peer[0].reviewsAboutYou">
                   <div *ngIf="review.peer !== undefined">
                     <div class="review-top">
-                      <div class="review-thumb thumb-circle">
+                      <div class="review-thumb thumb-circle pull-left">
                         <img src="{{review.peer[0].profiles[0].picture_url}}" alt=" " />
                       </div>
                       <div class="reviewer">
@@ -109,7 +109,7 @@
                 <div class="review-section" *ngFor="let review of profile.peer[0].reviewsByYou">
                   <div *ngIf="review.reviewedPeer !== undefined">
                     <div class="review-top">
-                      <div class="review-thumb thumb-circle">
+                      <div class="review-thumb thumb-circle pull-left">
                         <img src="{{review.reviewedPeer[0].profiles[0].picture_url}}" alt=" " />
                       </div>
                       <div class="reviewer">

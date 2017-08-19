@@ -327,6 +327,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public getContents(contents) {
+    debugger;
     const itenaries = {};
     for (const contentObj of contents) {
       contentObj.schedule = contentObj.schedules[0];
@@ -736,7 +737,7 @@ export class WorkshopEditComponent implements OnInit {
    * goto(toggleStep)  */
   public goto(toggleStep) {
     this.step = toggleStep;
-    this.router.navigate(['editWorkshop', this.workshopId, +toggleStep]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', +toggleStep]);
   }
 
 
