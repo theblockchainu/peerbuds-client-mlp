@@ -97,3 +97,19 @@ img {
 .full-width{
     width: 100%;    
 }
+
+.profile-thumb{
+    object-fit: cover;
+    width:30px;
+    height:30px;
+}
+
+.recommendation-thumb{
+    object-fit: cover;
+    max-height: 200px;
+    
+}
+
+.recommendation-card {
+    width: 300px;
+}

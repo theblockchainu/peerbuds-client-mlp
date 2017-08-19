@@ -24,11 +24,12 @@
       </div>
     </div>
   </div>
+</div>
+<div md-dialog-actions>
   <div class="row">
     <div class="col-md-12">
       <button md-button *ngIf="!data.timetoSession" (click)="joinSession(modalContent)">Join</button>
       <button md-button *ngIf="data.timetoSession" [disabled]="true"> {{data.timetoSession}} </button>
     </div>
   </div>
-
 </div>
