@@ -6106,7 +6106,7 @@ footer {
    width: 40px;
    height: 40px;
    border-radius: 50%;
-   background-color: #eee;
+   /* background-color: #eee; */
    margin-left: -9px;
    display: inline-block;
    border: 3px solid #ffffff;
