@@ -73,4 +73,10 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   public onSelect(workshop) {
     this.router.navigate(['/workshop/', workshop.id, 'edit', 1]);
   }
+
+  public createWorkshop() {
+    this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
+      this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
+    });
+  }
 }

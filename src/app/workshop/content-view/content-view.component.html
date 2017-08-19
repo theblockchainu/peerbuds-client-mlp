@@ -200,12 +200,14 @@
       <div *ngFor="let Content of itenaryForm.controls.contents.controls; let i=index" class="panel panel-default">
         <div class="panel-heading">
           <span>Content {{i + 1}}</span>
-          <span class="glyphicon glyphicon-remove pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)"></span>
+          <!-- <span class="glyphicon glyphicon-remove pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)"></span> -->
+          <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)">delete</md-icon>
         </div>
         <div>
           <div class="panel-body">
-            <span class="glyphicon glyphicon-edit pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="editContent(i,onlineEditModal,videoEditModal,projectEditModal)"></span>
+            <!-- <span class="glyphicon glyphicon-edit pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="editContent(i,onlineEditModal,videoEditModal,projectEditModal)"></span> -->
 
+            <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="editContent(i,onlineEditModal,videoEditModal,projectEditModal)">border_color</md-icon>
             <div class="col-md-5">
               <div class="row">{{Content.value.title}}</div>
               <div class="row"></div>

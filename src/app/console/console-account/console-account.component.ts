@@ -38,7 +38,7 @@ export class ConsoleAccountComponent implements OnInit {
    */
   public createWorkshop() {
     this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
-      this.router.navigate(['editWorkshop', workshopObject.id, 1]);
+      this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
     });
   }
 

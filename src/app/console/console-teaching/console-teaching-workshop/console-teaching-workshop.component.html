@@ -10,7 +10,7 @@
     <div #noContentView *ngIf="collections.data.length == 0" class="center" style="margin-top: 10%">
       <div class="lightText">
         You are not teaching any workshop
-        <br><br> Start by hosting an <a color="default" [routerLink]="'/editWorkshop'">Workshop </a>
+        <br><br> Start by hosting an <a color="default" (click)="createWorkshop()">Workshop </a>
       </div>
     </div>
     <div *ngIf="collections.activeCount > 0">
