@@ -289,6 +289,24 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+angular-calendar@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/angular-calendar/-/angular-calendar-0.20.1.tgz#006d4e5224164358d2a4acd7ab8bfdc412c02a4d"
+  dependencies:
+    angular-draggable-droppable "^1.0.1"
+    angular-resizable-element "^1.2.1"
+    calendar-utils "0.0.56"
+    date-fns "^1.28.5"
+    positioning "^1.0.4"
+
+angular-draggable-droppable@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/angular-draggable-droppable/-/angular-draggable-droppable-1.0.1.tgz#7ad70c310994b0f980f40d382dce59946fe30dcf"
+
+angular-resizable-element@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/angular-resizable-element/-/angular-resizable-element-1.2.1.tgz#e32128f68bbddea8c54e96c2fb143970ce0d7fab"
+
 ansi-escapes@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-2.0.0.tgz#5bae52be424878dd9783e8910e3fc2922e83c81b"
@@ -872,6 +890,10 @@ cache-base@^0.8.4:
     to-object-path "^0.3.0"
     union-value "^0.2.3"
     unset-value "^0.1.1"
+
+calendar-utils@0.0.56:
+  version "0.0.56"
+  resolved "https://registry.yarnpkg.com/calendar-utils/-/calendar-utils-0.0.56.tgz#db6dbbbca8eceeb2107d86e0fd1f80c55a3abfa4"
 
 callsite@1.0.0:
   version "1.0.0"
@@ -1465,6 +1487,10 @@ dashdash@^1.12.0:
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
   dependencies:
     assert-plus "^1.0.0"
+
+date-fns@^1.28.5:
+  version "1.28.5"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.28.5.tgz#257cfc45d322df45ef5658665967ee841cd73faf"
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -4375,6 +4401,10 @@ portfinder@^1.0.13, portfinder@^1.0.9, portfinder@~1.0.12:
     async "^1.5.2"
     debug "^2.2.0"
     mkdirp "0.5.x"
+
+positioning@^1.0.4:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/positioning/-/positioning-1.3.0.tgz#2db4c82ef8f5cefbc585005a2ca6e247d75a7062"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"

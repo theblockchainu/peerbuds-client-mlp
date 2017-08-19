@@ -13,7 +13,7 @@ import {
   TabsModule, PopoverModule, CarouselModule, DatepickerModule, TimepickerModule
 } from 'ngx-bootstrap';
 import {
-  FileUploadModule, ScheduleModule, DialogModule, CalendarModule,
+  FileUploadModule, ScheduleModule, DialogModule,
   CheckboxModule, LightboxModule, RatingModule
 } from 'primeng/primeng';
 
