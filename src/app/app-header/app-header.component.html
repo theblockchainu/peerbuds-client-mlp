@@ -44,75 +44,78 @@
     </span>
   </md-toolbar>
 
-  <md-menu #headerTeachMenu>
-    <button md-menu-item [routerLink]="['/console/dashboard']">
-      Dashboard
-    </button>
-    <button md-menu-item [routerLink]="['/console/teaching/all']">
-      Teaching Journey
-    </button>
-    <button md-menu-item [routerLink]="['/console/account/transactions']">
-      Transaction History
-    </button>
-    <button md-menu-item [routerLink]="['/editSessions']">
-      Enable Sessions
-    </button>
-    <button md-menu-item [routerLink]="['/console/teaching/workshops']">
-      Create a Workshop
-    </button>
-    <button md-menu-item [routerLink]="['/console/teaching/experiences']">
-      Create an Experience
-    </button>
-    <button md-menu-item [routerLink]="['/console/calendar']">
-      Calendar
-    </button>
-  </md-menu>
+<md-menu #headerTeachMenu>
+  <button md-menu-item [routerLink]="['/console/dashboard']">
+    Dashboard
+  </button>
+  <button md-menu-item [routerLink]="['/console/teaching/all']">
+    Teaching Journey
+  </button>
+  <button md-menu-item [routerLink]="['/console/account/transactions']">
+    Transaction History
+  </button>
+  <button md-menu-item [routerLink]="['/editSessions']">
+    Enable Sessions
+  </button>
+  <button md-menu-item [routerLink]="['/console/teaching/workshops']">
+    Create a Workshop
+  </button>
+  <button md-menu-item [routerLink]="['/console/teaching/experiences']">
+    Create an Experience
+  </button>
+  <button md-menu-item [routerLink]="['/console/calendar']">
+    Calendar
+  </button>
+</md-menu>
 
-  <md-menu #headerLearnMenu>
-    <button md-menu-item [routerLink]="['/console/dashboard']">
-      Dashboard
-    </button>
-    <button md-menu-item [routerLink]="['/console/account/transactions']">
-      Transaction History
-    </button>
-    <button md-menu-item [routerLink]="['/console/learning/workshops']">
-      Workshops
-    </button>
-    <button md-menu-item [routerLink]="['/console/learning/experiences']">
-      Experiences
-    </button>
-    <button md-menu-item [routerLink]="['/console/calendar']">
-      Calendar
-    </button>
-  </md-menu>
+<md-menu #headerLearnMenu>
+  <button md-menu-item [routerLink]="['/console/dashboard']">
+    Dashboard
+  </button>
+  <button md-menu-item [routerLink]="['/console/account/transactions']">
+    Transaction History
+  </button>
+  <button md-menu-item [routerLink]="['/console/learning/workshops']">
+    Workshops
+  </button>
+  <button md-menu-item [routerLink]="['/console/learning/experiences']">
+    Experiences
+  </button>
+  <button md-menu-item [routerLink]="['/console/calendar']">
+    Calendar
+  </button>
+</md-menu>
 
 
-  <md-menu #headerNotificationsMenu>
-    <div class="notificationsDiv dropdown-menu notification-sub-box">
-      <ul id="notificationsUL"></ul>
-      <div class="noNotiExists">
-        <div class="notificationLiContent">
-          <span class="text-grey conDesc">No notifications</span>
-        </div>
+<md-menu #headerNotificationsMenu>
+  <div class="notificationsDiv dropdown-menu notification-sub-box">
+    <ul id="notificationsUL"></ul>
+    <div class="noNotiExists">
+      <div class="notificationLiContent">
+        <span class="text-grey conDesc">No notifications</span>
       </div>
-      <div class='seeAllLi hide'><a class='seeAllAnc' href="${baseUrl}/notifications/all-notifications">See All</a></div>
     </div>
-  </md-menu>
+    <div class='seeAllLi hide'><a class='seeAllAnc' href="${baseUrl}/notifications/all-notifications">See All</a></div>
+  </div>
+</md-menu>
 
-  <md-menu #headerUserMenu>
-    <button md-menu-item [routerLink]="['/console/profile/edit']">
-      Edit Profile
-    </button>
-    <button md-menu-item [routerLink]="['/console/account/settings']">
-      Account Settings
-    </button>
-    <button md-menu-item [routerLink]="['/console/learning/bookmarks']">
-      Bookmarks
-    </button>
-    <button md-menu-item (click)="authService.logout()">
-      Logout
-    </button>
-  </md-menu>
+<md-menu #headerUserMenu>
+  <button md-menu-item [routerLink]="['/profile', userId]">
+    {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
+  </button>
+  <button md-menu-item [routerLink]="['/console/profile/edit']">
+    Edit Profile
+  </button>
+  <button md-menu-item [routerLink]="['/console/account/settings']">
+    Account Settings
+  </button>
+  <button md-menu-item [routerLink]="['/console/learning/bookmarks']">
+    Bookmarks
+  </button>
+  <button md-menu-item (click)="authService.logout()">
+    Logout
+  </button>
+</md-menu>
 
 </div> -->
 
@@ -151,7 +154,7 @@
       </button>
       <button md-button [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)">
         <div class="circle-thumb">
-          <img src="{{ config.apiUrl + profile.picture_url }}" alt="A" class="thumb-35">
+          <img src="{{ config.apiUrl + '/' + profile.picture_url }}" alt="A" class="thumb-35">
         </div>
       </button>
       <a md-button  href="/signup.html" *ngIf="!(isLoggedIn | async)">
@@ -219,6 +222,9 @@
   </md-menu>
 
   <md-menu #headerUserMenu>
+    <button md-menu-item [routerLink]="['/profile', userId]">
+      {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
+    </button>
     <button md-menu-item [routerLink]="['/console/profile/edit']">
       Edit Profile
     </button>

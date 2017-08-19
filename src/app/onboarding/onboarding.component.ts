@@ -5,15 +5,13 @@ import {
 } from '@angular/http';
 import { Http } from '@angular/http';
 import { AppConfig } from '../app.config';
-
-import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
 import { ContentService } from '../_services/content/content.service';
 import { ProfileService } from '../_services/profile/profile.service';
 import _ from 'lodash';
 
 @Component({
-  selector: 'onboarding',
+  selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.scss']
 })
@@ -21,7 +19,7 @@ export class OnboardingComponent implements OnInit {
 
   public userId: string;
   public placeholderStringTopic = 'Search for a topic ';
-  public step = 1;
+  public step: number;
   public suggestedTopics = [];
   public interests = [];
   public interest1: FormGroup;
@@ -41,6 +39,7 @@ export class OnboardingComponent implements OnInit {
     private _contentService: ContentService,
     private _profileService: ProfileService
   ) {
+    this.step = 1;
     this.interest1 = new FormGroup({
     });
     this.countryPickerService.getCountries()
@@ -56,8 +55,8 @@ export class OnboardingComponent implements OnInit {
     }
     this.interests = event;
     this.suggestedTopics = event;
-    this.suggestedTopics.map((obj) => {
-      obj.checked = 'true';
+      this.suggestedTopics.map((obj) => {
+                obj.checked = 'true';
       return obj;
     });
   }
@@ -81,7 +80,7 @@ export class OnboardingComponent implements OnInit {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       headers.append('Accept', 'application/json');
-      
+
       options = new RequestOptions({
         headers: headers,
         body: body
@@ -107,33 +106,27 @@ export class OnboardingComponent implements OnInit {
     }
   }
   goToNext(e) {
-    //alert(e);
-    if (typeof e == "number") {
-      this.step = e;
-    }
-    else {
+    if (typeof e !== 'number') {
       if (e.target.checked) {
         this.step = 2;
         return;
       }
+    } else {
+      this.step = e;
     }
   }
   public submitInterests(interests) {
-    let topicArray = [];
+    const topicArray = [];
     this.interests.forEach((topic) => {
 
       topicArray.push(topic.id);
     });
     if (topicArray.length !== 0) {
-      // this.http.put(this.config.apiUrl + '/api/peers/' + this.userId
-      //   + '/topics/rel/' + topicArray)
-      //   .map((response: Response) => { }).subscribe();
     }
-    //this.step++;
 
   }
   public changeInterests(topic: any) {
-    let index = this.interests.indexOf(topic);
+    const index = this.interests.indexOf(topic);
     if (index > -1) {
       this.interests.splice(index, 1); // If the user currently uses this topic, remove it.
     } else {
