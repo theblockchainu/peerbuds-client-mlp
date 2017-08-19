@@ -5,7 +5,7 @@
   <div class="row" *ngFor="let participant of data">
     <div *ngIf="participant.profiles">
       <div class="col-md-2">
-        <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle" alt="dp">
+        <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle profile-thumb" alt="dp">
       </div>
       <div class="col-md-3">
         {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}

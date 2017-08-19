@@ -9,12 +9,12 @@ import {
   MdListModule, MdTabsModule, MdTableModule, MdInputModule
 } from '@angular/material';
 import {
-  ModalModule, RatingModule, BsDropdownModule, ProgressbarModule,
+  ModalModule, BsDropdownModule, ProgressbarModule,
   TabsModule, PopoverModule, CarouselModule, DatepickerModule, TimepickerModule
 } from 'ngx-bootstrap';
 import {
   FileUploadModule, ScheduleModule, DialogModule, CalendarModule,
-  CheckboxModule, LightboxModule
+  CheckboxModule, LightboxModule, RatingModule
 } from 'primeng/primeng';
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
@@ -36,7 +36,6 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
   imports: [
     ProgressbarModule.forRoot(),
     ModalModule.forRoot(),
-    RatingModule.forRoot(),
     TabsModule.forRoot(),
     BsDropdownModule.forRoot(),
     FileUploadModule,

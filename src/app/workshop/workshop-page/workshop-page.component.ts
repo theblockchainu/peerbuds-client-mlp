@@ -37,10 +37,12 @@ export class WorkshopPageComponent implements OnInit {
   public topicFix: any;
   public messagingParticipant: any;
 
-  public maxRating = 5;
   public userRating: number;
   public isReadonly = true;
   public noOfReviews = 4;
+  public recommendations = {
+    collections: []
+  };
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -92,7 +94,7 @@ export class WorkshopPageComponent implements OnInit {
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
         { 'contents': ['schedules'] },
-        'reviews'
+        { 'reviews': [{ 'peer': ['profiles'] }] }
       ]
     };
 
@@ -140,7 +142,8 @@ export class WorkshopPageComponent implements OnInit {
           this.initializeUserType();
           this.calculateTotalHours();
           this.fixTopics();
-          this.calculateRating();
+          this.userRating = this.calculateRating(this.workshop);
+          this.getRecommendations();
         });
 
 
@@ -149,14 +152,14 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
 
-  private calculateRating() {
+  private calculateRating(workshop) {
     let reviewScore = 0;
     let totalScore = 0;
-    for (const reviewObject of this.workshop.reviews) {
+    for (const reviewObject of workshop.reviews) {
       reviewScore += reviewObject.score;
       totalScore += 5;
     }
-    this.userRating = totalScore / reviewScore;
+    return totalScore / reviewScore;
   }
 
   private fixTopics() {
@@ -352,7 +355,8 @@ content:any   */
         {
           const dialogRef = this.dialog.open(ContentOnlineComponent, {
             data: content,
-            width: '800px'
+            width: '800px',
+            height: '700px'
           });
           break;
         }
@@ -360,7 +364,8 @@ content:any   */
         {
           const dialogRef = this.dialog.open(ContentVideoComponent, {
             data: content,
-            width: '800px'
+            width: '800px',
+            height: '600px'
           }); break;
         }
       case 'project':
@@ -405,5 +410,29 @@ content:any   */
     }
   }
 
+  /**
+   * getRecommendations
+   */
+  public getRecommendations() {
+    const query = {
+      'include': [
+        'calendars',
+        { 'owners': ['profiles'] },
+        'reviews'
+      ],
+      'limit': 4
+    };
+    console.log('getting recos');
+    this._collectionService.getRecommendations(query, (err, response: any) => {
+      if (err) {
+        console.log(err);
+      } else {
+        for (const responseObj of response) {
+          responseObj.rating = this.calculateRating(responseObj);
+          this.recommendations.collections.push(responseObj);
+        }
+      }
+    });
+  }
 
 }
