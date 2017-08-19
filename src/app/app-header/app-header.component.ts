@@ -59,9 +59,11 @@ export class AppHeaderComponent implements OnInit {
   }
 
   getProfile() {
-    this._profileService.getProfile().subscribe(profile => {
-      this.profile = profile[0];
-    });
+    if(this.isLoggedIn) {
+        this._profileService.getProfile().subscribe(profile => {
+            this.profile = profile[0];
+        });
+    }
   }
 
   public getAllSearchResults(query: any, cb) {
