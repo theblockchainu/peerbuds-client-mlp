@@ -32,9 +32,7 @@ import { WorkshopPageModule } from './workshop-page/workshop-page.module';
     WorkshopEditComponent,
     WorkshopContentComponent,
     ContentViewComponent,
-    AppointmentCalendarComponent,
-    WorkshopPageComponent,
-
+    AppointmentCalendarComponent
   ],
   providers: [
   ],

@@ -10,18 +10,12 @@ const routes: Routes = [
     children: [
       {
         path: ':workshopId',
-        children: [
-          {
-            path: '',
-            component: WorkshopPageComponent,
-            canActivateChild: [AuthGuardService]
-          },
-          {
-            path: 'edit/:step',
-            component: WorkshopEditComponent,
-            canActivateChild: [AuthGuardService]
-          }
-        ]
+        loadChildren: './workshop-page/workshop-page.module#WorkshopPageModule'
+      },
+      {
+        path: ':workshopId/edit/:step',
+        component: WorkshopEditComponent,
+        canActivateChild: [AuthGuardService]
       }
 
     ]

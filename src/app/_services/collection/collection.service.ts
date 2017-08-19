@@ -156,7 +156,6 @@ export class CollectionService {
   }
   /* Submit workshop for Review */
   public submitForReview(id: string) {
-    debugger;
     return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', {}).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
