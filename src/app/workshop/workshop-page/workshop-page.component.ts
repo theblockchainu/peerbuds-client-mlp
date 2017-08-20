@@ -163,10 +163,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private fixTopics() {
-    console.log(this.workshop.topics);
     this.topicFix = _.uniqBy(this.workshop.topics, 'id');
-    console.log(this.topicFix);
-
   }
 
   private initializeForms() {
@@ -224,7 +221,7 @@ export class WorkshopPageComponent implements OnInit {
   public calculateDate(fromdate, day) {
     const tempMoment = moment(fromdate);
     tempMoment.add(day, 'days');
-    return tempMoment.format('Do MMMM');
+    return tempMoment;
   }
 
   /**
@@ -296,13 +293,6 @@ content:any   */
       }
     }
     return count;
-  }
-
-  /**
-   * getReadableDate
-   */
-  public getReadableDate(date: string) {
-    return moment(date).format('Do MMMM');
   }
 
   /**
@@ -422,7 +412,6 @@ content:any   */
       ],
       'limit': 4
     };
-    console.log('getting recos');
     this._collectionService.getRecommendations(query, (err, response: any) => {
       if (err) {
         console.log(err);
