@@ -396,7 +396,6 @@ export class CollectionService {
     this.http
       .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter)
       .map((response) => {
-        console.log(response.json());
         cb(null, response.json());
       }, (err) => {
         cb(err);
