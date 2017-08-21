@@ -25,12 +25,15 @@ export class ProfileComponent implements OnInit {
   public sessions: any = [];
   public experiences: any = [];
   public workshops: any = [];
-  public defaultProfileUrl = '/assets/images/default-user.jpg';
+  public defaultProfileUrl = '/assets/images/avatar.png';
+  // public defaultProfileUrl = '/assets/images/default-user.jpg';
   public defaultImageUrl = 'http://lorempixel.com/350/250/city/9';
   public calendars: any = [];
   public showHideSession = false;
   public profile: any;
   public loading: boolean;
+  public profileWork: any;
+  public profileEducation: any;
 
   constructor(
     public config: AppConfig,
@@ -64,6 +67,8 @@ export class ProfileComponent implements OnInit {
       console.log('peer' + JSON.stringify(peer));
       this.peer = peer;
       this.profile = peer.profiles[0];
+      this.profileWork = peer.profiles[0].work;
+      this.profileEducation = peer.profiles[0].education;
       this.peer.identities.forEach(identity => {
         identity.profile = JSON.parse(identity.profile);
       });

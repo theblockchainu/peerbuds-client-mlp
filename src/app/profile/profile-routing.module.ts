@@ -7,7 +7,7 @@ import { AuthService } from '../_services/auth/auth.service';
 
 const routes: Routes = [
   {
-    path: 'profile/:profileId',
+    path: ':profileId',
     children: [
       {
         path: '',
