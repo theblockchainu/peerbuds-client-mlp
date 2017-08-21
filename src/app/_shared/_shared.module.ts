@@ -14,7 +14,8 @@ import {
 } from 'ngx-bootstrap';
 import {
   FileUploadModule, ScheduleModule, DialogModule,
-  CheckboxModule, LightboxModule, RatingModule
+  CheckboxModule, LightboxModule, RatingModule,
+  AccordionModule
 } from 'primeng/primeng';
 import { NgPipesModule } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
@@ -96,7 +97,8 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     MdTableModule,
     CdkTableModule,
     MdInputModule,
-    NgPipesModule
+    NgPipesModule,
+    AccordionModule
   ]
 })
 export class SharedModule { }

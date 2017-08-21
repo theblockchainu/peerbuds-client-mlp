@@ -16,6 +16,7 @@ import { ContentOnlineComponent } from './content-online/content-online.componen
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
+import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
 
 @Component({
   selector: 'app-workshop-page',
@@ -408,7 +409,9 @@ content:any   */
       'include': [
         'calendars',
         { 'owners': ['profiles'] },
-        'reviews'
+        'reviews',
+        'topics',
+        'participants'
       ],
       'limit': 4
     };
@@ -418,9 +421,18 @@ content:any   */
       } else {
         for (const responseObj of response) {
           responseObj.rating = this.calculateRating(responseObj);
+          console.log(responseObj);
           this.recommendations.collections.push(responseObj);
         }
       }
+    });
+  }
+
+  /**
+   * selectJoiningDates
+   */
+  public selectJoiningDates() {
+    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
     });
   }
 

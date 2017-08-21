@@ -52,7 +52,7 @@
             <div class="row Topics">
               <div class="col-md-8">
                 <md-chip-list>
-                  <md-chip *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
+                  <md-chip class="mat-elevation-z3" *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
                 </md-chip-list>
               </div>
             </div>
@@ -271,10 +271,18 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="col-md-1">
+                        <md-icon>schedule</md-icon>
+                      </div>
+                      <div class="col-md-11">
+                        <h6>{{totalDuration}} hours in total</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="col-md-1">
                         <md-icon>mic</md-icon>
                       </div>
                       <div class="col-md-11">
-                        <p>Offered in {{workshop.language[0]}}</p>
+                        <h6>Offered in {{workshop.language[0]}}</h6>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -282,7 +290,7 @@
                         <md-icon>dvr</md-icon>
                       </div>
                       <div class="col-md-11">
-                        {{getContentCount('project')}} Project
+                        <h6>{{getContentCount('project')}} Project</h6>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -290,7 +298,7 @@
                         <md-icon>play_circle_outline</md-icon>
                       </div>
                       <div class="col-md-11">
-                        {{getContentCount('video')}} Recorded Videos
+                        <h6>{{getContentCount('video')}} Recorded Videos</h6>
                       </div>
                     </div>
                   </div>
@@ -305,16 +313,16 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                       <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
                     </div>
                     <div class="col-md-6">
-                      <p> {{workshop.reviews.length}} Reviews</p>
+                      <h6>{{workshop.reviews.length}} Reviews</h6>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <button md-button>Dates</button>
+                  <button md-raised-button (click)="selectJoiningDates()" class="full-width mat-accent">Dates</button>
                 </div>
               </div>
             </div>
@@ -365,7 +373,7 @@
                           </div>
                         </div>
                         <div class="col-md-12">
-                          307 Growth
+                          <p>{{collection.participants.length}} . {{collection.topics[0].name}}</p>
                         </div>
                       </div>
                     </md-card>
