@@ -62,12 +62,12 @@
               </md-input-container>
               <br>
               <md-select placeholder="Preferred Language" style="margin-bottom: 20px" name="preferred_language" [(ngModel)]="profile.preferred_language">
-                <md-option *ngFor="let language of languages" [value]="language">{{language}}</md-option>
+                <md-option *ngFor="let language of languages" [value]="language">{{language.name}}</md-option>
                 <md-hint align="start">We'll send you messages in this language.</md-hint>
               </md-select>
               <br><br><br>
               <md-select placeholder="Preferred Currency" style="margin-bottom: 20px" name="preferred_currency" [(ngModel)]="profile.preferred_currency">
-                <md-option *ngFor="let currency of currencies" [value]="currency">{{currency}}</md-option>
+                <md-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</md-option>
                 <md-hint align="start">Weʼll show you prices in this currency.</md-hint>
               </md-select>
               <br><br>
@@ -105,7 +105,6 @@
                   <input mdInput name="work_end" type="date"  placeholder="End Date" [(ngModel)]="profile.work[index].endDate">
                   <md-error>This field is required</md-error>
                 </md-input-container>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another Peerbuds user. This is how we can all get in touch.</md-hint>
               </div>
 
               <div *ngFor="let edu of profile.education; let index = index">
@@ -125,7 +124,6 @@
                   <input mdInput name="edu_end" type="text"  placeholder="End Year" [(ngModel)]="profile.education[index].endYear">
                   <md-error>This field is required</md-error>
                 </md-input-container>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another Peerbuds user. This is how we can all get in touch.</md-hint>
               </div>
 
               <md-input-container style="margin-bottom: 20px">

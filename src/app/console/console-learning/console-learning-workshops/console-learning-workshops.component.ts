@@ -22,7 +22,7 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     public _collectionService: CollectionService,
     public router: Router
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleLearningComponent.setActiveTab(urlSegment[0].path);
     });
@@ -63,7 +63,7 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
   }
 
   public onSelect(workshop) {
-    this.router.navigate(['/editWorkshop/', workshop.id, 1]);
+    this.router.navigate(['workshop', workshop.id, 'edit', 1]);
   }
 
 }

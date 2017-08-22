@@ -11,6 +11,42 @@
       <div>
         <div style="margin-top:20px;" class="col-md-12">
           <div class="row" style="margin-right: 20px;">
+            <md-tab-group>
+              <md-tab label="Topics Learning">
+                <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+                  Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics you learn about will be visible both here and on your public profile.
+                </div>
+                <div class="review-section" *ngFor="let topic of profile.peer[0].topicsLearning">
+                    <div class="topic-row">
+                      <div class="topic-name pull-left">
+                        {{topic.name}}
+                      </div>
+                      <div class="topic-delete-button pull-right">
+                        x
+                      </div>
+                    </div>
+                </div>
+              </md-tab>
+              <md-tab label="Topics Teaching">
+                <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+                  Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics you learn about will be visible both here and on your public profile.
+                </div>
+                <div class="review-section" *ngFor="let topic of profile.peer[0].topicsTeaching">
+                  <div class="topic-row">
+                    <div class="topic-name pull-left">
+                      {{topic.name}}
+                    </div>
+                    <div class="topic-experience pull-right">
+                      <md-input-container class="pb-block" style="margin-bottom: 20px">
+                        <textarea mdInput #experience name="experience" rows="4" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?" required></textarea>
+                        <md-error>This field is required</md-error>
+                        <md-hint align="end">{{experience.value.length}} / 1000</md-hint>
+                      </md-input-container>
+                    </div>
+                  </div>
+                </div>
+              </md-tab>
+            </md-tab-group>
           </div>
         </div>
       </div>

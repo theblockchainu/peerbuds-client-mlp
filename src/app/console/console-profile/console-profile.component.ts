@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ProfileService } from '../../_services/profile/profile.service';
-import {ConsoleComponent} from '../console.component';
+import { ConsoleComponent } from '../console.component';
 
 declare var moment: any;
 
@@ -26,12 +26,14 @@ export class ConsoleProfileComponent implements OnInit {
     public _collectionService: CollectionService,
     public consoleComponent: ConsoleComponent,
     public _profileService: ProfileService) {
-    activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
-    debugger;
-    //_profileService.getPeerProfile().subscribe((res)=> { debugger;this.profileId = res.id;});
+
+    // debugger;
+    // _profileService.getPeerProfile().subscribe((res)=> { debugger;this.profileId = res.id;});
+
     this.profileId = _profileService.getPeerProfile();
     this.activeTab = 'edit';
   }

@@ -100,7 +100,7 @@ export class WorkshopEditComponent implements OnInit {
   public _CTX;
 
   public urlForVideo;
-  public urlForImages=[];
+  public urlForImages = [];
 
   // TypeScript public modifiers
   constructor(
@@ -127,8 +127,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public ngOnInit() {
-
-    console.log("Inside oninit workshop");
+    console.log('Inside oninit workshop');
     this.interest1 = new FormGroup({
       // interests: this._fb.array([])
     });
@@ -145,7 +144,7 @@ export class WorkshopEditComponent implements OnInit {
       language: this._fb.array([]),
       selectedLanguage: '',
       headline: '',
-      description: [null,Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])],
+      description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])],
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
@@ -156,7 +155,7 @@ export class WorkshopEditComponent implements OnInit {
       currency: '',
       cancellationPolicy: '',
       ageLimit: '',
-      aboutHost: '',//[null,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
+      aboutHost: '', // [null,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
       notes: '',
       // isApproved: '',
       approvedBy: '',
@@ -190,17 +189,17 @@ export class WorkshopEditComponent implements OnInit {
     });
 
     this.paymentInfo = this._fb.group({
-      
-    })
+
+    });
 
     this.initializeFormFields();
 
     this.initializeWorkshop();
 
-    //this.initializeTimeLine();
-    
-    this._CANVAS = <HTMLCanvasElement> document.querySelector("#video-canvas");
-    this._VIDEO = document.querySelector("#main-video");
+    // this.initializeTimeLine();
+
+    this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
+    this._VIDEO = document.querySelector('#main-video');
   }
 
   private extractDate(dateString: string) {
@@ -224,19 +223,19 @@ export class WorkshopEditComponent implements OnInit {
     //   }
     // ).subscribe();
     if (res.calendars[0].startDate) {
-          let calendar = res.calendars[0];
-          calendar['startDate'] = this.extractDate(calendar.startDate);
-          calendar['endDate'] = this.extractDate(calendar.endDate);
-          this._collectionService.sanitize(calendar);
-          this.timeline.controls.calendar.patchValue(calendar);
-          this.initializeContentForm(res);
+      const calendar = res.calendars[0];
+      calendar['startDate'] = this.extractDate(calendar.startDate);
+      calendar['endDate'] = this.extractDate(calendar.endDate);
+      this._collectionService.sanitize(calendar);
+      this.timeline.controls.calendar.patchValue(calendar);
+      this.initializeContentForm(res);
     }
   }
 
   public initializeContentForm(res) {
     const contentGroup = <FormGroup>this.timeline.controls.contentGroup;
     const itenary = <FormArray>contentGroup.controls.itenary;
-    let itenaries = this.getContents(res.contents);
+    const itenaries = this.getContents(res.contents);
     // this.getContents((err, itenaries: any) => {
     //   if (err) {
     //     console.log(err);
@@ -286,11 +285,9 @@ export class WorkshopEditComponent implements OnInit {
             form.controls[key].patchValue(this.extractTime(value[key]));
           } else if (key === 'startDay' || key === 'endDay') {
             form.controls[key].patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
-          } else if(key === 'supplementUrls')
-          {
+          } else if (key === 'supplementUrls') {
             // form.controls[key] = value[key];
-          }
-          else {
+          } else {
             form.controls[key].patchValue(value[key]);
           }
         }
@@ -330,6 +327,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public getContents(contents) {
+    debugger;
     const itenaries = {};
     for (const contentObj of contents) {
       contentObj.schedule = contentObj.schedules[0];
@@ -343,7 +341,7 @@ export class WorkshopEditComponent implements OnInit {
     }
     this.sidebarMenuItems[2]['submenu'] = [];
     this.itenariesForMenu.forEach(function (item) {
-      let index = +item + 1;
+      const index = +item + 1;
       this.sidebarMenuItems[2]['submenu'].push({
         'title': 'Day ' + index,
         'step': 13 + '_' + index,
@@ -408,13 +406,12 @@ export class WorkshopEditComponent implements OnInit {
     this.languagePickerService.getLanguages()
       .subscribe((languages) => this.languagesArray = languages);
 
-    if(this.interests.length == 0) {
+    if (this.interests.length === 0) {
       this.http.get(this.config.searchUrl + '/api/search/topics')
         .map((response: any) => {
           this.suggestedTopics = response.slice(0, 10);
         }).subscribe();
-    }
-    else {
+    } else {
       this.suggestedTopics = this.interests;
     }
 
@@ -424,7 +421,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private initializeWorkshop() {
-    console.log("Inside init workshop");
+    console.log('Inside init workshop');
     // if (this.workshopId) {
     //   this._collectionService.getCollectionDetails(this.workshopId)
     //     .subscribe(res => {
@@ -449,19 +446,16 @@ export class WorkshopEditComponent implements OnInit {
       this._collectionService.getCollectionDetail(this.workshopId, query)
         .subscribe((res) => {
           console.log(res);
-          
+
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
 
-          if(res.status == 'active') {
+          if (res.status === 'active') {
             this.sidebarMenuItems[3].visible = false;
             this.sidebarMenuItems[4].visible = true;
             this.sidebarMenuItems[4].active = true;
-
             this.sidebarMenuItems[4].submenu[0].visible = true;
-            //this.sidebarMenuItems[4].submenu[0].active = true;
             this.sidebarMenuItems[4].submenu[1].visible = true;
-            //this.sidebarMenuItems[4].submenu[1].active = true;
           }
 
         },
@@ -475,7 +469,7 @@ export class WorkshopEditComponent implements OnInit {
 
   public languageChange(value) {
     console.log(value);
-    this.selectedLanguages = value;;
+    this.selectedLanguages = value;
     this.workshop.controls.selectedLanguage.setValue(value);
   }
 
@@ -509,11 +503,11 @@ export class WorkshopEditComponent implements OnInit {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       headers.append('Accept', 'application/json');
-      
+
       options = new RequestOptions({
         headers: headers,
         body: body
-      })
+      });
       if (topicArray.length !== 0) {
         this.http.delete(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', options)
           .map((response) => { console.log(response); }).subscribe();
@@ -543,15 +537,15 @@ export class WorkshopEditComponent implements OnInit {
 
 
   private initializeFormValues(res) {
-    //console.log(res);
+    // console.log(res);
     // Topics
     this.relTopics = _.uniqBy(res.topics, 'id');
     this.interests = this.relTopics;
-    if(this.interests) {
+    if (this.interests) {
       this.suggestedTopics = this.interests;
     }
     // Language
-    if(res.language && res.language.length > 0) {
+    if (res.language && res.language.length > 0) {
       this.selectedLanguages = res.language[0];
       this.workshop.controls.selectedLanguage.patchValue(res.language[0]);
     }
@@ -573,24 +567,24 @@ export class WorkshopEditComponent implements OnInit {
     // Notes
     this.workshop.controls.notes.patchValue(res.notes);
 
-    //Seats
+    // Seats
     this.workshop.controls.maxSpots.patchValue(res.maxSpots);
 
-    //Photos and Videos
-    this.workshop.controls['videoUrl'].setValue(res.videoUrl);
+    // Photos and Videos
+    this.workshop.controls.videoUrl.setValue(res.videoUrl);
     this.urlForVideo = res.videoUrl;
     // <img src="{{config.apiUrl+content.imageUrl}}">
-    if(res.imageUrls && res.imageUrls.length>0) {
+    if (res.imageUrls && res.imageUrls.length > 0) {
       this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
       this.urlForImages = res.imageUrls;
     }
 
-    //Currency, Amount, Cancellation Policy
+    // Currency, Amount, Cancellation Policy
     this.workshop.controls.price.patchValue(res.price);
     this.workshop.controls.currency.patchValue(res.currency);
     this.workshop.controls.cancellationPolicy.patchValue(res.cancellationPolicy);
 
-    //Status
+    // Status
     this.workshop.controls.status.setValue(res.status);
   }
 
@@ -655,7 +649,7 @@ export class WorkshopEditComponent implements OnInit {
       (response) => {
         this.step++;
         this.workshopStepUpdate();
-        this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+        this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
       }).subscribe();
   }
 
@@ -686,7 +680,7 @@ export class WorkshopEditComponent implements OnInit {
           this.step++;
           console.log(this.step);
           this.workshopStepUpdate();
-          this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+          this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
         })
         .subscribe();
     } else {
@@ -703,7 +697,7 @@ export class WorkshopEditComponent implements OnInit {
       topicArray.push(topic.id);
     });
     this.relTopics.forEach((topic) => {
-      topicArray = _.without(topicArray,topic.id)
+      topicArray = _.without(topicArray, topic.id);
     });
     console.log(topicArray);
     body = {
@@ -716,27 +710,26 @@ export class WorkshopEditComponent implements OnInit {
       //   .map((response) => {
       //     this.step++;
       //     this.workshopStepUpdate();
-      //     this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+      //             this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
       //   });
       // patchRequest.subscribe((res) => {
       //     this.step++;
       //     this.workshopStepUpdate();
-      //     this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+      //             this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
       // })
 
       let observable: Rx.Observable<any>;
       observable = this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', body)
-                            .map(response => response).publishReplay().refCount();
+        .map(response => response).publishReplay().refCount();
       observable.subscribe((res) => {
-          this.step++;
-          this.workshopStepUpdate();
-          this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+        this.step++;
+        this.workshopStepUpdate();
+        this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
       });
-    }
-    else {
-          this.step++;
-          this.workshopStepUpdate();
-          this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+    } else {
+      this.step++;
+      this.workshopStepUpdate();
+      this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
     }
   }
 
@@ -744,32 +737,33 @@ export class WorkshopEditComponent implements OnInit {
    * goto(toggleStep)  */
   public goto(toggleStep) {
     this.step = toggleStep;
-    this.router.navigate(['editWorkshop', this.workshopId, +toggleStep]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', +toggleStep]);
   }
 
 
   submitForReview(modal: ModalDirective) {
     // Post Workshop for review
     this._collectionService.submitForReview(this.workshopId)
-                           .subscribe((res)=> {
-                              this.sidebarMenuItems[3].visible = false;
-                              //call to get status of workshop
-                              if(this.workshop.controls.status.value == 'active') {
-                                this.sidebarMenuItems[4].visible = true;
-                                this.sidebarMenuItems[4].active = true;
-                                this.sidebarMenuItems[4].submenu[0].visible = true;
-                                //this.sidebarMenuItems[4].submenu[0].active = true;
-                                this.sidebarMenuItems[4].submenu[1].visible = true;
-                                //this.sidebarMenuItems[4].submenu[1].active = true;
-                                this.step = +this.step + 2;
-                              }
-                              modal.show();
-                            });
+
+      .subscribe((res) => {
+        this.sidebarMenuItems[3].visible = false;
+        // call to get status of workshop
+        if (this.workshop.controls.status.value === 'active') {
+          this.sidebarMenuItems[4].visible = true;
+          this.sidebarMenuItems[4].active = true;
+          this.sidebarMenuItems[4].submenu[0].visible = true;
+          // this.sidebarMenuItems[4].submenu[0].active = true;
+          this.sidebarMenuItems[4].submenu[1].visible = true;
+          // this.sidebarMenuItems[4].submenu[1].active = true;
+          this.step = +this.step + 2;
+        }
+        modal.show();
+      });
 
   }
 
   redirectToConsole(modal: ModalDirective) {
-    modal.hide(); 
+    modal.hide();
     this.router.navigate(['console', 'teaching', 'workshops']);
   }
 
@@ -779,7 +773,7 @@ export class WorkshopEditComponent implements OnInit {
 
   saveandexit() {
 
-    if (this.step == 12) {
+    if (this.step === 12) {
       const data = this.timeline;
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
@@ -820,7 +814,7 @@ export class WorkshopEditComponent implements OnInit {
         topic.checked = true;
         tempArray.push(topic);
         this.interests = _.union(this.interests, tempArray);
-        console.log("CHanged");
+        console.log('CHanged');
         this.suggestedTopics = this.interests;
         modal.hide();
       })
@@ -830,163 +824,163 @@ export class WorkshopEditComponent implements OnInit {
 
   uploadCanvasVideo(event) {
     // Validate whether MP4
-    if(['video/'].indexOf(event.target.files[0].type) == -1) {
-        alert('Error : Only Video allowed');
-        return;
+    if (['video/'].indexOf(event.target.files[0].type) === -1) {
+      alert('Error : Only Video allowed');
+      return;
     }
 
-    this._CTX = this._CANVAS.getContext("2d");
+    this._CTX = this._CANVAS.getContext('2d');
     // Hide upload button
-   //  document.querySelector("#upload-button").style.display = 'none';
+    //  document.querySelector("#upload-button").style.display = 'none';
 
     // Object Url as the video source
-    document.querySelector("#main-video source").setAttribute('src', URL.createObjectURL(event.target.files[0]));
+    document.querySelector('#main-video source').setAttribute('src', URL.createObjectURL(event.target.files[0]));
     // Load the video and show it
     this._VIDEO.load();
     // this._VIDEO.style.display = 'inline';
-    let self = this;
+    const self = this;
 
-    //this._VIDEO.onloadedmetadata = function(e){
-    this._VIDEO.addEventListener('loadedmetadata', function(e){
-        setTimeout(() => self.getMetadata(), 1000);
-        // self._CTX = self._CANVAS.getContext("2d");
-        // self._CANVAS.width = 150;//this.videoWidth;
-        // self._CANVAS.height = 100;//this.videoHeight;
-        // self._CTX.drawImage(this, 0, 0, self._CANVAS.width, self._CANVAS.height);
-      }, false);
+    // this._VIDEO.onloadedmetadata = function(e){
+    this._VIDEO.addEventListener('loadedmetadata', function (e) {
+      setTimeout(() => self.getMetadata(), 1000);
+      // self._CTX = self._CANVAS.getContext("2d");
+      // self._CANVAS.width = 150;//this.videoWidth;
+      // self._CANVAS.height = 100;//this.videoHeight;
+      // self._CTX.drawImage(this, 0, 0, self._CANVAS.width, self._CANVAS.height);
+    }, false);
+  }
+
+  getMetadata() {
+    console.log(new Date());
+    this._CANVAS.width = 150; // this.videoWidth;
+    this._CANVAS.height = 100; // this.videoHeight;
+    this._CTX.drawImage(this._VIDEO, 0, 0, this._CANVAS.width, this._CANVAS.height);
+
+  }
+
+  uploadImage1(event) {
+    if (event.target.files == null || event.target.files === undefined) {
+      document.write('This Browser has no support for HTML5 FileReader yet!');
+      return false;
     }
 
-    getMetadata() {
-      console.log(new Date());
-      this._CANVAS.width = 150;//this.videoWidth;
-      this._CANVAS.height = 100;//this.videoHeight;
-      this._CTX.drawImage(this._VIDEO, 0, 0, this._CANVAS.width, this._CANVAS.height);
+    for (let i = 0; i < event.target.files.length; i++) {
+      const file = event.target.files[i];
+      const imageType = /image.*/;
 
-    }
+      if (!file.type.match(imageType)) {
+        continue;
 
-    uploadImage1(event) {
-      if (event.target.files == null || event.target.files == undefined) {
-            document.write("This Browser has no support for HTML5 FileReader yet!");
-            return false;
-        }
- 
-        for (var i = 0; i < event.target.files.length; i++) {
-            var file = event.target.files[i];
-            var imageType = /image.*/;
- 
-            if (!file.type.match(imageType)) {
-                continue;
- 
-            }
- 
-            var reader = new FileReader();
- 
-            if (reader != null) {
- 
-                reader.onload = this.GetThumbnail;
-                reader.readAsDataURL(file);
-            }
- 
- 
-        }
-    }
-
-    GetThumbnail(e) {
-        var myCan = document.createElement('canvas');
-        var img = new Image();
-        img.src = e.target.result;
-        img.onload = function () {
- 
-            myCan.id = "myTempCanvas";
-            var tsize = 100;
-            myCan.width = Number(tsize);
-            myCan.height = Number(tsize);
-            if (myCan.getContext) {
-                var cntxt = myCan.getContext("2d");
-                cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
-                var dataURL = myCan.toDataURL();
- 
- 
-                if (dataURL != null && dataURL != undefined) {
-                    var nImg = document.createElement('img');
-                    nImg.src = dataURL;
-                    document.getElementById('image-holder').appendChild(nImg);
- 
-                }
-                else
-                    alert('unable to get context');
- 
-            }
- 
-        }
- 
-    }
-
-    deleteFromContainer(fileUrl, fileType) {
-      const fileurl = fileUrl;
-      fileUrl = _.replace(fileUrl,'download','files');
-      this.http.delete(this.config.apiUrl + fileUrl)
-          .map((response) => { console.log(response); 
-            if(fileType == 'video') {
-              this.urlForVideo = '';
-              this.workshop.controls.videoUrl.patchValue('');
-            }
-            else if (fileType == 'image'){
-              this.urlForImages = _.remove(this.urlForImages, function(n) {
-                return n != fileurl;
-              });
-              this.workshop.controls.imageUrls.patchValue(this.urlForImages);
-            }
-           }).subscribe();
-
-    }
-
-    deleteFromContainerArr(event, fileType) {
-      for (var i = 0; i < event.target.files.length; i++) {
-            var file = event.target.files[i];
-            const fileurl = file;
-            file = _.replace(file,'download','files');
-            this.http.delete(this.config.apiUrl + file)
-                     .map((response) => { console.log(response);
-                      if(fileType == 'video') {
-                        this.urlForVideo = '';
-                        this.workshop.controls.videoUrl.patchValue('');
-                      }
-                      else if (fileType == 'image'){
-                        this.urlForImages = _.remove(this.urlForImages, function(n) {
-                          return n != fileurl;
-                      });
-                      this.workshop.controls.imageUrls.patchValue(this.urlForImages);
-                      }
-                     }).subscribe();
- 
       }
-    }
 
-    toggleChoice(choice) {
-      this.selectedOption = choice;
-    }
+      const reader = new FileReader();
 
-    submitPhoneNo() {
-      //Call the OTP service
-      // Post Workshop for review
-      this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value)
-                            .subscribe((res)=> {
-                                console.log("SmS sent");
-                                });
-    }
+      if (reader != null) {
 
-    submitOTP() {
-      this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
-                            .subscribe((res)=> {
-                                console.log("Token Verified");
-                                });
-    }
+        reader.onload = this.GetThumbnail;
+        reader.readAsDataURL(file);
+      }
 
-    takeToPayment() {
-      this.step++;
-      this.router.navigate(['editWorkshop', this.workshopId, this.step]);
+
     }
+  }
+
+  GetThumbnail(e) {
+    const myCan = document.createElement('canvas');
+    const img = new Image();
+    img.src = e.target.result;
+    img.onload = function () {
+
+      myCan.id = 'myTempCanvas';
+      const tsize = 100;
+      myCan.width = Number(tsize);
+      myCan.height = Number(tsize);
+      if (myCan.getContext) {
+        const cntxt = myCan.getContext('2d');
+        cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
+        const dataURL = myCan.toDataURL();
+
+
+        if (dataURL != null && dataURL !== undefined) {
+          const nImg = document.createElement('img');
+          nImg.src = dataURL;
+          document.getElementById('image-holder').appendChild(nImg);
+
+        } else {
+          alert('unable to get context');
+        }
+
+      }
+    };
+
+  }
+
+  deleteFromContainer(fileUrl, fileType) {
+    const fileurl = fileUrl;
+    fileUrl = _.replace(fileUrl, 'download', 'files');
+    this.http.delete(this.config.apiUrl + fileUrl)
+      .map((response) => {
+        console.log(response);
+        if (fileType === 'video') {
+          this.urlForVideo = '';
+          this.workshop.controls.videoUrl.patchValue('');
+        } else if (fileType === 'image') {
+          this.urlForImages = _.remove(this.urlForImages, function (n) {
+            return n !== fileurl;
+          });
+          this.workshop.controls.imageUrls.patchValue(this.urlForImages);
+        }
+      }).subscribe();
+
+  }
+
+  deleteFromContainerArr(event, fileType) {
+    for (let i = 0; i < event.target.files.length; i++) {
+      let file = event.target.files[i];
+      const fileurl = file;
+      file = _.replace(file, 'download', 'files');
+      this.http.delete(this.config.apiUrl + file)
+        .map((response) => {
+          console.log(response);
+          if (fileType === 'video') {
+            this.urlForVideo = '';
+            this.workshop.controls.videoUrl.patchValue('');
+          } else if (fileType === 'image') {
+            this.urlForImages = _.remove(this.urlForImages, function (n) {
+              return n !== fileurl;
+            });
+            this.workshop.controls.imageUrls.patchValue(this.urlForImages);
+          }
+        }).subscribe();
+
+    }
+  }
+
+  toggleChoice(choice) {
+    this.selectedOption = choice;
+  }
+
+
+  submitPhoneNo() {
+    // Call the OTP service
+    // Post Workshop for review
+    this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value)
+      .subscribe((res) => {
+        console.log('SmS sent');
+      });
+  }
+
+  submitOTP() {
+    this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
+      .subscribe((res) => {
+        console.log('Token Verified');
+      });
+  }
+
+  takeToPayment() {
+    this.step++;
+    this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
+  }
 
 }
 

@@ -18,21 +18,25 @@ import {CookieService} from 'ngx-cookie-service';
 
 export class AppHeaderComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
+  loggedIn: boolean;
   public profile: any = {};
   public userType = '';
   public myControl = new FormControl('');
-  private userId: string;
+  public userId: string;
   private key = 'userId';
   public options: any[];
   public defaultProfileUrl = '/assets/images/default-user.jpg';
 
   constructor(public authService: AuthenticationService,
               public requestHeaderService: RequestHeaderService,
-              private config: AppConfig,
+              public config: AppConfig,
               private http: Http,
               private _cookieService: CookieService,
               private _profileService: ProfileService) {
     this.isLoggedIn = authService.isLoggedIn();
+    authService.isLoggedIn().subscribe((res)=>{
+      this.loggedIn = res;
+    });
     this.userId = this.getCookieValue(this.key);
   }
 
@@ -59,10 +63,10 @@ export class AppHeaderComponent implements OnInit {
   }
 
   getProfile() {
-    if(!this.isLoggedIn) {
-      this._profileService.getProfile().subscribe(profile => {
-        this.profile = profile;
-      });
+    if(this.loggedIn) {
+        this._profileService.getProfile().subscribe(profile => {
+            this.profile = profile[0];
+        });
     }
   }
 

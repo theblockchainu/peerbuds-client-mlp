@@ -13,7 +13,7 @@ export class ConsoleAccountSettingsComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleAccountComponent: ConsoleAccountComponent
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleAccountComponent.setActiveTab(urlSegment[0].path);
     });

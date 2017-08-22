@@ -2,12 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
-
+import { MdDialog } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { AppConfig } from '../../app.config';
 import * as moment from 'moment';
 import _ from 'lodash';
+
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { ViewParticipantsComponent } from './view-participants/view-participants.component';
+import { WorkshopVideoComponent } from './workshop-video/workshop-video.component';
+import { ContentOnlineComponent } from './content-online/content-online.component';
+import { ContentVideoComponent } from './content-video/content-video.component';
+import { ContentProjectComponent } from './content-project/content-project.component';
+import { MessageParticipantComponent } from './message-participant/message-participant.component';
+import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
 
 @Component({
   selector: 'app-workshop-page',
@@ -28,18 +37,22 @@ export class WorkshopPageComponent implements OnInit {
   public modalContent: any;
   public topicFix: any;
   public messagingParticipant: any;
-  public messageForm: FormGroup;
-  public maxRating = 5;
+
   public userRating: number;
   public isReadonly = true;
   public noOfReviews = 4;
+  public recommendations = {
+    collections: []
+  };
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
     private cookieUtilsService: CookieUtilsService,
     private _collectionService: CollectionService,
     private config: AppConfig,
-    private _fb: FormBuilder) {
+    private _fb: FormBuilder,
+    private dialog: MdDialog
+  ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
     });
@@ -82,7 +95,7 @@ export class WorkshopPageComponent implements OnInit {
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
         { 'contents': ['schedules'] },
-        'reviews'
+        { 'reviews': [{ 'peer': ['profiles'] }] }
       ]
     };
 
@@ -130,7 +143,8 @@ export class WorkshopPageComponent implements OnInit {
           this.initializeUserType();
           this.calculateTotalHours();
           this.fixTopics();
-          this.calculateRating();
+          this.userRating = this.calculateRating(this.workshop);
+          this.getRecommendations();
         });
 
 
@@ -139,21 +153,18 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
 
-  private calculateRating() {
+  private calculateRating(workshop) {
     let reviewScore = 0;
     let totalScore = 0;
-    for (const reviewObject of this.workshop.reviews) {
+    for (const reviewObject of workshop.reviews) {
       reviewScore += reviewObject.score;
       totalScore += 5;
     }
-    this.userRating = totalScore / reviewScore;
+    return totalScore / reviewScore;
   }
 
   private fixTopics() {
-    console.log(this.workshop.topics);
     this.topicFix = _.uniqBy(this.workshop.topics, 'id');
-    console.log(this.topicFix);
-
   }
 
   private initializeForms() {
@@ -161,15 +172,10 @@ export class WorkshopPageComponent implements OnInit {
       message: ['', Validators.required],
       announce: ''
     });
-
-    this.messageForm = this._fb.group({
-      message: ['', Validators.required],
-      sent: ''
-    });
   }
 
   gotoEdit() {
-    this.router.navigate(['editWorkshop', this.workshopId, 1]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
   }
 
   public parseCalendar(workshop: any) {
@@ -185,7 +191,7 @@ export class WorkshopPageComponent implements OnInit {
    * changeDates
    */
   public changeDates() {
-    this.router.navigate(['editWorkshop', this.workshopId, 13]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', 13]);
   }
   /**
    * joinGroupChat
@@ -216,7 +222,7 @@ export class WorkshopPageComponent implements OnInit {
   public calculateDate(fromdate, day) {
     const tempMoment = moment(fromdate);
     tempMoment.add(day, 'days');
-    return tempMoment.format('Do MMMM');
+    return tempMoment;
   }
 
   /**
@@ -244,44 +250,6 @@ export class WorkshopPageComponent implements OnInit {
     this.totalDuration = totalLength.toString();
   }
 
-
-  /**
-   * openModal
-content:any   */
-  public openModal(content: any, viewOnlineContent: ModalDirective, viewVideoContent: ModalDirective, viewProjectContent: ModalDirective) {
-    this.modalContent = content;
-    switch (content.type) {
-      case 'online':
-        {
-          viewOnlineContent.show();
-          break;
-        }
-      case 'video':
-        {
-          viewVideoContent.show();
-          break;
-        }
-      case 'project':
-        {
-          viewProjectContent.show();
-          break;
-        }
-      default:
-        break;
-    }
-
-  }
-
-  /**
-   * removeParticipant
-   */
-  public removeParticipant(participantId: string) {
-    this._collectionService.removeParticipant(this.workshopId, participantId).subscribe((response) => {
-      console.log('deleted');
-      this.initializeWorkshop();
-    });
-  }
-
   /**
    * isLive
    */
@@ -304,6 +272,7 @@ content:any   */
     if (currentMoment.isBetween(startMoment, endMoment)) {
       return true;
     } else {
+      this.timetoSession(content);
       return false;
     }
   }
@@ -315,8 +284,99 @@ content:any   */
     console.log('Joining Session');
   }
 
+
+
+  public getContentCount(type: string) {
+    let count = 0;
+    for (const content of this.workshop.contents) {
+      if (content.type === type) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   /**
-   * timetoSession
+   * toggleReviews
+   */
+  public toggleReviews() {
+    if (this.noOfReviews === 4) {
+      this.noOfReviews = 100;
+    } else {
+      this.noOfReviews = 4;
+    }
+  }
+
+  openDeleteDialog(action: string) {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: action
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'delete') {
+        this.deleteWorkshop();
+      } else if (result === 'cancel') {
+        this.cancelWorkshop();
+      } else {
+        console.log(result);
+      }
+    });
+  }
+
+  workshopVideoDialog() {
+    const dialogRef = this.dialog.open(WorkshopVideoComponent, {
+      data: this.config.apiUrl + this.workshop.videoUrl
+    });
+  }
+
+  viewParticipants() {
+    const dialogRef = this.dialog.open(ViewParticipantsComponent, {
+      data: this.workshop.participants,
+      width: '800px'
+    });
+  }
+
+  /**
+ * openDialog
+content:any   */
+  public openDialog(content: any) {
+    this.modalContent = content;
+    switch (content.type) {
+      case 'online':
+        {
+          const dialogRef = this.dialog.open(ContentOnlineComponent, {
+            data: content,
+            width: '800px',
+            height: '700px'
+          });
+          break;
+        }
+      case 'video':
+        {
+          const dialogRef = this.dialog.open(ContentVideoComponent, {
+            data: content,
+            width: '800px',
+            height: '600px'
+          }); break;
+        }
+      case 'project':
+        {
+          const dialogRef = this.dialog.open(ContentProjectComponent, {
+            data: {
+              content: content,
+              userType: this.userType
+            },
+            width: '800px'
+          }); break;
+        }
+      default:
+        break;
+    }
+
+  }
+
+  /**
+  * timetoSession
 content:any   */
   public timetoSession(content: any) {
     const startMoment = moment(this.workshop.calendars[0].startDate);
@@ -335,57 +395,45 @@ content:any   */
     endMoment.minutes(endTime.minutes());
 
     if (startMoment.diff(currentMoment) < 0) {
-      return endMoment.fromNow();
+      content.timetoSession = endMoment.fromNow();
     } else {
-      return startMoment.toNow();
+      content.timetoSession = startMoment.toNow();
     }
-
-
   }
 
   /**
-   * messageParticipant
+   * getRecommendations
    */
-  public messageParticipant(messageDialog: ModalDirective, participant: any) {
-    console.log(participant);
-    this.messagingParticipant = participant;
-    messageDialog.show();
-  }
-
-  /**
-   * sendMessage
-   */
-  public sendMessage() {
-    console.log(this.messageForm.value);
-    this.messageForm.reset();
-    console.log('sent');
-  }
-
-  public getContentCount(type: string) {
-    let count = 0;
-    for (const content of this.workshop.contents) {
-      if (content.type === type) {
-        count++;
+  public getRecommendations() {
+    const query = {
+      'include': [
+        'calendars',
+        { 'owners': ['profiles'] },
+        'reviews',
+        'topics',
+        'participants'
+      ],
+      'limit': 4
+    };
+    this._collectionService.getRecommendations(query, (err, response: any) => {
+      if (err) {
+        console.log(err);
+      } else {
+        for (const responseObj of response) {
+          responseObj.rating = this.calculateRating(responseObj);
+          console.log(responseObj);
+          this.recommendations.collections.push(responseObj);
+        }
       }
-    }
-    return count;
+    });
   }
 
   /**
-   * getReadableDate
+   * selectJoiningDates
    */
-  public getReadableDate(date: string) {
-    return moment(date).format('Do MMMM');
+  public selectJoiningDates() {
+    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
+    });
   }
 
-  /**
-   * toggleReviews
-   */
-  public toggleReviews() {
-    if (this.noOfReviews === 4) {
-      this.noOfReviews = 100;
-    } else {
-      this.noOfReviews = 4;
-    }
-  }
 }

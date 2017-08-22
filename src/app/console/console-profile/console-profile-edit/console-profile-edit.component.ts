@@ -34,7 +34,7 @@ export class ConsoleProfileEditComponent implements OnInit {
     public _currencyService: CurrencypickerService,
     public snackBar: MdSnackBar
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
         consoleProfileComponent.setActiveTab('edit');
       } else {

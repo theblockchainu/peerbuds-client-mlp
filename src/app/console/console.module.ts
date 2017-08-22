@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../_shared/_shared.module';
 import { ConsoleRoutingModule } from './console-routing.module';
 import { ConsoleComponent } from './console.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule, MdChipsModule, MdInputModule, MdSelectModule, MdSnackBarModule } from '@angular/material';
 import {RatingModule} from 'primeng/primeng';
 import 'hammerjs';
@@ -39,7 +39,7 @@ import { ConsoleAccountSettingsComponent } from './console-account/console-accou
     CommonModule,
     SharedModule,
     ConsoleRoutingModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     RatingModule,
     MdCardModule,
     MdButtonModule,

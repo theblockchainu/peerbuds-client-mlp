@@ -77,8 +77,6 @@ export class AuthenticationService {
   * Log out the user then tell all the subscribers about the new status
   */
   logout(): void {
-    //localStorage.removeItem('token');
-
     if (this.getCookie(this.key)) {
       this.http.get(this.config.apiUrl + '/auth/logout', {})
         .map((res: Response) => {

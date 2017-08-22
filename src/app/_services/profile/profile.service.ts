@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from "../requestHeader/request-header.service";
+import {RequestHeaderService} from '../requestHeader/request-header.service';
 // import { Response } from '@angular/http';
 
 @Injectable()
@@ -44,7 +44,7 @@ export class ProfileService {
     const peer = {};
     if (this.userId) {
       const options = `{"where": "","order": "","limit": "",
-      "include": ["profiles", "topicsLearning","topicsTeaching",
+      "include": [{"profiles":["work","education"]}, "topicsLearning","topicsTeaching",
       {"collections":{"reviews": {"peer": "profiles"}}},
       {"ownedCollections":[{"reviews":{"peer":"profiles"}},
       "calendars",{"contents":"schedules"}]},"communities","identities"]}`;
@@ -56,7 +56,7 @@ export class ProfileService {
   public getProfile() {
     const profile = {};
     if (this.userId) {
-      const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}]}, "work", "education"]}';
+      const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
       return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter)
         .map(
           (response: Response) => response.json()

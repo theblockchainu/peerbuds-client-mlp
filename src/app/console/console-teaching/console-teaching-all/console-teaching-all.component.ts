@@ -22,7 +22,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
     public router: Router,
     public _collectionService: CollectionService
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
         consoleTeachingComponent.setActiveTab('all');
       } else {
@@ -71,7 +71,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
   }
 
   public onSelect(workshop) {
-    this.router.navigate(['/editWorkshop/', workshop.id, 1]);
+    this.router.navigate(['workshop', workshop.id, 'edit', 1]);
   }
 
 }

@@ -156,7 +156,6 @@ export class CollectionService {
   }
   /* Submit workshop for Review */
   public submitForReview(id: string) {
-    debugger;
     return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', {}).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
@@ -389,5 +388,19 @@ export class CollectionService {
 
   }
 
+  /**
+   * getRecommendations
+   */
+  public getRecommendations(query, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+
+  }
 
 }
