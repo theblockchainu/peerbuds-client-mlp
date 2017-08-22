@@ -62,11 +62,13 @@
               </md-input-container>
               <br>
               <md-select placeholder="Preferred Language" style="margin-bottom: 20px" name="preferred_language" [(ngModel)]="profile.preferred_language">
+                <md-option *ngIf="!languages">languages not available</md-option>
                 <md-option *ngFor="let language of languages" [value]="language">{{language.name}}</md-option>
                 <md-hint align="start">We'll send you messages in this language.</md-hint>
               </md-select>
               <br><br><br>
               <md-select placeholder="Preferred Currency" style="margin-bottom: 20px" name="preferred_currency" [(ngModel)]="profile.preferred_currency">
+                <md-option *ngIf="!currencies">currencies not available</md-option>
                 <md-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</md-option>
                 <md-hint align="start">Weʼll show you prices in this currency.</md-hint>
               </md-select>
