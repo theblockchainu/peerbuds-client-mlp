@@ -66,9 +66,11 @@ export class ProfileComponent implements OnInit {
     this.profileService.getPeer(this.profileId).subscribe((peer) => {
       console.log('peer' + JSON.stringify(peer));
       this.peer = peer;
-      this.profile = peer.profiles[0];
-      this.profileWork = peer.profiles[0].work;
-      this.profileEducation = peer.profiles[0].education;
+      if (this.peer.profiles && this.peer.profiles.length) {
+        this.profile = peer.profiles[0];
+        this.profileWork = peer.profiles[0].work;
+        this.profileEducation = peer.profiles[0].education;
+      }
       this.peer.identities.forEach(identity => {
         identity.profile = JSON.parse(identity.profile);
       });
@@ -197,6 +199,6 @@ export class ProfileComponent implements OnInit {
       }
       setUserData();
     });
-        console.log(this.userType);
+    console.log(this.userType);
   }
 }
