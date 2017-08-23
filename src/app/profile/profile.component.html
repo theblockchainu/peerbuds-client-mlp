@@ -1,22 +1,22 @@
 <div class="main-content profile-setion">
-  <div class="">
+  <div class="" *ngIf="profile">
     <div class="row">
       <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
         <div class="profile-image-big">
-          <img src="{{peer.profiles[0].picture_url ? config.apiUrl+peer.profiles[0].picture_url : defaultProfileUrl}}" alt="image"
+          <img src="{{profile.picture_url ? config.apiUrl+profile.picture_url : defaultProfileUrl}}" alt="image"
           />
         </div>
         <div class="seperate-section text-center">
-          <div class="title dot-dot">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
-          <div class="sub-title dot-dot">{{peer.profiles[0].headline}}</div>
+          <div class="title dot-dot">{{profile.first_name}} {{profile.last_name}}</div>
+          <div class="sub-title dot-dot">{{profile.headline}}</div>
           <div class="margin-top-10" [hidden]="profileId === userId">
             <button class="btn btn-default" title="Message">Message</button>
             <span class="online-status online margin-left-15" title="Online"></span>
           </div>
         </div>
         <div class="seperate-section fs-14">
-          <div class="text-grey margin-bottom-10"><i class="fa fa-microphone margin-right-10"></i> {{peer.profiles[0].languages}}</div>
-          <div class="text-grey"><i class="fa fa-map-marker margin-right-10"></i> {{peer.profiles[0].location}}</div>
+          <div class="text-grey margin-bottom-10"><i class="fa fa-microphone margin-right-10"></i> {{profile.languages}}</div>
+          <div class="text-grey"><i class="fa fa-map-marker margin-right-10"></i> {{profile.location}}</div>
         </div>
         <div class="seperate-section">
           <div class="fs-18 fw-bold margin-bottom-20">Social Profiles</div>
@@ -42,7 +42,7 @@
       <div class="col-sm-5">
         <div class="seperate-section padding-top-0">
           <h3 class="heading">About me</h3>
-          <p class="text-grey lh-28 margin-bottom-0">{{peer.profiles[0].description}}</p>
+          <p class="text-grey lh-28 margin-bottom-0">{{profile.description}}</p>
         </div>
         <div class="seperate-section">
           <h3 class="heading">What I teach</h3>
