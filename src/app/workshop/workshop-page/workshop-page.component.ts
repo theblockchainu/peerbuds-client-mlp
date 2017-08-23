@@ -37,6 +37,8 @@ export class WorkshopPageComponent implements OnInit {
   public modalContent: any;
   public topicFix: any;
   public messagingParticipant: any;
+  public allItenaries = [];
+  public itenariesObj = {};
 
   public userRating: number;
   public isReadonly = true;
@@ -82,11 +84,35 @@ export class WorkshopPageComponent implements OnInit {
       }
       if (!this.userType) {
         this.userType = 'public';
+        this.initializeAllItenaries();
       }
       console.log('Welcome ' + this.userType);
 
     }
   }
+
+  private initializeAllItenaries() {
+    this.workshop.calendars.forEach(calendar => {
+      console.log(calendar);
+
+      const calendarItenary = [];
+      for (const key in this.itenariesObj) {
+        if (this.itenariesObj.hasOwnProperty(key)) {
+          const eventDate = this.calculateDate(calendar.startDate, key);
+          const itenary = {
+            startDay: key,
+            startDate: eventDate,
+            contents: this.itenariesObj[key]
+          };
+          calendarItenary.push(itenary);
+        }
+      }
+      this.allItenaries.push(calendarItenary);
+    });
+    console.log(this.allItenaries);
+
+  }
+
   private initializeWorkshop() {
     const query = {
       'include': [
@@ -104,28 +130,23 @@ export class WorkshopPageComponent implements OnInit {
         .subscribe(res => {
           this.workshop = res;
 
-          this.parseCalendar(this.workshop);
+          this.setCurrentCalendar(this.workshop);
 
-          const contents = [];
-          const itenariesObj = {};
+
           this.workshop.contents.forEach(contentObj => {
-            contents.push(contentObj);
-          });
-
-          contents.forEach(contentObj => {
-            if (itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
-              itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
+            if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+              this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
             } else {
-              itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
+              this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
             }
           });
-          for (const key in itenariesObj) {
-            if (itenariesObj.hasOwnProperty(key)) {
+          for (const key in this.itenariesObj) {
+            if (this.itenariesObj.hasOwnProperty(key)) {
               const eventDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
               const itenary = {
                 startDay: key,
                 startDate: eventDate,
-                contents: itenariesObj[key]
+                contents: this.itenariesObj[key]
               };
               this.itenaryArray.push(itenary);
             }
@@ -135,7 +156,6 @@ export class WorkshopPageComponent implements OnInit {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
           console.log(this.workshop);
-
         },
         err => console.log('error'),
         () => {
@@ -178,7 +198,7 @@ export class WorkshopPageComponent implements OnInit {
     this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
   }
 
-  public parseCalendar(workshop: any) {
+  public setCurrentCalendar(workshop: any) {
     if (workshop.calendars) {
       const startDate = moment(workshop.calendars[0].startDate);
       const endDate = moment(workshop.calendars[0].endDate);
@@ -421,7 +441,6 @@ content:any   */
       } else {
         for (const responseObj of response) {
           responseObj.rating = this.calculateRating(responseObj);
-          console.log(responseObj);
           this.recommendations.collections.push(responseObj);
         }
       }
@@ -433,6 +452,12 @@ content:any   */
    */
   public selectJoiningDates() {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
+      width: '800px',
+      height: '500px',
+      data: {
+        calendars: this.workshop.calendars,
+        contents: this.allItenaries
+      }
     });
   }
 
