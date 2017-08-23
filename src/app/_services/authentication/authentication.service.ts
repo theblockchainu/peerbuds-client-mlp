@@ -17,7 +17,6 @@ import { AppConfig } from '../../app.config';
 export class AuthenticationService {
 
   public key = 'access_token';
-  private loggedIn: any;
   isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: Http, private config: AppConfig,

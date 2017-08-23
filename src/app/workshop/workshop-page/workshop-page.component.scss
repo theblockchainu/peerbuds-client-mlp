@@ -113,3 +113,24 @@ img {
 .recommendation-card {
     width: 300px;
 }
+
+
+.calendar {
+    padding: 20px;
+}
+
+.flexContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+.prevNext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -17,10 +17,53 @@ import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
 
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  addDays,
+  endOfMonth,
+  isSameDay,
+  isSameMonth,
+  addHours
+} from 'date-fns';
+import { Subject } from 'rxjs/Subject';
+// import { NgModal } from 'ngx-bootstrap';
+import {
+  CalendarEvent,
+  CalendarEventAction,
+  CalendarEventTimesChangedEvent,
+  CalendarDateFormatter
+} from 'angular-calendar';
+import { CustomDateFormatter } from './custom-date-formatter.provider';
+
+
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3'
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF'
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA'
+  }
+};
+
 @Component({
   selector: 'app-workshop-page',
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './workshop-page.component.html',
-  styleUrls: ['./workshop-page.component.scss']
+  styleUrls: ['./workshop-page.component.scss'],
+  providers: [
+    {
+      provide: CalendarDateFormatter,
+      useClass: CustomDateFormatter
+    }
+  ]
 })
 export class WorkshopPageComponent implements OnInit {
 
@@ -43,6 +86,87 @@ export class WorkshopPageComponent implements OnInit {
   public recommendations = {
     collections: []
   };
+
+  // Calendar Start
+  public headerTemplate = `<ng-template #headerTemplate>
+                            <div class="cal-cell-row cal-header">
+                            <div class="cal-cell" *ngFor="let day of days" [class.cal-past]="day.isPast" [class.cal-today]="day.isToday"
+                                [class.cal-future]="day.isFuture"
+                                [class.cal-weekend]="day.isWeekend"
+                                [ngClass]="day.cssClass">RRR
+                            </div>
+                          </div>
+                          </ng-template>`;
+
+  public view: string = 'month';
+
+  public viewDate: Date = new Date();
+
+  refresh: Subject<any> = new Subject();
+
+  public modalData: {
+    action: string;
+    event: CalendarEvent;
+  };
+
+  actions: CalendarEventAction[] = [
+    {
+      label: '<i class="fa fa-fw fa-pencil"></i>',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.handleEvent('Edited', event);
+      }
+    },
+    {
+      label: '<i class="fa fa-fw fa-times"></i>',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.events = this.events.filter(iEvent => iEvent !== event);
+        this.handleEvent('Deleted', event);
+      }
+    }
+  ];
+
+  events: CalendarEvent[] = [
+    {
+      start: subDays(startOfDay(new Date()), 1),
+      end: addDays(new Date(), 1),
+      title: 'A 3 day event',
+      color: colors.red,
+      actions: this.actions
+    },
+    {
+      start: startOfDay(new Date()),
+      title: 'An event with no end date',
+      color: colors.yellow,
+      actions: this.actions
+    },
+    {
+      start: subDays(endOfMonth(new Date()), 3),
+      end: addDays(endOfMonth(new Date()), 3),
+      title: 'A long event that spans 2 months',
+      color: colors.blue
+    },
+    {
+      start: addHours(startOfDay(new Date()), 2),
+      end: new Date(),
+      title: 'A draggable and resizable event',
+      color: colors.yellow,
+      actions: this.actions,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true
+    }
+  ];
+
+  activeDayIsOpen: boolean = true;
+
+   handleEvent(action: string, event: CalendarEvent): void {
+    this.modalData = { event, action };
+    // this.modal.open(this.modalContent, { size: 'lg' });
+  }
+
+  // Calendar Ends
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,

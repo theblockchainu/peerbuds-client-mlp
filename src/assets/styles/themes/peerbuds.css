@@ -6112,3 +6112,126 @@ footer {
    border: 3px solid #ffffff;
 }
 
+.display-inline-block {
+    display: inline-block;
+}
+
+.display-block {
+    display: block;
+}
+
+.flex {
+    flex: 1;
+}
+
+.mat-toolbar-tools {
+    font-size: 20px;
+    letter-spacing: .005em;
+    box-sizing: border-box;
+    font-weight: 400;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    width: 100%;
+    height: 64px;
+    max-height: 64px;
+    padding: 0 16px;
+    margin: 0;
+}
+
+.mat-content {
+    color: rgba(0,0,0,0.87);
+    background-color: rgb(255,255,255);
+    display: block;
+    position: relative;
+    overflow: auto;
+}
+
+.mat-titles p.text-muted {
+    color:grey;
+    margin-top: 0px;
+}
+
+.border-calendar {
+    border: 1px solid #eee;
+}
+
+h3.calendarTiitle  {
+    margin: 10px !important;
+}
+
+.calendar .cal-month-view .cal-days {
+    border: none !important;
+}
+
+.calendar .cal-month-view .cal-days .cal-cell-row {
+    border: none !important;
+}
+
+.calendar .cal-month-view .cal-day-cell:not(:last-child) {
+    border: none !important;
+}
+
+.calendar .cal-month-view .cal-day-cell {
+    min-height: 50px !important;
+}
+
+.calendar .cal-month-view .cal-day-number {
+    font-size: 16px !important;
+}
+
+.calendar .cal-month-view .cal-cell-top {
+    min-height: 40px !important;
+}
+
+.calendar .cal-month-view .cal-day-number {
+    margin-right: 27px !important;
+}
+
+.calendar .cal-month-view .cal-events {
+    display: none !important;
+}
+
+.calendar .cal-month-view .cal-day-cell.cal-today {
+    background: none !important;
+}
+
+.calendar .cal-month-view .cal-day-badge {
+    float: right !important;
+    margin-right: 15px !important;
+    font-size: 0px !important;
+    width: 8px !important;
+    height: 8px !important;
+    background-color: #F0951B !important;
+}
+
+.calendar .cal-month-view .cal-day-cell.cal-has-events .cal-day-number {
+    margin-top: 8px;
+}
+
+.calendar .cal-month-view .cal-day-cell.cal-today .cal-day-number {
+    width: 30px;
+    height: 30px;
+    background-color: #2EB127;
+    border-radius: 15px;
+    padding: 7px 0px 7px 5px;
+    margin-top: 0px;
+    margin-right: 20px !important;
+}
+
+.calendar .cal-month-view .cal-day-cell.cal-out-month.cal-has-events .cal-day-number {
+    margin-left: 10px;
+}
+
+.calendar .cal-month-view .cal-day-badge {
+    padding: 0px !important;
+    margin-top: 0px !important;
+    min-width: 8px !important;
+}
+

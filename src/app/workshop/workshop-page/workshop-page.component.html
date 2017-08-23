@@ -40,7 +40,7 @@
           <div class="col-md-7 left-content">
             <div class="row About">
               <div class="col-md-8">
-                <h3>About this Workshop</h3>
+                <h2>About this Workshop</h2>
                 <h4 *ngIf="userType==='teacher' || userType==='participant'">{{workshop.headline}}
                   <a (click)="workshopVideoDialog()" *ngIf="workshop.videoUrl">
                       Watch Explainer Video <i class="fa fa-play-circle" aria-hidden="true"></i>                      
@@ -64,7 +64,7 @@
                     Who Should Come
                   </div>
                   <div class="col-md-8">
-                    <h3>{{workshop.difficultyLevel}} level</h3>
+                    <h2>{{workshop.difficultyLevel}} level</h2>
                     <p>{{workshop.notes}}</p>
                   </div>
                 </div>
@@ -95,7 +95,7 @@
                             <div class="col-md-6">
                               <div class="row">
                                 <div class="col-md-12">
-                                  <h3> {{content.title}}</h3>
+                                  <h2> {{content.title}}</h2>
                                   <h4> {{content.type}} content </h4>
                                 </div>
                               </div>
@@ -123,7 +123,7 @@
             <hr>
             <div class="row Discussion" *ngIf="userType==='teacher' || userType==='participant'">
               <div class="col-md-12">
-                <h3>Discussion</h3>
+                <h2>Discussion</h2>
                 <form [formGroup]="chatForm" (ngSubmit)="postMessage()">
                   <md-input-container class="fullwidth">
                     <input mdInput type="text" formControlName="message" placeholder="Post your thoughts in this project">
@@ -209,23 +209,79 @@
             </div>
           </div>
           <div class="col-md-4 col-md-offset-1 right-content">
-            <div class="row" *ngIf="userType==='teacher'">
-              <h3>Attendies</h3>
-              <div class="row" *ngFor="let participant of workshop.participants; let i=index">
-                <div *ngIf="participant.profiles && i<4">
-                  <div class="col-md-2">
-                    <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle profile-thumb" alt="dp">
+            <div class="md-whiteframe-z1">
+              <md-toolbar class="md-theme-default md-whiteframe-z1">
+                <div class="mat-toolbar-tools" *ngIf="userType==='teacher'">
+                  <h2 class="">Attendies</h2>
+                </div>
+              </md-toolbar>
+              <div class="mat-content">
+                <div class="md-content__body" *ngFor="let participant of workshop.participants; let i=index">
+                  <div *ngIf="participant.profiles && i<4">
+                    <div class="col-md-2">
+                      <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle profile-thumb" alt="dp">
+                    </div>
+                    <div class="col-md-4">
+                      {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}
+                    </div>
+                    <div class="col-md-4" *ngIf="participant.profiles[0].work">{{participant.profiles[0].work[0].position}}</div>
                   </div>
-                  <div class="col-md-4">
-                    {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}
-                  </div>
-                  <div class="col-md-4" *ngIf="participant.profiles[0].work">{{participant.profiles[0].work[0].position}}</div>
+                </div>
+                <div class="md-content__body">
+                  <a (click)="viewParticipants()"> View All Peers </a>
                 </div>
               </div>
-              <div>
-                <a (click)="viewParticipants()"> View All Peers </a>
+            </div>
+            <hr>
+            <div class="md-whiteframe-z1">
+              <md-toolbar class="md-theme-default md-whiteframe-z1">
+                <div class="mat-toolbar-tools" *ngIf="userType==='teacher'">
+                  <div class="mat-titles">
+                    <h2>Recurring Workshop</h2>
+                    <p class="text-muted h6">Every 50 sessions</p>
+                  </div>
+                  <span class="flex"></span>
+                  <button md-button (click)="editCalendar()" class="mat-icon-button pull-right"><md-icon>edit</md-icon></button>
+                </div>
+              </md-toolbar >
+              <div class="mat-content border-calendar calendar">
+                <div class="flex flexContainer">
+                  <div class="col-md-4">
+                    <h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+                  </div>
+
+                  <span class="flex"></span>
+
+                  <div class="prevNext">
+                    <button md-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+                      <md-icon class="" aria-hidden="true">chevron_left</md-icon>
+                    </button>
+
+                    <button md-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+                      <md-icon class="" aria-hidden="true">chevron_right</md-icon>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- <mwl-calendar-month-view-header
+                  [days]="columnHeaders"
+                  [locale]="locale"
+                  [customTemplate]="headerTemplate">
+                </mwl-calendar-month-view-header> -->
+
+                <div [ngSwitch]="view">
+                  <mwl-calendar-month-view
+                    *ngSwitchCase="'month'"
+                    [viewDate]="viewDate"
+                    [events]="events"
+                    [refresh]="refresh"
+                    (dayClicked)="dayClicked($event.day)">
+                  </mwl-calendar-month-view>
+                </div>
+
               </div>
             </div>
+            <hr *ngIf="userType==='public'">
             <div class="row" *ngIf="userType==='public'">
               <div class="row">
                 <div class="col-md-12">
@@ -255,7 +311,7 @@
                     <div class="col-md-9">
                       <div class="row">
                         <div class="col-md-12">
-                          {{workshop.owners[0].profiles[0].first_name +workshop.owners[0].profiles[0].last_name}}
+                          {{workshop.owners[0].profiles[0].first_name}} {{workshop.owners[0].profiles[0].last_name}}
                         </div>
                         <div class="col-md-12" *ngIf="workshop.owners[0].profiles[0].work">
                           {{workshop.owners[0].profiles[0].work[0].position}}
