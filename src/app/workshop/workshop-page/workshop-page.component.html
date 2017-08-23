@@ -372,8 +372,11 @@
                             <p>{{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</p>
                           </div>
                         </div>
-                        <div class="col-md-12">
-                          <p>{{collection.participants.length}} . {{collection.topics[0].name}}</p>
+                        <div class="col-md-3">
+                          <p>{{collection.participants.length}}</p>
+                        </div>
+                        <div class="col-md-9" *ngIf="collection.topics.length>0">
+                          <md-chip>{{collection.topics[0].name}}</md-chip>
                         </div>
                       </div>
                     </md-card>
