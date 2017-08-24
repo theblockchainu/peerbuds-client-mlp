@@ -29,7 +29,7 @@ export class WorkshopPageComponent implements OnInit {
   public userId: string;
   public workshop: any;
   public itenaryArray = [];
-  public calendarDisplay = {};
+  public currentCalendar: any;
   public booked = false;
   public chatForm: FormGroup;
   public userType: string;
@@ -39,7 +39,7 @@ export class WorkshopPageComponent implements OnInit {
   public messagingParticipant: any;
   public allItenaries = [];
   public itenariesObj = {};
-
+  public calendarId: string;
   public userRating: number;
   public isReadonly = true;
   public noOfReviews = 4;
@@ -74,7 +74,7 @@ export class WorkshopPageComponent implements OnInit {
           break;
         }
       }
-      if (!this.userType) {
+      if (!this.userType && this.currentCalendar) {
         for (const participant of this.workshop.participants) {
           if (participant.id === this.userId) {
             this.userType = 'participant';
@@ -84,6 +84,8 @@ export class WorkshopPageComponent implements OnInit {
       }
       if (!this.userType) {
         this.userType = 'public';
+      }
+      if (this.userType === 'public' || this.userType === 'teacher') {
         this.initializeAllItenaries();
       }
       console.log('Welcome ' + this.userType);
@@ -93,12 +95,13 @@ export class WorkshopPageComponent implements OnInit {
 
   private initializeAllItenaries() {
     this.workshop.calendars.forEach(calendar => {
-      console.log(calendar);
-
       const calendarItenary = [];
       for (const key in this.itenariesObj) {
         if (this.itenariesObj.hasOwnProperty(key)) {
           const eventDate = this.calculateDate(calendar.startDate, key);
+          this.itenariesObj[key].sort(function (a, b) {
+            return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
+          });
           const itenary = {
             startDay: key,
             startDate: eventDate,
@@ -107,7 +110,12 @@ export class WorkshopPageComponent implements OnInit {
           calendarItenary.push(itenary);
         }
       }
-      this.allItenaries.push(calendarItenary);
+      this.allItenaries.push(
+        {
+          calendar: calendar,
+          itenary: calendarItenary
+        });
+
     });
     console.log(this.allItenaries);
 
@@ -129,10 +137,7 @@ export class WorkshopPageComponent implements OnInit {
       this._collectionService.getCollectionDetail(this.workshopId, query)
         .subscribe(res => {
           this.workshop = res;
-
-          this.setCurrentCalendar(this.workshop);
-
-
+          this.setCurrentCalendar();
           this.workshop.contents.forEach(contentObj => {
             if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
               this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
@@ -142,7 +147,15 @@ export class WorkshopPageComponent implements OnInit {
           });
           for (const key in this.itenariesObj) {
             if (this.itenariesObj.hasOwnProperty(key)) {
-              const eventDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+              let eventDate;
+              if (this.currentCalendar) {
+                eventDate = this.calculateDate(this.currentCalendar.startDate, key);
+              } else {
+                eventDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+              }
+              this.itenariesObj[key].sort(function (a, b) {
+                return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
+              });
               const itenary = {
                 startDay: key,
                 startDate: eventDate,
@@ -198,20 +211,37 @@ export class WorkshopPageComponent implements OnInit {
     this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
   }
 
-  public setCurrentCalendar(workshop: any) {
-    if (workshop.calendars) {
-      const startDate = moment(workshop.calendars[0].startDate);
-      const endDate = moment(workshop.calendars[0].endDate);
-      this.calendarDisplay['startDate'] = startDate.format('Do MMMM');
-      this.calendarDisplay['endDate'] = endDate.format('Do MMMM');
-    }
+  public setCurrentCalendar() {
+    this.activatedRoute.params.subscribe(params => {
+      this.calendarId = params['calendarId'];
+      if (this.calendarId) {
+        const calendarIndex = this.workshop.calendars.findIndex(calendar => {
+          return calendar.id === this.calendarId;
+        });
+        if (calendarIndex > -1) {
+          this.currentCalendar = this.workshop.calendars[calendarIndex];
+        } else {
+          console.log('Calendar instance not found');
+        }
+      } else {
+        console.log('Calendar id not found');
+      }
+    });
   }
 
   /**
    * changeDates
    */
   public changeDates() {
-    this.router.navigate(['workshop', this.workshopId, 'edit', 13]);
+    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
+      width: '800px',
+      height: '500px',
+      data: this.allItenaries
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['workshop', this.workshopId, 'calendar', result]);
+
+    });
   }
   /**
    * joinGroupChat
@@ -454,9 +484,19 @@ content:any   */
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
       width: '800px',
       height: '500px',
-      data: {
-        calendars: this.workshop.calendars,
-        contents: this.allItenaries
+      data: this.allItenaries
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.joinWorkshop(result);
+    });
+  }
+
+  private joinWorkshop(calendarId: string) {
+    this._collectionService.addParticipant(this.workshopId, this.userId, calendarId, (err: any, response: any) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.router.navigate(['workshop', this.workshopId, 'calendar', calendarId]);
       }
     });
   }
