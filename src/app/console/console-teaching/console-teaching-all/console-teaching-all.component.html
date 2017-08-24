@@ -196,9 +196,9 @@
                       <p class="lightText" *ngIf="collection.status == 'draft'; then draftMessage else submittedMessage"></p>
                     </md-card-content>
                     <md-card-actions>
-                      <button md-raised-button (click)="_collectionService.viewWorkshop(collection)" *ngIf="collection.type === 'workshop'">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
-                      <button md-raised-button (click)="_collectionService.viewExperience(collection)" *ngIf="collection.type === 'experience'">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
-                      <button md-raised-button (click)="_collectionService.viewSession(collection)" *ngIf="collection.type === 'session'">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+                      <button md-raised-button (click)="_collectionService.openEditWorkshop(collection)" *ngIf="collection.type === 'workshop'">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+                      <button md-raised-button (click)="_collectionService.openEditExperience(collection)" *ngIf="collection.type === 'experience'">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+                      <button md-raised-button (click)="_collectionService.openEditSession(collection)" *ngIf="collection.type === 'session'">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
                     </md-card-actions>
                     <md-card-footer>
 

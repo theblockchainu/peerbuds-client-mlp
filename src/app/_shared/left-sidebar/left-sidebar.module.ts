@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { LeftSidebarRoutingModule } from './left-sidebar-routing.module';
 import { LeftSidebarComponent } from './left-sidebar.component';
+import { MdSidenavModule} from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
-    LeftSidebarRoutingModule
+    LeftSidebarRoutingModule,
+      MdSidenavModule
   ],
   declarations: [LeftSidebarComponent],
   exports: [

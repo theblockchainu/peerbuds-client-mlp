@@ -3,7 +3,7 @@ import {
   , HostBinding, HostListener, Output
 } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 
 import { LeftSidebarService, SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
@@ -12,7 +12,7 @@ import { CollectionService } from '../../_services/collection/collection.service
 import _ from 'lodash';
 
 @Component({
-  selector: 'left-sidebar',
+  selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
   styleUrls: ['./left-sidebar.component.scss'],
   animations: [
@@ -30,18 +30,18 @@ import _ from 'lodash';
 })
 export class LeftSidebarComponent implements OnInit {
 
-  menuState: string = 'out';
+  menuState = 'out';
   public menuJSON: Observable<Array<any>>;
   public step: number;
   public id: string;
   public path: string;
-  public status: string = 'draft';
+  public status = 'draft';
 
   sidebarMenuItems;
 
   // Input Parameter
   @Input('menuFile')
-  private menuFile: string = '';
+  private menuFile = '';
 
   @Output()
   private menuArray = new EventEmitter<any>();
@@ -67,7 +67,7 @@ export class LeftSidebarComponent implements OnInit {
     this._leftSidebarService.getMenuItems(this.menuFile).subscribe(response => {
       this.sidebarMenuItems = response;
 
-      if (this.status != 'submitted') {
+      if (this.status !== 'submitted') {
         this.sidebarMenuItems[4].visible = false;
         this.sidebarMenuItems[3].visible = true;
       }

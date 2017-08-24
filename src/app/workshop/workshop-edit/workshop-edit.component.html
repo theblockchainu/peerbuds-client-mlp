@@ -1,18 +1,18 @@
-<div id="content">
-  <div class="overlay"></div>
-
-  <left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></left-sidebar>
-  <!-- Page Content -->
-  <div class="container col-sm-10 col-md-10 col-lg-10 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
-    <div class="content-container col-sm-10 col-md-10 col-lg-10">
-      <div class="pull-right"><button type="button" class="btn btn-secondary" (click)="saveandexit()">Save &amp; Exit</button></div>
-      <br/>
+<div class="main-content" style="background: #fff;">
+  <md-sidenav-container style="max-height: 90vh; min-height: 90vh; overflow-y: scroll">
+    <md-sidenav mode="side" opened="true">
+      <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
+    </md-sidenav>
+    <!-- Page Content -->
+    <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 90vh; min-height: 90vh; overflow-y: scroll">
+      <div class="pull-right" *ngIf="step!=1 && step !=5"><button md-button (click)="saveandexit()">Save &amp; Exit</button></div>
+      <br/><br/><br/>
       <!--Disclaimer-->
       <div class="onboarding step-1" [hidden]="step!=1">
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
             <h1 class="title">Peerbuds Workshop Guidelines</h1>
-            <p class="fs-18 text-grey lh-24">We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines
+            <p class="subtitle">We value the quality of content taught on Peerbuds platform and expect all workshop hosts to follow strict guidelines
               towards their content.
             </p>
             <ol class="guideline-points text-grey">
@@ -21,40 +21,33 @@
               <li>Respect Others</li>
               <li>Respect Others</li>
             </ol>
-            <div class="margin-top-50">
-              <a href="javascript:;" (click)="goto(2)" class="text-agree"><i class="fa fa-check"></i> I agree, lets create a workshop</a>
+            <div class="margin-top-20">
+              <a md-raised-button href="javascript:;" (click)="goto(2)" color="accent">Continue</a>
             </div>
           </div>
         </div>
       </div>
-      <!--<div class="row hide">
-        <div class="col-md-10 col-md-offset-1" [hidden]="step==1">
-          <progressbar [max]="max" [value]="step">
-            <span style="color:white; white-space:nowrap;">{{step}} / {{max}}</span>
-          </progressbar>
-        </div>
-      </div>-->
       <div class="clearfix">
         <!-- step 1 starts here -->
         <div class="onboarding step-2" [hidden]="step!=2">
           <div class="row">
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-              <div class="title fw-bold">What topics does this Workshop cover?</div>
-              <p class="text-grey">Select topic that this workshop covers</p>
+              <div class="title">What topics does this Workshop cover?</div>
+              <p class="subtitle">Select topics that this workshop covers</p>
               <br/>
               <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="row">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                         <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
-                          [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
-                          [maxSelection]=maxTopics></multiselect-autocomplete>
+                                                  [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+                                                  [maxSelection]=maxTopics></multiselect-autocomplete>
                         <!--formArrayName="interests"-->
                       </div>
                     </div>
                     <div class="row">
-                      <span class="col-sm-4" style="padding-left: 30px;">{{maxTopicMsg}}</span>
+                      <span class="col-sm-4" style="font-size: 11px; color: #777">{{maxTopicMsg}}</span>
                     </div>
                   </div>
                 </div>
@@ -64,17 +57,20 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="lookingFor interest">
-                      <div class="lookingFor-thumb" style="padding:23%;">
-                        <button class="btn btn-link" type="button" [disabled]="interests.length >= maxTopics" (click)="newTopicModal.show()">Add New Topic</button>
-                        <div bsModal #newTopicModal="bs-modal" class="modal fade"  tabindex="-1" role="dialog"
-                          aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="lookingFor-thumb" style="text-align: center; padding-top: 20%">
+                        <a md-button [disabled]="interests.length >= maxTopics" (click)="newTopicModal.show()">
+                          <md-icon style="font-size: 30px">
+                            add
+                          </md-icon>
+                        </a>
+                        <div bsModal #newTopicModal="bs-modal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-md">
                             <div class="modal-content">
                               <div class="modal-header">
                                 <h4 class="modal-title pull-left">Add New Topic</h4>
                                 <button type="button" class="close pull-right" aria-label="Close" (click)="newTopicModal.hide()">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
                               </div>
                               <div class="modal-body">
                                 <form [formGroup]="newTopic" (ngSubmit)="AddNewTopic(newTopic,newTopicModal)">
@@ -93,21 +89,20 @@
                   <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
                     <div class="lookingFor interest">
                       <label class="check">
-                        <!-- <input type="checkbox" id={{topic.id}} [checked]="topic.checked"
-                                (change)="changeInterests(topic)">
-                                <i></i> -->
-                        <i *ngIf="topic.checked" class="fa fa-check fa-2x" style="color:green"></i>
+                        <md-icon *ngIf="topic.checked" color="accent">
+                          check_circle
+                        </md-icon>
                       </label>
                       <div class="lookingFor-thumb">
                         <i class="topic.id"></i>
                       </div>
-                      <span class="lookingForTitle captitalise">{{ topic.name }} - {{topic.type}}</span>
+                      <span class="lookingForTitle captitalise">{{ topic.name }}</span>
                     </div>
                   </div>
                 </div>
-                <div style="margin-top:100px;">
-                  <button class="btn btn-link" type="button" (click)=goto(1)>Back</button>
-                  <button class="btn btn-success btn-continue pull-right" (click)=submitInterests() [disabled]="interests.length == 0">Continue</button>
+                <div style="margin-top:60px;">
+                  <a md-button (click)=goto(1)>Back</a>
+                  <a md-raised-button color="accent" class="pull-right" (click)=submitInterests() [disabled]="interests.length == 0">Continue</a>
                 </div>
               </form>
             </div>
@@ -116,19 +111,18 @@
 
         <div class="onboarding step-3" [hidden]="step!=3">
           <div class="row">
-            <div class="col-sm-7">
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
               <h1 class="title">Which language will you host in?</h1>
-              <p class="text-grey">Youʼll write your descriptions in this language and guests will expect you to speak it during workshops.</p>
+              <p class="subtitle">You will write your descriptions in this language and guests will expect you to speak it during workshops.</p>
               <br/>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="text-grey margin-bottom-20">Select Language</div>
-                <select class="form-control" formArrayName="language" (change)="languageChange($event.target.value)">
-                      <option [value]="">--Select--</option>
-                      <option *ngFor="let l of languagesArray" [value]="l.name" [selected]="selectedLanguages == l.name">{{l.name}} </option>
-                </select>
+                <md-select placeholder="Select Language" style="margin-bottom: 20px" name="other_languages" formArrayName="language" (change)="languageChange($event.target.value)">
+                  <md-option [value]="">--Select--</md-option>
+                  <md-option *ngFor="let l of languagesArray" [value]="l.name">{{l.name}}</md-option>
+                </md-select>
                 <div style="margin-top:100px;">
-                  <button class="btn btn-link" type="button" (click)=goto(2)>Back</button>
-                  <button class="btn btn-success btn-continue pull-right" style="float:right;" type="Submit" [disabled]="!selectedLanguages">Continue</button>
+                  <a md-button (click)=goto(2)>Back</a>
+                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="!selectedLanguages">Continue</button>
                 </div>
               </form>
             </div>
@@ -137,30 +131,22 @@
         <!-- step 4 ends here  -->
         <div class="onboarding step-4" [hidden]="step!=4">
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
               <h1 class="title">Introduce yourself as a Host</h1>
-              <label class="display-block">Why are you the best person to host this Experience?</label>
+              <p class="subtitle">Why are you the best person to host this workshop?</p>
 
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row margin-bottom-30 margin-top-30">
-                  <div class="col-sm-8">
-                    <div class="form-group">
-                      <textarea class="form-control" maxlength="500" rows="10" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
-                      <span class="text-right text-grey display-block margin-top-5">max. 200 chars</span>
-
-                    </div>
-                  </div>
-                  <div class="col-sm-3 margin-left-20">
-                    <p class="fs-14 text-dark-grey">
-                      <span class="fs-13 text-uppercase text-grey">Here is a sample description</span><br/> "I'm a recent
-                      graduate that enjoys reading, travelling and documenting my adventures. I'm currently trying to persue
-                      freelance photography. Looking farward to talk to like minded people."
-                    </p>
+                  <div class="col-sm-10">
+                    <md-input-container class="pb-block" style="margin-bottom: 20px">
+                      <textarea mdInput #aboutHost maxlength="500" rows="10" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
+                      <md-hint align="end">{{aboutHost.value.length}} / 500</md-hint>
+                    </md-input-container>
                   </div>
                 </div>
                 <div style="margin-top:50px;">
-                  <button class="btn btn-link" type="button" (click)=goto(3)>Back</button>
-                  <button class="btn btn-success btn-continue pull-right" type="Submit">Continue</button>
+                  <a md-button (click)=goto(3)>Back</a>
+                  <button md-raised-button class="pull-right" color="accent" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
@@ -169,170 +155,162 @@
         <!--Disclaimer-->
         <div class="onboarding step-5" [hidden]="step!=5">
           <div class="row">
-            <div class="col-sm-7">
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
               <h1 class="title">Create the page learners will see</h1>
-              <p class="margin-top-30 lh-24">Write in a clear, straightforward and friendly way.We will give you tips on when to show off your personality
+              <p class="subtitle">Write in a clear, straightforward and friendly way.We will give you tips on when to show off your personality
                 and be more descriptive.
               </p>
               <br/>
-              <div style="margin-top:100px;">
-                <a class="btn btn-success btn-continue" (click)="goto(6)">Continue</a>
+              <div style="margin-top:60px;">
+                <a md-raised-button href="javascript:;" (click)="goto(6)" color="accent">Continue</a>
               </div>
             </div>
           </div>
         </div>
-        <!-- step 2 ends here -->
+        <!-- Step 6 - Title -->
         <div class="onboarding step-6" [hidden]="step!=6">
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="form-group">
-                      <label class="display-block">Title Your Workshop</label>
-                      <p>Make it sweet and simple</p>
+                      <h1 class="title">Title your workshop</h1>
+                      <p class="subtitle">
+                        Make it sweet and simple
+                      </p>
                       <br/>
-                      <input type="text" class="form-control" formControlName="title" />
-                      <span class="text-grey margin-top-5">10 characters needed</span>
-                      <span class="text-right text-grey margin-top-5 col-md-offset-8">25 characters max</span>
+                      <md-input-container class="pb-block" style="margin-bottom: 20px">
+                        <input mdInput #title formControlName="title" maxlength="50" placeholder="Enter Name">
+                        <md-hint align="start">{{50 - title.value.length}} more characters needed</md-hint>
+                        <md-hint align="end">{{title.value.length}} / 50</md-hint>
+                      </md-input-container>
                     </div>
                   </div>
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="form-group">
-                      <label class="display-block">Headline</label>
-                      <p>Explain your workshop in short and descriptive sentence.</p>
-                      <p>It should give an insight to learners of what they will do.</p>
+                      <h1 class="title">Headline</h1>
+                      <p class="subtitle">
+                        Explain your workshop in short and descriptive sentences.<br/>
+                        It should give an insight to learners on what they'll do.
+                      </p>
                       <br/>
-                      <input type="text" class="form-control" formControlName="headline" />
-                      <span class="text-grey margin-top-5">10 characters needed</span>
-                      <span class="text-right text-grey  col-md-offset-8">25 characters max</span>
+                      <md-input-container class="pb-block" style="margin-bottom: 20px">
+                        <input mdInput #headline formControlName="headline" maxlength="500" placeholder="Write headline">
+                        <md-hint align="start">{{500 - headline.value.length}} more characters needed</md-hint>
+                        <md-hint align="end">{{headline.value.length}} / 500</md-hint>
+                      </md-input-container>
                     </div>
                   </div>
                 </div>
-                <div style="margin-top:100px;">
-                  <button class="btn btn-link" type="button" (click)=goto(5)>Back</button>
-                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
+                <div style="margin-top:60px;">
+                  <a md-button (click)=goto(5)>Back</a>
+                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-        <!-- step 5 ends here -->
+        <!-- step 7 - Description  -->
         <div class="onboarding step-7" [hidden]="step!=7">
           <div class="row">
-            <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-              <div class="row">
-                <div class="col-sm-12 margin-bottom-30">
-                  <div class="form-group">
-                    <label class="display-block">What’s the workshop about?</label>
-                    <p>Give a detailed description to learners of what they will do in this workshop</p>
-                    <textarea class="form-control" maxlength="200" formControlName="description"></textarea>
-                    <span class="text-right text-grey display-block margin-top-5">max. 800 chars</span>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+              <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <div class="row">
+                  <div class="col-sm-12 margin-bottom-30">
+                    <h1 class="title">What’s the workshop about?</h1>
+                    <p class="subtitle">Give a detailed description to learners of what they will do in this workshop</p>
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                      <textarea mdInput #description maxlength="500" rows="5" formControlName="description" placeholder="What we'll do in this workshop?"></textarea>
+                      <md-hint align="end">{{description.value.length}} / 500</md-hint>
+                    </md-input-container>
                   </div>
                 </div>
-              </div>
-              <div style="margin-top:100px;">
-                <button class="btn btn-link" type="button" (click)=goto(6)>Back</button>
-                <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
-              </div>
-            </form>
+                <div style="margin-top:60px;">
+                  <a md-button (click)=goto(6)>Back</a>
+                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-        <!-- step 6 ends here -->
+        <!-- step 8 Difficulty Level-->
         <div class="onboarding step-8" [hidden]="step!=8">
           <div class="row">
-            <div class="col-sm-12">
-              <h1 class="title">Who should come</h1>
-              <p>Start with level of difficulty</p>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
+                <h1 class="title">Who should come?</h1>
+                <p class="subtitle">Start with a level of difficulty</p>
                 <div class="col-sm-12 margin-bottom-30">
-                  <select class="form-control" formControlName="difficultyLevel">
-                      <option [value]="">--Select--</option>
-                      <option *ngFor="let d of difficulties" [value]="d">{{d}} </option>
-                  </select>
+                  <md-select [floatPlaceholder]="false" style="margin-bottom: 20px" formControlName="difficultyLevel">
+                    <md-option [value]="">--Select--</md-option>
+                    <md-option *ngFor="let d of difficulties" [value]="d">{{d}}</md-option>
+                  </md-select>
                 </div>
+                <h1 class="title">Notes</h1>
+                <p class="subtitle">Describe the knowledge prerequisites, if there is any, that learners should know of.</p>
                 <div class="col-sm-12 margin-bottom-30">
-                  <div class="form-group">
-                    <label class="display-block">Notes</label>
-                    <textarea class="form-control" maxlength="5000" formControlName="notes"></textarea>
-                    <span class="text-right text-grey display-block margin-top-5">max. 5000 chars</span>
-                  </div>
+                  <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                    <textarea mdInput #notes maxlength="500" rows="5" formControlName="notes"></textarea>
+                    <md-hint align="end">{{notes.value.length}} / 500</md-hint>
+                  </md-input-container>
                 </div>
-                <div style="margin-top:100px;">
-                  <button class="btn btn-link" type="button" (click)=goto(7)>Back</button>
-                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
+                <div style="margin-top:60px;">
+                  <a md-button (click)=goto(7)>Back</a>
+                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-        <!-- step 7 ends here -->
+        <!-- Step 9 - Max Spots -->
         <div class="onboarding step-9" [hidden]="step!=9">
           <div class="row">
-            <div class="col-sm-7">
-              <div class="stepHeader">How many learners? </div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+              <h1 class="title">How many seats are available? </h1>
+              <p class="subtitle">
+                Remember to keep your workshop as personal as possible.<br>
+                The more learners the less attention you can give to everybody.
+              </p>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="col-sm-12 margin-bottom-30" style="margin-top:20px">
-                  <input type="number" formControlName="maxSpots" min="1" max="1000">
+                <div class="col-sm-12">
+                  <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                    <input type="number" mdInput #maxSpots formControlName="maxSpots" placeholder="Enter Number">
+                  </md-input-container>
                 </div>
-                <div style="padding-top:100px;">
-                  <button class="btn btn-link" type="button" (click)=goto(8)>Back</button>
-                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
+                <div style="padding-top:60px;">
+                  <a md-button (click)=goto(8)>Back</a>
+                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-        <!-- step 8 ends here -->
+        <!-- step 10 Photos -->
         <div class="onboarding step-10" [hidden]="step!=10">
-
           <div class="row">
-            <div class="col-sm-10">
-              <div class="stepHeader">Showcase your workshop</div>
-              <div class="row" style="margin-left:20px;margin-top:15px;">
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+              <h1 class="title">Showcase your workshop</h1>
+              <p class="subtitle">
+                Give the world a taste of your experience by showcasing captivating videos and/or photos
+              </p>
+              <div class="row" style="margin-top:25px;">
                 <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)" novalidate>
-                  <!-- <div class="row">
-                    <div id="video-demo-container">
-                      <button type="button" id="upload-button" (click)="uploadButton()">Select MP4 Video</button>
-                      <input type="file" id="file-to-upload" accept="video/*" (change)="uploadCanvasVideo($event)"/>
-                      <video id="main-video" controls>
-                        <source type="video/mp4">
-                      </video>
-                      <canvas id="video-canvas"></canvas>
-                      <div id="thumbnail-container">
-                        Seek to <select id="set-video-seconds"></select> seconds <a id="get-thumbnail" href="#">Download Thumbnail</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-8">
-                      <div id="wrapper">
-                        <input id="fileUpload" type="file" (change)="uploadImage1($event)"/><br />
-                        <div id="image-holder">
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
-
                   <div class="row" style="margin-top:40px">
                     <div class="col-md-8">
                       <div class="stepHeader">Upload Video</div>
                       <span class="label label-warning" [hidden]="!workshopVideoPending">Pending</span>
                       <span class="label label-success" [hidden]="workshopVideoPending">Success</span>
-                      <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000" auto="true"
-                        chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+                      <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
                       </p-fileUpload>
                       <div class="ui-fileupload-row"  *ngIf="urlForVideo">
                         <div>{{urlForVideo.split('/')[5]}}</div>
                         <div><button icon="fa-close" pbutton="" type="button" (click)="deleteFromContainer(urlForVideo, 'video')" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
                       </div>
-
-
                       <div class="stepHeader">Upload Images</div>
                       <span class="label label-warning" [hidden]="!workshopImage1Pending">Pending</span>
                       <span class="label label-success" [hidden]="workshopImage1Pending">Success</span>
-                      <p-fileUpload #fubauto name="image" multiple="multiple" customUpload="true" (uploadHandler)="uploadImages($event)" maxFileSize="10000000"
-                        auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)"></p-fileUpload>
+                      <p-fileUpload #fubauto name="image" multiple="multiple" customUpload="true" (uploadHandler)="uploadImages($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)"></p-fileUpload>
                       <div *ngIf="urlForImages.length">
                         <div *ngFor="let file of urlForImages" class="ui-fileupload-row" >
                           <div><img src="{{config.apiUrl+file}}" width="50"></div>
@@ -343,11 +321,9 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-4">
-                      <div style="margin-top:100px;">
-                        <button class="btn btn-link" type="button" (click)=goto(9)>Back</button>
-                        <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
-                      </div>
+                    <div style="margin-top:60px;">
+                      <a md-button (click)=goto(9)>Back</a>
+                      <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
                     </div>
                   </div>
                 </form>
@@ -355,76 +331,101 @@
             </div>
           </div>
         </div>
-        <!-- step 9 ends here -->
+        <!-- step 11 - Price -->
         <div class="onboarding step-11" [hidden]="step!=11">
           <div class="row">
-            <div class="col-sm-12">
-              <div class="stepHeader">What is the price of the workshop?</div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="col-sm-12 margin-bottom-30">
-                  Price:
-                  <input type="number" formControlName="price">
-                  <select formControlName="currency">
-                            <option *ngFor="let c of currencies" [value]="c">{{c}} </option>
-                      </select>
+                <h1 class="title">What is the price of the workshop?</h1>
+                <p class="subtitle">
+                  How much are you going to charge for this workshop?
+                </p>
+                <div class="col-sm-12">
+                  <md-input-container [floatPlaceholder]="false" style="margin: 20px 0px;">
+                    <input type="number" mdInput #price formControlName="price" placeholder="Enter Price">
+                  </md-input-container>
+                  <md-select [floatPlaceholder]="false" formControlName="currency" style="margin: 20px 0px;">
+                    <md-option *ngFor="let c of currencies" [value]="c">{{c}}</md-option>
+                  </md-select>
                 </div>
-
-                <div class="col-sm-12 margin-bottom-30">
-                  Cancellation Policy:
-                  <select class="form-control" formControlName="cancellationPolicy">
-                            <option [value]="">--Select--</option>
-                            <option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}} </option>
-                      </select>
+                <h1 class="title" style="margin-top: 50px;">Cancellation Policy</h1>
+                <div class="col-sm-12">
+                  <md-select [floatPlaceholder]="false" formControlName="cancellationPolicy" style="margin: 20px 0px;">
+                    <md-option [value]="">--Select--</md-option>
+                    <md-option *ngFor="let c of cancellationPolicies" [value]="c.value">{{c.text}}</md-option>
+                  </md-select>
                 </div>
                 <div style="margin-top:100px;">
-                  <button class="btn btn-link" type="button" (click)=goto(10)>Back</button>
-                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
+                  <a md-button (click)=goto(10)>Back</a>
+                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
+        <!--Step 12 - Disclaimer-->
         <div class="onboarding step-12" [hidden]="step!=12">
           <div class="row">
-            <div class="col-sm-12">
-              <div class="stepHeader">Add content to your Workshop</div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+              <h1 class="title">Add content to your Workshop</h1>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <p>Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
+                <p class="subtitle">Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
                   see this before they sign up for your workshop.</p>
-                <div style="margin-top:100px;">
-                  <button class="btn btn-link" type="button" (click)=goto(11)>Back</button>
-                  <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
+                <div style="margin-top:60px;">
+                  <a md-button (click)=goto(11)>Back</a>
+                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
+        <!--Step 13 - Itinerary-->
         <div class="onboarding step-13" [hidden]="step!=13">
           <div class="row">
-            <div class="col-sm-12">
-              <div class="stepHeader">What days are your workshop?</div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+              <h1 class="title">What days are your workshop?</h1>
+              <p class="subtitle">
+                Select the start date and end date of your workshop and add itineraries for any of those days.
+              </p>
               <form [formGroup]="timeline" (ngSubmit)="submitTimeline(timeline)" novalidate>
-                <div formGroupName="calendar">
-                  <div class="row">
-                    <div class="col-sm-6 margin-bottom-30">
-                      <input type="date" formControlName="startDate">
+                <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
+                  <div class="row" style="margin: 30px 0px 15px 0;">
+                    <div class="col-sm-6">
+                      <md-input-container>
+                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
+                        <button mdSuffix [mdDatepickerToggle]="startDatePicker"></button>
+                      </md-input-container>
+                      <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
                     </div>
-                    <div class="col-sm-6 margin-bottom-30">
-                      <input type="date" formControlName="endDate">
+                    <div class="col-sm-6">
+                      <md-input-container>
+                        <input mdInput [mdDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
+                        <button mdSuffix [mdDatepickerToggle]="endDatePicker"></button>
+                      </md-input-container>
+                      <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>
                   </div>
                 </div>
-                <div class="row" *ngIf="timeline.controls.calendar.value.endDate && timeline.controls.calendar.value.endDate">
-                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value"
-                    (days)="daysCollection($event)">
+                <div formGroupName="calendar" *ngIf="(timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate) && !datesEditable">
+                  <div class="row" style="margin: 30px 0px 15px 0;">
+                    <div class="col-md-12 selected-dates">
+                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd MMM'}}
+                      &emsp;
+                      <md-icon color="accent">
+                        date_range
+                      </md-icon>
+                      <a style="cursor: pointer; color: #33bd9e;" (click)="makeDatesEditable()">Change dates</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate">
+                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value" (days)="daysCollection($event)">
                   </app-workshop-content>
                 </div>
                 <div class="row">
-                  <div class="col-md-4 col-md-offset-6">
-                    <div style="margin-top:100px;">
-                      <button class="btn btn-link" type="button" (click)=goto(12)>Back</button>
-                      <button class="btn btn-success btn-continue" style="float:right;" type="Submit">Continue</button>
-                    </div>
+                  <div style="margin-top:100px;">
+                    <a md-button (click)=goto(12)>Back</a>
+                    <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
                   </div>
                 </div>
               </form>
@@ -433,29 +434,28 @@
         </div>
         <div class="onboarding step-14" [hidden]="step!=14">
           <div class="row">
-            <div class="col-sm-12">
-              <div class="stepHeader"><h2>Review and submit</h2></div>
-                <div style="margin-top:20px;">
-                <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox> <label>You meet our standard</label>
-                </div>
-                <div style="margin-top:20px;">
-                <p-checkbox name="groupname" value="val2" [(ngModel)]="selectedValues"></p-checkbox><label>You agree to our terms and conditions</label>
-                </div>
-                <button (click)="submitForReview(successModal);" class="btn btn-lg btn-success pull-right" [disabled]="selectedValues.length!==2"> Submit for Review</button>
-                <div bsModal #successModal="bs-modal" class="modal fade" [config]="{ keyboard: false, backdrop: false }"  tabindex="-1" role="dialog"
-                  aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                      <div class="modal-body">
-                        <div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+              <h1 class="title">Review and submit</h1>
+              <div style="margin-top:40px;">
+                <md-checkbox value="val1" [(ngModel)]="selectedValues[0]">You meet our standards.</md-checkbox>
+              </div>
+              <div style="margin-top:20px;">
+                <md-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</md-checkbox>
+              </div>
+              <button md-raised-button color="accent" (click)="submitForReview(successModal);" class="pull-right" [disabled]="!selectedValues[0] && !selectedValues[1]"> Submit for Review</button>
+              <div bsModal #successModal="bs-modal" class="modal fade" [config]="{ keyboard: false, backdrop: true }"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <div>
                         <p>Your workshop has been submitted for review.</p>
                         <p>You can add repeat dates for this workshop once it has been approved.</p>
-                        </div>
-                        <button type="button" class="btn btn-success" (click)="redirectToConsole(successModal)">OK</button>
                       </div>
+                      <button type="button" class="btn btn-success" (click)="redirectToConsole(successModal)">OK</button>
                     </div>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
         </div>
@@ -484,7 +484,7 @@
             </div>
           </div>
         </div>
-         <div class="onboarding step-17" [hidden]="step!=17">
+        <div class="onboarding step-17" [hidden]="step!=17">
           <div class="row">
             <div class="col-sm-12">
               <div class="stepHeader"><h2>Connect Payment Option</h2></div>
@@ -500,12 +500,8 @@
             </div>
           </div>
         </div>
-
-
       </div>
       <div class="clearfix"></div>
     </div>
-  </div>
-
-  <!-- </div>-->
+  </md-sidenav-container>
 </div>

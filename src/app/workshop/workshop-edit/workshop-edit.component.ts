@@ -1,13 +1,8 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
-} from '@angular/http';
+import {URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import {
-  FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
-} from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import {FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators} from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
@@ -15,22 +10,14 @@ import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
 import { ModalModule, ModalDirective } from 'ngx-bootstrap';
-
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
 import { CollectionService } from '../../_services/collection/collection.service';
-import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
-
-
-import { StepEnum } from '../StepEnum';
 import { AppConfig } from '../../app.config';
-
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
-
-import { SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
 import _ from 'lodash';
 
 
@@ -61,7 +48,7 @@ export class WorkshopEditComponent implements OnInit {
   public countries: any[];
   public languagesArray: any[];
   public userId: string;
-  public selectedValues: string[] = [];
+  public selectedValues: boolean[] = [false, false];
   public selectedOption = -1;
 
   public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
@@ -101,6 +88,8 @@ export class WorkshopEditComponent implements OnInit {
 
   public urlForVideo;
   public urlForImages = [];
+
+  public datesEditable: boolean = false;
 
   // TypeScript public modifiers
   constructor(
@@ -196,8 +185,6 @@ export class WorkshopEditComponent implements OnInit {
 
     this.initializeWorkshop();
 
-    // this.initializeTimeLine();
-
     this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
     this._VIDEO = document.querySelector('#main-video');
   }
@@ -211,17 +198,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private initializeTimeLine(res) {
-    // this.http.get(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar').map(
-    //   (res: any) => {
-    //     if (res.startDate) {
-    //       res.startDate = this.extractDate(res.startDate);
-    //       res.endDate = this.extractDate(res.endDate);
-    //       this._collectionService.sanitize(res);
-    //       this.timeline.controls.calendar.patchValue(res);
-    //       this.initializeContentForm();
-    //     }
-    //   }
-    // ).subscribe();
     if (res.calendars[0].startDate) {
       const calendar = res.calendars[0];
       calendar['startDate'] = this.extractDate(calendar.startDate);
@@ -236,25 +212,6 @@ export class WorkshopEditComponent implements OnInit {
     const contentGroup = <FormGroup>this.timeline.controls.contentGroup;
     const itenary = <FormArray>contentGroup.controls.itenary;
     const itenaries = this.getContents(res.contents);
-    // this.getContents((err, itenaries: any) => {
-    //   if (err) {
-    //     console.log(err);
-    //   } else {
-    //     for (const key in itenaries) {
-    //       if (itenaries.hasOwnProperty(key)) {
-    //         const itr: FormGroup = this.InitItenary();
-    //         itr.controls.date.patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, key));
-    //         for (const contentObj of itenaries[key]) {
-    //           const contentForm: FormGroup = this.InitContent();
-    //           this.assignFormValues(contentForm, contentObj);
-    //           const contents = <FormArray>itr.controls.contents;
-    //           contents.push(contentForm);
-    //         }
-    //         itenary.push(itr);
-    //       }
-    //     }
-    //   }
-    // });
     for (const key in itenaries) {
       if (itenaries.hasOwnProperty(key)) {
         const itr: FormGroup = this.InitItenary();
@@ -327,7 +284,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public getContents(contents) {
-    debugger;
     const itenaries = {};
     for (const contentObj of contents) {
       contentObj.schedule = contentObj.schedules[0];
@@ -340,34 +296,19 @@ export class WorkshopEditComponent implements OnInit {
       }
     }
     this.sidebarMenuItems[2]['submenu'] = [];
+    let i = 1;
     this.itenariesForMenu.forEach(function (item) {
-      const index = +item + 1;
+      const index = i;
       this.sidebarMenuItems[2]['submenu'].push({
         'title': 'Day ' + index,
         'step': 13 + '_' + index,
         'active': false,
         'visible': true
       });
+      i++;
     }, this);
     return itenaries;
-    // this.http.get(this.config.apiUrl + '/api/collections/' + this.workshopId + '/contents?filter={"include":"schedules"}').map(
-    //   (res: any) => {
-    //     const itenaries = {};
-    //     for (const contentObj of res) {
-    //       contentObj.schedule = contentObj.schedules[0];
-    //       delete contentObj.schedules;
-    //       if (itenaries.hasOwnProperty(contentObj.schedule.startDay)) {
-    //         itenaries[contentObj.schedule.startDay].push(contentObj);
-    //       } else {
-    //         itenaries[contentObj.schedule.startDay] = [contentObj];
-    //       }
-    //     }
-    //     cb(null, itenaries);
-    //   }
-    // ).subscribe();
   }
-
-
 
   private initializeFormFields() {
     this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
@@ -409,7 +350,7 @@ export class WorkshopEditComponent implements OnInit {
     if (this.interests.length === 0) {
       this.http.get(this.config.searchUrl + '/api/search/topics')
         .map((response: any) => {
-          this.suggestedTopics = response.slice(0, 10);
+          this.suggestedTopics = response.slice(0, 7);
         }).subscribe();
     } else {
       this.suggestedTopics = this.interests;
@@ -422,16 +363,6 @@ export class WorkshopEditComponent implements OnInit {
 
   private initializeWorkshop() {
     console.log('Inside init workshop');
-    // if (this.workshopId) {
-    //   this._collectionService.getCollectionDetails(this.workshopId)
-    //     .subscribe(res => {
-    //       this.initializeFormValues(res);
-    //     },
-    //     err => console.log('error'),
-    //     () => console.log('Completed!'));
-    // } else {
-    //   console.log('NO COLLECTION');
-    // }
     const query = {
       'include': [
         'topics',
@@ -573,7 +504,6 @@ export class WorkshopEditComponent implements OnInit {
     // Photos and Videos
     this.workshop.controls.videoUrl.setValue(res.videoUrl);
     this.urlForVideo = res.videoUrl;
-    // <img src="{{config.apiUrl+content.imageUrl}}">
     if (res.imageUrls && res.imageUrls.length > 0) {
       this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
       this.urlForImages = res.imageUrls;
@@ -744,7 +674,6 @@ export class WorkshopEditComponent implements OnInit {
   submitForReview(modal: ModalDirective) {
     // Post Workshop for review
     this._collectionService.submitForReview(this.workshopId)
-
       .subscribe((res) => {
         this.sidebarMenuItems[3].visible = false;
         // call to get status of workshop
@@ -757,7 +686,7 @@ export class WorkshopEditComponent implements OnInit {
           // this.sidebarMenuItems[4].submenu[1].active = true;
           this.step = +this.step + 2;
         }
-        modal.show();
+        //modal.show();
       });
 
   }
@@ -773,7 +702,7 @@ export class WorkshopEditComponent implements OnInit {
 
   saveandexit() {
 
-    if (this.step === 12) {
+    if (this.step === 13) {
       const data = this.timeline;
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
@@ -980,6 +909,13 @@ export class WorkshopEditComponent implements OnInit {
   takeToPayment() {
     this.step++;
     this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
+  }
+
+    /**
+     * Make the dates section of this page editable
+     */
+  makeDatesEditable() {
+    this.datesEditable = true;
   }
 
 }

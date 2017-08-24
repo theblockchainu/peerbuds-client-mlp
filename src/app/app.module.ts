@@ -19,7 +19,7 @@ import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule } from '@angular/material';
 import 'hammerjs';
 
 
@@ -50,7 +50,8 @@ import 'hammerjs';
     MdToolbarModule,
     MdIconModule,
     MdAutocompleteModule,
-    MdInputModule
+    MdInputModule,
+      MdNativeDateModule
     // SignupSocialModule
   ],
   bootstrap: [AppComponent]

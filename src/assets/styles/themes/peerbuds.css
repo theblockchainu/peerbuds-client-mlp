@@ -6094,6 +6094,11 @@ footer {
    cursor: pointer;
 }
 
+.mat-list-item-content {
+    min-height: 48px;
+    height: fit-content !important;
+}
+
 .mat-list-item-focus {
   outline: none;
 }
@@ -6110,5 +6115,35 @@ footer {
    margin-left: -9px;
    display: inline-block;
    border: 3px solid #ffffff;
+}
+
+md-sidenav {
+    width: 300px;
+    background: red; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#FE8A8D, #FF9194); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#FE8A8D, #FF9194); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#FE8A8D, #FF9194); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#FE8A8D, #FF9194); /* Standard syntax */
+    padding: 20px 30px;
+    color: #fff;
+}
+
+md-sidenav a {
+    color: #eaeaea;
+    cursor: pointer;
+}
+
+md-sidenav a:hover {
+    text-decoration: none;
+    color: #eaeaea;
+}
+
+.sidenav-divider {
+    margin: 32px 0px;
+    border-top-color: rgba(255, 255, 255, 0.3);
+}
+
+md-subheader {
+    margin: 1.5rem 0;
 }
 
