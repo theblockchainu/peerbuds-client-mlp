@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -16,6 +17,7 @@ import { ContentOnlineComponent } from './content-online/content-online.componen
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
+import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
 
 import {
   startOfDay,
@@ -88,6 +90,8 @@ export class WorkshopPageComponent implements OnInit {
   };
 
   // Calendar Start
+  public dateClicked: boolean = false;
+  public clickedDate;
   public headerTemplate = `<ng-template #headerTemplate>
                             <div class="cal-cell-row cal-header">
                             <div class="cal-cell" *ngFor="let day of days" [class.cal-past]="day.isPast" [class.cal-today]="day.isToday"
@@ -161,10 +165,28 @@ export class WorkshopPageComponent implements OnInit {
 
   activeDayIsOpen: boolean = true;
 
-   handleEvent(action: string, event: CalendarEvent): void {
+  handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
     // this.modal.open(this.modalContent, { size: 'lg' });
   }
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    debugger;
+    this.dateClicked = !this.dateClicked;
+    this.clickedDate = date;
+    if (isSameMonth(date, this.viewDate)) {
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        //this.activeDayIsOpen = false;
+      } else {
+        //this.activeDayIsOpen = true;
+        this.viewDate = date;
+      }
+    }
+  }
+
 
   // Calendar Ends
 
@@ -287,10 +309,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private fixTopics() {
-    console.log(this.workshop.topics);
     this.topicFix = _.uniqBy(this.workshop.topics, 'id');
-    console.log(this.topicFix);
-
   }
 
   private initializeForms() {
@@ -348,7 +367,7 @@ export class WorkshopPageComponent implements OnInit {
   public calculateDate(fromdate, day) {
     const tempMoment = moment(fromdate);
     tempMoment.add(day, 'days');
-    return tempMoment.format('Do MMMM');
+    return tempMoment;
   }
 
   /**
@@ -420,13 +439,6 @@ content:any   */
       }
     }
     return count;
-  }
-
-  /**
-   * getReadableDate
-   */
-  public getReadableDate(date: string) {
-    return moment(date).format('Do MMMM');
   }
 
   /**
@@ -542,20 +554,30 @@ content:any   */
       'include': [
         'calendars',
         { 'owners': ['profiles'] },
-        'reviews'
+        'reviews',
+        'topics',
+        'participants'
       ],
       'limit': 4
     };
-    console.log('getting recos');
     this._collectionService.getRecommendations(query, (err, response: any) => {
       if (err) {
         console.log(err);
       } else {
         for (const responseObj of response) {
           responseObj.rating = this.calculateRating(responseObj);
+          console.log(responseObj);
           this.recommendations.collections.push(responseObj);
         }
       }
+    });
+  }
+
+  /**
+   * selectJoiningDates
+   */
+  public selectJoiningDates() {
+    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
     });
   }
 

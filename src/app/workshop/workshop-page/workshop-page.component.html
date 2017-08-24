@@ -52,7 +52,7 @@
             <div class="row Topics">
               <div class="col-md-8">
                 <md-chip-list>
-                  <md-chip *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
+                  <md-chip class="mat-elevation-z3" *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
                 </md-chip-list>
               </div>
             </div>
@@ -83,14 +83,16 @@
                       <div class="message-inner">
                         <div class="qa-message-content">
                           <div class="row">
-                            <div class="col-md-8"> {{itenary.startDate}} </div>
+                            <div class="col-md-8" *ngIf="userType==='teacher' || userType==='participant'"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
+                            <div class="col-md-8" *ngIf="userType==='public'">Day {{itenary.startDay}}</div>
                           </div>
                           <div class="row" *ngFor="let content of itenary.contents" (click)="openDialog(content)">
                             <div class="col-md-6" style="object-fit:contain">
                               <br>
                               <br>
-                              <img *ngIf="content.type!=='video'" class="img-responsive center-block mat-elevation-z4" style="max-height:200px" src="{{config.apiUrl+content.imageUrl}}">
-                              <video *ngIf="content.type==='video'" class="center-block mat-elevation-z4" src="{{config.apiUrl+content.imageUrl}}" preload="metadata"></video>
+                              <img *ngIf="content.type!=='video'" class="img-responsive center-block mat-elevation-z4 itenary-media" src="{{config.apiUrl+content.imageUrl}}">
+                              <video *ngIf="content.type==='video'" class="center-block mat-elevation-z4 itenary-media" src="{{config.apiUrl+content.imageUrl}}"
+                                preload="metadata"></video>
                             </div>
                             <div class="col-md-6">
                               <div class="row">
@@ -101,7 +103,7 @@
                               </div>
                               <div class="row">
                                 <div class="col-md-12">
-                                  <p> {{content.description}} </p>
+                                  <p> {{content.description | shorten: 115 : '...read more'}} </p>
                                 </div>
                               </div>
                               <div class="row" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant')">
@@ -137,10 +139,11 @@
               </div>
             </div>
             <div class="row Reviews">
-              <hr>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-2">
                   <h4>Reviews ({{workshop.reviews.length}})</h4>
+                </div>
+                <div class="col-md-10">
                   <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
                 </div>
               </div>
@@ -151,16 +154,14 @@
                     <div class="col-md-12" [hidden]="i>noOfReviews">
                       <div class="row">
                         <div class="col-md-2">
-                          <img src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="img-circle profile-thumb" alt="dp">
+                          <img src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="img-circle review-thumb" alt="dp">
                         </div>
                         <div class="col-md-10">
-                          <div class="row">
-                            <div class="col-md-12">
-                              <h6>{{review.peer[0].profiles[0].first_name + review.peer[0].profiles[0].last_name}}</h6>
-                            </div>
-                            <div class="col-md-12">
-                              <p>{{getReadableDate(review.startDate)}}</p>
-                            </div>
+                          <div class="col-md-12">
+                            <h4>{{review.peer[0].profiles[0].first_name + review.peer[0].profiles[0].last_name}}</h4>
+                          </div>
+                          <div class="col-md-12">
+                            <p>{{review.createdAt | date:'mediumDate'}}</p>
                           </div>
                         </div>
                       </div>
@@ -172,7 +173,7 @@
                       <br>
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row" *ngIf="workshop.reviews.length>3">
                     <div class="col-md-12">
                       <hr>
                       <a [hidden]="noOfReviews!==4" (click)="toggleReviews()">See all {{workshop.reviews.length}} reviews</a>
@@ -183,7 +184,6 @@
                 </div>
               </div>
             </div>
-            <hr>
             <div class="row Eligibility" *ngIf="userType==='teacher'">
               <div class="col-md-8">
                 <div class="row">
@@ -278,7 +278,17 @@
                     (dayClicked)="dayClicked($event.day)">
                   </mwl-calendar-month-view>
                 </div>
-
+              </div>
+              <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
+                <div [ngClass]="{'displayFlex': dateClicked}">
+                  <span class="cal-day-badge"></span><h4>{{ clickedDate | date:'EEE, MMM dd' }}</h4>
+                </div>
+                <div class="displayFlex event" *ngFor="let event of events">
+                  <span>{{ event.start | date:'hh:mm' }}</span>
+                  <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
+                  <span class="flex"></span>
+                  <span>{{ event.title }}</span>
+                </div>
               </div>
             </div>
             <hr *ngIf="userType==='public'">
@@ -327,10 +337,18 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="col-md-1">
+                        <md-icon>schedule</md-icon>
+                      </div>
+                      <div class="col-md-11">
+                        <h6>{{totalDuration}} hours in total</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="col-md-1">
                         <md-icon>mic</md-icon>
                       </div>
                       <div class="col-md-11">
-                        <p>Offered in {{workshop.language[0]}}</p>
+                        <h6>Offered in {{workshop.language[0]}}</h6>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -338,7 +356,7 @@
                         <md-icon>dvr</md-icon>
                       </div>
                       <div class="col-md-11">
-                        {{getContentCount('project')}} Project
+                        <h6>{{getContentCount('project')}} Project</h6>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -346,7 +364,7 @@
                         <md-icon>play_circle_outline</md-icon>
                       </div>
                       <div class="col-md-11">
-                        {{getContentCount('video')}} Recorded Videos
+                        <h6>{{getContentCount('video')}} Recorded Videos</h6>
                       </div>
                     </div>
                   </div>
@@ -361,16 +379,16 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                       <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
                     </div>
                     <div class="col-md-6">
-                      <p> {{workshop.reviews.length}} Reviews</p>
+                      <h6>{{workshop.reviews.length}} Reviews</h6>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <button md-button>Dates</button>
+                  <button md-raised-button (click)="selectJoiningDates()" class="full-width mat-accent">Dates</button>
                 </div>
               </div>
             </div>
@@ -389,36 +407,47 @@
             </div>
           </div>
         </div>
-        <hr>
-        <div *ngIf="userType!=='teacher'" class="row workshop-suggestions">
-          <ul class="list-inline recommendation-list">
-            <li *ngFor="let collection of recommendations.collections">
-              <md-card class="recommendation-card">
-                <div *ngIf="collection.imageUrls.length>0">
-                  <img md-card-image class="recommendation-thumb" src="{{config.apiUrl+collection.imageUrls[0]}}">
-                </div>
-                <p>
-                  {{getReadableDate(collection.calendars[0].startDate)}}
-                </p>
-                <md-card-title>
-                  {{collection.title}}
-                </md-card-title>
-                <md-card-subtitle class="row">
-                  <div class="col-md-12">
-                    <p-rating [ngModel]="collection.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
-                  </div>
-                  <div class="col-md-3">
-                    <img md-card-image src="{{config.apiUrl+ collection.owners[0].profiles[0].picture_url}}" class="img-circle profile-thumb">
-                  </div>
-                  <div class="col-md-7">
-                    <p>
-                      {{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}
-                    </p>
-                  </div>
-                </md-card-subtitle>
-              </md-card>
-            </li>
-          </ul>
+        <div class="row workshop-suggestions" *ngIf="userType!=='teacher'">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <h3>Similar Workshops</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="12">
+                <ul class="list-inline recommendation-list">
+                  <li *ngFor="let collection of recommendations.collections">
+                    <md-card class="recommendation-card">
+                      <img *ngIf="collection.imageUrls.length>0" md-card-image src="{{config.apiUrl+collection.imageUrls[0]}}" class="recommendation-thumb">
+                      <div class="container">
+                        <div class="col-md-12">
+                          <p>{{collection.calendars[0].startDate | date:'mediumDate'}}</p>
+                        </div>
+                        <div class="col-md-12">
+                          <h4>{{collection.title}}</h4>
+                        </div>
+                        <div class="col-md-12">
+                          <p-rating [ngModel]="collection.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2">
+                            <img src="{{config.apiUrl+ collection.owners[0].profiles[0].picture_url}}" class="img-circle profile-thumb">
+                          </div>
+                          <div class="col-md-10">
+                            <p>{{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</p>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <p>{{collection.participants.length}} . {{collection.topics[0].name}}</p>
+                        </div>
+                      </div>
+                    </md-card>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

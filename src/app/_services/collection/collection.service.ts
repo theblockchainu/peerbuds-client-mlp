@@ -156,7 +156,7 @@ export class CollectionService {
   }
   /* Submit workshop for Review */
   public submitForReview(id: string) {
-    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', {}).map(
+    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', {}, this.options).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -371,7 +371,7 @@ export class CollectionService {
     const body = {
     };
     return this.http
-      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo, body)
+      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -381,7 +381,7 @@ export class CollectionService {
   public confirmSmsOTP(inputToken) {
     const body = {};
     return this.http
-      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body)
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -394,9 +394,8 @@ export class CollectionService {
   public getRecommendations(query, cb) {
     const filter = JSON.stringify(query);
     this.http
-      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter)
+      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter, this.options)
       .map((response) => {
-        console.log(response.json());
         cb(null, response.json());
       }, (err) => {
         cb(err);

@@ -17,4 +17,11 @@ export class ContentOnlineComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * joinSession
+   */
+  public joinSession() {
+    console.log('Handle Online session here');
+  }
+
 }

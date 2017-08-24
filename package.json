@@ -77,6 +77,7 @@
     "ng4-geoautocomplete": "^0.0.9",
     "ngx-bootstrap": "^1.8.0",
     "ngx-cookie-service": "^1.0.7",
+    "ngx-pipes": "^1.6.3",
     "primeng": "^4.1.2",
     "rxjs": "^5.4.3",
     "zone.js": "^0.8.14"

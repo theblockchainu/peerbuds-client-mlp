@@ -14,9 +14,10 @@ import {
 } from 'ngx-bootstrap';
 import {
   FileUploadModule, ScheduleModule, DialogModule,
-  CheckboxModule, LightboxModule, RatingModule
+  CheckboxModule, LightboxModule, RatingModule,
+  AccordionModule
 } from 'primeng/primeng';
-
+import { NgPipesModule } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
 
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
@@ -95,7 +96,9 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     MdTabsModule,
     MdTableModule,
     CdkTableModule,
-    MdInputModule
+    MdInputModule,
+    NgPipesModule,
+    AccordionModule
   ]
 })
 export class SharedModule { }
