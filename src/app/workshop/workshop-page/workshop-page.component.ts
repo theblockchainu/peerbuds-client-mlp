@@ -39,6 +39,7 @@ export class WorkshopPageComponent implements OnInit {
   public messagingParticipant: any;
   public allItenaries = [];
   public itenariesObj = {};
+  public defaultProfileUrl = '/assets/images/avatar.png';
 
   public userRating: number;
   public isReadonly = true;
@@ -155,7 +156,8 @@ export class WorkshopPageComponent implements OnInit {
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
-          console.log(this.workshop);
+
+          console.log('itenaryArray: ' + JSON.stringify(this.itenaryArray));
         },
         err => console.log('error'),
         () => {
@@ -386,7 +388,7 @@ content:any   */
               content: content,
               userType: this.userType
             },
-            width: '800px'
+            width: '660px'
           }); break;
         }
       default:

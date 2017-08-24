@@ -1,63 +1,51 @@
-<div id="content">
+<div class="main-content workshop-view-setion">
   <div *ngIf="workshop">
     <div class="row">
       <div class="col-md-10 col-md-offset-1">
         <div class="row workshop-header">
           <div class="col-md-8">
-            <div class="row">
-              <div class="col-md-12">
-                <h1>{{workshop.title}}</h1>
-              </div>
+            <div>user: {{userType}}</div>
+            <h1>{{workshop.title}}</h1>
+            <div *ngIf="userType==='teacher' || userType==='participant'">
+              <span>{{calendarDisplay.startDate}} - {{calendarDisplay.endDate}} {{totalDuration}} Hours</span>
+              <span class="bullet">{{workshop.contents.length}} parts</span>
+              <a *ngIf="userType==='teacher'" class="text-green display-inline-block margin-left-15" href="javascript:;" (click)="changeDates()"><i class="fa fa-calendar" aria-hidden="true" ></i> Change Dates</a>
             </div>
-            <div class="row">
-              <div class="col-md-12" *ngIf="userType==='teacher'">
-                {{calendarDisplay.startDate}} - {{calendarDisplay.endDate}} {{totalDuration}} Hours . {{workshop.contents.length}} parts
-                <i class="fa fa-calendar" aria-hidden="true" (click)="changeDates()"> Change Dates</i>
-              </div>
-              <div class="col-md-12" *ngIf="userType==='public'">
-                <p>{{itenaryArray.length}} days / {{totalDuration}} Hours . {{workshop.contents.length}} parts</p>
-              </div>
+            <div *ngIf="userType==='public'">
+              <span>{{itenaryArray.length}} days / {{totalDuration}} Hours</span>
+              <span class="bullet">{{workshop.contents.length}} parts</span>
             </div>
           </div>
           <div class="col-md-4">
-            <div class="row" *ngIf="userType==='teacher'">
-              <div class="col-md-11">
-                <button type="button" md-button class="pull-right" (click)="joinGroupChat()">  Join Group Chat  </button>
-                <button type="button" md-button class="pull-right" (click)="gotoEdit()">  Edit  </button>
-              </div>
-              <div class="col-md-1">
-                <md-icon [mdMenuTriggerFor]="menu">settings</md-icon>
-                <md-menu #menu="mdMenu">
-                  <button md-menu-item *ngIf="booked" (click)="openDeleteDialog('cancel')">Cancel Workshop</button>
-                  <button md-menu-item *ngIf="!booked" (click)="openDeleteDialog('delete')">Delete Workshop</button>
-                </md-menu>
-              </div>
+            <div class="pull-right padding-top-20">
+              <button type="button" md-button (click)="joinGroupChat()" *ngIf="userType !='public'">  Join Group Chat  </button>
+              <button type="button" md-button (click)="gotoEdit()" *ngIf="userType==='teacher'">  Edit  </button>
+              <md-icon [mdMenuTriggerFor]="menu" class="mat-icon-setting" *ngIf="userType !='public'">settings</md-icon>
+              <md-menu #menu="mdMenu">
+                <button md-menu-item *ngIf="booked || userType==='participant'">Cancel Dates</button>
+                <button md-menu-item *ngIf="booked || userType !='public'" (click)="openDeleteDialog('cancel')">Cancel Workshop</button>
+                <button md-menu-item *ngIf="userType==='teacher'" (click)="openDeleteDialog('delete')">Delete Workshop</button>
+              </md-menu>
             </div>
           </div>
         </div>
-        <hr>
         <div class="row workshop-content">
           <div class="col-md-7 left-content">
-            <div class="row About">
-              <div class="col-md-8">
-                <h3>About this Workshop</h3>
-                <h4 *ngIf="userType==='teacher' || userType==='participant'">{{workshop.headline}}
-                  <a (click)="workshopVideoDialog()" *ngIf="workshop.videoUrl">
-                      Watch Explainer Video <i class="fa fa-play-circle" aria-hidden="true"></i>                      
-                    </a>
-                </h4>
-                <p> {{workshop.description}} </p>
+            <div class="seperate-section about-this">
+              <h3>About this Workshop</h3>
+              <div class="about-position" *ngIf="userType==='teacher' || userType==='participant'">{{workshop.headline}}
+                <a href="javascript:;" class="text-green display-inline-block margin-left-15 fw-normal" (click)="workshopVideoDialog()" *ngIf="workshop.videoUrl && userType !='public'">
+                  <i class="fa fa-play-circle" aria-hidden="true"></i> Watch Explainer Video                      
+                </a>
               </div>
-            </div>
-            <div class="row Topics">
-              <div class="col-md-8">
+              <p class="about-description"> {{workshop.description}} </p>
+              <div class="margin-top-20">
                 <md-chip-list>
                   <md-chip class="mat-elevation-z3" *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
                 </md-chip-list>
               </div>
             </div>
-            <hr>
-            <div class="row Description" *ngIf="userType==='public' || userType==='participant'">
+            <div class="row seperate-section" *ngIf="userType==='public' || userType==='participant'">
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-4">
@@ -74,47 +62,44 @@
                 </div>
               </div>
             </div>
-            <hr>
             <div class="row Itenary">
-              <div class="featurette" id="about">
-                <div class="col-md-12">
-                  <div class="qa-message-list" id="wallmessages">
-                    <div class="message-item" *ngFor="let itenary of itenaryArray">
-                      <div class="message-inner">
-                        <div class="qa-message-content">
-                          <div class="row">
-                            <div class="col-md-8" *ngIf="userType==='teacher' || userType==='participant'"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
-                            <div class="col-md-8" *ngIf="userType==='public'">Day {{itenary.startDay}}</div>
-                          </div>
-                          <div class="row" *ngFor="let content of itenary.contents" (click)="openDialog(content)">
-                            <div class="col-md-6" style="object-fit:contain">
-                              <br>
-                              <br>
-                              <img *ngIf="content.type!=='video'" class="img-responsive center-block mat-elevation-z4 itenary-media" src="{{config.apiUrl+content.imageUrl}}">
-                              <video *ngIf="content.type==='video'" class="center-block mat-elevation-z4 itenary-media" src="{{config.apiUrl+content.imageUrl}}"
-                                preload="metadata"></video>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <h3> {{content.title}}</h3>
-                                  <h4> {{content.type}} content </h4>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <p> {{content.description | shorten: 115 : '...read more'}} </p>
-                                </div>
-                              </div>
-                              <div class="row" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant')">
-                                <div class="col-md-12">
-                                  <button md-button *ngIf="isLive(content)" (click)="joinSession(content)">Join</button>
-                                  <button md-button *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
-                                </div>
-                              </div>
-                            </div>
+              <div class="col-md-12 seperate-section">
+                <div class="qa-message-list" id="wallmessages">
+                  <div class="message-item" *ngFor="let itenary of itenaryArray">
+                    <div class="message-inner">
+                      <div class="qa-message-content">
+                        <div class="row">
+                          <div class="col-md-8" *ngIf="userType==='teacher' || userType==='participant'"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
+                          <div class="col-md-8" *ngIf="userType==='public'">Day {{itenary.startDay}}</div>
+                        </div>
+                        <div class="row" *ngFor="let content of itenary.contents" (click)="openDialog(content)">
+                          <div class="col-md-6" style="object-fit:contain">
                             <br>
+                            <br>
+                            <img *ngIf="content.type!=='video'" class="img-responsive center-block mat-elevation-z4 itenary-media" src="{{config.apiUrl+content.imageUrl}}">
+                            <video *ngIf="content.type==='video'" class="center-block mat-elevation-z4 itenary-media" src="{{config.apiUrl+content.imageUrl}}"
+                              preload="metadata"></video>
                           </div>
+                          <div class="col-md-6">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <h3> {{content.title}}</h3>
+                                <h4> {{content.type}} content </h4>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <p> {{content.description | shorten: 115 : '...read more'}} </p>
+                              </div>
+                            </div>
+                            <div class="row" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant')">
+                              <div class="col-md-12">
+                                <button md-button *ngIf="isLive(content)" (click)="joinSession(content)">Join</button>
+                                <button md-button *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
+                              </div>
+                            </div>
+                          </div>
+                          <br>
                         </div>
                       </div>
                     </div>
@@ -209,22 +194,21 @@
             </div>
           </div>
           <div class="col-md-4 col-md-offset-1 right-content">
-            <div class="row" *ngIf="userType==='teacher'">
+            <div class="row seperate-section" *ngIf="userType==='teacher'">
               <h3>Attendies</h3>
               <div class="row" *ngFor="let participant of workshop.participants; let i=index">
-                <div *ngIf="participant.profiles && i<4">
-                  <div class="col-md-2">
-                    <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle profile-thumb" alt="dp">
+                <div class="attendies-list" *ngIf="participant.profiles && i<4">
+                  <div class="col-md-7">
+                    <img src="{{participant.profiles[0].picture_url ? config.apiUrl+participant.profiles[0].picture_url : defaultProfileUrl}}"
+                      class="attendies-thumb img-circle thumb-30" alt="dp">
+                    <div class="attendies-name dot-dot">{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}</div>
                   </div>
-                  <div class="col-md-4">
-                    {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}
+                  <div class="col-md-5 attendies-position" *ngIf="participant.profiles[0].work">
+                    {{participant.profiles[0].work[0].position}}
                   </div>
-                  <div class="col-md-4" *ngIf="participant.profiles[0].work">{{participant.profiles[0].work[0].position}}</div>
                 </div>
               </div>
-              <div>
-                <a (click)="viewParticipants()"> View All Peers </a>
-              </div>
+              <a href="javascript:;" class="display-inline-block margin-top-10" (click)="viewParticipants()"> View All Peers </a>
             </div>
             <div class="row" *ngIf="userType==='public'">
               <div class="row">
