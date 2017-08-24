@@ -327,7 +327,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public getContents(contents) {
-    debugger;
     const itenaries = {};
     for (const contentObj of contents) {
       contentObj.schedule = contentObj.schedules[0];
