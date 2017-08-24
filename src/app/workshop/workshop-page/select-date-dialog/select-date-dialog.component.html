@@ -1,3 +1,33 @@
-<p>
-  select-date-dialog works!
-</p>
+<p-accordion (onOpen)="onTabOpen($event)">
+  <p-accordionTab *ngFor="let calendar of data.calendars; let i=index">
+    <p-header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="col-md-12">
+              <h4>{{calendar.startDate | date:'EEEE, MMMM d'}} - {{calendar.endDate | date:'EEEE, MMMM d'}}</h4>
+            </div>
+            <div class="col-md-12">
+              <p *ngIf="i!==selectedIndex">View Schedule</p>
+              <p *ngIf="i===selectedIndex">Hide Schedule</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <br>
+            <br>
+            <div class="col-md-12">
+              <button md-raised-button [disabled]="i!==selectedIndex">Choose Date</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-header>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          
+        </div>
+      </div>
+    </div>
+  </p-accordionTab>
+</p-accordion>

@@ -6112,3 +6112,15 @@ footer {
    border: 3px solid #ffffff;
 }
 
+
+.ui-accordion .ui-accordion-header{
+    background:rgba(255, 255, 255, 0.00);
+    
+}
+.ui-accordion .ui-accordion-header .fa-caret-right,.ui-accordion .ui-accordion-header .fa-caret-down{
+    display: none;
+}
+
+.ui-state-default {
+    border: 0px solid #d6d6d6;
+}
