@@ -6234,3 +6234,7 @@ h3.calendarTiitle  {
     margin-top: 0px !important;
     min-width: 8px !important;
 }
+
+.margin-top-20 {
+    margin-top: 20px;
+}

@@ -289,6 +289,9 @@
                   <span class="flex"></span>
                   <span>{{ event.title }}</span>
                 </div>
+                <div class="prevNext margin-top-20">
+                  <button md-raised-button (click)="viewDetails()" color="primary">View Details</button>
+                </div>
               </div>
             </div>
             <hr *ngIf="userType==='public'">

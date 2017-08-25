@@ -171,8 +171,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    debugger;
-    this.dateClicked = !this.dateClicked;
+    this.dateClicked = true; // !this.dateClicked;
     this.clickedDate = date;
     if (isSameMonth(date, this.viewDate)) {
       if (
@@ -202,6 +201,7 @@ export class WorkshopPageComponent implements OnInit {
       this.workshopId = params['workshopId'];
     });
     this.userId = cookieUtilsService.getValue('userId');
+    console.log(this.events);
   }
 
   ngOnInit() {
@@ -247,6 +247,7 @@ export class WorkshopPageComponent implements OnInit {
     if (this.workshopId) {
       this._collectionService.getCollectionDetail(this.workshopId, query)
         .subscribe(res => {
+          console.log(res);
           this.workshop = res;
 
           this.parseCalendar(this.workshop);
@@ -279,7 +280,8 @@ export class WorkshopPageComponent implements OnInit {
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
-          console.log(this.workshop);
+          console.log(this.itenaryArray);
+          // console.log(this.workshop);
 
         },
         err => console.log('error'),
