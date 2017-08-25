@@ -27,22 +27,26 @@ export class WorkshopPageComponent implements OnInit {
 
   public workshopId: string;
   public userId: string;
-  public workshop: any;
-  public itenaryArray = [];
-  public currentCalendar: any;
   public booked = false;
-  public chatForm: FormGroup;
   public userType: string;
   public totalDuration: string;
+  public calendarId: string;
+  public userRating: number;
+
+  public isReadonly = true;
+  public noOfReviews = 4;
+  private initialised = false;
+
+  public itenaryArray = [];
+  public workshop: any;
+  public currentCalendar: any;
+  public chatForm: FormGroup;
   public modalContent: any;
   public topicFix: any;
   public messagingParticipant: any;
   public allItenaries = [];
   public itenariesObj = {};
-  public calendarId: string;
-  public userRating: number;
-  public isReadonly = true;
-  public noOfReviews = 4;
+
   public recommendations = {
     collections: []
   };
@@ -53,18 +57,25 @@ export class WorkshopPageComponent implements OnInit {
     private _collectionService: CollectionService,
     private config: AppConfig,
     private _fb: FormBuilder,
-    private dialog: MdDialog
+    private dialog: MdDialog,
   ) {
     this.activatedRoute.params.subscribe(params => {
+      if (this.initialised && (this.workshopId !== params['workshopId'] || this.calendarId !== params['calendarId'])) {
+        location.reload();
+      }
       this.workshopId = params['workshopId'];
+      this.calendarId = params['calendarId'];
+      console.log('route changed');
     });
     this.userId = cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
+    this.initialised = true;
     this.initializeWorkshop();
     this.initializeForms();
   }
+
 
   private initializeUserType() {
     if (this.workshop) {
@@ -117,8 +128,6 @@ export class WorkshopPageComponent implements OnInit {
         });
 
     });
-    console.log(this.allItenaries);
-
   }
 
   private initializeWorkshop() {
@@ -212,21 +221,18 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   public setCurrentCalendar() {
-    this.activatedRoute.params.subscribe(params => {
-      this.calendarId = params['calendarId'];
-      if (this.calendarId) {
-        const calendarIndex = this.workshop.calendars.findIndex(calendar => {
-          return calendar.id === this.calendarId;
-        });
-        if (calendarIndex > -1) {
-          this.currentCalendar = this.workshop.calendars[calendarIndex];
-        } else {
-          console.log('Calendar instance not found');
-        }
+    if (this.calendarId) {
+      const calendarIndex = this.workshop.calendars.findIndex(calendar => {
+        return calendar.id === this.calendarId;
+      });
+      if (calendarIndex > -1) {
+        this.currentCalendar = this.workshop.calendars[calendarIndex];
       } else {
-        console.log('Calendar id not found');
+        console.log('Calendar instance not found');
       }
-    });
+    } else {
+      console.log('Calendar id not found');
+    }
   }
 
   /**
@@ -499,6 +505,11 @@ content:any   */
         this.router.navigate(['workshop', this.workshopId, 'calendar', calendarId]);
       }
     });
+  }
+
+  private extractTime(dateString: string) {
+    const time = moment.utc(dateString).local().format('HH:mm:ss');
+    return time;
   }
 
 }
