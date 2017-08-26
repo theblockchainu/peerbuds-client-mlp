@@ -1,11 +1,12 @@
 <p-accordion (onOpen)="onTabOpen($event)">
-  <p-accordionTab *ngFor="let calendar of data.calendars; let i=index">
+  <p-accordionTab *ngFor="let itenaryObj of data; let i=index">
     <p-header>
       <div class="container">
         <div class="row">
           <div class="col-md-9">
             <div class="col-md-12">
-              <h4>{{calendar.startDate | date:'EEEE, MMMM d'}} - {{calendar.endDate | date:'EEEE, MMMM d'}}</h4>
+              <h4>{{itenaryObj.calendar.startDate | date:'EEEE, MMMM d'}}-{{itenaryObj.calendar.endDate | date:'EEEE, MMMM d'}}
+              </h4>
             </div>
             <div class="col-md-12">
               <p *ngIf="i!==selectedIndex">View Schedule</p>
@@ -16,7 +17,7 @@
             <br>
             <br>
             <div class="col-md-12">
-              <button md-raised-button [disabled]="i!==selectedIndex">Choose Date</button>
+              <button md-raised-button md-dialog-close="{{itenaryObj.calendar.id}}" [disabled]="i!==selectedIndex">Choose Date</button>
             </div>
           </div>
         </div>
@@ -24,8 +25,14 @@
     </p-header>
     <div class="container">
       <div class="row">
-        <div class="col-md-4">
-          
+        <div class="col-md-12" *ngFor="let itenary of itenaryObj.itenary">
+          <div class="col-md-12">
+            <p>{{itenary.startDate | date:'EE MMM d'}}</p>
+          </div>
+          <div class="col-md-12">
+            <p>{{itenary.contents[0].schedules[0].startTime | extractTime:'HH:mm:ss'}} - {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime
+              | extractTime:'HH:mm:ss'}}</p>
+          </div>
         </div>
       </div>
     </div>
