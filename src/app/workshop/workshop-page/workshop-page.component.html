@@ -10,9 +10,16 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12" *ngIf="userType==='teacher'">
-                {{calendarDisplay.startDate}} - {{calendarDisplay.endDate}} {{totalDuration}} Hours . {{workshop.contents.length}} parts
-                <i class="fa fa-calendar" aria-hidden="true" (click)="changeDates()"> Change Dates</i>
+              <div class="col-md-12" *ngIf="userType==='teacher' || userType==='participant'">
+                <div class="col-md-2">
+                  <p *ngIf="currentCalendar">{{currentCalendar.startDate | date:'d MMM'}} - {{currentCalendar.endDate| date:'d MMM'}}</p>
+                </div>
+                <div class="col-md-2">
+                  <p> {{totalDuration}} Hours . {{workshop.contents.length}} parts</p>
+                </div>
+                <div class="col-md-2">
+                  <md-icon *ngIf="userType==='teacher'" (click)="changeDates()">date_range</md-icon>
+                </div>
               </div>
               <div class="col-md-12" *ngIf="userType==='public'">
                 <p>{{itenaryArray.length}} days / {{totalDuration}} Hours . {{workshop.contents.length}} parts</p>
@@ -52,7 +59,7 @@
             <div class="row Topics">
               <div class="col-md-8">
                 <md-chip-list>
-                  <md-chip class="mat-elevation-z3" *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
+                  <md-chip *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
                 </md-chip-list>
               </div>
             </div>
@@ -283,7 +290,7 @@
                 <div [ngClass]="{'displayFlex': dateClicked}">
                   <span class="cal-day-badge"></span><h4>{{ clickedDate | date:'EEE, MMM dd' }}</h4>
                 </div>
-                <div class="displayFlex event" *ngFor="let event of events">
+                <div class="displayFlex event" *ngFor="let event of eventsForTheDay">
                   <span>{{ event.start | date:'hh:mm' }}</span>
                   <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
                   <span class="flex"></span>
@@ -441,8 +448,11 @@
                             <p>{{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</p>
                           </div>
                         </div>
-                        <div class="col-md-12">
-                          <p>{{collection.participants.length}} . {{collection.topics[0].name}}</p>
+                        <div class="col-md-3">
+                          <p>{{collection.participants.length}}</p>
+                        </div>
+                        <div class="col-md-9" *ngIf="collection.topics.length>0">
+                          <md-chip>{{collection.topics[0].name}}</md-chip>
                         </div>
                       </div>
                     </md-card>

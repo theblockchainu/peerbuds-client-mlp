@@ -1,25 +1,22 @@
-<div id="content" class="profile-setion">
-  <div class="">
+<div class="main-content profile-setion">
+  <div class="" *ngIf="profile">
     <div class="row">
       <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
         <div class="profile-image-big">
-           <img src="{{config.apiUrl+profile.picture_url ? config.apiUrl+profile.picture_url: defaultProfileUrl}}" alt="image" />
+          <img src="{{profile.picture_url ? config.apiUrl+profile.picture_url : defaultProfileUrl}}" alt="image"
+          />
         </div>
         <div class="seperate-section text-center">
-          <div class="title dot-dot">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
-          <div class="sub-title dot-dot">{{peer.profiles[0].headline}}</div>
+          <div class="title dot-dot">{{profile.first_name}} {{profile.last_name}}</div>
+          <div class="sub-title dot-dot">{{profile.headline}}</div>
           <div class="margin-top-10" [hidden]="profileId === userId">
             <button class="btn btn-default" title="Message">Message</button>
             <span class="online-status online margin-left-15" title="Online"></span>
           </div>
         </div>
-        <!--<div class="seperate-section">
-          <div class="fs-18 fw-bold">Karma Earned <i class="fa fa-question-circle text-grey"></i></div>
-          <div class="text-center fs-20 text-grey margin-top-15">3.045k</div>
-        </div>-->
         <div class="seperate-section fs-14">
-          <div class="text-grey margin-bottom-10"><i class="fa fa-microphone margin-right-10"></i> {{peer.profiles[0].languages}}</div>
-          <div class="text-grey"><i class="fa fa-map-marker margin-right-10"></i> {{peer.profiles[0].location}}</div>
+          <div class="text-grey margin-bottom-10"><i class="fa fa-microphone margin-right-10"></i> {{profile.languages}}</div>
+          <div class="text-grey"><i class="fa fa-map-marker margin-right-10"></i> {{profile.location}}</div>
         </div>
         <div class="seperate-section">
           <div class="fs-18 fw-bold margin-bottom-20">Social Profiles</div>
@@ -45,7 +42,7 @@
       <div class="col-sm-5">
         <div class="seperate-section padding-top-0">
           <h3 class="heading">About me</h3>
-          <p class="text-grey lh-28 margin-bottom-0">{{peer.profiles[0].description}}</p>
+          <p class="text-grey lh-28 margin-bottom-0">{{profile.description}}</p>
         </div>
         <div class="seperate-section">
           <h3 class="heading">What I teach</h3>
@@ -71,46 +68,53 @@
             <div class="resume-thumb"><i class="fa fa-briefcase"></i></div>
             <div class="display-inline-block fs-14">
               <p class="fw-bold fs-18">Work Experience</p>
-              <p>
-                <span class="fw-bold">Illustrator</span>
-                <span class="bullet">Fireworks</span>
+              <p *ngIf="!profileWork">Not available</p>
+              <p *ngFor="let work of profileWork">
+                <span class="fw-bold">{{ work.position }}</span>
+                <span class="bullet">{{ work.company }}</span>
+                <span class="display-block margin-top-10">{{ work.startDate | date: 'yyyy' }} - {{ work.endDate | date: 'yyyy' }}</span>
               </p>
-              <p>2013 - Present</p>
             </div>
           </div>
           <div class="resume-list">
             <div class="resume-thumb"><i class="fa fa-book"></i></div>
             <div class="display-inline-block fs-14">
               <p class="fw-bold fs-18">Education</p>
-              <p>
-                <span class="fw-bold">Bachelor</span>
+               <p *ngIf="!profileEducation">Not available</p>
+              <p *ngFor="let education of profileEducation">
+                <span class="fw-bold">{{ education.degree }}</span>
                 <span class="bullet">Graphic Design</span>
+                <span class="display-block margin-top-10">{{ education.school }}</span>
               </p>
-              <p>University of Toronto</p>
             </div>
           </div>
         </div>
-        <div class="seperate-section padding-bottom-0">
+        <div class="seperate-section padding-bottom-0 border-none">
           <div class="margin-bottom-30">
             <div class="heading">Reviews
-              <rating [(ngModel)]="rate" [readonly]="isReadonly"></rating>
+              <p-rating [(ngModel)]="rate" [readonly]="true" [cancel]="false" stars="{{max}}"></p-rating>
             </div>
             <span>From Learners</span>
           </div>
-          <div class="review-section" *ngFor="let review of reviews">
-            <img src="{{review.reviewer.picture_url}}" class="review-thumb thumb-circle" />
-            <div class="review-title">{{ review.reviewer.first_name }}</div>
-            <div class="review-content">
-              <div class="review-desc">{{ review.description }}</div>
-              <div class="review-bottom">
-                <span>{{ review.collection.type }}</span>
-                <span class="bullet">{{ review.collection.createdAt | date: 'MMMM yyyy' }}</span>
-                <span class="bullet"><a href="javascript:;" class="text-green">{{ review.collection.title }}</a></span>
+          <div *ngIf="!reviews">No reviews</div>
+          <div class="review-section" *ngFor="let review of reviews; let i=index">
+            <!--<img src="{{review.reviewer.picture_url}}" class="review-thumb thumb-circle" />-->
+            <div *ngIf="i < 5">
+              <img src="{{review.reviewer.picture_url ? config.apiUrl+review.reviewer.picture_url : defaultProfileUrl}}" class="review-thumb thumb-circle"
+              />
+              <div class="review-title">{{ review.reviewer.first_name }}</div>
+              <div class="review-content">
+                <div class="review-desc">{{ review.description }}</div>
+                <div class="review-bottom">
+                  <span>{{ review.collection.type }}</span>
+                  <span class="bullet">{{ review.collection.createdAt | date: 'MMMM yyyy' }}</span>
+                  <span class="bullet"><a href="javascript:;" class="text-green">{{ review.collection.title }}</a></span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="review-all">
-            <a href="javascript:;">See all 34 reviews</a>
+          <div class="review-all" *ngIf="reviews && reviews.length > 5">
+            <a href="javascript:;">See all {{ reviews.length }} reviews</a>
           </div>
           <!--<div class="margin-top-30 margin-bottom-30">
             <span>From Teachers</span>
@@ -150,6 +154,22 @@
       <div class="col-sm-3" [hidden]="userType !== 'teacher'">
         <div class="sidebar-right">
           <div class="sidebar-box">
+            
+            <!--<md-tab-group>
+              <md-tab label="Session">
+                <h1>Session Heading</h1>
+                <p>Session content</p>
+              </md-tab>
+              <md-tab label="Experience">
+                <h1>Experience Heading</h1>
+                <p>Experience content</p>
+              </md-tab>
+              <md-tab label="Workshop">
+                <h1>Workshop Heading</h1>
+                <p>Workshop content</p>
+              </md-tab>
+            </md-tab-group>-->
+
             <tabset>
               <tab heading="Session" customClass="sidebar-tabs" [hidden]="!sessions">
                 <div class="sidebar-section margin-top-30">
@@ -220,8 +240,8 @@
               </div>
             </h3>
           </div>
-          <div class="col-sm-3" *ngFor="let joinedCollection of peer.collections">
-            <div class="full-section-list">
+          <div class="col-sm-3" *ngFor="let joinedCollection of peer.collections; let i = index;">
+            <div class="full-section-list" *ngIf="i < 4">
               <img src="http://lorempixel.com/250/250/business/1/" alt="image" class="section-image img-responsive border-radius-5" />
               <div class="section-head dot-dot">{{ joinedCollection.title }}</div>
               <div class="section-des"><strong>{{ joinedCollection.currency }} {{ joinedCollection.price }}</strong> {{ joinedCollection.description
@@ -229,44 +249,12 @@
                 <a href="javascript:;" class="text-black" [hidden]="(joinedCollection.description).length <= 127">...see details</a>
               </div>
               <div class="section-rating">
-                <rating [(ngModel)]="joinedCollection.rate" [readonly]="isReadonly" class="margin-right-10" style="margin-left:0;"></rating>
+                <p-rating [(ngModel)]="joinedCollection.rate" [cancel]="false" [readonly]="true" stars="{{max}}" class="margin-right-10"
+                  style="margin-left:0;"></p-rating>
                 <span>{{ joinedCollection.reviews.length }} reviews</span>
               </div>
             </div>
           </div>
-          <!--<div class="col-sm-3">
-            <div class="full-section-list">
-              <img src="http://lorempixel.com/250/250/business/2/" alt="image" class="section-image img-responsive border-radius-5" />
-              <div class="section-head dot-dot">How to make home made pasta</div>
-              <div class="section-des"><strong>$12</strong> Lorem ipsum dolor sit amit. Lorem ipsum dolor sit amit. Lorem... <a href="javascript:;"
-                  class="text-black">see details</a></div>
-              <div class="section-rating">
-                <span>307 reviews</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="full-section-list">
-              <img src="http://lorempixel.com/250/250/business/3/" alt="image" class="section-image img-responsive border-radius-5" />
-              <div class="section-head dot-dot">How to make home made pasta</div>
-              <div class="section-des"><strong>$12</strong> Lorem ipsum dolor sit amit. Lorem ipsum dolor sit amit. Lorem... <a href="javascript:;"
-                  class="text-black">see details</a></div>
-              <div class="section-rating">
-                <span>307 reviews</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="full-section-list">
-              <img src="http://lorempixel.com/250/250/business/4/" alt="image" class="section-image img-responsive border-radius-5" />
-              <div class="section-head dot-dot">How to make home made pasta</div>
-              <div class="section-des"><strong>$12</strong> Lorem ipsum dolor sit amit. Lorem ipsum dolor sit amit. Lorem... <a href="javascript:;"
-                  class="text-black">see details</a></div>
-              <div class="section-rating">
-                <span>307 reviews</span>
-              </div>
-            </div>
-          </div>-->
         </div>
         <!-- learning journey row ends -->
 
@@ -473,8 +461,8 @@
     <!-- book session join modal end -->
 
     <!-- see dates workshop modal start -->
-    <div class="modal fade" bsModal #seeDatesWorkshopModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog" aria-labelledby="seeDatesModalModalLabel"
-      aria-hidden="true">
+    <div class="modal fade" bsModal #seeDatesWorkshopModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
+      aria-labelledby="seeDatesModalModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
@@ -520,8 +508,8 @@
     <!-- see dates workshop modal end -->
 
     <!-- see dates experience modal start -->
-    <div class="modal fade" bsModal #seeDatesExperienceModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog" aria-labelledby="seeDatesModalModalLabel"
-      aria-hidden="true">
+    <div class="modal fade" bsModal #seeDatesExperienceModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
+      aria-labelledby="seeDatesModalModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
@@ -608,4 +596,4 @@
       </div>
     </div>
     <!-- edit session modal end -->
-</div>
+  </div>

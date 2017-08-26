@@ -71,20 +71,26 @@ export class WorkshopPageComponent implements OnInit {
 
   public workshopId: string;
   public userId: string;
-  public workshop: any;
-  public itenaryArray = [];
-  public calendarDisplay = {};
   public booked = false;
-  public chatForm: FormGroup;
   public userType: string;
   public totalDuration: string;
+  public calendarId: string;
+  public userRating: number;
+
+  public isReadonly = true;
+  public noOfReviews = 4;
+  private initialised = false;
+
+  public itenaryArray = [];
+  public workshop: any;
+  public currentCalendar: any;
+  public chatForm: FormGroup;
   public modalContent: any;
   public topicFix: any;
   public messagingParticipant: any;
+  public allItenaries = [];
+  public itenariesObj = {};
 
-  public userRating: number;
-  public isReadonly = true;
-  public noOfReviews = 4;
   public recommendations = {
     collections: []
   };
@@ -92,6 +98,7 @@ export class WorkshopPageComponent implements OnInit {
   // Calendar Start
   public dateClicked: boolean = false;
   public clickedDate;
+  public eventsForTheDay;
   public headerTemplate = `<ng-template #headerTemplate>
                             <div class="cal-cell-row cal-header">
                             <div class="cal-cell" *ngFor="let day of days" [class.cal-past]="day.isPast" [class.cal-today]="day.isToday"
@@ -130,37 +137,37 @@ export class WorkshopPageComponent implements OnInit {
   ];
 
   events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.blue
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: new Date(),
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    }
+    // {
+    //   start: subDays(startOfDay(new Date()), 1),
+    //   end: addDays(new Date(), 1),
+    //   title: 'A 3 day event',
+    //   color: colors.red,
+    //   actions: this.actions
+    // },
+    // {
+    //   start: startOfDay(new Date()),
+    //   title: 'An event with no end date',
+    //   color: colors.yellow,
+    //   actions: this.actions
+    // },
+    // {
+    //   start: subDays(endOfMonth(new Date()), 3),
+    //   end: addDays(endOfMonth(new Date()), 3),
+    //   title: 'A long event that spans 2 months',
+    //   color: colors.blue
+    // },
+    // {
+    //   start: addHours(startOfDay(new Date()), 2),
+    //   end: new Date(),
+    //   title: 'A draggable and resizable event',
+    //   color: colors.yellow,
+    //   actions: this.actions,
+    //   resizable: {
+    //     beforeStart: true,
+    //     afterEnd: true
+    //   },
+    //   draggable: true
+    // }
   ];
 
   activeDayIsOpen: boolean = true;
@@ -173,14 +180,15 @@ export class WorkshopPageComponent implements OnInit {
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     this.dateClicked = true; // !this.dateClicked;
     this.clickedDate = date;
+    this.eventsForTheDay = events;
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
       ) {
-        //this.activeDayIsOpen = false;
+        this.activeDayIsOpen = false;
       } else {
-        //this.activeDayIsOpen = true;
+        this.activeDayIsOpen = true;
         this.viewDate = date;
       }
     }
@@ -195,19 +203,26 @@ export class WorkshopPageComponent implements OnInit {
     private _collectionService: CollectionService,
     private config: AppConfig,
     private _fb: FormBuilder,
-    private dialog: MdDialog
+    private dialog: MdDialog,
   ) {
     this.activatedRoute.params.subscribe(params => {
+      if (this.initialised && (this.workshopId !== params['workshopId'] || this.calendarId !== params['calendarId'])) {
+        location.reload();
+      }
       this.workshopId = params['workshopId'];
+      this.calendarId = params['calendarId'];
+      console.log('route changed');
     });
     this.userId = cookieUtilsService.getValue('userId');
     console.log(this.events);
   }
 
   ngOnInit() {
+    this.initialised = true;
     this.initializeWorkshop();
     this.initializeForms();
   }
+
 
   private initializeUserType() {
     if (this.workshop) {
@@ -217,7 +232,7 @@ export class WorkshopPageComponent implements OnInit {
           break;
         }
       }
-      if (!this.userType) {
+      if (!this.userType && this.currentCalendar) {
         for (const participant of this.workshop.participants) {
           if (participant.id === this.userId) {
             this.userType = 'participant';
@@ -228,10 +243,40 @@ export class WorkshopPageComponent implements OnInit {
       if (!this.userType) {
         this.userType = 'public';
       }
+      if (this.userType === 'public' || this.userType === 'teacher') {
+        this.initializeAllItenaries();
+      }
       console.log('Welcome ' + this.userType);
 
     }
   }
+
+  private initializeAllItenaries() {
+    this.workshop.calendars.forEach(calendar => {
+      const calendarItenary = [];
+      for (const key in this.itenariesObj) {
+        if (this.itenariesObj.hasOwnProperty(key)) {
+          const eventDate = this.calculateDate(calendar.startDate, key);
+          this.itenariesObj[key].sort(function (a, b) {
+            return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
+          });
+          const itenary = {
+            startDay: key,
+            startDate: eventDate,
+            contents: this.itenariesObj[key]
+          };
+          calendarItenary.push(itenary);
+        }
+      }
+      this.allItenaries.push(
+        {
+          calendar: calendar,
+          itenary: calendarItenary
+        });
+
+    });
+  }
+
   private initializeWorkshop() {
     const query = {
       'include': [
@@ -249,29 +294,29 @@ export class WorkshopPageComponent implements OnInit {
         .subscribe(res => {
           console.log(res);
           this.workshop = res;
-
-          this.parseCalendar(this.workshop);
-
-          const contents = [];
-          const itenariesObj = {};
+          this.setCurrentCalendar();
           this.workshop.contents.forEach(contentObj => {
-            contents.push(contentObj);
-          });
-
-          contents.forEach(contentObj => {
-            if (itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
-              itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
+            if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+              this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
             } else {
-              itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
+              this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
             }
           });
-          for (const key in itenariesObj) {
-            if (itenariesObj.hasOwnProperty(key)) {
-              const eventDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+          for (const key in this.itenariesObj) {
+            if (this.itenariesObj.hasOwnProperty(key)) {
+              let eventDate;
+              if (this.currentCalendar) {
+                eventDate = this.calculateDate(this.currentCalendar.startDate, key);
+              } else {
+                eventDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+              }
+              this.itenariesObj[key].sort(function (a, b) {
+                return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
+              });
               const itenary = {
                 startDay: key,
                 startDate: eventDate,
-                contents: itenariesObj[key]
+                contents: this.itenariesObj[key]
               };
               this.itenaryArray.push(itenary);
             }
@@ -280,9 +325,25 @@ export class WorkshopPageComponent implements OnInit {
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
-          console.log(this.itenaryArray);
-          // console.log(this.workshop);
+          // console.log(this.itenaryArray);
+          for (let iterinary of this.itenaryArray) {
+            let startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
+            for (var i = 0; i < iterinary.contents.length; i++) {
+              let schedule = iterinary.contents[i].schedules;
+              debugger;
+              const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss'); 
+              const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss'); 
+              this.events.push({
+                title: iterinary.contents[i].title,
+                color: colors.red,
+                start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
+                end:  moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
+              });
+            }
+            // this.refresh.next();
+          }
 
+          // console.log(this.events);
         },
         err => console.log('error'),
         () => {
@@ -325,12 +386,18 @@ export class WorkshopPageComponent implements OnInit {
     this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
   }
 
-  public parseCalendar(workshop: any) {
-    if (workshop.calendars) {
-      const startDate = moment(workshop.calendars[0].startDate);
-      const endDate = moment(workshop.calendars[0].endDate);
-      this.calendarDisplay['startDate'] = startDate.format('Do MMMM');
-      this.calendarDisplay['endDate'] = endDate.format('Do MMMM');
+  public setCurrentCalendar() {
+    if (this.calendarId) {
+      const calendarIndex = this.workshop.calendars.findIndex(calendar => {
+        return calendar.id === this.calendarId;
+      });
+      if (calendarIndex > -1) {
+        this.currentCalendar = this.workshop.calendars[calendarIndex];
+      } else {
+        console.log('Calendar instance not found');
+      }
+    } else {
+      console.log('Calendar id not found');
     }
   }
 
@@ -338,7 +405,15 @@ export class WorkshopPageComponent implements OnInit {
    * changeDates
    */
   public changeDates() {
-    this.router.navigate(['workshop', this.workshopId, 'edit', 13]);
+    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
+      width: '800px',
+      height: '500px',
+      data: this.allItenaries
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['workshop', this.workshopId, 'calendar', result]);
+
+    });
   }
   /**
    * joinGroupChat
@@ -568,7 +643,6 @@ content:any   */
       } else {
         for (const responseObj of response) {
           responseObj.rating = this.calculateRating(responseObj);
-          console.log(responseObj);
           this.recommendations.collections.push(responseObj);
         }
       }
@@ -580,7 +654,28 @@ content:any   */
    */
   public selectJoiningDates() {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
+      width: '800px',
+      height: '500px',
+      data: this.allItenaries
     });
+    dialogRef.afterClosed().subscribe(result => {
+      this.joinWorkshop(result);
+    });
+  }
+
+  private joinWorkshop(calendarId: string) {
+    this._collectionService.addParticipant(this.workshopId, this.userId, calendarId, (err: any, response: any) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.router.navigate(['workshop', this.workshopId, 'calendar', calendarId]);
+      }
+    });
+  }
+
+  private extractTime(dateString: string) {
+    const time = moment.utc(dateString).local().format('HH:mm:ss');
+    return time;
   }
 
 }
