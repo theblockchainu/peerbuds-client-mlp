@@ -53,15 +53,11 @@ export class ContentViewComponent implements OnInit {
   ) {
       this.countryPickerService.getCountries()
         .subscribe((countries) => this.countries = countries);
-      console.log('start date: ' + typeof(this.collectionStartDate) + ' : ' + this.collectionStartDate);
-      console.log('end date'  + typeof(this.collectionEndDate) + ' : ' + this.collectionEndDate);
   }
 
   ngOnInit() {
     const content = <FormArray>this.itenaryForm.controls.contents;
     this.lastIndex = content.controls.length - 1;
-      console.log('start date: ' + typeof(this.collectionStartDate) + ' : ' + this.collectionStartDate);
-      console.log('end date'  + typeof(this.collectionEndDate) + ' : ' + this.collectionEndDate);
   }
 
   addContent(contentType: string) {

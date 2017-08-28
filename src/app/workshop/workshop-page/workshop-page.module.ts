@@ -10,6 +10,7 @@ import { ContentProjectComponent } from './content-project/content-project.compo
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
 import { WorkshopPageRoutingModule } from './workshop-page-routing.module';
 import { WorkshopPageComponent } from './workshop-page.component';
+import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
 
 @NgModule({
   imports: [
@@ -17,8 +18,8 @@ import { WorkshopPageComponent } from './workshop-page.component';
     CommonModule,
     SharedModule
   ],
-  declarations: [WorkshopPageComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent],
-  bootstrap: [DeleteDialogComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent]
+  declarations: [WorkshopPageComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent],
+  bootstrap: [DeleteDialogComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent]
 
 })
 export class WorkshopPageModule { }

@@ -86,7 +86,7 @@ export class WorkshopEditComponent implements OnInit {
   public _VIDEO;
   public _CTX;
 
-  public urlForVideo;
+  public urlForVideo = [];
   public urlForImages = [];
 
   public datesEditable: boolean = false;
@@ -96,7 +96,7 @@ export class WorkshopEditComponent implements OnInit {
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
-    private config: AppConfig,
+    public config: AppConfig,
     public authenticationService: AuthenticationService,
     private languagePickerService: LanguagePickerService,
     private _fb: FormBuilder,
@@ -137,7 +137,7 @@ export class WorkshopEditComponent implements OnInit {
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
-      videoUrl: '',
+      videoUrls: this._fb.array([]),
       imageUrls: this._fb.array([]),
       totalHours: '',
       price: '',
@@ -502,8 +502,10 @@ export class WorkshopEditComponent implements OnInit {
     this.workshop.controls.maxSpots.patchValue(res.maxSpots);
 
     // Photos and Videos
-    this.workshop.controls.videoUrl.setValue(res.videoUrl);
-    this.urlForVideo = res.videoUrl;
+    if (res.videoUrls && res.videoUrls.length > 0) {
+        this.workshop.controls['videoUrls'].patchValue(res.videoUrls);
+        this.urlForVideo = res.videoUrls;
+    }
     if (res.imageUrls && res.imageUrls.length > 0) {
       this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
       this.urlForImages = res.imageUrls;
@@ -534,29 +536,32 @@ export class WorkshopEditComponent implements OnInit {
 
   }
 
-  public addUrl(value: String) {
-    const control = <FormArray>this.workshop.controls['imageUrls'];
-    this.workshopImage1Pending = false;
-    control.push(new FormControl(value));
+  public addImageUrl(value: String) {
+      console.log('Adding image url: ' + value);
+      this.urlForImages.push(value);
+      const control = <FormArray>this.workshop.controls['imageUrls'];
+      this.workshopImage1Pending = false;
+      control.push(new FormControl(value));
+  }
+
+  public addVideoUrl(value: String) {
+      console.log('Adding video url: ' + value);
+      this.urlForVideo.push(value);
+      const control = <FormArray>this.workshop.controls['videoUrls'];
+      this.workshopVideoPending = false;
+      control.push(new FormControl(value));
   }
 
   uploadVideo(event) {
-    console.log(event.files);
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.workshop.controls['videoUrl'].patchValue(responseObj.url);
-        this.workshopVideoPending = false;
-      }).subscribe();
-    }
+    console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
+    const xhrResp = JSON.parse(event.xhr.response);
+    this.addVideoUrl(xhrResp.url);
   }
 
   uploadImages(event) {
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.addUrl(responseObj.url);
-      }).subscribe();
-    }
-    this.workshopImage1Pending = false;
+    console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
+    const xhrResp = JSON.parse(event.xhr.response);
+    this.addImageUrl(xhrResp.url);
   }
 
   public changeInterests(topic: any) {
@@ -851,8 +856,10 @@ export class WorkshopEditComponent implements OnInit {
       .map((response) => {
         console.log(response);
         if (fileType === 'video') {
-          this.urlForVideo = '';
-          this.workshop.controls.videoUrl.patchValue('');
+          this.urlForVideo = _.remove(this.urlForVideo, function (n) {
+              return n !== fileurl;
+          });
+          this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
         } else if (fileType === 'image') {
           this.urlForImages = _.remove(this.urlForImages, function (n) {
             return n !== fileurl;
@@ -872,8 +879,10 @@ export class WorkshopEditComponent implements OnInit {
         .map((response) => {
           console.log(response);
           if (fileType === 'video') {
-            this.urlForVideo = '';
-            this.workshop.controls.videoUrl.patchValue('');
+            this.urlForVideo = _.remove(this.urlForVideo, function (n) {
+                return n !== fileurl;
+            });
+            this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
           } else if (fileType === 'image') {
             this.urlForImages = _.remove(this.urlForImages, function (n) {
               return n !== fileurl;

@@ -299,27 +299,34 @@
                   <div class="row" style="margin-top:40px">
                     <div class="col-md-8">
                       <div class="stepHeader">Upload Video</div>
-                      <span class="label label-warning" [hidden]="!workshopVideoPending">Pending</span>
-                      <span class="label label-success" [hidden]="workshopVideoPending">Success</span>
-                      <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
-                      </p-fileUpload>
-                      <div class="ui-fileupload-row"  *ngIf="urlForVideo">
-                        <div>{{urlForVideo.split('/')[5]}}</div>
-                        <div><button icon="fa-close" pbutton="" type="button" (click)="deleteFromContainer(urlForVideo, 'video')" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
-                      </div>
-                      <div class="stepHeader">Upload Images</div>
-                      <span class="label label-warning" [hidden]="!workshopImage1Pending">Pending</span>
-                      <span class="label label-success" [hidden]="workshopImage1Pending">Success</span>
-                      <p-fileUpload #fubauto name="image" multiple="multiple" customUpload="true" (uploadHandler)="uploadImages($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)"></p-fileUpload>
-                      <div *ngIf="urlForImages.length">
-                        <div *ngFor="let file of urlForImages" class="ui-fileupload-row" >
-                          <div><img src="{{config.apiUrl+file}}" width="50"></div>
-                          <div>{{file.split('/')[5]}}</div>
-                          <div><button icon="fa-close" pbutton="" type="button" (click)="deleteFromContainer(file, 'image')" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">ui-btn</span></button></div>
+                      <p-fileUpload #fubauto name="video" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadVideo($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)"></p-fileUpload>
+                      <div class="ui-fileupload-row"  *ngIf="urlForVideo.length">
+                        <div *ngFor="let file of urlForVideo">
+                          <div><video src="{{config.apiUrl + file}}" width="150"></video></div>
+                          <div><button md-button><md-icon (click)="deleteFromContainer(file, 'video')">close</md-icon></button></div>
                         </div>
                       </div>
+                      <div class="stepHeader" style="margin-top: 40px;">Upload Images</div>
+                      <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImages($event)"  maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+                        <ng-template pTemplate="toolbar">
+                          <div>You can upload a maximum of 5 images</div>
+                        </ng-template>
+                        <ng-template #file pTemplate="file">
+                        </ng-template>
+                        <ng-template pTemplate="content">
+                          <md-grid-list cols="4" gutterSize="10px" *ngIf="urlForImages.length">
+                            <md-grid-tile *ngFor="let file of urlForImages">
+                              <div style="position: absolute; cursor: pointer;">
+                                <md-icon (click)="deleteFromContainer(file, 'video')" style="color: black;">close</md-icon>
+                              </div>
+                              <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+                            </md-grid-tile>
+                          </md-grid-list>
+                        </ng-template>
+                      </p-fileUpload>
                     </div>
                   </div>
+
                   <div class="row">
                     <div style="margin-top:60px;">
                       <a md-button (click)=goto(9)>Back</a>
