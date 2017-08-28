@@ -17,8 +17,8 @@
     </div>
   </div>
   <div class="margin-top-15">
-    <button *ngIf="data.userType==='participant'" md-raised-button>Submit Entree</button>
-    <button *ngIf="data.userType==='teacher'" md-raised-button>View Entries</button>
+    <button (click)="openSubmitEntryDialog()" *ngIf="data.userType==='participant'" md-raised-button>Submit Entree</button>
+    <button (click)="openSubmitEntryDialog()" *ngIf="data.userType==='teacher'" md-raised-button>View Entries</button>
   </div>
   <div class="submission-box">
     <div class="fw-bold margin-bottom-10">Submission (9)</div>

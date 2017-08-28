@@ -403,4 +403,26 @@ export class CollectionService {
 
   }
 
+  /**
+   * addParticipant
+collectionID:string,userId:string,calendarId:string   */
+  public addParticipant(collectionId: string, userId: string, calendarId: string, cb) {
+    const body = {
+      'calendarId': calendarId
+    };
+    this.http
+      .put(this.config.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + userId, body, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * getParticipants
+   */
+  public getParticipants() {
+
+  }
 }

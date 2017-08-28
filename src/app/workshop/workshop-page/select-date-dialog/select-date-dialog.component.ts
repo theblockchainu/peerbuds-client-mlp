@@ -15,6 +15,7 @@ export class SelectDateDialogComponent implements OnInit {
     @Inject(MD_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    console.log(this.data);
   }
 
   onTabOpen(event) {

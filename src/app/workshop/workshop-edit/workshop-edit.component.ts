@@ -206,8 +206,8 @@ export class WorkshopEditComponent implements OnInit {
     return dateString.split('T')[0];
   }
   private extractTime(dateString: string) {
-    const time = dateString.split('T')[1];
-    return time.split('.')[0];
+    const time = moment.utc(dateString).local().format('HH:mm:ss');
+    return time;
   }
 
   private initializeTimeLine(res) {
