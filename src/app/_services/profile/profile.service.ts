@@ -44,7 +44,7 @@ export class ProfileService {
     const peer = {};
     if (this.userId) {
       const options = `{"where": "","order": "","limit": "",
-      "include": ["profiles", "topicsLearning","topicsTeaching",
+      "include": [{"profiles":["work","education"]}, "topicsLearning","topicsTeaching",
       {"collections":{"reviews": {"peer": "profiles"}}},
       {"ownedCollections":[{"reviews":{"peer":"profiles"}},
       "calendars",{"contents":"schedules"}]},"communities","identities"]}`;

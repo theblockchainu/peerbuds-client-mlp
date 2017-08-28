@@ -114,6 +114,25 @@ img {
     width: 300px;
 }
 
+.calendar {
+    padding: 20px;
+}
+
+.flexContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+.prevNext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .itenary-media{
     max-height:200px;
 }
@@ -126,4 +145,39 @@ h4, h6 {
     object-fit: cover;
     width:50px;
     height:50px;
+}
+
+.displayNone {
+    display: none;
+}
+
+.displayFlex {
+    display: flex;
+    align-items: center;
+}
+
+.displayBlock {
+    display: block;
+}
+
+.clickedDate .cal-day-badge {
+    float:left;
+    width: 8px !important;
+    height: 8px !important;
+    background-color: #F0951B !important;
+    display: block;
+    border-radius: 8px;
+    margin-right:10px;
+
+}
+
+.displayFlex.event {
+    margin-bottom:10px;
+    align-items: baseline;
+}
+
+div.event span:first-child {
+    margin-right:10px;
+    font-size: 1.17em;
+    font-weight: bold;
 }

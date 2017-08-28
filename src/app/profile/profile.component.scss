@@ -1,4 +1,8 @@
 // component css goes here
+.profile-setion{
+    padding: 3% 0 5% 0 !important;
+    overflow-y: inherit;
+}
 .title{
     margin-top:0!important;
     margin-bottom:15px;
@@ -75,7 +79,7 @@
         .sidebar-tabs{
             list-style: none;
             width:100%;
-            border:1px solid #ccc!important;
+            // border:1px solid #ccc!important;
             border-radius:4px;
             height: 40px;
             padding:0;
@@ -270,16 +274,20 @@
         }
     }
 }
-rating{
+p-rating{
     color:#33bd9e;
     font-size:16px;
     display: inline-block;
     vertical-align: middle;
     line-height: 14px;
     margin-left:10px;
+    .ui-rating a{
+        color:#33bd9e;
+    }
 }
 .review-all{
     border-top:1px solid #ccc;
+    border-bottom:1px solid #ccc;
     text-align:center;
     a{
         color:#06d6a0;
