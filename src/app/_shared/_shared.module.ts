@@ -6,7 +6,7 @@ import { CdkTableModule } from '@angular/cdk';
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
-  MdListModule, MdTabsModule, MdTableModule, MdInputModule
+  MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -35,7 +35,7 @@ import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.servic
 import { ContentService } from '../_services/content/content.service';
 import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
 import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
-
+import { CommentService } from '../_services/comment/comment.service';
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -58,7 +58,8 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     CookieUtilsService,
     ContentService,
     LeftSidebarService,
-    CurrencypickerService
+    CurrencypickerService,
+    CommentService
   ],
   exports: [
     CommonModule,
@@ -98,7 +99,8 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     CdkTableModule,
     MdInputModule,
     NgPipesModule,
-    AccordionModule
+    AccordionModule,
+    MdCheckboxModule
   ]
 })
 export class SharedModule { }

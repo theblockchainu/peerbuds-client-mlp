@@ -6,6 +6,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { MdDialog } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
+import { CommentService } from '../../_services/comment/comment.service';
+
 import { AppConfig } from '../../app.config';
 import * as moment from 'moment';
 import _ from 'lodash';
@@ -78,9 +80,9 @@ export class WorkshopPageComponent implements OnInit {
   public userRating: number;
 
   public isReadonly = true;
-  public noOfReviews = 4;
+  public noOfReviews = 2;
   private initialised = false;
-
+  public replyingToCommentId: string;
   public itenaryArray = [];
   public workshop: any;
   public currentCalendar: any;
@@ -91,12 +93,16 @@ export class WorkshopPageComponent implements OnInit {
   public allItenaries = [];
   public itenariesObj = {};
 
+  public replyForm: FormGroup;
+
   public recommendations = {
     collections: []
   };
 
+  public comments: Array<any>;
+
   // Calendar Start
-  public dateClicked: boolean = false;
+  public dateClicked = false;
   public clickedDate;
   public eventsForTheDay;
   public headerTemplate = `<ng-template #headerTemplate>
@@ -109,7 +115,7 @@ export class WorkshopPageComponent implements OnInit {
                           </div>
                           </ng-template>`;
 
-  public view: string = 'month';
+  public view = 'month';
 
   public viewDate: Date = new Date();
 
@@ -170,7 +176,7 @@ export class WorkshopPageComponent implements OnInit {
     // }
   ];
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen = true;
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
@@ -201,6 +207,7 @@ export class WorkshopPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private cookieUtilsService: CookieUtilsService,
     private _collectionService: CollectionService,
+    private _commentService: CommentService,
     private config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
@@ -242,6 +249,9 @@ export class WorkshopPageComponent implements OnInit {
       }
       if (!this.userType) {
         this.userType = 'public';
+        if (this.calendarId) {
+          this.router.navigate(['workshop', this.workshopId]);
+        }
       }
       if (this.userType === 'public' || this.userType === 'teacher') {
         this.initializeAllItenaries();
@@ -326,18 +336,17 @@ export class WorkshopPageComponent implements OnInit {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
           // console.log(this.itenaryArray);
-          for (let iterinary of this.itenaryArray) {
-            let startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
-            for (var i = 0; i < iterinary.contents.length; i++) {
-              let schedule = iterinary.contents[i].schedules;
-              debugger;
-              const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss'); 
-              const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss'); 
+          for (const itenary of this.itenaryArray) {
+            const startDate = moment(itenary.startDate).format('YYYY-MM-DD');
+            for (let i = 0; i < itenary.contents.length; i++) {
+              const schedule = itenary.contents[i].schedules;
+              const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss');
+              const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss');
               this.events.push({
-                title: iterinary.contents[i].title,
+                title: itenary.contents[i].title,
                 color: colors.red,
                 start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
-                end:  moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
+                end: moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
               });
             }
             // this.refresh.next();
@@ -353,12 +362,45 @@ export class WorkshopPageComponent implements OnInit {
           this.fixTopics();
           this.userRating = this.calculateRating(this.workshop);
           this.getRecommendations();
+          this.getDiscussions();
         });
 
 
     } else {
       console.log('NO COLLECTION');
     }
+  }
+
+  private getDiscussions() {
+    const query = {
+      'include': [
+        {
+          'peer': [
+            { 'profiles': ['work'] }
+          ]
+        },
+        {
+          'replies': [
+            {
+              'peer': [
+                {
+                  'profiles': ['work']
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      'order': 'createdAt DESC'
+    };
+    this._collectionService.getComments(this.workshopId, query, (err, response) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.comments = response;
+        console.log(this.comments);
+      }
+    });
   }
 
   private calculateRating(workshop) {
@@ -377,7 +419,7 @@ export class WorkshopPageComponent implements OnInit {
 
   private initializeForms() {
     this.chatForm = this._fb.group({
-      message: ['', Validators.required],
+      description: ['', Validators.required],
       announce: ''
     });
   }
@@ -426,7 +468,14 @@ export class WorkshopPageComponent implements OnInit {
    * cancelWorkshop
    */
   public cancelWorkshop() {
-    console.log('cancel Workshop');
+    if (this.userType === 'participant') {
+      this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log('cancel Workshop');
+    }
   }
 
   /**
@@ -448,10 +497,19 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   /**
-   * postMessage
+   * postComment
    */
-  public postMessage() {
+  public postComment() {
     console.log(this.chatForm.value);
+    delete this.chatForm.value.announce;
+    this._collectionService.postComments(this.workshopId, this.chatForm.value, (err, response) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.chatForm.reset();
+        this.getDiscussions();
+      }
+    });
   }
 
   /**
@@ -492,6 +550,7 @@ export class WorkshopPageComponent implements OnInit {
     endMoment.minutes(endTime.minutes());
 
     if (currentMoment.isBetween(startMoment, endMoment)) {
+      content.isLive = true;
       return true;
     } else {
       this.timetoSession(content);
@@ -522,10 +581,10 @@ content:any   */
    * toggleReviews
    */
   public toggleReviews() {
-    if (this.noOfReviews === 4) {
+    if (this.noOfReviews === 2) {
       this.noOfReviews = 100;
     } else {
-      this.noOfReviews = 4;
+      this.noOfReviews = 2;
     }
   }
 
@@ -553,7 +612,10 @@ content:any   */
 
   viewParticipants() {
     const dialogRef = this.dialog.open(ViewParticipantsComponent, {
-      data: this.workshop.participants,
+      data: {
+        participants: this.workshop.participants,
+        workshopId: this.workshopId
+      },
       width: '800px'
     });
   }
@@ -567,7 +629,10 @@ content:any   */
       case 'online':
         {
           const dialogRef = this.dialog.open(ContentOnlineComponent, {
-            data: content,
+            data: {
+              content: content,
+              userType: this.userType
+            },
             width: '800px',
             height: '700px'
           });
@@ -576,7 +641,10 @@ content:any   */
       case 'video':
         {
           const dialogRef = this.dialog.open(ContentVideoComponent, {
-            data: content,
+            data: {
+              content: content,
+              userType: this.userType
+            },
             width: '800px',
             height: '600px'
           }); break;
@@ -642,8 +710,10 @@ content:any   */
         console.log(err);
       } else {
         for (const responseObj of response) {
-          responseObj.rating = this.calculateRating(responseObj);
-          this.recommendations.collections.push(responseObj);
+          if (this.workshopId !== responseObj.id) {
+            responseObj.rating = this.calculateRating(responseObj);
+            this.recommendations.collections.push(responseObj);
+          }
         }
       }
     });
@@ -659,7 +729,12 @@ content:any   */
       data: this.allItenaries
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.joinWorkshop(result);
+      console.log('userID= ' + this.userId);
+      if (this.userId) {
+        this.joinWorkshop(result);
+      } else {
+        this.router.navigate(['login']);
+      }
     });
   }
 
@@ -677,5 +752,27 @@ content:any   */
     const time = moment.utc(dateString).local().format('HH:mm:ss');
     return time;
   }
+
+  public createReplyForm(comment: any) {
+    this.replyingToCommentId = comment.id;
+    this.replyForm = this._fb.group({
+      description: ''
+    });
+  }
+
+  /**
+   * postReply
+   */
+  public postReply(comment: any) {
+    this._commentService.replyToComment(comment.id, this.replyForm.value).subscribe(
+      response => {
+        this.getDiscussions();
+        delete this.replyForm;
+      }, err => {
+        console.log(err);
+      }
+    );
+  }
+
 
 }

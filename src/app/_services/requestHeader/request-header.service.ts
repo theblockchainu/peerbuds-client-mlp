@@ -16,13 +16,13 @@ export class RequestHeaderService {
 
   constructor(private http: Http, private config: AppConfig,
     private _cookieService: CookieService) {
-      this.userId = this.getCookieValue(this.key);
-     }
+    this.userId = this.getCookieValue(this.key);
+  }
   getOptions() {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
     return options;
   }
   private getCookieValue(key: string) {
