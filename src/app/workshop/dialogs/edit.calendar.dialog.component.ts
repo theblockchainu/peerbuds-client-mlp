@@ -1,12 +1,15 @@
-import { MdDialogRef, MdIconModule, MdSelectModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig, MdIconModule, MdSelectModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
 
 import { ContentService } from '../../_services/content/content.service';
+import { CollectionService } from '../../_services/collection/collection.service';
 import * as moment from 'moment';
 import _ from 'lodash';
+
+import { ViewConflictDialog } from './view.conflict.dialog.component';
 
 import {
   startOfDay,
@@ -55,7 +58,6 @@ const colors: any = {
 })
 export class EditCalendarDialog implements OnInit {
 
-    public title: string;
     public id: string;
     public inpEvents: CalendarEvent[];
     public userId: string;
@@ -78,10 +80,12 @@ export class EditCalendarDialog implements OnInit {
 
     public recurring: FormGroup;
 
+    public recurringCalendar;
+
     // Insights stats
     public startDay;
     public endDay;
-    public recurringCount;
+    public recurringCount = 0;
 
     // eventCalendar
     public eventCalendar;
@@ -157,7 +161,9 @@ export class EditCalendarDialog implements OnInit {
 
     constructor(public dialogRef: MdDialogRef<EditCalendarDialog>,
         private _fb: FormBuilder,
-        private _contentService: ContentService) {
+        private _contentService: ContentService,
+        private dialog: MdDialog,
+        private _collectionService: CollectionService) {
     }
     public ngOnInit() {
         this.duration = moment.duration(moment(this.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment(this.startDate, 'YYYY-MM-DD HH:mm:ss'))).asDays();
@@ -168,12 +174,9 @@ export class EditCalendarDialog implements OnInit {
         this._contentService.getEvents(this.userId)
         .subscribe((response) => {
             this.eventCalendar = response;
-            console.log(response);
             this.sort();
-            console.log(this.eventCalendar);
             this.results = this.overlap();
         });
-
         this.recurring = this._fb.group({
             repeatWorkshopGroupOption: ['', Validators.required],
             days: [2],
@@ -181,11 +184,17 @@ export class EditCalendarDialog implements OnInit {
             daysRepeat: [2],
             monthsRepeat: [6],
             repeatTillOption: ['', Validators.required],
-            dateRepeat: ['']
+            dateRepeat: [moment().add(1, 'M')]
         });
     }
 
     public saveCalendar(): void {
+        console.log(this.recurringCalendar);
+        console.log(this.id);
+        this._collectionService.postCalendars(this.id, this.recurringCalendar)
+        .subscribe((response) => {
+            debugger;
+        });
     }
 
     public repeatFrequency(value) {
@@ -213,11 +222,61 @@ export class EditCalendarDialog implements OnInit {
     }
 
     public repeatTill(value) {
+        const days = +this.recurring.controls['days'].value;
+        const weekday = this.recurring.controls['weekdays'].value;
+        const tillDate = this.recurring.controls['dateRepeat'].value;
+        const start = this.startDay;
+        const end = moment(this.startDay).add(this.duration, 'days');
         switch (value) {
-            // case 'daysRepeat':
-            //                     this.endDay = 
+            case 'daysRepeat':
+                                this.recurringCalendar = [];
+                                const freq = this.recurring.controls['daysRepeat'].value;
+                                this.recurringCalendar.push({ startDate: moment(start).format(), endDate: end.format()});
+                                for (let i = 1; i < freq; i++) {
+                                    this.createCalendars(end, days, weekday);
+                                }
+                                break;
+            case 'monthsRepeat':
+                                this.recurringCalendar = [];
+                                const months = this.recurring.controls['monthsRepeat'].value;
+                                const futureMonth = moment(start).add(months, 'M');
+                                const futureMonthEnd = moment(futureMonth).endOf('month');
+                                this.recurringCalendar.push({ startDate: moment(start).format(), endDate: end.format()});
+                                while (moment(end).month() <= moment(futureMonth).month()) {
+                                    this.createCalendars(end, days, weekday);
+                                }
+                                break;
+            case 'dateRepeat':
+                                this.recurringCalendar = [];
+                                while (moment(end) <= moment(tillDate)) {
+                                    this.createCalendars(end, days, weekday);
+                                }
+                                break;
+            default:
+                                this.recurringCalendar = [];
         }
+        this.recurringCount = this.recurringCalendar.length;
+    }
 
+    public createCalendars(end, days, weekday) {
+        if (this.recurring.value.repeatWorkshopGroupOption === 'immediate') {
+            this.recurringCalendar.push({ startDate: end.format(), endDate: moment(end).add(this.duration, 'days').format()});
+            end = moment(end).add(this.duration, 'days');
+        }
+        else if (this.recurring.value.repeatWorkshopGroupOption === 'days') {
+            this.recurringCalendar.push({ startDate: moment(end).add(days, 'days').format(), endDate: moment(end).add(this.duration + days, 'days').format()});
+            end = moment(end).add(this.duration + days, 'days');
+        }
+        else if (this.recurring.value.repeatWorkshopGroupOption === 'weekdays') {
+            if (moment(end).isoWeekday() <= weekday) {
+                end = moment(end).isoWeekday(weekday);
+            } else {
+                // otherwise, give me next week's instance of that day
+                end = moment(end).add(1, 'weeks').isoWeekday(weekday);
+            }
+            this.recurringCalendar.push({ startDate: end.format(), endDate: moment(end).add(this.duration, 'days').format()});
+            end = moment(end).add(this.duration, 'days');
+        }
     }
 
     public sort() {
@@ -240,6 +299,7 @@ export class EditCalendarDialog implements OnInit {
     }
 
     public overlap() {
+        console.log(this.eventCalendar);
         const result = this.eventCalendar.reduce((result, current, idx, arr) => {
         // get the previous range
         if (idx === 0) { return result; }
@@ -269,9 +329,17 @@ export class EditCalendarDialog implements OnInit {
 
     // Modal
     public viewConflict() {
-        // this.dialogsService
-        // .showConflicts(this.results, this.id)
-        // .subscribe();
+        const dialogRef = this.dialog.open(ViewConflictDialog, {
+            width: '850px',
+            height: '600px',
+            data: {
+                conflicts: this.results,
+                id: this.id,
+                computedConflict: []
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+        });
     }
 
 }

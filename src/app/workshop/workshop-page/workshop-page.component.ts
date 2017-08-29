@@ -181,7 +181,7 @@ export class WorkshopPageComponent implements OnInit {
   // Modal
   public editCalendar() {
     this.dialogsService
-      .editCalendar('Repeat your 3 day workshop', this.workshopId, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
+      .editCalendar(this.workshopId, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
       .subscribe(res => this.result = res);
   }
 
@@ -287,10 +287,10 @@ export class WorkshopPageComponent implements OnInit {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
           // console.log(this.itenaryArray);
-          for (let iterinary of this.itenaryArray) {
-            let startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
-            for (var i = 0; i < iterinary.contents.length; i++) {
-              let schedule = iterinary.contents[i].schedules;
+          for (const iterinary of this.itenaryArray) {
+            const startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
+            for (let i = 0; i < iterinary.contents.length; i++) {
+              const schedule = iterinary.contents[i].schedules;
               const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss'); 
               const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss'); 
               this.events.push({

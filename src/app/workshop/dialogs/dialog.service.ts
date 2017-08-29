@@ -12,12 +12,11 @@ export class DialogsService {
 
     constructor(private dialog: MdDialog) { }
 
-    public editCalendar(title: string, id: string, events: CalendarEvent[], userId: string, startDate: Date, endDate: Date): Observable<boolean> {
+    public editCalendar(id: string, events: CalendarEvent[], userId: string, startDate: Date, endDate: Date): Observable<boolean> {
         let dialogRef: MdDialogRef<EditCalendarDialog>;
 
         dialogRef = this.dialog.open(EditCalendarDialog);
 
-        dialogRef.componentInstance.title = title;
         dialogRef.componentInstance.id = id;
         dialogRef.componentInstance.inpEvents = events;
         dialogRef.componentInstance.userId = userId;

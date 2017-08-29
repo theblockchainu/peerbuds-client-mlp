@@ -7,7 +7,7 @@ import { MdDialogModule, MdButtonModule, MdRadioModule, MdIconModule, MdSelectMo
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 
 import { EditCalendarDialog } from './edit.calendar.dialog.component';
-// import { ViewConflictDialog } from './view.conflict.dialog.component';
+import { ViewConflictDialog } from './view.conflict.dialog.component';
 
 @NgModule({
   imports: [
@@ -24,12 +24,13 @@ import { EditCalendarDialog } from './edit.calendar.dialog.component';
     SharedModule
   ],
   exports: [ EditCalendarDialog ],
-  declarations: [ EditCalendarDialog ],
+  declarations: [ EditCalendarDialog, ViewConflictDialog ],
   providers: [
       DialogsService,
   ],
   entryComponents: [
     EditCalendarDialog,
+    ViewConflictDialog
   ],
 })
 export class DialogsModule { }
