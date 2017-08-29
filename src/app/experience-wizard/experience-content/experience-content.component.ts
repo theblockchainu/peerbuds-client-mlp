@@ -1,15 +1,10 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-
 import { AppConfig } from '../../app.config';
-import { AuthenticationService } from "../../_services/authentication/authentication.service";
-import { CountryPickerService } from "../../_services/countrypicker/countrypicker.service";
-import { LanguagePickerService } from "../../_services/languagepicker/languagepicker.service";
-import {
-  Http, URLSearchParams, Headers, Response, BaseRequestOptions
-  , RequestOptions, RequestOptionsArgs
-} from '@angular/http';
-
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
+import {Http, URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -20,10 +15,10 @@ import * as moment from 'moment';
   styleUrls: ['./experience-content.component.scss']
 })
 export class ExperienceContentComponent implements OnInit {
-  @Input("itenary")
+  @Input('itenary')
   public myForm: FormGroup;
 
-  @Input("collectionId")
+  @Input('collectionId')
   public collectionId: string;
 
   @Input()
@@ -37,7 +32,7 @@ export class ExperienceContentComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.myForm.addControl("itenary", this._fb.array([this.initItenary()]));
+      this.myForm.addControl('itenary', this._fb.array([this.initItenary()]));
   }
 
   initItenary() {
@@ -53,10 +48,10 @@ export class ExperienceContentComponent implements OnInit {
   }
 
   removeItenary(i: number) {
-      let headers = new Headers();
+      const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       headers.append('Accept', 'application/json');
-      let options = new RequestOptions({ headers: headers, withCredentials: true });
+      const options = new RequestOptions({ headers: headers, withCredentials: true });
 
       const itenaries = <FormArray>this.myForm.controls.itenary;
       const itenaryGroup = <FormGroup>itenaries.controls[i];
@@ -83,23 +78,23 @@ export class ExperienceContentComponent implements OnInit {
      * numberOfdays
     */
   public numberOfdays(currentDate, startDate) {
-      let current = moment(currentDate);
-      let start = moment(startDate);
+      const current = moment(currentDate);
+      const start = moment(startDate);
       return current.diff(start, 'days');
   }
 
   saveTriggered(event, i) {
-      let headers = new Headers();
+      const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       headers.append('Accept', 'application/json');
-      let options = new RequestOptions({ headers: headers, withCredentials: true });
+      const options = new RequestOptions({ headers: headers, withCredentials: true });
 
-      if (event.action == "add") {
-          let itenaryObj = this.myForm.value.itenary[i];
-          let scheduleDate = itenaryObj.date;
-          let contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
-          let schedule = contentObj.schedule;
-          let location = contentObj.location;
+      if (event.action == 'add') {
+          const itenaryObj = this.myForm.value.itenary[i];
+          const scheduleDate = itenaryObj.date;
+          const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
+          const schedule = contentObj.schedule;
+          const location = contentObj.location;
 
           delete contentObj.id;
           delete contentObj.schedule;
@@ -107,14 +102,14 @@ export class ExperienceContentComponent implements OnInit {
           delete contentObj.location;
 
 
-          let startTimeArr = schedule.startTime.toString().split(':');
-          let startHour = startTimeArr[0];
-          let startMin = startTimeArr[1];
+          const startTimeArr = schedule.startTime.toString().split(':');
+          const startHour = startTimeArr[0];
+          const startMin = startTimeArr[1];
           schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
 
-          let endTimeArr = schedule.endTime.toString().split(':');
-          let endHour = endTimeArr[0];
-          let endMin = endTimeArr[1];
+          const endTimeArr = schedule.endTime.toString().split(':');
+          const endHour = endTimeArr[0];
+          const endMin = endTimeArr[1];
           schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
 
 
@@ -124,7 +119,7 @@ export class ExperienceContentComponent implements OnInit {
 
           this.http.post(this.config.apiUrl + '/api/collections/' + this.collectionId + '/contents', contentObj, options)
               .map((response: Response) => {
-                  let contentId = response.json().id;
+                  const contentId = response.json().id;
                   const itenary = <FormArray>this.myForm.controls.itenary;
                   const form = <FormGroup>itenary.controls[i];
                   const contentsArray = <FormArray>form.controls.contents;
@@ -159,33 +154,33 @@ export class ExperienceContentComponent implements OnInit {
               })
               .subscribe();
 
-      } else if (event.action == "update") {
+      } else if (event.action == 'update') {
           const itenary = <FormArray>this.myForm.controls.itenary;
           const form = <FormGroup>itenary.controls[i];
           const contentsArray = <FormArray>form.controls.contents;
           const contentGroup = <FormGroup>contentsArray.controls[event.value];
           contentGroup.controls.pending.setValue(true);
 
-          let itenaryObj = this.myForm.value.itenary[i];
-          let scheduleDate = itenaryObj.date;
-          let contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
-          let schedule = contentObj.schedule;
-          let contentId = contentObj.id;
-          let location = contentObj.location;
+          const itenaryObj = this.myForm.value.itenary[i];
+          const scheduleDate = itenaryObj.date;
+          const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
+          const schedule = contentObj.schedule;
+          const contentId = contentObj.id;
+          const location = contentObj.location;
 
           delete contentObj.id;
           delete contentObj.schedule;
           delete contentObj.pending;
           delete contentObj.location;
 
-          let startTimeArr = schedule.startTime.toString().split(':');
-          let startHour = startTimeArr[0];
-          let startMin = startTimeArr[1];
+          const startTimeArr = schedule.startTime.toString().split(':');
+          const startHour = startTimeArr[0];
+          const startMin = startTimeArr[1];
           schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
 
-          let endTimeArr = schedule.endTime.toString().split(':');
-          let endHour = endTimeArr[0];
-          let endMin = endTimeArr[1];
+          const endTimeArr = schedule.endTime.toString().split(':');
+          const endHour = endTimeArr[0];
+          const endMin = endTimeArr[1];
           schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
 
           schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
@@ -213,11 +208,11 @@ export class ExperienceContentComponent implements OnInit {
                       .subscribe();
               })
               .subscribe();
-      } else if (event.action = "delete") {
+      } else if (event.action = 'delete') {
           const itenaryObj = this.myForm.value.itenary[i];
           const scheduleDate = itenaryObj.date;
           const contentObj = itenaryObj.contents[event.value];
-          let contentId = contentObj.id;
+          const contentId = contentObj.id;
           this.http.delete(this.config.apiUrl + '/api/contents/' + contentId, options)
               .map((response: Response) => {
                   console.log(response);
@@ -229,7 +224,7 @@ export class ExperienceContentComponent implements OnInit {
               .subscribe();
       }
       else {
-          console.log("unhandledEvent Triggered");
+          console.log('unhandledEvent Triggered');
       }
   }
 

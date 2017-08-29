@@ -227,4 +227,12 @@ export class WorkshopContentComponent implements OnInit {
     }
   }
 
+  getCalendarStartDate() {
+    return new Date(this.calendar.startDate);
+  }
+
+    getCalendarEndDate() {
+        return new Date(this.calendar.endDate);
+    }
+
 }
