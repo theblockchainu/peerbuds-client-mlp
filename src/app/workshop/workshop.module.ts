@@ -13,7 +13,7 @@ import { WorkshopPageComponent } from './workshop-page/workshop-page.component';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule } from '@angular/material';
 import 'hammerjs';
 import { WorkshopPageModule } from './workshop-page/workshop-page.module';
-
+import { DialogsModule } from './dialogs/dialogs.module';
 
 @NgModule({
   imports: [
@@ -26,7 +26,8 @@ import { WorkshopPageModule } from './workshop-page/workshop-page.module';
     MdIconModule,
     MdProgressBarModule,
     MdListModule,
-    MdTabsModule
+    MdTabsModule,
+    DialogsModule
   ],
   declarations: [
     WorkshopEditComponent,

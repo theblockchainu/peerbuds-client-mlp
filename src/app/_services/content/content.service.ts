@@ -12,16 +12,31 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 
+import { RequestHeaderService } from '../requestHeader/request-header.service';
+
 @Injectable()
 export class ContentService {
+
+  public options;
 
   constructor(private http: Http, private config: AppConfig,
     private _cookieService: CookieService,
     private route: ActivatedRoute,
-    public router: Router) { }
+    public router: Router,
+    private requestHeaderService: RequestHeaderService) {
+      this.options = requestHeaderService.getOptions();
+    }
 
   public getTopics() {
-    return this.http.get(this.config.apiUrl + '/api/topics')
+    return this.http.get(this.config.apiUrl + '/api/topics', this.options)
+                    .map((response: Response) => response.json(), (err) => {
+                        console.log('Error: ' + err);
+                    });
+
+  }
+
+  public getEvents(userId: string) {
+    return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/eventCalendar', this.options)
                     .map((response: Response) => response.json(), (err) => {
                         console.log('Error: ' + err);
                     });

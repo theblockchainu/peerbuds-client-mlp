@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { AppConfig } from '../../app.config';
@@ -18,6 +18,10 @@ import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
+
+
+// import { CalendarComponent } from '../calendar-component/calendar-component.component';
+
 
 import {
   startOfDay,
@@ -39,6 +43,7 @@ import {
 } from 'angular-calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
 
+import { DialogsService } from '../dialogs/dialog.service';
 
 const colors: any = {
   red: {
@@ -94,20 +99,12 @@ export class WorkshopPageComponent implements OnInit {
   public recommendations = {
     collections: []
   };
+  public result;
 
   // Calendar Start
   public dateClicked: boolean = false;
   public clickedDate;
   public eventsForTheDay;
-  public headerTemplate = `<ng-template #headerTemplate>
-                            <div class="cal-cell-row cal-header">
-                            <div class="cal-cell" *ngFor="let day of days" [class.cal-past]="day.isPast" [class.cal-today]="day.isToday"
-                                [class.cal-future]="day.isFuture"
-                                [class.cal-weekend]="day.isWeekend"
-                                [ngClass]="day.cssClass">RRR
-                            </div>
-                          </div>
-                          </ng-template>`;
 
   public view: string = 'month';
 
@@ -120,54 +117,7 @@ export class WorkshopPageComponent implements OnInit {
     event: CalendarEvent;
   };
 
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      }
-    }
-  ];
-
   events: CalendarEvent[] = [
-    // {
-    //   start: subDays(startOfDay(new Date()), 1),
-    //   end: addDays(new Date(), 1),
-    //   title: 'A 3 day event',
-    //   color: colors.red,
-    //   actions: this.actions
-    // },
-    // {
-    //   start: startOfDay(new Date()),
-    //   title: 'An event with no end date',
-    //   color: colors.yellow,
-    //   actions: this.actions
-    // },
-    // {
-    //   start: subDays(endOfMonth(new Date()), 3),
-    //   end: addDays(endOfMonth(new Date()), 3),
-    //   title: 'A long event that spans 2 months',
-    //   color: colors.blue
-    // },
-    // {
-    //   start: addHours(startOfDay(new Date()), 2),
-    //   end: new Date(),
-    //   title: 'A draggable and resizable event',
-    //   color: colors.yellow,
-    //   actions: this.actions,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true
-    //   },
-    //   draggable: true
-    // }
   ];
 
   activeDayIsOpen: boolean = true;
@@ -178,7 +128,13 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    this.dateClicked = true; // !this.dateClicked;
+    if (events.length === 0) {
+      this.dateClicked = false;
+      return;
+    }
+    else {
+      this.dateClicked = true; // !this.dateClicked;
+    }
     this.clickedDate = date;
     this.eventsForTheDay = events;
     if (isSameMonth(date, this.viewDate)) {
@@ -194,7 +150,6 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
 
-
   // Calendar Ends
 
   constructor(public router: Router,
@@ -204,6 +159,7 @@ export class WorkshopPageComponent implements OnInit {
     private config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
+    private dialogsService: DialogsService
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.workshopId !== params['workshopId'] || this.calendarId !== params['calendarId'])) {
@@ -214,7 +170,6 @@ export class WorkshopPageComponent implements OnInit {
       console.log('route changed');
     });
     this.userId = cookieUtilsService.getValue('userId');
-    console.log(this.events);
   }
 
   ngOnInit() {
@@ -223,6 +178,12 @@ export class WorkshopPageComponent implements OnInit {
     this.initializeForms();
   }
 
+  // Modal
+  public editCalendar() {
+    this.dialogsService
+      .editCalendar('Repeat your 3 day workshop', this.workshopId, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
+      .subscribe(res => this.result = res);
+  }
 
   private initializeUserType() {
     if (this.workshop) {
@@ -330,7 +291,6 @@ export class WorkshopPageComponent implements OnInit {
             let startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
             for (var i = 0; i < iterinary.contents.length; i++) {
               let schedule = iterinary.contents[i].schedules;
-              debugger;
               const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss'); 
               const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss'); 
               this.events.push({

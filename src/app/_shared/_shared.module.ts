@@ -35,6 +35,7 @@ import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.servic
 import { ContentService } from '../_services/content/content.service';
 import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
 import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
+import { DialogsService } from '../workshop/dialogs/dialog.service';
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     CookieUtilsService,
     ContentService,
     LeftSidebarService,
-    CurrencypickerService
+    CurrencypickerService,
+    DialogsService
   ],
   exports: [
     CommonModule,

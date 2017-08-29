@@ -205,23 +205,13 @@ export class WorkshopEditComponent implements OnInit {
   private extractDate(dateString: string) {
     return dateString.split('T')[0];
   }
+
   private extractTime(dateString: string) {
     const time = moment.utc(dateString).local().format('HH:mm:ss');
     return time;
   }
 
   private initializeTimeLine(res) {
-    // this.http.get(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar').map(
-    //   (res: any) => {
-    //     if (res.startDate) {
-    //       res.startDate = this.extractDate(res.startDate);
-    //       res.endDate = this.extractDate(res.endDate);
-    //       this._collectionService.sanitize(res);
-    //       this.timeline.controls.calendar.patchValue(res);
-    //       this.initializeContentForm();
-    //     }
-    //   }
-    // ).subscribe();
     if (res.calendars[0].startDate) {
       const calendar = res.calendars[0];
       calendar['startDate'] = this.extractDate(calendar.startDate);
@@ -236,25 +226,6 @@ export class WorkshopEditComponent implements OnInit {
     const contentGroup = <FormGroup>this.timeline.controls.contentGroup;
     const itenary = <FormArray>contentGroup.controls.itenary;
     const itenaries = this.getContents(res.contents);
-    // this.getContents((err, itenaries: any) => {
-    //   if (err) {
-    //     console.log(err);
-    //   } else {
-    //     for (const key in itenaries) {
-    //       if (itenaries.hasOwnProperty(key)) {
-    //         const itr: FormGroup = this.InitItenary();
-    //         itr.controls.date.patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, key));
-    //         for (const contentObj of itenaries[key]) {
-    //           const contentForm: FormGroup = this.InitContent();
-    //           this.assignFormValues(contentForm, contentObj);
-    //           const contents = <FormArray>itr.controls.contents;
-    //           contents.push(contentForm);
-    //         }
-    //         itenary.push(itr);
-    //       }
-    //     }
-    //   }
-    // });
     for (const key in itenaries) {
       if (itenaries.hasOwnProperty(key)) {
         const itr: FormGroup = this.InitItenary();
