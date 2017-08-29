@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 
 import { AppConfig } from '../../app.config';
+import {AppFooterComponent} from '../../app-footer/app-footer.component';
 
 export class SideBarMenuItem {
     active: boolean;
@@ -21,9 +22,10 @@ export class LeftSidebarService {
 
   sidebarMenuItems: Observable<SideBarMenuItem>;
 
-  constructor(private http: Http, private config: AppConfig
-              , private route: ActivatedRoute, public router: Router) { 
-              }
+  constructor(
+      private http: Http, private config: AppConfig,
+      private route: ActivatedRoute, public router: Router
+  ) {}
 
   public getMenuItems(fileLocation: string): Observable<SideBarMenuItem> {
       return this.http.get(fileLocation)
@@ -31,5 +33,4 @@ export class LeftSidebarService {
                     return response.json();
                   });
   }
-
 }

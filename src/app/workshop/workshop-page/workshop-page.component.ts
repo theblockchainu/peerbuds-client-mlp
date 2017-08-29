@@ -331,8 +331,8 @@ export class WorkshopPageComponent implements OnInit {
             for (var i = 0; i < iterinary.contents.length; i++) {
               let schedule = iterinary.contents[i].schedules;
               debugger;
-              const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss'); 
-              const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss'); 
+              const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss');
+              const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss');
               this.events.push({
                 title: iterinary.contents[i].title,
                 color: colors.red,
@@ -643,6 +643,7 @@ content:any   */
       } else {
         for (const responseObj of response) {
           responseObj.rating = this.calculateRating(responseObj);
+          console.log(responseObj);
           this.recommendations.collections.push(responseObj);
         }
       }
