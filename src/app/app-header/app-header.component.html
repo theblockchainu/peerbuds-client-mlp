@@ -9,7 +9,7 @@
         <input name="search" class="md-block search-box" mdInput [formControl]="myControl" [mdAutocomplete]="auto" placeholder="Search people, topic...">
       </md-input-container>
       <md-autocomplete #auto="mdAutocomplete">
-        <md-option *ngFor="let option of options" [value]="option">
+        <md-option *ngFor="let option of options" [value]="getSearchOptionText(option)" (click)="onSearchOptionClicked(option)">
             <span class="lightText">
               {{getSearchOptionType(option)}}
             </span>

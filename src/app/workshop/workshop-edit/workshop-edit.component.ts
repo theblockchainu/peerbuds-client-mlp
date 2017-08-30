@@ -9,7 +9,6 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
-import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
@@ -19,6 +18,10 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import _ from 'lodash';
+import {MdDialog} from '@angular/material';
+import {WorkshopSubmitDialogComponent} from './workshop-submit-dialog/workshop-submit-dialog.component';
+import {WorkshopCloneDialogComponent} from './workshop-clone-dialog/workshop-clone-dialog.component';
+import {LeftSidebarService} from '../../_services/left-sidebar/left-sidebar.service';
 
 
 @Component({
@@ -42,7 +45,6 @@ export class WorkshopEditComponent implements OnInit {
   public paymentInfo: FormGroup;
 
   private workshopId: string;
-  private workshopObject = {};
   // Set our default values
   public localState = { value: '' };
   public countries: any[];
@@ -63,6 +65,7 @@ export class WorkshopEditComponent implements OnInit {
   public currencies = [];
   public key;
   public maxTopics = 3;
+  public otpSent = false;
 
   private options;
 
@@ -89,7 +92,9 @@ export class WorkshopEditComponent implements OnInit {
   public urlForVideo = [];
   public urlForImages = [];
 
-  public datesEditable: boolean = false;
+  public datesEditable = false;
+  public isPhoneVerified = false;
+  public isSubmitted = false;
 
   // TypeScript public modifiers
   constructor(
@@ -104,7 +109,9 @@ export class WorkshopEditComponent implements OnInit {
     public _collectionService: CollectionService,
     private mediaUploader: MediaUploaderService,
     private cookieUtilsService: CookieUtilsService,
-    public requestHeaderService: RequestHeaderService
+    public requestHeaderService: RequestHeaderService,
+    private dialog: MdDialog,
+    private _leftSideBarService: LeftSidebarService
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
@@ -137,8 +144,8 @@ export class WorkshopEditComponent implements OnInit {
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
-      videoUrls: this._fb.array([]),
-      imageUrls: this._fb.array([]),
+      videoUrls: [],
+      imageUrls: [],
       totalHours: '',
       price: '',
       currency: '',
@@ -313,17 +320,7 @@ export class WorkshopEditComponent implements OnInit {
   private initializeFormFields() {
     this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
 
-    this.cancellationPolicies = [{
-      value: 1,
-      text: '24 Hours'
-    }, {
-      value: 3,
-      text: '3 Days'
-    },
-    {
-      value: 7,
-      text: '1 Week'
-    }];
+    this.cancellationPolicies = ['24 Hours', '3 Days', '1 Week'];
 
     this.currencies = ['USD', 'INR', 'GBP'];
 
@@ -514,10 +511,20 @@ export class WorkshopEditComponent implements OnInit {
     // Currency, Amount, Cancellation Policy
     this.workshop.controls.price.patchValue(res.price);
     this.workshop.controls.currency.patchValue(res.currency);
-    this.workshop.controls.cancellationPolicy.patchValue(res.cancellationPolicy);
+    this.workshop.controls.cancellationPolicy.setValue(res.cancellationPolicy);
 
     // Status
     this.workshop.controls.status.setValue(res.status);
+
+    this.isPhoneVerified = res.owners[0].phoneVerified;
+
+    this.isSubmitted = this.workshop.controls.status.value === 'submitted';
+
+    this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].phone);
+
+    if (!this.timeline.controls.calendar.value.startDate || !this.timeline.controls.calendar.value.endDate) {
+      this.makeDatesEditable();
+    }
   }
 
   initAddress() {
@@ -541,15 +548,15 @@ export class WorkshopEditComponent implements OnInit {
       this.urlForImages.push(value);
       const control = <FormArray>this.workshop.controls['imageUrls'];
       this.workshopImage1Pending = false;
-      control.push(new FormControl(value));
+      control.patchValue(this.urlForImages);
   }
 
   public addVideoUrl(value: String) {
       console.log('Adding video url: ' + value);
       this.urlForVideo.push(value);
-      const control = <FormArray>this.workshop.controls['videoUrls'];
+      const control = this.workshop.controls['videoUrls'];
       this.workshopVideoPending = false;
-      control.push(new FormControl(value));
+      control.patchValue(this.urlForVideo);
   }
 
   uploadVideo(event) {
@@ -574,19 +581,45 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public submitWorkshop(data) {
-    const lang = <FormArray>this.workshop.controls.language;
-    lang.removeAt(0);
-    lang.push(this._fb.control(data.value.selectedLanguage));
-    const body = data.value;
-    delete body.selectedLanguage;
-
-    this._collectionService.patchCollection(this.workshopId, body).map(
-      (response) => {
-        this.step++;
-        this.workshopStepUpdate();
-        this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
-      }).subscribe();
+    if (this.workshop.controls.status.value === 'active') {
+        let dialogRef: any;
+        dialogRef = this.dialog.open(WorkshopCloneDialogComponent, {disableClose: true, hasBackdrop: true, width: '40%'});
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result === 'accept') {
+            this.executeSubmitWorkshop(data);
+          }
+          else if (result === 'reject') {
+            this.router.navigate(['/console/teaching/workshops']);
+          }
+        });
+    }
+    else {
+      this.executeSubmitWorkshop(data);
+    }
   }
+
+  private executeSubmitWorkshop(data) {
+      const lang = <FormArray>this.workshop.controls.language;
+      lang.removeAt(0);
+      lang.push(this._fb.control(data.value.selectedLanguage));
+      const body = data.value;
+      delete body.selectedLanguage;
+
+      this._collectionService.patchCollection(this.workshopId, body).map(
+          (response) => {
+              const result = response.json();
+              this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
+              this.step++;
+              this.workshopStepUpdate();
+              if (result.isNewInstance) {
+                  this.router.navigate(['workshop', result.id, 'edit', this.step]);
+                  this.workshop.controls.status.setValue(result.status);
+              }
+              else {
+                  this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
+              }
+          }).subscribe();
+}
 
   /**
    * numberOfdays
@@ -676,32 +709,24 @@ export class WorkshopEditComponent implements OnInit {
   }
 
 
-  submitForReview(modal: ModalDirective) {
+  submitForReview() {
     // Post Workshop for review
     this._collectionService.submitForReview(this.workshopId)
       .subscribe((res) => {
-        this.sidebarMenuItems[3].visible = false;
+        this.workshop.controls.status.setValue('submitted');
+        console.log('Workshop submitted for review');
+        this.isSubmitted = true;
+        let dialogRef: any;
+        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, {disableClose: false, hasBackdrop: true, width: '40vw'});
         // call to get status of workshop
         if (this.workshop.controls.status.value === 'active') {
+          this.sidebarMenuItems[3].visible = false;
           this.sidebarMenuItems[4].visible = true;
           this.sidebarMenuItems[4].active = true;
           this.sidebarMenuItems[4].submenu[0].visible = true;
-          // this.sidebarMenuItems[4].submenu[0].active = true;
           this.sidebarMenuItems[4].submenu[1].visible = true;
-          // this.sidebarMenuItems[4].submenu[1].active = true;
-          this.step = +this.step + 2;
         }
-        //modal.show();
       });
-
-  }
-
-  redirectToConsole(modal: ModalDirective) {
-    modal.hide();
-    this.router.navigate(['console', 'teaching', 'workshops']);
-  }
-
-  submitPhoneNumber() {
 
   }
 
@@ -732,6 +757,10 @@ export class WorkshopEditComponent implements OnInit {
           this.router.navigate(['console/teaching/workshops']);
         }).subscribe();
     }
+  }
+
+  exit() {
+      this.router.navigate(['console/teaching/workshops']);
   }
 
   AddNewTopic(data, modal) {
@@ -899,12 +928,16 @@ export class WorkshopEditComponent implements OnInit {
   }
 
 
-  submitPhoneNo() {
+  submitPhoneNo(element, text) {
     // Call the OTP service
     // Post Workshop for review
+
+    element.textContent = text;
     this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value)
       .subscribe((res) => {
-        console.log('SmS sent');
+        this.otpSent = true;
+        this.phoneDetails.controls.phoneNo.disable();
+        element.textContent = 'OTP Sent';
       });
   }
 
@@ -925,6 +958,10 @@ export class WorkshopEditComponent implements OnInit {
      */
   makeDatesEditable() {
     this.datesEditable = true;
+  }
+
+  openWorkshop() {
+    this.router.navigate(['/workshop', this.workshopId]);
   }
 
 }

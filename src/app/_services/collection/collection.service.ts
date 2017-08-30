@@ -406,14 +406,12 @@ export class CollectionService {
   }
 
   public sendVerifySMS(phoneNo) {
-    const body = {
-    };
+    const body = {};
     return this.http
       .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
-
   }
 
   public confirmSmsOTP(inputToken) {
@@ -463,4 +461,60 @@ collectionID:string,userId:string,calendarId:string   */
   public getParticipants() {
 
   }
+
+    /**
+     * Approve this collection
+     * @param collection
+     * @returns {Observable<any>}
+     */
+  public approveCollection(collection) {
+    this.http.post(this.config.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.options).map(
+      (response) => response.json(), (err) => {
+          console.log('Error: ' + err);
+      }).subscribe(() => {
+        this.router.navigate(['/console/teaching/all']);
+    });
+  }
+
+    /**
+     * open a collection view page based on its type
+     * @param collection
+     */
+  public openCollection(collection) {
+    switch (collection.type) {
+        case 'workshop':
+          this.router.navigate(['/workshop', collection.id]);
+          break;
+        case 'experience':
+            this.router.navigate(['/experience', collection.id]);
+            break;
+        case 'session':
+            this.router.navigate(['/session', collection.id]);
+            break;
+        default:
+            this.router.navigate(['/workshop', collection.id]);
+            break;
+    }
+  }
+
+    /**
+     * open a collection view page based on its type
+     * @param collection
+     */
+    public openEditCollection(collection) {
+        switch (collection.type) {
+            case 'workshop':
+                this.router.navigate(['/workshop', collection.id, 'edit', collection.stage]);
+                break;
+            case 'experience':
+                this.router.navigate(['/experience', collection.id, 'edit', collection.stage]);
+                break;
+            case 'session':
+                this.router.navigate(['/session', collection.id, 'edit', collection.stage]);
+                break;
+            default:
+                this.router.navigate(['/workshop', collection.id, 'edit', collection.stage]);
+                break;
+        }
+    }
 }

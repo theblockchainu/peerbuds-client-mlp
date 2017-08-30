@@ -66,12 +66,6 @@ export class ProfileService {
 
   public getPeerProfile() {
     return this.userId;
-    // if (this.userId) {
-    //   const options = '{"include": "profiles"}';
-    //   return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
-    //     .map((response: Response) => response.json()
-    //     );
-    // }
   }
 
   public updatePeer(id: any, body: any) {
@@ -194,14 +188,74 @@ export class ProfileService {
   }
 
   /**
+   * Delete all work nodes of a profile
+   * @param profileId
+   * @param cb
+   */
+  public deleteProfileWorks(profileId, cb) {
+    this.http
+      .delete(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.options)
+      .map((response) => {
+        cb(null, response);
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public updateProfileWorks(profileId, work: any, cb: any) {
+    if (!(work.length > 0 && this.userId)) {
+      console.log('User not logged in');
+      cb(new Error('User not logged in or work body blank'));
+    } else {
+      this.http
+        .post(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.sanitize(work), this.options)
+        .map((response1) => {
+          cb(null, response1.json());
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
+  /**
+   * Delete all education nodes of a profile
+   * @param profileId
+   * @param cb
+   */
+  public deleteProfileEducations(profileId, cb) {
+    this.http
+      .delete(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.options)
+      .map((response) => {
+        cb(null, response);
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public updateProfileEducations(profileId, education: any, cb: any) {
+    if (!(education.length > 0 && this.userId)) {
+      console.log('User not logged in');
+      cb(new Error('User not logged in or education body blank'));
+    } else {
+      this.http
+        .post(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.sanitize(education), this.options)
+        .map((response1) => {
+          cb(null, response1.json());
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
+  /**
    * sanitize
    */
-  private sanitize(newprofile: any) {
-    delete newprofile.id;
-    delete newprofile.peer;
-    delete newprofile.work;
-    delete newprofile.education;
-    return newprofile;
+  private sanitize(object: any) {
+    delete object.id;
+    delete object.peer;
+    delete object.work;
+    delete object.education;
+    return object;
   }
 
   getUserId() {

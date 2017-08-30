@@ -34,13 +34,4 @@ export class RequestHeaderService {
     return this.userId;
   }
 
-  // public getProfile() {
-  //   const profile = {};
-  //   if (this.userId) {
-  //     return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profile')
-  //       .map((response: Response) => response.json()
-  //       );
-  //   }
-  // }
-
 }

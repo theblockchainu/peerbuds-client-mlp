@@ -85,4 +85,8 @@ export class ConsoleTeachingComponent implements OnInit {
     // Show popup here
   }
 
+  imgErrorHandler(event) {
+      event.target.src = '/assets/images/user-placeholder.jpg';
+  }
+
 }
