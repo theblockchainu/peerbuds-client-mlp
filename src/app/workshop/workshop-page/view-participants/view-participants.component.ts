@@ -37,6 +37,7 @@ export class ViewParticipantsComponent implements OnInit {
   */
   public removeParticipant(participantId: string) {
     this._collectionService.removeParticipant(this.data.workshopId, participantId).subscribe((response) => {
+      location.reload();
       console.log('deleted');
     });
   }

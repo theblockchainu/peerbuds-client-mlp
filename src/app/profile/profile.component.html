@@ -37,14 +37,14 @@
             <a href="javascript:;" class="more">+more</a>
           </div>
         </div>
-        <a href="javascript:;" class="display-block text-grey text-center margin-top-10">report profile</a>
+        <a href="javascript:;" class="display-block text-grey text-center margin-top-10">Report profile</a>
       </div>
       <div class="col-sm-5">
         <div class="seperate-section padding-top-0">
           <h3 class="heading">About me</h3>
           <p class="text-grey lh-28 margin-bottom-0">{{profile.description}}</p>
         </div>
-        <div class="seperate-section">
+        <!--<div class="seperate-section">
           <h3 class="heading">What I teach</h3>
           <div class="what-i-teach">
             <div class="topic">Web Design</div>
@@ -61,7 +61,7 @@
             <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et rutrum leo. Sed efficitur tortor sed eros vehicula,
               ac gravida urna euismod<a href="javascript:;" class="read-more">...read more</a></p>
           </div>
-        </div>
+        </div>-->
         <div class="seperate-section">
           <h3 class="heading">Resume</h3>
           <div class="resume-list">
@@ -172,7 +172,7 @@
 
             <tabset>
               <tab heading="Session" customClass="sidebar-tabs" [hidden]="!sessions">
-                <div class="sidebar-section margin-top-30">
+                <!--<div class="sidebar-section margin-top-30">
                   <div class="display-inline-block">
                     <div class="heading">Trial {{userType}}</div>
                     <div class="desc">1 hour session</div>
@@ -195,13 +195,13 @@
                 </div>
                 <div class="sidebar-details" [hidden]="profileId === userId">
                   <button class="btn btn-success btn-book" (click)="bookSessionModal.show()">Book</button>
-                </div>
+                </div>-->
               </tab>
               <tab heading="Experience" [hidden]="!experiences">
                 <div class="sidebar-section margin-top-30" *ngFor="let experience of experiences">
-                  <img class="img-responsive" src="http://lorempixel.com/350/250/city/9">
+                  <img class="img-responsive" src="{{ (experience.imageUrls && experience.imageUrls.length > 0) ? config.apiUrl+experience.imageUrls[0] : defaultImageUrl }}">
                   <div class="text-black margin-bottom-10 margin-top-15 fw-bold">{{ experience.title != '' ? experience.title : 'No Title' }}</div>
-                  <p class="text-grey lh-24 margin-bottom-20">{{ experience.description != '' ? experience.description : 'No Description' }}</p>
+                  <p class="text-grey lh-24">{{ experience.description != '' ? experience.description : 'No Description' }}</p>
                 </div>
                 <div class="sidebar-details" [hidden]="profileId === userId">
                   <button class="btn btn-success btn-book" (click)="seeDatesExperienceModal.show()">See dates</button>
@@ -209,9 +209,9 @@
               </tab>
               <tab heading="Workshop" [hidden]="!workshops">
                 <div class="sidebar-section margin-top-30" *ngFor="let workshop of workshops">
-                  <img class="img-responsive" src="http://lorempixel.com/350/250/city/9" title="image">
+                  <img class="img-responsive" src="{{ (workshop.imageUrls && workshop.imageUrls.length > 0) ? config.apiUrl+workshop.imageUrls[0] : defaultImageUrl }}" title="image">
                   <div class="text-black margin-bottom-10 margin-top-15 fw-bold">{{ workshop.title != '' ? workshop.title : 'No Title' }}</div>
-                  <p class="text-grey lh-24 margin-bottom-20">{{ workshop.description != '' ? workshop.description : 'No Description' }}</p>
+                  <p class="text-grey lh-24">{{ workshop.description != '' ? workshop.description : 'No Description' }}</p>
                 </div>
                 <div class="sidebar-details" [hidden]="profileId === userId">
                   <button class="btn btn-success btn-book" (click)="seeDatesWorkshopModal.show()">See dates</button>

@@ -50,8 +50,8 @@
                     <div class="row">
                       <div class="col-sm-12">
                         <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
-                                                  [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
-                                                  [maxSelection]=maxTopics></multiselect-autocomplete>
+                          [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+                          [maxSelection]=maxTopics></multiselect-autocomplete>
                         <!--formArrayName="interests"-->
                       </div>
                     </div>
@@ -72,7 +72,7 @@
                             add
                           </md-icon>
                         </a>
-                        <div bsModal #newTopicModal="bs-modal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div bsModal #newTopicModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-md">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -200,8 +200,8 @@
                     <div class="form-group">
                       <h1 class="title">Headline</h1>
                       <p class="subtitle">
-                        Explain your workshop in short and descriptive sentences.<br/>
-                        It should give an insight to learners on what they'll do.
+                        Explain your workshop in short and descriptive sentences.<br/> It should give an insight to learners
+                        on what they'll do.
                       </p>
                       <br/>
                       <md-input-container class="pb-block" style="margin-bottom: 20px">
@@ -278,8 +278,8 @@
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
               <h1 class="title">How many seats are available? </h1>
               <p class="subtitle">
-                Remember to keep your workshop as personal as possible.<br>
-                The more learners the less attention you can give to everybody.
+                Remember to keep your workshop as personal as possible.<br> The more learners the less attention you can
+                give to everybody.
               </p>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="col-sm-12">
@@ -308,7 +308,8 @@
                   <div class="row" style="margin-top:40px">
                     <div class="col-md-8">
                       <div class="stepHeader">Upload Video</div>
-                      <p-fileUpload #fubauto name="video" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadVideo($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+                      <p-fileUpload #fubauto name="video" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadVideo($event)"
+                        maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
                         <ng-template pTemplate="toolbar">
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
                         </ng-template>
@@ -321,15 +322,15 @@
                                 <md-icon (click)="deleteFromContainer(file, 'video')" style="color: black;">close</md-icon>
                               </div>
                               <video controls width="150" style="border: 0.5px solid #ccc">
-                                <source src="{{config.apiUrl + file}}">
-                                Your browser does not support the video tag.
+                                <source src="{{config.apiUrl + file}}"> Your browser does not support the video tag.
                               </video>
                             </md-grid-tile>
                           </md-grid-list>
                         </ng-template>
                       </p-fileUpload>
                       <div class="stepHeader" style="margin-top: 40px;">Upload Images</div>
-                      <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImages($event)"  maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+                      <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImages($event)"
+                        maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
                         <ng-template pTemplate="toolbar">
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
                         </ng-template>
@@ -437,8 +438,8 @@
                 <div formGroupName="calendar" *ngIf="(timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate) && !datesEditable">
                   <div class="row" style="margin: 30px 0px 15px 0;">
                     <div class="col-md-12 selected-dates">
-                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd MMM'}}
-                      &emsp;
+                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd
+                      MMM'}} &emsp;
                       <md-icon color="accent">
                         date_range
                       </md-icon>
@@ -447,7 +448,8 @@
                   </div>
                 </div>
                 <div class="row" *ngIf="timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate">
-                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value" (days)="daysCollection($event)">
+                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collectionId]="workshopId" [calendar]="timeline.controls.calendar.value"
+                    (days)="daysCollection($event)">
                   </app-workshop-content>
                 </div>
                 <div class="row">
@@ -475,8 +477,8 @@
                 <button md-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] && !selectedValues[1]"> Submit for Review</button>
               </div>
               <div *ngIf="isSubmitted" style="margin-top: 70px;">
-                Your workshop has been submitted for review and is awaiting approval from Peerbuds team.<br><br>
-                We maintain highest possible standards for all content shared on Peerbuds platform.
+                Your workshop has been submitted for review and is awaiting approval from Peerbuds team.<br><br> We maintain
+                highest possible standards for all content shared on Peerbuds platform.
               </div>
             </div>
           </div>
@@ -499,7 +501,7 @@
                       <button md-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')" *ngIf="!isPhoneVerified">
                         Send OTP
                       </button>
-                      <button md-raised-button #sendOtpButton color="accent"  *ngIf="isPhoneVerified">
+                      <button md-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
                         <md-icon md-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</md-icon> Phone Verified
                       </button>
                     </div>
