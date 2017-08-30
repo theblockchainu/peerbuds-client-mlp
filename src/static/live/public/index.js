@@ -1,29 +1,51 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports={
-  "_from": "@twilio/sip.js@^0.7.6",
+  "_args": [
+    [
+      {
+        "raw": "@twilio/sip.js@^0.7.6",
+        "scope": "@twilio",
+        "escapedName": "@twilio%2fsip.js",
+        "name": "@twilio/sip.js",
+        "rawSpec": "^0.7.6",
+        "spec": ">=0.7.6 <0.8.0",
+        "type": "range"
+      },
+      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material/node_modules/twilio-video"
+    ]
+  ],
+  "_from": "@twilio/sip.js@>=0.7.6 <0.8.0",
   "_id": "@twilio/sip.js@0.7.6",
-  "_inBundle": false,
-  "_integrity": "sha1-kYbGlzay7AksAHkQh7Cnhol1wUw=",
+  "_inCache": true,
   "_location": "/@twilio/sip.js",
+  "_nodeVersion": "7.10.1",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/sip.js-0.7.6.tgz_1503335382018_0.028498857049271464"
+  },
+  "_npmUser": {
+    "name": "twilio-ci",
+    "email": "mroberts+twilio-ci@twilio.com"
+  },
+  "_npmVersion": "4.2.0",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
-    "registry": true,
     "raw": "@twilio/sip.js@^0.7.6",
-    "name": "@twilio/sip.js",
-    "escapedName": "@twilio%2fsip.js",
     "scope": "@twilio",
+    "escapedName": "@twilio%2fsip.js",
+    "name": "@twilio/sip.js",
     "rawSpec": "^0.7.6",
-    "saveSpec": null,
-    "fetchSpec": "^0.7.6"
+    "spec": ">=0.7.6 <0.8.0",
+    "type": "range"
   },
   "_requiredBy": [
     "/twilio-video"
   ],
   "_resolved": "https://registry.npmjs.org/@twilio/sip.js/-/sip.js-0.7.6.tgz",
   "_shasum": "9186c69736b2ec092c00791087b0a7868975c14c",
+  "_shrinkwrap": null,
   "_spec": "@twilio/sip.js@^0.7.6",
-  "_where": "/Users/aakash/WebstormProjects/peerbuds-client-mlp/node_modules/twilio-video",
+  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material/node_modules/twilio-video",
   "author": {
     "name": "OnSIP",
     "email": "developer@onsip.com",
@@ -35,13 +57,12 @@ module.exports={
   "bugs": {
     "url": "https://github.com/onsip/SIP.js/issues"
   },
-  "bundleDependencies": false,
   "contributors": [
     {
       "url": "https://github.com/onsip/SIP.js/blob/master/THANKS.md"
     }
   ],
-  "deprecated": false,
+  "dependencies": {},
   "description": "A simple, intuitive, and powerful JavaScript signaling library",
   "devDependencies": {
     "beefy": "^2.1.5",
@@ -58,9 +79,15 @@ module.exports={
     "pegjs": "^0.8.0",
     "release-tool": "^0.2.2"
   },
+  "directories": {},
+  "dist": {
+    "shasum": "9186c69736b2ec092c00791087b0a7868975c14c",
+    "tarball": "https://registry.npmjs.org/@twilio/sip.js/-/sip.js-0.7.6.tgz"
+  },
   "engines": {
     "node": ">=0.12"
   },
+  "gitHead": "1dac536a50b3d9b91fd3a3d86ecd7923d7c6f70c",
   "homepage": "http://sipjs.com",
   "keywords": [
     "sip",
@@ -71,7 +98,15 @@ module.exports={
   ],
   "license": "MIT",
   "main": "src/index.js",
+  "maintainers": [
+    {
+      "name": "twilio-ci",
+      "email": "mroberts+twilio-ci@twilio.com"
+    }
+  ],
   "name": "@twilio/sip.js",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/onsip/SIP.js.git"
@@ -14088,30 +14123,52 @@ module.exports = TrackMatcher;
 
 },{"./":49,"./sdp":51}],53:[function(require,module,exports){
 module.exports={
-  "_from": "@twilio/webrtc@^1.0.0",
+  "_args": [
+    [
+      {
+        "raw": "@twilio/webrtc@^1.0.0",
+        "scope": "@twilio",
+        "escapedName": "@twilio%2fwebrtc",
+        "name": "@twilio/webrtc",
+        "rawSpec": "^1.0.0",
+        "spec": ">=1.0.0 <2.0.0",
+        "type": "range"
+      },
+      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material/node_modules/twilio-video"
+    ]
+  ],
+  "_from": "@twilio/webrtc@>=1.0.0 <2.0.0",
   "_id": "@twilio/webrtc@1.0.0",
-  "_inBundle": false,
-  "_integrity": "sha512-6ioEOuzeYoAVIO44PM884Ni1dH0Ufln68YFobqGHjRNWpJ4RZd2AkJ1FmMJgOoeS9IAw9AY3bHcHC0p4hnuo/g==",
+  "_inCache": true,
   "_location": "/@twilio/webrtc",
+  "_nodeVersion": "8.2.1",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/webrtc-1.0.0.tgz_1503334397107_0.2456725083757192"
+  },
+  "_npmUser": {
+    "name": "twilio-ci",
+    "email": "mroberts+twilio-ci@twilio.com"
+  },
+  "_npmVersion": "5.3.0",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
-    "registry": true,
     "raw": "@twilio/webrtc@^1.0.0",
-    "name": "@twilio/webrtc",
-    "escapedName": "@twilio%2fwebrtc",
     "scope": "@twilio",
+    "escapedName": "@twilio%2fwebrtc",
+    "name": "@twilio/webrtc",
     "rawSpec": "^1.0.0",
-    "saveSpec": null,
-    "fetchSpec": "^1.0.0"
+    "spec": ">=1.0.0 <2.0.0",
+    "type": "range"
   },
   "_requiredBy": [
     "/twilio-video"
   ],
   "_resolved": "https://registry.npmjs.org/@twilio/webrtc/-/webrtc-1.0.0.tgz",
   "_shasum": "fbb968259c08fac774a6723bf5540ec5eb53425e",
+  "_shrinkwrap": null,
   "_spec": "@twilio/webrtc@^1.0.0",
-  "_where": "/Users/aakash/WebstormProjects/peerbuds-client-mlp/node_modules/twilio-video",
+  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material/node_modules/twilio-video",
   "author": {
     "name": "Manjesh Malavalli",
     "email": "mmalavalli@twilio.com"
@@ -14119,7 +14176,6 @@ module.exports={
   "bugs": {
     "url": "https://github.com/twilio/twilio-webrtc.js/issues"
   },
-  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Mark Roberts",
@@ -14130,7 +14186,7 @@ module.exports={
       "email": "rrowland@twilio.com"
     }
   ],
-  "deprecated": false,
+  "dependencies": {},
   "description": "WebRTC-related APIs and shims used by twilio-video.js",
   "devDependencies": {
     "browserify": "^14.4.0",
@@ -14152,6 +14208,13 @@ module.exports={
     "watchify": "^3.9.0",
     "webrtc-adapter": "^4.2.2"
   },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-6ioEOuzeYoAVIO44PM884Ni1dH0Ufln68YFobqGHjRNWpJ4RZd2AkJ1FmMJgOoeS9IAw9AY3bHcHC0p4hnuo/g==",
+    "shasum": "fbb968259c08fac774a6723bf5540ec5eb53425e",
+    "tarball": "https://registry.npmjs.org/@twilio/webrtc/-/webrtc-1.0.0.tgz"
+  },
+  "gitHead": "bc3b8ea06ff5c0d11405bffa51ede7805a0478e8",
   "homepage": "https://github.com/twilio/twilio-webrtc.js#readme",
   "keywords": [
     "shim",
@@ -14161,7 +14224,15 @@ module.exports={
   ],
   "license": "BSD-3-Clause",
   "main": "./lib/index.js",
+  "maintainers": [
+    {
+      "name": "twilio-ci",
+      "email": "mroberts+twilio-ci@twilio.com"
+    }
+  ],
   "name": "@twilio/webrtc",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/twilio/twilio-webrtc.js.git"
@@ -23385,30 +23456,52 @@ module.exports = TwilioError;
 
 },{"util":119}],114:[function(require,module,exports){
 module.exports={
-  "_from": "twilio-video@1.2.2",
+  "_args": [
+    [
+      {
+        "raw": "twilio-video@^1.2.2",
+        "scope": null,
+        "escapedName": "twilio-video",
+        "name": "twilio-video",
+        "rawSpec": "^1.2.2",
+        "spec": ">=1.2.2 <2.0.0",
+        "type": "range"
+      },
+      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material"
+    ]
+  ],
+  "_from": "twilio-video@>=1.2.2 <2.0.0",
   "_id": "twilio-video@1.2.2",
-  "_inBundle": false,
-  "_integrity": "sha1-tITLjU/S/xy1ZxcuqZTsdVrArTo=",
+  "_inCache": true,
   "_location": "/twilio-video",
+  "_nodeVersion": "7.10.1",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/twilio-video-1.2.2.tgz_1503446113728_0.15544145344756544"
+  },
+  "_npmUser": {
+    "name": "markandrus",
+    "email": "markandrusroberts@gmail.com"
+  },
+  "_npmVersion": "4.2.0",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "twilio-video@1.2.2",
-    "name": "twilio-video",
+    "raw": "twilio-video@^1.2.2",
+    "scope": null,
     "escapedName": "twilio-video",
-    "rawSpec": "1.2.2",
-    "saveSpec": null,
-    "fetchSpec": "1.2.2"
+    "name": "twilio-video",
+    "rawSpec": "^1.2.2",
+    "spec": ">=1.2.2 <2.0.0",
+    "type": "range"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/twilio-video/-/twilio-video-1.2.2.tgz",
   "_shasum": "b484cb8d4fd2ff1cb567172ea994ec755ac0ad3a",
-  "_spec": "twilio-video@1.2.2",
-  "_where": "/Users/aakash/WebstormProjects/peerbuds-client-mlp",
+  "_shrinkwrap": null,
+  "_spec": "twilio-video@^1.2.2",
+  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material",
   "author": {
     "name": "Mark Andrus Roberts",
     "email": "mroberts@twilio.com"
@@ -23420,7 +23513,6 @@ module.exports={
   "bugs": {
     "url": "https://github.com/twilio/twilio-video.js/issues"
   },
-  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Ryan Rowland",
@@ -23437,7 +23529,6 @@ module.exports={
     "ws": "^2.3.1",
     "xmlhttprequest": "^1.8.0"
   },
-  "deprecated": false,
   "description": "Twilio Video JavaScript library",
   "devDependencies": {
     "browserify": "^14.3.0",
@@ -23472,9 +23563,15 @@ module.exports={
     "vinyl-source-stream": "^1.1.0",
     "webrtc-adapter": "^4.1.1"
   },
+  "directories": {},
+  "dist": {
+    "shasum": "b484cb8d4fd2ff1cb567172ea994ec755ac0ad3a",
+    "tarball": "https://registry.npmjs.org/twilio-video/-/twilio-video-1.2.2.tgz"
+  },
   "engines": {
     "node": ">=0.12"
   },
+  "gitHead": "52fa756648ef32ba6d6a6c9cb0d6bed93ac6c73d",
   "homepage": "https://twilio.com",
   "keywords": [
     "twilio",
@@ -23486,7 +23583,15 @@ module.exports={
   ],
   "license": "BSD-3-Clause",
   "main": "./lib/index.js",
+  "maintainers": [
+    {
+      "name": "markandrus",
+      "email": "markandrusroberts@gmail.com"
+    }
+  ],
   "name": "twilio-video",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/twilio/twilio-video.js.git"
