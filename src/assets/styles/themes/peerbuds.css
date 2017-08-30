@@ -6323,3 +6323,14 @@ md-subheader {
 .ui-autocomplete-token {
     margin-bottom: 10px;
 }
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+.margin-top-50 {
+    margin-top: 50px !important;
+}

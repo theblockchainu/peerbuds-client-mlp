@@ -97,6 +97,7 @@ export class WorkshopPageComponent implements OnInit {
   public messagingParticipant: any;
   public allItenaries = [];
   public itenariesObj = {};
+  public defaultProfileUrl = '/assets/images/avatar.png';
 
   public replyForm: FormGroup;
 
@@ -304,7 +305,7 @@ export class WorkshopPageComponent implements OnInit {
         'calendars',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules'] },
+        { 'contents': ['schedules', {'submissions': ['peer']}] },
         { 'reviews': [{ 'peer': ['profiles'] }] }
       ]
     };
@@ -647,7 +648,7 @@ content:any   */
               content: content,
               userType: this.userType
             },
-            width: '800px'
+            width: '660px'
           }); break;
         }
       default:

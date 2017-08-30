@@ -693,18 +693,18 @@ a{
 // 	}
 // }
 
-// .dot-dot {
-// 	overflow: hidden;
-// 	text-overflow: ellipsis;
-// 	position: relative;
-// 	white-space: nowrap;
-// 	vertical-align: middle;
-// }
-// .dot-2line{
-// 	max-height:60px;
-// 	overflow:hidden;
-// 	display:inline-block;
-// }
+.dot-dot {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	position: relative;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+.dot-2line{
+	max-height:60px;
+	overflow:hidden;
+	display:inline-block;
+}
 // .form-control {
 //     height: 40px;
 // }
