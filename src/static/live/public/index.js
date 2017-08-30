@@ -24303,71 +24303,6 @@ function detachParticipantTracks(participant) {
 // from the room, if joined.
 window.addEventListener('beforeunload', leaveRoomIfJoined);
 
-// $.ajax(
-//   { 
-//     type: "POST",
-//     url: "http://localhost:3000/api/vsessions/token",
-//     dataType: 'json',
-//     xhrFields: {
-//          withCredentials: true
-//     },
-//     crossDomain: true,
-//     // beforeSend: function(xhr) {
-//     //       xhr.setRequestHeader("Cookie", "session=xxxyyyzzz");
-//     // },
-//     success: function(data){
-//       identity = data.identity;
-//       document.getElementById('room-controls').style.display = 'block';
-    
-//       // Bind button to join Room.
-//       document.getElementById('button-join').onclick = function () {
-//         roomName = document.getElementById('room-name').value;
-//         if (!roomName) {
-//           alert('Please enter a room name.');
-//           return;
-//         }
-    
-//         log("Joining room '" + roomName + "'...");
-//         var connectOptions = {
-//           name: roomName,
-//           logLevel: 'debug'
-//         };
-    
-//         if (previewTracks) {
-//           connectOptions.tracks = previewTracks;
-//         }
-    
-//         // Join the Room with the token from the server and the
-//         // LocalParticipant's Tracks.
-//         Video.connect(data.token, connectOptions).then(roomJoined, function (error) {
-//           log('Could not connect to Twilio: ' + error.message);
-//         });
-//       }
-//     },
-//     error: function (xhr) {
-//            alert(xhr.responseText);
-//     }
-//   }
-// );
-
-// var req = new XMLHttpRequest();
-// req.open('POST', 'http://localhost:3000/api/vsessions/token', true); // force XMLHttpRequest2
-// req.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-// req.setRequestHeader('Accept', 'application/json');
-// req.withCredentials = true; // pass along cookies
-// req.onload = function()  {
-//     // store token and redirect
-//     let json;
-//     try {
-//         debugger;
-//         json = JSON.parse(req.responseText);
-//     } catch (error) {
-//         return reject(error);
-//     }
-//     resolve(json);
-// };
-// //req.onerror = reject;
-
 function getToken() {
   debugger;
   return new Promise(function(fulfill, reject) {
@@ -24379,16 +24314,6 @@ function getToken() {
       req.onload = function()  {
           let data;
           data = JSON.parse(req.responseText);
-          // store token and redirect
-          // let json;
-          // try {
-          //     json = JSON.parse(req.responseText);
-          // } catch (error) {
-          //     return reject(error);
-          // }
-          // resolve(json);
-          //   identity = data.identity;
-          debugger;
           document.getElementById('room-controls').style.display = 'block';
 
           // Bind button to join Room.
@@ -24428,43 +24353,6 @@ function getToken() {
 }
 
 getToken();
-
-// // Obtain a token from the server in order to connect to the Room.
-// $.ajax('http://localhost:3000/api/vsessions/token', function (data) {
-//   identity = data.identity;
-//   document.getElementById('room-controls').style.display = 'block';
-
-//   // Bind button to join Room.
-//   document.getElementById('button-join').onclick = function () {
-//     roomName = document.getElementById('room-name').value;
-//     if (!roomName) {
-//       alert('Please enter a room name.');
-//       return;
-//     }
-
-//     log("Joining room '" + roomName + "'...");
-//     var connectOptions = {
-//       name: roomName,
-//       logLevel: 'debug'
-//     };
-
-//     if (previewTracks) {
-//       connectOptions.tracks = previewTracks;
-//     }
-
-//     // Join the Room with the token from the server and the
-//     // LocalParticipant's Tracks.
-//     Video.connect(data.token, connectOptions).then(roomJoined, function (error) {
-//       log('Could not connect to Twilio: ' + error.message);
-//     });
-//   };
-
-//   // Bind button to leave Room.
-//   document.getElementById('button-leave').onclick = function () {
-//     log('Leaving room...');
-//     activeRoom.disconnect();
-//   };
-// });
 
 // Successfully connected!
 function roomJoined(room) {
