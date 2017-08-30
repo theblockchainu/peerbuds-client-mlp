@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
   public workshops: any = [];
   public defaultProfileUrl = '/assets/images/avatar.png';
   // public defaultProfileUrl = '/assets/images/default-user.jpg';
-  public defaultImageUrl = 'http://lorempixel.com/350/250/city/9';
+  public defaultImageUrl = 'assets/images/no-image.jpg';
   public calendars: any = [];
   public showHideSession = false;
   public profile: any;
