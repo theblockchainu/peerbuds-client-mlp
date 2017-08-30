@@ -37,7 +37,7 @@
                       </div>
                       <div class="collectionParticipantImageCarousel">
                         <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="teacherName">
@@ -82,7 +82,7 @@
                       </div>
                       <div class="collectionParticipantImageCarousel">
                         <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="teacherName">
@@ -150,7 +150,7 @@
                       </div>
                       <div class="collectionParticipantImageCarousel">
                         <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="teacherName">

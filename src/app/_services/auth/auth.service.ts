@@ -6,17 +6,20 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 
 import { CookieService } from 'ngx-cookie-service';
+import {RequestHeaderService} from '../requestHeader/request-header.service';
 
 @Injectable()
 export class AuthService {
   isLoggedIn = false;
   key = 'access_token';
+  private options;
 
-  // store the URL so we can redirect after logging in
-  redirectUrl: string;
-
-  constructor(private _cookieService: CookieService) {
+  constructor(
+      private _cookieService: CookieService,
+      public _requestHeaderService: RequestHeaderService
+      ) {
     this.isLoggedIn = !!this.getCookie(this.key);
+    this.options = this._requestHeaderService.getOptions();
   }
 
   getCookie(key: string): any {
@@ -38,8 +41,5 @@ export class AuthService {
 
   logout(): void {
     this.isLoggedIn = false;
-
-
-
   }
 }
