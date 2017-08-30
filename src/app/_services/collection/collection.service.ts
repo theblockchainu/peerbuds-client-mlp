@@ -465,7 +465,6 @@ collectionID:string,userId:string,calendarId:string   */
   }
 
   public postCalendars(id, calendars) {
-    debugger;
     return this.http
             .post(this.config.apiUrl + '/api/collections/' + id + '/calendars', calendars, this.options)
             .map((response: Response) => response.json(), (err) => {
