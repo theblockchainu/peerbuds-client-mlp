@@ -1,8 +1,8 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-import {URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs} from '@angular/http';
+import { URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import {FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators} from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
@@ -398,10 +398,11 @@ export class WorkshopEditComponent implements OnInit {
     }
   }
 
-  public languageChange(value) {
-    console.log(value);
-    this.selectedLanguages = value;
-    this.workshop.controls.selectedLanguage.setValue(value);
+  public languageChange(event) {
+    if (event) {
+      this.selectedLanguages = event.value;
+      this.workshop.controls.selectedLanguage.setValue(event.value);
+    }
   }
 
   public selected(event) {
@@ -503,8 +504,8 @@ export class WorkshopEditComponent implements OnInit {
 
     // Photos and Videos
     if (res.videoUrls && res.videoUrls.length > 0) {
-        this.workshop.controls['videoUrls'].patchValue(res.videoUrls);
-        this.urlForVideo = res.videoUrls;
+      this.workshop.controls['videoUrls'].patchValue(res.videoUrls);
+      this.urlForVideo = res.videoUrls;
     }
     if (res.imageUrls && res.imageUrls.length > 0) {
       this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
@@ -537,19 +538,19 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public addImageUrl(value: String) {
-      console.log('Adding image url: ' + value);
-      this.urlForImages.push(value);
-      const control = <FormArray>this.workshop.controls['imageUrls'];
-      this.workshopImage1Pending = false;
-      control.push(new FormControl(value));
+    console.log('Adding image url: ' + value);
+    this.urlForImages.push(value);
+    const control = <FormArray>this.workshop.controls['imageUrls'];
+    this.workshopImage1Pending = false;
+    control.push(new FormControl(value));
   }
 
   public addVideoUrl(value: String) {
-      console.log('Adding video url: ' + value);
-      this.urlForVideo.push(value);
-      const control = <FormArray>this.workshop.controls['videoUrls'];
-      this.workshopVideoPending = false;
-      control.push(new FormControl(value));
+    console.log('Adding video url: ' + value);
+    this.urlForVideo.push(value);
+    const control = <FormArray>this.workshop.controls['videoUrls'];
+    this.workshopVideoPending = false;
+    control.push(new FormControl(value));
   }
 
   uploadVideo(event) {
@@ -857,7 +858,7 @@ export class WorkshopEditComponent implements OnInit {
         console.log(response);
         if (fileType === 'video') {
           this.urlForVideo = _.remove(this.urlForVideo, function (n) {
-              return n !== fileurl;
+            return n !== fileurl;
           });
           this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
         } else if (fileType === 'image') {
@@ -880,7 +881,7 @@ export class WorkshopEditComponent implements OnInit {
           console.log(response);
           if (fileType === 'video') {
             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
-                return n !== fileurl;
+              return n !== fileurl;
             });
             this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
           } else if (fileType === 'image') {
@@ -920,9 +921,9 @@ export class WorkshopEditComponent implements OnInit {
     this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
   }
 
-    /**
-     * Make the dates section of this page editable
-     */
+  /**
+   * Make the dates section of this page editable
+   */
   makeDatesEditable() {
     this.datesEditable = true;
   }
