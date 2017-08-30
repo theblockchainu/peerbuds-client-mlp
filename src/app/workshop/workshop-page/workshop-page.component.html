@@ -165,7 +165,8 @@
                     <div class="col-md-12" *ngIf="comment.peer.length>0">
                       <div class="col-md-2">
                         <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="thumb-35">
-                        <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="img-circle review-thumb" alt="dp">
+                        <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="img-circle review-thumb"
+                          alt="dp">
                       </div>
                       <div class="col-md-10">
                         <div class="col-md-12">
@@ -198,7 +199,8 @@
                           <div class="col-md-12" *ngIf="reply.peer && reply.peer.length>0">
                             <div class="col-md-2">
                               <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="thumb-35">
-                              <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="img-circle review-thumb" alt="dp">
+                              <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="img-circle review-thumb"
+                                alt="dp">
                             </div>
                             <div class="col-md-10">
                               <div class="col-md-12">
@@ -283,8 +285,9 @@
                     <div class="col-md-12" [hidden]="i>=noOfReviews">
                       <div class="row">
                         <div class="col-md-2">
-                          <img *ngIf="!review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="thumb-35">
-                          <img *ngIf="review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="img-circle review-thumb" alt="dp">
+                          <img *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="thumb-35">
+                          <img *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}"
+                            class="img-circle review-thumb" alt="dp">
                         </div>
                         <div class="col-md-10">
                           <div class="col-md-12">
@@ -365,7 +368,7 @@
             <hr>
             <div class="mat-whiteframe-z1" *ngIf="userType==='teacher'">
               <md-toolbar class="md-theme-default mat-whiteframe-z1">
-                <div class="mat-toolbar-tools" >
+                <div class="mat-toolbar-tools">
                   <div class="mat-titles">
                     <h2>Recurring Workshop</h2>
                     <p class="text-muted h6">Every 50 sessions</p>
