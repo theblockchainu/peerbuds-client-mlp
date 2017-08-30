@@ -52,7 +52,7 @@ export class WorkshopContentComponent implements OnInit {
   }
   initItenary() {
     return this._fb.group({
-      date: null,
+      date: [null],
       contents: this._fb.array([])
     });
   }
