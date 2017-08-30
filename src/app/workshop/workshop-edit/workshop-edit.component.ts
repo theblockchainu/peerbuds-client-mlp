@@ -1,13 +1,8 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
-} from '@angular/http';
+import {URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import {
-  FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
-} from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import {FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators} from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
@@ -15,22 +10,14 @@ import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
 import { ModalModule, ModalDirective } from 'ngx-bootstrap';
-
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
 import { CollectionService } from '../../_services/collection/collection.service';
-import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
-
-
-import { StepEnum } from '../StepEnum';
 import { AppConfig } from '../../app.config';
-
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
-
-import { SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
 import _ from 'lodash';
 
 
@@ -61,7 +48,7 @@ export class WorkshopEditComponent implements OnInit {
   public countries: any[];
   public languagesArray: any[];
   public userId: string;
-  public selectedValues: string[] = [];
+  public selectedValues: boolean[] = [false, false];
   public selectedOption = -1;
 
   public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
@@ -99,15 +86,17 @@ export class WorkshopEditComponent implements OnInit {
   public _VIDEO;
   public _CTX;
 
-  public urlForVideo;
+  public urlForVideo = [];
   public urlForImages = [];
+
+  public datesEditable: boolean = false;
 
   // TypeScript public modifiers
   constructor(
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
-    private config: AppConfig,
+    public config: AppConfig,
     public authenticationService: AuthenticationService,
     private languagePickerService: LanguagePickerService,
     private _fb: FormBuilder,
@@ -148,7 +137,7 @@ export class WorkshopEditComponent implements OnInit {
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
-      videoUrl: '',
+      videoUrls: this._fb.array([]),
       imageUrls: this._fb.array([]),
       totalHours: '',
       price: '',
@@ -195,8 +184,6 @@ export class WorkshopEditComponent implements OnInit {
     this.initializeFormFields();
 
     this.initializeWorkshop();
-
-    // this.initializeTimeLine();
 
     this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
     this._VIDEO = document.querySelector('#main-video');
@@ -310,34 +297,19 @@ export class WorkshopEditComponent implements OnInit {
       }
     }
     this.sidebarMenuItems[2]['submenu'] = [];
+    let i = 1;
     this.itenariesForMenu.forEach(function (item) {
-      const index = +item + 1;
+      const index = i;
       this.sidebarMenuItems[2]['submenu'].push({
         'title': 'Day ' + index,
         'step': 13 + '_' + index,
         'active': false,
         'visible': true
       });
+      i++;
     }, this);
     return itenaries;
-    // this.http.get(this.config.apiUrl + '/api/collections/' + this.workshopId + '/contents?filter={"include":"schedules"}').map(
-    //   (res: any) => {
-    //     const itenaries = {};
-    //     for (const contentObj of res) {
-    //       contentObj.schedule = contentObj.schedules[0];
-    //       delete contentObj.schedules;
-    //       if (itenaries.hasOwnProperty(contentObj.schedule.startDay)) {
-    //         itenaries[contentObj.schedule.startDay].push(contentObj);
-    //       } else {
-    //         itenaries[contentObj.schedule.startDay] = [contentObj];
-    //       }
-    //     }
-    //     cb(null, itenaries);
-    //   }
-    // ).subscribe();
   }
-
-
 
   private initializeFormFields() {
     this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
@@ -379,7 +351,7 @@ export class WorkshopEditComponent implements OnInit {
     if (this.interests.length === 0) {
       this.http.get(this.config.searchUrl + '/api/search/topics')
         .map((response: any) => {
-          this.suggestedTopics = response.slice(0, 10);
+          this.suggestedTopics = response.slice(0, 7);
         }).subscribe();
     } else {
       this.suggestedTopics = this.interests;
@@ -392,16 +364,6 @@ export class WorkshopEditComponent implements OnInit {
 
   private initializeWorkshop() {
     console.log('Inside init workshop');
-    // if (this.workshopId) {
-    //   this._collectionService.getCollectionDetails(this.workshopId)
-    //     .subscribe(res => {
-    //       this.initializeFormValues(res);
-    //     },
-    //     err => console.log('error'),
-    //     () => console.log('Completed!'));
-    // } else {
-    //   console.log('NO COLLECTION');
-    // }
     const query = {
       'include': [
         'topics',
@@ -541,9 +503,10 @@ export class WorkshopEditComponent implements OnInit {
     this.workshop.controls.maxSpots.patchValue(res.maxSpots);
 
     // Photos and Videos
-    this.workshop.controls.videoUrl.setValue(res.videoUrl);
-    this.urlForVideo = res.videoUrl;
-    // <img src="{{config.apiUrl+content.imageUrl}}">
+    if (res.videoUrls && res.videoUrls.length > 0) {
+        this.workshop.controls['videoUrls'].patchValue(res.videoUrls);
+        this.urlForVideo = res.videoUrls;
+    }
     if (res.imageUrls && res.imageUrls.length > 0) {
       this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
       this.urlForImages = res.imageUrls;
@@ -574,29 +537,32 @@ export class WorkshopEditComponent implements OnInit {
 
   }
 
-  public addUrl(value: String) {
-    const control = <FormArray>this.workshop.controls['imageUrls'];
-    this.workshopImage1Pending = false;
-    control.push(new FormControl(value));
+  public addImageUrl(value: String) {
+      console.log('Adding image url: ' + value);
+      this.urlForImages.push(value);
+      const control = <FormArray>this.workshop.controls['imageUrls'];
+      this.workshopImage1Pending = false;
+      control.push(new FormControl(value));
+  }
+
+  public addVideoUrl(value: String) {
+      console.log('Adding video url: ' + value);
+      this.urlForVideo.push(value);
+      const control = <FormArray>this.workshop.controls['videoUrls'];
+      this.workshopVideoPending = false;
+      control.push(new FormControl(value));
   }
 
   uploadVideo(event) {
-    console.log(event.files);
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.workshop.controls['videoUrl'].patchValue(responseObj.url);
-        this.workshopVideoPending = false;
-      }).subscribe();
-    }
+    console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
+    const xhrResp = JSON.parse(event.xhr.response);
+    this.addVideoUrl(xhrResp.url);
   }
 
   uploadImages(event) {
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.addUrl(responseObj.url);
-      }).subscribe();
-    }
-    this.workshopImage1Pending = false;
+    console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
+    const xhrResp = JSON.parse(event.xhr.response);
+    this.addImageUrl(xhrResp.url);
   }
 
   public changeInterests(topic: any) {
@@ -714,7 +680,6 @@ export class WorkshopEditComponent implements OnInit {
   submitForReview(modal: ModalDirective) {
     // Post Workshop for review
     this._collectionService.submitForReview(this.workshopId)
-
       .subscribe((res) => {
         this.sidebarMenuItems[3].visible = false;
         // call to get status of workshop
@@ -727,7 +692,7 @@ export class WorkshopEditComponent implements OnInit {
           // this.sidebarMenuItems[4].submenu[1].active = true;
           this.step = +this.step + 2;
         }
-        modal.show();
+        //modal.show();
       });
 
   }
@@ -743,7 +708,7 @@ export class WorkshopEditComponent implements OnInit {
 
   saveandexit() {
 
-    if (this.step === 12) {
+    if (this.step === 13) {
       const data = this.timeline;
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
@@ -892,8 +857,10 @@ export class WorkshopEditComponent implements OnInit {
       .map((response) => {
         console.log(response);
         if (fileType === 'video') {
-          this.urlForVideo = '';
-          this.workshop.controls.videoUrl.patchValue('');
+          this.urlForVideo = _.remove(this.urlForVideo, function (n) {
+              return n !== fileurl;
+          });
+          this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
         } else if (fileType === 'image') {
           this.urlForImages = _.remove(this.urlForImages, function (n) {
             return n !== fileurl;
@@ -913,8 +880,10 @@ export class WorkshopEditComponent implements OnInit {
         .map((response) => {
           console.log(response);
           if (fileType === 'video') {
-            this.urlForVideo = '';
-            this.workshop.controls.videoUrl.patchValue('');
+            this.urlForVideo = _.remove(this.urlForVideo, function (n) {
+                return n !== fileurl;
+            });
+            this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
           } else if (fileType === 'image') {
             this.urlForImages = _.remove(this.urlForImages, function (n) {
               return n !== fileurl;
@@ -950,6 +919,13 @@ export class WorkshopEditComponent implements OnInit {
   takeToPayment() {
     this.step++;
     this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
+  }
+
+    /**
+     * Make the dates section of this page editable
+     */
+  makeDatesEditable() {
+    this.datesEditable = true;
   }
 
 }

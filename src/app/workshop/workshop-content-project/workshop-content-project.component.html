@@ -1,0 +1,56 @@
+<h1 md-dialog-title>{{getAddOrEditText()}} project activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h1>
+<button md-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [md-dialog-close]="getCloseDialogData()" *ngIf="isEdit">
+    <md-icon style="color: #777777; font-size: 20px;">close</md-icon>
+</button>
+<div *ngIf="lastIndex>-1">
+    <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
+        <md-dialog-content>
+            <div class="row">
+                <div class="col-sm-12 margin-bottom-30">
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                        <input mdInput #title formControlName="title" placeholder="Project Title">
+                    </md-input-container>
+
+                    <div formGroupName="schedule">
+                        <md-input-container style="margin-top: 20px; margin-bottom: 20px">
+                            <input mdInput type="time" #endDay formControlName="endDay" placeholder="Deadline">
+                        </md-input-container>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload a photo/video that best describes this content</label>
+                        <div class="upload-image-section imageHolder">
+                            <p-fileUpload #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse"></p-fileUpload>
+                        </div>
+                    </div>
+
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                        <textarea mdInput #description maxlength="500" rows="5" formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
+                        <md-hint align="end">{{description.value.length}} / 500</md-hint>
+                    </md-input-container>
+
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                        <textarea mdInput #prerequisites maxlength="500" rows="5" formControlName="prerequisites" placeholder="What do learners need to know?" [required]="true"></textarea>
+                        <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
+                    </md-input-container>
+
+                    <div class="form-group">
+                        <label class="display-block">Add supporting material</label>
+                        <div *ngIf="filesToUpload">
+                            <progressbar [max]="filesToUpload" [value]="filesUploaded">
+                                <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
+                            </progressbar>
+                        </div>
+                        <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadNew($event)" multiple="multiple" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <button md-raised-button [md-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit">Save</button> &emsp;
+            <button md-raised-button [md-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
+            <button md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
+            <button md-button [md-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
+        </md-dialog-actions>
+    </form>
+</div>

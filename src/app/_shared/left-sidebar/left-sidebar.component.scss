@@ -301,6 +301,13 @@ html { height: 100%;}
 }
 
 .childItem {
-    padding-left:20px;
+    padding-left:0px;
     font-size:15px;
+    font-weight: 400;
+}
+
+.active {
+    font-weight: 800;
+    font-size: 115%;
+    color: #ffffff;
 }

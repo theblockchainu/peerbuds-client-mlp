@@ -17,7 +17,6 @@ import _ from 'lodash';
 export class ViewConflictDialog implements OnInit {
 
     public conflicts: FormGroup;
-    public computedConflict;
 
     constructor(public dialogRef1: MdDialogRef<ViewConflictDialog>,
     @Inject(MD_DIALOG_DATA) public data: any,
@@ -25,22 +24,16 @@ export class ViewConflictDialog implements OnInit {
 
     ngOnInit() {
         console.log(this.data);
-        for (const conflict of this.data.conflicts.ranges) {
-            if (conflict.previous.eventId === this.data.id) {
-                this.data.computedConflict.push({
-                    event: conflict.previous,
-                    conflictWith: conflict.current
-                });
-            }
-            else {
-                this.data.computedConflict.push({
-                    event: conflict.current,
-                    conflictWith: conflict.previous
-                });
-            }
-        }
         this.conflicts = this._fb.group({
         });
+    }
+
+    public continueAnyways() {
+        this.dialogRef1.close();
+    }
+
+    public dropCalendar(startDate, endDate) {
+        this.dialogRef1.close({startDate, endDate});
     }
 
 }

@@ -102,11 +102,12 @@ export class WorkshopPageComponent implements OnInit {
   public result;
 
   // Calendar Start
-  public dateClicked: boolean = false;
+  public dateClicked = false;
   public clickedDate;
-  public eventsForTheDay;
+  public eventsForTheDay = {};
+  objectKeys = Object.keys;
 
-  public view: string = 'month';
+  public view = 'month';
 
   public viewDate: Date = new Date();
 
@@ -120,7 +121,7 @@ export class WorkshopPageComponent implements OnInit {
   events: CalendarEvent[] = [
   ];
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen = true;
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
@@ -128,6 +129,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    this.eventsForTheDay = {};
     if (events.length === 0) {
       this.dateClicked = false;
       return;
@@ -136,7 +138,27 @@ export class WorkshopPageComponent implements OnInit {
       this.dateClicked = true; // !this.dateClicked;
     }
     this.clickedDate = date;
-    this.eventsForTheDay = events;
+    for (const event of events) {
+      const titleCalIdArray = this.parseTitle(event.title);
+      const calId = titleCalIdArray[1];
+      const title = titleCalIdArray[0];
+      if (!this.eventsForTheDay.hasOwnProperty(calId)) {
+        this.eventsForTheDay[calId] = [{
+                                      title: title,
+                                      color: event.color,
+                                      start: event.start,
+                                      end:  event.end
+                                      }];
+      }
+      else {
+        this.eventsForTheDay[calId].push({
+          title: title,
+          color: event.color,
+          start: event.start,
+          end:  event.end
+        });
+      }
+    }
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -178,10 +200,14 @@ export class WorkshopPageComponent implements OnInit {
     this.initializeForms();
   }
 
+  public parseTitle(title) {
+      return title.split(':');
+  }
+
   // Modal
   public editCalendar() {
     this.dialogsService
-      .editCalendar(this.workshopId, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
+      .editCalendar({id: this.workshopId, type: this.workshop.type, name: this.workshop.title}, this.workshop.contents, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
       .subscribe(res => this.result = res);
   }
 
@@ -234,8 +260,31 @@ export class WorkshopPageComponent implements OnInit {
           calendar: calendar,
           itenary: calendarItenary
         });
-
     });
+
+    console.log(this.allItenaries);
+    for (const indvIterinary of this.allItenaries) {
+      const calendarId = indvIterinary.calendar.id;
+      for (const iterinary of indvIterinary.itenary) {
+        const startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
+        for (let i = 0; i < iterinary.contents.length; i++) {
+          const schedule = iterinary.contents[i].schedules;
+          const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss');
+          const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss');
+          this.events.push({
+            title: iterinary.contents[i].title + ':' + calendarId,
+            color: colors.red,
+            start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
+            end:  moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
+          });
+        }
+        // this.refresh.next();
+
+      }
+    }
+
+    console.log(this.events);
+
   }
 
   private initializeWorkshop() {
@@ -282,28 +331,9 @@ export class WorkshopPageComponent implements OnInit {
               this.itenaryArray.push(itenary);
             }
           }
-
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
-          // console.log(this.itenaryArray);
-          for (const iterinary of this.itenaryArray) {
-            const startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
-            for (let i = 0; i < iterinary.contents.length; i++) {
-              const schedule = iterinary.contents[i].schedules;
-              const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss'); 
-              const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss'); 
-              this.events.push({
-                title: iterinary.contents[i].title,
-                color: colors.red,
-                start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
-                end:  moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
-              });
-            }
-            // this.refresh.next();
-          }
-
-          // console.log(this.events);
         },
         err => console.log('error'),
         () => {
@@ -603,6 +633,7 @@ content:any   */
       } else {
         for (const responseObj of response) {
           responseObj.rating = this.calculateRating(responseObj);
+          console.log(responseObj);
           this.recommendations.collections.push(responseObj);
         }
       }
@@ -636,6 +667,10 @@ content:any   */
   private extractTime(dateString: string) {
     const time = moment.utc(dateString).local().format('HH:mm:ss');
     return time;
+  }
+
+  public viewDetails(key) {
+    this.router.navigate(['workshop', this.workshopId, 'calendar', key]);
   }
 
 }

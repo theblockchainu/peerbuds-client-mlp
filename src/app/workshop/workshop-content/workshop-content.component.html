@@ -1,23 +1,26 @@
-<div class="content-container col-sm-10 col-md-10 col-lg-10">
+<div class="content-container col-sm-12 col-md-12 col-lg-12">
   <div class="row">
     <div class="col-xs-12">
+      <div style="font-weight: 800; font-size: 110%; margin-bottom: 20px;">
+        Timeline
+      </div>
       <form [formGroup]="myForm" novalidate>
-
         <!--itenary-->
         <div formArrayName="itenary">
           <div *ngFor="let Itenary of myForm.controls.itenary.controls; let i=index" class="panel panel-default">
-            <div class="panel-heading">
-              <span>Itenary {{i + 1}}</span>
-              <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.itenary.controls.length > 1" (click)="removeItenary(i)"></span>
-            </div>
             <div class="panel-body" [formGroupName]="i">
-              <app-itenary [itenaryForm]="myForm.controls.itenary.controls[i]" [itenaryId]="i" (triggerSave)="saveTriggered($event,i)"></app-itenary>
+              <app-itenary [itenaryForm]="myForm.controls.itenary.controls[i]" [itenaryId]="i" [collectionStartDate]="getCalendarStartDate()" [collectionEndDate]="getCalendarEndDate()" (triggerSave)="saveTriggered($event,i)"></app-itenary>
             </div>
           </div>
         </div>
-
-        <div class="margin-20">
-          <a (click)="addItenary()" style="cursor: default">Add another Itenary +</a>
+        <div style="text-align: center; margin-top: 50px;">
+          <hr>
+          <div style="margin-top: -30px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
+            <md-icon>add</md-icon>
+            <a style="cursor: pointer; float: right; margin: 5px 0 0 10px;" (click)="addItenary()">
+              Add a new day
+            </a>
+          </div>
         </div>
       </form>
     </div>

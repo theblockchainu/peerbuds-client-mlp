@@ -1,7 +1,7 @@
 
     <div class="mat-dialog-focus-trap"></div>
     <form [formGroup]="conflicts"> 
-        <!-- <button md-button class="mat-icon-button" type="button" (click)="dialogRef1.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button> -->
+        <!-- <button md-button class="mat-icon-button" type="button" (click)="close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button> -->
         <div class="flexContainer">
             <div class="prevNext">
                 <md-icon class="mat-icon material-icons mat-icon-medium margin-right-20">error_outline</md-icon>
@@ -9,20 +9,22 @@
             <h3 md-dialog-title class="conflicts">Avoid Conflicts</h3>
             <span flex="" class="flex"></span>
         </div>
-        <p>We have found {{ data.conflicts.ranges.length }} conflict/s with your planned workshop</p>
+        <p>We have found {{ data.conflicts.length }} conflict/s with your planned workshop</p>
         <hr>
         <md-dialog-content>
             <div class="flex-body">
-                <div class="flex-row" *ngFor="let conflict of data.computedConflict">
-                    <span flex class="flex margin-right-20"></span>
-                    <div class="mat-titles margin-right-20">
-                        <span class="desc">{{ conflict.event.startDateTime | date:'EEE MMM dd, y hh:mm a' }} - {{ conflict.event.endDateTime | date:'EEE MMM dd, y hh:mm a' }}</span>
-                        <p class="text-muted h6">Conflicts with {{conflict.conflictWith.eventName}}</p>
-                    </div>
-                    <span flex class="flex"></span>
-                    <button md-button class="" color="grey">Remove from plan</button>
-                    <button md-button color="primary">Plan anyways</button>
-                </div>    
+                <div class="flex-column">
+                    <div class="flex-row margin-top-50 margin-bottom-20" *ngFor="let conflict of data.conflicts">
+                        <span flex class="flex margin-right-20"></span>
+                        <div class="mat-titles margin-right-20">
+                            <span class="desc">{{ conflict.event.startDateTime | date:'EEE MMM dd, y hh:mm a' }} - {{ conflict.event.endDateTime | date:'EEE MMM dd, y hh:mm a' }}</span>
+                            <p class="text-muted h6">Conflicts with {{conflict.conflictWith.collectionName}} | {{conflict.conflictWith.contentName}}</p>
+                        </div>
+                        <span flex class="flex"></span>
+                        <button md-raised-button class="margin-right-20" color="grey" (click)="dropCalendar(conflict.event.startDateTime,conflict.event.endDateTime)">Remove from plan</button>
+                        <button md-raised-button class="mat-accent" (click)="continueAnyways()">Plan anyways</button>
+                    </div> 
+                </div>   
             </div>
 
         </md-dialog-content>

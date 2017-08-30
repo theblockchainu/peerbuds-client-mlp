@@ -49,7 +49,7 @@ h3.conflicts {
 }
 
 .margin-right-20 {
-    margin-right: 20px;
+    margin-right: 20px !important;
 }
 
 .mat-titles p.text-muted {
@@ -87,4 +87,11 @@ h3.conflicts {
 
 .mat-raised-button.mat-primary {
     background-color: #3f51b5;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+.margin-top-50 {
+    margin-top: 50px !important;
 }

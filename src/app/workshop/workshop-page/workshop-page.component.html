@@ -59,7 +59,7 @@
             <div class="row Topics">
               <div class="col-md-8">
                 <md-chip-list>
-                  <md-chip *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
+                  <md-chip class="mat-elevation-z3" *ngFor="let topic of topicFix"> {{topic.name}} </md-chip>
                 </md-chip-list>
               </div>
             </div>
@@ -284,14 +284,16 @@
                 <div [ngClass]="{'displayFlex': dateClicked}">
                   <span class="cal-day-badge"></span><h4>{{ clickedDate | date:'EEE, MMM dd' }}</h4>
                 </div>
-                <div class="displayFlex event" *ngFor="let event of eventsForTheDay">
-                  <span>{{ event.start | date:'hh:mm' }}</span>
-                  <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
-                  <span class="flex"></span>
-                  <span>{{ event.title }}</span>
-                </div>
-                <div class="prevNext margin-top-20">
-                  <button md-raised-button (click)="viewDetails()" color="primary">View Details</button>
+                <div class="" *ngFor="let key of objectKeys(eventsForTheDay)">
+                  <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]">
+                    <span>{{ event.start | date:'hh:mm' }}</span>
+                    <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
+                    <span class="flex"></span>
+                    <span>{{ parseTitle(event.title)[0] }}</span>
+                  </div>
+                  <div class="prevNext margin-top-20">
+                    <button md-raised-button (click)="viewDetails(key)" class="mat-accent">View Details</button>
+                  </div>
                 </div>
               </div>
             </div>

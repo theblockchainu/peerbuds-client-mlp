@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppFooterComponent implements OnInit {
 
+  public isVisible = true;
+
   constructor() { }
 
   ngOnInit() {

@@ -13,9 +13,6 @@
             <div class="flex-column spacer">
                 <label>After your first worskshop session ends, <br/>the next session starts...</label>
                 <md-radio-group class="repeat-workshop-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
-                    <!-- <md-radio-button class="repeat-workshop-button" *ngFor="let option of repeatWorkshopOptions">
-                        {{ splitString(option, '_')[0] }}
-                    </md-radio-button> -->
                     <md-radio-button class="repeat-workshop-button" value="immediate"> 
                         <span>Immediately</span>
                     </md-radio-button>
@@ -58,7 +55,7 @@
                         </md-radio-button>
                     </md-radio-group>
                     <div class="prevNext margin-top-20">
-                        <button md-raised-button (click)="saveCalendar()" [disabled]= "recurringCount == 0" color="primary">Save Recurring Calendar</button>
+                        <button md-raised-button (click)="saveCalendar()" [disabled]= "recurringCount == 0" class="mat-accent">Save Recurring Calendar</button>
                     </div>
                 </div>
             </div>
@@ -96,17 +93,20 @@
                     <div [ngClass]="{'displayFlex': dateClicked}">
                         <span class="cal-day-badge"></span><h4>{{ clickedDate | date:'EEE, MMM dd' }}</h4>
                     </div>
-                    <div class="displayFlex event" *ngFor="let event of eventsForTheDay">
-                        <span>{{ event.start | date:'hh:mm' }}</span>
-                        <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
-                        <span class="flex"></span>
-                        <span>{{ event.title }}</span>
+                    <div class="" *ngFor="let key of objectKeys(eventsForTheDay)">
+                        <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]">
+                            <span>{{ event.start | date:'hh:mm' }}</span>
+                            <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
+                            <span class="flex"></span>
+                            <span>{{ parseTitle(event.title)[0] }}</span>
+                        </div>
+                        <hr/>
                     </div>
                 </div>
-                <div class="margin-Top-50 flex-column" *ngIf="results && results.overlap">
+                <div class="margin-Top-50 flex-column" *ngIf="computedConflict.length > 0">
                     <h3>Avoid Conflicts</h3>
                     <div>
-                        <label>{{results.ranges.length}} of your workshop sessions will have conflicts with<br/> existing calendar events.</label>
+                        <label>{{computedConflict.length}} of your workshop sessions will have conflicts with<br/> existing calendar events.</label>
                     </div>
                     <div class="margin-top-20 margin-bottom-20">
                         <button md-raised-button (click)="viewConflict()" color="grey">View Conflict</button>
@@ -118,7 +118,7 @@
                         <label>You will have total of {{ recurringCount }} recurring sessions</label>
                     </div>
                     <div class="margin-top-20">
-                        <label>Your workshop will run for {{ recurringCount }} of the next  days</label>
+                        <label>Your workshop will run for {{ recurringCount }} of the next {{nextDays}} days</label>
                     </div>
                 </div>
             </div>
