@@ -221,7 +221,7 @@ export class EditCalendarDialog implements OnInit {
             daysRepeat: [2],
             monthsRepeat: [6],
             repeatTillOption: ['', Validators.required],
-            dateRepeat: [moment().add(1, 'M')]
+            dateRepeat: [null]
         });
     }
 
