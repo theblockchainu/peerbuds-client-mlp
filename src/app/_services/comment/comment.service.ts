@@ -20,4 +20,21 @@ export class CommentService {
     return this.http
       .post(this.config.apiUrl + '/api/comments/' + commentId + '/replies', replyBody, this.options);
   }
+
+  /**
+   * deleteReply
+   */
+  public deleteReply(replyId: string) {
+    return this.http
+      .delete(this.config.apiUrl + '/api/replies/' + replyId, this.options);
+  }
+
+  /**
+   * deleteComment
+   */
+  public deleteComment(commentId: string) {
+    return this.http
+      .delete(this.config.apiUrl + '/api/comments/' + commentId, this.options);
+  }
+
 }

@@ -774,5 +774,31 @@ content:any   */
     );
   }
 
+  /**
+   * deleteReply
+   */
+  public deleteReply(reply: any) {
+    this._commentService.deleteReply(reply.id).subscribe(
+      response => {
+        this.getDiscussions();
+      }, err => {
+        console.log(err);
+      }
+    );
+  }
+
+  /**
+   * deleteComment
+   */
+  public deleteComment(comment: any) {
+    this._commentService.deleteComment(comment.id).subscribe(
+      response => {
+        this.getDiscussions();
+      }, err => {
+        console.log(err);
+      }
+    );
+  }
+
 
 }
