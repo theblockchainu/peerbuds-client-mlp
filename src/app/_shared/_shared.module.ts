@@ -6,7 +6,7 @@ import { CdkTableModule } from '@angular/cdk';
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
-  MdListModule, MdTabsModule, MdTableModule, MdInputModule
+  MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -37,6 +37,7 @@ import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.servi
 import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
 import { DialogsService } from '../workshop/dialogs/dialog.service';
 
+import { CommentService } from '../_services/comment/comment.service';
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -60,7 +61,8 @@ import { DialogsService } from '../workshop/dialogs/dialog.service';
     ContentService,
     LeftSidebarService,
     CurrencypickerService,
-    DialogsService
+    DialogsService,
+    CommentService
   ],
   exports: [
     CommonModule,
@@ -100,7 +102,8 @@ import { DialogsService } from '../workshop/dialogs/dialog.service';
     CdkTableModule,
     MdInputModule,
     NgPipesModule,
-    AccordionModule
+    AccordionModule,
+    MdCheckboxModule
   ]
 })
 export class SharedModule { }
