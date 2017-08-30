@@ -421,14 +421,14 @@
                     <div class="col-sm-6">
                       <md-input-container>
                         <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
-                        <button mdSuffix [mdDatepickerToggle]="startDatePicker"></button>
+                        <md-datepicker-toggle mdSuffix [for]="startDatePicker"></md-datepicker-toggle>
                       </md-input-container>
                       <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
                     </div>
                     <div class="col-sm-6">
                       <md-input-container>
                         <input mdInput [mdDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
-                        <button mdSuffix [mdDatepickerToggle]="endDatePicker"></button>
+                        <md-datepicker-toggle mdSuffix [for]="endDatePicker"></md-datepicker-toggle>
                       </md-input-container>
                       <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>

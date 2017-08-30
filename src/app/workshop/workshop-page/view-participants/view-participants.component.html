@@ -2,7 +2,7 @@
   <h4>Attendies</h4>
 </div>
 <div md-dialog-content class="container">
-  <div class="row" *ngFor="let participant of data">
+  <div class="row" *ngFor="let participant of data.participants">
     <div *ngIf="participant.profiles">
       <div class="col-md-2">
         <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle profile-thumb" alt="dp">
@@ -18,7 +18,9 @@
         </md-progress-bar>
       </div>
       <div class="col-md-1">
-        <md-icon [mdMenuTriggerFor]="menu">more_vert</md-icon>
+        <button md-icon-button [mdMenuTriggerFor]="menu">
+              <md-icon>more_vert</md-icon>
+            </button>
         <md-menu #menu="mdMenu">
           <button md-menu-item (click)="messageParticipant(participant)">Message</button>
           <button md-menu-item (click)="removeParticipant(participant.id)">Remove</button>

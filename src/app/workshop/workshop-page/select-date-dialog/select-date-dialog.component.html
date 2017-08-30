@@ -30,8 +30,8 @@
             <p>{{itenary.startDate | date:'EE MMM d'}}</p>
           </div>
           <div class="col-md-12">
-            <p>{{itenary.contents[0].schedules[0].startTime | extractTime:'HH:mm:ss'}} - {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime
-              | extractTime:'HH:mm:ss'}}</p>
+            <p>{{itenary.contents[0].schedules[0].startTime | extractTime:'HH:mm'}} - {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime
+              | extractTime:'HH:mm'}}</p>
           </div>
         </div>
       </div>

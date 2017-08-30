@@ -1,8 +1,8 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-import {URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs} from '@angular/http';
+import { URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import {FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators} from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
@@ -395,10 +395,11 @@ export class WorkshopEditComponent implements OnInit {
     }
   }
 
-  public languageChange(value) {
-    console.log(value);
-    this.selectedLanguages = value;
-    this.workshop.controls.selectedLanguage.setValue(value);
+  public languageChange(event) {
+    if (event) {
+      this.selectedLanguages = event.value;
+      this.workshop.controls.selectedLanguage.setValue(event.value);
+    }
   }
 
   public selected(event) {
@@ -500,8 +501,8 @@ export class WorkshopEditComponent implements OnInit {
 
     // Photos and Videos
     if (res.videoUrls && res.videoUrls.length > 0) {
-        this.workshop.controls['videoUrls'].patchValue(res.videoUrls);
-        this.urlForVideo = res.videoUrls;
+      this.workshop.controls['videoUrls'].patchValue(res.videoUrls);
+      this.urlForVideo = res.videoUrls;
     }
     if (res.imageUrls && res.imageUrls.length > 0) {
       this.workshop.controls['imageUrls'].patchValue(res.imageUrls);
