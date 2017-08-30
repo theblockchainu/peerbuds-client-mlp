@@ -37,7 +37,7 @@
                       </div>
                       <div class="collectionParticipantImageCarousel">
                         <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="teacherName">
@@ -82,7 +82,7 @@
                       </div>
                       <div class="collectionParticipantImageCarousel">
                         <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="teacherName">
@@ -118,8 +118,10 @@
                   </md-card>
                 </ng-template>
                 <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'active'">
-                  <div *ngIf="consoleLearningComponent.getLearnerCalendar(collection).startDate > now; then ongoingCard else upcomingCard">
-                    <!--show card template here-->
+                  <div *ngIf="collection.calendarId !== undefined">
+                    <div *ngIf="consoleLearningComponent.getLearnerCalendar(collection).startDate > now; then ongoingCard else upcomingCard">
+                      <!--show card template here-->
+                    </div>
                   </div>
                 </div>
               </div>
@@ -150,7 +152,7 @@
                       </div>
                       <div class="collectionParticipantImageCarousel">
                         <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="teacherName">

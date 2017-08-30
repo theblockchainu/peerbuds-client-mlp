@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ConsoleProfileComponent} from '../console-profile.component';
 import {CookieService} from 'ngx-cookie-service';
@@ -12,12 +12,15 @@ declare var moment: any;
 @Component({
   selector: 'app-console-profile-edit',
   templateUrl: './console-profile-edit.component.html',
-  styleUrls: ['./console-profile-edit.component.scss']
+  styleUrls: ['./console-profile-edit.component.scss', '../../console.component.scss']
 })
 export class ConsoleProfileEditComponent implements OnInit {
 
   public loaded: boolean;
   public profile: any;
+  public peer: any;
+  public work: any;
+  public education: any;
   public months: any[];
   public days: any[];
   public years: any[];
@@ -47,6 +50,14 @@ export class ConsoleProfileEditComponent implements OnInit {
     this.loaded = false;
     this._profileService.getProfile().subscribe((profiles) => {
       this.profile = profiles[0];
+      if (this.profile.work !== undefined && this.profile.work.length === 0) {
+        const workEntry = {};
+        this.profile.work.push(workEntry);
+      }
+      if (this.profile.education !== undefined && this.profile.education.length === 0) {
+        const educationEntry = {};
+        this.profile.education.push(educationEntry);
+      }
       console.log(this.profile);
       this.loaded = true;
       this.months = moment.months();
@@ -67,7 +78,7 @@ export class ConsoleProfileEditComponent implements OnInit {
    */
   public getDaysArray() {
     const days = [];
-    for (let i = 0; i <= 30; i++) {
+    for (let i = 1; i <= 30; i++) {
       days.push(i);
     }
     return days;
@@ -90,16 +101,83 @@ export class ConsoleProfileEditComponent implements OnInit {
    */
   public updateProfile() {
     const profileToUpdate = Object.assign({}, this.profile);
+    const peerToUpdate = Object.assign({}, this.profile.peer[0]);
+    const worksToUpdate = Object.assign([], this.profile.work);
+    const educationsToUpdate = Object.assign([], this.profile.education);
+    console.log(worksToUpdate);
+    console.log(educationsToUpdate);
     this._profileService.updateProfile(profileToUpdate, (err, result) => {
       if (!err) {
         console.log(result);
         this.snackBar.open('Profile Updated', 'Close');
       } else {
-        this.snackBar.open('Profile Updated', 'Retry').onAction().subscribe(() =>{
+        this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe(() => {
           this.updateProfile();
         });
       }
     });
+    this._profileService.updatePeer(peerToUpdate.id, peerToUpdate).subscribe();
+    if (worksToUpdate[0].position !== undefined) {
+      this._profileService.deleteProfileWorks(this.profile.id, (err, result) => {
+        if (!err) {
+          this._profileService.updateProfileWorks(this.profile.id, worksToUpdate, (err1, result1) => {
+            if (!err1) {
+              console.log(result1);
+            } else {
+              console.log(err1);
+            }
+          });
+        }
+      });
+    }
+    if (educationsToUpdate[0].degree !== undefined) {
+      this._profileService.deleteProfileEducations(this.profile.id, (err, result) => {
+        if (!err) {
+          this._profileService.updateProfileEducations(this.profile.id, educationsToUpdate, (err1, result1) => {
+            if (!err1) {
+              console.log(result1);
+            } else {
+              console.log(err1);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  /**
+   * Add a row to the work detail section
+   */
+  public addWorkDetailsRow() {
+    const workEntry = {};
+    this.profile.work.push(workEntry);
+  }
+
+  /**
+   * Add a row to the education detail section
+   */
+  public addEducationDetailsRow() {
+    const eduEntry = {};
+    this.profile.education.push(eduEntry);
+  }
+
+  /**
+   * output debug data
+   */
+  public debugData() {
+    console.log(this.profile);
+  }
+
+  trackByFn(index) {
+    return index;
+  }
+
+  public deleteWorkDetailsRow(i) {
+    this.profile.work.splice(i, 1);
+  }
+
+  public deleteEducationDetailsRow(i) {
+    this.profile.education.splice(i, 1);
   }
 
 }

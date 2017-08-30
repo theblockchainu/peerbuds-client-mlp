@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CdkTableModule } from '@angular/cdk';
 
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
@@ -99,7 +98,6 @@ import { CommentService } from '../_services/comment/comment.service';
     MdListModule,
     MdTabsModule,
     MdTableModule,
-    CdkTableModule,
     MdInputModule,
     NgPipesModule,
     AccordionModule,
