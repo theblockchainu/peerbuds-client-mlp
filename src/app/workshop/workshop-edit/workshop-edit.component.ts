@@ -164,8 +164,8 @@ export class WorkshopEditComponent implements OnInit {
 
     this.timeline = this._fb.group({
       calendar: this._fb.group({
-        startDate: '',
-        endDate: ''
+        startDate: null,
+        endDate: null
       }),
       contentGroup: this._fb.group({
         itenary: this._fb.array([])
