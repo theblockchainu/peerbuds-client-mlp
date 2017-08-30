@@ -192,6 +192,7 @@ export class WorkshopEditComponent implements OnInit {
   private extractDate(dateString: string) {
     return dateString.split('T')[0];
   }
+
   private extractTime(dateString: string) {
     const time = moment.utc(dateString).local().format('HH:mm:ss');
     return time;

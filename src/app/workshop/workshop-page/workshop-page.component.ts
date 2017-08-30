@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
@@ -20,6 +20,10 @@ import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
+
+
+// import { CalendarComponent } from '../calendar-component/calendar-component.component';
+
 
 import {
   startOfDay,
@@ -41,6 +45,7 @@ import {
 } from 'angular-calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
 
+import { DialogsService } from '../dialogs/dialog.service';
 
 const colors: any = {
   red: {
@@ -97,22 +102,15 @@ export class WorkshopPageComponent implements OnInit {
   public recommendations = {
     collections: []
   };
+  public result;
 
   public comments: Array<any>;
 
   // Calendar Start
   public dateClicked = false;
   public clickedDate;
-  public eventsForTheDay;
-  public headerTemplate = `<ng-template #headerTemplate>
-                            <div class="cal-cell-row cal-header">
-                            <div class="cal-cell" *ngFor="let day of days" [class.cal-past]="day.isPast" [class.cal-today]="day.isToday"
-                                [class.cal-future]="day.isFuture"
-                                [class.cal-weekend]="day.isWeekend"
-                                [ngClass]="day.cssClass">RRR
-                            </div>
-                          </div>
-                          </ng-template>`;
+  public eventsForTheDay = {};
+  objectKeys = Object.keys;
 
   public view = 'month';
 
@@ -125,54 +123,7 @@ export class WorkshopPageComponent implements OnInit {
     event: CalendarEvent;
   };
 
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      }
-    }
-  ];
-
   events: CalendarEvent[] = [
-    // {
-    //   start: subDays(startOfDay(new Date()), 1),
-    //   end: addDays(new Date(), 1),
-    //   title: 'A 3 day event',
-    //   color: colors.red,
-    //   actions: this.actions
-    // },
-    // {
-    //   start: startOfDay(new Date()),
-    //   title: 'An event with no end date',
-    //   color: colors.yellow,
-    //   actions: this.actions
-    // },
-    // {
-    //   start: subDays(endOfMonth(new Date()), 3),
-    //   end: addDays(endOfMonth(new Date()), 3),
-    //   title: 'A long event that spans 2 months',
-    //   color: colors.blue
-    // },
-    // {
-    //   start: addHours(startOfDay(new Date()), 2),
-    //   end: new Date(),
-    //   title: 'A draggable and resizable event',
-    //   color: colors.yellow,
-    //   actions: this.actions,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true
-    //   },
-    //   draggable: true
-    // }
   ];
 
   activeDayIsOpen = true;
@@ -183,9 +134,36 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    this.dateClicked = true; // !this.dateClicked;
+    this.eventsForTheDay = {};
+    if (events.length === 0) {
+      this.dateClicked = false;
+      return;
+    }
+    else {
+      this.dateClicked = true; // !this.dateClicked;
+    }
     this.clickedDate = date;
-    this.eventsForTheDay = events;
+    for (const event of events) {
+      const titleCalIdArray = this.parseTitle(event.title);
+      const calId = titleCalIdArray[1];
+      const title = titleCalIdArray[0];
+      if (!this.eventsForTheDay.hasOwnProperty(calId)) {
+        this.eventsForTheDay[calId] = [{
+                                      title: title,
+                                      color: event.color,
+                                      start: event.start,
+                                      end:  event.end
+                                      }];
+      }
+      else {
+        this.eventsForTheDay[calId].push({
+          title: title,
+          color: event.color,
+          start: event.start,
+          end:  event.end
+        });
+      }
+    }
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -199,7 +177,6 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
 
-
   // Calendar Ends
 
   constructor(public router: Router,
@@ -210,6 +187,7 @@ export class WorkshopPageComponent implements OnInit {
     private config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
+    private dialogsService: DialogsService
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.workshopId !== params['workshopId'] || this.calendarId !== params['calendarId'])) {
@@ -228,6 +206,16 @@ export class WorkshopPageComponent implements OnInit {
     this.initializeForms();
   }
 
+  public parseTitle(title) {
+      return title.split(':');
+  }
+
+  // Modal
+  public editCalendar() {
+    this.dialogsService
+      .editCalendar({id: this.workshopId, type: this.workshop.type, name: this.workshop.title}, this.workshop.contents, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
+      .subscribe(res => this.result = res);
+  }
 
   private initializeUserType() {
     if (this.workshop) {
@@ -281,8 +269,31 @@ export class WorkshopPageComponent implements OnInit {
           calendar: calendar,
           itenary: calendarItenary
         });
-
     });
+
+    console.log(this.allItenaries);
+    for (const indvIterinary of this.allItenaries) {
+      const calendarId = indvIterinary.calendar.id;
+      for (const iterinary of indvIterinary.itenary) {
+        const startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
+        for (let i = 0; i < iterinary.contents.length; i++) {
+          const schedule = iterinary.contents[i].schedules;
+          const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss');
+          const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss');
+          this.events.push({
+            title: iterinary.contents[i].title + ':' + calendarId,
+            color: colors.red,
+            start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
+            end:  moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
+          });
+        }
+        // this.refresh.next();
+
+      }
+    }
+
+    console.log(this.events);
+
   }
 
   private initializeWorkshop() {
@@ -327,24 +338,9 @@ export class WorkshopPageComponent implements OnInit {
               this.itenaryArray.push(itenary);
             }
           }
-
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
-          for (const itenary of this.itenaryArray) {
-            const startDate = moment(itenary.startDate).format('YYYY-MM-DD');
-            for (let i = 0; i < itenary.contents.length; i++) {
-              const schedule = itenary.contents[i].schedules;
-              const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss');
-              const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss');
-              this.events.push({
-                title: itenary.contents[i].title,
-                color: colors.red,
-                start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
-                end: moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
-              });
-            }
-          }
         },
         err => console.log('error'),
         () => {
@@ -766,6 +762,10 @@ content:any   */
   private extractTime(dateString: string) {
     const time = moment.utc(dateString).local().format('HH:mm:ss');
     return time;
+  }
+
+  public viewDetails(key) {
+    this.router.navigate(['workshop', this.workshopId, 'calendar', key]);
   }
 
   public createReplyForm(comment: any) {

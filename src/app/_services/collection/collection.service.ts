@@ -464,6 +464,14 @@ collectionID:string,userId:string,calendarId:string   */
 
   }
 
+  public postCalendars(id, calendars) {
+    return this.http
+            .post(this.config.apiUrl + '/api/collections/' + id + '/calendars', calendars, this.options)
+            .map((response: Response) => response.json(), (err) => {
+              console.log('Error: ' + err);
+            });
+  }
+
   /**
    * getComments
    */
@@ -491,7 +499,7 @@ collectionID:string,userId:string,calendarId:string   */
 
   /**
    * postComments
-worrkshopID   */
+  worrkshopID   */
   public postComments(workshopId: string, commentBody: any, cb) {
     this.http
       .post(this.config.apiUrl + '/api/collections/' + workshopId + '/comments', commentBody, this.options)
