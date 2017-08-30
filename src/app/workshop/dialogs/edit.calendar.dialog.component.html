@@ -49,7 +49,7 @@
                             <span class="valignsub">the date</span>
                             &nbsp;&nbsp;<md-input-container>
                             <input mdInput [mdDatepicker]="dateRepeat" formControlName="dateRepeat">
-                            <button mdSuffix [mdDatepickerToggle]="dateRepeat"></button>
+                            <md-datepicker-toggle mdSuffix [for]="dateRepeat"></md-datepicker-toggle>
                             </md-input-container>
                             <md-datepicker #dateRepeat></md-datepicker>
                         </md-radio-button>

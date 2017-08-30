@@ -78,7 +78,7 @@
                 "complete": false
             }
             ,{
-                "title" : "Price & Cancellation Policy",
+                "title" : "Price & Cancellation",
                 "step" : 11,
                 "active" : false,
                 "visible" : true,
@@ -116,7 +116,8 @@
     {
         "title" : "Finishing Touches",
         "active":false,
-        "step" : 15,
+        "visible" : false,
+        "step" : 16,
         "submenu": [
             {
                 "title" : "Phone Number",
@@ -135,7 +136,6 @@
                 "complete": false
             }
         ],
-        "visible" : false,
         "locked": false
     }
 ]

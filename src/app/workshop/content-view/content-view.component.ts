@@ -251,6 +251,12 @@ export class ContentViewComponent implements OnInit {
     }
   }
 
+  getContentTimeRange(content) {
+      const startTime = moment('01-02-1990 ' + content.controls.schedule.controls.startTime.value).format('hh:mm a');
+      const endTime = moment('01-02-1990 ' + content.controls.schedule.controls.endTime.value).format('hh:mm a');
+      return startTime + ' - ' + endTime;
+  }
+
   public showItineraryDate(date) {
     if (date) {
       return moment(date).format('DD/MM/YYYY');
@@ -324,6 +330,10 @@ export class ContentViewComponent implements OnInit {
         else {
             return new Date(2020, 0 , 1);
         }
+    }
+
+    imgErrorHandler(event) {
+      event.target.src = '/assets/images/placeholder-image.jpg';
     }
 
 }

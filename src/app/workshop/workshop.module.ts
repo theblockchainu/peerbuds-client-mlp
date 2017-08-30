@@ -8,8 +8,11 @@ import { WorkshopContentProjectComponent} from './workshop-content-project/works
 import { WorkshopContentVideoComponent} from './workshop-content-video/workshop-content-video.component';
 import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule, MdSidenavModule, MdSelectModule, MdDatepickerModule, MdDialogModule, MdGridListModule, MdCheckboxModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule, MdSidenavModule, MdSelectModule, MdDatepickerModule, MdDialogModule, MdGridListModule, MdCheckboxModule, MdRadioModule, MdChipsModule } from '@angular/material';
 import 'hammerjs';
+import { WorkshopSubmitDialogComponent } from './workshop-edit/workshop-submit-dialog/workshop-submit-dialog.component';
+import { WorkshopCloneDialogComponent } from './workshop-edit/workshop-clone-dialog/workshop-clone-dialog.component';
+
 import { WorkshopPageModule } from './workshop-page/workshop-page.module';
 import { DialogsModule } from './dialogs/dialogs.module';
 
@@ -31,6 +34,8 @@ import { DialogsModule } from './dialogs/dialogs.module';
         MdDialogModule,
         MdGridListModule,
         MdCheckboxModule,
+        MdRadioModule,
+        MdChipsModule,
         DialogsModule
     ],
     declarations: [
@@ -40,10 +45,12 @@ import { DialogsModule } from './dialogs/dialogs.module';
         AppointmentCalendarComponent,
         WorkshopContentOnlineComponent,
         WorkshopContentProjectComponent,
-        WorkshopContentVideoComponent
+        WorkshopContentVideoComponent,
+        WorkshopSubmitDialogComponent,
+        WorkshopCloneDialogComponent
     ],
     providers: [],
     bootstrap: [],
-    entryComponents: [WorkshopContentOnlineComponent, WorkshopContentProjectComponent, WorkshopContentVideoComponent]
+    entryComponents: [WorkshopContentOnlineComponent, WorkshopContentProjectComponent, WorkshopContentVideoComponent, WorkshopSubmitDialogComponent, WorkshopCloneDialogComponent]
 })
 export class WorkshopModule { }

@@ -19,8 +19,8 @@
                 <div class="review-section" *ngFor="let review of profile.peer[0].reviewsAboutYou">
                   <div *ngIf="review.peer !== undefined">
                     <div class="review-top">
-                      <div class="review-thumb thumb-circle pull-left">
-                        <img src="{{review.peer[0].profiles[0].picture_url}}" alt=" " />
+                      <div class="review-thumb pull-left">
+                        <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleProfileComponent.imgErrorHandler($event)">
                       </div>
                       <div class="reviewer">
                         <div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name }}</div>
@@ -74,8 +74,11 @@
                                   </div>
                                 </div>
                                 <div class="collectionParticipantImageCarousel">
-                                  <div class="circle-thumb" *ngFor="let participant of collection.participants">
-                                    <img src="{{ participant?.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                                  <div class="image-inline" *ngFor="let participant of collection.participants">
+                                    <img src="{{ participant?.profiles[0].picture_url }}" alt=" " class="circle-thumb-overlap" (error)="consoleProfileComponent.imgErrorHandler($event)">
+                                  </div>
+                                  <div class="image-inline" *ngIf="collection.participants.length === 0">
+                                    <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb-overlap" (error)="consoleProfileComponent.imgErrorHandler($event)">
                                   </div>
                                 </div>
                                 <div class="participantCount">
@@ -109,8 +112,8 @@
                 <div class="review-section" *ngFor="let review of profile.peer[0].reviewsByYou">
                   <div *ngIf="review.reviewedPeer !== undefined">
                     <div class="review-top">
-                      <div class="review-thumb thumb-circle pull-left">
-                        <img src="{{review.reviewedPeer[0].profiles[0].picture_url}}" alt=" " />
+                      <div class="review-thumb pull-left">
+                        <img src="{{ review.reviewedPeer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleProfileComponent.imgErrorHandler($event)">
                       </div>
                       <div class="reviewer">
                         <div class="reviewer-name">{{ review.reviewedPeer[0].profiles[0].first_name + ' ' + review.reviewedPeer[0].profiles[0].last_name }}</div>

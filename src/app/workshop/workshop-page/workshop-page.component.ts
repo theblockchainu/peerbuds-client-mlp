@@ -97,6 +97,8 @@ export class WorkshopPageComponent implements OnInit {
   public allItenaries = [];
   public itenariesObj = {};
   public reviews;
+  public defaultProfileUrl = '/assets/images/avatar.png';
+
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
   public recommendations = {
@@ -666,7 +668,7 @@ content:any   */
               content: content,
               userType: this.userType
             },
-            width: '800px'
+            width: '660px'
           }); break;
         }
       default:

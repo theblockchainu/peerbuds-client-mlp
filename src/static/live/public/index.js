@@ -24197,19 +24197,32 @@ function detachParticipantTracks(participant) {
 // from the room, if joined.
 window.addEventListener('beforeunload', leaveRoomIfJoined);
 
-// Obtain a token from the server in order to connect to the Room.
-$.getJSON('http://localhost:3000/token', function (data) {
-  console.log(data);
-  identity = data.identity;
-  document.getElementById('room-controls').style.display = 'block';
+function getToken() {
+  debugger;
+  return new Promise(function(fulfill, reject) {
+      var req = new XMLHttpRequest();
+      req.open('GET', 'http://localhost:3000/api/vsessions/token', true); // force XMLHttpRequest2
+      req.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+      req.setRequestHeader('Accept', 'application/json');
+      req.withCredentials = true; // pass along cookies
+      req.onload = function()  {
+          let data;
+          data = JSON.parse(req.responseText);
+          document.getElementById('room-controls').style.display = 'block';
 
-  // Bind button to join Room.
-  document.getElementById('button-join').onclick = function () {
-    roomName = document.getElementById('room-name').value;
-    if (!roomName) {
-      alert('Please enter a room name.');
-      return;
-    }
+          // Bind button to join Room.
+          document.getElementById('button-join').onclick = function () {
+            roomName = document.getElementById('room-name').value;
+            if (!roomName) {
+              alert('Please enter a room name.');
+              return;
+            }
+
+            log("Joining room '" + roomName + "'...");
+            var connectOptions = {
+              name: roomName,
+              logLevel: 'debug'
+            };
 
     log("Joining room '" + roomName + "'...");
     var connectOptions = {
@@ -24228,12 +24241,7 @@ $.getJSON('http://localhost:3000/token', function (data) {
     });
   };
 
-  // Bind button to leave Room.
-  document.getElementById('button-leave').onclick = function () {
-    log('Leaving room...');
-    activeRoom.disconnect();
-  };
-});
+getToken();
 
 // Successfully connected!
 function roomJoined(room) {
