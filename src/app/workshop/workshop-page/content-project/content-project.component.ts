@@ -10,6 +10,8 @@ import { SubmitEntryComponent } from '../submit-entry/submit-entry.component';
 })
 export class ContentProjectComponent implements OnInit {
 
+  public noImage = 'assets/images/no-image.jpg';
+
   constructor(public config: AppConfig,
     @Inject(MD_DIALOG_DATA) public data: any,
     public dialog: MdDialog
@@ -17,8 +19,9 @@ export class ContentProjectComponent implements OnInit {
   ngOnInit() {
   }
 
-  openSubmitEntryDialog() {
+  openSubmitEntryDialog(data: any) {
     const dialogRef = this.dialog.open(SubmitEntryComponent, {
+      data: data,
       width: '660px'
     });
   }

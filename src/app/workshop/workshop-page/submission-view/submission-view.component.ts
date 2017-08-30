@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Http, Response, } from '@angular/http';
+import { MdDialogRef, MD_DIALOG_DATA, MdDialog } from '@angular/material';
+import { AppConfig } from '../../../app.config';
 
 @Component({
   selector: 'app-submission-view',
@@ -7,7 +10,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubmissionViewComponent implements OnInit {
 
-  constructor() { }
+  constructor( public config: AppConfig,
+     @Inject(MD_DIALOG_DATA) public data: any
+  ) { }
 
   ngOnInit() {
   }

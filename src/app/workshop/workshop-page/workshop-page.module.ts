@@ -14,6 +14,7 @@ import { SelectDateDialogComponent } from './select-date-dialog/select-date-dial
 import { ExtractTimePipe } from '../../_shared/extract-time/extract-time.pipe';
 import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
 import { SubmissionViewComponent } from './submission-view/submission-view.component';
+import { ProjectSubmissionService } from '../../_services/project-submission/project-submission.service';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { SubmissionViewComponent } from './submission-view/submission-view.compo
   ],
 
   declarations: [WorkshopPageComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, ExtractTimePipe, SubmitEntryComponent, SubmissionViewComponent],
-  bootstrap: [DeleteDialogComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, ExtractTimePipe, SubmitEntryComponent, SubmissionViewComponent]
+  bootstrap: [DeleteDialogComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent],
+  providers: [ProjectSubmissionService]
 
 })
 export class WorkshopPageModule { }

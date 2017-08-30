@@ -428,8 +428,8 @@
               <div class="12">
                 <ul class="list-inline recommendation-list">
                   <li *ngFor="let collection of recommendations.collections">
-                    <md-card class="recommendation-card">
-                      <img *ngIf="collection.imageUrls.length>0" md-card-image src="{{config.apiUrl+collection.imageUrls[0]}}" class="recommendation-thumb">
+                    <md-card class="recommendation-card" *ngIf="collection.owners">
+                      <img *ngIf="collection.imageUrls" md-card-image src="{{config.apiUrl+collection.imageUrls[0]}}" class="recommendation-thumb">
                       <div class="container">
                         <div class="col-md-12">
                           <p>{{collection.calendars[0].startDate | date:'mediumDate'}}</p>
@@ -438,9 +438,9 @@
                           <h4>{{collection.title}}</h4>
                         </div>
                         <div class="col-md-12">
-                          <p-rating [ngModel]="collection.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+                          <!--<p-rating [ngModel]="collection.rating" readonly="true" stars="5" [cancel]="false"></p-rating>-->
                         </div>
-                        <div class="row">
+                        <div class="row" *ngIf="collection.owners.length>0">
                           <div class="col-md-2">
                             <img src="{{config.apiUrl+ collection.owners[0].profiles[0].picture_url}}" class="img-circle profile-thumb">
                           </div>

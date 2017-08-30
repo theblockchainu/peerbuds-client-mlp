@@ -1,22 +1,23 @@
-<div md-dialog-content class="container">
+<div md-dialog-content class="container" *ngIf="data">
   <div class="fs-13 text-grey margin-bottom-20">
-    <a href="javascript:;" class="text-grey">< Back</a>
+    <a href="javascript:;" class="text-grey">
+      < Back</a>
   </div>
-  <h2 class="margin-bottom-0">Submission title</h2>
+  <h2 class="margin-bottom-0">{{ data.submission.name }}</h2>
   <div class="margin-bottom-20 clearfix">
     <span class="fs-13 display-inline-block margin-top-10"><i class="fa fa-thumbs-o-up"></i> 124</span>
     <button class="pull-right" md-raised-button>Edit</button>
   </div>
-  <!--<div class="content-image" *ngIf="data.content.imageUrl">
-    <img class="img-responsive media-middle" src="{{config.apiUrl+data.content.imageUrl}}" alt="image">
-  </div>-->
-  <div class="default-image">
+  <div class="content-image" *ngIf="data.submission.picture_url">
+    <img class="img-responsive media-middle" src="{{config.apiUrl+data.submission.picture_url}}" alt="image">
+  </div>
+  <div class="default-image" *ngIf="!data.submission.picture_url">
     <i class="fa fa-picture-o"></i>
   </div>
   <div class="content-box">
     <div class="seperate-section">
       <div class="section-subhead">Description</div>
-      <div class="section-description"> dksfjs dlfkjsdlf ksdjflksdjfkls </div>
+      <div class="section-description">{{ data.submission.description }}</div>
     </div>
   </div>
 </div>

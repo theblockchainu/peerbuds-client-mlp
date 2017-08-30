@@ -1,49 +1,57 @@
 <div md-dialog-content class="container">
-  <form [formGroup]="submitEntryForm" (click)="publishView()">
+  <form [formGroup]="submitEntryForm" (ngSubmit)="publishView()">
     <div class="row">
       <div class="col-sm-6">
-        <span class="fw-bold">Submission Title</span>
+        <span class="fw-bold">Submit Entry</span>
       </div>
       <div class="col-sm-6 text-right">
-        <div class="display-inline-block text-grey margin-right-10 fs-13 hide">Saving Draft</div>
+        <div class="display-inline-block margin-right-10" *ngIf="savingDraft"><img src="{{loader}}" alt="loader" /> <span class="text-grey fs-13">Saving Draft</span></div>
         <button md-raised-button>Preview</button>
         <button md-raised-button type="submit">Publish</button>
       </div>
     </div>
-    <md-input-container class="pb-block margin-bottom-20">
-      <input mdInput formControlName="submission_title" type="text" placeholder="Nam dapibux nisl vitae elit">
-      <md-error>This field is required</md-error>
-    </md-input-container>
     <div class="fw-bold text-dark-grey margin-bottom-15">Upload photo (jpg, png, gif)</div>
     <div class="uploadContainer">
-      <div class="margin-bottom-15">
+      <!--<div class="margin-bottom-15">
         <md-icon class="mat-cloud-icon" color="#999999">cloud_upload</md-icon>
       </div>
-      <div><button md-raised-button color="primary">Upload photo</button></div>
+      <div>
+        <button md-raised-button color="primary">Upload photo</button>
+      </div>
       <br>
-      <span class="text-grey fs-13">or drag  and drop</span>
+      <span class="text-grey fs-13">or drag  and drop</span>-->
+      <p-fileUpload #fubauto name="image" customUpload="true" accept="image/*" maxFileSize="1000000" (uploadHandler)="uploadImage($event)" auto="true"></p-fileUpload>
+      <div *ngIf="imageUrl">
+        <div><img src="{{config.apiUrl+file}}" width="50"></div>
+        <div>{{file.split('/')[5]}}</div>
+      </div>
     </div>
     <div class="row">
       <div class="col-sm-9">
         <md-input-container class="pb-block margin-bottom-30">
-          <input mdInput formControlName="submission_name" type="text" placeholder="Submission Name">
+          <input mdInput formControlName="name" type="text" placeholder="Submission Name">
           <md-hint>24/200 chars</md-hint>
         </md-input-container>
         <md-input-container class="pb-block margin-bottom-30">
-          <input mdInput formControlName="submission_description" type="text" placeholder="Submission Description">
+          <input mdInput formControlName="description" type="text" placeholder="Submission Description">
           <md-hint>24/200 chars</md-hint>
         </md-input-container>
         <div class="fw-bold text-dark-grey fs-15">Submission Tag</div>
         <md-input-container class="pb-block margin-bottom-30">
-          <input mdInput formControlName="submission_tag" type="text" placeholder="Submission Tag">
+          <input mdInput name="tags" type="text" placeholder="Submission Tag">
           <md-hint>24/200 chars</md-hint>
         </md-input-container>
+        <!--<multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=submissionTopics
+        [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+        [maxSelection]=maxTopics></multiselect-autocomplete>-->
         <div class="margin-bottom-10">
           <div class="fw-bold text-dark-grey fs-15 margin-bottom-20">Submission Privacy</div>
-          <md-radio-group>
-            <md-radio-button formControlName="submission_privacy" value="true">Private</md-radio-button>
-            <md-radio-button formControlName="submission_privacy" value="false">Public</md-radio-button>
-          </md-radio-group>
+          <!--<md-radio-group>
+            <md-radio-button value="true">Private</md-radio-button>
+            <md-radio-button value="false">Public</md-radio-button>
+          </md-radio-group>-->
+          <label class="radio-inline"><input type="radio" formControlName="isPrivate" value="true">Private</label>
+          <label class="radio-inline"><input type="radio" formControlName="isPrivate" value="false">Public</label>
         </div>
       </div>
     </div>
