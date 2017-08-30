@@ -22,7 +22,7 @@ export class RequestHeaderService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
-    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
     return options;
   }
   private getCookieValue(key: string) {
