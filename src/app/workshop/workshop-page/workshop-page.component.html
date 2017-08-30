@@ -322,7 +322,7 @@
                 </div>
               </md-toolbar>
               <div class="mat-content">
-                <div class="md-content__body container" *ngFor="let participant of workshop.participants; let i=index">
+                <div class="mat-content__body container" *ngFor="let participant of workshop.participants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2">
                       <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle profile-thumb" alt="dp">
@@ -333,7 +333,7 @@
                     <div class="col-md-5" *ngIf="participant.profiles[0].work">{{participant.profiles[0].work[0].position}}</div>
                   </div>
                 </div>
-                <div class="md-content__body">
+                <div class="mat-content__body">
                   <a (click)="viewParticipants()"> View All Peers </a>
                 </div>
               </div>
