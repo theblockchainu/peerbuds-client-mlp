@@ -328,10 +328,11 @@ export class WorkshopPageComponent implements OnInit {
           });
 
           // console.log(this.itenaryArray);
-          for (const iterinary of this.itenaryArray) {
-            const startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
-            for (let i = 0; i < iterinary.contents.length; i++) {
-              const schedule = iterinary.contents[i].schedules;
+
+          for (let iterinary of this.itenaryArray) {
+            let startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
+            for (var i = 0; i < iterinary.contents.length; i++) {
+              let schedule = iterinary.contents[i].schedules;
               // debugger;
               const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss');
               const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss');
@@ -645,6 +646,7 @@ content:any   */
       } else {
         for (const responseObj of response) {
           responseObj.rating = this.calculateRating(responseObj);
+          console.log(responseObj);
           this.recommendations.collections.push(responseObj);
         }
       }

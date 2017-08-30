@@ -6,6 +6,13 @@ import { CountryPickerService } from '../../_services/countrypicker/countrypicke
 import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import * as _ from 'lodash';
+import {MdDialog} from '@angular/material';
+import {WorkshopContentOnlineComponent} from '../workshop-content-online/workshop-content-online.component';
+import {WorkshopContentProjectComponent} from '../workshop-content-project/workshop-content-project.component';
+import {WorkshopContentVideoComponent} from '../workshop-content-video/workshop-content-video.component';
+import {CollectionService} from '../../_services/collection/collection.service';
+
+declare var moment: any;
 
 @Component({
   selector: 'app-itenary',
@@ -18,6 +25,10 @@ export class ContentViewComponent implements OnInit {
   public itenaryForm: FormGroup;
   @Input()
   public itenaryId: Number;
+    @Input()
+    public collectionStartDate: any;
+    @Input()
+    public collectionEndDate: any;
 
   @Output()
   triggerSave: EventEmitter<any> = new EventEmitter<any>();
@@ -32,12 +43,16 @@ export class ContentViewComponent implements OnInit {
   public filesUploaded: number;
 
   constructor(
-    private _fb: FormBuilder, private http: Http, private config: AppConfig,
+    private _fb: FormBuilder,
+    private http: Http,
+    public config: AppConfig,
     private countryPickerService: CountryPickerService,
-    private mediaUploader: MediaUploaderService
+    private mediaUploader: MediaUploaderService,
+    private dialog: MdDialog,
+    public _collectionService: CollectionService
   ) {
-    this.countryPickerService.getCountries()
-      .subscribe((countries) => this.countries = countries);
+      this.countryPickerService.getCountries()
+        .subscribe((countries) => this.countries = countries);
   }
 
   ngOnInit() {
@@ -78,14 +93,12 @@ export class ContentViewComponent implements OnInit {
     });
   }
 
-  removeContentForm(i: number, modal: ModalDirective) {
+  removeContentForm(i: number) {
     console.log('Discarding Form Content');
     const control = <FormArray>this.itenaryForm.controls['contents'];
     control.removeAt(i);
     this.resetIndex();
-    modal.hide();
     this.resetProgressBar();
-
   }
 
   removeContent(i: number) {
@@ -126,47 +139,6 @@ export class ContentViewComponent implements OnInit {
     }
   }
 
-  editContent(listIndex: number, onlineEditModal: ModalDirective, videoEditModal: ModalDirective, projectEditModal: ModalDirective) {
-    this.editIndex = listIndex;
-    const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-    const contentForm = <FormGroup>contentsFArray.controls[listIndex];
-    this.tempForm = _.cloneDeep(contentForm);
-    //console.log(this.tempForm.controls['supplementUrls'][0]);
-    const contentType = contentForm.value.type;
-    let editModal: ModalDirective;
-    switch (contentType) {
-      case 'online':
-        editModal = onlineEditModal;
-        break;
-      case 'project':
-        editModal = projectEditModal;
-        break;
-      case 'video':
-        editModal = videoEditModal;
-        break;
-      default:
-        break;
-    }
-    editModal.show();
-    // editModal.onHide.subscribe(() => {
-    // });
-  }
-
-
-  saveTemp(modal: ModalDirective) {
-    const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-    const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
-    contentForm.patchValue(this.tempForm.value);
-
-    this.triggerSave.emit({
-      action: 'update',
-      value: this.editIndex
-    });
-    modal.hide();
-    console.log('updated!');
-    this.resetProgressBar();
-
-  }
 
   saveTempForEditDate(content, index) {
 
@@ -182,19 +154,30 @@ export class ContentViewComponent implements OnInit {
 
   }
 
-  saveNew(modal: ModalDirective) {
+  saveContent(lastIndex) {
     this.triggerSave.emit({
       action: 'add',
-      value: this.lastIndex
+      value: lastIndex
     });
     console.log('saved!');
     this.resetProgressBar();
-    modal.hide();
   }
 
   resetProgressBar() {
     delete this.filesToUpload;
     delete this.filesUploaded;
+  }
+
+  editContent(index) {
+      /*const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+      const contentForm = <FormGroup>contentsFArray.controls[index];
+      contentForm.patchValue(this.tempForm.value);*/
+      this.triggerSave.emit({
+          action: 'update',
+          value: index
+      });
+      console.log('updated!');
+      this.resetProgressBar();
   }
 
   uploadNew(event) {
@@ -257,33 +240,90 @@ export class ContentViewComponent implements OnInit {
     //this.deleteFromContainer(event);
   }
 
-  deleteFromContainer(fileUrl, fileType='') {
-    // debugger;
-    //   const fileurl = fileUrl;
-    //   fileUrl = _.replace(fileUrl,'download','files');
-    //   this.http.delete(this.config.apiUrl + fileUrl)
-    //       .map((response) => { console.log(response); 
-    //         if(fileType == 'supplement') {
-    //           this.tempForm.controls['supplementUrls'].patchValue('');
-    //         }
-    //         else if (fileType == 'image'){
-    //           let imageArr = this.tempForm.controls['imageUrl'];
-    //            imageArr= _.remove(imageArr, function(n) {
-    //             return n != fileurl;
-    //         });
-    //         this.tempForm.controls['imageUrl'].patchValue(imageArr);
-    //         }
-    //       }).subscribe();
-    }
-
   triggerContentUpdate(form) {
     const date = form.controls.date.value;
-    let contentArray = <FormArray>form.controls['contents'].controls;
-    for(var i = 0; i < contentArray.length; i++) {
+    const contentArray = <FormArray>form.controls['contents'].controls;
+    for (let i = 0; i < contentArray.length; i++) {
       const type = contentArray[i].controls.type.value;
       contentArray[i].controls.schedule.controls.startDay.patchValue(date);
       contentArray[i].controls.schedule.controls.endDay.patchValue(date);
-      this.saveTempForEditDate(contentArray[i],i);
+      this.saveTempForEditDate(contentArray[i], i);
     }
   }
+
+  public showItineraryDate(date) {
+    if (date) {
+      return moment(date).format('DD/MM/YYYY');
+    }
+    else {
+      return 'Select date';
+    }
+  }
+
+    /**
+     * Open dialog for creating new online content
+     */
+    public findAndOpenDialog(index) {
+      let isEdit = true;
+      const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+      if (index === -1) {
+          index = contentsFArray.controls.length - 1;
+          isEdit = false;
+      }
+      const contentForm = <FormGroup>contentsFArray.controls[index];
+      const contentType = contentForm.value.type;
+      let dialogRef: any;
+      switch (contentType) {
+          case 'online':
+              dialogRef = this.dialog.open(WorkshopContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
+              break;
+          case 'project':
+              dialogRef = this.dialog.open(WorkshopContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
+              break;
+          case 'video':
+              dialogRef = this.dialog.open(WorkshopContentVideoComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
+              break;
+          default:
+              break;
+      }
+
+      dialogRef.afterClosed().subscribe(result => {
+          console.log(result);
+          result = JSON.parse(result);
+          if (result.status === 'save') {
+              this.saveContent(result.data);
+          }
+          else if (result.status === 'edit') {
+              this.editContent(result.data);
+          }
+          else if (result.status === 'delete') {
+              this.removeContent(result.data);
+          }
+          else if (result.status === 'close') {
+              // do nothing
+          }
+          else {
+              this.removeContentForm(result.data);
+          }
+      });
+    }
+
+    getCollectionStartDate() {
+      if (this.collectionStartDate !== undefined) {
+        return new Date(this.collectionStartDate);
+      }
+      else {
+        return new Date(2000, 0 , 1);
+      }
+    }
+
+    getCollectionEndDate() {
+        if (this.collectionEndDate !== undefined) {
+            return new Date(this.collectionEndDate);
+        }
+        else {
+            return new Date(2020, 0 , 1);
+        }
+    }
+
 }
