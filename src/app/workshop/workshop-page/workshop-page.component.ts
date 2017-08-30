@@ -285,7 +285,7 @@ export class WorkshopPageComponent implements OnInit {
         'calendars',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules', 'submissions'] },
+        { 'contents': ['schedules', {'submissions': ['peer']}] },
         { 'reviews': [{ 'peer': ['profiles'] }] }
       ]
     };
