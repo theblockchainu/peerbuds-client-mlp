@@ -1,5 +1,15 @@
 <div id="content">
   <div *ngIf="workshop">
+    <div class="row pending-actions" *ngIf="workshop.isCancelled && userType==='teacher' ">
+      <div class="col-md-10 col-md-offset-1">
+        <h1> This workshop has been cancelled</h1>
+      </div>
+    </div>
+    <div class="row pending-actions center" *ngIf="!workshop.isApproved && userType==='teacher' ">
+      <div class="col-md-10 col-md-offset-1">
+        <span> Approval Pending !</span>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-10 col-md-offset-1">
         <div class="row workshop-header">
@@ -246,25 +256,37 @@
             </div>
             <div class="row Reviews">
               <div class="row">
-                <div class="col-md-2">
-                  <h4>Reviews ({{workshop.reviews.length}})</h4>
+                <div class="col-md-2" *ngIf="reviews">
+                  <h4>Reviews ({{reviews.length}})</h4>
                 </div>
                 <div class="col-md-10">
-                  <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
+                  <p-rating *ngIf="userType==='teacher' || userType==='public'" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
+                  <p-rating *ngIf="userType==='participant'" [(ngModel)]="userRating" (onRate)="handleRate($event)" [cancel]="false"></p-rating>
+                </div>
+              </div>
+              <div class="row" *ngIf="userType==='participant' && reviewForm">
+                <div class="col-md-12">
+                  <form [formGroup]="reviewForm" (ngSubmit)="postReview()">
+                    <md-input-container class="full-width">
+                      <input mdInput type="text" formControlName="description" placeholder="Please give us your reviews">
+                    </md-input-container>
+                    <button type="submit" [disabled]="!reviewForm.valid" md-button class="pull-right">Submit</button>
+                  </form>
                 </div>
               </div>
               <hr>
               <div class="row">
                 <div class="col-md-11 col-md-offset-1">
-                  <div class="row" *ngFor="let review of workshop.reviews;let i=index">
+                  <div class="row" *ngFor="let review of reviews;let i=index">
                     <div class="col-md-12" [hidden]="i>=noOfReviews">
                       <div class="row">
                         <div class="col-md-2">
-                          <img src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="img-circle review-thumb" alt="dp">
+                          <img *ngIf="review.peer" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="img-circle review-thumb"
+                            alt="dp">
                         </div>
                         <div class="col-md-10">
                           <div class="col-md-12">
-                            <h4>{{review.peer[0].profiles[0].first_name + review.peer[0].profiles[0].last_name}}</h4>
+                            <h4 *ngIf="review.peer">{{review.peer[0].profiles[0].first_name + review.peer[0].profiles[0].last_name}}</h4>
                           </div>
                           <div class="col-md-12">
                             <p>{{review.createdAt | date:'mediumDate'}}</p>
@@ -279,10 +301,10 @@
                       <br>
                     </div>
                   </div>
-                  <div class="row" *ngIf="workshop.reviews.length>3">
+                  <div class="row" *ngIf="reviews && reviews.length>3">
                     <div class="col-md-12">
                       <hr>
-                      <a [hidden]="noOfReviews!==2" (click)="toggleReviews()">See all {{workshop.reviews.length}} reviews</a>
+                      <a [hidden]="noOfReviews!==2" (click)="toggleReviews()">See all {{reviews.length}} reviews</a>
                       <a [hidden]="noOfReviews===2" (click)="toggleReviews()">See fewer reviews</a>
                       <hr>
                     </div>
@@ -480,7 +502,7 @@
                       <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
                     </div>
                     <div class="col-md-6">
-                      <h6>{{workshop.reviews.length}} Reviews</h6>
+                      <h6>{{reviews.length}} Reviews</h6>
                     </div>
                   </div>
                 </div>

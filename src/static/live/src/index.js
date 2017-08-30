@@ -40,7 +40,8 @@ function detachParticipantTracks(participant) {
 window.addEventListener('beforeunload', leaveRoomIfJoined);
 
 // Obtain a token from the server in order to connect to the Room.
-$.ajax('http://localhost:3000/api/vsessions/token', function (data) {
+$.getJSON('http://localhost:3000/token', function (data) {
+  console.log(data);
   identity = data.identity;
   document.getElementById('room-controls').style.display = 'block';
 

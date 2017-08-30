@@ -73,7 +73,6 @@ export class WorkshopPageComponent implements OnInit {
 
   public workshopId: string;
   public userId: string;
-  public booked = false;
   public userType: string;
   public totalDuration: string;
   public calendarId: string;
@@ -92,9 +91,9 @@ export class WorkshopPageComponent implements OnInit {
   public messagingParticipant: any;
   public allItenaries = [];
   public itenariesObj = {};
-
+  public reviews;
   public replyForm: FormGroup;
-
+  public reviewForm: FormGroup;
   public recommendations = {
     collections: []
   };
@@ -221,7 +220,6 @@ export class WorkshopPageComponent implements OnInit {
       console.log('route changed');
     });
     this.userId = cookieUtilsService.getValue('userId');
-    console.log(this.events);
   }
 
   ngOnInit() {
@@ -294,9 +292,7 @@ export class WorkshopPageComponent implements OnInit {
         'calendars',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules'] },
-        { 'reviews': [{ 'peer': ['profiles'] }] }
-      ]
+        { 'contents': ['schedules'] }]
     };
 
     if (this.workshopId) {
@@ -335,7 +331,6 @@ export class WorkshopPageComponent implements OnInit {
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
-          // console.log(this.itenaryArray);
           for (const itenary of this.itenaryArray) {
             const startDate = moment(itenary.startDate).format('YYYY-MM-DD');
             for (let i = 0; i < itenary.contents.length; i++) {
@@ -349,10 +344,7 @@ export class WorkshopPageComponent implements OnInit {
                 end: moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
               });
             }
-            // this.refresh.next();
           }
-
-          // console.log(this.events);
         },
         err => console.log('error'),
         () => {
@@ -360,7 +352,7 @@ export class WorkshopPageComponent implements OnInit {
           this.initializeUserType();
           this.calculateTotalHours();
           this.fixTopics();
-          this.userRating = this.calculateRating(this.workshop);
+          this.getReviews();
           this.getRecommendations();
           this.getDiscussions();
         });
@@ -369,6 +361,18 @@ export class WorkshopPageComponent implements OnInit {
     } else {
       console.log('NO COLLECTION');
     }
+  }
+  private getReviews() {
+    const query = { 'peer': ['profiles'] };
+    this._collectionService.getReviews(this.workshopId, query, (err, response) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(response);
+        this.reviews = response;
+        this.userRating = this.calculateRating(this.reviews);
+      }
+    });
   }
 
   private getDiscussions() {
@@ -398,19 +402,22 @@ export class WorkshopPageComponent implements OnInit {
         console.log(err);
       } else {
         this.comments = response;
-        console.log(this.comments);
       }
     });
   }
 
-  private calculateRating(workshop) {
+  private calculateRating(reviewArray?: any) {
     let reviewScore = 0;
-    let totalScore = 0;
-    for (const reviewObject of workshop.reviews) {
-      reviewScore += reviewObject.score;
-      totalScore += 5;
+    let reviews;
+    if (reviewArray) {
+      reviews = reviewArray;
+    } else {
+      reviews = this.reviews;
     }
-    return totalScore / reviewScore;
+    for (const reviewObject of reviews) {
+      reviewScore += reviewObject.score;
+    }
+    return (reviews.length * 5) / reviewScore;
   }
 
   private fixTopics() {
@@ -453,8 +460,9 @@ export class WorkshopPageComponent implements OnInit {
       data: this.allItenaries
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.router.navigate(['workshop', this.workshopId, 'calendar', result]);
-
+      if (result) {
+        this.router.navigate(['workshop', this.workshopId, 'calendar', result]);
+      }
     });
   }
   /**
@@ -470,10 +478,17 @@ export class WorkshopPageComponent implements OnInit {
   public cancelWorkshop() {
     if (this.userType === 'participant') {
       this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
-        console.log(response);
         location.reload();
       });
-    } else {
+    } else if (this.userType === 'teacher') {
+      const cancelObj = {
+        isCancelled: true
+      };
+      this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
+        location.reload();
+      });
+    }
+    else {
       console.log('cancel Workshop');
     }
   }
@@ -500,7 +515,6 @@ export class WorkshopPageComponent implements OnInit {
    * postComment
    */
   public postComment() {
-    console.log(this.chatForm.value);
     delete this.chatForm.value.announce;
     this._collectionService.postComments(this.workshopId, this.chatForm.value, (err, response) => {
       if (err) {
@@ -706,8 +720,8 @@ content:any   */
       'limit': 4
     };
     this._collectionService.getRecommendations(query, (err, response: any) => {
+      console.log(err);
       if (err) {
-        console.log(err);
       } else {
         for (const responseObj of response) {
           if (this.workshopId !== responseObj.id) {
@@ -729,11 +743,12 @@ content:any   */
       data: this.allItenaries
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('userID= ' + this.userId);
-      if (this.userId) {
-        this.joinWorkshop(result);
-      } else {
-        this.router.navigate(['login']);
+      if (result) {
+        if (this.userId) {
+          this.joinWorkshop(result);
+        } else {
+          this.router.navigate(['login']);
+        }
       }
     });
   }
@@ -800,5 +815,34 @@ content:any   */
     );
   }
 
+  /**
+   * handleRate
+   */
+  public handleRate(event) {
+    this.reviewForm = this._fb.group({
+      description: '',
+      like: '',
+      score: '',
+      collectionId: this.workshopId,
+      collectionCalendarId: this.calendarId,
+    });
+    this.reviewForm.controls['score'].setValue(event.value);
+  }
 
+  /**
+   * postReview
+   */
+  public postReview() {
+    this._collectionService.postReview(this.workshopId, this.reviewForm.value).subscribe(
+      result => {
+        if (result) {
+          this.getReviews();
+          this.calculateRating();
+          delete this.reviewForm;
+        }
+      }, err => {
+        console.log(err);
+      }
+    );
+  }
 }
