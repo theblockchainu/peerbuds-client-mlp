@@ -463,4 +463,41 @@ collectionID:string,userId:string,calendarId:string   */
   public getParticipants() {
 
   }
+
+  public postCalendars(id, calendars) {
+    return this.http
+            .post(this.config.apiUrl + '/api/collections/' + id + '/calendars', calendars, this.options)
+            .map((response: Response) => response.json(), (err) => {
+              console.log('Error: ' + err);
+            });
+  }
+
+  /**
+   * getComments
+   */
+  public getComments(workshopId: string, query: any, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/collections/' + workshopId + '/comments' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * postComments
+  worrkshopID   */
+  public postComments(workshopId: string, commentBody: any, cb) {
+    console.log(this.options);
+    this.http
+      .post(this.config.apiUrl + '/api/collections/' + workshopId + '/comments', commentBody, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
 }

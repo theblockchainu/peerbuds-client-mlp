@@ -9,8 +9,9 @@ import { WorkshopContentVideoComponent} from './workshop-content-video/workshop-
 import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule, MdSidenavModule, MdSelectModule, MdDatepickerModule, MdDialogModule, MdGridListModule, MdCheckboxModule } from '@angular/material';
-
 import 'hammerjs';
+import { WorkshopPageModule } from './workshop-page/workshop-page.module';
+import { DialogsModule } from './dialogs/dialogs.module';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import 'hammerjs';
         MdDatepickerModule,
         MdDialogModule,
         MdGridListModule,
-        MdCheckboxModule
+        MdCheckboxModule,
+        DialogsModule
     ],
     declarations: [
         WorkshopEditComponent,

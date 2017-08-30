@@ -1374,7 +1374,7 @@ md-progress-circular {
     margin: auto
 }
 
-.md-button-toggle .md-toggle-icon {
+.mat-button-toggle .mat-toggle-icon {
     display: block;
     margin-left: auto;
     speak: none;
@@ -1388,7 +1388,7 @@ md-progress-circular {
     -webkit-transition: -webkit-transform .3s ease-in-out
 }
 
-.md-button-toggle .md-toggle-icon.toggled {
+.mat-button-toggle .mat-toggle-icon.toggled {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
@@ -1396,7 +1396,7 @@ md-progress-circular {
     transform: rotate(180deg)
 }
 
-.md-button-toggle .md-toggle-icon.toggled-half {
+.mat-button-toggle .mat-toggle-icon.toggled-half {
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
@@ -1404,27 +1404,27 @@ md-progress-circular {
     transform: rotate(45deg)
 }
 
-.md-content__body {
+.mat-content__body {
     background: #fff;
     padding: 15px;
     position: relative
 }
 
-.md-content__body.extra-padding {
+.mat-content__body.extra-padding {
     padding: 40px
 }
 
-md-toolbar.md-accent,md-toolbar.md-primary {
+md-toolbar.mat-accent,md-toolbar.mat-primary {
     color: #fff
 }
 
-md-toolbar.md-accent h3,md-toolbar.md-primary h3 {
+md-toolbar.mat-accent h3,md-toolbar.mat-primary h3 {
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 18px
 }
 
-md-toolbar.md-accent *,md-toolbar.md-accent h1,md-toolbar.md-accent h2,md-toolbar.md-accent h3,md-toolbar.md-accent h4,md-toolbar.md-accent h5,md-toolbar.md-accent h6,md-toolbar.md-accent p,md-toolbar.md-primary *,md-toolbar.md-primary h1,md-toolbar.md-primary h2,md-toolbar.md-primary h3,md-toolbar.md-primary h4,md-toolbar.md-primary h5,md-toolbar.md-primary h6,md-toolbar.md-primary p {
+md-toolbar.mat-accent *,md-toolbar.mat-accent h1,md-toolbar.mat-accent h2,md-toolbar.mat-accent h3,md-toolbar.mat-accent h4,md-toolbar.mat-accent h5,md-toolbar.mat-accent h6,md-toolbar.mat-accent p,md-toolbar.mat-primary *,md-toolbar.mat-primary h1,md-toolbar.mat-primary h2,md-toolbar.mat-primary h3,md-toolbar.mat-primary h4,md-toolbar.mat-primary h5,md-toolbar.mat-primary h6,md-toolbar.mat-primary p {
     color: #fff
 }
 
@@ -1432,16 +1432,16 @@ md-toolbar.md-accent *,md-toolbar.md-accent h1,md-toolbar.md-accent h2,md-toolba
     min-height: 54px
 }
 
-.main-content md-toolbar .md-toolbar-tools {
+.main-content md-toolbar .mat-toolbar-tools {
     height: 54px
 }
 
-.md-toolbar-content {
+.mat-toolbar-content {
     padding: 20px;
     font-size: 1em
 }
 
-.md-content__footer {
+.mat-content__footer {
     padding: 20px;
     border-top: 1px solid #dedede
 }
@@ -1487,7 +1487,7 @@ body {
     margin-bottom: 5px
 }
 
-.md-title {
+.mat-title {
     font-weight: 400
 }
 
@@ -1580,7 +1580,7 @@ textarea.no-border:focus {
     outline: 0
 }
 
-.md-button.md-icon-button.md-icon-button--small {
+.mat-button.mat-icon-button.mat-icon-button--small {
     width: 40px;
     height: 40px;
     line-height: 40px;
@@ -1588,7 +1588,7 @@ textarea.no-border:focus {
     margin-right: 0
 }
 
-.md-button.button--small {
+.mat-button.button--small {
     line-height: 26px;
     min-height: 26px;
     font-size: 12px;
@@ -1596,247 +1596,247 @@ textarea.no-border:focus {
     margin-right: 0
 }
 
-.md-button.md-success.md-fab,.md-button.md-success.md-raised {
+.mat-button.mat-success.mat-fab,.mat-button.mat-success.mat-raised {
     background-color: #1C691F;
     color: #fff
 }
 
-.md-button.md-success[disabled] {
+.mat-button.mat-success[disabled] {
     opacity: .7
 }
 
-.md-button.md-success.md-fab:not([disabled]):focus,.md-button.md-success.md-fab:not([disabled]):hover,.md-button.md-success.md-raised:not([disabled]):focus,.md-button.md-success.md-raised:not([disabled]):hover {
+.mat-button.mat-success.mat-fab:not([disabled]):focus,.mat-button.mat-success.mat-fab:not([disabled]):hover,.mat-button.mat-success.mat-raised:not([disabled]):focus,.mat-button.mat-success.mat-raised:not([disabled]):hover {
     background-color: #1C691F
 }
 
-.btn-up.md-success:before,.btn-up.md-success:hover:before {
+.btn-up.mat-success:before,.btn-up.mat-success:hover:before {
     border-bottom: 8px solid #1C691F
 }
 
-.btn-down.md-success:before,.btn-down.md-success:hover:before {
+.btn-down.mat-success:before,.btn-down.mat-success:hover:before {
     border-top: 8px solid #1C691F
 }
 
-.btn-left.md-success:before,.btn-left.md-success:hover:before {
+.btn-left.mat-success:before,.btn-left.mat-success:hover:before {
     border-right: 10px solid #1C691F
 }
 
-.btn-right.md-success:before,.btn-right.md-success:hover:before {
+.btn-right.mat-success:before,.btn-right.mat-success:hover:before {
     border-left: 10px solid #1C691F
 }
 
-.md-button.md-info.md-fab,.md-button.md-info.md-raised {
+.mat-button.mat-info.mat-fab,.mat-button.mat-info.mat-raised {
     background-color: #477486;
     color: #fff
 }
 
-.md-button.md-info[disabled] {
+.mat-button.mat-info[disabled] {
     opacity: .7
 }
 
-.md-button.md-info.md-fab:not([disabled]):focus,.md-button.md-info.md-fab:not([disabled]):hover,.md-button.md-info.md-raised:not([disabled]):focus,.md-button.md-info.md-raised:not([disabled]):hover {
+.mat-button.mat-info.mat-fab:not([disabled]):focus,.mat-button.mat-info.mat-fab:not([disabled]):hover,.mat-button.mat-info.mat-raised:not([disabled]):focus,.mat-button.mat-info.mat-raised:not([disabled]):hover {
     background-color: #477486
 }
 
-.btn-up.md-info:before,.btn-up.md-info:hover:before {
+.btn-up.mat-info:before,.btn-up.mat-info:hover:before {
     border-bottom: 8px solid #477486
 }
 
-.btn-down.md-info:before,.btn-down.md-info:hover:before {
+.btn-down.mat-info:before,.btn-down.mat-info:hover:before {
     border-top: 8px solid #477486
 }
 
-.btn-left.md-info:before,.btn-left.md-info:hover:before {
+.btn-left.mat-info:before,.btn-left.mat-info:hover:before {
     border-right: 10px solid #477486
 }
 
-.btn-right.md-info:before,.btn-right.md-info:hover:before {
+.btn-right.mat-info:before,.btn-right.mat-info:hover:before {
     border-left: 10px solid #477486
 }
 
-.md-button.md-warning.md-fab,.md-button.md-warning.md-raised {
+.mat-button.mat-warning.mat-fab,.mat-button.mat-warning.mat-raised {
     background-color: #F2B33F;
     color: #fff
 }
 
-.md-button.md-warning[disabled] {
+.mat-button.mat-warning[disabled] {
     opacity: .7
 }
 
-.md-button.md-warning.md-fab:not([disabled]):focus,.md-button.md-warning.md-fab:not([disabled]):hover,.md-button.md-warning.md-raised:not([disabled]):focus,.md-button.md-warning.md-raised:not([disabled]):hover {
+.mat-button.mat-warning.mat-fab:not([disabled]):focus,.mat-button.mat-warning.mat-fab:not([disabled]):hover,.mat-button.mat-warning.mat-raised:not([disabled]):focus,.mat-button.mat-warning.mat-raised:not([disabled]):hover {
     background-color: #F2B33F
 }
 
-.btn-up.md-warning:before,.btn-up.md-warning:hover:before {
+.btn-up.mat-warning:before,.btn-up.mat-warning:hover:before {
     border-bottom: 8px solid #F2B33F
 }
 
-.btn-down.md-warning:before,.btn-down.md-warning:hover:before {
+.btn-down.mat-warning:before,.btn-down.mat-warning:hover:before {
     border-top: 8px solid #F2B33F
 }
 
-.btn-left.md-warning:before,.btn-left.md-warning:hover:before {
+.btn-left.mat-warning:before,.btn-left.mat-warning:hover:before {
     border-right: 10px solid #F2B33F
 }
 
-.btn-right.md-warning:before,.btn-right.md-warning:hover:before {
+.btn-right.mat-warning:before,.btn-right.mat-warning:hover:before {
     border-left: 10px solid #F2B33F
 }
 
-.md-button.md-danger.md-fab,.md-button.md-danger.md-raised {
+.mat-button.mat-danger.mat-fab,.mat-button.mat-danger.mat-raised {
     background-color: #C62828;
     color: #fff
 }
 
-.md-button.md-danger[disabled] {
+.mat-button.mat-danger[disabled] {
     opacity: .7
 }
 
-.md-button.md-danger.md-fab:not([disabled]):focus,.md-button.md-danger.md-fab:not([disabled]):hover,.md-button.md-danger.md-raised:not([disabled]):focus,.md-button.md-danger.md-raised:not([disabled]):hover {
+.mat-button.mat-danger.mat-fab:not([disabled]):focus,.mat-button.mat-danger.mat-fab:not([disabled]):hover,.mat-button.mat-danger.mat-raised:not([disabled]):focus,.mat-button.mat-danger.mat-raised:not([disabled]):hover {
     background-color: #C62828
 }
 
-.btn-up.md-danger:before,.btn-up.md-danger:hover:before {
+.btn-up.mat-danger:before,.btn-up.mat-danger:hover:before {
     border-bottom: 8px solid #C62828
 }
 
-.btn-down.md-danger:before,.btn-down.md-danger:hover:before {
+.btn-down.mat-danger:before,.btn-down.mat-danger:hover:before {
     border-top: 8px solid #C62828
 }
 
-.btn-left.md-danger:before,.btn-left.md-danger:hover:before {
+.btn-left.mat-danger:before,.btn-left.mat-danger:hover:before {
     border-right: 10px solid #C62828
 }
 
-.btn-right.md-danger:before,.btn-right.md-danger:hover:before {
+.btn-right.mat-danger:before,.btn-right.mat-danger:hover:before {
     border-left: 10px solid #C62828
 }
 
-.md-button.md-success {
+.mat-button.mat-success {
     color: #1C691F
 }
 
-.md-button.md-info {
+.mat-button.mat-info {
     color: #477486
 }
 
-.md-button.md-warning {
+.mat-button.mat-warning {
     color: #F2B33F
 }
 
-.md-button.md-danger {
+.mat-button.mat-danger {
     color: #C62828
 }
 
-.md-button.md-raised.md-twitter,.md-button.md-raised.md-twitter:focus,.md-button.md-raised.md-twitter:hover {
+.mat-button.mat-raised.mat-twitter,.mat-button.mat-raised.mat-twitter:focus,.mat-button.mat-raised.mat-twitter:hover {
     color: #fff;
     background: #00c7f7;
     border-color: #00c7f7
 }
 
-.md-button.md-raised.md-facebook,.md-button.md-raised.md-facebook:focus,.md-button.md-raised.md-facebook:hover {
+.mat-button.mat-raised.mat-facebook,.mat-button.mat-raised.mat-facebook:focus,.mat-button.mat-raised.mat-facebook:hover {
     color: #fff;
     background: #335397;
     border-color: #335397
 }
 
-.md-button.md-raised.md-google-plus,.md-button.md-raised.md-google-plus:focus,.md-button.md-raised.md-google-plus:hover,.md-button.md-raised.md-gplus,.md-button.md-raised.md-gplus:focus,.md-button.md-raised.md-gplus:hover {
+.mat-button.mat-raised.mat-google-plus,.mat-button.mat-raised.mat-google-plus:focus,.mat-button.mat-raised.mat-google-plus:hover,.mat-button.mat-raised.mat-gplus,.mat-button.mat-raised.mat-gplus:focus,.mat-button.mat-raised.mat-gplus:hover {
     color: #fff;
     background: #dd4a38;
     border-color: #dd4a38
 }
 
-.md-button.md-raised.md-instagram,.md-button.md-raised.md-instagram:focus,.md-button.md-raised.md-instagram:hover {
+.mat-button.mat-raised.mat-instagram,.mat-button.mat-raised.mat-instagram:focus,.mat-button.mat-raised.mat-instagram:hover {
     color: #fff;
     background: #82685a;
     border-color: #82685a
 }
 
-.md-button.md-raised.md-vimeo,.md-button.md-raised.md-vimeo:focus,.md-button.md-raised.md-vimeo:hover {
+.mat-button.mat-raised.mat-vimeo,.mat-button.mat-raised.mat-vimeo:focus,.mat-button.mat-raised.mat-vimeo:hover {
     color: #fff;
     background: #63879c;
     border-color: #63879c
 }
 
-.md-button.md-raised.md-flickr,.md-button.md-raised.md-flickr:focus,.md-button.md-raised.md-flickr:hover {
+.mat-button.mat-raised.mat-flickr,.mat-button.mat-raised.mat-flickr:focus,.mat-button.mat-raised.mat-flickr:hover {
     color: #fff;
     background: #0061db;
     border-color: #0061db
 }
 
-.md-button.md-raised.md-github,.md-button.md-raised.md-github:focus,.md-button.md-raised.md-github:hover {
+.mat-button.mat-raised.mat-github,.mat-button.mat-raised.mat-github:focus,.mat-button.mat-raised.mat-github:hover {
     color: #fff;
     background: #3b3b3b;
     border-color: #3b3b3b
 }
 
-.md-button.md-raised.md-pinterest,.md-button.md-raised.md-pinterest:focus,.md-button.md-raised.md-pinterest:hover {
+.mat-button.mat-raised.mat-pinterest,.mat-button.mat-raised.mat-pinterest:focus,.mat-button.mat-raised.mat-pinterest:hover {
     color: #fff;
     background: #bc2725;
     border-color: #bc2725
 }
 
-.md-button.md-raised.md-tumblr,.md-button.md-raised.md-tumblr:focus,.md-button.md-raised.md-tumblr:hover {
+.mat-button.mat-raised.mat-tumblr,.mat-button.mat-raised.mat-tumblr:focus,.mat-button.mat-raised.mat-tumblr:hover {
     color: #fff;
     background: #586980;
     border-color: #586980
 }
 
-.md-button.md-raised.md-linkedin,.md-button.md-raised.md-linkedin:focus,.md-button.md-raised.md-linkedin:hover {
+.mat-button.mat-raised.mat-linkedin,.mat-button.mat-raised.mat-linkedin:focus,.mat-button.mat-raised.mat-linkedin:hover {
     color: #fff;
     background: #018faf;
     border-color: #018faf
 }
 
-.md-button.md-raised.md-dribble,.md-button.md-raised.md-dribble:focus,.md-button.md-raised.md-dribble:hover {
+.mat-button.mat-raised.mat-dribble,.mat-button.mat-raised.mat-dribble:focus,.mat-button.mat-raised.mat-dribble:hover {
     color: #fff;
     background: #ea73a0;
     border-color: #ea73a0
 }
 
-.md-button.md-raised.md-stumbleupon,.md-button.md-raised.md-stumbleupon:focus,.md-button.md-raised.md-stumbleupon:hover {
+.mat-button.mat-raised.mat-stumbleupon,.mat-button.mat-raised.mat-stumbleupon:focus,.mat-button.mat-raised.mat-stumbleupon:hover {
     color: #fff;
     background: #ea4b24;
     border-color: #ea4b24
 }
 
-.md-button.md-raised.md-lastfm,.md-button.md-raised.md-lastfm:focus,.md-button.md-raised.md-lastfm:hover {
+.mat-button.mat-raised.mat-lastfm,.mat-button.mat-raised.mat-lastfm:focus,.mat-button.mat-raised.mat-lastfm:hover {
     color: #fff;
     background: #b80638;
     border-color: #b80638
 }
 
-.md-button.md-raised.md-evernote,.md-button.md-raised.md-evernote:focus,.md-button.md-raised.md-evernote:hover {
+.mat-button.mat-raised.mat-evernote,.mat-button.mat-raised.mat-evernote:focus,.mat-button.mat-raised.mat-evernote:hover {
     color: #fff;
     background: #3bab27;
     border-color: #3bab27
 }
 
-.md-button.md-raised.md-skype,.md-button.md-raised.md-skype:focus,.md-button.md-raised.md-skype:hover {
+.mat-button.mat-raised.mat-skype,.mat-button.mat-raised.mat-skype:focus,.mat-button.mat-raised.mat-skype:hover {
     color: #fff;
     background: #12A5F4;
     border-color: #12A5F4
 }
 
-.md-button.md-raised.md-soundcloud,.md-button.md-raised.md-soundcloud:focus,.md-button.md-raised.md-soundcloud:hover {
+.mat-button.mat-raised.mat-soundcloud,.mat-button.mat-raised.mat-soundcloud:focus,.mat-button.mat-raised.mat-soundcloud:hover {
     color: #fff;
     background: #06f;
     border-color: #06f
 }
 
-.md-button.md-raised.md-behance,.md-button.md-raised.md-behance:focus,.md-button.md-raised.md-behance:hover {
+.mat-button.mat-raised.mat-behance,.mat-button.mat-raised.mat-behance:focus,.mat-button.mat-raised.mat-behance:hover {
     color: #fff;
     background: #b80638;
     border-color: #b80638
 }
 
-.md-button.md-raised.md-rss,.md-button.md-raised.md-rss:focus,.md-button.md-raised.md-rss:hover {
+.mat-button.mat-raised.mat-rss,.mat-button.mat-raised.mat-rss:focus,.mat-button.mat-raised.mat-rss:hover {
     color: #fff;
     background: #f79638;
     border-color: #f79638
 }
 
-.md-button.md-raised.md-youtube,.md-button.md-raised.md-youtube:focus,.md-button.md-raised.md-youtube:hover {
+.mat-button.mat-raised.mat-youtube,.mat-button.mat-raised.mat-youtube:focus,.mat-button.mat-raised.mat-youtube:hover {
     color: #fff;
     background: #cc181e;
     border-color: #cc181e
@@ -1873,23 +1873,23 @@ textarea.no-border:focus {
     margin: 0
 }
 
-md-icon.md-white {
+md-icon.mat-white {
     color: "white"
 }
 
-md-icon.md-success {
+md-icon.mat-success {
     color: #1C691F
 }
 
-md-icon.md-info {
+md-icon.mat-info {
     color: #477486
 }
 
-md-icon.md-warning {
+md-icon.mat-warning {
     color: #F2B33F
 }
 
-md-icon.md-danger {
+md-icon.mat-danger {
     color: #C62828
 }
 
@@ -2477,7 +2477,7 @@ table.responsive {
     }
 }
 
-.side-nav,md-sidenav.md-locked-open,md-sidenav.md-locked-open.md-closed,md-sidenav.md-locked-open.md-closed.md-sidenav-left {
+.side-nav,md-sidenav.mat-locked-open,md-sidenav.mat-locked-open.mat-closed,md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left {
     min-width: 250px;
     width: 250px;
     height: 100%;
@@ -2489,7 +2489,7 @@ table.responsive {
     height: 158px
 }
 
-.side-navigation--userpic .md-toolbar-tools {
+.side-navigation--userpic .mat-toolbar-tools {
     margin: 0;
     padding: 0
 }
@@ -2530,7 +2530,7 @@ table.responsive {
     text-align: left
 }
 
-.main-menu .main-menu--section .md-button {
+.main-menu .main-menu--section .mat-button {
     width: 100%;
     margin: 0;
     font-size: 12px;
@@ -2538,11 +2538,11 @@ table.responsive {
     text-align: left
 }
 
-.main-menu .main-menu--section .md-button .menu-item__menu {
+.main-menu .main-menu--section .mat-button .menu-item__menu {
     margin-right: 20px
 }
 
-.main-menu .main-menu--section .md-button-toggle .md-toggle-icon {
+.main-menu .main-menu--section .mat-button-toggle .mat-toggle-icon {
     position: absolute;
     right: 20px;
     top: 10px
@@ -2554,7 +2554,7 @@ table.responsive {
     background: #F5F5F5
 }
 
-.main-menu .main-menu__submenu li .md-button {
+.main-menu .main-menu__submenu li .mat-button {
     font-size: 12px;
     padding: 7px 0 7px 45px;
     text-align: left;
@@ -2582,7 +2582,7 @@ table.responsive {
     transform: scale(1) rotate(0deg)
 }
 
-md-backdrop.md-sidenav-backdrop {
+md-backdrop.mat-sidenav-backdrop {
     display: none
 }
 
@@ -2597,7 +2597,7 @@ md-backdrop.md-sidenav-backdrop {
     opacity: 0
 }
 
-.mfb-component.md-button {
+.mfb-component.mat-button {
     position: relative
 }
 
@@ -2614,7 +2614,7 @@ md-backdrop.md-sidenav-backdrop {
     opacity: 1
 }
 
-.navigation--small .md-sidenav-left.md-closed,.navigation--small md-sidenav.md-closed {
+.navigation--small .mat-sidenav-left.mat-closed,.navigation--small md-sidenav.mat-closed {
     -webkit-transform: none;
     -moz-transform: none;
     -ms-transform: none;
@@ -2623,7 +2623,7 @@ md-backdrop.md-sidenav-backdrop {
 }
 
 @media (min-width: 768px) {
-    .navigation--small .md-sidenav-left.md-closed,.navigation--small md-sidenav.md-closed {
+    .navigation--small .mat-sidenav-left.mat-closed,.navigation--small md-sidenav.mat-closed {
         display:block;
         -webkit-transition: all .5s ease;
         -moz-transition: all .5s ease;
@@ -2634,7 +2634,7 @@ md-backdrop.md-sidenav-backdrop {
 }
 
 @media (min-width: 768px) {
-    .navigation--small .side-nav,.navigation--small md-sidenav.md-locked-open,.navigation--small md-sidenav.md-locked-open.md-closed,.navigation--small md-sidenav.md-locked-open.md-closed.md-sidenav-left {
+    .navigation--small .side-nav,.navigation--small md-sidenav.mat-locked-open,.navigation--small md-sidenav.mat-locked-open.mat-closed,.navigation--small md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left {
         min-width:80px;
         width: 80px;
         height: 100%;
@@ -2647,35 +2647,35 @@ md-backdrop.md-sidenav-backdrop {
         overflow: hidden
     }
 
-    .navigation--small .side-nav .main-menu__submenu.open,.navigation--small md-sidenav.md-locked-open .main-menu__submenu.open,.navigation--small md-sidenav.md-locked-open.md-closed .main-menu__submenu.open,.navigation--small md-sidenav.md-locked-open.md-closed.md-sidenav-left .main-menu__submenu.open {
+    .navigation--small .side-nav .main-menu__submenu.open,.navigation--small md-sidenav.mat-locked-open .main-menu__submenu.open,.navigation--small md-sidenav.mat-locked-open.mat-closed .main-menu__submenu.open,.navigation--small md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left .main-menu__submenu.open {
         display: none!important
     }
 
-    .navigation--small .side-nav:hover,.navigation--small md-sidenav.md-locked-open.md-closed.md-sidenav-left:hover,.navigation--small md-sidenav.md-locked-open.md-closed:hover,.navigation--small md-sidenav.md-locked-open:hover {
+    .navigation--small .side-nav:hover,.navigation--small md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left:hover,.navigation--small md-sidenav.mat-locked-open.mat-closed:hover,.navigation--small md-sidenav.mat-locked-open:hover {
         overflow-y: auto;
         min-width: 250px;
         width: 250px
     }
 
-    .navigation--small .side-nav:hover~.view-container,.navigation--small md-sidenav.md-locked-open.md-closed.md-sidenav-left:hover~.view-container,.navigation--small md-sidenav.md-locked-open.md-closed:hover~.view-container,.navigation--small md-sidenav.md-locked-open:hover~.view-container {
+    .navigation--small .side-nav:hover~.view-container,.navigation--small md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left:hover~.view-container,.navigation--small md-sidenav.mat-locked-open.mat-closed:hover~.view-container,.navigation--small md-sidenav.mat-locked-open:hover~.view-container {
         margin-left: 250px;
         width: auto
     }
 
-    .navigation--small .side-nav:hover .main-menu__submenu.open,.navigation--small md-sidenav.md-locked-open.md-closed.md-sidenav-left:hover .main-menu__submenu.open,.navigation--small md-sidenav.md-locked-open.md-closed:hover .main-menu__submenu.open,.navigation--small md-sidenav.md-locked-open:hover .main-menu__submenu.open {
+    .navigation--small .side-nav:hover .main-menu__submenu.open,.navigation--small md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left:hover .main-menu__submenu.open,.navigation--small md-sidenav.mat-locked-open.mat-closed:hover .main-menu__submenu.open,.navigation--small md-sidenav.mat-locked-open:hover .main-menu__submenu.open {
         display: block!important
     }
 
-    .navigation--small .side-nav:hover .side-navigation--userpic,.navigation--small md-sidenav.md-locked-open.md-closed.md-sidenav-left:hover .side-navigation--userpic,.navigation--small md-sidenav.md-locked-open.md-closed:hover .side-navigation--userpic,.navigation--small md-sidenav.md-locked-open:hover .side-navigation--userpic {
+    .navigation--small .side-nav:hover .side-navigation--userpic,.navigation--small md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left:hover .side-navigation--userpic,.navigation--small md-sidenav.mat-locked-open.mat-closed:hover .side-navigation--userpic,.navigation--small md-sidenav.mat-locked-open:hover .side-navigation--userpic {
         width: 250px;
         text-align: left
     }
 
-    .navigation--small .side-nav:hover .main-menu--section .md-button .menu-item__menu,.navigation--small md-sidenav.md-locked-open.md-closed.md-sidenav-left:hover .main-menu--section .md-button .menu-item__menu,.navigation--small md-sidenav.md-locked-open.md-closed:hover .main-menu--section .md-button .menu-item__menu,.navigation--small md-sidenav.md-locked-open:hover .main-menu--section .md-button .menu-item__menu {
+    .navigation--small .side-nav:hover .main-menu--section .mat-button .menu-item__menu,.navigation--small md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left:hover .main-menu--section .mat-button .menu-item__menu,.navigation--small md-sidenav.mat-locked-open.mat-closed:hover .main-menu--section .mat-button .menu-item__menu,.navigation--small md-sidenav.mat-locked-open:hover .main-menu--section .mat-button .menu-item__menu {
         width: 20px
     }
 
-    .navigation--small .side-nav:hover .main-menu--section .md-toggle-icon,.navigation--small md-sidenav.md-locked-open.md-closed.md-sidenav-left:hover .main-menu--section .md-toggle-icon,.navigation--small md-sidenav.md-locked-open.md-closed:hover .main-menu--section .md-toggle-icon,.navigation--small md-sidenav.md-locked-open:hover .main-menu--section .md-toggle-icon {
+    .navigation--small .side-nav:hover .main-menu--section .mat-toggle-icon,.navigation--small md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left:hover .main-menu--section .mat-toggle-icon,.navigation--small md-sidenav.mat-locked-open.mat-closed:hover .main-menu--section .mat-toggle-icon,.navigation--small md-sidenav.mat-locked-open:hover .main-menu--section .mat-toggle-icon {
         display: block
     }
 }
@@ -2768,17 +2768,17 @@ md-backdrop.md-sidenav-backdrop {
     }
 }
 
-.navigation--small .main-menu--section .md-button .menu-item__menu {
+.navigation--small .main-menu--section .mat-button .menu-item__menu {
     width: 40px
 }
 
 @media (min-width: 768px) {
-    .navigation--small .main-menu--section .md-toggle-icon {
+    .navigation--small .main-menu--section .mat-toggle-icon {
         display:none
     }
 }
 
-.navigation--medium .md-sidenav-left.md-closed,.navigation--medium md-sidenav.md-closed,.navigation--medium--image .md-sidenav-left.md-closed,.navigation--medium--image md-sidenav.md-closed {
+.navigation--medium .mat-sidenav-left.mat-closed,.navigation--medium md-sidenav.mat-closed,.navigation--medium--image .mat-sidenav-left.mat-closed,.navigation--medium--image md-sidenav.mat-closed {
     -webkit-transform: none;
     -moz-transform: none;
     -ms-transform: none;
@@ -2787,7 +2787,7 @@ md-backdrop.md-sidenav-backdrop {
 }
 
 @media (min-width: 768px) {
-    .navigation--medium .md-sidenav-left.md-closed,.navigation--medium md-sidenav.md-closed,.navigation--medium--image .md-sidenav-left.md-closed,.navigation--medium--image md-sidenav.md-closed {
+    .navigation--medium .mat-sidenav-left.mat-closed,.navigation--medium md-sidenav.mat-closed,.navigation--medium--image .mat-sidenav-left.mat-closed,.navigation--medium--image md-sidenav.mat-closed {
         display:block;
         -webkit-transition: all .5s ease;
         -moz-transition: all .5s ease;
@@ -2797,13 +2797,13 @@ md-backdrop.md-sidenav-backdrop {
     }
 }
 
-.navigation--medium .side-nav,.navigation--medium md-sidenav.md-locked-open,.navigation--medium md-sidenav.md-locked-open.md-closed,.navigation--medium md-sidenav.md-locked-open.md-closed.md-sidenav-left,.navigation--medium--image .side-nav,.navigation--medium--image md-sidenav.md-locked-open,.navigation--medium--image md-sidenav.md-locked-open.md-closed,.navigation--medium--image md-sidenav.md-locked-open.md-closed.md-sidenav-left {
+.navigation--medium .side-nav,.navigation--medium md-sidenav.mat-locked-open,.navigation--medium md-sidenav.mat-locked-open.mat-closed,.navigation--medium md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left,.navigation--medium--image .side-nav,.navigation--medium--image md-sidenav.mat-locked-open,.navigation--medium--image md-sidenav.mat-locked-open.mat-closed,.navigation--medium--image md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left {
     min-width: 150px;
     width: 150px
 }
 
 @media (min-width: 768px) {
-    .navigation--medium .side-nav,.navigation--medium md-sidenav.md-locked-open,.navigation--medium md-sidenav.md-locked-open.md-closed,.navigation--medium md-sidenav.md-locked-open.md-closed.md-sidenav-left,.navigation--medium--image .side-nav,.navigation--medium--image md-sidenav.md-locked-open,.navigation--medium--image md-sidenav.md-locked-open.md-closed,.navigation--medium--image md-sidenav.md-locked-open.md-closed.md-sidenav-left {
+    .navigation--medium .side-nav,.navigation--medium md-sidenav.mat-locked-open,.navigation--medium md-sidenav.mat-locked-open.mat-closed,.navigation--medium md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left,.navigation--medium--image .side-nav,.navigation--medium--image md-sidenav.mat-locked-open,.navigation--medium--image md-sidenav.mat-locked-open.mat-closed,.navigation--medium--image md-sidenav.mat-locked-open.mat-closed.mat-sidenav-left {
         height:100%;
         position: fixed;
         -webkit-transition: all .5s ease;
@@ -2891,26 +2891,26 @@ md-backdrop.md-sidenav-backdrop {
     }
 }
 
-.navigation--medium .main-menu--section .md-button,.navigation--medium--image .main-menu--section .md-button {
+.navigation--medium .main-menu--section .mat-button,.navigation--medium--image .main-menu--section .mat-button {
     text-align: center;
     padding: 20px 20px 10px
 }
 
-.navigation--medium .main-menu--section .md-button .menu-item__menu,.navigation--medium--image .main-menu--section .md-button .menu-item__menu {
+.navigation--medium .main-menu--section .mat-button .menu-item__menu,.navigation--medium--image .main-menu--section .mat-button .menu-item__menu {
     margin-right: auto;
     display: block
 }
 
-.navigation--medium .main-menu--section .md-button .menu-item__menu-name,.navigation--medium--image .main-menu--section .md-button .menu-item__menu-name {
+.navigation--medium .main-menu--section .mat-button .menu-item__menu-name,.navigation--medium--image .main-menu--section .mat-button .menu-item__menu-name {
     margin: auto
 }
 
-.navigation--medium .main-menu--section .main-menu__submenu li .md-button,.navigation--medium--image .main-menu--section .main-menu__submenu li .md-button {
+.navigation--medium .main-menu--section .main-menu__submenu li .mat-button,.navigation--medium--image .main-menu--section .main-menu__submenu li .mat-button {
     padding: 7px;
     text-align: center
 }
 
-.navigation--medium .main-menu--section .md-toggle-icon,.navigation--medium--image .main-menu--section .md-toggle-icon,.navigation--medium--image .nav-header .side-navigation--logo {
+.navigation--medium .main-menu--section .mat-toggle-icon,.navigation--medium--image .main-menu--section .mat-toggle-icon,.navigation--medium--image .nav-header .side-navigation--logo {
     display: none
 }
 
@@ -2938,13 +2938,13 @@ md-backdrop.md-sidenav-backdrop {
     box-shadow: 0 0 3px 1px rgba(0,0,0,.2)
 }
 
-.md-content__menu,.md-content__menu--calendar {
+.mat-content__menu,.mat-content__menu--calendar {
     position: absolute;
     top: 10px;
     right: 10px
 }
 
-.md-content__menu--calendar {
+.mat-content__menu--calendar {
     right: 30px;
     top: 15px
 }
@@ -4149,7 +4149,7 @@ canvas {
     margin: auto
 }
 
-.signin-header .logo a .md-button.md-icon-button.md-icon-button--small {
+.signin-header .logo a .mat-button.mat-icon-button.mat-icon-button--small {
     height: 50px;
     width: 50px
 }
@@ -4279,7 +4279,7 @@ canvas {
     margin: auto
 }
 
-.page-err-header .logo a .md-button.md-icon-button.md-icon-button--small {
+.page-err-header .logo a .mat-button.mat-icon-button.mat-icon-button--small {
     height: 50px;
     width: 50px
 }
@@ -4443,7 +4443,7 @@ canvas {
     background: #333
 }
 
-.chat_talk_nav .md-toolbar-tools h5 {
+.chat_talk_nav .mat-toolbar-tools h5 {
     font-weight: 400
 }
 
@@ -4531,7 +4531,7 @@ canvas {
     display: table-cell
 }
 
-.chat__send-message .chat__send-message__form .input-group .input-group-button .md-button {
+.chat__send-message .chat__send-message__form .input-group .input-group-button .mat-button {
     border: 1px solid #dedede;
     border-radius: 0;
     margin: 0 0 0 -1px;
@@ -4640,12 +4640,12 @@ canvas {
     z-index: 100
 }
 
-.chipsdemo .custom-chips .md-chip {
+.chipsdemo .custom-chips .mat-chip {
     position: relative;
     padding-right: 35px
 }
 
-.chipsdemo .custom-chips .md-chip .md-chip-remove-container {
+.chipsdemo .custom-chips .mat-chip .mat-chip-remove-container {
     position: absolute;
     right: 4px;
     top: 4px;
@@ -4653,7 +4653,7 @@ canvas {
     height: 24px
 }
 
-.chipsdemo .custom-chips .md-chip .md-chip-remove-container button.vegetablechip {
+.chipsdemo .custom-chips .mat-chip .mat-chip-remove-container button.vegetablechip {
     position: relative;
     height: 24px;
     width: 24px;
@@ -4669,7 +4669,7 @@ canvas {
     display: block
 }
 
-.chipsdemo .custom-chips .md-chip .md-chip-remove-container button.vegetablechip md-icon {
+.chipsdemo .custom-chips .mat-chip .mat-chip-remove-container button.vegetablechip md-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -4678,7 +4678,7 @@ canvas {
     fill: #fff
 }
 
-.chipsdemo .custom-chips .md-chip .md-chip-remove-container button.vegetablechip:focus,.chipsdemo .custom-chips .md-chip .md-chip-remove-container button.vegetablechip:hover {
+.chipsdemo .custom-chips .mat-chip .mat-chip-remove-container button.vegetablechip:focus,.chipsdemo .custom-chips .mat-chip .mat-chip-remove-container button.vegetablechip:hover {
     background: #C62828
 }
 
@@ -4686,7 +4686,7 @@ canvas {
     min-height: 250px
 }
 
-.chipsdemoContactChips .md-item-text.compact {
+.chipsdemoContactChips .mat-item-text.compact {
     padding-top: 8px;
     padding-bottom: 8px
 }
@@ -4699,17 +4699,17 @@ canvas {
     opacity: .5
 }
 
-.chipsdemoContactChips .contact-item .md-list-item-text {
+.chipsdemoContactChips .contact-item .mat-list-item-text {
     padding: 14px 0
 }
 
-.chipsdemoContactChips .contact-item .md-list-item-text h3 {
+.chipsdemoContactChips .contact-item .mat-list-item-text h3 {
     margin: 0!important;
     padding: 0;
     line-height: 1.2em!important
 }
 
-.chipsdemoContactChips .contact-item .md-list-item-text h3,.chipsdemoContactChips .contact-item .md-list-item-text p {
+.chipsdemoContactChips .contact-item .mat-list-item-text h3,.chipsdemoContactChips .contact-item .mat-list-item-text p {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden
@@ -4726,7 +4726,7 @@ canvas {
     margin-bottom: 10px
 }
 
-.chipsdemoContactChips .md-chips {
+.chipsdemoContactChips .mat-chips {
     padding: 5px 0 8px
 }
 
@@ -4735,7 +4735,7 @@ canvas {
     overflow: hidden
 }
 
-.md-contact-suggestion img {
+.mat-contact-suggestion img {
     vertical-align: top
 }
 
@@ -4756,7 +4756,7 @@ canvas {
     margin-bottom: 40px
 }
 
-.tabsdemoDynamicTabs md-tabs,.tabsdemoDynamicTabs md-tabs .md-header {
+.tabsdemoDynamicTabs md-tabs,.tabsdemoDynamicTabs md-tabs .mat-header {
     border-bottom: 1px solid #D8D8D8
 }
 
@@ -4764,7 +4764,7 @@ canvas {
     opacity: .5
 }
 
-.tabsdemoDynamicTabs .md-tab-content {
+.tabsdemoDynamicTabs .mat-tab-content {
     background: #fff
 }
 
@@ -4789,7 +4789,7 @@ canvas {
     width: 264px
 }
 
-.tabsdemoDynamicTabs .md-button.add-tab {
+.tabsdemoDynamicTabs .mat-button.add-tab {
     margin-top: 20px;
     max-height: 30px!important
 }
@@ -5031,12 +5031,12 @@ button.toast-close-button {
     border: none
 }
 
-md-list md-list-item.md-3-line .md-list-item-text h3 {
+md-list md-list-item.mat-3-line .mat-list-item-text h3 {
     font-size: 15px;
     color: #787878
 }
 
-.tooltipUsage md-toolbar .md-toolbar-tools .md-button,.tooltipUsage md-toolbar .md-toolbar-tools .md-button:hover {
+.tooltipUsage md-toolbar .mat-toolbar-tools .mat-button,.tooltipUsage md-toolbar .mat-toolbar-tools .mat-button:hover {
     box-shadow: none;
     border: none;
     transform: none;
@@ -5053,7 +5053,7 @@ md-list md-list-item.md-3-line .md-list-item-text h3 {
     right: 56px!important
 }
 
-.tooltipdemoBasicUsage md-toolbar .md-toolbar-tools .md-button,.tooltipdemoBasicUsage md-toolbar .md-toolbar-tools .md-button:hover {
+.tooltipdemoBasicUsage md-toolbar .mat-toolbar-tools .mat-button,.tooltipdemoBasicUsage md-toolbar .mat-toolbar-tools .mat-button:hover {
     box-shadow: none;
     border: none;
     transform: none;
@@ -5326,7 +5326,7 @@ md-card md-card-header h3 {
     font-weight: 400
 }
 
-md-card .md-fab.middle-right {
+md-card .mat-fab.middle-right {
     position: absolute;
     right: 20px;
     top: -40px
@@ -5457,11 +5457,11 @@ md-card md-fab-speed-dial {
     position: absolute
 }
 
-md-card.card-weather .md-card-header {
+md-card.card-weather .mat-card-header {
     position: relative
 }
 
-md-card.card-weather .md-card-header .weather-icon {
+md-card.card-weather .mat-card-header .weather-icon {
     position: absolute;
     top: 40%;
     width: 100%;
@@ -5469,13 +5469,13 @@ md-card.card-weather .md-card-header .weather-icon {
     text-align: center
 }
 
-md-card.card-weather .md-card-header .weather-icon .weather-icon {
+md-card.card-weather .mat-card-header .weather-icon .weather-icon {
     font-size: 50px;
     color: #fff
 }
 
 @media (min-width: 768px) {
-    md-card.card-weather .md-card-header .weather-icon .weather-icon {
+    md-card.card-weather .mat-card-header .weather-icon .weather-icon {
         font-size:80px
     }
 }
@@ -5484,33 +5484,33 @@ md-card.card-weather .weather-speed-dial md-fab-speed-dial {
     rigth: 90px
 }
 
-md-card.card-weather .md-card-weather__list ul {
+md-card.card-weather .mat-card-weather__list ul {
     padding: 0;
     display: inline-table;
     width: 100%;
     table-layout: fixed
 }
 
-md-card.card-weather .md-card-weather__list ul li {
+md-card.card-weather .mat-card-weather__list ul li {
     display: table-cell;
     list-style: none;
     border-right: 1px solid #dedede
 }
 
-md-card.card-weather .md-card-weather__list ul li:last-child {
+md-card.card-weather .mat-card-weather__list ul li:last-child {
     border: none
 }
 
-md-card.card-weather .md-card-weather__list ul li .weather-icon {
+md-card.card-weather .mat-card-weather__list ul li .weather-icon {
     font-size: 30px
 }
 
-md-card.md-user-card .md-card-header {
+md-card.mat-user-card .mat-card-header {
     position: relative;
     max-height: 250px
 }
 
-md-card.md-user-card .md-card-header:before {
+md-card.mat-user-card .mat-card-header:before {
     content: "";
     background-color: rgba(0,0,0,.4);
     position: absolute;
@@ -5520,32 +5520,32 @@ md-card.md-user-card .md-card-header:before {
     height: 100%
 }
 
-md-card.md-user-card .md-card-header .card-user-name {
+md-card.mat-user-card .mat-card-header .card-user-name {
     color: #fff;
     position: absolute;
     bottom: 20px;
     left: 30px
 }
 
-md-card.md-user-card .user-speed-dial md-fab-speed-dial {
+md-card.mat-user-card .user-speed-dial md-fab-speed-dial {
     right: 90px;
     margin-top: -90px
 }
 
-md-card.md-user-card .md-card-buttons__list ul {
+md-card.mat-user-card .mat-card-buttons__list ul {
     padding: 0;
     display: inline-table;
     width: 100%;
     table-layout: fixed
 }
 
-md-card.md-user-card .md-card-buttons__list ul li {
+md-card.mat-user-card .mat-card-buttons__list ul li {
     display: table-cell;
     list-style: none;
     border-right: 1px solid #dedede
 }
 
-md-card.md-user-card .md-card-buttons__list ul li:last-child {
+md-card.mat-user-card .mat-card-buttons__list ul li:last-child {
     border: none
 }
 
@@ -5992,7 +5992,7 @@ md-card.md-user-card .md-card-buttons__list ul li:last-child {
     display: block
 }
 
-.md-virtual-repeat-container .md-virtual-repeat-offsetter {
+.mat-virtual-repeat-container .mat-virtual-repeat-offsetter {
     width: 100%
 }
 
@@ -6226,7 +6226,7 @@ h3.calendarTiitle  {
     background-color: #2EB127;
     border-radius: 15px;
     padding: 7px 0px 7px 5px;
-    margin-top: 0px;
+    margin-top: 8px;
     margin-right: 20px !important;
 }
 
@@ -6255,6 +6255,16 @@ h3.calendarTiitle  {
 .ui-state-default {
     border: 0px solid #d6d6d6;
 }
+
+.fullframe {
+    width: 100%;
+    height: auto;
+}
+
+.mat-icon-small {
+    font-size: 16px !important;
+}
+
 md-sidenav {
     width: 300px;
     background: red; /* For browsers that do not support gradients */

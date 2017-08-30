@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SocialSyncComponent } from './socialsync.component';
+import { CalendarComponent } from './calendar-component.component';
 
 @NgModule({
     imports: [
@@ -9,11 +9,11 @@ import { SocialSyncComponent } from './socialsync.component';
         FormsModule,
     ],
     exports: [
-        SocialSyncComponent,
+        CalendarComponent,
     ],
     declarations: [
-        SocialSyncComponent,
+        CalendarComponent,
     ],
     providers: [],
 })
-export class SocialSyncModule { }
+export class CalendarCustomModule { }
