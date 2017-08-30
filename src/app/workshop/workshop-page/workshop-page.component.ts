@@ -151,18 +151,18 @@ export class WorkshopPageComponent implements OnInit {
       const title = titleCalIdArray[0];
       if (!this.eventsForTheDay.hasOwnProperty(calId)) {
         this.eventsForTheDay[calId] = [{
-                                      title: title,
-                                      color: event.color,
-                                      start: event.start,
-                                      end:  event.end
-                                      }];
+          title: title,
+          color: event.color,
+          start: event.start,
+          end: event.end
+        }];
       }
       else {
         this.eventsForTheDay[calId].push({
           title: title,
           color: event.color,
           start: event.start,
-          end:  event.end
+          end: event.end
         });
       }
     }
@@ -209,13 +209,13 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   public parseTitle(title) {
-      return title.split(':');
+    return title.split(':');
   }
 
   // Modal
   public editCalendar() {
     this.dialogsService
-      .editCalendar({id: this.workshopId, type: this.workshop.type, name: this.workshop.title}, this.workshop.contents, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
+      .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
       .subscribe(res => this.result = res);
   }
 
@@ -286,7 +286,7 @@ export class WorkshopPageComponent implements OnInit {
             title: iterinary.contents[i].title + ':' + calendarId,
             color: colors.red,
             start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
-            end:  moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
+            end: moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
           });
         }
         // this.refresh.next();

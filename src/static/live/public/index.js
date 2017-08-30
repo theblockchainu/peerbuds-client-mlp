@@ -24224,22 +24224,27 @@ function getToken() {
               logLevel: 'debug'
             };
 
-    log("Joining room '" + roomName + "'...");
-    var connectOptions = {
-      name: roomName,
-      logLevel: 'debug'
-    };
+            if (previewTracks) {
+              connectOptions.tracks = previewTracks;
+            }
 
-    if (previewTracks) {
-      connectOptions.tracks = previewTracks;
-    }
+            // Join the Room with the token from the server and the
+            // LocalParticipant's Tracks.
+            Video.connect(data.token, connectOptions).then(roomJoined, function (error) {
+              log('Could not connect to Twilio: ' + error.message);
+            });
+          };
 
-    // Join the Room with the token from the server and the
-    // LocalParticipant's Tracks.
-    Video.connect(data.token, connectOptions).then(roomJoined, function (error) {
-      log('Could not connect to Twilio: ' + error.message);
-    });
-  };
+          // Bind button to leave Room.
+          document.getElementById('button-leave').onclick = function () {
+            log('Leaving room...');
+            activeRoom.disconnect();
+          }; 
+      };
+      req.onerror = reject;
+      req.send();
+  });
+}
 
 getToken();
 

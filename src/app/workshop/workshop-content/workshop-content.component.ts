@@ -52,7 +52,7 @@ export class WorkshopContentComponent implements OnInit {
   }
   initItenary() {
     return this._fb.group({
-      date: [''],
+      date: null,
       contents: this._fb.array([])
     });
   }
@@ -231,8 +231,8 @@ export class WorkshopContentComponent implements OnInit {
     return new Date(this.calendar.startDate);
   }
 
-    getCalendarEndDate() {
-        return new Date(this.calendar.endDate);
-    }
+  getCalendarEndDate() {
+    return new Date(this.calendar.endDate);
+  }
 
 }
