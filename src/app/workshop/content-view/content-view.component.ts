@@ -86,8 +86,8 @@ export class ContentViewComponent implements OnInit {
       schedule: this._fb.group({
         startDay: [''],
         endDay: [''],
-        startTime: [''],
-        endTime: ['']
+        startTime: [null],
+        endTime: [null]
       }),
       pending: ['']
     });
@@ -241,7 +241,7 @@ export class ContentViewComponent implements OnInit {
   }
 
   triggerContentUpdate(form) {
-    const date = form.controls.date.value;
+    const date = moment(form.controls.date.value).toDate();
     const contentArray = <FormArray>form.controls['contents'].controls;
     for (let i = 0; i < contentArray.length; i++) {
       const type = contentArray[i].controls.type.value;
