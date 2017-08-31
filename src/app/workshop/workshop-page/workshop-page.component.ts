@@ -98,6 +98,7 @@ export class WorkshopPageComponent implements OnInit {
   public itenariesObj = {};
   public reviews;
   public defaultProfileUrl = '/assets/images/avatar.png';
+  public noWrapSlides = true;
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
