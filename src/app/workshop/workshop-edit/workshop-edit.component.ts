@@ -18,10 +18,10 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import _ from 'lodash';
-import {MdDialog} from '@angular/material';
-import {WorkshopSubmitDialogComponent} from './workshop-submit-dialog/workshop-submit-dialog.component';
-import {WorkshopCloneDialogComponent} from './workshop-clone-dialog/workshop-clone-dialog.component';
-import {LeftSidebarService} from '../../_services/left-sidebar/left-sidebar.service';
+import { MdDialog } from '@angular/material';
+import { WorkshopSubmitDialogComponent } from './workshop-submit-dialog/workshop-submit-dialog.component';
+import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-clone-dialog.component';
+import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 
 
 @Component({
@@ -545,19 +545,19 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public addImageUrl(value: String) {
-      console.log('Adding image url: ' + value);
-      this.urlForImages.push(value);
-      const control = <FormArray>this.workshop.controls['imageUrls'];
-      this.workshopImage1Pending = false;
-      control.patchValue(this.urlForImages);
+    console.log('Adding image url: ' + value);
+    this.urlForImages.push(value);
+    const control = <FormArray>this.workshop.controls['imageUrls'];
+    this.workshopImage1Pending = false;
+    control.patchValue(this.urlForImages);
   }
 
   public addVideoUrl(value: String) {
-      console.log('Adding video url: ' + value);
-      this.urlForVideo.push(value);
-      const control = this.workshop.controls['videoUrls'];
-      this.workshopVideoPending = false;
-      control.patchValue(this.urlForVideo);
+    console.log('Adding video url: ' + value);
+    this.urlForVideo.push(value);
+    const control = this.workshop.controls['videoUrls'];
+    this.workshopVideoPending = false;
+    control.patchValue(this.urlForVideo);
   }
 
   uploadVideo(event) {
@@ -583,16 +583,16 @@ export class WorkshopEditComponent implements OnInit {
 
   public submitWorkshop(data) {
     if (this.workshop.controls.status.value === 'active') {
-        let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopCloneDialogComponent, {disableClose: true, hasBackdrop: true, width: '40%'});
-        dialogRef.afterClosed().subscribe((result) => {
-          if (result === 'accept') {
-            this.executeSubmitWorkshop(data);
-          }
-          else if (result === 'reject') {
-            this.router.navigate(['/console/teaching/workshops']);
-          }
-        });
+      let dialogRef: any;
+      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '40%' });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result === 'accept') {
+          this.executeSubmitWorkshop(data);
+        }
+        else if (result === 'reject') {
+          this.router.navigate(['/console/teaching/workshops']);
+        }
+      });
     }
     else {
       this.executeSubmitWorkshop(data);
@@ -600,27 +600,27 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private executeSubmitWorkshop(data) {
-      const lang = <FormArray>this.workshop.controls.language;
-      lang.removeAt(0);
-      lang.push(this._fb.control(data.value.selectedLanguage));
-      const body = data.value;
-      delete body.selectedLanguage;
+    const lang = <FormArray>this.workshop.controls.language;
+    lang.removeAt(0);
+    lang.push(this._fb.control(data.value.selectedLanguage));
+    const body = data.value;
+    delete body.selectedLanguage;
 
-      this._collectionService.patchCollection(this.workshopId, body).map(
-          (response) => {
-              const result = response.json();
-              this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
-              this.step++;
-              this.workshopStepUpdate();
-              if (result.isNewInstance) {
-                  this.router.navigate(['workshop', result.id, 'edit', this.step]);
-                  this.workshop.controls.status.setValue(result.status);
-              }
-              else {
-                  this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
-              }
-          }).subscribe();
-}
+    this._collectionService.patchCollection(this.workshopId, body).map(
+      (response) => {
+        const result = response.json();
+        this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
+        this.step++;
+        this.workshopStepUpdate();
+        if (result.isNewInstance) {
+          this.router.navigate(['workshop', result.id, 'edit', this.step]);
+          this.workshop.controls.status.setValue(result.status);
+        }
+        else {
+          this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
+        }
+      }).subscribe();
+  }
 
   /**
    * numberOfdays
@@ -718,7 +718,7 @@ export class WorkshopEditComponent implements OnInit {
         console.log('Workshop submitted for review');
         this.isSubmitted = true;
         let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, {disableClose: false, hasBackdrop: true, width: '40vw'});
+        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: false, hasBackdrop: true, width: '40vw' });
         // call to get status of workshop
         if (this.workshop.controls.status.value === 'active') {
           this.sidebarMenuItems[3].visible = false;
@@ -761,7 +761,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   exit() {
-      this.router.navigate(['console/teaching/workshops']);
+    this.router.navigate(['console/teaching/workshops']);
   }
 
   AddNewTopic(data, modal) {
@@ -887,7 +887,7 @@ export class WorkshopEditComponent implements OnInit {
         console.log(response);
         if (fileType === 'video') {
           this.urlForVideo = _.remove(this.urlForVideo, function (n) {
-              return n !== fileurl;
+            return n !== fileurl;
           });
           this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
         } else if (fileType === 'image') {
@@ -910,7 +910,7 @@ export class WorkshopEditComponent implements OnInit {
           console.log(response);
           if (fileType === 'video') {
             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
-                return n !== fileurl;
+              return n !== fileurl;
             });
             this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
           } else if (fileType === 'image') {
@@ -954,9 +954,9 @@ export class WorkshopEditComponent implements OnInit {
     this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
   }
 
-    /**
-     * Make the dates section of this page editable
-     */
+  /**
+   * Make the dates section of this page editable
+   */
   makeDatesEditable() {
     this.datesEditable = true;
   }

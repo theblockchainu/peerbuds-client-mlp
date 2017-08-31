@@ -5,7 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
-  MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule
+  MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
+  MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
+  MdNativeDateModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -81,27 +83,18 @@ import { CommentService } from '../_services/comment/comment.service';
     SocialSyncModule,
     PopoverModule,
     LightboxModule,
-    MdChipsModule,
     LeftSidebarModule,
-    MdDialogModule,
-    MdMenuModule,
     CarouselModule,
     DatepickerModule,
     TimepickerModule,
     FinishingTouchesModule,
-    MdCardModule,
-    MdButtonModule,
-    MdMenuModule,
-    MdToolbarModule,
-    MdIconModule,
-    MdProgressBarModule,
-    MdListModule,
-    MdTabsModule,
-    MdTableModule,
-    MdInputModule,
     NgPipesModule,
     AccordionModule,
-    MdCheckboxModule
+    MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
+    MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
+    MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
+    MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
+    MdNativeDateModule
   ]
 })
 export class SharedModule { }
