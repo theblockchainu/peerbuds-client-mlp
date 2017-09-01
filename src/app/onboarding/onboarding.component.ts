@@ -61,8 +61,6 @@ export class OnboardingComponent implements OnInit {
     });
   }
 
-
-
   public removed(event) {
     let body = {};
     let options;
@@ -123,7 +121,6 @@ export class OnboardingComponent implements OnInit {
     });
     if (topicArray.length !== 0) {
     }
-
   }
   public changeInterests(topic: any) {
     const index = this.interests.indexOf(topic);

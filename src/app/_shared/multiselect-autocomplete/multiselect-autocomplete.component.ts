@@ -104,13 +104,14 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
      clickedComponent = clickedComponent.parentNode;
     } while (clickedComponent);
     if (!inside) {
-     this.filteredList = [];
+    this.filteredList = [];
+
     }
   }
 
   ngOnChanges() {
     console.log("ngChanges");
-    if(!!this.preselectedTopics){         
+    if(!!this.preselectedTopics){       
         console.log(this.preselectedTopics);         
     }
     this.selected = _.union(this.preselectedTopics, this.selected);
