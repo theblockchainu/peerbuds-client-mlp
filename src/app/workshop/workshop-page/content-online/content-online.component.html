@@ -28,7 +28,7 @@
 <div md-dialog-actions *ngIf="data.userType==='teacher' || data.userType==='participant' ">
   <div class="row">
     <div class="col-md-12">
-      <button md-button *ngIf="data.content.isLive"> <a href="/static/live/public/index.html" target="_blank">Join</a> </button>
+      <a md-button *ngIf="data.content.isLive" href="/static/live/public/index.html" target="_blank">Join</a>
       <button md-button *ngIf="data.content.timetoSession" [disabled]="true"> {{data.content.timetoSession}} </button>
     </div>
   </div>

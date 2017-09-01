@@ -126,7 +126,7 @@
                               </div>
                               <div class="row" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
                                 <div class="col-md-12">
-                                  <button md-button *ngIf="isLive(content)" (click)="joinSession(content)"><a href="/static/live/public/index.html" target="_blank">Join</a></button>
+                                  <a md-button *ngIf="isLive(content)" href="/static/live/public/index.html" target="_blank">Join</a>
                                   <button md-button *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
                                 </div>
                               </div>
@@ -449,7 +449,7 @@
                     <div class="col-md-3">
                       <img *ngIf="!workshop.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="thumb-35 img-circle profile-thumb">
                       <img *ngIf="workshop.owners[0].profiles[0].picture_url" src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}"
-                        class="img-circle profile-thumb">
+                        class="img-circle taughtby-thumb">
                     </div>
                     <div class="col-md-9">
                       <div class="row">
