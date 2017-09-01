@@ -86,8 +86,8 @@ export class ContentViewComponent implements OnInit {
       schedule: this._fb.group({
         startDay: [''],
         endDay: [''],
-        startTime: [''],
-        endTime: ['']
+        startTime: [null],
+        endTime: [null]
       }),
       pending: ['']
     });
@@ -241,7 +241,7 @@ export class ContentViewComponent implements OnInit {
   }
 
   triggerContentUpdate(form) {
-    const date = form.controls.date.value;
+    const date = moment(form.controls.date.value).toDate();
     const contentArray = <FormArray>form.controls['contents'].controls;
     for (let i = 0; i < contentArray.length; i++) {
       const type = contentArray[i].controls.type.value;
@@ -249,6 +249,12 @@ export class ContentViewComponent implements OnInit {
       contentArray[i].controls.schedule.controls.endDay.patchValue(date);
       this.saveTempForEditDate(contentArray[i], i);
     }
+  }
+
+  getContentTimeRange(content) {
+      const startTime = moment('01-02-1990 ' + content.controls.schedule.controls.startTime.value).format('hh:mm a');
+      const endTime = moment('01-02-1990 ' + content.controls.schedule.controls.endTime.value).format('hh:mm a');
+      return startTime + ' - ' + endTime;
   }
 
   public showItineraryDate(date) {
@@ -324,6 +330,10 @@ export class ContentViewComponent implements OnInit {
         else {
             return new Date(2020, 0 , 1);
         }
+    }
+
+    imgErrorHandler(event) {
+      event.target.src = '/assets/images/placeholder-image.jpg';
     }
 
 }

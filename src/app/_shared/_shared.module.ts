@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+<<<<<<< HEAD
 import { CdkTableModule } from '@angular/cdk/table';
+=======
+>>>>>>> 77ec2a5a836e05d9bfbca2e4061313ef896aa49e
 
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
-  MdListModule, MdTabsModule, MdTableModule, MdInputModule
+  MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
+  MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
+  MdNativeDateModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -35,7 +40,9 @@ import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.servic
 import { ContentService } from '../_services/content/content.service';
 import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
 import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
+import { DialogsService } from '../workshop/dialogs/dialog.service';
 
+import { CommentService } from '../_services/comment/comment.service';
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -58,7 +65,9 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     CookieUtilsService,
     ContentService,
     LeftSidebarService,
-    CurrencypickerService
+    CurrencypickerService,
+    DialogsService,
+    CommentService
   ],
   exports: [
     CommonModule,
@@ -78,27 +87,18 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
     SocialSyncModule,
     PopoverModule,
     LightboxModule,
-    MdChipsModule,
     LeftSidebarModule,
-    MdDialogModule,
-    MdMenuModule,
     CarouselModule,
     DatepickerModule,
     TimepickerModule,
     FinishingTouchesModule,
-    MdCardModule,
-    MdButtonModule,
-    MdMenuModule,
-    MdToolbarModule,
-    MdIconModule,
-    MdProgressBarModule,
-    MdListModule,
-    MdTabsModule,
-    MdTableModule,
-    CdkTableModule,
-    MdInputModule,
     NgPipesModule,
-    AccordionModule
+    AccordionModule,
+    MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
+    MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
+    MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
+    MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
+    MdNativeDateModule
   ]
 })
 export class SharedModule { }

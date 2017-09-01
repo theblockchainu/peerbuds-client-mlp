@@ -243,21 +243,21 @@ export class CollectionService {
     return contents[0];
   }
 
-    /**
-     * Get the full name of any content type
-     * @param contentType
-     * @returns {string}
-     */
+  /**
+   * Get the full name of any content type
+   * @param contentType
+   * @returns {string}
+   */
   public getContentTypeFullName(contentType) {
-      let fillerWord = '';
-      if (contentType === 'online') {
-          fillerWord = 'session';
-      } else if (contentType === 'video') {
-          fillerWord = 'recording';
-      } else if (contentType === 'project') {
-          fillerWord = 'submission';
-      }
-      return contentType + ' ' + fillerWord;
+    let fillerWord = '';
+    if (contentType === 'online') {
+      fillerWord = 'session';
+    } else if (contentType === 'video') {
+      fillerWord = 'recording';
+    } else if (contentType === 'project') {
+      fillerWord = 'submission';
+    }
+    return contentType + ' ' + fillerWord;
   }
 
   /**
@@ -361,26 +361,26 @@ export class CollectionService {
     this.router.navigate(['session', collection.id]);
   }
 
-    /**
-     *  Workshop
-     */
-    public openEditWorkshop(collection) {
-        this.router.navigate(['workshop', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
-    }
+  /**
+   *  Workshop
+   */
+  public openEditWorkshop(collection) {
+    this.router.navigate(['workshop', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+  }
 
-    /**
-     * viewExperience
-     */
-    public openEditExperience(collection) {
-        this.router.navigate(['experience', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
-    }
+  /**
+   * viewExperience
+   */
+  public openEditExperience(collection) {
+    this.router.navigate(['experience', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+  }
 
-    /**
-     * viewSession
-     */
-    public openEditSession(collection) {
-        this.router.navigate(['session', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
-    }
+  /**
+   * viewSession
+   */
+  public openEditSession(collection) {
+    this.router.navigate(['session', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+  }
 
   /**
    * Get text to show in action button of draft card
@@ -406,14 +406,12 @@ export class CollectionService {
   }
 
   public sendVerifySMS(phoneNo) {
-    const body = {
-    };
+    const body = {};
     return this.http
       .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
-
   }
 
   public confirmSmsOTP(inputToken) {
@@ -463,4 +461,115 @@ collectionID:string,userId:string,calendarId:string   */
   public getParticipants() {
 
   }
+
+  /**
+   * Approve this collection
+   * @param collection
+   * @returns {Observable<any>}
+   */
+  public approveCollection(collection) {
+    this.http.post(this.config.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.options).map(
+      (response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      }).subscribe(() => {
+        this.router.navigate(['/console/teaching/all']);
+      });
+  }
+
+  /**
+   * open a collection view page based on its type
+   * @param collection
+   */
+  public openCollection(collection) {
+    switch (collection.type) {
+      case 'workshop':
+        this.router.navigate(['/workshop', collection.id]);
+        break;
+      case 'experience':
+        this.router.navigate(['/experience', collection.id]);
+        break;
+      case 'session':
+        this.router.navigate(['/session', collection.id]);
+        break;
+      default:
+        this.router.navigate(['/workshop', collection.id]);
+        break;
+    }
+  }
+
+  /**
+   * open a collection view page based on its type
+   * @param collection
+   */
+  public openEditCollection(collection) {
+    switch (collection.type) {
+      case 'workshop':
+        this.router.navigate(['/workshop', collection.id, 'edit', collection.stage]);
+        break;
+      case 'experience':
+        this.router.navigate(['/experience', collection.id, 'edit', collection.stage]);
+        break;
+      case 'session':
+        this.router.navigate(['/session', collection.id, 'edit', collection.stage]);
+        break;
+      default:
+        this.router.navigate(['/workshop', collection.id, 'edit', collection.stage]);
+        break;
+    }
+  }
+
+  public postCalendars(id, calendars) {
+    return this.http
+      .post(this.config.apiUrl + '/api/collections/' + id + '/calendars', calendars, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+  }
+
+  /**
+   * getComments
+   */
+  public getComments(workshopId: string, query: any, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/collections/' + workshopId + '/comments' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public getReviews(workshopId: string, query: any, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * postComments
+  worrkshopID   */
+  public postComments(workshopId: string, commentBody: any, cb) {
+    this.http
+      .post(this.config.apiUrl + '/api/collections/' + workshopId + '/comments', commentBody, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * postReview
+   */
+  public postReview(workshopId: string, reviewBody: any) {
+    return this.http
+      .post(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews', reviewBody, this.options);
+  }
+
 }

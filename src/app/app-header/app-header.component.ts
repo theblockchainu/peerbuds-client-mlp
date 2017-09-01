@@ -8,6 +8,7 @@ import {FormControl} from '@angular/forms';
 import {AppConfig} from '../app.config';
 import {Http} from '@angular/http';
 import {CookieService} from 'ngx-cookie-service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -32,9 +33,10 @@ export class AppHeaderComponent implements OnInit {
               public config: AppConfig,
               private http: Http,
               private _cookieService: CookieService,
-              private _profileService: ProfileService) {
+              private _profileService: ProfileService,
+              private router: Router) {
     this.isLoggedIn = authService.isLoggedIn();
-    authService.isLoggedIn().subscribe((res)=>{
+    authService.isLoggedIn().subscribe((res) => {
       this.loggedIn = res;
     });
     this.userId = this.getCookieValue(this.key);
@@ -63,10 +65,13 @@ export class AppHeaderComponent implements OnInit {
   }
 
   getProfile() {
-    if(this.loggedIn) {
+    if (this.loggedIn) {
         this._profileService.getProfile().subscribe(profile => {
             this.profile = profile[0];
         });
+    }
+    else {
+      return null;
     }
   }
 
@@ -125,6 +130,32 @@ export class AppHeaderComponent implements OnInit {
       default:
         return;
     }
+  }
+
+  public onSearchOptionClicked(option) {
+      switch (option.index) {
+          case 'collection':
+              switch (option.data.type) {
+                  case 'workshop':
+                      this.router.navigate(['/workshop', option.data.id]);
+                      break;
+                  case 'experience':
+                      this.router.navigate(['/experience', option.data.id]);
+                      break;
+                  default:
+                      this.router.navigate(['/console/dashboard']);
+                      break;
+              }
+              break;
+          case 'topic':
+              this.router.navigate(['/console/profile/topics']);
+              break;
+          case 'peer':
+              this.router.navigate(['/profile', option.data.id]);
+              break;
+          default:
+              break;
+      }
   }
 
 }

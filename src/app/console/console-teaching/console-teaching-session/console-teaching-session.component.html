@@ -30,14 +30,17 @@
                     <md-card-content>
                       <div style="text-align: right">
                         <div class="pull-right">
-                          <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                          <a [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
                       </div>
                       <div class="collectionParticipantImageCarousel">
-                        <div class="circle-thumb" *ngFor="let participant of collection.participants">
-                          <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                        <div class="image-inline" *ngFor="let participant of collection.participants">
+                          <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                        </div>
+                        <div class="image-inline" *ngIf="collection.participants.length === 0">
+                          <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="participantCount">
@@ -61,6 +64,17 @@
                     <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
                       <button md-raised-button (click)="_collectionService.viewSession(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                     </md-card-actions>
+                    <md-menu #ongoingCardMenu>
+                      <button md-menu-item>
+                        Delete
+                      </button>
+                      <button md-menu-item>
+                        Message Students
+                      </button>
+                      <button md-menu-item (click)="_collectionService.viewSession(collection)">
+                        View Profile
+                      </button>
+                    </md-menu>
                     <br><br>
                     <md-card-footer class="cardFooter">
                       <button md-button (click)="_collectionService.viewSession(collection)">Continue Teaching</button>
@@ -72,14 +86,17 @@
                     <md-card-content>
                       <div style="text-align: right">
                         <div class="pull-right">
-                          <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                          <a [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
                       </div>
                       <div class="collectionParticipantImageCarousel">
-                        <div class="circle-thumb" *ngFor="let participant of collection.participants">
-                          <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                        <div class="image-inline" *ngFor="let participant of collection.participants">
+                          <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                        </div>
+                        <div class="image-inline" *ngIf="collection.participants.length === 0">
+                          <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="participantCount">
@@ -108,6 +125,17 @@
                     <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
                       <button md-raised-button (click)="_collectionService.viewSession(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                     </md-card-actions>
+                    <md-menu #upcomingCardMenu>
+                      <button md-menu-item>
+                        Delete
+                      </button>
+                      <button md-menu-item>
+                        Message Students
+                      </button>
+                      <button md-menu-item (click)="_collectionService.viewSession(collection)">
+                        View Profile
+                      </button>
+                    </md-menu>
                     <br><br>
                     <md-card-footer class="cardFooter">
                       <button md-button (click)="_collectionService.viewSession(collection)">Is this a recurring session?</button>
@@ -135,7 +163,7 @@
           <div style="margin-top:20px;" class="col-md-12">
             <div class="row">
               <div *ngFor="let collection of collections.data" [ngSwitch]="collection.status">
-                <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'draft' || 'submitted'" >
+                <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'draft'" >
                   <md-card style="text-align: center; padding: 20px;">
                     <md-card-content>
                       <div class="clearfix" style="text-align: right">
@@ -153,7 +181,8 @@
                       </ng-template>
                       <ng-template #submittedMessage>
                         <p class="lightText" style="margin-top:20px">
-                          Submitted for review
+                          Submitted for review <br>
+                          Awaiting approval
                         </p>
                       </ng-template>
                       <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
@@ -166,6 +195,64 @@
 
                     </md-card-footer>
                   </md-card>
+                  <md-menu #draftCardMenu>
+                    <button md-menu-item>
+                      Delete
+                    </button>
+                    <button md-menu-item>
+                      Message Students
+                    </button>
+                    <button md-menu-item (click)="_collectionService.viewSession(collection)">
+                      View Profile
+                    </button>
+                  </md-menu>
+                </div>
+                <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'submitted'" >
+                  <md-card style="text-align: center; padding: 20px;">
+                    <md-card-content>
+                      <div class="clearfix" style="text-align: right">
+                        <div class="pull-right">
+                          <a md-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
+                            <md-icon>more_vert</md-icon>
+                          </a>
+                        </div>
+                      </div>
+                      <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' }} </div>
+                      <ng-template #draftMessage>
+                        <p class="lightText" style="margin-top:20px">
+                          You still have to complete updating your profile
+                        </p>
+                      </ng-template>
+                      <ng-template #submittedMessage>
+                        <p class="lightText" style="margin-top:20px">
+                          Submitted for review <br>
+                          Awaiting approval
+                        </p>
+                      </ng-template>
+                      <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
+                      <p class="lightText" *ngIf="collection.status == 'draft'; then draftMessage else submittedMessage"></p>
+                    </md-card-content>
+                    <md-card-actions>
+                      <button md-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+                    </md-card-actions>
+                    <md-card-footer>
+
+                    </md-card-footer>
+                  </md-card>
+                  <md-menu #draftCardMenu>
+                    <button md-menu-item>
+                      Delete
+                    </button>
+                    <button md-menu-item>
+                      Message Students
+                    </button>
+                    <button md-menu-item (click)="_collectionService.approveCollection(collection)">
+                      Approve Workshop
+                    </button>
+                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                      View Workshop
+                    </button>
+                  </md-menu>
                 </div>
               </div>
             </div>
@@ -190,14 +277,17 @@
                     <md-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
-                          <a md-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                          <a md-button [mdMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
                       </div>
                       <div class="collectionParticipantImageCarousel">
-                        <div class="circle-thumb" *ngFor="let participant of collection.participants">
-                          <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="thumb-50">
+                        <div class="image-inline" *ngFor="let participant of collection.participants">
+                          <img src="{{ participant.profiles[0].picture_url }}" alt=" " class="thumb-50" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                        </div>
+                        <div class="image-inline" *ngIf="collection.participants.length === 0">
+                          <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
                         </div>
                       </div>
                       <div class="participantCount">
@@ -217,6 +307,17 @@
                         View Details
                       </button>
                     </md-card-actions>
+                    <md-menu #pastCardMenu>
+                      <button md-menu-item>
+                        Delete
+                      </button>
+                      <button md-menu-item>
+                        Message Students
+                      </button>
+                      <button md-menu-item (click)="_collectionService.viewSession(collection)">
+                        View Profile
+                      </button>
+                    </md-menu>
                     <br><br>
                     <md-card-footer class="cardFooter">
                       <button md-button (click)="_collectionService.viewTransactions()">View Transactions</button>
@@ -231,11 +332,3 @@
     </div>
   </div>
 </div>
-<md-menu #collectionCardMenu>
-  <button md-menu-item>
-    Delete
-  </button>
-  <button md-menu-item>
-    Message Students
-  </button>
-</md-menu>

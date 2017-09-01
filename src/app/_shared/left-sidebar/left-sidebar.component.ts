@@ -79,7 +79,8 @@ export class LeftSidebarComponent implements OnInit {
             .subscribe(res => {
                     this.status = res.status;
                     this.collection = res;
-                    this.updateSideMenu(this.collection);
+                    this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, this.sidebarMenuItems);
+                    this.menuArray.emit(this.sidebarMenuItems);
                 },
                 err => console.log('error'),
                 () => console.log('Completed!'));
@@ -98,72 +99,6 @@ export class LeftSidebarComponent implements OnInit {
     }
     this.step = +step;
     this.router.navigate([this.path, this.id, 'edit', step]);
-  }
-
-  updateSideMenu(collection) {
-      let completedSections = 0;
-      if (collection.status === 'draft') {
-          this.sidebarMenuItems[4].visible = false;
-          this.sidebarMenuItems[3].visible = true;
-      }
-      else {
-          this.sidebarMenuItems[4].visible = true;
-          this.sidebarMenuItems[3].visible = false;
-          this.sidebarMenuItems.forEach(mainItem => {
-            mainItem.submenu.forEach(item => {
-                  item.locked = true;
-              }, this);
-          }, this);
-      }
-      if (collection.topics.length >= 3) {
-          this.sidebarMenuItems[0].submenu[0].complete = true;
-          completedSections++;
-      }
-      if (collection.language.length > 0) {
-          this.sidebarMenuItems[0].submenu[1].complete = true;
-          completedSections++;
-      }
-      if (collection.aboutHost.length > 0) {
-          this.sidebarMenuItems[0].submenu[2].complete = true;
-          completedSections++;
-      }
-      if (collection.title.length > 0 && collection.headline.length > 0) {
-          this.sidebarMenuItems[1].submenu[0].complete = true;
-          completedSections++;
-      }
-      if (collection.description.length > 0) {
-          this.sidebarMenuItems[1].submenu[1].complete = true;
-          completedSections++;
-      }
-      if (collection.difficultyLevel.length > 0 && collection.notes.length > 0) {
-          this.sidebarMenuItems[1].submenu[2].complete = true;
-          completedSections++;
-      }
-      if (collection.maxSpots.length > 0) {
-          this.sidebarMenuItems[1].submenu[3].complete = true;
-          completedSections++;
-      }
-      if (collection.imageUrls.length > 0 && collection.videoUrls.length > 0) {
-          this.sidebarMenuItems[1].submenu[4].complete = true;
-          completedSections++;
-      }
-      if (collection.price.length > 0 && collection.currency.length > 0 && collection.cancellationPolicy.length > 0) {
-          this.sidebarMenuItems[1].submenu[5].complete = true;
-          completedSections++;
-      }
-      if (collection.contents.length > 0) {
-          this.sidebarMenuItems[2].submenu.forEach(item => {
-            item.complete = true;
-          }, this);
-          completedSections++;
-      }
-      if (completedSections !== 10) {
-        this.sidebarMenuItems[3].locked = true;
-      }
-      else {
-          this.sidebarMenuItems[3].locked = false;
-      }
-      this.menuArray.emit(this.sidebarMenuItems);
   }
 
 }

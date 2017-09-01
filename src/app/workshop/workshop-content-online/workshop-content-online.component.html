@@ -23,26 +23,52 @@
                     <div class="form-group">
                         <label>Upload a photo:</label>
                         <div class="upload-image-section imageHolder">
-                            <p-fileUpload #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse"></p-fileUpload>
+                            <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImage($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse">
+                                <ng-template pTemplate="toolbar">
+                                    <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
+                                </ng-template>
+                                <ng-template #file pTemplate="file">
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <md-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
+                                        <md-grid-tile>
+                                            <div style="position: absolute; cursor: pointer;">
+                                                <md-icon style="color: black;">close</md-icon>
+                                            </div>
+                                            <img src="{{config.apiUrl + image.value}}" width="150" (error)="imgErrorHandler($event)">
+                                        </md-grid-tile>
+                                    </md-grid-list>
+                                </ng-template>
+                            </p-fileUpload>
                         </div>
                     </div>
                     <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                        <textarea mdInput #description maxlength="500" rows="5" formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
+                        <textarea mdInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
                         <md-hint align="end">{{description.value.length}} / 500</md-hint>
                     </md-input-container>
                     <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                        <textarea mdInput #prerequisites maxlength="500" rows="5" formControlName="prerequisites" placeholder="What do learners need to know?" [required]="true"></textarea>
+                        <textarea mdInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?" [required]="true"></textarea>
                         <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
                     </md-input-container>
                     <div class="form-group">
                         <label class="display-block">Add supporting material</label>
-                        <div *ngIf="filesToUpload">
-                            <progressbar [max]="filesToUpload" [value]="filesUploaded">
-                                <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>
-                                </span>
-                            </progressbar>
-                        </div>
-                        <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadNew($event)" multiple="multiple" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)"></p-fileUpload>
+                        <p-fileUpload #fubauto name="file" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadAttachments($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse">
+                            <ng-template pTemplate="toolbar">
+                                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
+                            </ng-template>
+                            <ng-template #file pTemplate="file">
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls">
+                                    <md-grid-tile *ngFor="let file of attachmentUrls">
+                                        <div style="float: left; margin-right: 15px; cursor: pointer;">
+                                            <md-icon style="color: black;">close</md-icon>
+                                        </div>
+                                        <a href="{{config.apiUrl + file}}">{{file}}</a>
+                                    </md-grid-tile>
+                                </md-grid-list>
+                            </ng-template>
+                        </p-fileUpload>
                     </div>
                 </div>
             </div>

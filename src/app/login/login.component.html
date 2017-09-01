@@ -4,16 +4,16 @@
         </div>
         <section class="page-padding row">
             <div class="page-signin">
-                <div class="signin-form md-whiteframe-z1">
+                <div class="signin-form mat-whiteframe-z1">
                     <div class="md-content__body extra-padding">
 
                         <form class="form-horizontal" [formGroup]="loginForm">
                             <div class="margin-bottom-20">
-                                <a md-button class="btn-width-large btn-block btn-lg md-button mat-raised-button mat-primary" href="http://localhost:3000/auth/facebook?returnTo=/">
+                                <a md-raised-button class="btn-width-large btn-block md-facebook" color="primary" href="http://localhost:3000/auth/facebook?returnTo=/">
                                     <i class="fa fa-facebook"></i> Login with Facebook</a>
                             </div>
                             <div class="margin-bottom-20">
-                                <a md-button class="btn-width-large btn-block btn-lg md-button mat-raised-button mat-accent" href="http://localhost:3000/auth/google?returnTo=/">
+                                <a md-raised-button class="btn-width-large btn-block md-button md-raised md-google-plus" href="http://localhost:3000/auth/google?returnTo=/">
                                     <i class="fa fa-google"></i> Login with Gmail</a>
                             </div>
                             <!-- <div class="form-group">
@@ -34,10 +34,10 @@
                             </div>
 
                             <div class="form-group text-center">
-                                <button class="btn-width-medium btn-md md-button mat-raised-button mat-primary vertical-bottom" type="submit" (click)="login()"><span>Log In</span></button>
-                                <a md-button class="btn-width-medium btn-md md-button mat-raised-button vertical-middle" href="/signup.html"><span>Sign up</span></a>
-                                <a href="#" class="link display-block margin-top-10">Forgot password?</a>
-
+                                <button md-raised-button class="btn-width-medium vertical-bottom" color="accent" type="submit" (click)="login()"><span>Log In</span></button> &emsp;
+                                <a md-raised-button class="btn-width-medium vertical-middle" href="/signup.html"><span>Sign up</span></a>
+                                <br><br>
+                                <a href="#" class="link display-block margin-top-10" style="font-size: 10px;">Forgot password?</a>
                             </div>
                         </form>
                     </div>
