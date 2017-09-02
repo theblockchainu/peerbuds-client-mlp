@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 import { EditCalendarDialog } from './edit.calendar.dialog.component';
 // import { ViewConflictDialog } from './view.conflict.dialog.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
 import {
@@ -25,6 +27,17 @@ export class DialogsService {
         dialogRef.componentInstance.endDate = endDate;
 
         return dialogRef.afterClosed();
+    }
+
+    public deleteCollection(action) {
+        debugger;
+        let dialogRef: MdDialogRef<DeleteDialogComponent>;
+
+        dialogRef = this.dialog.open(DeleteDialogComponent);
+        dialogRef.componentInstance.action = action;
+
+        return dialogRef.afterClosed();
+
     }
 
     // public showConflicts(conflicts, id): Observable<boolean> {
