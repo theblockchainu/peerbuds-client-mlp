@@ -125,7 +125,7 @@
               <p class="subtitle">You will write your descriptions in this language and guests will expect you to speak it during workshops.</p>
               <br/>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <md-select placeholder="Select Language" style="margin-bottom: 20px" name="other_languages" formArrayName="language" (change)="languageChange($event.target.value)">
+                <md-select placeholder="Select Language" style="margin-bottom: 20px" name="other_languages" formArrayName="language" (change)="languageChange($event)">
                   <md-option [value]="">--Select--</md-option>
                   <md-option *ngFor="let l of languagesArray" [value]="l.name">{{l.name}}</md-option>
                 </md-select>

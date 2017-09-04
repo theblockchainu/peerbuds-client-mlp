@@ -224,7 +224,7 @@ export class WorkshopEditComponent implements OnInit {
       if (itenaries.hasOwnProperty(key)) {
         const itr: FormGroup = this.InitItenary();
         console.log(itr);
-        itr.controls.date.patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, key));
+        itr.controls.date.patchValue(moment(this.calculatedDate(this.timeline.value.calendar.startDate, key)).toDate());
         for (const contentObj of itenaries[key]) {
           const contentForm: FormGroup = this.InitContent();
           this.assignFormValues(contentForm, contentObj);
@@ -523,7 +523,6 @@ export class WorkshopEditComponent implements OnInit {
     this.isSubmitted = this.workshop.controls.status.value === 'submitted';
 
     this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].phone);
-
     if (!this.timeline.controls.calendar.value.startDate || !this.timeline.controls.calendar.value.endDate) {
       this.makeDatesEditable();
     }
