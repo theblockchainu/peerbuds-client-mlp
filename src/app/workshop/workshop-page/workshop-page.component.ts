@@ -98,6 +98,7 @@ export class WorkshopPageComponent implements OnInit {
   public itenariesObj = {};
   public reviews;
   public defaultProfileUrl = '/assets/images/avatar.png';
+  public noWrapSlides = true;
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
@@ -305,7 +306,7 @@ export class WorkshopPageComponent implements OnInit {
         'calendars',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules'] }]
+        { 'contents': ['schedules', 'submissions'] }]
     };
 
     if (this.workshopId) {
@@ -343,6 +344,8 @@ export class WorkshopPageComponent implements OnInit {
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
+          console.log(this.itenaryArray);
+
         },
         err => console.log('error'),
         () => {

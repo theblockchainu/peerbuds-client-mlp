@@ -321,7 +321,7 @@
                               <div style="position: absolute; cursor: pointer;">
                                 <md-icon (click)="deleteFromContainer(file, 'video')" style="color: black;">close</md-icon>
                               </div>
-                              <video controls width="150" style="border: 0.5px solid #ccc">
+                              <video controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
                                 <source src="{{config.apiUrl + file}}"> Your browser does not support the video tag.
                               </video>
                             </md-grid-tile>

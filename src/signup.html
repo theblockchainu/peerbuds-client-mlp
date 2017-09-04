@@ -201,16 +201,16 @@
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
-            $.validator.addMethod("check_date_of_birth", function(value, element) {
+            $.validator.addMethod("check_date_of_birth", function (value, element) {
 
                 var day = $("#birthDay").val();
                 var month = $("#birthMonth").val();
                 var year = $("#birthYear").val();
-                var age =  18;
+                var age = 18;
 
                 var mydate = new Date();
                 var mydate2 = mydate;
-                mydate.setFullYear(year, month-1, day);
+                mydate.setFullYear(year, month - 1, day);
                 var currdate = new Date();
                 currdate.setFullYear(currdate.getFullYear() - age);
                 return currdate > mydate2;
@@ -260,22 +260,22 @@
                         error.insertAfter(element);
                 },
                 success: function () {
-                  //$('.error').hide();
+                    //$('.error').hide();
                 }
             });
             //Load year
             var presentYear = new Date().getFullYear();
             var maxYear = presentYear;
             var period = 100;
-            for (var i = maxYear ; i >= maxYear - 100; i--){
+            for (var i = maxYear; i >= maxYear - 100; i--) {
                 $("#birthYear").append(new Option(i, i));
             }
 
             //Load MONTH
-            for (var i = 1 ; i <= 31 ; i++){
+            for (var i = 1; i <= 31; i++) {
                 var newI;
-                if(i < 10) {
-                  newI = '0' + i;
+                if (i < 10) {
+                    newI = '0' + i;
                 }
                 $("#birthDay").append(new Option(i, newI));
             }
@@ -285,14 +285,14 @@
             $(".signupEmail").removeClass("hide");
             $(".btnSignupEmail").addClass("hide");
         }
-        function signup(){
+        function signup() {
 
-            if($('#promoOptIn').prop('checked')) {
+            if ($('#promoOptIn').prop('checked')) {
                 $('#promoOptIn').val(true);
             }
             else
                 $('#promoOptIn').val(false);
-            $('#dob').val($('#birthYear').val()+"-"+$('#birthMonth').val()+"-"+$('#birthDay').val());
+            $('#dob').val($('#birthYear').val() + "-" + $('#birthMonth').val() + "-" + $('#birthDay').val());
             $('#signupForm').submit();
         }
     </script>
@@ -305,7 +305,7 @@
             <div class="col-md-6 col-md-offset-3 position-relative">
                 <div class="signup-box drop-shadow">
                     <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification" method="POST">
-                        <input type="hidden" name= "dob" id="dob" value="" required/>
+                        <input type="hidden" name="dob" id="dob" value="" required/>
                         <div class="margin-bottom-20">
                             <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook"></i> Sign up with Facebook</a>
                         </div>
@@ -382,7 +382,7 @@
                                 </div>
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox" class="form-control" name="promoOptIn" id="promoOptIn"/> I'd like to receive coupons, promotions, surveys, and updates via email about Peerbuds and its partners.</label>
+                                <label><input type="checkbox" name="promoOptIn" id="promoOptIn"/> I'd like to receive coupons, promotions, surveys, and updates via email about Peerbuds and its partners.</label>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Signup</button>
