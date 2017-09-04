@@ -10,6 +10,7 @@ import { AlertService } from '../_services/alert/alert.service';
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileService } from '../_services/profile/profile.service';
+import 'hammerjs';
 
 @NgModule({
   imports: [

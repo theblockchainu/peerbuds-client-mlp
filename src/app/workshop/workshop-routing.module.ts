@@ -13,9 +13,8 @@ const routes: Routes = [
         loadChildren: './workshop-page/workshop-page.module#WorkshopPageModule'
       },
       {
-        path: ':workshopId/edit/:step',
-        component: WorkshopEditComponent,
-        canActivateChild: [AuthGuardService]
+        path: ':workshopId/edit',
+        loadChildren: './workshop-edit/workshop-edit.module#WorkshopEditModule'
       }
 
     ]

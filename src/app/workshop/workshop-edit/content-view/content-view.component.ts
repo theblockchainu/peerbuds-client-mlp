@@ -1,16 +1,16 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Http, Response, } from '@angular/http';
-import { AppConfig } from '../../app.config';
-import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { AppConfig } from '../../../app.config';
+import { CountryPickerService } from '../../../_services/countrypicker/countrypicker.service';
 import { ModalModule, ModalDirective } from 'ngx-bootstrap';
-import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
+import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
 import * as _ from 'lodash';
-import {MdDialog} from '@angular/material';
-import {WorkshopContentOnlineComponent} from '../workshop-content-online/workshop-content-online.component';
-import {WorkshopContentProjectComponent} from '../workshop-content-project/workshop-content-project.component';
-import {WorkshopContentVideoComponent} from '../workshop-content-video/workshop-content-video.component';
-import {CollectionService} from '../../_services/collection/collection.service';
+import { MdDialog } from '@angular/material';
+import { WorkshopContentOnlineComponent } from '../workshop-content-online/workshop-content-online.component';
+import { WorkshopContentProjectComponent } from '../workshop-content-project/workshop-content-project.component';
+import { WorkshopContentVideoComponent } from '../workshop-content-video/workshop-content-video.component';
+import { CollectionService } from '../../../_services/collection/collection.service';
 
 declare var moment: any;
 
@@ -25,10 +25,10 @@ export class ContentViewComponent implements OnInit {
   public itenaryForm: FormGroup;
   @Input()
   public itenaryId: Number;
-    @Input()
-    public collectionStartDate: any;
-    @Input()
-    public collectionEndDate: any;
+  @Input()
+  public collectionStartDate: any;
+  @Input()
+  public collectionEndDate: any;
 
   @Output()
   triggerSave: EventEmitter<any> = new EventEmitter<any>();
@@ -51,8 +51,8 @@ export class ContentViewComponent implements OnInit {
     private dialog: MdDialog,
     public _collectionService: CollectionService
   ) {
-      this.countryPickerService.getCountries()
-        .subscribe((countries) => this.countries = countries);
+    this.countryPickerService.getCountries()
+      .subscribe((countries) => this.countries = countries);
   }
 
   ngOnInit() {
@@ -169,15 +169,15 @@ export class ContentViewComponent implements OnInit {
   }
 
   editContent(index) {
-      /*const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-      const contentForm = <FormGroup>contentsFArray.controls[index];
-      contentForm.patchValue(this.tempForm.value);*/
-      this.triggerSave.emit({
-          action: 'update',
-          value: index
-      });
-      console.log('updated!');
-      this.resetProgressBar();
+    /*const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+    const contentForm = <FormGroup>contentsFArray.controls[index];
+    contentForm.patchValue(this.tempForm.value);*/
+    this.triggerSave.emit({
+      action: 'update',
+      value: index
+    });
+    console.log('updated!');
+    this.resetProgressBar();
   }
 
   uploadNew(event) {
@@ -252,9 +252,9 @@ export class ContentViewComponent implements OnInit {
   }
 
   getContentTimeRange(content) {
-      const startTime = moment('01-02-1990 ' + content.controls.schedule.controls.startTime.value).format('hh:mm a');
-      const endTime = moment('01-02-1990 ' + content.controls.schedule.controls.endTime.value).format('hh:mm a');
-      return startTime + ' - ' + endTime;
+    const startTime = moment('01-02-1990 ' + content.controls.schedule.controls.startTime.value).format('hh:mm a');
+    const endTime = moment('01-02-1990 ' + content.controls.schedule.controls.endTime.value).format('hh:mm a');
+    return startTime + ' - ' + endTime;
   }
 
   public showItineraryDate(date) {
@@ -266,74 +266,74 @@ export class ContentViewComponent implements OnInit {
     }
   }
 
-    /**
-     * Open dialog for creating new online content
-     */
-    public findAndOpenDialog(index) {
-      let isEdit = true;
-      const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-      if (index === -1) {
-          index = contentsFArray.controls.length - 1;
-          isEdit = false;
-      }
-      const contentForm = <FormGroup>contentsFArray.controls[index];
-      const contentType = contentForm.value.type;
-      let dialogRef: any;
-      switch (contentType) {
-          case 'online':
-              dialogRef = this.dialog.open(WorkshopContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
-              break;
-          case 'project':
-              dialogRef = this.dialog.open(WorkshopContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
-              break;
-          case 'video':
-              dialogRef = this.dialog.open(WorkshopContentVideoComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
-              break;
-          default:
-              break;
-      }
-
-      dialogRef.afterClosed().subscribe(result => {
-          console.log(result);
-          result = JSON.parse(result);
-          if (result.status === 'save') {
-              this.saveContent(result.data);
-          }
-          else if (result.status === 'edit') {
-              this.editContent(result.data);
-          }
-          else if (result.status === 'delete') {
-              this.removeContent(result.data);
-          }
-          else if (result.status === 'close') {
-              // do nothing
-          }
-          else {
-              this.removeContentForm(result.data);
-          }
-      });
+  /**
+   * Open dialog for creating new online content
+   */
+  public findAndOpenDialog(index) {
+    let isEdit = true;
+    const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+    if (index === -1) {
+      index = contentsFArray.controls.length - 1;
+      isEdit = false;
+    }
+    const contentForm = <FormGroup>contentsFArray.controls[index];
+    const contentType = contentForm.value.type;
+    let dialogRef: any;
+    switch (contentType) {
+      case 'online':
+        dialogRef = this.dialog.open(WorkshopContentOnlineComponent, { data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh' });
+        break;
+      case 'project':
+        dialogRef = this.dialog.open(WorkshopContentProjectComponent, { data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh' });
+        break;
+      case 'video':
+        dialogRef = this.dialog.open(WorkshopContentVideoComponent, { data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh' });
+        break;
+      default:
+        break;
     }
 
-    getCollectionStartDate() {
-      if (this.collectionStartDate !== undefined) {
-        return new Date(this.collectionStartDate);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      result = JSON.parse(result);
+      if (result.status === 'save') {
+        this.saveContent(result.data);
+      }
+      else if (result.status === 'edit') {
+        this.editContent(result.data);
+      }
+      else if (result.status === 'delete') {
+        this.removeContent(result.data);
+      }
+      else if (result.status === 'close') {
+        // do nothing
       }
       else {
-        return new Date(2000, 0 , 1);
+        this.removeContentForm(result.data);
       }
-    }
+    });
+  }
 
-    getCollectionEndDate() {
-        if (this.collectionEndDate !== undefined) {
-            return new Date(this.collectionEndDate);
-        }
-        else {
-            return new Date(2020, 0 , 1);
-        }
+  getCollectionStartDate() {
+    if (this.collectionStartDate !== undefined) {
+      return new Date(this.collectionStartDate);
     }
+    else {
+      return new Date(2000, 0, 1);
+    }
+  }
 
-    imgErrorHandler(event) {
-      event.target.src = '/assets/images/placeholder-image.jpg';
+  getCollectionEndDate() {
+    if (this.collectionEndDate !== undefined) {
+      return new Date(this.collectionEndDate);
     }
+    else {
+      return new Date(2020, 0, 1);
+    }
+  }
+
+  imgErrorHandler(event) {
+    event.target.src = '/assets/images/placeholder-image.jpg';
+  }
 
 }

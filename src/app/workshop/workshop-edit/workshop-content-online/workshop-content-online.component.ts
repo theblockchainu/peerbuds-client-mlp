@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import {FormGroup, FormArray, FormBuilder, Validators, FormControl} from '@angular/forms';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Http, Response, } from '@angular/http';
-import { AppConfig } from '../../app.config';
-import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
-import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
+import { AppConfig } from '../../../app.config';
+import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
+import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
 
 @Component({
     selector: 'app-workshop-content-online',

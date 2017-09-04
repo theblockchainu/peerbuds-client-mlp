@@ -1,9 +1,9 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {AppConfig} from '../../app.config';
-import {Http} from '@angular/http';
-import {MediaUploaderService} from '../../_services/mediaUploader/media-uploader.service';
-import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AppConfig } from '../../../app.config';
+import { Http } from '@angular/http';
+import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
+import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
 
 @Component({
     selector: 'app-workshop-content-video',

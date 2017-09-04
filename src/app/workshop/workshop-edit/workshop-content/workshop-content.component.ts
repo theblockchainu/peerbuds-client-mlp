@@ -9,10 +9,10 @@ import {
   Http, URLSearchParams, Headers, Response, BaseRequestOptions
   , RequestOptions, RequestOptionsArgs
 } from '@angular/http';
-import { AppConfig } from '../../app.config';
-import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { AppConfig } from '../../../app.config';
+import { AuthenticationService } from '../../../_services/authentication/authentication.service';
 import * as moment from 'moment';
-import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
+import { RequestHeaderService } from '../../../_services/requestHeader/request-header.service';
 
 @Component({
   selector: 'app-workshop-content',
