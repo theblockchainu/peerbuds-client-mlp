@@ -13,13 +13,13 @@
       <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
         Sessions
       </md-list-item>
-      <md-list-item *ngIf="activeTab == 'workshops'">
+      <md-list-item *ngIf="getActiveTab() === 'workshops'">
         <button md-raised-button (click)="createWorkshop()" color="primary">New Workshop</button>
       </md-list-item>
-      <md-list-item *ngIf="activeTab == 'experiences'">
+      <md-list-item *ngIf="activeTab === 'experiences'">
         <button md-raised-button (click)="createExperience()" color="primary">New Experience</button>
       </md-list-item>
-      <md-list-item *ngIf="activeTab == 'sessions'">
+      <md-list-item *ngIf="getActiveTab() === 'sessions'">
         <button md-raised-button (click)="enableSessions()" color="primary">Enable Sessions</button>
       </md-list-item>
     </md-list>

@@ -18,7 +18,6 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   public loaded: boolean;
   public now: Date;
   private outputResult: any;
-  public activeTab: string;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -73,7 +72,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   }
 
   public onSelect(workshop) {
-    this.router.navigate(['/workshop/', workshop.id, 'edit', workshop.stage.length > 0 ? workshop.stage : 1]);
+    this.router.navigate(['/workshop/', workshop.id, 'edit', workshop.stage ? workshop.stage : 1]);
   }
 
   public createWorkshop() {
