@@ -30,7 +30,6 @@ export class DialogsService {
     }
 
     public deleteCollection(action) {
-        debugger;
         let dialogRef: MdDialogRef<DeleteDialogComponent>;
 
         dialogRef = this.dialog.open(DeleteDialogComponent);
