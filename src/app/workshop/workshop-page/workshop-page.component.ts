@@ -185,9 +185,9 @@ export class WorkshopPageComponent implements OnInit {
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
     private cookieUtilsService: CookieUtilsService,
-    private _collectionService: CollectionService,
+    public _collectionService: CollectionService,
     private _commentService: CommentService,
-    private config: AppConfig,
+    public config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
     private dialogsService: DialogsService
@@ -590,19 +590,17 @@ content:any   */
   }
 
   openDeleteDialog(action: string) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'delete') {
-        this.deleteWorkshop();
-      } else if (result === 'cancel') {
-        this.cancelWorkshop();
-      } else {
-        console.log(result);
-      }
-    });
+    this.dialogsService
+    .deleteCollection(action)
+    .subscribe((result) => {
+        if (result === 'delete') {
+          this.deleteWorkshop();
+        } else if (result === 'cancel') {
+          this.cancelWorkshop();
+        } else {
+          console.log(result);
+        }
+      });
   }
 
   workshopVideoDialog() {

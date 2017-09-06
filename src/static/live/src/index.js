@@ -40,7 +40,6 @@ function detachParticipantTracks(participant) {
 window.addEventListener('beforeunload', leaveRoomIfJoined);
 
 function getToken() {
-  debugger;
   return new Promise(function(fulfill, reject) {
       var req = new XMLHttpRequest();
       req.open('GET', 'http://localhost:3000/api/vsessions/token', true); // force XMLHttpRequest2

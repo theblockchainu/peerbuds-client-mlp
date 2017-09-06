@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 
 import { EditCalendarDialog } from './edit.calendar.dialog.component';
 import { ViewConflictDialog } from './view.conflict.dialog.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 @NgModule({
   imports: [
@@ -14,14 +15,15 @@ import { ViewConflictDialog } from './view.conflict.dialog.component';
     ReactiveFormsModule,
     SharedModule
   ],
-  exports: [EditCalendarDialog],
-  declarations: [EditCalendarDialog, ViewConflictDialog],
+  exports: [EditCalendarDialog, DeleteDialogComponent],
+  declarations: [EditCalendarDialog, ViewConflictDialog, DeleteDialogComponent],
   providers: [
     DialogsService,
   ],
   entryComponents: [
     EditCalendarDialog,
-    ViewConflictDialog
+    ViewConflictDialog,
+    DeleteDialogComponent
   ],
 })
 export class DialogsModule { }

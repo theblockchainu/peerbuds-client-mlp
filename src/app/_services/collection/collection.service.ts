@@ -590,4 +590,8 @@ collectionID:string,userId:string,calendarId:string   */
     return (reviewScore / (reviewArray.length * 5)) * 5;
   }
 
+  public imgErrorHandler(event) {
+    event.target.src = '/assets/images/placeholder-image.jpg';
+  }
+
 }
