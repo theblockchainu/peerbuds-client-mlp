@@ -38,8 +38,8 @@
         <md-list style="margin-left: -20px">
           <md-list-item *ngFor="let Content of itenaryForm.controls.contents.controls; let i=index" style="margin: 20px 0px; padding: 0px 0px; height: fit-content;">
             <div class="col-md-3" style="padding-left: 0px;" (click)="findAndOpenDialog(i)">
-              <img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg">
-              <img *ngIf="Content.value.imageUrl" src="{{config.apiUrl + Content.value.imageUrl}}" (error)="imgErrorHandler($event)">
+              <img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
+              <img *ngIf="Content.value.imageUrl" src="{{config.apiUrl + Content.value.imageUrl}}" (error)="imgErrorHandler($event)" style="width: 140px;">
             </div>
             <div class="col-md-7" (click)="findAndOpenDialog(i)">
               <div class="content-title">{{Content.value.title}}</div>

@@ -23,7 +23,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/@twilio/sip.js/-/sip.js-0.7.6.tgz",
   "_shasum": "9186c69736b2ec092c00791087b0a7868975c14c",
   "_spec": "@twilio/sip.js@^0.7.6",
-  "_where": "D:\\Work Repo\\peerbuds\\peerbuds-client-mlp\\node_modules\\twilio-video",
+  "_where": "/Users/aakash/WebstormProjects/peerbuds-client-mlp/node_modules/twilio-video",
   "author": {
     "name": "OnSIP",
     "email": "developer@onsip.com",
@@ -14111,7 +14111,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/@twilio/webrtc/-/webrtc-1.0.0.tgz",
   "_shasum": "fbb968259c08fac774a6723bf5540ec5eb53425e",
   "_spec": "@twilio/webrtc@^1.0.0",
-  "_where": "D:\\Work Repo\\peerbuds\\peerbuds-client-mlp\\node_modules\\twilio-video",
+  "_where": "/Users/aakash/WebstormProjects/peerbuds-client-mlp/node_modules/twilio-video",
   "author": {
     "name": "Manjesh Malavalli",
     "email": "mmalavalli@twilio.com"
@@ -23385,29 +23385,30 @@ module.exports = TwilioError;
 
 },{"util":119}],114:[function(require,module,exports){
 module.exports={
-  "_from": "twilio-video@^1.2.2",
+  "_from": "twilio-video@1.2.2",
   "_id": "twilio-video@1.2.2",
   "_inBundle": false,
   "_integrity": "sha1-tITLjU/S/xy1ZxcuqZTsdVrArTo=",
   "_location": "/twilio-video",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "twilio-video@^1.2.2",
+    "raw": "twilio-video@1.2.2",
     "name": "twilio-video",
     "escapedName": "twilio-video",
-    "rawSpec": "^1.2.2",
+    "rawSpec": "1.2.2",
     "saveSpec": null,
-    "fetchSpec": "^1.2.2"
+    "fetchSpec": "1.2.2"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/twilio-video/-/twilio-video-1.2.2.tgz",
   "_shasum": "b484cb8d4fd2ff1cb567172ea994ec755ac0ad3a",
-  "_spec": "twilio-video@^1.2.2",
-  "_where": "D:\\Work Repo\\peerbuds\\peerbuds-client-mlp",
+  "_spec": "twilio-video@1.2.2",
+  "_where": "/Users/aakash/WebstormProjects/peerbuds-client-mlp",
   "author": {
     "name": "Mark Andrus Roberts",
     "email": "mroberts@twilio.com"
