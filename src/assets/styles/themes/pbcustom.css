@@ -343,7 +343,7 @@ h3.calendarTiitle  {
 }
 
 .mat-select-trigger {
-    font-size: 14px;
+    font-size: 14px !important;
 }
 
 md-sidenav {
@@ -426,6 +426,7 @@ body {
     width: 27px !important;
     height: 27px !important;
     left: -43px !important;
+    padding-top: 5px !important;
 }
 
 img {
