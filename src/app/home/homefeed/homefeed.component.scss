@@ -1,7 +1,17 @@
+.homefeed a{
+    color: black;    
+}
+
 .recommendation-thumb{
     object-fit: cover;
     height: 240px;
     width: 200px;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 240px;
+    width: 185px;
 }
 
 .recommendation-card{
