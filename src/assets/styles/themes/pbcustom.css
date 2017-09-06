@@ -489,9 +489,6 @@ img {
 }
 
 .signin-header {
-    background: url(../images/background/bg_sky1.jpg) center/cover;
-    /* padding-bottom: 100px;
-    padding-top: 100px; */
     text-align: center;
     color: #fff;
     position: relative;
