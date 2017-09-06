@@ -572,4 +572,8 @@ collectionID:string,userId:string,calendarId:string   */
       .post(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews', reviewBody, this.options);
   }
 
+  public imgErrorHandler(event) {
+      event.target.src = '/assets/images/placeholder-image.jpg';
+  }
+
 }

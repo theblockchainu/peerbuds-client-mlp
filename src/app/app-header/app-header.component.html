@@ -32,9 +32,9 @@
         <md-icon>notifications</md-icon>
       </button>
       <button md-button [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)">
-        <div class="circle-thumb">
-          <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="thumb-35">
-          <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="thumb-35">
+        <div>
+          <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+          <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
         </div>
       </button>
       <a md-button  href="/signup.html" *ngIf="!(isLoggedIn | async)">

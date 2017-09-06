@@ -185,9 +185,9 @@ export class WorkshopPageComponent implements OnInit {
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
     private cookieUtilsService: CookieUtilsService,
-    private _collectionService: CollectionService,
+    public _collectionService: CollectionService,
     private _commentService: CommentService,
-    private config: AppConfig,
+    public config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
     private dialogsService: DialogsService
