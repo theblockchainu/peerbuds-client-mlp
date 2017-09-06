@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { CollectionService } from '../../_services/collection/collection.service';
-
+ 
 @Component({
   selector: 'app-list-experience',
   templateUrl: './list-experience.component.html',
@@ -21,13 +21,13 @@ export class ListExperienceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._collectionService.getCollection('experience', function (err, result) {
-      if (err) {
-        console.log(err);
-      } else {
-        this.experiences = result;
-      }
-    });
+    // this._collectionService.getCollection('experience', function (err, result) {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     this.experiences = result;
+    //   }
+    // });
     // if (!this.experiences) {
     //   this.router.navigate(['/login']);
 
