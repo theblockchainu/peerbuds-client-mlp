@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../_services/collection/collection.service';
@@ -8,7 +8,7 @@ import { AppConfig } from '../app.config';
   templateUrl: './console.component.html',
   styleUrls: ['./console.component.scss']
 })
-export class ConsoleComponent implements OnInit {
+export class ConsoleComponent implements AfterViewInit {
 
   public activeTab: string;
   public userId: string;
@@ -16,7 +16,8 @@ export class ConsoleComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private cookieUtilsService: CookieUtilsService,
               private _collectionService: CollectionService,
-              private appConfig: AppConfig) {
+              private appConfig: AppConfig,
+              private cd: ChangeDetectorRef ) {
     this.activatedRoute.firstChild.url.subscribe((urlSegment) => {
       console.log('activated route is: ' +  JSON.stringify(urlSegment));
       this.activeTab = urlSegment[0].path;
@@ -24,7 +25,8 @@ export class ConsoleComponent implements OnInit {
     this.userId = cookieUtilsService.getValue('userId');
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.cd.detectChanges();
   }
 
   /**

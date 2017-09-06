@@ -604,19 +604,17 @@ content:any   */
   }
 
   openDeleteDialog(action: string) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'delete') {
-        this.deleteWorkshop();
-      } else if (result === 'cancel') {
-        this.cancelWorkshop();
-      } else {
-        console.log(result);
-      }
-    });
+    this.dialogsService
+    .deleteCollection(action)
+    .subscribe((result) => {
+        if (result === 'delete') {
+          this.deleteWorkshop();
+        } else if (result === 'cancel') {
+          this.cancelWorkshop();
+        } else {
+          console.log(result);
+        }
+      });
   }
 
   workshopVideoDialog() {
