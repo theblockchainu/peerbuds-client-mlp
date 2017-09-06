@@ -5,8 +5,8 @@
         <div class="col-md-5">
           <h2>Workshops</h2>
         </div>
-        <a [routerLink]="'/home/workshops'">
-          <div class="col-md-2 pull-right">
+        <div class="col-md-2 pull-right">
+          <a [routerLink]="'/home/workshops'">
             <div class="col-md-8">
               <h4 class="pull-right">See all
               </h4>
@@ -14,8 +14,8 @@
             <div class="col-md-1">
               <md-icon>chevron_right</md-icon>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </div>
       <div class="row feed-horizontal">
         <div class="col-md-2 recommendation-card" *ngFor="let workshop of workshops">
@@ -53,14 +53,13 @@
         <div class="col-md-5">
           <h2>Peers</h2>
         </div>
-        <div class="col-md-3 pull-right">
+        <div class="col-md-2 pull-right">
           <a [routerLink]="'/home/peers'">
-            <div class="col-md-6">
-              <h5>See all
-              </h5>
+            <div class="col-md-8">
+              <h4 class="pull-right">See all
+              </h4>
             </div>
-            <div class="col-md-6">
-              <br>
+            <div class="col-md-1">
               <md-icon>chevron_right</md-icon>
             </div>
           </a>

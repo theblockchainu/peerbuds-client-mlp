@@ -1,5 +1,9 @@
 .homefeed a{
-    color: black;    
+    color: black;  
+}
+
+.homefeed{
+    padding-top: 30px;      
 }
 
 .recommendation-thumb{
@@ -16,6 +20,7 @@
 
 .recommendation-card{
 width: 230px;
+height: 370px;
 }
 
 .homefeed label{
