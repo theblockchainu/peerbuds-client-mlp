@@ -8,7 +8,6 @@ import 'rxjs/add/operator/delay';
 @Injectable()
 export class SpinnerService {
   spinnerState: BehaviorSubject<boolean>;
-  private options;
 
   constructor() {
     this.spinnerState = new BehaviorSubject(true);
@@ -21,5 +20,4 @@ export class SpinnerService {
   setSpinnerState(value: boolean) {
       this.spinnerState.next(value);
   }
-
 }

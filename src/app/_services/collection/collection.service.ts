@@ -9,7 +9,6 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
 declare var moment: any;
 
 @Injectable()
@@ -22,8 +21,7 @@ export class CollectionService {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
-    private requestHeaderService: RequestHeaderService,
-    private httpClient: HttpClient) {
+    private requestHeaderService: RequestHeaderService) {
     this.userId = this.getCookieValue(this.key);
     this.options = requestHeaderService.getOptions();
     this.now = new Date();
@@ -570,16 +568,6 @@ collectionID:string,userId:string,calendarId:string   */
   public postReview(workshopId: string, reviewBody: any) {
     return this.http
       .post(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews', reviewBody, this.options);
-  }
-
-  /**
-   * getCollections
-   */
-  public getAllCollections(query: any) {
-    // return this.http.get(this.config.apiUrl + '/api/collections/', JSON.stringify(query));
-    return this.httpClient.get(this.config.apiUrl + '/api/collections/', {
-      params: new HttpParams().set('filter=', JSON.stringify(query)),
-    });
   }
 
   public calculateRating(reviewArray?: any) {

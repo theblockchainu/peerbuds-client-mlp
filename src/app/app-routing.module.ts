@@ -52,11 +52,11 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: 'app/admin/admin.module#AdminModule'
   }
-  // ,
-  // {
-  //   path: '**',
-  //   component: NoContentComponent
-  // }
+  ,
+  {
+    path: '**',
+    component: NoContentComponent
+  }
 
 ];
 
