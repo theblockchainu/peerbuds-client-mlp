@@ -4,9 +4,7 @@ import { DialogsService } from './dialog.service';
 import { SharedModule } from '../../_shared/_shared.module';
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 
-import { EditCalendarDialog } from './edit.calendar.dialog.component';
-import { ViewConflictDialog } from './view.conflict.dialog.component';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 
 @NgModule({
   imports: [
@@ -15,15 +13,13 @@ import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
     ReactiveFormsModule,
     SharedModule
   ],
-  exports: [EditCalendarDialog, DeleteDialogComponent],
-  declarations: [EditCalendarDialog, ViewConflictDialog, DeleteDialogComponent],
+  exports: [SignupComponentDialog],
+  declarations: [SignupComponentDialog],
   providers: [
     DialogsService,
   ],
   entryComponents: [
-    EditCalendarDialog,
-    ViewConflictDialog,
-    DeleteDialogComponent
+    SignupComponentDialog
   ],
 })
 export class DialogsModule { }
