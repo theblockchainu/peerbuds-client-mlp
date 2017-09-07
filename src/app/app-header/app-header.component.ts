@@ -13,6 +13,10 @@ import {MdDialog, MdDialogConfig, MdDialogRef} from '@angular/material';
 import {SignupComponent} from '../signup/signup.component';
 
 
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+
+import { DialogsService } from '../_services/dialogs/dialog.service';
+
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
@@ -40,7 +44,10 @@ export class AppHeaderComponent implements OnInit {
               private _cookieService: CookieService,
               private _profileService: ProfileService,
               private router: Router,
+
               private dialog: MdDialog) {
+              private dialog: MdDialog,
+              private dialogsService: DialogsService) {
     this.isLoggedIn = authService.isLoggedIn();
     authService.isLoggedIn().subscribe((res) => {
       this.loggedIn = res;
@@ -164,6 +171,7 @@ export class AppHeaderComponent implements OnInit {
       }
   }
 
+
   openSignup() {
     const dialogRef = this.dialog.open(SignupComponent, {
       data: ''
@@ -174,3 +182,10 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 }
+
+  public openSignup() {
+    this.dialogsService.openSignup().subscribe();
+  }  
+
+}
+

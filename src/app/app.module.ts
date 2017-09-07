@@ -18,6 +18,8 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
 
 import 'hammerjs';
 
+import { DialogsModule } from './_services/dialogs/dialogs.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +45,8 @@ import 'hammerjs';
     MdInputModule,
     MdNativeDateModule,
     MdProgressSpinnerModule,
-    MdProgressBarModule
+    MdProgressBarModule,
+    DialogsModule
   ],
   bootstrap: [AppComponent]
 })

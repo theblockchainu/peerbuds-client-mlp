@@ -37,8 +37,11 @@
           <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
         </div>
       </button>
+
       
       <a md-button href="/signup.html" *ngIf="!(isLoggedIn | async)">
+
+      <a md-button (click)="openSignup()" *ngIf="!(isLoggedIn | async)">
         Sign Up
       </a>
 

@@ -21,7 +21,7 @@ module.exports={
         "spec": ">=0.7.6 <0.8.0",
         "type": "range"
       },
-      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material/node_modules/twilio-video"
+      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/sahana/peerbuds-client-mlp/node_modules/twilio-video"
     ]
   ],
   "_from": "@twilio/sip.js@>=0.7.6 <0.8.0",
@@ -55,7 +55,7 @@ module.exports={
   "_shasum": "9186c69736b2ec092c00791087b0a7868975c14c",
   "_shrinkwrap": null,
   "_spec": "@twilio/sip.js@^0.7.6",
-  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material/node_modules/twilio-video",
+  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/sahana/peerbuds-client-mlp/node_modules/twilio-video",
   "author": {
     "name": "OnSIP",
     "email": "developer@onsip.com",
@@ -14179,7 +14179,7 @@ module.exports={
         "spec": ">=1.0.0 <2.0.0",
         "type": "range"
       },
-      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material/node_modules/twilio-video"
+      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/sahana/peerbuds-client-mlp/node_modules/twilio-video"
     ]
   ],
   "_from": "@twilio/webrtc@>=1.0.0 <2.0.0",
@@ -14213,7 +14213,7 @@ module.exports={
   "_shasum": "fbb968259c08fac774a6723bf5540ec5eb53425e",
   "_shrinkwrap": null,
   "_spec": "@twilio/webrtc@^1.0.0",
-  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material/node_modules/twilio-video",
+  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/sahana/peerbuds-client-mlp/node_modules/twilio-video",
   "author": {
     "name": "Manjesh Malavalli",
     "email": "mmalavalli@twilio.com"
@@ -23542,7 +23542,7 @@ module.exports={
         "spec": ">=1.2.2 <2.0.0",
         "type": "range"
       },
-      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material"
+      "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/sahana/peerbuds-client-mlp"
     ]
   ],
   "_from": "twilio-video@>=1.2.2 <2.0.0",
@@ -23576,7 +23576,7 @@ module.exports={
   "_shasum": "b484cb8d4fd2ff1cb567172ea994ec755ac0ad3a",
   "_shrinkwrap": null,
   "_spec": "twilio-video@^1.2.2",
-  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/develop-material",
+  "_where": "/Users/ritikanigam/Documents/Ritika/Work/Workspace/kloudritika/prototype/peerbuds-client-cli/sahana/peerbuds-client-mlp",
   "author": {
     "name": "Mark Andrus Roberts",
     "email": "mroberts@twilio.com"
