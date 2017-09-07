@@ -1,48 +1,31 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports={
-  "_from": "@twilio/sip.js@^0.7.6",
-  "_id": "@twilio/sip.js@0.7.6",
-  "_inBundle": false,
-  "_integrity": "sha1-kYbGlzay7AksAHkQh7Cnhol1wUw=",
-  "_location": "/@twilio/sip.js",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "range",
-    "registry": true,
-    "raw": "@twilio/sip.js@^0.7.6",
-    "name": "@twilio/sip.js",
-    "escapedName": "@twilio%2fsip.js",
-    "scope": "@twilio",
-    "rawSpec": "^0.7.6",
-    "saveSpec": null,
-    "fetchSpec": "^0.7.6"
-  },
-  "_requiredBy": [
-    "/twilio-video"
-  ],
-  "_resolved": "https://registry.npmjs.org/@twilio/sip.js/-/sip.js-0.7.6.tgz",
-  "_shasum": "9186c69736b2ec092c00791087b0a7868975c14c",
-  "_spec": "@twilio/sip.js@^0.7.6",
-  "_where": "D:\\Work Repo\\peerbuds\\peerbuds-client-mlp\\node_modules\\twilio-video",
-  "author": {
-    "name": "OnSIP",
-    "email": "developer@onsip.com",
-    "url": "http://sipjs.com/authors/"
-  },
+  "name": "@twilio/sip.js",
+  "title": "SIP.js",
+  "description": "A simple, intuitive, and powerful JavaScript signaling library",
+  "version": "0.7.6",
+  "main": "src/index.js",
   "browser": {
     "./src/environment.js": "./src/environment_browser.js"
   },
-  "bugs": {
-    "url": "https://github.com/onsip/SIP.js/issues"
-  },
-  "bundleDependencies": false,
+  "homepage": "http://sipjs.com",
+  "author": "OnSIP <developer@onsip.com> (http://sipjs.com/authors/)",
   "contributors": [
     {
       "url": "https://github.com/onsip/SIP.js/blob/master/THANKS.md"
     }
   ],
-  "deprecated": false,
-  "description": "A simple, intuitive, and powerful JavaScript signaling library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onsip/SIP.js.git"
+  },
+  "keywords": [
+    "sip",
+    "websocket",
+    "webrtc",
+    "library",
+    "javascript"
+  ],
   "devDependencies": {
     "beefy": "^2.1.5",
     "browserify": "^4.1.8",
@@ -61,28 +44,12 @@ module.exports={
   "engines": {
     "node": ">=0.12"
   },
-  "homepage": "http://sipjs.com",
-  "keywords": [
-    "sip",
-    "websocket",
-    "webrtc",
-    "library",
-    "javascript"
-  ],
   "license": "MIT",
-  "main": "src/index.js",
-  "name": "@twilio/sip.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/onsip/SIP.js.git"
-  },
   "scripts": {
-    "build": "grunt build",
     "repl": "beefy test/repl.js --open",
+    "build": "grunt build",
     "test": "grunt travis --verbose"
-  },
-  "title": "SIP.js",
-  "version": "0.7.6"
+  }
 }
 
 },{}],2:[function(require,module,exports){
@@ -14088,50 +14055,40 @@ module.exports = TrackMatcher;
 
 },{"./":49,"./sdp":51}],53:[function(require,module,exports){
 module.exports={
-  "_from": "@twilio/webrtc@^1.0.0",
-  "_id": "@twilio/webrtc@1.0.0",
-  "_inBundle": false,
-  "_integrity": "sha512-6ioEOuzeYoAVIO44PM884Ni1dH0Ufln68YFobqGHjRNWpJ4RZd2AkJ1FmMJgOoeS9IAw9AY3bHcHC0p4hnuo/g==",
-  "_location": "/@twilio/webrtc",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "range",
-    "registry": true,
-    "raw": "@twilio/webrtc@^1.0.0",
-    "name": "@twilio/webrtc",
-    "escapedName": "@twilio%2fwebrtc",
-    "scope": "@twilio",
-    "rawSpec": "^1.0.0",
-    "saveSpec": null,
-    "fetchSpec": "^1.0.0"
+  "name": "@twilio/webrtc",
+  "version": "1.0.0",
+  "description": "WebRTC-related APIs and shims used by twilio-video.js",
+  "scripts": {
+    "build": "npm-run-all clean lint test",
+    "clean": "rimraf coverage",
+    "lint": "eslint ./lib",
+    "test:unit": "istanbul cover node_modules/mocha/bin/_mocha -- ./test/unit/index.js",
+    "test:integration:native": "karma start karma/integration.conf.js",
+    "test:integration:adapter": "karma start karma/integration.adapter.conf.js",
+    "test:integration": "npm-run-all test:integration:*",
+    "test": "npm-run-all test:*"
   },
-  "_requiredBy": [
-    "/twilio-video"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/twilio/twilio-webrtc.js.git"
+  },
+  "keywords": [
+    "shim",
+    "twilio",
+    "video",
+    "webrtc"
   ],
-  "_resolved": "https://registry.npmjs.org/@twilio/webrtc/-/webrtc-1.0.0.tgz",
-  "_shasum": "fbb968259c08fac774a6723bf5540ec5eb53425e",
-  "_spec": "@twilio/webrtc@^1.0.0",
-  "_where": "D:\\Work Repo\\peerbuds\\peerbuds-client-mlp\\node_modules\\twilio-video",
-  "author": {
-    "name": "Manjesh Malavalli",
-    "email": "mmalavalli@twilio.com"
-  },
+  "author": "Manjesh Malavalli <mmalavalli@twilio.com>",
+  "contributors": [
+    "Mark Roberts <mroberts@twilio.com>",
+    "Ryan Rowland <rrowland@twilio.com>"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "./lib/index.js",
   "bugs": {
     "url": "https://github.com/twilio/twilio-webrtc.js/issues"
   },
-  "bundleDependencies": false,
-  "contributors": [
-    {
-      "name": "Mark Roberts",
-      "email": "mroberts@twilio.com"
-    },
-    {
-      "name": "Ryan Rowland",
-      "email": "rrowland@twilio.com"
-    }
-  ],
-  "deprecated": false,
-  "description": "WebRTC-related APIs and shims used by twilio-video.js",
+  "homepage": "https://github.com/twilio/twilio-webrtc.js#readme",
   "devDependencies": {
     "browserify": "^14.4.0",
     "envify": "^4.1.0",
@@ -14151,32 +14108,7 @@ module.exports={
     "travis-multirunner": "^4.2.3",
     "watchify": "^3.9.0",
     "webrtc-adapter": "^4.2.2"
-  },
-  "homepage": "https://github.com/twilio/twilio-webrtc.js#readme",
-  "keywords": [
-    "shim",
-    "twilio",
-    "video",
-    "webrtc"
-  ],
-  "license": "BSD-3-Clause",
-  "main": "./lib/index.js",
-  "name": "@twilio/webrtc",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/twilio/twilio-webrtc.js.git"
-  },
-  "scripts": {
-    "build": "npm-run-all clean lint test",
-    "clean": "rimraf coverage",
-    "lint": "eslint ./lib",
-    "test": "npm-run-all test:*",
-    "test:integration": "npm-run-all test:integration:*",
-    "test:integration:adapter": "karma start karma/integration.adapter.conf.js",
-    "test:integration:native": "karma start karma/integration.conf.js",
-    "test:unit": "istanbul cover node_modules/mocha/bin/_mocha -- ./test/unit/index.js"
-  },
-  "version": "1.0.0"
+  }
 }
 
 },{}],54:[function(require,module,exports){
@@ -23385,59 +23317,28 @@ module.exports = TwilioError;
 
 },{"util":119}],114:[function(require,module,exports){
 module.exports={
-  "_from": "twilio-video@^1.2.2",
-  "_id": "twilio-video@1.2.2",
-  "_inBundle": false,
-  "_integrity": "sha1-tITLjU/S/xy1ZxcuqZTsdVrArTo=",
-  "_location": "/twilio-video",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "range",
-    "registry": true,
-    "raw": "twilio-video@^1.2.2",
-    "name": "twilio-video",
-    "escapedName": "twilio-video",
-    "rawSpec": "^1.2.2",
-    "saveSpec": null,
-    "fetchSpec": "^1.2.2"
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/twilio-video/-/twilio-video-1.2.2.tgz",
-  "_shasum": "b484cb8d4fd2ff1cb567172ea994ec755ac0ad3a",
-  "_spec": "twilio-video@^1.2.2",
-  "_where": "D:\\Work Repo\\peerbuds\\peerbuds-client-mlp",
-  "author": {
-    "name": "Mark Andrus Roberts",
-    "email": "mroberts@twilio.com"
-  },
-  "browser": {
-    "ws": "./src/ws.js",
-    "xmlhttprequest": "./src/xmlhttprequest.js"
-  },
-  "bugs": {
-    "url": "https://github.com/twilio/twilio-video.js/issues"
-  },
-  "bundleDependencies": false,
-  "contributors": [
-    {
-      "name": "Ryan Rowland",
-      "email": "rrowland@twilio.com"
-    },
-    {
-      "name": "Manjesh Malavalli",
-      "email": "mmalavalli@twilio.com"
-    }
-  ],
-  "dependencies": {
-    "@twilio/sip.js": "^0.7.6",
-    "@twilio/webrtc": "^1.0.0",
-    "ws": "^2.3.1",
-    "xmlhttprequest": "^1.8.0"
-  },
-  "deprecated": false,
+  "name": "twilio-video",
+  "title": "Twilio Video",
   "description": "Twilio Video JavaScript library",
+  "version": "1.2.2",
+  "homepage": "https://twilio.com",
+  "author": "Mark Andrus Roberts <mroberts@twilio.com>",
+  "contributors": [
+    "Ryan Rowland <rrowland@twilio.com>",
+    "Manjesh Malavalli <mmalavalli@twilio.com>"
+  ],
+  "keywords": [
+    "twilio",
+    "webrtc",
+    "library",
+    "javascript",
+    "video",
+    "rooms"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twilio/twilio-video.js.git"
+  },
   "devDependencies": {
     "browserify": "^14.3.0",
     "cheerio": "^0.22.0",
@@ -23474,57 +23375,51 @@ module.exports={
   "engines": {
     "node": ">=0.12"
   },
-  "homepage": "https://twilio.com",
-  "keywords": [
-    "twilio",
-    "webrtc",
-    "library",
-    "javascript",
-    "video",
-    "rooms"
-  ],
   "license": "BSD-3-Clause",
   "main": "./lib/index.js",
-  "name": "twilio-video",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/twilio/twilio-video.js.git"
-  },
   "scripts": {
-    "build": "npm-run-all clean lint docs cover test:integration build:js build:min.js test:umd",
-    "build:js": "node ./scripts/build.js ./src/twilio-video.js ./LICENSE.md ./dist/twilio-video.js",
-    "build:min.js": "uglifyjs ./dist/twilio-video.js -o ./dist/twilio-video.min.js --comments \"/^! twilio-video.js/\" -b beautify=false,ascii_only=true",
-    "build:quick": "npm-run-all clean lint docs build:js build:min.js",
-    "build:travis": "npm-run-all clean lint docs cover test:integration:travis build:js build:min.js test:umd test:framework",
-    "clean": "rimraf ./coverage ./dist",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha -- ./test/unit/index.js",
-    "docs": "node ./scripts/docs.js ./dist/docs",
     "lint": "eslint ./lib",
-    "test": "npm-run-all test:unit test:integration",
-    "test:framework": "npm-run-all test:framework:angular test:framework:meteor test:framework:no-framework test:framework:react",
-    "test:framework:angular": "npm-run-all test:framework:angular:*",
-    "test:framework:angular:install": "cd ./test/framework/twilio-video-angular && rimraf ./node_modules && npm install",
-    "test:framework:angular:run": "mocha ./test/framework/twilio-video-angular.js",
-    "test:framework:angular:test": "node ./scripts/framework.js twilio-video-angular",
-    "test:framework:meteor": "npm-run-all test:framework:meteor:*",
-    "test:framework:meteor:install": "cd ./test/framework/twilio-video-meteor && rimraf ./node_modules && npm install",
-    "test:framework:meteor:run": "mocha ./test/framework/twilio-video-meteor.js",
-    "test:framework:meteor:test": "node ./scripts/framework.js twilio-video-meteor",
-    "test:framework:no-framework": "npm-run-all test:framework:no-framework:*",
-    "test:framework:no-framework:run": "mocha ./test/framework/twilio-video-no-framework.js",
-    "test:framework:react": "npm-run-all test:framework:react:*",
-    "test:framework:react:build": "cd ./test/framework/twilio-video-react && npm run build",
-    "test:framework:react:install": "cd ./test/framework/twilio-video-react && rimraf ./node_modules && npm install",
-    "test:framework:react:run": "mocha ./test/framework/twilio-video-react.js",
-    "test:framework:react:test": "node ./scripts/framework.js twilio-video-react",
-    "test:integration": "node ./scripts/karma.js karma/integration.conf.js",
+    "test:unit": "mocha ./test/unit/index.js",
     "test:integration:adapter": "node ./scripts/karma.js karma/integration.adapter.conf.js",
     "test:integration:travis": "node ./scripts/integration.js",
+    "test:integration": "node ./scripts/karma.js karma/integration.conf.js",
     "test:umd": "mocha ./test/umd/index.js",
-    "test:unit": "mocha ./test/unit/index.js"
+    "test:framework:angular:install": "cd ./test/framework/twilio-video-angular && rimraf ./node_modules && npm install",
+    "test:framework:angular:test": "node ./scripts/framework.js twilio-video-angular",
+    "test:framework:angular:run": "mocha ./test/framework/twilio-video-angular.js",
+    "test:framework:angular": "npm-run-all test:framework:angular:*",
+    "test:framework:meteor:install": "cd ./test/framework/twilio-video-meteor && rimraf ./node_modules && npm install",
+    "test:framework:meteor:test": "node ./scripts/framework.js twilio-video-meteor",
+    "test:framework:meteor:run": "mocha ./test/framework/twilio-video-meteor.js",
+    "test:framework:meteor": "npm-run-all test:framework:meteor:*",
+    "test:framework:no-framework:run": "mocha ./test/framework/twilio-video-no-framework.js",
+    "test:framework:no-framework": "npm-run-all test:framework:no-framework:*",
+    "test:framework:react:install": "cd ./test/framework/twilio-video-react && rimraf ./node_modules && npm install",
+    "test:framework:react:test": "node ./scripts/framework.js twilio-video-react",
+    "test:framework:react:build": "cd ./test/framework/twilio-video-react && npm run build",
+    "test:framework:react:run": "mocha ./test/framework/twilio-video-react.js",
+    "test:framework:react": "npm-run-all test:framework:react:*",
+    "test:framework": "npm-run-all test:framework:angular test:framework:meteor test:framework:no-framework test:framework:react",
+    "test": "npm-run-all test:unit test:integration",
+    "build:js": "node ./scripts/build.js ./src/twilio-video.js ./LICENSE.md ./dist/twilio-video.js",
+    "build:min.js": "uglifyjs ./dist/twilio-video.js -o ./dist/twilio-video.min.js --comments \"/^! twilio-video.js/\" -b beautify=false,ascii_only=true",
+    "build": "npm-run-all clean lint docs cover test:integration build:js build:min.js test:umd",
+    "build:travis": "npm-run-all clean lint docs cover test:integration:travis build:js build:min.js test:umd test:framework",
+    "build:quick": "npm-run-all clean lint docs build:js build:min.js",
+    "docs": "node ./scripts/docs.js ./dist/docs",
+    "clean": "rimraf ./coverage ./dist",
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha -- ./test/unit/index.js"
   },
-  "title": "Twilio Video",
-  "version": "1.2.2"
+  "dependencies": {
+    "@twilio/sip.js": "^0.7.6",
+    "@twilio/webrtc": "^1.0.0",
+    "ws": "^2.3.1",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "browser": {
+    "ws": "./src/ws.js",
+    "xmlhttprequest": "./src/xmlhttprequest.js"
+  }
 }
 
 },{}],115:[function(require,module,exports){

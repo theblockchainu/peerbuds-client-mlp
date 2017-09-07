@@ -13,7 +13,7 @@
             <span class="lightText">
               {{getSearchOptionType(option)}}
             </span>
-  <span>
+            <span>
               {{getSearchOptionText(option)}}
             </span>
   </md-option>
@@ -37,12 +37,19 @@
           <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="thumb-35">
         </div>
       </button>
-      <a md-button  href="/signup.html" *ngIf="!(isLoggedIn | async)">
+      
+      <a md-button href="/signup.html" *ngIf="!(isLoggedIn | async)">
         Sign Up
       </a>
+
+      <!--<button md-button [routerLink]="['/login']" *ngIf="!(isLoggedIn | async)">
+        Log In
+      </button>-->
+      <!-- trying dialog-->
       <button md-button [routerLink]="['/login']" *ngIf="!(isLoggedIn | async)">
         Log In
       </button>
+
     </span>
 </md-toolbar>
 
@@ -102,7 +109,7 @@
 </md-menu>
 
 <md-menu #headerUserMenu>
-  <button md-menu-item [routerLink]="['/profile', userId]">
+  <button md-menu-item [routerLink]="['/profile', userId]"> Hey
       {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
     </button>
   <button md-menu-item [routerLink]="['/console/profile/edit']">

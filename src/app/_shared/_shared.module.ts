@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-<<<<<<< HEAD
 import { CdkTableModule } from '@angular/cdk/table';
-=======
->>>>>>> 77ec2a5a836e05d9bfbca2e4061313ef896aa49e
 
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,

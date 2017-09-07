@@ -6,35 +6,30 @@
             <div class="page-signin">
                 <div class="signin-form mat-whiteframe-z1">
                     <div class="md-content__body extra-padding">
-
                         <form class="form-horizontal" [formGroup]="loginForm">
                             <div class="margin-bottom-20">
-                                <a md-raised-button class="btn-width-large btn-block md-facebook" color="primary" href="http://localhost:3000/auth/facebook?returnTo=/">
+                                <a md-raised-button class="btn-width-large btn-block mat-facebook" href="http://localhost:3000/auth/facebook?returnTo=/">
                                     <i class="fa fa-facebook"></i> Login with Facebook</a>
                             </div>
+
                             <div class="margin-bottom-20">
-                                <a md-raised-button class="btn-width-large btn-block md-button md-raised md-google-plus" href="http://localhost:3000/auth/google?returnTo=/">
+                                <a md-raised-button class="btn-width-large btn-block md-button md-raised mat-google-plus" href="http://localhost:3000/auth/google?returnTo=/">
                                     <i class="fa fa-google"></i> Login with Gmail</a>
                             </div>
-                            <!-- <div class="form-group">
-                            <md-input-container class="md-accent md-input-has-placeholder md-has-icon" md-no-float="">
-                                <md-icon md-svg-src="dist/img/icons/ic_person_24px.svg" class="ng-isolate-scope" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fit="" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg></md-icon>
-                                <input mdInput type="text" placeholder="Username" class="ng-pristine ng-untouched ng-valid md-input" aria-label="Username" id="input_127" aria-invalid="false">
-                            </md-input-container>
-                            </div> -->
-                            <div class="form-group">
-                                <md-input-container class="mat-block">
+
+                            <div class="margin-bottom-20">
+                                <md-input-container class="pb-block">
                                     <input mdInput placeholder="Email" formControlName="email">
                                 </md-input-container>
                             </div>
-                            <div class="form-group">
-                                <md-input-container class="mat-block">
+                            <div class="margin-bottom-20">
+                                <md-input-container class="pb-block">
                                     <input mdInput placeholder="Password" formControlName="password" type="password">
                                 </md-input-container>
                             </div>
 
-                            <div class="form-group text-center">
-                                <button md-raised-button class="btn-width-medium vertical-bottom" color="accent" type="submit" (click)="login()"><span>Log In</span></button> &emsp;
+                            <div class="text-center margin-bottom-20">
+                                <button md-raised-button class="btn-width-medium vertical-bottom" color="primary" type="submit" (click)="login()"><span>Log In</span></button> &emsp;
                                 <a md-raised-button class="btn-width-medium vertical-middle" href="/signup.html"><span>Sign up</span></a>
                                 <br><br>
                                 <a href="#" class="link display-block margin-top-10" style="font-size: 10px;">Forgot password?</a>

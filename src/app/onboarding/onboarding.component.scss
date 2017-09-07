@@ -5,9 +5,9 @@
 .onboarding{
   .title{
     font-size:29px;
-    margin:0 0 20px 0;
-    color:#666;
-    font-weight:300;
+    margin:50px 0 20px 0;
+    color:#000;
+    font-weight:600;
   }
   .step
   {
@@ -97,23 +97,24 @@
 }
 label.check > input, label.radiobox > input{display: none;}
 label.check, label.radiobox{
-  font-size: 14px;
+  font-size: 18px;
   font-weight: normal;
-  position:absolute;
-  top:5px;
-  right:25px;
+  padding: 15px 45px;
+  position: absolute;
+  top:2px;
+  right:20px;
   z-index: 1;
 }
 label.check i, label.radiobox i {
-    height: 24px;
-    width: 24px;
-    background-color: #fff;
+    height: 12px;
+    width: 12px;
+    background-color: #ff5b5f;
     display: inline-block;
-    position: relative;
-    left: 0px;
-    top: 5px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
     border-radius:5px;
-    border:1px solid #ccc;
+    border:1px solid #ff5b5f;
     font-style:normal;
 }
 label.radiobox i{border-radius:50%;}
@@ -127,17 +128,24 @@ label.check [type=checkbox]:checked + i:before, label.radiobox [type=radio]:chec
   position: absolute;
   top: 2px;
   left: 4px;
-  color:#fff;
+  color:#ff5b5f;
   font-family:"FontAwesome";
 }
+
+label.check {
+  background-color: #ff5b5f!important;
+  text-color: #fff!important;
+  position:absolute;
+}
+
 label.radiobox [type=radio]:checked + i:before {top:3px; left:5px;}
 .welcome-box{
-    background-color: #757575;
+    background-color: #fff;
     color:#fff;
-    padding:50px 100px;
+    padding:100px 100px;
     border-radius:5px;
     .title{
-        color:#fff;
+        color:#000;
     }
 }
 .input-topic{

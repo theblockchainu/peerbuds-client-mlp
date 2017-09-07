@@ -570,7 +570,8 @@
 }
 .mat-accent .mat-option.mat-selected,
 .mat-option.mat-selected.mat-accent {
-    color: #33bd9e
+    color: #33bd9e;
+    background-color: #ff5b5f
 }
 .mat-option.mat-selected.mat-warn,
 .mat-warn .mat-option.mat-selected {
@@ -608,7 +609,7 @@
 .mat-accent .mat-pseudo-checkbox-indeterminate,
 .mat-pseudo-checkbox-checked.mat-accent,
 .mat-pseudo-checkbox-indeterminate.mat-accent {
-    background: #33bd9e
+    background: #ff5b5f
 }
 .mat-pseudo-checkbox-checked.mat-warn,
 .mat-pseudo-checkbox-indeterminate.mat-warn,

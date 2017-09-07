@@ -9,6 +9,9 @@ import {AppConfig} from '../app.config';
 import {Http} from '@angular/http';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
+import {MdDialog, MdDialogConfig, MdDialogRef} from '@angular/material';
+import {SignupComponent} from '../signup/signup.component';
+
 
 @Component({
   selector: 'app-header',
@@ -18,6 +21,7 @@ import {Router} from '@angular/router';
 })
 
 export class AppHeaderComponent implements OnInit {
+ 
   isLoggedIn: Observable<boolean>;
   loggedIn: boolean;
   public profile: any = {};
@@ -28,13 +32,15 @@ export class AppHeaderComponent implements OnInit {
   public options: any[];
   public defaultProfileUrl = '/assets/images/default-user.jpg';
 
+
   constructor(public authService: AuthenticationService,
               public requestHeaderService: RequestHeaderService,
               public config: AppConfig,
               private http: Http,
               private _cookieService: CookieService,
               private _profileService: ProfileService,
-              private router: Router) {
+              private router: Router,
+              private dialog: MdDialog) {
     this.isLoggedIn = authService.isLoggedIn();
     authService.isLoggedIn().subscribe((res) => {
       this.loggedIn = res;
@@ -158,4 +164,13 @@ export class AppHeaderComponent implements OnInit {
       }
   }
 
+  openSignup() {
+    const dialogRef = this.dialog.open(SignupComponent, {
+      data: ''
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+     debugger;
+    });
+  }
 }

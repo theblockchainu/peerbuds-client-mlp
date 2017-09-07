@@ -12,7 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdDialogModule } from '@angular/material';
+import {SignupComponent} from './signup/signup.component';
 import 'hammerjs';
 
 @NgModule({
@@ -22,7 +23,8 @@ import 'hammerjs';
     NoContentComponent,
     LoginComponent,
     AppHeaderComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
