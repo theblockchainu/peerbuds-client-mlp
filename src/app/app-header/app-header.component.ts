@@ -9,9 +9,6 @@ import {AppConfig} from '../app.config';
 import {Http} from '@angular/http';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
-import {MdDialog, MdDialogConfig, MdDialogRef} from '@angular/material';
-import {SignupComponent} from '../signup/signup.component';
-
 
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
@@ -25,7 +22,6 @@ import { DialogsService } from '../_services/dialogs/dialog.service';
 })
 
 export class AppHeaderComponent implements OnInit {
- 
   isLoggedIn: Observable<boolean>;
   loggedIn: boolean;
   public profile: any = {};
@@ -36,7 +32,6 @@ export class AppHeaderComponent implements OnInit {
   public options: any[];
   public defaultProfileUrl = '/assets/images/default-user.jpg';
 
-
   constructor(public authService: AuthenticationService,
               public requestHeaderService: RequestHeaderService,
               public config: AppConfig,
@@ -44,8 +39,6 @@ export class AppHeaderComponent implements OnInit {
               private _cookieService: CookieService,
               private _profileService: ProfileService,
               private router: Router,
-
-              private dialog: MdDialog) {
               private dialog: MdDialog,
               private dialogsService: DialogsService) {
     this.isLoggedIn = authService.isLoggedIn();
@@ -171,21 +164,11 @@ export class AppHeaderComponent implements OnInit {
       }
   }
 
-
-  openSignup() {
-    const dialogRef = this.dialog.open(SignupComponent, {
-      data: ''
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-     debugger;
-    });
-  }
-}
-
   public openSignup() {
     this.dialogsService.openSignup().subscribe();
   }  
 
+   public openLogin() {
+    this.dialogsService.openLogin().subscribe();
+  }  
 }
-

@@ -6,6 +6,7 @@ import { AuthenticationService } from '../_services/authentication/authenticatio
 import { Observable } from "rxjs";
 
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+//import {LoginDialogComponent} from '../_services/dialogs/login-dialog/login-dialog.component';
 
 @Component({
   selector: 'login',  // <login></login>
