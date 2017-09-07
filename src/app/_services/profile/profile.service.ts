@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 // import { Response } from '@angular/http';
 
 @Injectable()
@@ -21,11 +21,11 @@ export class ProfileService {
   private options;
 
   constructor(private http: Http,
-              private config: AppConfig,
-              private _cookieService: CookieService,
-              private route: ActivatedRoute,
-              public router: Router,
-              public _requestHeaderService: RequestHeaderService
+    private config: AppConfig,
+    private _cookieService: CookieService,
+    private route: ActivatedRoute,
+    public router: Router,
+    public _requestHeaderService: RequestHeaderService
   ) {
     this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
@@ -59,7 +59,7 @@ export class ProfileService {
       const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
       return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter, this.options)
         .map(
-          (response: Response) => response.json()
+        (response: Response) => response.json()
         );
     }
   }
@@ -261,4 +261,19 @@ export class ProfileService {
   getUserId() {
     return this.getCookieValue(this.key);
   }
+
+  /**
+   * getAllPeers
+   */
+  public getAllPeers(query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers?filter=' + JSON.stringify(query));
+  }
+
+  /**
+   * getTopics
+   */
+  public getTopics(userId: string, query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning?filter=' + JSON.stringify(query));
+  }
+
 }
