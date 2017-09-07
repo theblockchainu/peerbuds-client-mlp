@@ -14,6 +14,8 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdDialogModule } from '@angular/material';
 import {SignupComponent} from './signup/signup.component';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+
 import 'hammerjs';
 
 @NgModule({
@@ -39,7 +41,9 @@ import 'hammerjs';
     MdIconModule,
     MdAutocompleteModule,
     MdInputModule,
-    MdNativeDateModule
+    MdNativeDateModule,
+    MdProgressSpinnerModule,
+    MdProgressBarModule
   ],
   bootstrap: [AppComponent]
 })

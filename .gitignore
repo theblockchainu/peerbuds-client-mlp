@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 yarn-error.log
 
-/src/static/live/public/index.js
+/src/static/live/public

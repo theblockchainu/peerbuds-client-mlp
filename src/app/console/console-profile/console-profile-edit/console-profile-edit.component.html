@@ -89,7 +89,9 @@
               <div style="margin-top: 90px; margin-bottom: 20px; color: #333333;">
                 Additional Details
               </div>
-
+              <div style="font-weight: 600; margin-bottom: 25px;">
+                Work Experience
+              </div>
               <div *ngFor="let work of profile.work; index as i; trackBy: trackByFn">
                 <md-input-container >
                   <input mdInput name="position" type="text"  placeholder="Position" [(ngModel)]="profile.work[i].position">
@@ -114,7 +116,9 @@
               <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addWorkDetailsRow()">
                 + Add another work detail
               </div>
-
+              <div style="font-weight: 600; margin-bottom: 25px;">
+                Education
+              </div>
               <div *ngFor="let edu of profile.education; let index = index">
                 <md-input-container>
                   <input mdInput name="edu_degree" type="text"  placeholder="Degree" [(ngModel)]="profile.education[index].degree" >

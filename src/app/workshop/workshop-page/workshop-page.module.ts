@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+//import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { SharedModule } from '../../_shared/_shared.module';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { WorkshopVideoComponent } from './workshop-video/workshop-video.component';
@@ -23,8 +23,8 @@ import { ProjectSubmissionService } from '../../_services/project-submission/pro
     SharedModule
   ],
 
-  declarations: [WorkshopPageComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, ExtractTimePipe, SubmitEntryComponent, SubmissionViewComponent],
-  bootstrap: [DeleteDialogComponent, DeleteDialogComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent],
+  declarations: [WorkshopPageComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, ExtractTimePipe, SubmitEntryComponent, SubmissionViewComponent],
+  bootstrap: [ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent],
   providers: [ProjectSubmissionService]
 
 })

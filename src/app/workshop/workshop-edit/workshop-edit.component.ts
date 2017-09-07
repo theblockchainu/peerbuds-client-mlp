@@ -140,7 +140,7 @@ export class WorkshopEditComponent implements OnInit {
       language: this._fb.array([]),
       selectedLanguage: '',
       headline: '',
-      description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])],
+      description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(100)])],
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
@@ -637,7 +637,7 @@ export class WorkshopEditComponent implements OnInit {
   public calculatedDate(currenDate, day) {
     const current = moment(currenDate);
     current.add(day, 'days');
-    return current.format('YYYY-MM-DD');
+    return current.toDate();
   }
 
   public submitTimeline(data: FormGroup) {
