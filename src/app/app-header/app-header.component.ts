@@ -167,7 +167,8 @@ export class AppHeaderComponent implements OnInit {
 
   public openSignup() {
     this.dialogsService.openSignup().subscribe();
-  }  
+  } 
+
 
    public openLogin() {
     this.dialogsService.openLogin().subscribe();

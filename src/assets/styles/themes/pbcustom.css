@@ -681,16 +681,26 @@ img {
     border-color: #00c7f7
 }
 
-.mat-facebook,.mat-facebook:focus,.mat-facebook:hover {
-    color: #fff !important;
+.mat-facebook {
+    color: #000!important;
+    background-color: #fff
+}
+    
+.mat-facebook:focus,.mat-facebook:hover{
+    color: #fff!important;
     background: #335397 !important;
-    border-color: #335397 !important;
+    border-color: #335397 !important
 }
 
-.mat-google-plus,.mat-google-plus:focus,.mat-google-plus:hover,.mat-gplus,.mat-gplus:focus,.mat-gplus:hover {
-    color: #fff !important;
+.mat-google-plus,.mat-gplus{
+    color: #000!important;
+    background-color: #fff
+}
+
+.mat-google-plus:focus,.mat-google-plus:hover,.mat-gplus:focus,.mat-gplus:hover {
+    color: #fff!important;
     background: #dd4a38 !important;
-    border-color: #dd4a38 !important;
+    border-color: #dd4a38 !important
 }
 
 .mat-button.mat-raised.mat-instagram,.mat-button.mat-raised.mat-instagram:focus,.mat-button.mat-raised.mat-instagram:hover {

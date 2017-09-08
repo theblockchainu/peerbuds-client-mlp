@@ -20,9 +20,11 @@ export class DialogsService {
     public openLogin() {
         let dialogRef1: MdDialogRef<LoginComponentDialog>;
 
-        dialogRef1 = this.dialog.open(LoginComponentDialog);
+        dialogRef1= this.dialog.open(LoginComponentDialog);
 
         return dialogRef1.afterClosed();
     }
 
 }
+
+
