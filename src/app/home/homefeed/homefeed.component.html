@@ -1,0 +1,92 @@
+<div class="container homefeed">
+  <div class="row workshop-feed">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-5">
+          <h2>Workshops</h2>
+        </div>
+        <div class="col-md-2 pull-right">
+          <a [routerLink]="'/home/workshops'">
+            <div class="col-md-8">
+              <h4 class="pull-right">See all
+              </h4>
+            </div>
+            <div class="col-md-1">
+              <md-icon>chevron_right</md-icon>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="row feed-horizontal">
+        <div class="col-md-2 recommendation-card" *ngFor="let workshop of workshops">
+          <a [routerLink]="'/workshop/'+workshop.id">
+            <div class="col-md-12">
+              <img class="mat-elevation-z3 recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
+                alt="workshpImg">
+              <img class="mat-elevation-z3 recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+                alt="workshpImg">
+            </div>
+            <div class="col-md-12">
+              <h4>{{workshop.currency}} {{workshop.price}}</h4>
+            </div>
+            <div class="col-md-12">
+              <h4>{{workshop.title}}</h4>
+            </div>
+            <div class="col-md-12">
+              <p>{{workshop.headline | shorten: 10 : '...'}}</p>
+            </div>
+            <div class="col-md-7">
+              <p-rating [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+              </p-rating>
+            </div>
+            <div class="col-md-5">
+              <label>{{workshop.reviews.length}} Reviews</label>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row peer-feed">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-5">
+          <h2>Peers</h2>
+        </div>
+        <div class="col-md-2 pull-right">
+          <a [routerLink]="'/home/peers'">
+            <div class="col-md-8">
+              <h4 class="pull-right">See all
+              </h4>
+            </div>
+            <div class="col-md-1">
+              <md-icon>chevron_right</md-icon>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="row feed-horizontal">
+        <div class="col-md-2 peer-recommendation-card" *ngFor="let peer of peers">
+          <a [routerLink]="'/profile/'+peer.id">
+            <div class="col-md-12">
+              <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}"
+                alt="workshpImg">
+              <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png"
+                alt="workshpImg">
+            </div>
+            <div class="col-md-12">
+              <h4>{{peer.profiles[0].first_name}}</h4>
+            </div>
+            <div class="col-md-8">
+              <p-rating [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
+              </p-rating>
+            </div>
+            <div class="col-md-4" *ngIf="peer.reviewsAboutYou.length>0">
+              <label>{{peer.reviewsAboutYou.length}} Reviews</label>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

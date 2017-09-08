@@ -5,10 +5,8 @@
   <!-- <div *ngIf="loading" class="centerFlex" layout="row" layout-sm="column" layout-align="center center" style="height:700px">
     <md-progress-spinner mode="indeterminate" color="accent" strokeWidth="6"></md-progress-spinner>
   </div> -->
-  <div *ngIf="loading" class="centerFlex">
-      <md-progress-bar mode="indeterminate" color="primary"></md-progress-bar>
-    </div>
-  <router-outlet *ngIf="!loading"></router-outlet>
+  <div *ngIf="loading | async" class="centerFlex">
+    <md-progress-bar mode="indeterminate" color="primary"></md-progress-bar>
+  </div>
+  <router-outlet></router-outlet>
 </main>
-
-

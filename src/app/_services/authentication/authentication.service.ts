@@ -76,13 +76,15 @@ export class AuthenticationService {
   */
   logout(): void {
     if (this.getCookie(this.key)) {
+      debugger;
       this.http.get(this.config.apiUrl + '/auth/logout', this.options)
         .map((res: Response) => {
+          debugger;
           console.log('Logged out from server');
           this.removeCookie(this.key);
           this.removeCookie('userId');
           this.isLoginSubject.next(false);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/']);
         }).subscribe();
     }
   }

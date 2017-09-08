@@ -3,14 +3,12 @@ import {
   Http, Headers, Response, BaseRequestOptions, RequestOptions
   , RequestOptionsArgs
 } from '@angular/http';
-
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-
 declare var moment: any;
 
 @Injectable()
@@ -572,8 +570,16 @@ collectionID:string,userId:string,calendarId:string   */
       .post(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews', reviewBody, this.options);
   }
 
+  public calculateRating(reviewArray?: any) {
+    let reviewScore = 0;
+    for (const reviewObject of reviewArray) {
+      reviewScore += reviewObject.score;
+    }
+    return (reviewScore / (reviewArray.length * 5)) * 5;
+  }
+
   public imgErrorHandler(event) {
-      event.target.src = '/assets/images/placeholder-image.jpg';
+    event.target.src = '/assets/images/placeholder-image.jpg';
   }
 
 }

@@ -11,8 +11,7 @@ import { NoContentComponent } from './no-content/no-content.component';
 import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {SignupComponent} from './signup/signup.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
 
 import 'hammerjs';
@@ -26,8 +25,7 @@ import { DialogsModule } from './_services/dialogs/dialogs.module';
     NoContentComponent,
     LoginComponent,
     AppHeaderComponent,
-    AppFooterComponent,
-    SignupComponent
+    AppFooterComponent
   ],
   imports: [
     BrowserModule,
@@ -49,4 +47,4 @@ import { DialogsModule } from './_services/dialogs/dialogs.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
