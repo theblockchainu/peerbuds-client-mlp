@@ -7,7 +7,7 @@ import {
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
   MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
   MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-  MdNativeDateModule
+  MdNativeDateModule, MdSliderModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -16,7 +16,7 @@ import {
 import {
   FileUploadModule, ScheduleModule, DialogModule,
   CheckboxModule, LightboxModule, RatingModule,
-  AccordionModule
+  AccordionModule, SliderModule
 } from 'primeng/primeng';
 import { NgPipesModule } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
@@ -37,7 +37,7 @@ import { ContentService } from '../_services/content/content.service';
 import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
 import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
 import { DialogsService } from '../workshop/dialogs/dialog.service';
-
+import { TopicService } from '../_services/topic/topic.service';
 import { CommentService } from '../_services/comment/comment.service';
 @NgModule({
   imports: [
@@ -63,7 +63,8 @@ import { CommentService } from '../_services/comment/comment.service';
     LeftSidebarService,
     CurrencypickerService,
     DialogsService,
-    CommentService
+    CommentService,
+    TopicService
   ],
   exports: [
     CommonModule,
@@ -94,7 +95,8 @@ import { CommentService } from '../_services/comment/comment.service';
     MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
     MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-    MdNativeDateModule
+    MdNativeDateModule, MdSliderModule,
+    SliderModule
   ]
 })
 export class SharedModule { }
