@@ -41,12 +41,13 @@ export class AppHeaderComponent implements OnInit {
               private router: Router,
               private dialog: MdDialog,
               private dialogsService: DialogsService) {
-    this.isLoggedIn = authService.isLoggedIn();
-    authService.isLoggedIn().subscribe((res) => {
-      this.loggedIn = res;
-    });
-    this.userId = this.getCookieValue(this.key);
-  }
+
+                this.isLoggedIn = authService.isLoggedIn();
+                authService.isLoggedIn().subscribe((res) => {
+                this.loggedIn = res;
+              });
+            this.userId = this.getCookieValue(this.key);
+          }
 
   ngOnInit() {
     this.getProfile();

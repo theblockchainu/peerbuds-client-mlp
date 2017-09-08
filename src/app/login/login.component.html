@@ -1,11 +1,13 @@
 <div class="view-container layout-column flex ownpage" layout="column">
-    <section id="content" class="main-content">
+    <section id="content" class="maincontent">
         <div class="signin-header">
         </div>
+        <div class="logincontent">
         <section class="page-padding row">
             <div class="page-signin">
                 <div class="signin-form mat-whiteframe-z1">
                     <div class="md-content__body extra-padding">
+                
                         <form class="form-horizontal" [formGroup]="loginForm">
                             <div class="margin-bottom-20">
                                 <a md-raised-button class="btn-width-large btn-block mat-facebook" href="http://localhost:3000/auth/facebook?returnTo=/">
@@ -38,6 +40,6 @@
                 </div>
             </div>
         </section>
- 
+ </div>
     </section>
 </div>
