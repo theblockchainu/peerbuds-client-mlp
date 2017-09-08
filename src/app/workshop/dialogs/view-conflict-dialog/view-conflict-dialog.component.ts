@@ -10,8 +10,8 @@ import _ from 'lodash';
 
 @Component({
     selector: 'app-view-conflict-dialog',
-    templateUrl: './view.conflict.dialog.component.html',
-    styleUrls: ['./view.conflict.dialog.component.scss']
+    templateUrl: './view-conflict-dialog.component.html',
+    styleUrls: ['./view-conflict-dialog.component.scss']
 })
 
 export class ViewConflictDialog implements OnInit {

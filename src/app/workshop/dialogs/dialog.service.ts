@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { EditCalendarDialog } from './edit.calendar.dialog.component';
+import { EditCalendarDialog } from './edit-calendar-dialog/edit-calendar-dialog.component';
 // import { ViewConflictDialog } from './view.conflict.dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
@@ -38,16 +38,4 @@ export class DialogsService {
         return dialogRef.afterClosed();
 
     }
-
-    // public showConflicts(conflicts, id): Observable<boolean> {
-    //     let dialogRef: MdDialogRef<ViewConflictDialog>;
-
-    //     dialogRef = this.dialog.open(ViewConflictDialog);
-
-    //     dialogRef.componentInstance.conflicts = conflicts;
-    //     dialogRef.componentInstance.id = id;
-
-    //     return dialogRef.afterClosed();
-
-    // }
 }
