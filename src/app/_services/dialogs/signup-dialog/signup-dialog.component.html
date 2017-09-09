@@ -25,7 +25,7 @@
          .signup-box {
             background-color: #fff;
             padding: 20px 20px;
-            width: 500px;
+            width: 300px;
         }
 
         .signup-box.drop-shadow {
@@ -39,7 +39,7 @@
         }
 
         .login-section {
-            margin: 50px 0;
+            margin: 20px 0;
         }
 
         .form-control {
@@ -95,9 +95,9 @@
 
         .btn-social i {
             border-right: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 20px;
+            font-size: 13px;
             left: 16px;
-            padding-right: 15px;
+            padding-right: 7px;
             position: absolute;
             top: 15px;
         }
@@ -205,6 +205,30 @@
         .fs-13 {
             font-size: 13px;
         }
+        .container{
+            width: 500px;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        .col-md-offset-3,.col-md-6{
+            margin-left: 15%;
+            margin-right: 10%;
+        }
+
+.fa-facebook{
+    background-color: #335397;
+    color: #fff!important;
+}
+
+.fa-google{
+    background-color: #dd4a38;
+    color: #fff!important;
+}
+
+.circle-icon {
+    padding:4px;
+    border-radius: 100%;
+}
 
     </style>
     <script>
@@ -309,17 +333,17 @@
                     <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification" method="POST">
                         <input type="hidden" name="dob" id="dob" value="" required/>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> Sign up with Facebook</a>
+                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> Continue with Facebook</a>
                         </div>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> Sign up with Google</a>
+                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> Continue with Google</a>
                         </div>
                         <div class="position-relative margin-bottom-20 text-center">
                             <div class="or-seperator-vertical"></div>
                             <span class="round-or-text or-text-vertical">OR</span>
                         </div>
                         <div class="margin-bottom-20 btnSignupEmail">
-                            <a class="btn-social btn-email pi-margin-bottom-20" href="javascript:;" onclick="signupEmail()"><i class="fa fa-envelope"></i> Sign with Email</a>
+                            <a class="btn-social btn-email pi-margin-bottom-20" href="javascript:;" onclick="signupEmail()"> Continue with Email</a>
                         </div>
                         <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link" style="font-size:14px;text-decoration: none;">Log In</a></div>
 
