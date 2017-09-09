@@ -43,8 +43,8 @@ export class LoginComponentDialog implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home/homefeed';
 
     this.loginForm = this._fb.group({
-      email : [null, [Validators.required, Validators.pattern("^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$")]], /* putting reg ex as well */
-      password : [null, Validators.required]
+      email : ['', Validators.required], /* putting reg ex as well */
+      password : ['', Validators.required]
     });
   }
 
@@ -63,6 +63,7 @@ export class LoginComponentDialog implements OnInit {
                   this.alertService.error(error._body);
                   // this.loading = false;
               });
+  }
 
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
