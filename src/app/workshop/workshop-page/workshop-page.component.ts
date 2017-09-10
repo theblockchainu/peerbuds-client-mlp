@@ -371,7 +371,7 @@ export class WorkshopPageComponent implements OnInit {
       } else {
         console.log(response);
         this.reviews = response;
-        this.userRating = this.calculateRating(this.reviews);
+        this.userRating = this._collectionService.calculateRating(this.reviews);
       }
     });
   }
@@ -408,20 +408,6 @@ export class WorkshopPageComponent implements OnInit {
         this.comments = response;
       }
     });
-  }
-
-  private calculateRating(reviewArray?: any) {
-    let reviewScore = 0;
-    let reviews;
-    if (reviewArray) {
-      reviews = reviewArray;
-    } else {
-      reviews = this.reviews;
-    }
-    for (const reviewObject of reviews) {
-      reviewScore += reviewObject.score;
-    }
-    return (reviews.length * 5) / reviewScore;
   }
 
   private fixTopics() {
@@ -727,7 +713,7 @@ content:any   */
       } else {
         for (const responseObj of response) {
           if (this.workshopId !== responseObj.id) {
-            responseObj.rating = this.calculateRating(responseObj);
+            responseObj.rating = this._collectionService.calculateRating(responseObj.reviews);
             this.recommendations.collections.push(responseObj);
           }
         }
@@ -843,7 +829,6 @@ content:any   */
       result => {
         if (result) {
           this.getReviews();
-          this.calculateRating();
           delete this.reviewForm;
         }
       }, err => {
