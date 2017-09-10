@@ -394,6 +394,9 @@ export class WorkshopPageComponent implements OnInit {
               ]
             }
           ]
+        },
+        {
+            'upvotes': 'peer'
         }
       ],
       'order': 'createdAt DESC'

@@ -186,8 +186,8 @@ footer {
     border: 1px solid #eee;
 }
 
-h3.calendarTiitle  {
-    margin: 10px !important;
+h3.calendarTitle  {
+    font-weight: 400 !important;
 }
 
 .calendar .cal-month-view .cal-days {
@@ -228,7 +228,7 @@ h3.calendarTiitle  {
 
 .calendar .cal-month-view .cal-day-badge {
     float: right !important;
-    margin-right: 15px !important;
+    margin-right: 18px !important;
     font-size: 0px !important;
     width: 8px !important;
     height: 8px !important;
@@ -242,9 +242,9 @@ h3.calendarTiitle  {
 .calendar .cal-month-view .cal-day-cell.cal-today .cal-day-number {
     width: 30px;
     height: 30px;
-    background-color: #2EB127;
+    background-color: #33bd9e;
     border-radius: 15px;
-    padding: 7px 0px 7px 5px;
+    padding: 7px 0px 7px 6px;
     margin-top: 8px;
     margin-right: 20px !important;
 }
@@ -257,7 +257,10 @@ h3.calendarTiitle  {
     padding: 0px !important;
     margin-top: 0px !important;
     min-width: 8px !important;
+    position: relative !important;
+    top: 7px !important;
 }
+
 
 .margin-top-10 {
     margin-top: 10px;
@@ -291,34 +294,34 @@ h3.calendarTiitle  {
 }
 
 .margin-bottom-10 {
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .margin-bottom-20 {
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .margin-bottom-30 {
-    margin-top: 30px;
+    margin-bottom: 30px;
 }
 .margin-bottom-40 {
-    margin-top: 40px;
+    margin-bottom: 40px;
 }
 .margin-bottom-50 {
-    margin-top: 50px;
+    margin-bottom: 50px;
 }
 .margin-bottom-60 {
-    margin-top: 60px;
+    margin-bottom: 60px;
 }
 .margin-bottom-70 {
-    margin-top: 70px;
+    margin-bottom: 70px;
 }
 .margin-bottom-80 {
-    margin-top: 80px;
+    margin-bottom: 80px;
 }
 .margin-bottom-90 {
-    margin-top: 90px;
+    margin-bottom: 90px;
 }
 .margin-bottom-100 {
-    margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 .ui-accordion .ui-accordion-header{
@@ -427,6 +430,7 @@ body {
     height: 27px !important;
     left: -43px !important;
     padding-top: 5px !important;
+    top: 3px !important;
 }
 
 img {
@@ -790,4 +794,16 @@ img {
     color: #fff;
     background: #cc181e;
     border-color: #cc181e
+}
+
+.emptySectionText {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border: 1px solid #eeeeee;
+    border-radius: 2px;
+    padding: 10px;
+}
+
+.square.mat-chip {
+    border-radius: 2px !important;
 }
