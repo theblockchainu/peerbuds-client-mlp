@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA, MdDialog } from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import * as moment from 'moment';
+import {CollectionService} from '../../../_services/collection/collection.service';
 
 @Component({
   selector: 'app-content-online',
@@ -11,6 +12,7 @@ import * as moment from 'moment';
 export class ContentOnlineComponent implements OnInit {
 
   constructor(public config: AppConfig,
+    public _collectionService: CollectionService,
     @Inject(MD_DIALOG_DATA) public data: any,
   ) { }
 

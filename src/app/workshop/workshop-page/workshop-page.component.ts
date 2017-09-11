@@ -635,8 +635,8 @@ content:any   */
               content: content,
               userType: this.userType
             },
-            width: '800px',
-            height: '700px'
+            width: '50vw',
+            height: '90wh'
           });
           break;
         }
@@ -647,9 +647,10 @@ content:any   */
               content: content,
               userType: this.userType
             },
-            width: '800px',
-            height: '600px'
-          }); break;
+            width: '50vw',
+            height: '90wh'
+          });
+          break;
         }
       case 'project':
         {
@@ -658,8 +659,10 @@ content:any   */
               content: content,
               userType: this.userType
             },
-            width: '660px'
-          }); break;
+            width: '50vw',
+            height: '90wh'
+          });
+          break;
         }
       default:
         break;

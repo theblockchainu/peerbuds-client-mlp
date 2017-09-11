@@ -1,11 +1,12 @@
-<div md-dialog-content class="container" *ngIf="data.content">
+<div md-dialog-content *ngIf="data.content">
   <div class="row">
-    <div class="col-md-8 col-md-offset-2 embed-responsive embed-responsive-16by9">
-      <video class="embed-responsive-item" controls src="{{config.apiUrl+data.content.imageUrl}}">
+    <div class="col-md-12 embed-responsive embed-responsive-16by9">
+      <video class="embed-responsive-item" width="100%" controls>
+        <source src="{{config.apiUrl+data.content.imageUrl}}">
       </video>
     </div>
     <div class="col-md-12">
-      <h2>{{data.content.title}}</h2>
+      <h3>{{data.content.title}}</h3>
     </div>
     <div class="col-md-12">
       <p>{{data.content.description}}</p>
