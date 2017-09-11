@@ -1,0 +1,42 @@
+<div md-dialog-content class="container" *ngIf="data">
+  <div class="content-image" *ngIf="data.content.imageUrl">
+    <img class="img-responsive media-middle" src="{{config.apiUrl+data.content.imageUrl}}" alt="image">
+  </div>
+  <div class="default-image" *ngIf="!data.content.imageUrl">
+    <i class="fa fa-picture-o"></i>
+  </div>
+  <div class="content-box">
+    <h2 class="margin-bottom-0">{{data.content.title}}</h2>
+    <div class="seperate-section">
+      <div class="section-subhead">What we'll do</div>
+      <div class="section-description"> {{data.content.description}} </div>
+    </div>
+    <div class="seperate-section" *ngIf="data.content.notes">
+      <div class="section-subhead">Need to know</div>
+      <div class="section-description"> {{data.content.notes}} </div>
+    </div>
+  </div>
+  <div class="margin-top-15">
+    <button (click)="openSubmitEntryDialog(data)" *ngIf="data.userType==='participant'" md-raised-button>Submit Entry</button>
+    <button *ngIf="data.userType==='teacher'" md-raised-button>View Entries</button>
+  </div>
+  <div class="submission-box" *ngIf="data.content.submissions">
+    <div class="fw-bold margin-bottom-10">Submission ({{ data.content.submissions.length }})</div>
+    <div class="row">
+      <div *ngFor="let submission of data.content.submissions; let i=index">
+        <div class="col-sm-3" *ngIf="i < 4">
+          <img class="img-responsive" src="{{ submission.picture_url ? config.apiUrl+submission.picture_url : noImage }}" alt="image"
+            height="117" />
+          <div class="submission-title">{{ submission.name }}</div>
+          <div class="submission-owner">
+            <img class="thumbs thumb-circle thumb-20" src="assets/images/avatar.png" alt="thumb" />
+            <span class="owner-name">Leah Cadston</span>
+          </div>
+          <div class="submission-likes">
+            <i class="fa fa-thumbs-o-up"></i> 124
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,39 +1,42 @@
-<div class="login-section" id="content">
-    <div class="container">
-        <div class="col-md-6 col-md-offset-3 position-relative">
-            <div class="signup-box drop-shadow">
-                <form name="form" #f="ngForm" ngNoForm [formGroup]="loginForm" action="http://localhost:3000/signup?returnTo=onboarding" method="POST" novalidate>
-                    <!--(ngSubmit)="f.form.valid && login()" -->
-                    <div class="margin-bottom-20">
-                        <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=/"><i class="fa fa-facebook"></i> Login with Facebook</a>
-                    </div>
-                    <div class="margin-bottom-20">
-                        <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=/"><i class="fa fa-google"></i> Login with Gmail</a>
-                    </div>
-                    <div class="position-relative margin-bottom-20 text-center">
-                        <div class="or-seperator-vertical"></div>
-                        <span class="round-or-text or-text-vertical">OR</span>
-                    </div>
-                    <div class="form-group margin-bottom-20">
-                        <label for="Email">Email</label>
-                        <input type="text" class="form-control" formControlName="email" />
-                        <div *ngIf="loginForm.controls['email'].hasError('required') && loginForm.controls.email.touched" class="text-danger fs-13">Email is required</div>
-                        <div *ngIf="loginForm.controls['email'].hasError('pattern')" class="text-danger fs-13">Please input valid email</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" formControlName="password" />
-                        <div *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls.password.touched" class="text-danger fs-13">Password is required</div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" (click)="login()"  class="btn btn-primary">Log In</button><!--[attr.disabled]="!loginForm.valid"-->
-                        <!--<img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                        />-->
-                        <a href="/signup.html" class="btn btn-primary margin-left-10">Sign Up</a><!--[attr.disabled]="!loginForm.valid" -->
-                        <a href="#" class="link display-block margin-top-10">Forgot password?</a>
-                    </div>
-                </form>
-            </div>
+<div class="view-container layout-column flex ownpage" layout="column">
+    <section id="content" class="main-content">
+        <div class="signin-header">
         </div>
-    </div>
+        <section class="page-padding row">
+            <div class="page-signin">
+                <div class="signin-form mat-whiteframe-z1">
+                    <div class="md-content__body extra-padding">
+                        <form class="form-horizontal" [formGroup]="loginForm">
+                            <div class="margin-bottom-20">
+                                <a md-raised-button class="btn-width-large btn-block mat-facebook" href="http://localhost:3000/auth/facebook?returnTo=/">
+                                    <i class="fa fa-facebook"></i> Login with Facebook</a>
+                            </div>
+
+                            <div class="margin-bottom-20">
+                                <a md-raised-button class="btn-width-large btn-block md-button md-raised mat-google-plus" href="http://localhost:3000/auth/google?returnTo=/">
+                                    <i class="fa fa-google"></i> Login with Gmail</a>
+                            </div>
+                            <div class="margin-bottom-20">
+                                <md-input-container class="pb-block">
+                                    <input mdInput placeholder="Email" formControlName="email">
+                                </md-input-container>
+                            </div>
+                            <div class="margin-bottom-20">
+                                <md-input-container class="pb-block">
+                                    <input mdInput placeholder="Password" formControlName="password" type="password">
+                                </md-input-container>
+                            </div>
+
+                            <div class="text-center margin-bottom-20">
+                                <button md-raised-button class="btn-width-medium vertical-bottom" color="primary" type="submit" (click)="login()"><span>Log In</span></button> &emsp;
+                                <a md-raised-button class="btn-width-medium vertical-middle" href="/signup.html"><span>Sign up</span></a>
+                                <br><br>
+                                <a href="#" class="link display-block margin-top-10" style="font-size: 10px;">Forgot password?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
 </div>

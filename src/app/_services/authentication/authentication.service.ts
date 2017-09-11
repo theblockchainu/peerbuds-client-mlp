@@ -12,19 +12,22 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
+import {RequestHeaderService} from "../requestHeader/request-header.service";
 
 @Injectable()
 export class AuthenticationService {
 
   public key = 'access_token';
-  private loggedIn: any;
+  private options;
   isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: Http, private config: AppConfig,
-    private _cookieService: CookieService,
-    private route: ActivatedRoute,
-    public router: Router) {
-    // this.loggedIn = !!this.getCookie(this.key);
+        private _cookieService: CookieService,
+        private route: ActivatedRoute,
+        public router: Router,
+        public _requestHeaderService: RequestHeaderService
+  ) {
+      this.options = this._requestHeaderService.getOptions();
   }
 
   /**
@@ -54,12 +57,8 @@ export class AuthenticationService {
     // localStorage.setItem('token', 'JWT');
     // this.isLoginSubject.next(true);
     let body = `{"email":"${email}","password":"${password}"}`;
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
-    let responseStatus = false;
     return this.http
-      .post(this.config.apiUrl + '/auth/local', body, options)
+      .post(this.config.apiUrl + '/auth/local', body, this.options)
       .map((response: Response) => {
         // login successful if there's a jwt token in the response
         let user = response.json();
@@ -70,17 +69,14 @@ export class AuthenticationService {
       }, (err) => {
         console.log('Error: ' + err);
       });
-
   }
 
   /**
   * Log out the user then tell all the subscribers about the new status
   */
   logout(): void {
-    //localStorage.removeItem('token');
-
     if (this.getCookie(this.key)) {
-      this.http.get(this.config.apiUrl + '/auth/logout', {})
+      this.http.get(this.config.apiUrl + '/auth/logout', this.options)
         .map((res: Response) => {
           console.log('Logged out from server');
           this.removeCookie(this.key);

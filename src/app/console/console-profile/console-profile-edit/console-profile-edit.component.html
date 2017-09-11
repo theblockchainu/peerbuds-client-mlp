@@ -62,12 +62,14 @@
               </md-input-container>
               <br>
               <md-select placeholder="Preferred Language" style="margin-bottom: 20px" name="preferred_language" [(ngModel)]="profile.preferred_language">
-                <md-option *ngFor="let language of languages" [value]="language">{{language}}</md-option>
+                <md-option *ngIf="!languages">languages not available</md-option>
+                <md-option *ngFor="let language of languages" [value]="language">{{language.name}}</md-option>
                 <md-hint align="start">We'll send you messages in this language.</md-hint>
               </md-select>
               <br><br><br>
               <md-select placeholder="Preferred Currency" style="margin-bottom: 20px" name="preferred_currency" [(ngModel)]="profile.preferred_currency">
-                <md-option *ngFor="let currency of currencies" [value]="currency">{{currency}}</md-option>
+                <md-option *ngIf="!currencies">currencies not available</md-option>
+                <md-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</md-option>
                 <md-hint align="start">Weʼll show you prices in this currency.</md-hint>
               </md-select>
               <br><br>
@@ -87,45 +89,59 @@
               <div style="margin-top: 90px; margin-bottom: 20px; color: #333333;">
                 Additional Details
               </div>
-
-              <div *ngFor="let work of profile.work; let index = index;">
-                <md-input-container style="margin-bottom: 20px">
-                  <input mdInput name="work_position" type="text"  placeholder="Position" [(ngModel)]="profile.work[index].position">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container style="margin-bottom: 20px">
-                  <input mdInput name="work_company" type="text"  placeholder="Company" [(ngModel)]="profile.work[index].company">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container style="margin-bottom: 20px">
-                  <input mdInput name="work_start" type="date"  placeholder="Start Date" [(ngModel)]="profile.work[index].startDate">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container style="margin-bottom: 20px">
-                  <input mdInput name="work_end" type="date"  placeholder="End Date" [(ngModel)]="profile.work[index].endDate">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another Peerbuds user. This is how we can all get in touch.</md-hint>
+              <div style="font-weight: 600; margin-bottom: 25px;">
+                Work Experience
               </div>
-
-              <div *ngFor="let edu of profile.education; let index = index">
-                <md-input-container style="margin-bottom: 20px">
-                  <input mdInput name="edu_degree" type="text"  placeholder="Degree" [(ngModel)]="profile.education[index].degree">
+              <div *ngFor="let work of profile.work; index as i; trackBy: trackByFn">
+                <md-input-container >
+                  <input mdInput name="position" type="text"  placeholder="Position" [(ngModel)]="profile.work[i].position">
                   <md-error>This field is required</md-error>
                 </md-input-container>
-                <md-input-container style="margin-bottom: 20px">
+                <md-input-container >
+                  <input mdInput name="company" type="text"  placeholder="Company" [(ngModel)]="profile.work[i].company">
+                  <md-error>This field is required</md-error>
+                </md-input-container>
+                <md-input-container >
+                  <input mdInput name="startDate" type="date"  placeholder="Start Date" [ngModel]="profile.work[i].startDate | date:'y-MM-dd'" (ngModelChange)="profile.work[i].startDate=$event">
+                  <md-error>This field is required</md-error>
+                </md-input-container>
+                <md-input-container >
+                  <input mdInput name="endDate" type="date"  placeholder="End Date" [ngModel]="profile.work[i].endDate | date:'y-MM-dd'" (ngModelChange)="profile.work[i].endDate=$event">
+                  <md-error>This field is required</md-error>
+                </md-input-container>
+                <md-icon (click)="deleteWorkDetailsRow(i)" style="cursor: pointer;" class="lighterText">
+                  close
+                </md-icon>
+              </div>
+              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addWorkDetailsRow()">
+                + Add another work detail
+              </div>
+              <div style="font-weight: 600; margin-bottom: 25px;">
+                Education
+              </div>
+              <div *ngFor="let edu of profile.education; let index = index">
+                <md-input-container>
+                  <input mdInput name="edu_degree" type="text"  placeholder="Degree" [(ngModel)]="profile.education[index].degree" >
+                  <md-error>This field is required</md-error>
+                </md-input-container>
+                <md-input-container>
                   <input mdInput name="edu_school" type="text"  placeholder="School / College" [(ngModel)]="profile.education[index].school">
                   <md-error>This field is required</md-error>
                 </md-input-container>
-                <md-input-container style="margin-bottom: 20px">
+                <md-input-container >
                   <input mdInput name="edu_start" type="text"  placeholder="Start Year" [(ngModel)]="profile.education[index].startYear">
                   <md-error>This field is required</md-error>
                 </md-input-container>
-                <md-input-container style="margin-bottom: 20px">
+                <md-input-container >
                   <input mdInput name="edu_end" type="text"  placeholder="End Year" [(ngModel)]="profile.education[index].endYear">
                   <md-error>This field is required</md-error>
                 </md-input-container>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another Peerbuds user. This is how we can all get in touch.</md-hint>
+                <md-icon (click)="deleteEducationDetailsRow(index)" style="cursor: pointer;" class="lighterText">
+                  close
+                </md-icon>
+              </div>
+              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addEducationDetailsRow()">
+                + Add another education detail
               </div>
 
               <md-input-container style="margin-bottom: 20px">

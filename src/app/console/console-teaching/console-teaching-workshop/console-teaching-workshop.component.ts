@@ -3,6 +3,7 @@ import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { ConsoleTeachingComponent } from '../console-teaching.component';
+import {AppConfig} from '../../../app.config';
 
 declare var moment: any;
 
@@ -17,15 +18,15 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   public loaded: boolean;
   public now: Date;
   private outputResult: any;
-  public activeTab: string;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleTeachingComponent: ConsoleTeachingComponent,
     public _collectionService: CollectionService,
-    public router: Router
+    public router: Router,
+    public config: AppConfig
   ) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleTeachingComponent.setActiveTab(urlSegment[0].path);
     });
@@ -71,6 +72,12 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   }
 
   public onSelect(workshop) {
-    this.router.navigate(['/editWorkshop/', workshop.id, 1]);
+    this.router.navigate(['/workshop/', workshop.id, 'edit', workshop.stage ? workshop.stage : 1]);
+  }
+
+  public createWorkshop() {
+    this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
+      this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
+    });
   }
 }

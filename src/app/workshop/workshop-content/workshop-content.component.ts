@@ -1,5 +1,7 @@
-import { Component, Input, OnInit, forwardRef, ElementRef, Inject, EventEmitter
-        , HostBinding, HostListener, Output} from '@angular/core';
+import {
+  Component, Input, OnInit, forwardRef, ElementRef, Inject, EventEmitter
+  , HostBinding, HostListener, Output
+} from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 
@@ -50,7 +52,7 @@ export class WorkshopContentComponent implements OnInit {
   }
   initItenary() {
     return this._fb.group({
-      date: [''],
+      date: [null],
       contents: this._fb.array([])
     });
   }
@@ -151,7 +153,6 @@ export class WorkshopContentComponent implements OnInit {
         .subscribe();
 
     } else if (event.action === 'update') {
-      debugger;
       const itenary = <FormArray>this.myForm.controls.itenary;
       const form = <FormGroup>itenary.controls[i];
       const contentsArray = <FormArray>form.controls.contents;
@@ -172,22 +173,20 @@ export class WorkshopContentComponent implements OnInit {
         schedule.endDay = endDay;
       }
       if (contentObj.type === 'online') {
-        
+
       }
-      debugger;
       schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
       schedule.endDay = 0;
-      if(schedule.startTime === '') {
-        schedule.startTime = new Date(0,0,0,1,0,0,0);
-      }
-      else {
+      if (schedule.startTime === '') {
+        schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
+      } else {
         const startTimeArr = schedule.startTime.toString().split(':');
         const startHour = startTimeArr[0];
         const startMin = startTimeArr[1];
         schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
       }
-      if(schedule.endTime === '') {
-        schedule.endTime = new Date(0,0,0,23,0,0,0);
+      if (schedule.endTime === '') {
+        schedule.endTime = new Date(0, 0, 0, 23, 0, 0, 0);
       }
       else {
         const endTimeArr = schedule.endTime.toString().split(':');
@@ -226,6 +225,14 @@ export class WorkshopContentComponent implements OnInit {
     } else {
       console.log('unhandledEvent Triggered');
     }
+  }
+
+  getCalendarStartDate() {
+    return new Date(this.calendar.startDate);
+  }
+
+  getCalendarEndDate() {
+    return new Date(this.calendar.endDate);
   }
 
 }

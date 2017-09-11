@@ -138,7 +138,8 @@ html { height: 100%;}
 }
 
 .sidebar-brand a {
-    font-weight: 900; 
+    font-weight: 300; 
+    font-size: 20px;
 }
 
 .sidebar-nav li a:hover,
@@ -301,6 +302,18 @@ html { height: 100%;}
 }
 
 .childItem {
-    padding-left:20px;
+    padding-left:0px;
     font-size:15px;
+    font-weight: 400;
+}
+
+.sidebar-brand a.active {
+    font-weight: 500;
+    font-size: 22px;
+    color: #ffffff;
+}
+
+.childItem .active {
+  font-weight: 500;
+  color: #ffffff;
 }

@@ -1,0 +1,40 @@
+<p-accordion (onOpen)="onTabOpen($event)">
+  <p-accordionTab *ngFor="let itenaryObj of data; let i=index">
+    <p-header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="col-md-12">
+              <h4>{{itenaryObj.calendar.startDate | date:'EEEE, MMMM d'}}-{{itenaryObj.calendar.endDate | date:'EEEE, MMMM d'}}
+              </h4>
+            </div>
+            <div class="col-md-12">
+              <p *ngIf="i!==selectedIndex">View Schedule</p>
+              <p *ngIf="i===selectedIndex">Hide Schedule</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <br>
+            <br>
+            <div class="col-md-12">
+              <button md-raised-button md-dialog-close="{{itenaryObj.calendar.id}}" [disabled]="i!==selectedIndex">Choose Date</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-header>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12" *ngFor="let itenary of itenaryObj.itenary">
+          <div class="col-md-12">
+            <p>{{itenary.startDate | date:'EE MMM d'}}</p>
+          </div>
+          <div class="col-md-12">
+            <p>{{itenary.contents[0].schedules[0].startTime | extractTime:'HH:mm'}} - {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime
+              | extractTime:'HH:mm'}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-accordionTab>
+</p-accordion>

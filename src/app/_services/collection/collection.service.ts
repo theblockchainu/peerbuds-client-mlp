@@ -3,14 +3,12 @@ import {
   Http, Headers, Response, BaseRequestOptions, RequestOptions
   , RequestOptionsArgs
 } from '@angular/http';
-
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-
 declare var moment: any;
 
 @Injectable()
@@ -156,8 +154,7 @@ export class CollectionService {
   }
   /* Submit workshop for Review */
   public submitForReview(id: string) {
-    debugger;
-    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', {}).map(
+    return this.http.post(this.config.apiUrl + '/api/collections/' + id + '/submitForReview', {}, this.options).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -242,6 +239,23 @@ export class CollectionService {
     contents[0].fillerWord = fillerWord;
     contents[0].hasStarted = false;
     return contents[0];
+  }
+
+  /**
+   * Get the full name of any content type
+   * @param contentType
+   * @returns {string}
+   */
+  public getContentTypeFullName(contentType) {
+    let fillerWord = '';
+    if (contentType === 'online') {
+      fillerWord = 'session';
+    } else if (contentType === 'video') {
+      fillerWord = 'recording';
+    } else if (contentType === 'project') {
+      fillerWord = 'submission';
+    }
+    return contentType + ' ' + fillerWord;
   }
 
   /**
@@ -346,6 +360,27 @@ export class CollectionService {
   }
 
   /**
+   *  Workshop
+   */
+  public openEditWorkshop(collection) {
+    this.router.navigate(['workshop', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+  }
+
+  /**
+   * viewExperience
+   */
+  public openEditExperience(collection) {
+    this.router.navigate(['experience', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+  }
+
+  /**
+   * viewSession
+   */
+  public openEditSession(collection) {
+    this.router.navigate(['session', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+  }
+
+  /**
    * Get text to show in action button of draft card
    * @param status
    * @returns {any}
@@ -369,25 +404,182 @@ export class CollectionService {
   }
 
   public sendVerifySMS(phoneNo) {
-    const body = {
-    };
+    const body = {};
     return this.http
-      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo, body)
+      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
-
   }
 
   public confirmSmsOTP(inputToken) {
     const body = {};
     return this.http
-      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body)
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
 
   }
 
+  /**
+   * getRecommendations
+   */
+  public getRecommendations(query, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+
+  }
+
+  /**
+   * addParticipant
+collectionID:string,userId:string,calendarId:string   */
+  public addParticipant(collectionId: string, userId: string, calendarId: string, cb) {
+    const body = {
+      'calendarId': calendarId
+    };
+    this.http
+      .put(this.config.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + userId, body, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * getParticipants
+   */
+  public getParticipants() {
+
+  }
+
+  /**
+   * Approve this collection
+   * @param collection
+   * @returns {Observable<any>}
+   */
+  public approveCollection(collection) {
+    this.http.post(this.config.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.options).map(
+      (response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      }).subscribe(() => {
+        this.router.navigate(['/console/teaching/all']);
+      });
+  }
+
+  /**
+   * open a collection view page based on its type
+   * @param collection
+   */
+  public openCollection(collection) {
+    switch (collection.type) {
+      case 'workshop':
+        this.router.navigate(['/workshop', collection.id]);
+        break;
+      case 'experience':
+        this.router.navigate(['/experience', collection.id]);
+        break;
+      case 'session':
+        this.router.navigate(['/session', collection.id]);
+        break;
+      default:
+        this.router.navigate(['/workshop', collection.id]);
+        break;
+    }
+  }
+
+  /**
+   * open a collection view page based on its type
+   * @param collection
+   */
+  public openEditCollection(collection) {
+    switch (collection.type) {
+      case 'workshop':
+        this.router.navigate(['/workshop', collection.id, 'edit', collection.stage]);
+        break;
+      case 'experience':
+        this.router.navigate(['/experience', collection.id, 'edit', collection.stage]);
+        break;
+      case 'session':
+        this.router.navigate(['/session', collection.id, 'edit', collection.stage]);
+        break;
+      default:
+        this.router.navigate(['/workshop', collection.id, 'edit', collection.stage]);
+        break;
+    }
+  }
+
+  public postCalendars(id, calendars) {
+    return this.http
+      .post(this.config.apiUrl + '/api/collections/' + id + '/calendars', calendars, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+  }
+
+  /**
+   * getComments
+   */
+  public getComments(workshopId: string, query: any, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/collections/' + workshopId + '/comments' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public getReviews(workshopId: string, query: any, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * postComments
+  worrkshopID   */
+  public postComments(workshopId: string, commentBody: any, cb) {
+    this.http
+      .post(this.config.apiUrl + '/api/collections/' + workshopId + '/comments', commentBody, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * postReview
+   */
+  public postReview(workshopId: string, reviewBody: any) {
+    return this.http
+      .post(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews', reviewBody, this.options);
+  }
+
+  public calculateRating(reviewArray?: any) {
+    let reviewScore = 0;
+    for (const reviewObject of reviewArray) {
+      reviewScore += reviewObject.score;
+    }
+    return (reviewScore / (reviewArray.length * 5)) * 5;
+  }
+
+  public imgErrorHandler(event) {
+    event.target.src = '/assets/images/placeholder-image.jpg';
+  }
 
 }

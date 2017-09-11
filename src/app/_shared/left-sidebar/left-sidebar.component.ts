@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, forwardRef, ElementRef, Inject, EventEmitter
-        , HostBinding, HostListener, Output } from '@angular/core';
-import { trigger, state, style, transition, animate} from '@angular/animations';
-import { BehaviorSubject, Observable } from "rxjs";
+import {
+  Component, OnInit, Input, forwardRef, ElementRef, Inject, EventEmitter
+  , HostBinding, HostListener, Output
+} from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 
 import { LeftSidebarService, SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
@@ -10,7 +12,7 @@ import { CollectionService } from '../../_services/collection/collection.service
 import _ from 'lodash';
 
 @Component({
-  selector: 'left-sidebar',
+  selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
   styleUrls: ['./left-sidebar.component.scss'],
   animations: [
@@ -26,20 +28,22 @@ import _ from 'lodash';
     ]),
   ]
 })
+
 export class LeftSidebarComponent implements OnInit {
- 
-  menuState:string = 'out';
+
+  menuState = 'out';
   public menuJSON: Observable<Array<any>>;
-  public step:number;
+  public step: number;
   public id: string;
   public path: string;
-  public status: string = 'draft';
+  public status = 'draft';
+  public collection: any;
 
   sidebarMenuItems;
 
   // Input Parameter
   @Input('menuFile')
-  private menuFile: string = '';
+  private menuFile = '';
 
   @Output()
   private menuArray = new EventEmitter<any>();
@@ -48,55 +52,53 @@ export class LeftSidebarComponent implements OnInit {
     public router: Router,
     private _leftSidebarService: LeftSidebarService,
     private activatedRoute: ActivatedRoute,
-    public _collectionService: CollectionService) { 
-      if (this.id) {
-        this._collectionService.getCollectionDetails(this.id)
-          .subscribe(res => {
-            this.status = res.status;
-          },
-          err => console.log('error'),
-          () => console.log('Completed!'));
-      } else {
-        console.log('NO COLLECTION');
-      }  
-    }
-
-  ngOnInit() {   
-      this._leftSidebarService.getMenuItems(this.menuFile).subscribe(response => {
-              this.sidebarMenuItems = response; 
-               
-              if(this.status != 'submitted')
-              {
-                this.sidebarMenuItems[4].visible = false;
-                this.sidebarMenuItems[3].visible = true;
-              }
-              else {
-                this.sidebarMenuItems[4].visible = true;
-                this.sidebarMenuItems[3].visible = false;
-              }
-          
-              this.menuArray.emit(this.sidebarMenuItems);
-            });  
-      this.path = this.router.url.split('/')[1];
-      this.activatedRoute.params.subscribe(params => {
-        this.id = params['workshopId']; //Need to make it generic or fetch different names like experienceId and put ||
-        this.step = params['step'];
-      }); 
+    public _collectionService: CollectionService) {
   }
-  
+
+  ngOnInit() {
+    this._leftSidebarService.getMenuItems(this.menuFile).subscribe(response => {
+        this.sidebarMenuItems = response;
+        this.menuArray.emit(this.sidebarMenuItems);
+    });
+    this.path = this.router.url.split('/')[1];
+    this.activatedRoute.params.subscribe(params => {
+      this.id = params['workshopId']; // Need to make it generic or fetch different names like experienceId and put ||
+      this.step = params['step'];
+    });
+    if (this.id) {
+        const query = {
+            'include': [
+                'topics',
+                'calendars',
+                { 'participants': [{ 'profiles': ['work'] }] },
+                { 'owners': ['profiles'] },
+                { 'contents': ['schedules'] }
+            ]
+        };
+        this._collectionService.getCollectionDetail(this.id, query)
+            .subscribe(res => {
+                    this.status = res.status;
+                    this.collection = res;
+                    this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, this.sidebarMenuItems);
+                    this.menuArray.emit(this.sidebarMenuItems);
+                },
+                err => console.log('error'),
+                () => console.log('Completed!'));
+    } else {
+        console.log('NO COLLECTION');
+    }
+  }
+
   public toggleMenu() {
     this.menuState = this.menuState === 'out' ? 'in' : 'out';
   }
 
   public goto(step) {
-    if(_.includes(step, '_'))
-    {
+    if (_.includes(step, '_')) {
       step = _.take(step.split('_'))[0];
     }
     this.step = +step;
-    this.router.navigate([this.path, this.id, step]);
+    this.router.navigate([this.path, this.id, 'edit', step]);
   }
-
-
 
 }

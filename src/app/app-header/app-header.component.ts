@@ -8,6 +8,11 @@ import {FormControl} from '@angular/forms';
 import {AppConfig} from '../app.config';
 import {Http} from '@angular/http';
 import {CookieService} from 'ngx-cookie-service';
+import {Router} from '@angular/router';
+
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+
+import { DialogsService } from '../_services/dialogs/dialog.service';
 
 @Component({
   selector: 'app-header',
@@ -18,21 +23,28 @@ import {CookieService} from 'ngx-cookie-service';
 
 export class AppHeaderComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
+  loggedIn: boolean;
   public profile: any = {};
   public userType = '';
   public myControl = new FormControl('');
-  private userId: string;
+  public userId: string;
   private key = 'userId';
   public options: any[];
   public defaultProfileUrl = '/assets/images/default-user.jpg';
 
   constructor(public authService: AuthenticationService,
               public requestHeaderService: RequestHeaderService,
-              private config: AppConfig,
+              public config: AppConfig,
               private http: Http,
               private _cookieService: CookieService,
-              private _profileService: ProfileService) {
+              private _profileService: ProfileService,
+              private router: Router,
+              private dialog: MdDialog,
+              private dialogsService: DialogsService) {
     this.isLoggedIn = authService.isLoggedIn();
+    authService.isLoggedIn().subscribe((res) => {
+      this.loggedIn = res;
+    });
     this.userId = this.getCookieValue(this.key);
   }
 
@@ -59,10 +71,13 @@ export class AppHeaderComponent implements OnInit {
   }
 
   getProfile() {
-    if(!this.isLoggedIn) {
-      this._profileService.getProfile().subscribe(profile => {
-        this.profile = profile;
-      });
+    if (this.loggedIn) {
+        this._profileService.getProfile().subscribe(profile => {
+            this.profile = profile[0];
+        });
+    }
+    else {
+      return null;
     }
   }
 
@@ -122,5 +137,35 @@ export class AppHeaderComponent implements OnInit {
         return;
     }
   }
+
+  public onSearchOptionClicked(option) {
+      switch (option.index) {
+          case 'collection':
+              switch (option.data.type) {
+                  case 'workshop':
+                      this.router.navigate(['/workshop', option.data.id]);
+                      break;
+                  case 'experience':
+                      this.router.navigate(['/experience', option.data.id]);
+                      break;
+                  default:
+                      this.router.navigate(['/console/dashboard']);
+                      break;
+              }
+              break;
+          case 'topic':
+              this.router.navigate(['/console/profile/topics']);
+              break;
+          case 'peer':
+              this.router.navigate(['/profile', option.data.id]);
+              break;
+          default:
+              break;
+      }
+  }
+
+  public openSignup() {
+    this.dialogsService.openSignup().subscribe();
+  }  
 
 }

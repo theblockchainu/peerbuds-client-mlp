@@ -27,7 +27,7 @@ export class ConsoleLearningComponent implements OnInit {
     public _collectionService: CollectionService,
     public consoleComponent: ConsoleComponent,
     public _cookieService: CookieService) {
-    activatedRoute.pathFromRoot[2].url.subscribe((urlSegment) => {
+    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
@@ -244,6 +244,11 @@ export class ConsoleLearningComponent implements OnInit {
    */
   public viewSession(collection) {
     this.router.navigate(['session', collection.id]);
+  }
+
+
+  imgErrorHandler(event) {
+      event.target.src = '/assets/images/user-placeholder.jpg';
   }
 
 }

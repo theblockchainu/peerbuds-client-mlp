@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from "../requestHeader/request-header.service";
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 // import { Response } from '@angular/http';
 
 @Injectable()
@@ -21,11 +21,11 @@ export class ProfileService {
   private options;
 
   constructor(private http: Http,
-              private config: AppConfig,
-              private _cookieService: CookieService,
-              private route: ActivatedRoute,
-              public router: Router,
-              public _requestHeaderService: RequestHeaderService
+    private config: AppConfig,
+    private _cookieService: CookieService,
+    private route: ActivatedRoute,
+    public router: Router,
+    public _requestHeaderService: RequestHeaderService
   ) {
     this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
@@ -44,11 +44,11 @@ export class ProfileService {
     const peer = {};
     if (this.userId) {
       const options = `{"where": "","order": "","limit": "",
-      "include": ["profiles", "topicsLearning","topicsTeaching",
+      "include": [{"profiles":["work","education"]}, "topicsLearning","topicsTeaching",
       {"collections":{"reviews": {"peer": "profiles"}}},
       {"ownedCollections":[{"reviews":{"peer":"profiles"}},
       "calendars",{"contents":"schedules"}]},"communities","identities"]}`;
-      return this.http.get(this.config.apiUrl + '/api/peers/' + id + '?filter=' + options)
+      return this.http.get(this.config.apiUrl + '/api/peers/' + id + '?filter=' + options, this.options)
         .map((response: Response) => response.json());
     }
   }
@@ -56,32 +56,26 @@ export class ProfileService {
   public getProfile() {
     const profile = {};
     if (this.userId) {
-      const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}]}, "work", "education"]}';
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter)
+      const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter, this.options)
         .map(
-          (response: Response) => response.json()
+        (response: Response) => response.json()
         );
     }
   }
 
   public getPeerProfile() {
     return this.userId;
-    // if (this.userId) {
-    //   const options = '{"include": "profiles"}';
-    //   return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
-    //     .map((response: Response) => response.json()
-    //     );
-    // }
   }
 
   public updatePeer(id: any, body: any) {
     if (this.userId) {
-      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId, body);
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId, body, this.options);
     }
   }
   public updatePeerProfile(id, body: any) {
     if (this.userId) {
-      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body);
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body, this.options);
       // patch first_name, last_name, dob, promoOptIn into peers/id/profiles
     }
   }
@@ -89,7 +83,7 @@ export class ProfileService {
   public socialProfiles() {
     const socialProfile = [];
     if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities')
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities', this.options)
         .map((response: Response) => response.json()
         );
     }
@@ -101,7 +95,7 @@ export class ProfileService {
 
       const topicsUrl = topicsFor === 'teacher' ? '/topicsTeaching' : '/topicsLearning';
 
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + topicsUrl)
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + topicsUrl, this.options)
         .map((response: Response) => response.json()
         );
     }
@@ -119,7 +113,7 @@ export class ProfileService {
     const body = {
     };
     return this.http
-      .post(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId + '&email=' + emailAddress, body)
+      .post(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId + '&email=' + emailAddress, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -130,7 +124,7 @@ export class ProfileService {
     const body = {};
     const redirect = 'onboarding';
     return this.http
-      .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect, body)
+      .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -140,7 +134,7 @@ export class ProfileService {
 
   public getSocialIdentities() {
     return this.http
-      .get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities')
+      .get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities', this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -149,7 +143,7 @@ export class ProfileService {
   /* get collections */
   public getCollections() {
     if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections')
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections', this.options)
         .map((response: Response) => response.json(), (err) => {
           console.log('Error: ' + err);
         });
@@ -161,19 +155,19 @@ export class ProfileService {
       // console.log(collections);
       // const reviews: any = [];
       //  collections.forEach(collection => {
-      return this.http.get(this.config.apiUrl + '/api/collections/' + collectionId + '/reviews')
+      return this.http.get(this.config.apiUrl + '/api/collections/' + collectionId + '/reviews', this.options)
         .map((response: Response) => response.json());
     }
   }
   public getOwnedCollectionCount(id) {
     if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + id + '/ownedCollections/count')
+      return this.http.get(this.config.apiUrl + '/api/peers/' + id + '/ownedCollections/count', this.options)
         .map((response: Response) => response.json());
     }
   }
   public getReviewer(reviewId) {
     if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/reviews/' + reviewId + '/peer')
+      return this.http.get(this.config.apiUrl + '/api/reviews/' + reviewId + '/peer', this.options)
         .map((response: Response) => response.json());
     }
   }
@@ -194,17 +188,92 @@ export class ProfileService {
   }
 
   /**
+   * Delete all work nodes of a profile
+   * @param profileId
+   * @param cb
+   */
+  public deleteProfileWorks(profileId, cb) {
+    this.http
+      .delete(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.options)
+      .map((response) => {
+        cb(null, response);
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public updateProfileWorks(profileId, work: any, cb: any) {
+    if (!(work.length > 0 && this.userId)) {
+      console.log('User not logged in');
+      cb(new Error('User not logged in or work body blank'));
+    } else {
+      this.http
+        .post(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.sanitize(work), this.options)
+        .map((response1) => {
+          cb(null, response1.json());
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
+  /**
+   * Delete all education nodes of a profile
+   * @param profileId
+   * @param cb
+   */
+  public deleteProfileEducations(profileId, cb) {
+    this.http
+      .delete(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.options)
+      .map((response) => {
+        cb(null, response);
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public updateProfileEducations(profileId, education: any, cb: any) {
+    if (!(education.length > 0 && this.userId)) {
+      console.log('User not logged in');
+      cb(new Error('User not logged in or education body blank'));
+    } else {
+      this.http
+        .post(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.sanitize(education), this.options)
+        .map((response1) => {
+          cb(null, response1.json());
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
+  /**
    * sanitize
    */
-  private sanitize(newprofile: any) {
-    delete newprofile.id;
-    delete newprofile.peer;
-    delete newprofile.work;
-    delete newprofile.education;
-    return newprofile;
+  private sanitize(object: any) {
+    delete object.id;
+    delete object.peer;
+    delete object.work;
+    delete object.education;
+    return object;
   }
 
   getUserId() {
     return this.getCookieValue(this.key);
   }
+
+  /**
+   * getAllPeers
+   */
+  public getAllPeers(query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers?filter=' + JSON.stringify(query));
+  }
+
+  /**
+   * getTopics
+   */
+  public getTopics(userId: string, query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning?filter=' + JSON.stringify(query));
+  }
+
 }

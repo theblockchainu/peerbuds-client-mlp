@@ -6,3 +6,13 @@ html, body {
 a.active {
   background-color: gray;
 }
+
+.mat-list-item-content {
+  height: fit-content !important;
+}
+
+.centerFlex {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}

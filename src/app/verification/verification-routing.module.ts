@@ -4,7 +4,7 @@ import { UploadDocsComponent } from './upload-docs/upload-docs.component';
 
 const routes: Routes = [
 {
-  path: 'identity-verification', component: UploadDocsComponent
+  path: '', component: UploadDocsComponent
 }
 ];
 

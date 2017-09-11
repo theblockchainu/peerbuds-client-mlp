@@ -84,7 +84,7 @@
     display: inline-block;
     vertical-align: middle;
     overflow: hidden;
-    padding: .125em .5em;
+    padding: .625em .5em;
     white-space: nowrap;
     position: relative;
     margin-right: .125em;
@@ -144,4 +144,14 @@ span.ui-autocomplete-multiple {
     border:none;
     border-bottom: 1px solid lightgray;
     width: 100%;
+}
+
+.ui-state-highlight {
+    background-color: #eeeeee;
+    border: 0.5px solid #ccc;
+    color: #4a4a4a;
+}
+
+a.ui-autocomplete-token-icon.fa-close::before {
+    color: gray !important;
 }

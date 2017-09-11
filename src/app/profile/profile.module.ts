@@ -4,12 +4,14 @@ import { SharedModule } from '../_shared/_shared.module';
 import { ProfileComponent } from './profile.component';
 
 import { ProfileRoutingModule } from './profile-routing.module';
+import { MdTabsModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    ProfileRoutingModule
+    ProfileRoutingModule,
+    MdTabsModule
   ],
   declarations: [ProfileComponent]
 })
