@@ -40,7 +40,7 @@ export class HomefeedComponent implements OnInit {
     this._topicService.getTopics(query).subscribe(
       (response) => {
         this.workshops = [];
-        for (const responseObj of response.json()) {
+        for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.reviews) {
               collection.rating = this._collectionService.calculateRating(collection.reviews);

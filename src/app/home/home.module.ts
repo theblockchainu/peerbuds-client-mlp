@@ -10,6 +10,7 @@ import { MdTabsModule } from '@angular/material';
 import { HomefeedComponent } from './homefeed/homefeed.component';
 import { SharedModule } from '../_shared/_shared.module';
 import { SelectTopicsComponent } from './workshops/select-topics/select-topics.component';
+import { SelectPriceComponent } from './workshops/select-price/select-price.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,8 +18,8 @@ import { SelectTopicsComponent } from './workshops/select-topics/select-topics.c
     MdTabsModule,
     SharedModule
   ],
-  declarations: [HomeComponent, WorkshopsComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent],
+  declarations: [HomeComponent, WorkshopsComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent, SelectPriceComponent],
   providers: [],
-  bootstrap: [SelectTopicsComponent]
+  bootstrap: [SelectTopicsComponent, SelectPriceComponent]
 })
 export class HomeModule { }

@@ -8,6 +8,8 @@ import _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
 import { SelectTopicsComponent } from './select-topics/select-topics.component';
+import { SelectPriceComponent } from './select-price/select-price.component';
+import 'rxjs/add/operator/do';
 
 @Component({
   selector: 'app-workshops',
@@ -18,8 +20,14 @@ export class WorkshopsComponent implements OnInit {
   public availableTopics: Array<any>;
   public userId: string;
   public workshops: Array<any>;
+  @ViewChild('topicButton') topicButton;
+  @ViewChild('priceButton') priceButton;
+  public availableRange: Array<number>;
+  public selectedRange: Array<number>;
+  public loading: boolean;
+  topicPromise: Promise<any>;
+  public initialized: boolean;
   public selectedTopics: Array<any>;
-  @ViewChild('menuButton') menuButton;
 
   constructor(
     public _collectionService: CollectionService,
@@ -33,64 +41,99 @@ export class WorkshopsComponent implements OnInit {
     this.userId = _cookieUtilsService.getValue('userId');
   }
   ngOnInit() {
-    this.fetchTopics();
-    this.fetchWorkshops();
+    this.fetchData().subscribe();
   }
 
+  fetchData(): Observable<any> {
+    return this.fetchTopics().map(
+      response => {
+        this.availableTopics = response;
+        this.fetchWorkshops();
+      }, err => {
+        console.log(err);
+      });
+  }
 
-  fetchTopics() {
+  setPriceRange(): void {
+    if (this.workshops) {
+      this.availableRange = [
+        _.minBy(this.workshops, function (o) {
+          return o.price;
+        }).price,
+        _.maxBy(this.workshops, function (o) { return o.price; }).price
+      ];
+      this.selectedRange = _.clone(this.availableRange);
+    }
+  }
+
+  fetchTopics(): Observable<Array<any>> {
     const query = {};
-    this._topicService.getTopics(query).subscribe(
+    return this._topicService.getTopics(query).map(
       (response) => {
-        this.availableTopics = [];
-        response.json().forEach(topic => {
-          this.availableTopics.push({ 'topic': topic, 'checked': false });
+        const availableTopics = [];
+        response.forEach(topic => {
+          availableTopics.push({ 'topic': topic, 'checked': false });
         });
+        return availableTopics;
       }, (err) => {
         console.log(err);
       }
     );
   }
 
-  fetchWorkshops(availableTopics?: Array<string>) {
+  fetchWorkshops(): void {
     let query;
-    if (availableTopics) {
-      this.selectedTopics = [];
-      for (const topicObj of availableTopics) {
-        if (topicObj['checked']) {
-          this.selectedTopics.push({ 'name': topicObj['topic'].name });
-        }
+    this.loading = true;
+    this.selectedTopics = [];
+    for (const topicObj of this.availableTopics) {
+      if (topicObj['checked']) {
+        this.selectedTopics.push({ 'name': topicObj['topic'].name });
       }
-      query = {
-        'include': [
-          { 'collections': ['reviews'] }
-        ],
-        'where': { or: this.selectedTopics }
-      };
-    } else {
-      query = {
-        'include': [
-          { 'collections': ['reviews'] }
-        ]
-      };
     }
+    if (this.selectedTopics.length < 1) {
+      for (const topicObj of this.availableTopics) {
+        this.selectedTopics.push({ 'name': topicObj['topic'].name });
+      }
+    }
+    query = {
+      'include': [
+        { 'collections': ['reviews'] }
+      ],
+      'where': { or: this.selectedTopics }
+    };
 
-    this._topicService.getTopics(query).subscribe(
+    this._topicService.getTopics(query)
+      .subscribe(
       (response) => {
-        this.workshops = [];
-        for (const responseObj of response.json()) {
+        const workshops = [];
+        for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.reviews) {
               collection.rating = this._collectionService.calculateRating(collection.reviews);
             }
-            this.workshops.push(collection);
+            if (collection.price) {
+              if (this.selectedRange) {
+                if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
+                  workshops.push(collection);
+                }
+              } else {
+                workshops.push(collection);
+              }
+            } else {
+              console.log('price unavailable');
+            }
           });
         }
-        this.workshops = _.uniqBy(this.workshops, 'id');
+        this.workshops = _.uniqBy(workshops, 'id');
+        this.loading = false;
+        if (!this.initialized) {
+          this.setPriceRange();
+          this.initialized = true;
+        }
       }, (err) => {
         console.log(err);
       }
-    );
+      );
   }
 
   openTopicsDialog(): void {
@@ -99,18 +142,38 @@ export class WorkshopsComponent implements OnInit {
       data: this.availableTopics,
       disableClose: true,
       position: {
-        top: this.menuButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
-        left: this.menuButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
+        top: this.topicButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
+        left: this.topicButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result) {
         this.availableTopics = result;
-        this.fetchWorkshops(this.availableTopics);
+        this.fetchWorkshops();
       }
     });
   }
 
+  openPriceDialog(): void {
+    const dialogRef = this.dialog.open(SelectPriceComponent, {
+      width: '250px',
+      data: {
+        availableRange: this.availableRange,
+        selectedRange: this.selectedRange
+      },
+      disableClose: true,
+      position: {
+        top: this.priceButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
+        left: this.priceButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.selectedRange = result.selectedRange;
+        this.fetchWorkshops();
+      }
+    });
+  }
 }

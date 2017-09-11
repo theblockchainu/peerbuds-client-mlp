@@ -1,20 +1,20 @@
+<!-- <div *ngIf="loading" class="col-md-2 col-md-offset-5">
+  <md-spinner></md-spinner>
+</div> -->
 <div class="container feed workshopsFeed">
   <div class="row workshop-feed">
     <div class="col-md-12">
       <div class="row">
         <div class="col-md-5">
-          <h2 *ngIf="!selectedTopics">Workshops</h2>
+          <h2 *ngIf="!selectedTopics || selectedTopics.length<1">Workshops</h2>
           <h2 *ngIf="selectedTopics && selectedTopics.length>0 "> <span>{{selectedTopics[0].name}}</span> Workshops <span *ngIf="selectedTopics.length>1"> +{{selectedTopics.length-1}} more</span></h2>
         </div>
         <div class="col-md-3 pull-right">
           <div class="col-md-6">
-            <button md-button #menuButton (click)="openTopicsDialog()">Topics <md-icon>arrow_drop_down</md-icon> </button>
+            <button md-button #topicButton (click)="openTopicsDialog()">Topics <md-icon>arrow_drop_down</md-icon> </button>
           </div>
           <div class="col-md-6">
-            <button md-button [mdMenuTriggerFor]="menu2">Price Range <md-icon>arrow_drop_down</md-icon></button>
-            <md-menu #menu2="mdMenu">
-              <md-slider></md-slider>
-            </md-menu>
+            <button md-button #priceButton (click)="openPriceDialog()">Price Range <md-icon>arrow_drop_down</md-icon> </button>
           </div>
         </div>
       </div>
