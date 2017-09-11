@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs/Rx';
-import { EditCalendarDialog } from './edit.calendar.dialog.component';
-// import { ViewConflictDialog } from './view.conflict.dialog.component';
+import { EditCalendarDialog } from './edit-calendar-dialog/edit-calendar-dialog.component';
+import { AddTopicDialogComponent } from './add-topic-dialog/add-topic-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { AddLanguageDialogComponent } from './add-language-dialog/add-language-dialog.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
@@ -39,15 +40,21 @@ export class DialogsService {
 
     }
 
-    // public showConflicts(conflicts, id): Observable<boolean> {
-    //     let dialogRef: MdDialogRef<ViewConflictDialog>;
+    public addNewTopic() {
+        let dialogRef: MdDialogRef<AddTopicDialogComponent>;
 
-    //     dialogRef = this.dialog.open(ViewConflictDialog);
+        dialogRef = this.dialog.open(AddTopicDialogComponent);
 
-    //     dialogRef.componentInstance.conflicts = conflicts;
-    //     dialogRef.componentInstance.id = id;
+        return dialogRef.afterClosed();
 
-    //     return dialogRef.afterClosed();
+    }
 
-    // }
+    public addNewLanguage() {
+        let dialogRef: MdDialogRef<AddLanguageDialogComponent>;
+
+        dialogRef = this.dialog.open(AddLanguageDialogComponent);
+
+        return dialogRef.afterClosed();
+
+    }
 }

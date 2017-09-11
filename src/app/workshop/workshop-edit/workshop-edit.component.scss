@@ -4,19 +4,19 @@
 .title{
     margin-top:20px !important;
     margin-bottom:15px;
-    font-size:38px;
-    font-weight:700;
+    // font-size:38px;
+    // font-weight:700;
     line-height: 1.1;
 }
 .subtitle {
-  font-size: 15px;
+  font-size: 16px;
   color: #aaaaaa;
-  margin: 5px;
+  // margin: 5px;
 }
 .guideline-points{
   margin:10vh 0;
   padding: 0 0 0 15px;
-  font-size:18px;
+  font-size:15px;
   li{
     margin-bottom:20px;
   }
@@ -37,9 +37,9 @@ input[type="text"]{
 .btn-continue{
   padding:10px 50px;
 }
-textarea{
-  resize:none;
-}
+// textarea{
+//   resize:none;
+// }
 .navbar-fixed-left {
   width: 180px;
   position: fixed;
@@ -193,4 +193,14 @@ md-icon {
 
 a:hover {
   text-decoration: none;
+}
+
+.iconVC {
+  vertical-align:baseline;
+  font-size: 20px
+}
+
+.addIconText {
+  font-size: 16px;
+  color: darkgray;
 }
