@@ -7,8 +7,8 @@ import { AppConfig } from '../../app.config';
 import _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
-import { SelectTopicsComponent } from './select-topics/select-topics.component';
-import { SelectPriceComponent } from './select-price/select-price.component';
+import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
+import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import 'rxjs/add/operator/do';
 
 @Component({
@@ -25,7 +25,6 @@ export class WorkshopsComponent implements OnInit {
   public availableRange: Array<number>;
   public selectedRange: Array<number>;
   public loading: boolean;
-  topicPromise: Promise<any>;
   public initialized: boolean;
   public selectedTopics: Array<any>;
 

@@ -9,8 +9,8 @@ import { PeersComponent } from './peers/peers.component';
 import { MdTabsModule } from '@angular/material';
 import { HomefeedComponent } from './homefeed/homefeed.component';
 import { SharedModule } from '../_shared/_shared.module';
-import { SelectTopicsComponent } from './workshops/select-topics/select-topics.component';
-import { SelectPriceComponent } from './workshops/select-price/select-price.component';
+import { SelectTopicsComponent } from './dialogs/select-topics/select-topics.component';
+import { SelectPriceComponent } from './dialogs//select-price/select-price.component';
 @NgModule({
   imports: [
     CommonModule,
