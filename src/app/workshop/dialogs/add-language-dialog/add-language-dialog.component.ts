@@ -6,25 +6,25 @@ import {
 import { ContentService } from '../../../_services/content/content.service';
 
 @Component({
-  selector: 'app-add-topic-dialog',
-  templateUrl: './add-topic-dialog.component.html',
-  styleUrls: ['./add-topic-dialog.component.scss']
+  selector: 'app-add-language-dialog',
+  templateUrl: './add-language-dialog.component.html',
+  styleUrls: ['./add-language-dialog.component.scss']
 })
-export class AddTopicDialogComponent implements OnInit {
-  public newTopic: FormGroup;
+export class AddLanguageDialogComponent implements OnInit {
+  public newLanguage: FormGroup;
 
-  constructor(public dialogRef: MdDialogRef<AddTopicDialogComponent>,
+  constructor(public dialogRef: MdDialogRef<AddLanguageDialogComponent>,
               public _contentService: ContentService,
               private _fb: FormBuilder) { }
 
   ngOnInit() {
-    this.newTopic = this._fb.group({
-      topicName: ['', Validators.required]
+    this.newLanguage = this._fb.group({
+      name: ['', Validators.required]
     });
   }
 
-  addNewTopic() {
-    this._contentService.addNewTopic(this.newTopic.controls['topicName'].value)
+  addNewLanguage() {
+    this._contentService.addNewLanguage(this.newLanguage.controls['name'].value)
         .map((res) => {
           this.dialogRef.close(res);
         })

@@ -15,8 +15,7 @@ export class SideBarMenuItem {
 
 @Injectable()
 export class LeftSidebarService {
-
-
+    
   sidebarMenuItems: Observable<SideBarMenuItem>;
 
   constructor(
@@ -63,7 +62,7 @@ export class LeftSidebarService {
                 }
             });
         }
-        if (collection.topics !== undefined && collection.topics.length >= 3) {
+        if (collection.topics !== undefined && collection.topics.length <= 3) {
             sidebarMenuItems[0].submenu[0].complete = true;
             completedSections++;
         }

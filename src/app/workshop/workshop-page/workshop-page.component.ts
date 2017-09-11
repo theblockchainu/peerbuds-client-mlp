@@ -198,7 +198,6 @@ export class WorkshopPageComponent implements OnInit {
       }
       this.workshopId = params['workshopId'];
       this.calendarId = params['calendarId'];
-      console.log('route changed');
     });
     this.userId = cookieUtilsService.getValue('userId');
   }

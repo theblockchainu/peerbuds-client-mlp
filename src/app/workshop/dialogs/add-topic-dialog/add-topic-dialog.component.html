@@ -1,32 +1,13 @@
 
-
 <h3 md-dialog-title>Add New Topic</h3>
 <div md-dialog-content>
   <form [formGroup]="newTopic" (ngSubmit)="addNewTopic()">
-    <md-form-field>
+    <md-form-field class="form-group" [ngClass]="{'has-error':!newTopic.controls['topicName'].valid}">
       <input mdInput tabindex="1" formControlName="topicName">
     </md-form-field>
-    <div md-dialog-actions>
-      <button md-button tabindex="2" type="submit">Add</button>
-      <button md-button tabindex="-1" (click)="dialogRef1.close()">Cancel</button>
+    <div>
+      <button md-button tabindex="2" type="submit" [disabled]="!newTopic.valid">Add</button>
+      <button md-button tabindex="-1" type="button" (click)="dialogRef.close()">Cancel</button>
     </div>
   </form>
-    <!-- <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Add New Topic</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="newTopicModal.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="newTopic" (ngSubmit)="AddNewTopic(newTopic,newTopicModal)">
-          <label>Provide the Topic Name</label>
-          <input type="text" formControlName="topicName">
-          <div style="height:15px"></div>
-          <button type="submit" class="btn btn-primary btn-sm">Add</button>
-        </form>
-      </div>
-    </div>
-  </div> -->
 </div>
