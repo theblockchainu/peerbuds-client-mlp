@@ -12,7 +12,7 @@ export class ViewParticipantsComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<ViewParticipantsComponent>,
     @Inject(MD_DIALOG_DATA) public data: any,
-    private config: AppConfig,
+    public config: AppConfig,
     private dialog: MdDialog,
     private _collectionService: CollectionService
   ) { }

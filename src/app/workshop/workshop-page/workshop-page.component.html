@@ -105,7 +105,12 @@
                               <div class="row">
                                 <div class="col-md-12">
                                   <h3> {{content.title | titlecase}}</h3>
-                                  <h4> {{_collectionService.getContentTypeFullName(content.type) | titlecase}}</h4>
+                                  <p>{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
+                                    <span *ngIf="content.schedules[0].startTime !== undefined" class="lighterText" style="font-size: 80%">
+                                      &emsp;<md-icon style="font-size: 5px; top: -2px; height: 20px;">fiber_manual_record</md-icon>
+                                      {{content.schedules[0].startTime | date: 'hh:mm a'}} - {{content.schedules[0].endTime | date: 'hh:mm a'}}
+                                    </span>
+                                  </p>
                                 </div>
                               </div>
                               <div class="row margin-top-10">
@@ -132,13 +137,14 @@
             <hr class="margin-top-40 margin-bottom-40">
             <!--DISCUSSION THREAD-->
             <div class="row Discussion" *ngIf="userType==='teacher' || userType==='participant'">
-              <div class="col-md-12">
-                <h3>Discussion</h3>
+              <div class="col-md-12 margin-bottom-20">
+                <h3 *ngIf="comments !== undefined">Discussion ({{comments.length}})</h3>
+                <h3 *ngIf="comments === undefined">Discussion (0)</h3>
                 <form [formGroup]="chatForm" (ngSubmit)="postComment()">
                   <md-input-container class="full-width margin-top-10" [floatPlaceholder]="false">
                     <input mdInput type="text" formControlName="description" placeholder="Post your thoughts on this workshop">
                   </md-input-container>
-                  <md-checkbox formControlName="announce">Make Announcement</md-checkbox>
+                  <md-checkbox [formControlName]="'isAnnouncement'" *ngIf="userType==='teacher'">Make Announcement</md-checkbox>
                   <button md-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right">Post</button>
                 </form>
               </div>
@@ -148,160 +154,193 @@
                     <div class="emptySectionText">Be the first one to start a discussion on this workshop..</div>
                   </div>
                 </div>
-                <div class="row margin-top-30" *ngFor="let comment of comments">
-                  <div class="col-md-1" style="text-align: center; color: #cccccc;">
-                    <md-icon style="">arrow_drop_up</md-icon>
-                    <div>
-                      {{comment.upvotes.length}}
+                <div class="row" *ngFor="let comment of comments">
+                  <div *ngIf="comment.isAnnouncement === true">
+                    <div class="announcement">
+                      <button md-icon-button [mdMenuTriggerFor]="menuComment" style="float: right;">
+                        <md-icon style="color: #cccccc">more_vert</md-icon>
+                      </button>
+                      <md-menu #menuComment="mdMenu">
+                        <button *ngIf="userType==='participant'" md-menu-item>
+                          <md-icon>flag</md-icon>
+                          <span>Flag</span>
+                        </button>
+                        <button *ngIf="userType==='teacher'" md-menu-item>
+                          <md-icon>delete</md-icon>
+                          <span>Delete</span>
+                        </button>
+                      </md-menu>
+                      <div class="margin-bottom-10"><b>Announcement</b></div>
+                      <div>{{comment.description}}</div>
                     </div>
                   </div>
-                  <div class="col-md-11">
-                    <button md-icon-button [mdMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;">
-                      <md-icon style="color: #cccccc">more_vert</md-icon>
-                    </button>
-                    <md-menu #menuComment="mdMenu">
-                      <button *ngIf="userType==='participant'" md-menu-item>
-                        <md-icon>flag</md-icon>
-                        <span>Flag</span>
-                      </button>
-                      <button *ngIf="userType==='teacher'" md-menu-item>
-                        <md-icon>delete</md-icon>
-                        <span>Delete</span>
-                      </button>
-                    </md-menu>
-                    <div style="font-weight: 800">{{comment.description}}</div>
-                    <div style="margin-top: 10px; font-size: 85%" *ngIf="comment.peer.length>0">
-                      <div style="float: left;">
-                        <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
-                        <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp">
-                      </div>
-                      <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
-                        <div>
-                          <div>
-                            <span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>
-                            <span *ngIf="comment.peer[0].profiles[0].work">{{comment.peer[0].profiles[0].work[0].position}}</span>
-                          </div>
-                        </div>
-                        <div style="font-size: 90%">
-                          <span class="lighterText">{{comment.createdAt |extractTime:'hh:mm a, Do MMMM YYYY'}}</span>
-                        </div>
+                </div>
+                <div class="row margin-top-10" *ngFor="let comment of comments">
+                  <div *ngIf="comment.isAnnouncement === false">
+                    <div class="col-md-1" style="text-align: center; color: #cccccc;">
+                      <md-icon style="cursor: pointer;" (click)="addCommentUpvote(comment)" >arrow_drop_up</md-icon>
+                      <div>
+                        {{comment.upvotes.length}}
                       </div>
                     </div>
-                    <div style="margin-top: 15px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
-                      <a href="javascript:void(0);" (click)="createReplyForm(comment)"><md-icon style="top: 5px;">reply</md-icon> Reply</a>
-                    </div>
-                    <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
-                      <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
-                        <img src="/assets/images/avatar.png" alt="A" class="circle-thumb">
-                        <md-input-container style="margin-left: 15px; width: 88%;">
-                          <input mdInput type="text" formControlName="description" placeholder="Reply to above comment...">
-                        </md-input-container>
-                        <button [disabled]="!replyForm.valid" md-raised-button class="pull-right" color="primary">Post</button>
-                      </form>
-                    </div>
-                    <div class="col-md-11 col-md-offset-1 margin-top-20">
-                      <div class="row margin-top-20" *ngFor="let reply of comment.replies">
-                        <button md-icon-button [mdMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;">
-                          <md-icon style="color: #cccccc;">more_vert</md-icon>
+                    <div class="col-md-11">
+                      <button md-icon-button [mdMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;">
+                        <md-icon style="color: #cccccc">more_vert</md-icon>
+                      </button>
+                      <md-menu #menuComment="mdMenu">
+                        <button *ngIf="userType==='participant'" md-menu-item>
+                          <md-icon>flag</md-icon>
+                          <span>Flag</span>
                         </button>
-                        <md-menu #menuReply="mdMenu">
-                          <button *ngIf="userType==='participant'" md-menu-item>
-                            <md-icon>flag</md-icon>
-                            <span>Flag</span>
-                          </button>
-                          <button *ngIf="userType==='teacher'" md-menu-item>
-                            <md-icon>delete</md-icon>
-                            <span>Delete</span>
-                          </button>
-                        </md-menu>
-                        <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px; margin-left: -60px;">
-                          <md-icon style="">arrow_drop_up</md-icon>
+                        <button *ngIf="userType==='teacher'" md-menu-item>
+                          <md-icon>delete</md-icon>
+                          <span>Delete</span>
+                        </button>
+                      </md-menu>
+                      <div>{{comment.description}}</div>
+                      <div style="margin-top: 10px; font-size: 85%" *ngIf="comment.peer.length>0">
+                        <div style="float: left;">
+                          <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+                          <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp">
+                        </div>
+                        <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                           <div>
-                            <!--{{reply.upvotes}}-->
-                            0
+                            <div>
+                              <span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                              <span *ngIf="comment.peer[0].profiles[0].headline">{{comment.peer[0].profiles[0].headline}}</span>
+                            </div>
+                          </div>
+                          <div style="font-size: 90%">
+                            <span class="lighterText">{{comment.createdAt |extractTime:'hh:mm a, Do MMMM YYYY'}}</span>
                           </div>
                         </div>
-                        <div style="display: inline-block">
-                          <div style="font-weight: 800">{{reply.description}}</div>
-                          <div style="margin-top: 10px; font-size: 85%" *ngIf="reply.peer && reply.peer.length>0">
-                            <div style="float: left;">
-                              <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
-                              <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp">
+                      </div>
+                      <div style="margin-top: 15px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
+                        <a href="javascript:void(0);" (click)="createReplyForm(comment)"><md-icon style="top: 5px;">reply</md-icon> Reply</a>
+                      </div>
+                      <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
+                        <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
+                          <img src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+                          <md-input-container style="margin-left: 15px; width: 88%;">
+                            <input mdInput type="text" formControlName="description" placeholder="Reply to above comment...">
+                          </md-input-container>
+                          <button [disabled]="!replyForm.valid" md-raised-button class="pull-right" color="primary">Post</button>
+                        </form>
+                      </div>
+                      <div class="col-md-11 col-md-offset-1 margin-top-20">
+                        <div class="row margin-top-20" *ngFor="let reply of comment.replies">
+                          <button md-icon-button [mdMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;">
+                            <md-icon style="color: #cccccc;">more_vert</md-icon>
+                          </button>
+                          <md-menu #menuReply="mdMenu">
+                            <button *ngIf="userType==='participant'" md-menu-item>
+                              <md-icon>flag</md-icon>
+                              <span>Flag</span>
+                            </button>
+                            <button *ngIf="userType==='teacher'" md-menu-item>
+                              <md-icon>delete</md-icon>
+                              <span>Delete</span>
+                            </button>
+                          </md-menu>
+                          <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px; margin-left: -60px;">
+                            <md-icon style="cursor: pointer;" (click)="addReplyUpvote(reply)" >arrow_drop_up</md-icon>
+                            <div>
+                              <span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
+                              <span *ngIf="reply.upvotes === undefined">0</span>
                             </div>
-                            <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
-                              <div>
+                          </div>
+                          <div style="display: inline-block">
+                            <div>{{reply.description}}</div>
+                            <div style="margin-top: 10px; font-size: 85%" *ngIf="reply.peer && reply.peer.length>0">
+                              <div style="float: left;">
+                                <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+                                <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp">
+                              </div>
+                              <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                                 <div>
-                                  <span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>
-                                  <span *ngIf="reply.peer[0].profiles[0].work">{{reply.peer[0].profiles[0].work[0].position}}</span>
+                                  <div>
+                                    <span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                                    <span *ngIf="reply.peer[0].profiles[0].headline">{{reply.peer[0].profiles[0].headline}}</span>
+                                  </div>
+                                </div>
+                                <div style="font-size: 90%">
+                                  <span class="lighterText">{{reply.createdAt |extractTime:'hh:mm a, Do MMMM YYYY'}}</span>
                                 </div>
                               </div>
-                              <div style="font-size: 90%">
-                                <span class="lighterText">{{reply.createdAt |extractTime:'hh:mm a, Do MMMM YYYY'}}</span>
-                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-12">
-                    <hr class="margin-top-30">
+                    <div class="col-md-12">
+                      <hr class="margin-top-30">
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <hr class="margin-top-70" *ngIf="(userType==='teacher' || userType==='participant') && comments!== undefined && comments.length === 0">
             <!--REVIEWS-->
-            <div class="row Reviews margin-top-70" *ngIf="reviews !== undefined && reviews.length > 0">
+            <div class="row Reviews" *ngIf="reviews !== undefined">
               <div class="col-md-12">
-                <div class="row margin-top-40">
+                <div class="row margin-top-20">
                   <div class="col-md-12">
-                    <span><b>Reviews ({{reviews.length}})</b></span> &emsp;
-                    <p-rating style="display: inline-flex;" *ngIf="userType==='teacher' || userType==='public'" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
-                    <p-rating style="display: inline-flex;" *ngIf="userType==='participant'" [(ngModel)]="userRating" (onRate)="handleRate($event)" [cancel]="false"></p-rating>
+                    <h3 style="display: inline-block;">Reviews ({{reviews.length}})</h3> &emsp;
+                    <span style="display: inline-block;">
+                      <p-rating style="display: inline-flex;" *ngIf="userType==='teacher' || userType==='public'" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
+                      <p-rating style="display: inline-flex;" *ngIf="userType==='participant'" [(ngModel)]="userRating" (onRate)="handleRate($event)" [cancel]="false"></p-rating>
+                    </span>
                   </div>
                 </div>
-                <div class="row" *ngIf="userType==='participant' && reviewForm">
+                <div class="row margin-top-20" *ngIf="userType==='participant' && reviewForm">
                   <div class="col-md-12">
                     <form [formGroup]="reviewForm" (ngSubmit)="postReview()">
                       <md-input-container class="full-width">
-                        <input mdInput formControlName="description" placeholder="Please give us your review">
+                        <input mdInput formControlName="description" placeholder="Describe your experience with this workshop">
                       </md-input-container>
-                      <button type="submit" [disabled]="!reviewForm.valid" md-button class="pull-right">Submit</button>
+                      <button [disabled]="!reviewForm.valid" md-button class="pull-right">Submit</button>
                     </form>
                   </div>
                 </div>
-                <hr>
                 <div class="row lighterText" *ngIf="reviews.length === 0">
                   <div class="col-md-12">
-                    <div class="emptySectionText">Start by writing a review for this workshop..</div>
+                    <div class="emptySectionText" *ngIf="userType !== 'teacher'">Start by giving stars to this workshop..</div>
+                    <div class="emptySectionText" *ngIf="userType === 'teacher'">Awaiting first review from participants of this workshop..</div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-11 col-md-offset-1">
-                    <div class="row" *ngFor="let review of reviews;let i=index">
+                  <div class="col-md-12">
+                    <div class="row margin-top-20" *ngFor="let review of reviews;let i=index">
                       <div class="col-md-12" [hidden]="i>=noOfReviews">
                         <div class="row">
-                          <div class="col-md-2">
-                            <img *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="thumb-35">
-                            <img *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}"
-                                 class="img-circle review-thumb" alt="dp">
-                          </div>
-                          <div class="col-md-10">
-                            <div class="col-md-12">
-                              <h4 *ngIf="review.peer">{{review.peer[0].profiles[0].first_name + review.peer[0].profiles[0].last_name}}</h4>
-                            </div>
-                            <div class="col-md-12">
-                              <p>{{review.createdAt | date:'mediumDate'}}</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
                           <div class="col-md-12">
-                            {{review.description}}
+                            <div class="row">
+                              <div style="margin-top: 10px; font-size: 85%">
+                                <div style="float: left;">
+                                  <img *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
+                                  <img *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
+                                </div>
+                                <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+                                  <div>
+                                    <div>
+                                      <span style="font-weight: 500">{{review.peer[0].profiles[0].first_name + review.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                                      <span *ngIf="review.peer[0].profiles[0].headline">{{review.peer[0].profiles[0].headline}}</span>
+                                    </div>
+                                  </div>
+                                  <div style="font-size: 90%">
+                                    <span class="lighterText">{{review.createdAt | date:'mediumDate'}}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row margin-top-10">
+                              <div class="col-md-12">
+                                {{review.description}}
+                              </div>
+                            </div>
+                            <br>
                           </div>
                         </div>
-                        <br>
                       </div>
                     </div>
                     <div class="row" *ngIf="reviews && reviews.length>3">
@@ -316,9 +355,9 @@
                 </div>
               </div>
             </div>
-            <hr class="margin-top-70" *ngIf="reviews !== undefined && reviews.length > 0">
+            <hr class="margin-top-70" *ngIf="reviews !== undefined">
             <!--REQUIREMENTS-->
-            <div class="row Eligibility margin-top-50" *ngIf="userType==='teacher' || userType === 'participant'">
+            <div class="row Eligibility margin-top-20" *ngIf="userType==='teacher' || userType === 'participant'">
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
@@ -362,20 +401,20 @@
                 </div>
                 <div *ngFor="let participant of workshop.participants; let i=index">
                   <div class="row margin-top-20 margin-bottom-20" *ngIf="participant.profiles && i<4">
-                    <div class="col-md-2">
+                    <div class="col-md-2 vcenter">
                       <img *ngIf="!participant.peer || !participant.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" style="margin-left: 0px;">
                       <img *ngIf="participant.peer && participant.peer[0].profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb" alt="dp" style="margin-left: 0px;">
                     </div>
-                    <div class="col-md-5">
-                      {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}
+                    <div class="col-md-9 vcenter">
+                      {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
+                      <span *ngIf="participant.profiles[0].headline" style="font-weight: 300;">{{participant.profiles[0].headline}}</span>
                     </div>
-                    <div class="col-md-5" *ngIf="participant.profiles[0].work">{{participant.profiles[0].work[0].position}}</div>
                   </div>
                 </div>
                 <div>
                   <div class="row">
                     <div class="col-md-12">
-                      <a (click)="viewParticipants()"> View all participants </a>
+                      <a (click)="viewParticipants()" style="cursor: pointer;"> View all participants </a>
                     </div>
                   </div>
                 </div>

@@ -805,3 +805,20 @@ img {
     border-radius: 2px !important;
 }
 
+.ui-accordion .ui-accordion-header a {
+    color: #464646 !important;
+}
+
+.ui-accordion .ui-accordion-header a:focus {
+    outline: none;
+}
+
+.ui-accordion {
+    border-bottom: 0.5px solid #eee !important;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

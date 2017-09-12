@@ -22,4 +22,8 @@ export class SelectDateDialogComponent implements OnInit {
     this.selectedIndex = event.index;
   }
 
+  onTabClose(event) {
+    this.selectedIndex = -1;
+  }
+
 }

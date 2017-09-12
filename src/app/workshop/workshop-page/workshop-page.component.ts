@@ -99,6 +99,8 @@ export class WorkshopPageComponent implements OnInit {
   public reviews;
   public defaultProfileUrl = '/assets/images/avatar.png';
   public noWrapSlides = true;
+  public peerHasSubmission = false;
+  public contentHasSubmission = {};
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
@@ -306,7 +308,8 @@ export class WorkshopPageComponent implements OnInit {
         'calendars',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules', 'submissions'] }]
+        { 'contents': ['schedules', { 'submissions': [{'upvotes': 'peer'}, { 'peer': 'profiles' } ] }] }
+      ]
     };
 
     if (this.workshopId) {
@@ -321,6 +324,17 @@ export class WorkshopPageComponent implements OnInit {
             } else {
               this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
             }
+
+            if (contentObj.submissions && contentObj.submissions.length > 0) {
+              contentObj.submissions.forEach(submission => {
+                if (submission.peer) {
+                  if (this.userId === submission.peer[0].id) {
+                    this.peerHasSubmission = true;
+                  }
+                }
+              });
+            }
+
           });
           for (const key in this.itenariesObj) {
             if (this.itenariesObj.hasOwnProperty(key)) {
@@ -364,7 +378,11 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
   private getReviews() {
-    const query = { 'peer': ['profiles'] };
+    const query = {'include': [
+        {
+            'peer': ['profiles']
+        }]
+    };
     this._collectionService.getReviews(this.workshopId, query, (err, response) => {
       if (err) {
         console.log(err);
@@ -392,6 +410,9 @@ export class WorkshopPageComponent implements OnInit {
                   'profiles': ['work']
                 }
               ]
+            },
+            {
+              'upvotes': 'peer'
             }
           ]
         },
@@ -417,7 +438,7 @@ export class WorkshopPageComponent implements OnInit {
   private initializeForms() {
     this.chatForm = this._fb.group({
       description: ['', Validators.required],
-      announce: ''
+      isAnnouncement: [false]
     });
   }
 
@@ -455,6 +476,7 @@ export class WorkshopPageComponent implements OnInit {
       }
     });
   }
+
   /**
    * joinGroupChat
    */
@@ -505,7 +527,6 @@ export class WorkshopPageComponent implements OnInit {
    * postComment
    */
   public postComment() {
-    delete this.chatForm.value.announce;
     this._collectionService.postComments(this.workshopId, this.chatForm.value, (err, response) => {
       if (err) {
         console.log(err);
@@ -593,17 +614,19 @@ content:any   */
   }
 
   openDeleteDialog(action: string) {
-    this.dialogsService
-    .deleteCollection(action)
-    .subscribe((result) => {
-        if (result === 'delete') {
-          this.deleteWorkshop();
-        } else if (result === 'cancel') {
-          this.cancelWorkshop();
-        } else {
-          console.log(result);
-        }
-      });
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: action
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'delete') {
+        this.deleteWorkshop();
+      } else if (result === 'cancel') {
+        this.cancelWorkshop();
+      } else {
+        console.log(result);
+      }
+    });
   }
 
   workshopVideoDialog() {
@@ -618,7 +641,8 @@ content:any   */
         participants: this.workshop.participants,
         workshopId: this.workshopId
       },
-      width: '800px'
+      width: '50vw',
+        height: '90vh'
     });
   }
 
@@ -633,7 +657,8 @@ content:any   */
           const dialogRef = this.dialog.open(ContentOnlineComponent, {
             data: {
               content: content,
-              userType: this.userType
+              userType: this.userType,
+              collectionId: this.workshopId
             },
             width: '50vw',
             height: '90wh'
@@ -645,7 +670,8 @@ content:any   */
           const dialogRef = this.dialog.open(ContentVideoComponent, {
             data: {
               content: content,
-              userType: this.userType
+              userType: this.userType,
+              collectionId: this.workshopId
             },
             width: '50vw',
             height: '90wh'
@@ -657,7 +683,9 @@ content:any   */
           const dialogRef = this.dialog.open(ContentProjectComponent, {
             data: {
               content: content,
-              userType: this.userType
+              userType: this.userType,
+              peerHasSubmission: this.peerHasSubmission,
+              collectionId: this.workshopId
             },
             width: '50vw',
             height: '90wh'
@@ -729,8 +757,8 @@ content:any   */
    */
   public selectJoiningDates() {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
-      width: '800px',
-      height: '500px',
+      width: '50vw',
+      height: '90vh',
       data: this.allItenaries
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -838,5 +866,38 @@ content:any   */
         console.log(err);
       }
     );
+  }
+
+  addCommentUpvote(comment: any) {
+      this._commentService.addCommentUpvote(comment.id, {}).subscribe(
+          response => {
+              if (comment.upvotes !== undefined) {
+                  comment.upvotes.push(response.json());
+              }
+              else {
+                  comment.upvotes = [];
+                  comment.upvotes.push(response.json());
+              }
+          }, err => {
+              console.log(err);
+          }
+      );
+  }
+
+  addReplyUpvote(reply: any) {
+      this._commentService.addReplyUpvote(reply.id, {}).subscribe(
+          response => {
+              console.log(response);
+              if (reply.upvotes !== undefined) {
+                reply.upvotes.push(response.json());
+              }
+              else {
+                reply.upvotes = [];
+                reply.upvotes.push(response.json());
+              }
+          }, err => {
+              console.log(err);
+          }
+      );
   }
 }
