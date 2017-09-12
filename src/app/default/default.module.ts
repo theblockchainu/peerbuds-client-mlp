@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { DefaultRoutingModule } from './default-routing.module';
 import { IndexComponent } from './index/index.component';
+import { IndexHeaderComponent } from './index/index.component';
+
 
 @NgModule({
   imports: [
