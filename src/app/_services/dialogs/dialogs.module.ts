@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 
 import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
+import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 
 @NgModule({
   imports: [
@@ -14,13 +15,13 @@ import { LoginComponentDialog } from './login-dialog/login-dialog.component';
     ReactiveFormsModule,
     SharedModule
   ],
-  exports: [SignupComponentDialog,LoginComponentDialog],
-  declarations: [SignupComponentDialog,LoginComponentDialog],
+  exports: [SignupComponentDialog,LoginComponentDialog,ForgotpwdComponentDialog],
+  declarations: [SignupComponentDialog,LoginComponentDialog,ForgotpwdComponentDialog],
   providers: [
     DialogsService,
   ],
   entryComponents: [
-    SignupComponentDialog,LoginComponentDialog
+    SignupComponentDialog,LoginComponentDialog,ForgotpwdComponentDialog
   ],
 })
 export class DialogsModule { }

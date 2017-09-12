@@ -96,4 +96,20 @@ export class AuthenticationService {
   private hasToken(): boolean {
     return !!this.getCookie(this.key);
   }
+
+  getpwd(email: string): any {
+    let body = `{"email":"${email}"}`;
+    return this.http
+      .post(this.config.apiUrl + '/auth/local', body, this.options)
+      .map((response: Response) => {
+        // login successful if there's a jwt token in the response
+        let user = response.json();
+        if (user && user.access_token) {
+          this.isLoginSubject.next(true);
+          // responseStatus = true;
+        }
+      }, (err) => {
+        console.log('Error: ' + err);
+      });
+  }
 }

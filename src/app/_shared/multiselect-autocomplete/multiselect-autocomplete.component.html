@@ -11,10 +11,8 @@
     <li class="ui-autocomplete-input-token">
       <input #box id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}">
     </li>
-    
   </ul>
 </span>
-
 
 <div class="suggestions" *ngIf="filteredList.length > 0">
   <ul *ngFor="let item of filteredList" style="list-style:none">
@@ -24,10 +22,13 @@
   </ul>
 </div>
 
-<div class="md-content__body extra-padding">
+<div class="col-sm-6 col-sm-offset-3 card">
+      <div class="margin-bottom-20">
+      <i class="twa twa-3x twa-pensive text-center"></i>
+      </div>
       <div class="margin-bottom-20 text-center">
-			<div class="suggestions" *ngIf="!filteredList.length && filteredList.length < 1"> Topic you are looking for cannot be found</div>
-				<button *ngIf="!filteredList.length" class="onboarding-btn btn btn-lg btn-default" md-button> Request for {{box.value}} topic</button>
-		</div>
-<div>
-
+      <div class="suggestions text-center" *ngIf="!filteredList.length && filteredList.length < 1"> Topic you are looking for cannot be found</div>
+        <button *ngIf="!filteredList.length" class="onboarding-btn btn btn-lg 
+        btn-default" md-button> Request for {{box.value}} topic</button>
+    </div>
+</div>

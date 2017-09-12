@@ -172,5 +172,9 @@ export class AppHeaderComponent implements OnInit {
 
    public openLogin() {
     this.dialogsService.openLogin().subscribe();
+  }
+
+  public forgotPwd(){
+  this.dialogsService.forgotPwd().subscribe();
   }  
 }
