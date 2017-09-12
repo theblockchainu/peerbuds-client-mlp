@@ -152,6 +152,7 @@ span.ui-autocomplete-multiple {
     color: #4a4a4a;
 }
 
+
 .col-sm-offset-3{
     margin-left: 55%;
     margin-right: 30%;
@@ -160,3 +161,8 @@ span.ui-autocomplete-multiple {
 .card{
     padding: 30px 30px 30px 30px;
 }
+
+a.ui-autocomplete-token-icon.fa-close::before {
+    color: gray !important;
+}
+

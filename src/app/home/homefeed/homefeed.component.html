@@ -1,4 +1,4 @@
-<div class="container homefeed">
+<div class="container feed homefeed">
   <div class="row workshop-feed">
     <div class="col-md-12">
       <div class="row">
@@ -18,8 +18,8 @@
         </div>
       </div>
       <div class="row feed-horizontal">
-        <div class="col-md-2 recommendation-card" *ngFor="let workshop of workshops">
-          <a [routerLink]="'/workshop/'+workshop.id">
+        <div class="col-md-2 recommendation-card" *ngFor="let workshop of workshops; let i =index">
+          <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
             <div class="col-md-12">
               <img class="mat-elevation-z3 recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
                 alt="workshpImg">
@@ -39,7 +39,7 @@
               <p-rating [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
               </p-rating>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5" *ngIf="workshop.reviews">
               <label>{{workshop.reviews.length}} Reviews</label>
             </div>
           </a>

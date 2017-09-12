@@ -42,4 +42,26 @@ export class ContentService {
                     });
 
   }
+
+  public addNewTopic(topicName: string) {
+    const body = {
+      'name': topicName,
+      'type': 'user'
+    };
+    return this.http.post(this.config.apiUrl + '/api/topics', body, this.options)
+                    .map((response: Response) => response.json(), (err) => {
+                      console.log('Error: ' + err);
+                     });
+  }
+
+  public addNewLanguage(name: string) {
+    const body = {
+      'name': name,
+      'code': name
+    };
+    return this.http.post(this.config.apiUrl + '/api/languages', body, this.options)
+                    .map((response: Response) => response.json(), (err) => {
+                      console.log('Error: ' + err);
+                     });
+  }
 }

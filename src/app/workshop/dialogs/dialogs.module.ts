@@ -4,9 +4,10 @@ import { DialogsService } from './dialog.service';
 import { SharedModule } from '../../_shared/_shared.module';
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 
-import { EditCalendarDialog } from './edit.calendar.dialog.component';
-import { ViewConflictDialog } from './view.conflict.dialog.component';
+import { EditCalendarDialog } from './edit-calendar-dialog/edit-calendar-dialog.component';
+import { AddTopicDialogComponent } from './add-topic-dialog/add-topic-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { AddLanguageDialogComponent } from './add-language-dialog/add-language-dialog.component';
 
 @NgModule({
   imports: [
@@ -15,15 +16,16 @@ import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
     ReactiveFormsModule,
     SharedModule
   ],
-  exports: [EditCalendarDialog, DeleteDialogComponent],
-  declarations: [EditCalendarDialog, ViewConflictDialog, DeleteDialogComponent],
+  exports: [EditCalendarDialog, DeleteDialogComponent, AddTopicDialogComponent, AddLanguageDialogComponent],
+  declarations: [EditCalendarDialog, DeleteDialogComponent, AddTopicDialogComponent, AddLanguageDialogComponent],
   providers: [
     DialogsService,
   ],
   entryComponents: [
     EditCalendarDialog,
-    ViewConflictDialog,
-    DeleteDialogComponent
+    AddTopicDialogComponent,
+    DeleteDialogComponent,
+    AddLanguageDialogComponent
   ],
 })
 export class DialogsModule { }
