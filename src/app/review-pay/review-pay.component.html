@@ -1,0 +1,77 @@
+<!--component html goes here -->
+<div class="main-content review-pay-setion" *ngIf="collection">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="title">Review and pay</div>
+                <div class="seperate-section">
+                    <div>{{ collection.title }}</div>
+                </div>
+                <form [formGroup]="makePaymentForm" (ngSubmit)="getToken()" novalidate>
+                    <div class="payment-message fs-13 text-center margin-top-20">{{message}}</div>
+                    <label class="small margin-top-20 margin-bottom-0">Card Number</label>
+                    <div class="position-relative">
+                        <md-input-container class="pb-block">
+                            <input mdInput formControlName="cardNumber" type="text" placeholder="0987 4859 6258 4857">
+                        </md-input-container>
+                        <i class="fa fa-cc-visa fa-2x"></i>
+                    </div>
+
+                    <div class="row margin-bottom-30">
+                        <div class="col-sm-6">
+                            <label class="small display-block">Expires on *</label>
+                            <md-select placeholder="MM" formControlName="expiryMonth">
+                                <md-option value="01">January</md-option>
+                                <md-option value="02">February</md-option>
+                                <md-option value="03">March</md-option>
+                                <md-option value="04">April</md-option>
+                                <md-option value="05">May</md-option>
+                                <md-option value="06">June</md-option>
+                                <md-option value="07">July</md-option>
+                                <md-option value="08">August</md-option>
+                                <md-option value="09">Sepetmber</md-option>
+                                <md-option value="10">October</md-option>
+                                <md-option value="11">November</md-option>
+                                <md-option value="12">December</md-option>
+                            </md-select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="small display-block">&nbsp;</label>
+                            <md-select placeholder="YYYY" formControlName="expiryYear">
+                                <md-option value="2017">2017</md-option>
+                                <md-option value="2018">2018</md-option>
+                                <md-option value="2019">2019</md-option>
+                                <md-option value="2020">2020</md-option>
+                                <md-option value="2021">2021</md-option>
+                                <md-option value="2022">2022</md-option>
+                                <md-option value="2023">2023</md-option>
+                                <md-option value="2024">2024</md-option>
+                                <md-option value="2025">2025</md-option>
+                                <md-option value="2026">2026</md-option>
+                                <md-option value="2027">2027</md-option>
+                                <md-option value="2028">2028</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="small">CVC</label>
+                            <md-input-container class="pb-block">
+                                <input mdInput formControlName="cvc" type="text" placeholder="221">
+                            </md-input-container>
+                        </div>
+                        <div class="col-sm-6">
+                            <span mdTooltip="The Card Verification Code or CVC, is an extra code printed on your debit or credit card" mdTooltipPosition="above"
+                                class="small display-inline-block margin-top-35 cursor-pointer">What is cvc?</span>
+                        </div>
+                    </div>
+                    <button md-raised-button color="primary" type="submit" class="text-center" [disabled]="!makePaymentForm.valid">{{collection.price}} usd - Confirm Payment</button>
+                    <div class="display-inline-block margin-right-10" *ngIf="savingData"><img src="{{loader}}" alt="loading" /></div>
+                    <div class="text-center text-grey small margin-top-10">
+                        <i class="fa fa-lock"></i> Your Credit card information is encrypted
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
