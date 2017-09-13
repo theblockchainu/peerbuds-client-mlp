@@ -1,4 +1,4 @@
-<h1 md-dialog-title>{{getAddOrEditText()}} video activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h1>
+<h3 md-dialog-title>{{getAddOrEditText()}} video activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
 <button md-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [md-dialog-close]="getCloseDialogData()" *ngIf="isEdit">
     <md-icon style="color: #777777; font-size: 20px;">close</md-icon>
 </button>
@@ -7,11 +7,11 @@
         <md-dialog-content>
             <div class="row">
                 <div class="col-sm-12 margin-bottom-30">
-                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                    <md-input-container class="pb-block margin-top-20 margin-bot-20">
                         <input mdInput #title formControlName="title" placeholder="Video Title">
                     </md-input-container>
 
-                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                    <md-input-container class="pb-block margin-top-20 margin-bot-20">
                         <textarea mdInput #description maxlength="500" rows="5" formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
                         <md-hint align="end">{{description.value.length}} / 500</md-hint>
                     </md-input-container>
@@ -19,7 +19,23 @@
                     <div class="form-group">
                         <label>Upload Video:</label>
                         <div class="upload-image-section imageHolder">
-                            <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="imageUploadNew($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse"></p-fileUpload>
+                            <p-fileUpload #fubauto name="video" customUpload="true" (uploadHandler)="imageUploadNew($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse">
+                                <ng-template pTemplate="toolbar">
+                                    <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 video</div>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <md-grid-list cols="2" rowHeight="100px" gutterSize="10px" *ngIf="urlForVideo">
+                                        <!-- <md-grid-tile *ngFor="let file of urlForVideo"> -->
+                                        <div style="position: absolute; cursor: pointer;">
+                                            <md-icon (click)="deleteFromContainer(urlForVideo, 'video')" style="color: black;">close</md-icon>
+                                        </div>
+                                        <video controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+                                            <source src="{{config.apiUrl + urlForVideo}}"> Your browser does not support the video tag.
+                                        </video>
+                                        <!-- </md-grid-tile> -->
+                                    </md-grid-list>
+                                </ng-template>
+                            </p-fileUpload>
                         </div>
                     </div>
 

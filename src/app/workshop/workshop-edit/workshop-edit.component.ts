@@ -34,7 +34,7 @@ import { DialogsService } from '../dialogs/dialog.service';
 
 export class WorkshopEditComponent implements OnInit {
   public sidebarFilePath = 'assets/menu/workshop-static-left-sidebar-menu.json';
-  sidebarMenuItems;
+  public sidebarMenuItems;
   public itenariesForMenu = [];
 
   public interest1: FormGroup;
@@ -45,6 +45,8 @@ export class WorkshopEditComponent implements OnInit {
   public conditions: FormGroup;
   public phoneDetails: FormGroup;
   public paymentInfo: FormGroup;
+
+  public supplementUrls = new FormArray([])
 
   private workshopId: string;
   // Set our default values
@@ -210,7 +212,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private extractDate(dateString: string) {
-    return moment(dateString.split('T')[0]).toDate();
+    return moment.utc(dateString).local().toDate();
   }
 
   private extractTime(dateString: string) {
@@ -265,6 +267,7 @@ export class WorkshopEditComponent implements OnInit {
             form.controls[key].patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
           } else if (key === 'supplementUrls') {
             // form.controls[key] = value[key];
+            // this.setChildControlFactory(value[key], () => new FormControl());
           } else {
             form.controls[key].patchValue(value[key]);
           }
@@ -273,6 +276,45 @@ export class WorkshopEditComponent implements OnInit {
       }
     }
   }
+
+  // public setChildControlFactory(control: FormArray, factory: () => AbstractControl) {
+  //   (control as any).__createChildControl = factory;
+  // }
+  
+  // public createChildControl(control: FormArray) {
+  //   return (control as any).__createChildControl();
+  // }
+  
+  // /**
+  //  * Recursively set the values of a form control, creating new children FormArrays as necessary
+  //  */
+  // public setValues(control: AbstractControl, value: any) {
+  //   if (control instanceof FormGroup) {
+  //     if (value != null) {
+  //       Object.keys(value).forEach(name => {
+  //         if (control.contains(name)) {
+  //           this.setValues(control.get(name), value[name]);
+  //         }
+  //       });
+  //     }
+  //   } else if (control instanceof FormArray) {
+  //     const length = value ? value.length : 0;
+  //     // Remove excess controls from the array
+  //     while (control.length > length) {
+  //       control.removeAt(control.length - 1);
+  //     }
+  //     // Add missing controls
+  //     while (control.length < length) {
+  //       control.push(this.createChildControl(control));
+  //     }
+  //     // Update all the values in the array
+  //     for (let i = 0; i < length; ++i) {
+  //       this.setValues(control.at(i), value[i]);
+  //     }
+  //   } else {
+  //     control.setValue(value);
+  //   }
+  // }
 
   public InitItenary() {
     return this._fb.group({
@@ -376,16 +418,6 @@ export class WorkshopEditComponent implements OnInit {
 
   private initializeWorkshop() {
     console.log('Inside init workshop');
-    // const query = {
-    //   'include': [
-    //     'topics',
-    //     'calendars',
-    //     { 'participants': [{ 'profiles': ['work'] }] },
-    //     { 'owners': ['profiles'] },
-    //     { 'contents': ['schedules'] }
-    //   ]
-    // };
-
     if (this.workshopId) {
       this._collectionService.getCollectionDetail(this.workshopId, this.query)
         .subscribe((res) => {
@@ -431,7 +463,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public removed(event) {
-    debugger;
     let body = {};
     let options;
     this.removedInterests = event;
@@ -584,7 +615,7 @@ export class WorkshopEditComponent implements OnInit {
   public submitWorkshop(data) {
     if (this.workshop.controls.status.value === 'active') {
       let dialogRef: any;
-      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '40%' });
+      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%' });
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'accept') {
           this.executeSubmitWorkshop(data);
@@ -724,6 +755,8 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   saveandexit() {
+    debugger;
+    this.workshopStepUpdate();
     if (this.step === 13) {
       const data = this.timeline;
       const body = data.value.calendar;
