@@ -12,77 +12,90 @@
         <div style="margin-top:20px;" class="col-md-12">
           <div class="row">
             <div class="col-md-12">
-              <button md-button (click)="updateProfile()" class="pull-right" style="margin-bottom: 20px;">
+              <button md-raised-button color="accent" (click)="saveProfile()" class="pull-right" style="margin-bottom: 20px;">
                 Update Profile
               </button>
             </div>
           </div>
           <div class="row" style="margin-right: 20px; line-height: 120%">
-            <form #profileEditForm="ngForm">
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
               <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput #first_name name="first_name" type="text" [(ngModel)]="profile.first_name" placeholder="First Name" required>
+                <input mdInput formControlName="first_name" type="text" placeholder="First Name" required>
                 <md-error>This field is required</md-error>
+                <md-hint align="start">Your public profile only shows your first name.</md-hint>
               </md-input-container>
               <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput #last_name name="last_name" type="text" [(ngModel)]="profile.last_name" placeholder="Last Name" required>
+                <input mdInput formControlName="last_name" type="text" placeholder="Last Name" required>
                 <md-error>This field is required</md-error>
-                <md-hint align="start">Your public profile only shows your first name. When you request a booking, your host will see your first and last name.</md-hint>
+                <md-hint align="start"> When you request a booking, your host will see your first and last name.</md-hint>
               </md-input-container>
               <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput #headline name="headline" type="text" [(ngModel)]="profile.headline" placeholder="Profile Credential" required>
+                <input mdInput formControlName="headline" type="text" placeholder="Profile Credential" required>
                 <md-error>This field is required</md-error>
                 <md-hint align="start">Ex. mechanical engineer, electric car enthusiast</md-hint>
-                <md-hint align="end">{{headline.value.length}} / 200</md-hint>
+                <md-hint align="end">{{profileForm.value.headline.length}} / 200</md-hint>
               </md-input-container>
               <br>
-              <md-select placeholder="Gender" style="margin-bottom: 20px" name="gender" [(ngModel)]="profile.gender">
+              <md-select placeholder="Gender" style="margin-bottom: 20px" formControlName="gender">
                 <md-option [value]="'Male'">Male</md-option>
                 <md-option [value]="'Female'">Female</md-option>
               </md-select>
               <br><br>
-              <md-select placeholder="Birth Month" style="margin-bottom: 20px" name="dobMonth" [(ngModel)]="profile.dobMonth">
-                <md-option *ngFor="let month of months" [value]="month" >{{month}}</md-option>
+              <md-select placeholder="Birth Month" style="margin-bottom: 20px" formControlName="dobMonth">
+                <md-option *ngFor="let month of months" [value]="month">{{month}}</md-option>
               </md-select>
-              <md-select placeholder="Day" style="margin-bottom: 20px" name="dobDay" [(ngModel)]="profile.dobDay">
+              <md-select placeholder="Day" style="margin-bottom: 20px" formControlName="dobDay">
                 <md-option *ngFor="let day of days" [value]="day">{{day}}</md-option>
               </md-select>
-              <md-select placeholder="Year" style="margin-bottom: 20px" name="dobYear" [(ngModel)]="profile.dobYear">
+              <md-select placeholder="Year" style="margin-bottom: 20px" formControlName="dobYear">
                 <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
               </md-select>
               <br><br>
               <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput name="email" type="email" [(ngModel)]="profile.peer[0].email" placeholder="Email Address" required>
+                <input mdInput formControlName="email" type="email" placeholder="Email Address" required>
                 <md-error>This field is required</md-error>
                 <md-hint align="start">We wonʼt share your private email address with other peerbuds users. Learn more.</md-hint>
               </md-input-container>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput name="phones" type="tel" [(ngModel)]="profile.peer[0].phone" placeholder="Phone Number" required>
-                <md-error>This field is required</md-error>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all get in touch.</md-hint>
-              </md-input-container>
+              <div formArrayName="phones">
+                <p>Phone Numbers</p>
+                <md-input-container *ngFor="let phoneNumber of profileForm.controls['phones'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
+                  <input mdInput formControlName="{{i}}" type="number" placeholder="Phone Number" required>
+                  <md-error>This field is required</md-error>
+                  <md-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;" class="lighterText pull-right">
+                    close
+                  </md-icon>
+                </md-input-container>
+                <md-hint align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all
+                  get in touch.</md-hint>
+              </div>
+
+              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addPhoneControl()">
+                + Add a phone number
+              </div>
               <br>
-              <md-select placeholder="Preferred Language" style="margin-bottom: 20px" name="preferred_language" [(ngModel)]="profile.preferred_language">
+              <md-select placeholder="Preferred Language" style="margin-bottom: 20px" formControlName="preferred_language">
                 <md-option *ngIf="!languages">languages not available</md-option>
-                <md-option *ngFor="let language of languages" [value]="language">{{language.name}}</md-option>
+                <md-option *ngFor="let language of languages" [value]="language.code">{{language.name}}</md-option>
                 <md-hint align="start">We'll send you messages in this language.</md-hint>
               </md-select>
               <br><br><br>
-              <md-select placeholder="Preferred Currency" style="margin-bottom: 20px" name="preferred_currency" [(ngModel)]="profile.preferred_currency">
+              <md-select placeholder="Preferred Currency" style="margin-bottom: 20px" formControlName="currency">
                 <md-option *ngIf="!currencies">currencies not available</md-option>
-                <md-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</md-option>
+                <md-option *ngFor="let currency of currencies" [value]="currency.code">{{currency.name}}</md-option>
                 <md-hint align="start">Weʼll show you prices in this currency.</md-hint>
               </md-select>
               <br><br>
               <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput name="location_string" type="text" [(ngModel)]="profile.location_string" placeholder="Where do you live" required>
+                <input mdInput formControlName="location_string" type="text" placeholder="Where do you live" required>
                 <md-error>This field is required</md-error>
               </md-input-container>
               <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <textarea mdInput #description name="description" rows="4" [(ngModel)]="profile.description" placeholder="Describe yourself" required></textarea>
+                <textarea mdInput #description formControlName="description" rows="4" placeholder="Describe yourself" required></textarea>
                 <md-error>This field is required</md-error>
-                <md-hint align="start">Peerbuds is built on relationships. Help other people get to know you.
-                  Tell them about the things you like: What are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows, music, food.
-                  Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning? Of peerbuds teaching? Tell them about you: Do you have a life motto?</md-hint>
+                <md-hint align="start">Peerbuds is built on relationships. Help other people get to know you. Tell them about the things you like:
+                  What are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows,
+                  music, food. Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning?
+                  Of peerbuds teaching? Tell them about you: Do you have a life motto?</md-hint>
                 <md-hint align="end">{{description.value.length}} / 1000</md-hint>
               </md-input-container>
 
@@ -92,81 +105,110 @@
               <div style="font-weight: 600; margin-bottom: 25px;">
                 Work Experience
               </div>
-              <div *ngFor="let work of profile.work; index as i; trackBy: trackByFn">
-                <md-input-container >
-                  <input mdInput name="position" type="text"  placeholder="Position" [(ngModel)]="profile.work[i].position">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container >
-                  <input mdInput name="company" type="text"  placeholder="Company" [(ngModel)]="profile.work[i].company">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container >
-                  <input mdInput name="startDate" type="date"  placeholder="Start Date" [ngModel]="profile.work[i].startDate | date:'y-MM-dd'" (ngModelChange)="profile.work[i].startDate=$event">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container >
-                  <input mdInput name="endDate" type="date"  placeholder="End Date" [ngModel]="profile.work[i].endDate | date:'y-MM-dd'" (ngModelChange)="profile.work[i].endDate=$event">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-icon (click)="deleteWorkDetailsRow(i)" style="cursor: pointer;" class="lighterText">
-                  close
-                </md-icon>
+
+              <div formArrayName="work" class="well well-lg">
+                <div *ngFor="let workObj of profileForm.controls['work'].controls; let i=index" [formGroupName]="i">
+                  <md-input-container>
+                    <input mdInput formControlName="position" type="text" placeholder="Position">
+                    <!-- <md-error>This field is required</md-error> -->
+                  </md-input-container>
+                  <md-input-container>
+                    <input mdInput formControlName="company" type="text" placeholder="Company">
+                    <!-- <md-error>This field is required</md-error> -->
+                  </md-input-container>
+                  <md-form-field>
+                    <input mdInput formControlName="startDate" [mdDatepicker]="startPicker" placeholder="Choose a date">
+                    <md-datepicker-toggle mdSuffix [for]="startPicker"></md-datepicker-toggle>
+                    <md-datepicker #startPicker></md-datepicker>
+                  </md-form-field>
+                  <!-- <md-error>This field is required</md-error> -->
+                  <md-form-field>
+                    <input mdInput formControlName="endDate" [mdDatepicker]="endPicker" placeholder="Choose a date">
+                    <md-datepicker-toggle mdSuffix [for]="endPicker"></md-datepicker-toggle>
+                    <md-datepicker #endPicker></md-datepicker>
+                  </md-form-field>
+                  <md-icon (click)="deletework(i)" style="cursor: pointer;" class="lighterText">
+                    close
+                  </md-icon>
+                </div>
               </div>
-              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addWorkDetailsRow()">
+              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addwork()">
                 + Add another work detail
               </div>
               <div style="font-weight: 600; margin-bottom: 25px;">
                 Education
               </div>
-              <div *ngFor="let edu of profile.education; let index = index">
-                <md-input-container>
-                  <input mdInput name="edu_degree" type="text"  placeholder="Degree" [(ngModel)]="profile.education[index].degree" >
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container>
-                  <input mdInput name="edu_school" type="text"  placeholder="School / College" [(ngModel)]="profile.education[index].school">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container >
-                  <input mdInput name="edu_start" type="text"  placeholder="Start Year" [(ngModel)]="profile.education[index].startYear">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-input-container >
-                  <input mdInput name="edu_end" type="text"  placeholder="End Year" [(ngModel)]="profile.education[index].endYear">
-                  <md-error>This field is required</md-error>
-                </md-input-container>
-                <md-icon (click)="deleteEducationDetailsRow(index)" style="cursor: pointer;" class="lighterText">
-                  close
-                </md-icon>
+              <div formArrayName="education">
+                <div *ngFor="let educationObj of profileForm.controls['education'].controls; let i = index" [formGroupName]="i">
+                  <md-input-container>
+                    <input mdInput formControlName="degree" type="text" placeholder="Degree">
+                    <!-- <md-error>This field is required</md-error> -->
+                  </md-input-container>
+                  <md-input-container>
+                    <input mdInput formControlName="school" type="text" placeholder="School / College">
+                    <!-- <md-error>This field is required</md-error> -->
+                  </md-input-container>
+                  <md-select placeholder="Start Year" style="margin-bottom: 20px" formControlName="startYear">
+                    <md-option *ngFor="let syear of years" [value]="syear">{{syear}}</md-option>
+                  </md-select>
+                  <md-select placeholder="End Year" style="margin-bottom: 20px" formControlName="endYear">
+                    <md-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</md-option>
+                  </md-select>
+                  <md-icon (click)="deleteeducation(i)" style="cursor: pointer;" class="lighterText">
+                    close
+                  </md-icon>
+                </div>
               </div>
-              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addEducationDetailsRow()">
+
+              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addeducation()">
                 + Add another education detail
               </div>
 
-              <md-input-container style="margin-bottom: 20px">
-                <input mdInput name="timezone" type="text" [(ngModel)]="profile.timezone" placeholder="Timezone">
-                <md-error>This field is required</md-error>
-                <md-hint align="start">Your home time zone.</md-hint>
-              </md-input-container>
-              <div *ngFor="let otherLang of profile.other_languages; let index = index;">
-                <md-select placeholder="Languages" style="margin-bottom: 20px" name="other_languages" [(ngModel)]="profile.other_languages[index]">
-                  <md-option *ngFor="let language of languages" [value]="language">{{language}}</md-option>
-                  <md-hint align="start">Add any languages that others can use to speak with you on peerbuds.</md-hint>
-                </md-select>
+              <md-select placeholder="Timezone" style="margin-bottom: 20px" formControlName="timezone">
+                <md-option *ngFor="let timezone of timezones" [value]="timezone.value">{{timezone.text}}</md-option>
+              </md-select>
+              <md-error>This field is required</md-error>
+              <md-hint align="start">Your home time zone.</md-hint>
+              <div formArrayName="other_languages">
+                <p>Other languages</p>
+                <div *ngFor="let languageObj of profileForm.controls['other_languages'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
+                  <md-select mdInput placeholder="Languages" class="pb-block" style="margin-bottom: 20px" formControlName="{{i}}">
+                    <md-option *ngFor="let language of languages" [value]="language.code">{{language.name}}</md-option>
+                  </md-select>
+                  <md-icon (click)="deleteLanguage(i)" style="cursor: pointer;" class="lighterText pull-right">
+                    close
+                  </md-icon>
+                </div>
+                <md-hint align="start">Add any languages that others can use to speak with you on peerbuds.</md-hint>
+              </div>
+              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addlanguage()">
+                + Add a Language
               </div>
               <md-input-container style="margin-bottom: 20px" class="pb-block">
-                <input mdInput name="vat_number" type="text" [(ngModel)]="profile.vat_number" placeholder="VAT Number">
+                <input mdInput formControlName="vat_number" type="text" placeholder="VAT Number">
                 <md-error>This field is required</md-error>
-                <md-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be assessed on our Service Fees. If you live in a country where we need to charge VAT, you will not be charged VAT if you enter a valid VAT ID Number. Visit VAT FAQs »</md-hint>
+                <md-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be assessed on our Service
+                  Fees. If you live in a country where we need to charge VAT, you will not be charged VAT if you enter a
+                  valid VAT ID Number. Visit VAT FAQs »</md-hint>
               </md-input-container>
-              <div *ngFor="let emerg of profile.emergency_contact; let index = index;">
-                <md-input-container style="margin-bottom: 20px" class="pb-block">
-                  <input mdInput name="emergency_contact" type="text"  placeholder="Emergency Contact" [(ngModel)]="profile.emergency_contact[index]">
-                  <md-error>This field is required</md-error>
-                  <md-hint align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</md-hint>
+              <div formArrayName="emergency_contact">
+                <md-input-container *ngFor="let emergency_contact_number of profileForm.controls['emergency_contact'].controls; let i = index;"
+                  style="margin-bottom: 20px" class="pb-block">
+                  <input mdInput formControlName="{{i}}" type="number" placeholder="Emergency Contact">
+                  <!-- <md-error>This field is required</md-error> -->
+                  <md-icon (click)="deleteEmergencyContact(i)" style="cursor: pointer;" class="lighterText pull-right">
+                    close
+                  </md-icon>
                 </md-input-container>
+                <md-hint align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</md-hint>
+
+                <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addEmergencyContact()">
+                  + Add Emergency Contact Number
+                </div>
               </div>
+              <md-checkbox class="example-margin" formControlName="is_Admin">
+                Is Admin
+              </md-checkbox>
             </form>
           </div>
         </div>
