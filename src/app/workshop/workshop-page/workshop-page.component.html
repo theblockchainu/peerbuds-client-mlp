@@ -20,7 +20,7 @@
                 <div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
                   <span *ngIf="currentCalendar">{{currentCalendar.startDate | date:'d MMM'}} - {{currentCalendar.endDate| date:'d MMM'}} &emsp;<md-icon style="font-size: 5px; top: -2px; height: 20px;">fiber_manual_record</md-icon></span>
                   <span> {{totalDuration}} Hours &emsp;<md-icon style="font-size: 5px; top: -2px; height: 20px;">fiber_manual_record</md-icon>{{workshop.contents.length}} parts &emsp;</span>
-                  <a href="javascript:void(0)" *ngIf="userType==='teacher'"><md-icon (click)="changeDates()" style="top: 5px;">date_range</md-icon> Change dates </a>
+                  <a href="javascript:void(0)" *ngIf="userType==='teacher'" (click)="changeDates()"><md-icon style="top: 5px;">date_range</md-icon> Change dates </a>
                 </div>
                 <div *ngIf="userType==='public'" style="margin-top: -12px;">
                   <span>{{itenaryArray.length}} days / {{totalDuration}} Hours &emsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon>{{workshop.contents.length}} parts</span>
@@ -355,7 +355,7 @@
                 </div>
               </div>
             </div>
-            <hr class="margin-top-70" *ngIf="reviews !== undefined">
+            <hr class="margin-top-40" *ngIf="reviews !== undefined">
             <!--REQUIREMENTS-->
             <div class="row Eligibility margin-top-20" *ngIf="userType==='teacher' || userType === 'participant'">
               <div class="col-md-12">
@@ -389,21 +389,21 @@
 
           <!--RIGHT SIDEBAR-->
           <div class="col-md-4 col-md-offset-1 right-content">
-            <div *ngIf="userType==='teacher' || userType==='participant'">
+            <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
               <h3 class="">Participants</h3>
               <div>
                 <div>
-                  <div class="row lighterText" *ngIf="workshop.participants.length === 0">
+                  <div class="row lighterText" *ngIf="participants.length === 0">
                     <div class="col-md-12">
                       <div class="emptySectionText">Invite peers to your new workshop?</div>
                     </div>
                   </div>
                 </div>
-                <div *ngFor="let participant of workshop.participants; let i=index">
+                <div *ngFor="let participant of participants; let i=index">
                   <div class="row margin-top-20 margin-bottom-20" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter">
-                      <img *ngIf="!participant.peer || !participant.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" style="margin-left: 0px;">
-                      <img *ngIf="participant.peer && participant.peer[0].profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb" alt="dp" style="margin-left: 0px;">
+                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" style="margin-left: 0px;">
+                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb" alt="dp" style="margin-left: 0px;">
                     </div>
                     <div class="col-md-9 vcenter">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
@@ -414,7 +414,19 @@
                 <div>
                   <div class="row">
                     <div class="col-md-12">
-                      <a (click)="viewParticipants()" style="cursor: pointer;"> View all participants </a>
+                      <a (click)="viewParticipants()" style="cursor: pointer;" *ngIf="participants.length > 0"> View all participants </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId === undefined">
+              <h3 class="">Participants</h3>
+              <div>
+                <div>
+                  <div class="row lighterText">
+                    <div class="col-md-12">
+                      <div class="emptySectionText">Select a particular workshop cohort to view participants.</div>
                     </div>
                   </div>
                 </div>
@@ -423,10 +435,10 @@
             <hr class="margin-top-30 margin-bottom-30" *ngIf="userType==='teacher'">
             <div *ngIf="userType==='teacher'">
               <div>
-                <h3 style="display: inline-block;">Recurring Workshops</h3>
-                <span (click)="editCalendar()" class="pull-right" style="font-size: 10px !important;"><md-icon>edit</md-icon></span>
+                <h3 style="display: inline-block;">Workshop Batches</h3>
+                <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;"><md-icon style="font-size: 14px; top: 15px;">edit</md-icon></span>
                 <br>
-                <span class="text-muted h6">5 Repetitions</span>
+                <span class="text-muted h6">{{workshop.calendars.length}} Cohorts</span>
               </div>
               <br>
               <div class="mat-content border-calendar calendar">
@@ -585,52 +597,41 @@
         </div>
 
         <!--SIMILAR WORKSHOPS-->
-        <div class="row workshop-suggestions margin-top-30" *ngIf="userType!=='teacher'">
+        <div class="row workshop-suggestions margin-top-10" *ngIf="userType!=='teacher'">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-12">
                 <h3>Similar Workshops</h3>
               </div>
             </div>
-            <!--<div class="row">
-              <div class="12">
-                <ul class="list-inline recommendation-list">
-                  <li *ngFor="let collection of recommendations.collections">
-                    <md-card class="recommendation-card">
-                      <img *ngIf="collection.imageUrls && collection.imageUrls.length>0" md-card-image src="{{config.apiUrl+collection.imageUrls[0]}}"
-                        class="recommendation-thumb">
-                      <div class="container">
-                        <div class="col-md-12">
-                          <p *ngIf="collection.calendars.length > 0">{{collection.calendars[0].startDate | date:'mediumDate'}}</p>
-                        </div>
-                        <div class="col-md-12">
-                          <h4>{{collection.title}}</h4>
-                        </div>
-                        <div class="col-md-12">
-                          &lt;!&ndash;<p-rating [ngModel]="collection.rating" readonly="true" stars="5" [cancel]="false"></p-rating>&ndash;&gt;
-                        </div>
-                        <div class="row" *ngIf="collection.owners.length>0">
-                          <div class="col-md-2">
-                            <img *ngIf="!collection.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="thumb-35">
-                            <img *ngIf="collection.owners[0].profiles[0].picture_url" src="{{config.apiUrl+ collection.owners[0].profiles[0].picture_url}}"
-                              class="img-circle profile-thumb">
-                          </div>
-                          <div class="col-md-10">
-                            <p>{{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</p>
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <p>{{collection.participants.length}}</p>
-                        </div>
-                        <div class="col-md-9" *ngIf="collection.topics.length>0">
-                          <md-chip>{{collection.topics[0].name}}</md-chip>
-                        </div>
-                      </div>
-                    </md-card>
-                  </li>
-                </ul>
+            <div class="row feed-horizontal margin-top-30" style="margin-left: -30px;">
+              <div class="col-md-2 recommendation-card" *ngFor="let workshop of recommendations.collections; let i =index">
+                <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
+                  <div class="col-md-12">
+                    <img class="mat-elevation-z3 recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
+                         alt="workshpImg">
+                    <img class="mat-elevation-z3 recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+                         alt="workshpImg">
+                  </div>
+                  <div class="col-md-12 margin-top-10">
+                    <p style="font-weight: 700">{{workshop.currency}} {{workshop.price}}</p>
+                  </div>
+                  <div class="col-md-12 margin-top-10">
+                    <p style="font-weight: 700">{{workshop.title}}</p>
+                  </div>
+                  <div class="col-md-12">
+                    <p>{{workshop.headline | shorten: 30 : '...'}}</p>
+                  </div>
+                  <div class="col-md-7 margin-top-10">
+                    <p-rating [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+                    </p-rating>
+                  </div>
+                  <div class="col-md-5 margin-top-10" *ngIf="workshop.reviews">
+                    <p class="lighterText" style="font-size: 80%">{{workshop.reviews.length}} Reviews</p>
+                  </div>
+                </a>
               </div>
-            </div>-->
+            </div>
           </div>
         </div>
       </div>

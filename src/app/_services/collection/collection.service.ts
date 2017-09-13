@@ -425,16 +425,19 @@ export class CollectionService {
   /**
    * getRecommendations
    */
-  public getRecommendations(query, cb) {
+  public getRecommendations(query) {
     const filter = JSON.stringify(query);
-    this.http
-      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter, this.options)
-      .map((response) => {
-        cb(null, response.json());
-      }, (err) => {
-        cb(err);
-      }).subscribe();
+    return this.http
+      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter, this.options);
+  }
 
+  /**
+   * getParticipants
+   */
+  public getParticipants(collectionId, query) {
+      const filter = JSON.stringify(query);
+      return this.http
+          .get(this.config.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.options);
   }
 
   /**
@@ -453,12 +456,6 @@ collectionID:string,userId:string,calendarId:string   */
       }).subscribe();
   }
 
-  /**
-   * getParticipants
-   */
-  public getParticipants() {
-
-  }
 
   /**
    * Approve this collection

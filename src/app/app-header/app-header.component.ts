@@ -9,6 +9,10 @@ import {Http} from '@angular/http';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
 
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+
+import { DialogsService } from '../_services/dialogs/dialog.service';
+
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
@@ -33,7 +37,9 @@ export class AppHeaderComponent implements OnInit {
               private http: Http,
               private _cookieService: CookieService,
               private _profileService: ProfileService,
-              private router: Router) {
+              private router: Router,
+              private dialog: MdDialog,
+              private dialogsService: DialogsService) {
     this.isLoggedIn = authService.isLoggedIn();
     authService.isLoggedIn().subscribe((res) => {
       this.loggedIn = res;
@@ -156,5 +162,9 @@ export class AppHeaderComponent implements OnInit {
               break;
       }
   }
+
+  public openSignup() {
+    this.dialogsService.openSignup().subscribe();
+  }  
 
 }

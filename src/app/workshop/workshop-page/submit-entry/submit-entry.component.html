@@ -5,7 +5,7 @@
         <h3>Submit Entry to Project</h3>
       </div>
       <div class="col-sm-6" style="text-align: right;">
-        <div class="display-inline-block margin-right-10" *ngIf="savingDraft"><img src="{{loader}}" alt="loader" /> <span class="text-grey fs-13">Saving Draft</span></div>
+        <div class="display-inline-block margin-right-10" *ngIf="savingDraft"><img src="{{loader}}" alt="loader" width="30px" /> <span class="text-grey fs-13">Saving Draft</span></div>
         <button md-button class="mat-border-button">Publish</button>
       </div>
     </div>
@@ -31,7 +31,7 @@
           <div class="margin-bottom-20; font-weight: 500;">Do you wish to make your submission public?</div>
           <md-radio-group [formControlName]="'isPrivate'">
             <md-radio-button value="true">Private</md-radio-button>&emsp;
-            <md-radio-button value="true">Public</md-radio-button>
+            <md-radio-button value="false">Public</md-radio-button>
           </md-radio-group>
         </div>
       </div>

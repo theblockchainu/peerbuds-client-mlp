@@ -101,6 +101,7 @@ export class WorkshopPageComponent implements OnInit {
   public noWrapSlides = true;
   public peerHasSubmission = false;
   public contentHasSubmission = {};
+  public participants = [];
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
@@ -200,7 +201,6 @@ export class WorkshopPageComponent implements OnInit {
       }
       this.workshopId = params['workshopId'];
       this.calendarId = params['calendarId'];
-      console.log('route changed');
     });
     this.userId = cookieUtilsService.getValue('userId');
   }
@@ -309,7 +309,8 @@ export class WorkshopPageComponent implements OnInit {
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
         { 'contents': ['schedules', { 'submissions': [{'upvotes': 'peer'}, { 'peer': 'profiles' } ] }] }
-      ]
+      ],
+      'relInclude': 'calendarId'
     };
 
     if (this.workshopId) {
@@ -369,6 +370,7 @@ export class WorkshopPageComponent implements OnInit {
           this.fixTopics();
           this.getReviews();
           this.getRecommendations();
+          this.getParticipants();
           this.getDiscussions();
         });
 
@@ -466,8 +468,8 @@ export class WorkshopPageComponent implements OnInit {
    */
   public changeDates() {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
-      width: '800px',
-      height: '500px',
+      width: '50vw',
+      height: '90vh',
       data: this.allItenaries
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -638,7 +640,7 @@ content:any   */
   viewParticipants() {
     const dialogRef = this.dialog.open(ViewParticipantsComponent, {
       data: {
-        participants: this.workshop.participants,
+        participants: this.participants,
         workshopId: this.workshopId
       },
       width: '50vw',
@@ -647,8 +649,8 @@ content:any   */
   }
 
   /**
- * openDialog
-content:any   */
+  * openDialog
+  content:any   */
   public openDialog(content: any) {
     this.modalContent = content;
     switch (content.type) {
@@ -700,7 +702,7 @@ content:any   */
 
   /**
   * timetoSession
-content:any   */
+  content:any   */
   public timetoSession(content: any) {
     const startMoment = moment(this.workshop.calendars[0].startDate);
     const endMoment = moment(this.workshop.calendars[0].startDate);
@@ -736,20 +738,21 @@ content:any   */
         'topics',
         'participants'
       ],
-      'limit': 4
+      'limit': 5,
+      'where': {'id': {'neq': this.workshopId}}
     };
-    this._collectionService.getRecommendations(query, (err, response: any) => {
-      console.log(err);
-      if (err) {
-      } else {
-        for (const responseObj of response) {
+    this._collectionService.getRecommendations(query).subscribe(
+      (response: any) => {
+        for (const responseObj of response.json()) {
           if (this.workshopId !== responseObj.id) {
             responseObj.rating = this._collectionService.calculateRating(responseObj.reviews);
             this.recommendations.collections.push(responseObj);
           }
         }
+      }, (err) => {
+        console.log(err);
       }
-    });
+    );
   }
 
   /**
@@ -896,6 +899,34 @@ content:any   */
                 reply.upvotes.push(response.json());
               }
           }, err => {
+              console.log(err);
+          }
+      );
+  }
+
+  public getParticipants() {
+      const query = {
+          'relInclude': 'calendarId',
+          'include': ['profiles']
+      };
+      let isCurrentUserParticipant = false;
+      let currentUserParticipatingCalendar = '';
+      this._collectionService.getParticipants(this.workshopId, query).subscribe(
+          (response: any) => {
+              for (const responseObj of response.json()) {
+                  if (this.calendarId && this.calendarId === responseObj.calendarId) {
+                    this.participants.push(responseObj);
+                  }
+                  if (this.calendarId === undefined && responseObj.id === this.userId) {
+                    // current user is a participant of this workshop
+                      isCurrentUserParticipant = true;
+                      currentUserParticipatingCalendar = responseObj.calendarId;
+                  }
+              }
+              if (isCurrentUserParticipant) {
+                this.router.navigate(['workshop', this.workshopId, 'calendar', currentUserParticipatingCalendar]);
+              }
+          }, (err) => {
               console.log(err);
           }
       );

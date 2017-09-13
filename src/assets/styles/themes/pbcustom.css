@@ -351,11 +351,16 @@ h3.calendarTitle  {
 
 md-sidenav {
     width: 300px;
-    background: red; /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(#FE8A8D, #FF9194); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#FE8A8D, #FF9194); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#FE8A8D, #FF9194); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#FE8A8D, #FF9194); /* Standard syntax */
+    /*background: red;
+    background: -webkit-linear-gradient(#FE8A8D, #FF9194);
+    background: -o-linear-gradient(#FE8A8D, #FF9194);
+    background: -moz-linear-gradient(#FE8A8D, #FF9194);
+    background: linear-gradient(#FE8A8D, #FF9194); */
+    /*rgba(255,166,170,0.8), rgba(255,109,113,0.8)*/
+    background: -webkit-linear-gradient(top, #FFA6AA, #FF6D71); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom, #FFA6AA, #FF6D71); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom, #FFA6AA, #FF6D71); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom, #FFA6AA, #FF6D71); /* Standard syntax (must be last) */
     padding: 20px 30px;
     color: #fff;
 }
@@ -792,6 +797,44 @@ img {
     background: #cc181e;
     border-color: #cc181e
 }
+
+.flexContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+.mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+    background-color: #ff6d71 !important;
+    color: white !important;
+}
+
+.mat-raised-button.mat-primary[disabled], .mat-raised-button.mat-accent[disabled], .mat-raised-button.mat-warn[disabled], .mat-raised-button[disabled][disabled], .mat-fab.mat-primary[disabled], .mat-fab.mat-accent[disabled], .mat-fab.mat-warn[disabled], .mat-fab[disabled][disabled], .mat-mini-fab.mat-primary[disabled], .mat-mini-fab.mat-accent[disabled], .mat-mini-fab.mat-warn[disabled], .mat-mini-fab[disabled][disabled] {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+    color: rgba(0, 0, 0, 0.38) !important;
+}
+
+.padding-left-0 {
+    padding-left: 0px !important;
+}
+
+.onboarding .mat-select-placeholder {
+    font-size: 19px !important;
+    margin-bottom: 50px;
+}
+
+.onboarding .mat-select-value-text {
+    font-size: 18px !important;
+    color: #767676 !important;
+}
+
+.text-grey {
+    color: #484848;
+}
+
 
 .emptySectionText {
     margin-top: 25px;
