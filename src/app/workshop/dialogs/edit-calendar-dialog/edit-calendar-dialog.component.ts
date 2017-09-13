@@ -360,7 +360,7 @@ export class EditCalendarDialog implements OnInit {
     }
 
     private extractDate(dateString: string) {
-        return dateString.split('T')[0];
+        return moment.utc(dateString).local().toDate();
     }
 
     private extractTime(dateString: string) {

@@ -50,6 +50,7 @@ export class WorkshopContentComponent implements OnInit {
   ngOnInit() {
     this.myForm.addControl('itenary', this._fb.array([this.initItenary()]));
   }
+
   initItenary() {
     return this._fb.group({
       date: [null],
@@ -107,10 +108,15 @@ export class WorkshopContentComponent implements OnInit {
       delete contentObj.schedule;
       delete contentObj.pending;
       if (contentObj.type === 'project' || contentObj.type === 'video') {
-        const endDay = new Date(schedule.endDay);
-        schedule.endDay = endDay;
-        schedule.startTime = null;
-        schedule.endTime = null;
+        if(contentObj.type === 'video') {
+          schedule.endDay = 0;
+        }
+        else {
+          const endDate = new Date(schedule.endDay);
+          schedule.endDay = this.numberOfdays(endDate, this.calendar.startDate);
+        }
+        schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
+        schedule.endTime = new Date(0, 0, 0, 1, 0, 0, 0);
       } else if (contentObj.type === 'online') {
         const startTimeArr = schedule.startTime.toString().split(':');
         const startHour = startTimeArr[0];
@@ -121,12 +127,10 @@ export class WorkshopContentComponent implements OnInit {
         const endHour = endTimeArr[0];
         const endMin = endTimeArr[1];
         schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
-      } else if (contentObj.type === 'video') {
-
+        schedule.endDay = 0;
       }
-
       schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
-      schedule.endDay = 0;
+
       console.log(schedule);
       this.http.post(this.config.apiUrl + '/api/collections/' + this.collectionId + '/contents', contentObj, this.options)
         .map((response: Response) => {
@@ -144,6 +148,9 @@ export class WorkshopContentComponent implements OnInit {
                 const Form = <FormGroup>Itenary.controls[i];
                 const ContentsArray = <FormArray>Form.controls.contents;
                 const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
+                const ContentSchedule = <FormGroup>ContentGroup.controls.schedule;
+                ContentSchedule.controls.startTime.patchValue('');
+                ContentSchedule.controls.endTime.patchValue('');
                 ContentGroup.controls.pending.setValue(false);
               }
               console.log(response);
@@ -157,6 +164,7 @@ export class WorkshopContentComponent implements OnInit {
       const form = <FormGroup>itenary.controls[i];
       const contentsArray = <FormArray>form.controls.contents;
       const contentGroup = <FormGroup>contentsArray.controls[event.value];
+      const ContentSchedule = <FormGroup>contentGroup.controls.schedule;
       contentGroup.controls.pending.setValue(true);
 
       const itenaryObj = this.myForm.value.itenary[i];
@@ -172,11 +180,10 @@ export class WorkshopContentComponent implements OnInit {
         const endDay = new Date(schedule.endDay);
         schedule.endDay = endDay;
       }
-      if (contentObj.type === 'online') {
-
+      if (contentObj.type === 'online' || contentObj.type === 'video') {
+        schedule.endDay = 0;
       }
       schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
-      schedule.endDay = 0;
       if (schedule.startTime === '') {
         schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
       } else {
@@ -201,6 +208,8 @@ export class WorkshopContentComponent implements OnInit {
           this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
             .map((resp: Response) => {
               if (resp.status === 200) {
+                ContentSchedule.controls.startTime.patchValue('');
+                ContentSchedule.controls.endTime.patchValue('');
                 contentGroup.controls.pending.setValue(false);
               }
               console.log(resp);
@@ -208,7 +217,7 @@ export class WorkshopContentComponent implements OnInit {
             .subscribe();
         })
         .subscribe();
-    } else if (event.action = 'delete') {
+    } else if (event.action === 'delete') {
       const itenaryObj = this.myForm.value.itenary[i];
       const scheduleDate = itenaryObj.date;
       const contentObj = itenaryObj.contents[event.value];
@@ -222,6 +231,10 @@ export class WorkshopContentComponent implements OnInit {
           contentsArray.removeAt(event.value);
         })
         .subscribe();
+    }
+    else if (event.action === 'deleteDay') {
+      const itenary = <FormArray>this.myForm.controls.itenary;
+      itenary.removeAt(i);
     } else {
       console.log('unhandledEvent Triggered');
     }

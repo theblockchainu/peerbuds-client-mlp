@@ -817,6 +817,10 @@ img {
     padding-left: 0px !important;
 }
 
+.padding-right-0 {
+    padding-right: 0px !important;
+}
+
 .onboarding .mat-select-placeholder {
     font-size: 19px !important;
     margin-bottom: 50px;
@@ -829,4 +833,53 @@ img {
 
 .text-grey {
     color: #484848;
+}
+
+.margin-left-0 {
+    margin-left: 0px !important;
+}
+
+.padding-top-0 {
+    padding-top: 0px !important;
+}
+
+.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
+    font-size: 16px !important;
+}
+
+.dateStyles input.mat-input-element, .timeInput input.mat-input-element {
+    font-size: 18px !important;
+}
+
+.dateStyles .svgStyle md-icon {
+    font-size: 20px !important;
+}
+
+.timeInput .mat-input-element {
+    resize: none !important;
+}
+
+.noJustify a.mat-tab-link {
+    justify-content: left !important;
+    padding-left: 3px !important;
+    margin-left: 5px;
+    min-width: 100px !important;
+    margin-right: 20px  !important;
+}
+
+.noJustify .mat-ink-bar {
+    width: 100px !important;
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2px !important;
+}
+
+.rightLinks {
+    font-size:16px !important;
+    color: #767676;
+}
+
+.rightChevron {
+    color: #767676;
 }
