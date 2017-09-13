@@ -755,7 +755,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   saveandexit() {
-    debugger;
     this.workshopStepUpdate();
     if (this.step === 13) {
       const data = this.timeline;
