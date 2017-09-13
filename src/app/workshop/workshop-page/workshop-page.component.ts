@@ -198,7 +198,6 @@ export class WorkshopPageComponent implements OnInit {
       }
       this.workshopId = params['workshopId'];
       this.calendarId = params['calendarId'];
-      console.log('route changed');
     });
     this.userId = cookieUtilsService.getValue('userId');
   }
@@ -591,8 +590,8 @@ content:any   */
 
   openDeleteDialog(action: string) {
     this.dialogsService
-    .deleteCollection(action)
-    .subscribe((result) => {
+      .deleteCollection(action)
+      .subscribe((result) => {
         if (result === 'delete') {
           this.deleteWorkshop();
         } else if (result === 'cancel') {
@@ -704,18 +703,18 @@ content:any   */
       ],
       'limit': 4
     };
-    this._collectionService.getRecommendations(query, (err, response: any) => {
-      console.log(err);
-      if (err) {
-      } else {
-        for (const responseObj of response) {
+    this._collectionService.getRecommendations(query).subscribe(
+      (response: any) => {
+        for (const responseObj of response.json()) {
           if (this.workshopId !== responseObj.id) {
             responseObj.rating = this._collectionService.calculateRating(responseObj.reviews);
             this.recommendations.collections.push(responseObj);
           }
         }
+      }, (err) => {
+        console.log(err);
       }
-    });
+    );
   }
 
   /**

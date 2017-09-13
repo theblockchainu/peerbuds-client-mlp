@@ -23,6 +23,8 @@ import { WorkshopSubmitDialogComponent } from './workshop-submit-dialog/workshop
 import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-clone-dialog.component';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 
+import { DialogsService } from '../dialogs/dialog.service';
+
 
 @Component({
   selector: 'app-workshop-edit',
@@ -97,6 +99,16 @@ export class WorkshopEditComponent implements OnInit {
   public isSubmitted = false;
   public connectPaymentUrl = '';
 
+  public query = {
+    'include': [
+      'topics',
+      'calendars',
+      { 'participants': [{ 'profiles': ['work'] }] },
+      { 'owners': ['profiles'] },
+      { 'contents': ['schedules'] }
+    ]
+  };
+
   // TypeScript public modifiers
   constructor(
     public router: Router,
@@ -112,7 +124,8 @@ export class WorkshopEditComponent implements OnInit {
     private cookieUtilsService: CookieUtilsService,
     public requestHeaderService: RequestHeaderService,
     private dialog: MdDialog,
-    private _leftSideBarService: LeftSidebarService
+    private _leftSideBarService: LeftSidebarService,
+    private dialogsService: DialogsService
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
@@ -314,7 +327,9 @@ export class WorkshopEditComponent implements OnInit {
         'title': 'Day ' + index,
         'step': 13 + '_' + index,
         'active': false,
-        'visible': true
+        'visible': true,
+        'locked': false,
+        'complete': false
       });
       i++;
     }, this);
@@ -364,18 +379,18 @@ export class WorkshopEditComponent implements OnInit {
 
   private initializeWorkshop() {
     console.log('Inside init workshop');
-    const query = {
-      'include': [
-        'topics',
-        'calendars',
-        { 'participants': [{ 'profiles': ['work'] }] },
-        { 'owners': ['profiles'] },
-        { 'contents': ['schedules'] }
-      ]
-    };
+    // const query = {
+    //   'include': [
+    //     'topics',
+    //     'calendars',
+    //     { 'participants': [{ 'profiles': ['work'] }] },
+    //     { 'owners': ['profiles'] },
+    //     { 'contents': ['schedules'] }
+    //   ]
+    // };
 
     if (this.workshopId) {
-      this._collectionService.getCollectionDetail(this.workshopId, query)
+      this._collectionService.getCollectionDetail(this.workshopId, this.query)
         .subscribe((res) => {
           console.log(res);
 
@@ -407,8 +422,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public selected(event) {
-
-    if (this.interests.length >= 3) {
+    if (event.length > 3) {
       this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
     }
     this.interests = event;
@@ -420,31 +434,18 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public removed(event) {
+    debugger;
     let body = {};
     let options;
     this.removedInterests = event;
     if (this.removedInterests.length !== 0) {
-      const topicArray = [];
       this.removedInterests.forEach((topic) => {
-        topicArray.push(topic.id);
+        this.http.delete(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel/' + topic.id, options)
+          .map((response) => { 
+            console.log(response); 
+          }).subscribe();
       });
 
-      body = {
-        'targetIds': topicArray
-      };
-
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('Accept', 'application/json');
-
-      options = new RequestOptions({
-        headers: headers,
-        body: body
-      });
-      if (topicArray.length !== 0) {
-        this.http.delete(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', options)
-          .map((response) => { console.log(response); }).subscribe();
-      }
     }
   }
 
@@ -457,12 +458,12 @@ export class WorkshopEditComponent implements OnInit {
         'title': 'Day ' + index2,
         'step': 13 + '_' + index2,
         'active': false,
-        'visible': true
+        'visible': true,
+        'locked': false,
+        'complete': false
       });
     }, this);
   }
-
-
 
   public getMenuArray(event) {
     this.sidebarMenuItems = event;
@@ -470,7 +471,6 @@ export class WorkshopEditComponent implements OnInit {
 
 
   private initializeFormValues(res) {
-    // console.log(res);
     // Topics
     this.relTopics = _.uniqBy(res.topics, 'id');
     this.interests = this.relTopics;
@@ -677,24 +677,16 @@ export class WorkshopEditComponent implements OnInit {
     };
 
     if (topicArray.length !== 0) {
-      // this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', body)
-      //   .share()
-      //   .map((response) => {
-      //     this.step++;
-      //     this.workshopStepUpdate();
-      //             this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
-      //   });
-      // patchRequest.subscribe((res) => {
-      //     this.step++;
-      //     this.workshopStepUpdate();
-      //             this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
-      // })
-
       let observable: Rx.Observable<any>;
       observable = this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel', body)
         .map(response => response).publishReplay().refCount();
       observable.subscribe((res) => {
         this.step++;
+        this._collectionService.getCollectionDetail(this.workshopId, this.query)
+        .subscribe((res) => {
+          console.log(res);
+          this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(res, this.sidebarMenuItems); 
+        });
         this.workshopStepUpdate();
         this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
       });
@@ -735,7 +727,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   saveandexit() {
-
     if (this.step === 13) {
       const data = this.timeline;
       const body = data.value.calendar;
@@ -767,27 +758,34 @@ export class WorkshopEditComponent implements OnInit {
     this.router.navigate(['console/teaching/workshops']);
   }
 
-  AddNewTopic(data, modal) {
+  addNewTopic() {
     let tempArray = [];
     tempArray = _.union(this.interests, tempArray);
-    const body = {
-      'name': data.value.topicName,
-      'type': 'user'
-    };
     let topic;
-    this.http.post(this.config.apiUrl + '/api/topics', body)
-      .map((res) => {
+    this.dialogsService
+    .addNewTopic()
+    .subscribe((res) => {
+      if(res) {
         topic = res;
         topic.checked = true;
         tempArray.push(topic);
         this.interests = _.union(this.interests, tempArray);
-        console.log('CHanged');
         this.suggestedTopics = this.interests;
-        modal.hide();
-      })
-      .subscribe();
+      }
+      });
   }
 
+  addNewLanguage() {
+    this.dialogsService
+    .addNewLanguage()
+    .subscribe((res) => {
+      if(res) {
+        this.languagesArray.push(res);
+        this.workshop.controls.selectedLanguage.patchValue(res.name);
+      }
+      });
+
+  }
 
   uploadCanvasVideo(event) {
     // Validate whether MP4

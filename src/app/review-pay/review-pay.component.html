@@ -38,18 +38,7 @@
                         <div class="col-sm-6">
                             <label class="small display-block">&nbsp;</label>
                             <md-select placeholder="YYYY" formControlName="expiryYear">
-                                <md-option value="2017">2017</md-option>
-                                <md-option value="2018">2018</md-option>
-                                <md-option value="2019">2019</md-option>
-                                <md-option value="2020">2020</md-option>
-                                <md-option value="2021">2021</md-option>
-                                <md-option value="2022">2022</md-option>
-                                <md-option value="2023">2023</md-option>
-                                <md-option value="2024">2024</md-option>
-                                <md-option value="2025">2025</md-option>
-                                <md-option value="2026">2026</md-option>
-                                <md-option value="2027">2027</md-option>
-                                <md-option value="2028">2028</md-option>
+                                <md-option value="{{ expiryyear }}" *ngFor="let expiryyear of expiryYear">{{ expiryyear }}</md-option>
                             </md-select>
                         </div>
                     </div>
@@ -66,7 +55,7 @@
                         </div>
                     </div>
                     <button md-raised-button color="primary" type="submit" class="text-center" [disabled]="!makePaymentForm.valid">{{collection.price}} usd - Confirm Payment</button>
-                    <div class="display-inline-block margin-right-10" *ngIf="savingData"><img src="{{loader}}" alt="loading" /></div>
+                    <div class="text-center margin-top-10" *ngIf="savingData"><img src="{{loader}}" alt="loading" style="width:16px;" />  Processing Payment</div>
                     <div class="text-center text-grey small margin-top-10">
                         <i class="fa fa-lock"></i> Your Credit card information is encrypted
                     </div>

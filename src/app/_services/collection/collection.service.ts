@@ -425,16 +425,10 @@ export class CollectionService {
   /**
    * getRecommendations
    */
-  public getRecommendations(query, cb) {
+  public getRecommendations(query) {
     const filter = JSON.stringify(query);
-    this.http
-      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter, this.options)
-      .map((response) => {
-        cb(null, response.json());
-      }, (err) => {
-        cb(err);
-      }).subscribe();
-
+    return this.http
+      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + filter, this.options);
   }
 
   /**

@@ -21,7 +21,7 @@ export class ReviewPayComponent implements OnInit {
   public collectionTitle = '';
   public cardNumber: string;
   public expiryMonth: string;
-  public expiryYear: string;
+  public expiryYear: any = [];
   public cvc: string;
   public message: string;
   public confirmAmount = '';
@@ -35,6 +35,9 @@ export class ReviewPayComponent implements OnInit {
   public createChargeData = { amount: 0 , currency: 'usd', source: '', description: '', customer: '' };
   public isCardExist = false;
   public listAllCards = [];
+  public presentYear: any = new Date().getFullYear();
+  public maxYear = (this.presentYear + 10);
+  public periodStarts = this.presentYear;
 
   constructor(public config: AppConfig,
     private cookieUtilsService: CookieUtilsService,
@@ -86,6 +89,14 @@ export class ReviewPayComponent implements OnInit {
     });
     // console.log(this.custId);
 
+    this.loadYear();
+  }
+
+// Load year
+  loadYear() {
+    for (let index = this.periodStarts; index <= this.maxYear; index++) {
+      this.expiryYear.push(index);
+    }
   }
 
   getToken() {
@@ -108,6 +119,7 @@ export class ReviewPayComponent implements OnInit {
         if (resp) {
           // console.log(JSON.stringify(resp.json()));
           this.savingData = false;
+          this.message = 'Payment Confirmation Success!';
         }
       });
     }

@@ -4,12 +4,12 @@ import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
 
-import { ContentService } from '../../_services/content/content.service';
-import { CollectionService } from '../../_services/collection/collection.service';
+import { ContentService } from '../../../_services/content/content.service';
+import { CollectionService } from '../../../_services/collection/collection.service';
 import * as moment from 'moment';
 import _ from 'lodash';
 
-import { ViewConflictDialog } from './view.conflict.dialog.component';
+import { ViewConflictDialog } from '../view-conflict-dialog/view-conflict-dialog.component';
 
 import {
   startOfDay,
@@ -28,7 +28,7 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarDateFormatter
 } from 'angular-calendar';
-import { CustomDateFormatter } from '../workshop-page/custom-date-formatter.provider';
+import { CustomDateFormatter } from '../../workshop-page/custom-date-formatter.provider';
 
 const colors: any = {
     red: {
@@ -47,8 +47,8 @@ const colors: any = {
 
 @Component({
     selector: 'app-edit-calendar-dialog',
-    templateUrl: './edit.calendar.dialog.component.html',
-    styleUrls: ['./edit.calendar.dialog.component.scss'],
+    templateUrl: './edit-calendar-dialog.component.html',
+    styleUrls: ['./edit-calendar-dialog.component.scss'],
     providers: [
       {
         provide: CalendarDateFormatter,
@@ -119,7 +119,6 @@ export class EditCalendarDialog implements OnInit {
 
     handleEvent(action: string, event: CalendarEvent): void {
         this.modalData = { event, action };
-        // this.modal.open(this.modalContent, { size: 'lg' });
     }
 
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {

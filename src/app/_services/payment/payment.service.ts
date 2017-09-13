@@ -59,7 +59,7 @@ export class PaymentService {
 
   listAllCards(customerId: any) {
     if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/transactions/list-all-cards/' + customerId, null);
+      return this.http.get(this.config.apiUrl + '/api/transactions/list-all-cards/' + customerId, this.options);
     }
   }
 

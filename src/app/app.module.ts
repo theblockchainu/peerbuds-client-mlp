@@ -15,6 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
 import 'hammerjs';
 
+import { DialogsModule } from './_services/dialogs/dialogs.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +41,8 @@ import 'hammerjs';
     MdInputModule,
     MdNativeDateModule,
     MdProgressSpinnerModule,
-    MdProgressBarModule
+    MdProgressBarModule,
+    DialogsModule
   ],
   bootstrap: [AppComponent]
 })
