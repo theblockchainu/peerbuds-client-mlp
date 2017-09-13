@@ -522,7 +522,7 @@
               <form [formGroup]="paymentInfo">
                 <div style="margin-top:50px;">
                   <button md-raised-button>PayTM</button> &emsp;
-                  <button md-raised-button>Stripe</button> &emsp;
+                  <button md-raised-button><a [href]="connectPaymentUrl" target="_blank">Stripe</a></button> &emsp;
                   <button md-raised-button>Paypal</button> &emsp;
                 </div>
               </form>

@@ -97,6 +97,7 @@ export class WorkshopEditComponent implements OnInit {
   public datesEditable = false;
   public isPhoneVerified = false;
   public isSubmitted = false;
+  public connectPaymentUrl = '';
 
   public query = {
     'include': [
@@ -129,6 +130,8 @@ export class WorkshopEditComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
       this.step = params['step'];
+      // this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.apiUrl + '/workshop/' + this.workshopId + '/edit/' + this.step + '&state=1';
+      this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write';
     });
     this.userId = cookieUtilsService.getValue('userId');
     this.options = requestHeaderService.getOptions();

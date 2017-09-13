@@ -1,0 +1,94 @@
+// component css goes here
+.review-pay-setion{
+    padding: 3% 0 5% 0 !important;
+    overflow-y: inherit;
+}
+.title{
+    font-size:32px;
+    font-weight:600;
+    line-height: 0.8;
+}
+
+.bullet{
+    margin-right:17px;
+    display:inline-block;
+    position:relative;
+    padding-left: 30px;
+    &:before{
+        display: inline-block;
+        position: absolute;
+        content:"";
+        width:6px;
+        height:6px;
+        background-color: #ccc;
+        border-radius: 50%;
+        top:6px;
+        left:10px;
+    }
+}
+
+.sidebar-right{
+    .sidebar-box{
+        padding:20px;
+        border:1px solid #bbb;
+        h3{
+            margin:0 0 30px 0;
+        }
+    }
+}
+.seperate-section{
+    &{
+        border-bottom:1px solid #ccc;
+        padding:20px 0;
+    }
+    &:last-child{
+        border-bottom:none;
+        padding-bottom:0;
+    }
+    h3{
+        margin:0;
+    }
+    .section-description{
+        font-size:0.8750em;
+        color:#666;
+        line-height: 28px;
+    }
+}
+
+label{
+    font-size:18px;
+}
+.small{
+    font-size:13px;
+    color:#999;
+}
+.fa-cc-visa{
+    position:absolute;
+    top:10px;
+    right:0;
+    color:#999;
+}
+.mat-primary{
+    width:100%;
+}
+.mat-select{
+    width:100%;
+}
+.position-relative{
+    position:relative;
+}
+.text-center{
+    text-align: center;
+}
+.text-grey{
+    color:#999;
+}
+.fs-13{
+    font-size: 13px;
+}
+.margin-top-35{
+    margin-top:35px;
+}
+.cursor-pointer{
+    cursor:pointer;
+}
