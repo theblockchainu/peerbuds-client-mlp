@@ -51,6 +51,10 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: 'app/admin/admin.module#AdminModule'
+  },
+  {
+    path: 'review-pay',
+    loadChildren: 'app/review-pay/review-pay.module#ReviewPayModule'
   }
   ,
   {
