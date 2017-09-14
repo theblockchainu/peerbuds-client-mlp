@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
@@ -51,6 +52,15 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: 'app/admin/admin.module#AdminModule'
+  },
+  {
+    path: 'review-pay',
+    loadChildren: 'app/review-pay/review-pay.module#ReviewPayModule'
+  }
+  ,
+  {
+    path: 'access-denied',
+    component: AccessDeniedComponent
   }
   ,
   {
