@@ -77,7 +77,7 @@ export class ConsoleProfileEditComponent implements OnInit {
           this.initailizeWorkForm()
         ]),
         email: '',
-        is_Admin: ''
+        isAdmin: ''
       }
     );
     const query = {
@@ -123,6 +123,7 @@ export class ConsoleProfileEditComponent implements OnInit {
   private setFormValues(profiles: Array<any>) {
     if (profiles.length > 0) {
       this.profileForm.patchValue(profiles[0]);
+      this.profileForm.controls['isAdmin'].patchValue(profiles[0].peer[0].isAdmin);
       this.profileForm.controls['email'].patchValue(profiles[0].peer[0].email);
       if (profiles[0].phones && profiles[0].phones.length > 0) {
         this.profileForm.setControl('phones', this._fb.array(
@@ -230,6 +231,7 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.work;
     const email = profileData.email;
     delete profileData.email;
+    const isAdmin = profileData.isAdmin;
     delete profileData.is_Admin;
     this._profileService.updateProfile(profileData)
       .flatMap((response) => {
@@ -237,7 +239,7 @@ export class ConsoleProfileEditComponent implements OnInit {
       }).flatMap((response) => {
         return this._profileService.updateEducation(this.profile.id, education);
       }).flatMap((response) => {
-        return this._profileService.updatePeer({ 'email': email });
+        return this._profileService.updatePeer({ 'email': email, 'isAdmin': isAdmin });
       }).subscribe((response) => {
         this.snackBar.open('Profile Updated', 'Close');
       }, (err) => {

@@ -125,7 +125,7 @@
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(2)>Back</a> -->
-                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="!selectedLanguages">Continue</button>
+                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages==undefined">Continue</button>
                 </div>
               </form>
             </div>
