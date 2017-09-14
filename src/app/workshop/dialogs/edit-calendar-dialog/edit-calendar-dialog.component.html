@@ -10,19 +10,19 @@
             <div class="col-md-6">
                 <label>After your first workshop session ends, <br/>the next session starts...</label><br><br>
                 <md-radio-group class="repeat-workshop-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
-                    <md-radio-button class="repeat-workshop-button" value="immediate"> 
+                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="immediate"> 
                         <span>Immediately</span>
                     </md-radio-button>
-                    <md-radio-button class="repeat-workshop-button" value="days"> 
-                        <span class="valignsub">after</span>
-                        &nbsp;&nbsp;<md-select formControlName="days" class="widthDays">
+                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="days"> 
+                        <span class="valignMiddle">after</span>
+                        &nbsp;&nbsp;<md-select formControlName="days" class="widthDays padding-top-0">
                             <md-option *ngFor="let day of daysOption" [value]="day">{{day}}</md-option>
                         </md-select>
-                        <span class="valignsub">&nbsp;&nbsp;days</span>
+                        <span class="valignMiddle">&nbsp;&nbsp;days</span>
                     </md-radio-button>
-                    <md-radio-button class="repeat-workshop-button" value="weekdays"> 
-                        <span class="valignsub">from the next</span>
-                        &nbsp;&nbsp;<md-select formControlName="weekdays">
+                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="weekdays"> 
+                        <span class="valignMiddle">from the next</span>
+                        &nbsp;&nbsp;<md-select formControlName="weekdays" class="padding-top-0">
                             <md-option *ngFor="let day of weekDayOption" [value]="day.value">{{day.text}}</md-option>
                         </md-select>
                     </md-radio-button>
@@ -30,20 +30,20 @@
                 <div class="margin-Top-50 flex-column">
                     <label>It will continue repeating up to..</label><br>
                     <md-radio-group class="repeat-workshop-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
-                        <md-radio-button class="repeat-workshop-button" value="daysRepeat"> 
-                            &nbsp;&nbsp;<md-select formControlName="daysRepeat" class="widthDays">
+                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="daysRepeat"> 
+                            &nbsp;&nbsp;<md-select formControlName="daysRepeat" class="widthDays padding-top-0">
                                 <md-option *ngFor="let day of daysOption" [value]="day">{{day}}</md-option>
                             </md-select>
-                            <span class="valignsub">&nbsp;&nbsp;more sessions</span>
+                            <span class="valignMiddle">&nbsp;&nbsp;more sessions</span>
                         </md-radio-button>
-                        <md-radio-button class="repeat-workshop-button" value="monthsRepeat"> 
-                            &nbsp;&nbsp;<md-select formControlName="monthsRepeat" class="widthDays">
+                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="monthsRepeat"> 
+                            &nbsp;&nbsp;<md-select formControlName="monthsRepeat" class="widthDays padding-top-0">
                                 <md-option *ngFor="let month of monthOption" [value]="month">{{month}}</md-option>
                             </md-select>
-                            <span class="valignsub">&nbsp;&nbsp;more months</span>
+                            <span class="valignMiddle">&nbsp;&nbsp;more months</span>
                         </md-radio-button>
-                        <md-radio-button class="repeat-workshop-button" value="dateRepeat"> 
-                            <span class="valignsub">the date</span>
+                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="dateRepeat"> 
+                            <span class="valignMiddle">the date</span>
                             &nbsp;&nbsp;<md-input-container>
                             <input mdInput [mdDatepicker]="dateRepeat" formControlName="dateRepeat">
                             <md-datepicker-toggle mdSuffix [for]="dateRepeat"></md-datepicker-toggle>

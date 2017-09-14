@@ -96,7 +96,7 @@
                           </div>
                           <div class="row margin-top-30" style="cursor: pointer;" *ngFor="let content of itenary.contents" (click)="openDialog(content)">
                             <div class="col-md-5">
-                              <img style="width: 100%; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive center-block itenary-media" src="{{config.apiUrl+content.imageUrl}}" (error)="_collectionService.imgErrorHandler($event)">
+                              <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive center-block itenary-media" src="{{config.apiUrl+content.imageUrl}}" (error)="_collectionService.imgErrorHandler($event)">
                               <video width="100%" height="120px" *ngIf="content.type==='video'" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
                                 <source src="{{config.apiUrl+content.imageUrl}}">
                               </video>
@@ -433,7 +433,7 @@
               </div>
             </div>
             <hr class="margin-top-30 margin-bottom-30" *ngIf="userType==='teacher'">
-            <div *ngIf="userType==='teacher'">
+            <div *ngIf="workshop.isApproved && userType==='teacher'">
               <div>
                 <h3 style="display: inline-block;">Workshop Batches</h3>
                 <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;"><md-icon style="font-size: 14px; top: 15px;">edit</md-icon></span>
