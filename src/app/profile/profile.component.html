@@ -1,599 +1,396 @@
-<div class="main-content profile-setion">
-  <div class="" *ngIf="profile">
+<div class="container profile-page">
+    <div class="row" *ngIf="profileObj">
+        <div class="col-md-3 left-panel">
+            <div class="row">
+                <div class="col-md-12">
+                    <img class="profile-pic" src="{{config.apiUrl+profileObj.picture_url}}" alt="profile pic">
+                </div>
+                <div class="col-md-12">
+                    <h3>{{profileObj.first_name}} {{profileObj.last_name}}</h3>
+                </div>
+                <div class="col-md-12">
+                    <h4>{{profileObj.headline}}</h4>
+                </div>
+                <div class="col-md-12">
+                    <button md-button>Message</button>
+                </div>
+            </div>
+            <!-- <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Karma Earned</h3>
+                        </div>
+                    </div> -->
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <md-icon>mic_none</md-icon>
+                        {{profileObj.other_languages}}
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <p>
+                        <md-icon>
+                            location_on
+                        </md-icon>
+                        {{profileObj.location_string}}
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Social Profiles</h3>
+                </div>
+                <div class="col-md-12">
+                    <i *ngFor="let identity of socialIdentities" class="fa fa-{{identity.provider}}" aria-hidden="true"></i>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Interest</h3>
+                </div>
+                <div class="col-md-12">
+                    <md-chip-list>
+                        <span *ngFor="let interest of interestsArray;let i=index">
+                                        <md-chip *ngIf="i<maxVisibleInterest">{{interest}}</md-chip>
+                                </span>
+                    </md-chip-list>
+                    <span *ngIf="interestsArray.length>maxVisibleInterest">
+                                <a (click)="toggleMaxInterest()"> +more </a>
+                            </span>
+                    <span *ngIf="interestsArray.length<maxVisibleInterest">
+                                    <a (click)="toggleMaxInterest()"> +less </a>
+                                </span>
+                </div>
+            </div>
+            <hr>
+            <div class="row" *ngIf="urluserId!==cookieUserId">
+                <div class="col-md-12">
+                    <h6 (click)="reportProfile()">Report profile</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 center-feed">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>About Me</h2>
+                </div>
+                <div class="col-md-12">
+                    <p>{{profileObj.description}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class=col-md-12>
+                    <h2>What I teach</h2>
+                </div>
+                <div class="col-md-12">
+                    <div class="row" *ngFor="let topic of topicsTeaching">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>{{topic.name}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>{{topic.experience}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <div class="row ">
+                        <div class="col-md-12 ">
+                            <h2>Resume</h2>
+                        </div>
+                    </div>
+                    <div class="row " *ngIf="profileObj.work && profileObj.work.length>0">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <md-icon>work</md-icon>
+                                </div>
+                                <div class="col-md-11">
+                                    <h4>Work Experience</h4>
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let workObj of profileObj.work">
+                                <div class="col-md-11 col-md-offset-1">
+                                    <div class="row">
+                                        <div class="col-md-12 work-title">
+                                            <h3>{{workObj.position}}</h3> <span>. {{workObj.company}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</span>
+                                            <span *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="profileObj.education && profileObj.education.length>0">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <md-icon>school</md-icon>
+                                </div>
+                                <div class="col-md-11">
+                                    <h4>Education</h4>
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let educationObj of profileObj.education">
+                                <div class="col-md-11 col-md-offset-1">
+                                    <div class="row">
+                                        <div class="col-md-12 education-title">
+                                            <h3>{{educationObj.degree}}</h3>
+                                            <!-- <h4>{{educationObj.major}}</h4> -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- <h4 *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</h4>
+                                                    <h4 *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</h4> -->
+                                            <h4>{{educationObj.school}}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class=col-md-12>
+                    <div class="row">
+                        <div class="col-md-12 review">
+                            <h2>Reviews</h2>
+                            <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false">
+                            </p-rating>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Review From Learners</h4>
+                        </div>
+                        <div class="col-md-12">
+                            <hr>
+                            <p>No Review yet</p>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Review From Teachers</h4>
+                        </div>
+                        <div class="col-md-12">
+                            <hr>
+                            <p>No Reviews yet</p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 right-panel" *ngIf="isTeacher">
+            <div class="row">
+                <div class="col-md-12">
+                    <md-tab-group>
+                        <!-- <md-tab label="Session">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>No Sessions</p>
+                                        </div>
+                                    </div>
+                                </md-tab>
+                                <md-tab label="Experience">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>No Experiences</p>
+                                        </div>
+                                    </div>
+                                </md-tab> -->
+                        <md-tab label="Workshops">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <md-accordion>
+                                        <md-expansion-panel *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index" hideToggle="true">
+                                            <md-expansion-panel-header>
+                                                <md-panel-title>
+                                                    {{collectionObj.title}}
+                                                </md-panel-title>
+                                            </md-expansion-panel-header>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <img *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h3>
+                                                        {{collectionObj.title}}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12" *ngIf="collectionObj.contents">
+                                                    <span>{{collectionObj.itenaryArray.length}} days / {{collectionObj.totalDuration}} Hours &emsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon>{{collectionObj.contents.length}} parts</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>{{collectionObj.description}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button md-raised-button [routerLink]="['/workshop',collectionObj.id]" color="accent">See Dates</button>
+                                                </div>
+                                            </div>
+                                            <!--TIMELINE-->
+                                            <div class="row Itenary">
+                                                <div class="featurette" id="about">
+                                                    <div class="col-md-12">
+                                                        <div class="qa-message-list" id="wallmessages">
+                                                            <div class="message-item" *ngFor="let itenary of collectionObj.itenaryArray">
+                                                                <div class="message-inner">
+                                                                    <div class="qa-message-content">
+                                                                        <div>
+                                                                            <div>Day {{itenary.startDay}}</div>
+                                                                        </div>
+                                                                        <div class="row margin-top-30" style="cursor: pointer;" *ngFor="let content of itenary.contents">
+                                                                            <div class="col-md-5">
+                                                                                <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive center-block itenary-media"
+                                                                                    src="{{config.apiUrl+content.imageUrl}}"
+                                                                                    (error)="_collectionService.imgErrorHandler($event)">
+                                                                                <video width="100%" height="120px" *ngIf="content.type==='video'" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
+                                                                                    <source src="{{config.apiUrl+content.imageUrl}}">
+                                                                                </video>
+                                                                            </div>
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </md-expansion-panel>
+                                    </md-accordion>
+                                </div>
+                            </div>
+                        </md-tab>
+                    </md-tab-group>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
-      <div class="col-sm-2" [ngClass]="(userType=='teacher') ? 'col-sm-offset-1' : 'col-sm-offset-3'">
-        <div class="profile-image-big">
-          <img src="{{profile.picture_url ? config.apiUrl+profile.picture_url : defaultProfileUrl}}" alt="image"
-          />
-        </div>
-        <div class="seperate-section text-center">
-          <div class="title dot-dot">{{profile.first_name}} {{profile.last_name}}</div>
-          <div class="sub-title dot-dot">{{profile.headline}}</div>
-          <div class="margin-top-10" [hidden]="profileId === userId">
-            <button class="btn btn-default" title="Message">Message</button>
-            <span class="online-status online margin-left-15" title="Online"></span>
-          </div>
-        </div>
-        <div class="seperate-section fs-14">
-          <div class="text-grey margin-bottom-10"><i class="fa fa-microphone margin-right-10"></i> {{profile.languages}}</div>
-          <div class="text-grey"><i class="fa fa-map-marker margin-right-10"></i> {{profile.location}}</div>
-        </div>
-        <div class="seperate-section">
-          <div class="fs-18 fw-bold margin-bottom-20">Social Profiles</div>
-          <div class="social-profiles">
-            <a class="social-icons" href="{{social.profile._json.url}}" target="_blank" *ngFor="let social of peer.identities" title="{{social.profile._json.url}}">
-              <i *ngIf="social.provider=='google'" class="fa fa-google-plus"></i>
-              <i *ngIf="social.provider=='facebook'" class="fa fa-facebook"></i>
-              <i *ngIf="social.provider=='behance'" class="fa fa-behance"></i>
-              <i *ngIf="social.provider=='linkedin'" class="fa fa-linkedin"></i>
-              <i *ngIf="social.provider=='twitter'" class="fa fa-twitter"></i>
-            </a>
-          </div>
-        </div>
-        <div class="seperate-section">
-          <div class="fs-18 fw-bold margin-bottom-20">Interest</div>
-          <div class="interest">
-            <span *ngFor="let topic of peer.topicsTeaching">{{ topic.name }}</span>
-            <a href="javascript:;" class="more">+more</a>
-          </div>
-        </div>
-        <a href="javascript:;" class="display-block text-grey text-center margin-top-10">Report profile</a>
-      </div>
-      <div class="col-sm-5">
-        <div class="seperate-section padding-top-0">
-          <h3 class="heading">About me</h3>
-          <p class="text-grey lh-28 margin-bottom-0">{{profile.description}}</p>
-        </div>
-        <!--<div class="seperate-section">
-          <h3 class="heading">What I teach</h3>
-          <div class="what-i-teach">
-            <div class="topic">Web Design</div>
-            <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et rutrum leo. Sed efficitur tortor sed eros vehicula,
-              ac gravida urna euismod <a href="javascript:;" class="read-more">...read more</a></p>
-          </div>
-          <div class="what-i-teach">
-            <div class="topic">Coading with Java</div>
-            <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et rutrum leo. Sed efficitur tortor sed eros vehicula,
-              ac gravida urna euismod <a href="javascript:;" class="read-more">...read more</a></p>
-          </div>
-          <div class="what-i-teach">
-            <div class="topic">Basics of VR Design</div>
-            <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et rutrum leo. Sed efficitur tortor sed eros vehicula,
-              ac gravida urna euismod<a href="javascript:;" class="read-more">...read more</a></p>
-          </div>
-        </div>-->
-        <div class="seperate-section">
-          <h3 class="heading">Resume</h3>
-          <div class="resume-list">
-            <div class="resume-thumb"><i class="fa fa-briefcase"></i></div>
-            <div class="display-inline-block fs-14">
-              <p class="fw-bold fs-18">Work Experience</p>
-              <p *ngIf="!profileWork">Not available</p>
-              <p *ngFor="let work of profileWork">
-                <span class="fw-bold">{{ work.position }}</span>
-                <span class="bullet">{{ work.company }}</span>
-                <span class="display-block margin-top-10">{{ work.startDate | date: 'yyyy' }} - {{ work.endDate | date: 'yyyy' }}</span>
-              </p>
-            </div>
-          </div>
-          <div class="resume-list">
-            <div class="resume-thumb"><i class="fa fa-book"></i></div>
-            <div class="display-inline-block fs-14">
-              <p class="fw-bold fs-18">Education</p>
-               <p *ngIf="!profileEducation">Not available</p>
-              <p *ngFor="let education of profileEducation">
-                <span class="fw-bold">{{ education.degree }}</span>
-                <span class="bullet">Graphic Design</span>
-                <span class="display-block margin-top-10">{{ education.school }}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="seperate-section padding-bottom-0 border-none">
-          <div class="margin-bottom-30">
-            <div class="heading">Reviews
-              <p-rating [(ngModel)]="rate" [readonly]="true" [cancel]="false" stars="{{max}}"></p-rating>
-            </div>
-            <span>From Learners</span>
-          </div>
-          <div *ngIf="!reviews">No reviews</div>
-          <div class="review-section" *ngFor="let review of reviews; let i=index">
-            <!--<img src="{{review.reviewer.picture_url}}" class="review-thumb thumb-circle" />-->
-            <div *ngIf="i < 5">
-              <img src="{{review.reviewer.picture_url ? config.apiUrl+review.reviewer.picture_url : defaultProfileUrl}}" class="review-thumb thumb-circle"
-              />
-              <div class="review-title">{{ review.reviewer.first_name }}</div>
-              <div class="review-content">
-                <div class="review-desc">{{ review.description }}</div>
-                <div class="review-bottom">
-                  <span>{{ review.collection.type }}</span>
-                  <span class="bullet">{{ review.collection.createdAt | date: 'MMMM yyyy' }}</span>
-                  <span class="bullet"><a href="javascript:;" class="text-green">{{ review.collection.title }}</a></span>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-9">
+                    <h4>Leanring Journey</h4>
                 </div>
-              </div>
+                <div class="col-md-3">
+                    <md-select>
+                        <md-option *ngFor="let collection of collectionTypes" [value]="collection">
+                            {{ collection }}
+                        </md-option>
+                    </md-select>
+                    <a [routerLink]="'/home/workshops'">
+                        <h4>See all</h4>
+                    </a>
+                </div>
             </div>
-          </div>
-          <div class="review-all" *ngIf="reviews && reviews.length > 5">
-            <a href="javascript:;">See all {{ reviews.length }} reviews</a>
-          </div>
-          <!--<div class="margin-top-30 margin-bottom-30">
-            <span>From Teachers</span>
-          </div>
-          <div class="review-section">
-            <img src="http://lorempixel.com/62/62/people/1" class="review-thumb thumb-circle" />
-            <div class="review-title">Alexis</div>
-            <div class="review-content">
-              <div class="review-desc">He is a good teacher. Learned lots from him. He is always ready to provide you with any extra help you might
-                need. I would recommend others to take this course.
-              </div>
-              <div class="review-bottom">
-                <span>Experience</span>
-                <span class="bullet">October 2016</span>
-                <span class="bullet"><a href="javascript:;" class="text-green">Lighting in photography</a></span>
-              </div>
+            <div class="row feed-horizontal margin-top-20 margin-bottom-50">
+                <div class="col-md-3 recommendation-card" *ngFor="let workshop of participatingWorkshops; let i =index">
+                    <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
+                        <div class="">
+                            <img class="mat-elevation-z3 recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
+                                alt="workshpImg">
+                            <img class="mat-elevation-z3 recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+                                alt="workshpImg">
+                        </div>
+                        <div class="margin-top-20">
+                            <h4 class="title">{{workshop.currency}} {{workshop.price}}</h4>
+                        </div>
+                        <div class="">
+                            <h4 class="margin-bottom-2 title">{{workshop.title}}</h4>
+                        </div>
+                        <div class="headline">
+                            <p>{{workshop.headline | shorten: 20 : '...'}}</p>
+                        </div>
+                        <div class="col-sm-12 padding-left-0">
+                            <p-rating class="col-sm-7 padding-left-0" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+                            </p-rating>
+                            <span class="col-sm-5 padding-left-0" *ngIf="workshop.reviews">
+                                        <label>{{workshop.reviews.length}} Reviews</label>
+                                      </span>
+                            <span class="col-sm-5 padding-left-0" *ngIf="!workshop.reviews">
+                                        <label>0 Reviews</label>
+                                      </span>
+                        </div>
+                    </a>
+                </div>
             </div>
-          </div>
-          <div class="review-section">
-            <img src="http://lorempixel.com/62/62/people/2" class="review-thumb thumb-circle" />
-            <div class="review-title">Lusi</div>
-            <div class="review-content">
-              <div class="review-desc">He is a good teacher. Learned lots from him. He is always ready to provide you with any extra help you might
-                need. I would recommend others to take this course.
-              </div>
-              <div class="review-bottom">
-                <span>Session</span>
-                <span class="bullet">October 2016</span>
-              </div>
-            </div>
-          </div>
-          <div class="review-all">
-            <a href="javascript:;">See all 34 reviews</a>
-          </div>-->
         </div>
-      </div>
-      <div class="col-sm-3" [hidden]="userType !== 'teacher'">
-        <div class="sidebar-right">
-          <div class="sidebar-box">
-
-            <!--<md-tab-group>
-              <md-tab label="Session">
-                <h1>Session Heading</h1>
-                <p>Session content</p>
-              </md-tab>
-              <md-tab label="Experience">
-                <h1>Experience Heading</h1>
-                <p>Experience content</p>
-              </md-tab>
-              <md-tab label="Workshop">
-                <h1>Workshop Heading</h1>
-                <p>Workshop content</p>
-              </md-tab>
-            </md-tab-group>-->
-
-            <tabset>
-              <tab heading="Session" customClass="sidebar-tabs" [hidden]="!sessions">
-                <!--<div class="sidebar-section margin-top-30">
-                  <div class="display-inline-block">
-                    <div class="heading">Trial {{userType}}</div>
-                    <div class="desc">1 hour session</div>
-                  </div>
-                </div>
-                <div class="sidebar-section" (click)="editSessionModal.show()">
-                  <div class="display-inline-block">
-                    <div class="heading">Standard</div>
-                    <div class="desc">1 hour session</div>
-                  </div>
-                </div>
-                <div class="sidebar-section">
-                  <div class="display-inline-block">
-                    <div class="heading">Package</div>
-                    <div class="desc">
-                      <span class="display-block margin-bottom-10">2 session (1 hour each)</span>
-                      <span class="display-block">3 session (1 hour each)</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="sidebar-details" [hidden]="profileId === userId">
-                  <button class="btn btn-success btn-book" (click)="bookSessionModal.show()">Book</button>
-                </div>-->
-              </tab>
-              <tab heading="Experience" [hidden]="!experiences">
-                <div class="sidebar-section margin-top-30" *ngFor="let experience of experiences">
-                  <img class="img-responsive" src="{{ (experience.imageUrls && experience.imageUrls.length > 0) ? config.apiUrl+experience.imageUrls[0] : defaultImageUrl }}">
-                  <div class="text-black margin-bottom-10 margin-top-15 fw-bold">{{ experience.title != '' ? experience.title : 'No Title' }}</div>
-                  <p class="text-grey lh-24">{{ experience.description != '' ? experience.description : 'No Description' }}</p>
-                </div>
-                <div class="sidebar-details" [hidden]="profileId === userId">
-                  <button class="btn btn-success btn-book" (click)="seeDatesExperienceModal.show()">See dates</button>
-                </div>
-              </tab>
-              <tab heading="Workshop" [hidden]="!workshops">
-                <div class="sidebar-section margin-top-30" *ngFor="let workshop of workshops">
-                  <img class="img-responsive" src="{{ (workshop.imageUrls && workshop.imageUrls.length > 0) ? config.apiUrl+workshop.imageUrls[0] : defaultImageUrl }}" title="image">
-                  <div class="text-black margin-bottom-10 margin-top-15 fw-bold">{{ workshop.title != '' ? workshop.title : 'No Title' }}</div>
-                  <p class="text-grey lh-24">{{ workshop.description != '' ? workshop.description : 'No Description' }}</p>
-                </div>
-                <div class="sidebar-details" [hidden]="profileId === userId">
-                  <button class="btn btn-success btn-book" (click)="seeDatesWorkshopModal.show()">See dates</button>
-                </div>
-              </tab>
-            </tabset>
-            <!--<ul class="sidebar-tabs clearfix">
-              <li class="active"><a href="javascript:;">Session</a></li>
-              <li><a href="javascript:;">Experience</a></li>
-              <li><a href="javascript:;">Workshop</a></li>
-            </ul>-->
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-10 col-sm-offset-1" [hidden]="!(peer.collections).length">
-        <div class="row full-section">
-          <div class="col-sm-12">
-            <h3 class="margin-bottom-20">
-              Learning Journey
-              <div class="pull-right">
-                <select class="form-control section-dropdown">
-                  <option value="Workshop">Workshop</option>
-                  <option value="Experience">Experience</option>
-                </select>
-                <a href="#" class="fs-13 text-grey">See all</a>
-              </div>
-            </h3>
-          </div>
-          <div class="col-sm-3" *ngFor="let joinedCollection of peer.collections; let i = index;">
-            <div class="full-section-list" *ngIf="i < 4">
-              <img src="http://lorempixel.com/250/250/business/1/" alt="image" class="section-image img-responsive border-radius-5" />
-              <div class="section-head dot-dot">{{ joinedCollection.title }}</div>
-              <div class="section-des"><strong>{{ joinedCollection.currency }} {{ joinedCollection.price }}</strong> {{ joinedCollection.description
-                }}
-                <a href="javascript:;" class="text-black" [hidden]="(joinedCollection.description).length <= 127">...see details</a>
-              </div>
-              <div class="section-rating">
-                <p-rating [(ngModel)]="joinedCollection.rate" [cancel]="false" [readonly]="true" stars="{{max}}" class="margin-right-10"
-                  style="margin-left:0;"></p-rating>
-                <span>{{ joinedCollection.reviews.length }} reviews</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- learning journey row ends -->
-
-        <!--<div class="row full-section">
-          <div class="col-sm-12">
-            <h3 class="margin-bottom-20">
-              Communities
-              <div class="pull-right">
-                <a href="#" class="fs-13 text-grey">See all</a>
-              </div>
-            </h3>
-          </div>
-          <div class="col-sm-4">
-            <div class="full-section-list">
-              <img src="http://lorempixel.com/344/250/business/5/" alt="image" class="section-image img-responsive border-radius-5" />
-              <div class="section-head dot-dot">How to make home made pasta</div>
-              <div class="section-des"><strong>$12</strong> Lorem ipsum dolor sit amit. Lorem ipsum dolor sit amit. Lorem... <a href="javascript:;"
-                  class="text-black">see details</a></div>
-              <div class="section-rating">
-                <span>307 reviews</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="full-section-list">
-              <img src="http://lorempixel.com/344/250/business/6/" alt="image" class="section-image img-responsive border-radius-5" />
-              <div class="section-head dot-dot">How to make home made pasta</div>
-              <div class="section-des"><strong>$12</strong> Lorem ipsum dolor sit amit. Lorem ipsum dolor sit amit. Lorem... <a href="javascript:;"
-                  class="text-black">see details</a></div>
-              <div class="section-rating">
-                <span>307 reviews</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="full-section-list">
-              <img src="http://lorempixel.com/344/250/business/7/" alt="image" class="section-image img-responsive border-radius-5" />
-              <div class="section-head dot-dot">How to make home made pasta</div>
-              <div class="section-des"><strong>$12</strong> Lorem ipsum dolor sit amit. Lorem ipsum dolor sit amit. Lorem... <a href="javascript:;"
-                  class="text-black">see details</a></div>
-              <div class="section-rating">
-                <span>307 reviews</span>
-              </div>
-            </div>
-          </div>
-        </div>-->
-        <!-- communities row ends -->
-      </div>
     </div>
-
-    <!--<div id="similarPeers">
-      <h2 class="similar-peers-head">Similar Peers</h2>
-      <div class="row">
-        <div class="col-sm-3">
-          <div class="similar-peers-col">
-            <img src="https://uinames.com/api/photos/female/9.jpg" class="img-responsive" alt="image" />
-            <div class="peers-name">Donna Allen</div>
-            <div class="peers-topic">Film Industry</div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="similar-peers-col">
-            <img src="https://uinames.com/api/photos/male/40.jpg" class="img-responsive" alt="image" />
-            <div class="peers-name">Stephen Bradley</div>
-            <div class="peers-topic">Film Industry</div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="similar-peers-col">
-            <img src="https://uinames.com/api/photos/male/10.jpg" class="img-responsive" alt="image" />
-            <div class="peers-name">Justin Willis</div>
-            <div class="peers-topic">Film Industry</div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="similar-peers-col">
-            <img src="https://uinames.com/api/photos/female/16.jpg" class="img-responsive" alt="image" />
-            <div class="peers-name">Olivia Bradley</div>
-            <div class="peers-topic">Film Industry</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>-->
-
-    <!-- book session modal start -->
-    <div class="modal fade" bsModal #bookSessionModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
-      aria-labelledby="bookSessionModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" aria-label="Close" (click)="bookSessionModal.hide()">&times;</button>
-            <h4 class="modal-title">Book a session</h4>
-          </div>
-          <div class="modal-body">
-            <span class="fs-20">Package</span>
-            <form name="bookSessionForm" novalidate>
-              <div class="row seperate-section">
-                <div class="col-sm-6">
-                  <label class="display-block">
-                            <input type="radio" name="package" value="first"> 2 Session (1 hour each)
-                        </label>
-                  <label class="display-block">
-                            <input type="radio" name="package" value="second"> 3 Session (1 hour each)
-                        </label>
-                  <label class="display-block">
-                            <input type="radio" name="package" value="trial"> Trial (15 min.)
-                        </label>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-9">
+                    <h4>Leanring Journey</h4>
                 </div>
-                <div class="col-sm-6">
-                  <label class="fw-bold display-block">$30</label>
-                  <label class="fw-bold display-block">$50</label>
-                  <label class="display-block">Free</label>
+                <div class="col-md-3">
+                    <a [routerLink]="'/home/peers'">
+                        <h4>See all</h4>
+                    </a>
                 </div>
-              </div>
-              <div class="seperate-section hide">
-                <div class="fs-20 margin-bottom-20">Select time</div>
-              </div>
-              <div class="seperate-section">
-                <div class="fs-20 margin-bottom-20">What topic you want to learn?</div>
-                <select class="form-control" name="topic">
-                    <option value="Science">Science</option>
-                    <option value="Academic">Academic</option>
-                    <option value="Design">Design</option>
-                    <option value="Gaming">Gaming</option>
-                    <option value="Marketing">Marketing</option>
-                </select>
-              </div>
-              <div class="margin-top-30">
-                <div class="fs-20 margin-bottom-20">Notes for teacher</div>
-                <textarea class="form-control" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mattis, leo non posuere ultricies, purus metus ullamcorper orci, sed semper ex risus quis nisl.</textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-success btn-continue" (click)="bookSessionModal.hide(); bookSessionJoinModal.show()">Continue</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- book session modal end -->
-
-    <!-- book session join modal start -->
-    <div class="modal fade" bsModal #bookSessionJoinModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
-      aria-labelledby="bookSessionJoinModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <!--<div class="slider-section">
-              <div class="session-slider-wrapper">
-                <div class="session-slider">
-                  <div class="slides">
-                    <div class="slides-content">
-                      <img src="http://lorempixel.com/200/200/business/1/" alt="slide1">
-                    </div>
-                  </div>
-                  <div class="slides slidePrev">
-                    <div class="slides-content">
-                      <img src="http://lorempixel.com/200/200/business/2/" alt="slide1">
-                    </div>
-                  </div>
-                  <div class="slides active">
-                    <div class="slides-content">
-                      <img src="http://lorempixel.com/240/240/business/3/" alt="slide2">
-                    </div>
-                  </div>
-                  <div class="slides">
-                    <div class="slides-content">
-                      <img src="http://lorempixel.com/200/200/business/4/" alt="slide3">
-                    </div>
-                  </div>
-                  <div class="slides">
-                    <div class="slides-content">
-                      <img src="http://lorempixel.com/200/200/business/5/" alt="slide3">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>-->
-            <div class="position-relative">
-              <button type="button" class="close" aria-label="Close" (click)="bookSessionJoinModal.hide()">&times;</button>
-              <div class="session-join-content">
-                <h3 class="session-head">When can you attend?</h3>
-                <div class="seperate-section" *ngFor="let session of sessions">
-                  <div *ngFor="let calendar of session.calendars">
-                    <button class="btn btn-success session-join-btn">Choose Dates</button>
-                    <div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
-                    <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="toggleSession(1);">View schedule</a>
-                    <div class="session-list-box">
-                      <div class="session-list" *ngFor="let content of session.contents">
-                        <span class="display-inline-block margin-bottom-10">{{ calendar.startDate | date: 'EEE, MMM dd' }}</span><br>
-                        <span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- book session join modal end -->
-
-    <!-- see dates workshop modal start -->
-    <div class="modal fade" bsModal #seeDatesWorkshopModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
-      aria-labelledby="seeDatesModalModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <div class="position-relative">
-              <button type="button" class="close" aria-label="Close" (click)="seeDatesWorkshopModal.hide()">&times;</button>
-              <div class="session-join-content">
-                <h3 class="session-head">When can you attend?</h3>
-                <div class="seperate-section" *ngFor="let workshop of workshops">
-                  <div *ngFor="let calendar of workshop.calendars">
-                    <button class="btn btn-success session-join-btn">Choose Dates</button>
-                    <div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
-                    <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="showHideSession[$index] =! showHideSession[$index]">View schedule</a>
-                    <div class="session-list-box" [hidden]="showHideSession[$index]">
-                      <div class="session-list" *ngFor="let content of calendar.contents">
-                        <span class="display-inline-block margin-bottom-10">{{ content.schedules[0].startDate | date: 'EEE, MMM dd' }}</span><br>
-                        <span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
-                      </div>
-                    </div>
-                  </div>
+            <div class="row feed-horizontal margin-top-20 margin-bottom-50">
+                <div class="col-md-2 peer-recommendation-card" *ngFor="let peer of recommendedpeers">
+                    <a (click)="navigateTo(peer.id)">
+                        <div class="">
+                            <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}"
+                                alt="peerImg">
+                            <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png"
+                                alt="peerImg">
+                        </div>
+                        <div class="margin-top-20">
+                            <h4>{{peer.profiles[0].first_name}}</h4>
+                        </div>
+                        <div class="col-sm-12 padding-left-0">
+                            <p-rating class="col-sm-7 padding-left-0" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
+                            </p-rating>
+                            <span class="col-sm-5 padding-left-0" *ngIf="peer.reviewsAboutYou.length>0">
+                                        <label>{{peer.reviewsAboutYou.length}} Reviews</label>
+                                      </span>
+                            <span class="col-sm-5 padding-left-0" *ngIf="peer.reviewsAboutYou.length==0">
+                                        <label>0 Reviews</label>
+                                      </span>
+                        </div>
+                    </a>
                 </div>
-                <!--<div class="seperate-section">
-                  <button class="btn btn-success session-join-btn">Choose Dates</button>
-                  <span class="display-inline-block margin-bottom-5">Session 2</span>
-                  <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
-                  <div class="session-list-box" *ngIf="showHideSession2">
-                    <div class="session-list">
-                      <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
-                      <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
-                      <span class="display-inline-block">10.00 - 16.00</span>
-                    </div>
-                  </div>
-                  <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(2);">{{showHideSession2 ? "Hide schedule" : "Show schedule"}}
-                      <i class="fa fa-angle-up" *ngIf="showHideSession2"></i>
-                      <i class="fa fa-angle-down" *ngIf="!showHideSession2"></i>
-                  </a>
-                </div>-->
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-    <!-- see dates workshop modal end -->
-
-    <!-- see dates experience modal start -->
-    <div class="modal fade" bsModal #seeDatesExperienceModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
-      aria-labelledby="seeDatesModalModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <div class="position-relative">
-              <button type="button" class="close" aria-label="Close" (click)="seeDatesExperienceModal.hide()">&times;</button>
-              <div class="session-join-content">
-                <h3 class="session-head">When can you attend?</h3>
-                <div class="seperate-section" *ngFor="let experience of experiences">
-                  <div *ngFor="let calendar of experience.calendars">
-                    <button class="btn btn-success session-join-btn">Choose Dates</button>
-                    <div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
-                    <a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="toggleSession(1);">View schedule</a>
-                    <div class="session-list-box">
-                      <div class="session-list" *ngFor="let content of calendar.contents">
-                        <span class="display-inline-block margin-bottom-10">{{ content.schedules[0].startDate | date: 'EEE, MMM dd' }}</span><br>
-                        <span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- see dates experience modal end -->
-
-    <!-- edit session modal start -->
-    <div class="modal fade" bsModal #editSessionModal="bs-modal" [config]="{backdrop: 'enable'}" tabindex="-1" role="dialog"
-      aria-labelledby="editSessionModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <button type="button" class="close" aria-label="Close" (click)="editSessionModal.hide()">&times;</button>
-            <div class="edit-session-content">
-              <h3>Sessions</h3>
-              <div class="seperate-section">
-                <div class="session-join-btn">
-                  <button class="btn btn-primary">Edit</button>
-                  <button class="btn btn-link">Remove</button>
-                </div>
-                <span class="display-inline-block margin-bottom-5">Session 1</span>
-                <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
-                <div class="session-list-box" *ngIf="showHideSession">
-                  <div class="session-list">
-                    <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
-                    <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
-                    <span class="display-inline-block">10.00 - 16.00</span>
-                  </div>
-                  <div class="session-list">
-                    <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
-                    <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
-                    <span class="display-inline-block">10.00 - 16.00</span>
-                  </div>
-                </div>
-                <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(1);">{{showHideSession ? "Hide schedule" : "Show schedule"}}
-                            <i class="fa fa-angle-up" *ngIf="showHideSession"></i>
-                            <i class="fa fa-angle-down" *ngIf="!showHideSession"></i>
-                        </a>
-              </div>
-              <div class="seperate-section">
-                <div class="session-join-btn">
-                  <button class="btn btn-primary">Edit</button>
-                  <button class="btn btn-link">Remove</button>
-                </div>
-                <span class="display-inline-block margin-bottom-5">Session 2</span>
-                <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
-                <div class="session-list-box" *ngIf="showHideSession2">
-                  <div class="session-list">
-                    <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
-                    <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
-                    <span class="display-inline-block">10.00 - 16.00</span>
-                  </div>
-                </div>
-                <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(2);">{{showHideSession2 ? "Hide schedule" : "Show schedule"}}
-                            <i class="fa fa-angle-up" *ngIf="showHideSession2"></i>
-                            <i class="fa fa-angle-down" *ngIf="!showHideSession2"></i>
-                        </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- edit session modal end -->
-  </div>
+</div>

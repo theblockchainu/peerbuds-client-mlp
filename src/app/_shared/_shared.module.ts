@@ -8,7 +8,7 @@ import {
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
   MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
   MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule
+  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -97,7 +97,7 @@ import { CommentService } from '../_services/comment/comment.service';
     MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule,
-    SliderModule, MdProgressSpinnerModule, MdExpansionModule
+    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule
   ]
 })
 export class SharedModule { }

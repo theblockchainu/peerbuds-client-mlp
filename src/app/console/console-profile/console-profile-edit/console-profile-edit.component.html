@@ -173,7 +173,7 @@
                 <p>Other languages</p>
                 <div *ngFor="let languageObj of profileForm.controls['other_languages'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
                   <md-select mdInput placeholder="Languages" class="pb-block" style="margin-bottom: 20px" formControlName="{{i}}">
-                    <md-option *ngFor="let language of languages" [value]="language.code">{{language.name}}</md-option>
+                    <md-option *ngFor="let language of languages" [value]="language.name">{{language.name}}</md-option>
                   </md-select>
                   <md-icon (click)="deleteLanguage(i)" style="cursor: pointer;" class="lighterText pull-right">
                     close
