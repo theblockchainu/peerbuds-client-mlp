@@ -1,16 +1,21 @@
-<div class="main-content margin-top-40">
+<div class="main-content">
   <div *ngIf="workshop">
-    <div class="row pending-actions" *ngIf="workshop.isCancelled && userType==='teacher' ">
+    <div class="row pending-actions" *ngIf="workshop.status === 'cancelled' && userType==='teacher' ">
       <div class="col-md-10 col-md-offset-1">
-        <h1> This workshop has been cancelled</h1>
+        <h1>This workshop has been cancelled by the teacher</h1>
       </div>
     </div>
-    <div class="row pending-actions center" *ngIf="!workshop.isApproved && userType==='teacher' ">
+    <div class="row pending-actions center" *ngIf="workshop.status === 'submitted' && userType==='teacher' ">
       <div class="col-md-10 col-md-offset-1">
-        <span> Approval Pending !</span>
+        <span>This workshop is pending approval from peerbuds team</span>
       </div>
     </div>
-    <div class="row">
+    <div class="row pending-actions center" *ngIf="(workshop.status === 'draft' || workshop.status === '' ) && userType==='teacher' ">
+      <div class="col-md-10 col-md-offset-1">
+        <span>This is a preview. Submit your workshop to get it approved</span>
+      </div>
+    </div>
+    <div class="row margin-top-40">
       <div class="col-md-10 col-md-offset-1">
         <div class="row workshop-header">
           <div class="col-md-8">
@@ -20,7 +25,8 @@
                 <div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
                   <span *ngIf="currentCalendar">{{currentCalendar.startDate | date:'d MMM'}} - {{currentCalendar.endDate| date:'d MMM'}} &emsp;<md-icon style="font-size: 5px; top: -2px; height: 20px;">fiber_manual_record</md-icon></span>
                   <span> {{totalDuration}} Hours &emsp;<md-icon style="font-size: 5px; top: -2px; height: 20px;">fiber_manual_record</md-icon>{{workshop.contents.length}} parts &emsp;</span>
-                  <a href="javascript:void(0)" *ngIf="userType==='teacher'" (click)="changeDates()"><md-icon style="top: 5px;">date_range</md-icon> Change dates </a>
+                  <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()"><md-icon style="top: 5px;">date_range</md-icon> Change cohort </a>
+                  <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()"><md-icon style="top: 5px;">date_range</md-icon> Select cohort </a>
                 </div>
                 <div *ngIf="userType==='public'" style="margin-top: -12px;">
                   <span>{{itenaryArray.length}} days / {{totalDuration}} Hours &emsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon>{{workshop.contents.length}} parts</span>
@@ -91,13 +97,13 @@
                       <div class="message-inner">
                         <div class="qa-message-content">
                           <div>
-                            <div *ngIf="userType==='teacher' || userType==='participant'"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
-                            <div *ngIf="userType==='public'">Day {{itenary.startDay}}</div>
+                            <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
+                            <div *ngIf="userType==='public'|| calendarId === undefined">Day {{itenary.startDay}}</div>
                           </div>
                           <div class="row margin-top-30" style="cursor: pointer;" *ngFor="let content of itenary.contents" (click)="openDialog(content)">
                             <div class="col-md-5">
-                              <img style="width: 100%; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive center-block itenary-media" src="{{config.apiUrl+content.imageUrl}}" (error)="_collectionService.imgErrorHandler($event)">
-                              <video width="100%" height="120px" *ngIf="content.type==='video'" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
+                              <img style="width: 100%; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}" (error)="_collectionService.imgErrorHandler($event)">
+                              <video width="100%" height="120px" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
                                 <source src="{{config.apiUrl+content.imageUrl}}">
                               </video>
                             </div>
@@ -395,7 +401,7 @@
                 <div>
                   <div class="row lighterText" *ngIf="participants.length === 0">
                     <div class="col-md-12">
-                      <div class="emptySectionText">Invite peers to your new workshop?</div>
+                      <div class="emptySectionText">Invite peers to this cohort?</div>
                     </div>
                   </div>
                 </div>
@@ -433,7 +439,7 @@
               </div>
             </div>
             <hr class="margin-top-30 margin-bottom-30" *ngIf="userType==='teacher'">
-            <div *ngIf="userType==='teacher'">
+            <div *ngIf="userType==='teacher' && workshop.isApproved">
               <div>
                 <h3 style="display: inline-block;">Workshop Batches</h3>
                 <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;"><md-icon style="font-size: 14px; top: 15px;">edit</md-icon></span>
@@ -464,17 +470,28 @@
               <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
                 <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
                   <span class="cal-day-badge"></span>
-                  <span>{{ clickedDate | date:'EEE, MMM dd' }}</span>
+                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})</span>
                 </div>
-                <div *ngFor="let key of objectKeys(eventsForTheDay)">
+                <div class="margin-top-10 margin-bottom-10">
+                  <span>{{clickedDate | date:'EEEE, MMM d'}}</span>
+                </div>
+                <div *ngIf="objectKeys(eventsForTheDay).length === 0">
+                  <div class="displayFlex event">
+                    <span>No events on this date</span>
+                  </div>
+                  <div class="margin-top-20 margin-bottom-20">
+                    <button md-button (click)="viewDetails(clickedCohortId)" class="mat-border-button">View details of {{clickedCohort}}</button>
+                  </div>
+                </div>
+                <div *ngFor="let key of objectKeys(eventsForTheDay);">
                   <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]">
                     <span>{{ event.start | date:'hh:mm' }}</span>
                     <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
                     &emsp;
                     <span>{{ parseTitle(event.title)[0] | titlecase }}</span>
                   </div>
-                  <div class="margin-top-20">
-                    <button md-button (click)="viewDetails(key)" class="mat-border-button">View details of {{clickedDate | date:'MMM dd'}}</button>
+                  <div class="margin-top-20 margin-bottom-20">
+                    <button md-button (click)="viewDetails(key)" class="mat-border-button">View details of {{clickedCohort}}</button>
                   </div>
                 </div>
               </div>

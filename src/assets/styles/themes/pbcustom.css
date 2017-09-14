@@ -27,10 +27,11 @@ md-input-container.mat-block {
 
 .mat-white {
     background-color: white !important;
-    border-bottom: 4px solid #dedede;
+    /*border-bottom: 4px solid #dedede;*/
 }
 
 .main-content {
+    padding-top: 64px;
     min-height: 90vh;
     overflow-y: auto;
 }
@@ -66,7 +67,8 @@ md-input-container.mat-block {
 }
 
 .mat-toolbar {
-    font: 400 16px/32px Roboto, "Helvetica Neue", sans-serif;
+    position: fixed !important;
+    z-index: 1000 !important;
 }
 
 .search-form .mat-input-wrapper {
@@ -212,10 +214,12 @@ h3.calendarTitle  {
 
 .calendar .cal-month-view .cal-cell-top {
     min-height: 40px !important;
+    margin: 2px 0px;
 }
 
 .calendar .cal-month-view .cal-day-number {
-    margin-right: 27px !important;
+    margin-right: 15px !important;
+    margin-left: 5px !important;
 }
 
 .calendar .cal-month-view .cal-events {
@@ -230,9 +234,15 @@ h3.calendarTitle  {
     float: right !important;
     margin-right: 18px !important;
     font-size: 0px !important;
-    width: 8px !important;
-    height: 8px !important;
-    background-color: #F0951B !important;
+    width: 0px !important;
+    height: 0px !important;
+    /*background-color: #F0951B !important;*/
+    background-color: #ffeaea !important;
+    padding: 0px !important;
+    margin-top: 8px !important;
+    min-width: 8px !important;
+    position: relative !important;
+    top: 7px !important;
 }
 
 .calendar .cal-month-view .cal-day-cell.cal-has-events .cal-day-number {
@@ -244,8 +254,8 @@ h3.calendarTitle  {
     height: 30px;
     background-color: #33bd9e;
     border-radius: 15px;
-    padding: 7px 0px 7px 6px;
-    margin-top: 8px;
+    padding: 5px 0px 7px 6px;
+    margin-top: 1px;
     margin-right: 20px !important;
 }
 
@@ -254,11 +264,7 @@ h3.calendarTitle  {
 }
 
 .calendar .cal-month-view .cal-day-badge {
-    padding: 0px !important;
-    margin-top: 0px !important;
-    min-width: 8px !important;
-    position: relative !important;
-    top: 7px !important;
+
 }
 
 
@@ -412,6 +418,8 @@ a, a:active, a:visited {
 a:focus {
     color: #1dab8d;
     text-decoration: none;
+    outline: 0;
+    cursor: pointer;
 }
 
 body {
@@ -918,4 +926,8 @@ img {
     display: inline-block;
     vertical-align: middle;
     float: none;
+}
+
+.cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
+    border-bottom: 1.5px solid #ff5b5f;
 }

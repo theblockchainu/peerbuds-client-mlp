@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
 
@@ -16,6 +16,7 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
 import 'hammerjs';
 
 import { DialogsModule } from './_services/dialogs/dialogs.module';
+import {GlobalErrorHandler} from './error-handler/globalerrorhandler';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,12 @@ import { DialogsModule } from './_services/dialogs/dialogs.module';
     MdProgressBarModule,
     DialogsModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+      {
+        provide: ErrorHandler,
+        useClass: GlobalErrorHandler
+      }
+  ]
 })
 export class AppModule { }

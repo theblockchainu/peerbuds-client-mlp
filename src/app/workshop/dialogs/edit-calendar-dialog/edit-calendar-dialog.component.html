@@ -4,11 +4,16 @@
     <div style="display: inline-block">
         <h3 md-dialog-title>Repeat your {{ duration }} day workshop</h3>
     </div>
+    <br>
+    <div style="margin: -12px 0 20px 45px;">
+        <span>{{calendars.length}} Existing Cohorts</span> &emsp;
+        <a href="javascript:void(0);" (click)="viewCohorts()">View all</a>
+    </div>
     <hr style="margin-top: 0px;">
     <md-dialog-content>
         <div class="row">
             <div class="col-md-6">
-                <label>After your first workshop session ends, <br/>the next session starts...</label><br><br>
+                <label>After your first cohort ends, the next cohort starts...</label><br><br>
                 <md-radio-group class="repeat-workshop-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
                     <md-radio-button class="repeat-workshop-button" value="immediate"> 
                         <span>Immediately</span>
@@ -52,7 +57,7 @@
                         </md-radio-button>
                     </md-radio-group>
                     <div class="margin-top-20">
-                        <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]= "recurringCount == 0">Save Recurring Calendar</button>
+                        <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]= "recurringCount == 0">Save Workshop Batches</button>
                     </div>
                 </div>
             </div>

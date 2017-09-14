@@ -21,9 +21,8 @@
     <button *ngIf="data.userType==='participant' && data.peerHasSubmission" md-button class="mat-border-button">Submitted</button>
     <button *ngIf="data.userType==='teacher'" md-button class="mat-border-button">View Entries</button>
   </div>
-
   <div class="submission-box" *ngIf="data.content.submissions">
-    <div class="fw-bold margin-bottom-10" *ngIf="(data.userType === 'public' && hasPublicSubmissions)">Submissions ({{ publicSubmissionCount }})</div>
+    <div class="fw-bold margin-bottom-10" *ngIf="(data.userType === 'public' && hasPublicSubmission)">Submissions ({{ publicSubmissionCount }})</div>
     <div class="fw-bold margin-bottom-10" *ngIf="(data.userType !== 'public')">Submissions ({{ data.content.submissions.length }})</div>
     <div class="row">
       <div *ngFor="let submission of data.content.submissions; let i=index">

@@ -29,6 +29,8 @@ import {
   CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from '../../workshop-page/custom-date-formatter.provider';
+import {SelectDateDialogComponent} from '../../workshop-page/select-date-dialog/select-date-dialog.component';
+import {Router} from '@angular/router';
 
 const colors: any = {
     red: {
@@ -60,6 +62,8 @@ export class EditCalendarDialogComponent implements OnInit {
 
     public collection;
     public contents;
+    public calendars;
+    public participants;
     public inpEvents: CalendarEvent[];
     public userId: string;
     public startDate;
@@ -111,6 +115,9 @@ export class EditCalendarDialogComponent implements OnInit {
         action: string;
         event: CalendarEvent;
     };
+
+    public allItenaries = [];
+    public itenariesObj = {};
 
     events: CalendarEvent[] = [
     ];
@@ -200,6 +207,7 @@ export class EditCalendarDialogComponent implements OnInit {
         private _fb: FormBuilder,
         private _contentService: ContentService,
         private dialog: MdDialog,
+        private router: Router,
         private _collectionService: CollectionService) {
     }
     public ngOnInit() {
@@ -456,6 +464,22 @@ export class EditCalendarDialogComponent implements OnInit {
                         return item.startDate !== this.recurringCalendar[i].startDate && item.endDate !== this.recurringCalendar[i].endDate;
                     });
                 }
+            }
+        });
+    }
+
+    /**
+     * viewCohorts
+     */
+    public viewCohorts() {
+        const dialogRef = this.dialog.open(SelectDateDialogComponent, {
+            width: '50vw',
+            height: '90vh',
+            data: {itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants}
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this._collectionService.deleteCalendar(result);
             }
         });
     }
