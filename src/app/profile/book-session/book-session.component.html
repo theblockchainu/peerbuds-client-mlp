@@ -1,0 +1,49 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="bookSessionModal.hide()">&times;</button>
+    <h4 class="modal-title">Book a session</h4>
+  </div>
+  <div class="modal-body">
+    <span class="fs-20">Package</span>
+    <form name="bookSessionForm" novalidate>
+      <div class="row seperate-section">
+        <div class="col-sm-6">
+          <label class="display-block">
+                    <input type="radio" name="package" value="first"> 2 Session (1 hour each)
+                </label>
+          <label class="display-block">
+                    <input type="radio" name="package" value="second"> 3 Session (1 hour each)
+                </label>
+          <label class="display-block">
+                    <input type="radio" name="package" value="trial"> Trial (15 min.)
+                </label>
+        </div>
+        <div class="col-sm-6">
+          <label class="fw-bold display-block">$30</label>
+          <label class="fw-bold display-block">$50</label>
+          <label class="display-block">Free</label>
+        </div>
+      </div>
+      <div class="seperate-section hide">
+        <div class="fs-20 margin-bottom-20">Select time</div>
+      </div>
+      <div class="seperate-section">
+        <div class="fs-20 margin-bottom-20">What topic you want to learn?</div>
+        <select class="form-control" name="topic">
+            <option value="Science">Science</option>
+            <option value="Academic">Academic</option>
+            <option value="Design">Design</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Marketing">Marketing</option>
+        </select>
+      </div>
+      <div class="margin-top-30">
+        <div class="fs-20 margin-bottom-20">Notes for teacher</div>
+        <textarea class="form-control" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mattis, leo non posuere ultricies, purus metus ullamcorper orci, sed semper ex risus quis nisl.</textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success btn-continue" (click)="bookSessionModal.hide(); bookSessionJoinModal.show()">Continue</button>
+  </div>
+</div>

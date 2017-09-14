@@ -62,9 +62,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getPeer() {
-    // console.log('in get peer');
     this.profileService.getPeer(this.profileId).subscribe((peer) => {
-      console.log('peer' + JSON.stringify(peer));
       this.peer = peer;
       if (this.peer.profiles && this.peer.profiles.length) {
         this.profile = peer.profiles[0];
@@ -164,8 +162,6 @@ export class ProfileComponent implements OnInit {
       });
     }
 
-    // console.log('peer' + JSON.stringify(this.peer));
-    console.log('peer' + JSON.stringify(this.peer));
     this.loading = false;
   }
 

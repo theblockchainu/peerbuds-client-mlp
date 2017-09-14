@@ -5,6 +5,11 @@ import { ProfileComponent } from './profile.component';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { MdTabsModule } from '@angular/material';
+import { BookSessionComponent } from './book-session/book-session.component';
+import { BookSessionJoinComponent } from './book-session-join/book-session-join.component';
+import { SeeDatesWorkshopComponent } from './see-dates-workshop/see-dates-workshop.component';
+import { SeeDatesExperienceComponent } from './see-dates-experience/see-dates-experience.component';
+import { EditSessionComponent } from './edit-session/edit-session.component';
 
 @NgModule({
   imports: [
@@ -13,6 +18,6 @@ import { MdTabsModule } from '@angular/material';
     ProfileRoutingModule,
     MdTabsModule
   ],
-  declarations: [ProfileComponent]
+  declarations: [ProfileComponent, BookSessionComponent, BookSessionJoinComponent, SeeDatesWorkshopComponent, SeeDatesExperienceComponent, EditSessionComponent]
 })
 export class ProfileModule { }
