@@ -60,7 +60,6 @@ export class LoginComponentDialog implements OnInit {
       this.authenticationService.login(this.email, this.passWord)
           .subscribe(
               (data) => {
-                debugger;
                   this.dialogRef.close();
                   this.router.navigate([this.returnUrl]);
               },
@@ -76,7 +75,6 @@ export class LoginComponentDialog implements OnInit {
       this.authenticationService.getpwd(this.email)
           .subscribe(
               (data) => {
-                debugger;
                   this.dialogRef.close();
                   this.router.navigate([this.returnUrl]);
               },

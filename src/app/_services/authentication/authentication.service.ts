@@ -4,7 +4,7 @@ import {
   , RequestOptionsArgs
 } from '@angular/http';
 // import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from "../requestHeader/request-header.service";
+import {RequestHeaderService} from '../requestHeader/request-header.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -76,10 +76,8 @@ export class AuthenticationService {
   */
   logout(): void {
     if (this.getCookie(this.key)) {
-      debugger;
       this.http.get(this.config.apiUrl + '/auth/logout', this.options)
         .map((res: Response) => {
-          debugger;
           console.log('Logged out from server');
           this.removeCookie(this.key);
           this.removeCookie('userId');

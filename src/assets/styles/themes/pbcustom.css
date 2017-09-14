@@ -853,6 +853,10 @@ img {
     margin-left: 0px !important;
 }
 
+.margin-bottom-0 {
+    margin-bottom: 0px !important;
+}
+
 .padding-top-0 {
     padding-top: 0px !important;
 }
@@ -889,6 +893,10 @@ img {
 
 .margin-bottom-2 {
     margin-bottom: 2px !important;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
 }
 
 .rightLinks {

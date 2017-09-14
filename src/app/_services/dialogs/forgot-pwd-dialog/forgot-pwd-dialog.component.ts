@@ -53,7 +53,6 @@ export class ForgotpwdComponentDialog implements OnInit {
       this.authenticationService.getpwd(this.email)
           .subscribe(
               (data) => {
-                debugger;
                   this.dialogRef.close();
                   this.router.navigate([this.returnUrl]);
               },

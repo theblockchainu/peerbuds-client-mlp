@@ -69,6 +69,9 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   @Output()
   removedOutput = new EventEmitter<any>();
 
+  @Output()
+  anyTopicNotFound = new EventEmitter<any>();
+
 
   // writeValue(value: any) {
   //   if (value !== undefined) {
@@ -124,8 +127,8 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   }
 
   private filter() {
-    if(!this.isMultiSelect) {
-      if(this.filteredList.length != 0) {
+    if (!this.isMultiSelect) {
+      if (this.filteredList.length !== 0) {
         //Force only 1 selection
         //TBD
       }
@@ -135,6 +138,12 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
           this.filteredList = _.filter(this.inputCollection, (item) => {
                 return item.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
           });
+          if(this.filteredList.length == 0) {
+             this.anyTopicNotFound.emit(this.query);
+          }
+          else {
+            this.anyTopicNotFound.emit('');
+          }
       }
       if (this.searchURL) {
           let finalSearchURL = this.searchURL + this.query;
@@ -168,6 +177,8 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
       }
     } else {
       this.filteredList = [];
+      this.anyTopicNotFound.emit('');
+      this.selectedOutput.emit(this.selected);
     }
   }
 
