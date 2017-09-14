@@ -1,15 +1,396 @@
-<div class="row">
-    <div class="col-md-3 left-panel">
-        <div class="row">
-            <div class="col-md-12">
-                <img src="" alt="profile pic">
+<div class="container profile-page">
+    <div class="row" *ngIf="profileObj">
+        <div class="col-md-3 left-panel">
+            <div class="row">
+                <div class="col-md-12">
+                    <img class="profile-pic" src="{{config.apiUrl+profileObj.picture_url}}" alt="profile pic">
+                </div>
+                <div class="col-md-12">
+                    <h3>{{profileObj.first_name}} {{profileObj.last_name}}</h3>
+                </div>
+                <div class="col-md-12">
+                    <h4>{{profileObj.headline}}</h4>
+                </div>
+                <div class="col-md-12">
+                    <button md-button>Message</button>
+                </div>
+            </div>
+            <!-- <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Karma Earned</h3>
+                        </div>
+                    </div> -->
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <md-icon>mic_none</md-icon>
+                        {{profileObj.other_languages}}
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <p>
+                        <md-icon>
+                            location_on
+                        </md-icon>
+                        {{profileObj.location_string}}
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Social Profiles</h3>
+                </div>
+                <div class="col-md-12">
+                    <i *ngFor="let identity of socialIdentities" class="fa fa-{{identity.provider}}" aria-hidden="true"></i>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Interest</h3>
+                </div>
+                <div class="col-md-12">
+                    <md-chip-list>
+                        <span *ngFor="let interest of interestsArray;let i=index">
+                                        <md-chip *ngIf="i<maxVisibleInterest">{{interest}}</md-chip>
+                                </span>
+                    </md-chip-list>
+                    <span *ngIf="interestsArray.length>maxVisibleInterest">
+                                <a (click)="toggleMaxInterest()"> +more </a>
+                            </span>
+                    <span *ngIf="interestsArray.length<maxVisibleInterest">
+                                    <a (click)="toggleMaxInterest()"> +less </a>
+                                </span>
+                </div>
+            </div>
+            <hr>
+            <div class="row" *ngIf="urluserId!==cookieUserId">
+                <div class="col-md-12">
+                    <h6 (click)="reportProfile()">Report profile</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 center-feed">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>About Me</h2>
+                </div>
+                <div class="col-md-12">
+                    <p>{{profileObj.description}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class=col-md-12>
+                    <h2>What I teach</h2>
+                </div>
+                <div class="col-md-12">
+                    <div class="row" *ngFor="let topic of topicsTeaching">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>{{topic.name}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>{{topic.experience}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <div class="row ">
+                        <div class="col-md-12 ">
+                            <h2>Resume</h2>
+                        </div>
+                    </div>
+                    <div class="row " *ngIf="profileObj.work && profileObj.work.length>0">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <md-icon>work</md-icon>
+                                </div>
+                                <div class="col-md-11">
+                                    <h4>Work Experience</h4>
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let workObj of profileObj.work">
+                                <div class="col-md-11 col-md-offset-1">
+                                    <div class="row">
+                                        <div class="col-md-12 work-title">
+                                            <h3>{{workObj.position}}</h3> <span>. {{workObj.company}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</span>
+                                            <span *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="profileObj.education && profileObj.education.length>0">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <md-icon>school</md-icon>
+                                </div>
+                                <div class="col-md-11">
+                                    <h4>Education</h4>
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let educationObj of profileObj.education">
+                                <div class="col-md-11 col-md-offset-1">
+                                    <div class="row">
+                                        <div class="col-md-12 education-title">
+                                            <h3>{{educationObj.degree}}</h3>
+                                            <!-- <h4>{{educationObj.major}}</h4> -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- <h4 *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</h4>
+                                                    <h4 *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</h4> -->
+                                            <h4>{{educationObj.school}}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class=col-md-12>
+                    <div class="row">
+                        <div class="col-md-12 review">
+                            <h2>Reviews</h2>
+                            <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false">
+                            </p-rating>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Review From Learners</h4>
+                        </div>
+                        <div class="col-md-12">
+                            <hr>
+                            <p>No Review yet</p>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Review From Teachers</h4>
+                        </div>
+                        <div class="col-md-12">
+                            <hr>
+                            <p>No Reviews yet</p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 right-panel" *ngIf="isTeacher">
+            <div class="row">
+                <div class="col-md-12">
+                    <md-tab-group>
+                        <!-- <md-tab label="Session">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>No Sessions</p>
+                                        </div>
+                                    </div>
+                                </md-tab>
+                                <md-tab label="Experience">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>No Experiences</p>
+                                        </div>
+                                    </div>
+                                </md-tab> -->
+                        <md-tab label="Workshops">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <md-accordion>
+                                        <md-expansion-panel *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index" hideToggle="true">
+                                            <md-expansion-panel-header>
+                                                <md-panel-title>
+                                                    {{collectionObj.title}}
+                                                </md-panel-title>
+                                            </md-expansion-panel-header>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <img *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h3>
+                                                        {{collectionObj.title}}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12" *ngIf="collectionObj.contents">
+                                                    <span>{{collectionObj.itenaryArray.length}} days / {{collectionObj.totalDuration}} Hours &emsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon>{{collectionObj.contents.length}} parts</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>{{collectionObj.description}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button md-raised-button [routerLink]="['/workshop',collectionObj.id]" color="accent">See Dates</button>
+                                                </div>
+                                            </div>
+                                            <!--TIMELINE-->
+                                            <div class="row Itenary">
+                                                <div class="featurette" id="about">
+                                                    <div class="col-md-12">
+                                                        <div class="qa-message-list" id="wallmessages">
+                                                            <div class="message-item" *ngFor="let itenary of collectionObj.itenaryArray">
+                                                                <div class="message-inner">
+                                                                    <div class="qa-message-content">
+                                                                        <div>
+                                                                            <div>Day {{itenary.startDay}}</div>
+                                                                        </div>
+                                                                        <div class="row margin-top-30" style="cursor: pointer;" *ngFor="let content of itenary.contents">
+                                                                            <div class="col-md-5">
+                                                                                <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive center-block itenary-media"
+                                                                                    src="{{config.apiUrl+content.imageUrl}}"
+                                                                                    (error)="_collectionService.imgErrorHandler($event)">
+                                                                                <video width="100%" height="120px" *ngIf="content.type==='video'" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
+                                                                                    <source src="{{config.apiUrl+content.imageUrl}}">
+                                                                                </video>
+                                                                            </div>
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </md-expansion-panel>
+                                    </md-accordion>
+                                </div>
+                            </div>
+                        </md-tab>
+                    </md-tab-group>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6 center-feed">
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-9">
+                    <h4>Leanring Journey</h4>
+                </div>
+                <div class="col-md-3">
+                    <md-select>
+                        <md-option *ngFor="let collection of collectionTypes" [value]="collection">
+                            {{ collection }}
+                        </md-option>
+                    </md-select>
+                    <a [routerLink]="'/home/workshops'">
+                        <h4>See all</h4>
+                    </a>
+                </div>
+            </div>
+            <div class="row feed-horizontal margin-top-20 margin-bottom-50">
+                <div class="col-md-3 recommendation-card" *ngFor="let workshop of participatingWorkshops; let i =index">
+                    <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
+                        <div class="">
+                            <img class="mat-elevation-z3 recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
+                                alt="workshpImg">
+                            <img class="mat-elevation-z3 recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+                                alt="workshpImg">
+                        </div>
+                        <div class="margin-top-20">
+                            <h4 class="title">{{workshop.currency}} {{workshop.price}}</h4>
+                        </div>
+                        <div class="">
+                            <h4 class="margin-bottom-2 title">{{workshop.title}}</h4>
+                        </div>
+                        <div class="headline">
+                            <p>{{workshop.headline | shorten: 20 : '...'}}</p>
+                        </div>
+                        <div class="col-sm-12 padding-left-0">
+                            <p-rating class="col-sm-7 padding-left-0" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+                            </p-rating>
+                            <span class="col-sm-5 padding-left-0" *ngIf="workshop.reviews">
+                                        <label>{{workshop.reviews.length}} Reviews</label>
+                                      </span>
+                            <span class="col-sm-5 padding-left-0" *ngIf="!workshop.reviews">
+                                        <label>0 Reviews</label>
+                                      </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3 right-panel">
-
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-9">
+                    <h4>Leanring Journey</h4>
+                </div>
+                <div class="col-md-3">
+                    <a [routerLink]="'/home/peers'">
+                        <h4>See all</h4>
+                    </a>
+                </div>
+            </div>
+            <div class="row feed-horizontal margin-top-20 margin-bottom-50">
+                <div class="col-md-2 peer-recommendation-card" *ngFor="let peer of recommendedpeers">
+                    <a (click)="navigateTo(peer.id)">
+                        <div class="">
+                            <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}"
+                                alt="peerImg">
+                            <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png"
+                                alt="peerImg">
+                        </div>
+                        <div class="margin-top-20">
+                            <h4>{{peer.profiles[0].first_name}}</h4>
+                        </div>
+                        <div class="col-sm-12 padding-left-0">
+                            <p-rating class="col-sm-7 padding-left-0" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
+                            </p-rating>
+                            <span class="col-sm-5 padding-left-0" *ngIf="peer.reviewsAboutYou.length>0">
+                                        <label>{{peer.reviewsAboutYou.length}} Reviews</label>
+                                      </span>
+                            <span class="col-sm-5 padding-left-0" *ngIf="peer.reviewsAboutYou.length==0">
+                                        <label>0 Reviews</label>
+                                      </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

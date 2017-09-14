@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { SharedModule } from '../_shared/_shared.module';
 import { ProfileComponent } from './profile.component';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { MdTabsModule } from '@angular/material';
-import { BookSessionComponent } from './book-session/book-session.component';
-import { BookSessionJoinComponent } from './book-session-join/book-session-join.component';
 import { SeeDatesWorkshopComponent } from './see-dates-workshop/see-dates-workshop.component';
-import { SeeDatesExperienceComponent } from './see-dates-experience/see-dates-experience.component';
-import { EditSessionComponent } from './edit-session/edit-session.component';
+import { ExtractLanguagePipe } from '../_shared/extract-language/extract-language.pipe';
+import { ReportProfileComponent } from './report-profile/report-profile.component';
 
 @NgModule({
   imports: [
@@ -18,6 +16,7 @@ import { EditSessionComponent } from './edit-session/edit-session.component';
     ProfileRoutingModule,
     MdTabsModule
   ],
-  declarations: [ProfileComponent, BookSessionComponent, BookSessionJoinComponent, SeeDatesWorkshopComponent, SeeDatesExperienceComponent, EditSessionComponent]
+  declarations: [ProfileComponent, SeeDatesWorkshopComponent, ExtractLanguagePipe, ReportProfileComponent],
+  bootstrap: [ReportProfileComponent]
 })
 export class ProfileModule { }
