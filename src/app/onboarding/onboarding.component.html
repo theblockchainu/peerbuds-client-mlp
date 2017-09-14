@@ -16,6 +16,7 @@
           </div>
         </div>
       </div>
+<!-- step 2-->
       <div class="onboarding step-2" [hidden]="step!=2">
         <div class="row">
           <div class="col-sm-8 col-sm-offset-2">
@@ -34,6 +35,7 @@
                       <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [searchUrl]=searchTopicURL [title]=placeholderStringTopic
                           [maxSelection]=maxTopics></multiselect-autocomplete>
                     </div>
+                
                     <div class="col-sm-4">
                       <a class="text-right text-grey fs-14" (click)="socialModal.show()">Social</a>
                       <div bsModal #socialModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
@@ -51,11 +53,13 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                   </div>
+
                   <div class="row">
                     <div class="col-sm-12 margin-top-30">
                       <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
                     </div>
+                    <!--<li *ngFor="let topic of suggestedTopics">{{topic.name}}</li>-->
                     <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
                       <div class="lookingFor interest">
                         <label class="check">
@@ -77,6 +81,7 @@
             </form>
           </div>
         </div>
+
       </div>
       <div class="onboarding step-3" [hidden]="step!=3">
         <div class="text-center">

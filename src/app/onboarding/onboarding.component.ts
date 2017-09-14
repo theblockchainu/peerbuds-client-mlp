@@ -61,8 +61,6 @@ export class OnboardingComponent implements OnInit {
     });
   }
 
-
-
   public removed(event) {
     let body = {};
     let options;

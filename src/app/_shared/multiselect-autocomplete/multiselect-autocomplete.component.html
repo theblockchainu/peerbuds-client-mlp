@@ -1,5 +1,6 @@
 <span class="ui-autocomplete ui-widget ui-autocomplete-multiple">
   <ul class="ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all" style="padding-left: 0.0em">
+ 
     <span *ngFor="let item of selected">
       <li class="ui-autocomplete-token ui-state-highlight ui-corner-all">
           <a (click)="remove(item)" class="ui-autocomplete-token-icon fa fa-fw fa-close" style="text-decoration:none"></a>
@@ -8,14 +9,25 @@
       </li>
     </span>
     <li class="ui-autocomplete-input-token">
-      <input id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}">
+      <input #box id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}">
     </li>
+    
   </ul>
 </span>
+
+
 <div class="suggestions" *ngIf="filteredList.length > 0">
-  <ul *ngFor="let item of filteredList" style="list-style:none" >
-    <li >
+  <ul *ngFor="let item of filteredList" style="list-style:none">
+    <li>
         <a (click)="select(item)" class="captitalise">{{item.name}}</a>
     </li>
   </ul>
 </div>
+
+<!-- <div class="md-content__body extra-padding">
+      <div class="margin-bottom-20 text-center">
+			<div class="suggestions" *ngIf="!filteredList.length && filteredList.length < 1"> Topic you are looking for cannot be found</div>
+				<button *ngIf="!filteredList.length" class="onboarding-btn btn btn-lg btn-default" md-button> Request for {{box.value}} topic</button>
+		</div>
+<div> -->
+

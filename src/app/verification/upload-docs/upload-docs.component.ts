@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { Http } from '@angular/http';
 import { AppConfig } from '../../app.config';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
@@ -25,11 +25,15 @@ export class UploadDocsComponent implements OnInit {
 
   constructor(
     public router: Router,
+    private activatedRoute: ActivatedRoute,
     private mediaUploader: MediaUploaderService,
     private _fb: FormBuilder,
     public _profileService: ProfileService,
     private http: Http,
     private config: AppConfig) {
+      this.activatedRoute.params.subscribe(params => {
+        this.step = params['step'];
+      });
   }
 
   ngOnInit() {
@@ -40,17 +44,18 @@ export class UploadDocsComponent implements OnInit {
     });
 
     this.otp = this._fb.group({
-      inputOTP: ['']
+      inputOTP: [null]
     });
     this._profileService.getPeerNode()
       .subscribe((res) => this.email = res.email);
   }
 
   continue(p) {
-    if (p === 4) {
+    if (p === 3) {
       this.resendOTP();
     }
     this.step = p;
+    this.router.navigate(['identity-verification', +this.step]);
   }
 
   public resendOTP() {
