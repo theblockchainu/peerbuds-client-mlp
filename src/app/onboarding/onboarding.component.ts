@@ -55,8 +55,8 @@ export class OnboardingComponent implements OnInit {
     }
     this.interests = event;
     this.suggestedTopics = event;
-      this.suggestedTopics.map((obj) => {
-                obj.checked = 'true';
+    this.suggestedTopics.map((obj) => {
+      obj.checked = 'true';
       return obj;
     });
   }
@@ -93,7 +93,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   public ngOnInit() {
-    if(this.interests.length == 0) {
+    if (this.interests.length == 0) {
       this.http.get(this.config.searchUrl + '/api/search/topics')
         .map((response: any) => {
           this.suggestedTopics = response.json().slice(0, 10);
@@ -116,7 +116,6 @@ export class OnboardingComponent implements OnInit {
   public submitInterests(interests) {
     const topicArray = [];
     this.interests.forEach((topic) => {
-
       topicArray.push(topic.id);
     });
     if (topicArray.length !== 0) {

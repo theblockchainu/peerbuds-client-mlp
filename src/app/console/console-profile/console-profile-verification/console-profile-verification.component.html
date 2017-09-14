@@ -8,9 +8,114 @@
 <div class="row">
   <div class="col-md-12" *ngIf="loaded">
     <div class="row">
-      <div>
-        <div style="margin-top:20px;" class="col-md-12">
-          <div class="row" style="margin-right: 20px;">
+      <div style="margin-top:20px;" class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Be ready to teach</h3>
+          </div>
+          <div class="col-md-8">
+            <p>You will need to provide identification before you book, so get a head start by doing it now. Learn More</p>
+          </div>
+          <div class="col-md-4">
+            <button class="provideId" md-button>Provide ID</button>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Already Verified</h3>
+          </div>
+          <div class="col-md-12">
+            <div class="row" *ngFor="let verifiedObj of alreadyVerified">
+              <div class="col-md-12">
+                <h6>{{verifiedObj.text}}</h6>
+              </div>
+              <div class="col-md-1">
+                <button md-mini-fab>
+                    <md-icon>
+                      check
+                    </md-icon>
+                  </button>
+              </div>
+              <div class="col-md-11">
+                <p>{{verifiedObj.value}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Yet to be Verified</h3>
+          </div>
+          <div class="col-md-12">
+            <div class="row" *ngFor="let unverifiedObj of notVerified">
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h6>{{unverifiedObj.text}}</h6>
+                  </div>
+                  <div class="col-md-12">
+                    <p>{{unverifiedObj.value}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <button md-button color="primary">Verify</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-12">
+                <h6>Facebook</h6>
+              </div>
+              <div class="col-md-12">
+                <p>
+                  Sign in with your facebook and discover your trusted connections to teachers and learners all oer the world.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <button md-button color="primary">Connect</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-12">
+                <h6>Google</h6>
+              </div>
+              <div class="col-md-12">
+                <p>
+                  Sign in with your Google and discover your trusted connections to teachers and learners all oer the world.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <button md-button color="primary">Connect</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-12">
+                <h6>LinkedIn</h6>
+              </div>
+              <div class="col-md-12">
+                <p>
+                  Sign in with your LinkedIn and discover your trusted connections to teachers and learners all oer the world.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <button md-button color="primary">Connect</button>
           </div>
         </div>
       </div>
