@@ -21,6 +21,28 @@ export class CommentService {
       .post(this.config.apiUrl + '/api/comments/' + commentId + '/replies', replyBody, this.options);
   }
 
+    /**
+     * Add comment upvote
+     * @param commentId
+     * @param upvoteBody
+     * @returns {Observable<Response>}
+     */
+  public addCommentUpvote(commentId, upvoteBody) {
+      return this.http
+          .post(this.config.apiUrl + '/api/comments/' + commentId + '/upvotes', upvoteBody, this.options);
+  }
+
+    /**
+     * Add reply upvote
+     * @param replyId
+     * @param upvoteBody
+     * @returns {Observable<Response>}
+     */
+  public addReplyUpvote(replyId, upvoteBody) {
+      return this.http
+          .post(this.config.apiUrl + '/api/replies/' + replyId + '/upvotes', upvoteBody, this.options);
+  }
+
   /**
    * deleteReply
    */

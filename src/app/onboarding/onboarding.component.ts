@@ -27,6 +27,13 @@ export class OnboardingComponent implements OnInit {
   public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
   public createTopicURL = 'http://localhost:3000/api/topics';
 
+  public socialIdentitiesConnected: any = [];
+  public boolShowConnectedSocials = false;
+  private connectedIdentities = {
+    'fb': false,
+    'google': false
+  };
+
   public maxTopicMsg = 'Choose max 3 related topics';
   public maxTopics = 3;
   public removedInterests = [];
@@ -47,6 +54,25 @@ export class OnboardingComponent implements OnInit {
     this._contentService.getTopics()
       .subscribe((suggestions) => this.suggestedTopics = suggestions);
     this.userId = _profileService.getUserId();
+    
+    this._profileService.getSocialIdentities()
+    .subscribe((response: Response) => {
+      this.socialIdentitiesConnected = response;
+
+      this.socialIdentitiesConnected.forEach(socialIdentity => {
+        if (socialIdentity.provider === 'google') {
+          this.connectedIdentities.google = true;
+        }
+        if (socialIdentity.provider === 'facebook') {
+          this.connectedIdentities.fb = true;
+        }
+      });
+      // console.log(JSON.stringify(this.socialIdentitiesConnected));
+
+    },
+    (err) => {
+      console.log('Error: ' + err);
+    });
   }
 
   public selected(event) {
@@ -55,8 +81,8 @@ export class OnboardingComponent implements OnInit {
     }
     this.interests = event;
     this.suggestedTopics = event;
-      this.suggestedTopics.map((obj) => {
-                obj.checked = 'true';
+    this.suggestedTopics.map((obj) => {
+      obj.checked = 'true';
       return obj;
     });
   }
@@ -93,7 +119,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   public ngOnInit() {
-    if(this.interests.length == 0) {
+    if (this.interests.length == 0) {
       this.http.get(this.config.searchUrl + '/api/search/topics')
         .map((response: any) => {
           this.suggestedTopics = response.json().slice(0, 10);
@@ -103,20 +129,17 @@ export class OnboardingComponent implements OnInit {
       this.suggestedTopics = this.interests;
     }
   }
-  goToNext(e) {
-    if (typeof e !== 'number') {
-      if (e.target.checked) {
-        this.step = 2;
-        return;
-      }
-    } else {
-      this.step = e;
-    }
+  goToNext(n) {
+    this.step = n;
   }
+
+  public showConnectedSocials() {
+    this.boolShowConnectedSocials = true;
+  }
+
   public submitInterests(interests) {
     const topicArray = [];
     this.interests.forEach((topic) => {
-
       topicArray.push(topic.id);
     });
     if (topicArray.length !== 0) {
