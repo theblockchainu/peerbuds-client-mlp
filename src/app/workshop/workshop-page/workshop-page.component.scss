@@ -296,3 +296,38 @@ h3 {
 .About video {
     width: 100%;
 }
+
+.workshop-content {
+    margin-bottom: 20px;
+}
+
+.announcement {
+    padding: 30px;
+    background-color: #efefef;
+    margin: 15px 15px 25px;
+}
+
+.recommendation-thumb{
+    object-fit: cover;
+    height: 240px;
+    width: 200px;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 230px;
+    width: 165px;
+}
+
+.recommendation-card{
+    width: 220px;
+    height: 370px;
+}
+
+.workshop-suggestions a {
+    color: #464646;
+}
+
+.workshop-suggestions p {
+    margin-bottom: 0px !important;
+}

@@ -93,6 +93,16 @@ export class ProfileService {
       }
     }
   }
+  public getCompactProfile() {
+    const profile = {};
+    if (this.userId) {
+      const filter = '{"include": "peer"}';
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter, this.options)
+        .map(
+        (response: Response) => response.json()
+        );
+    }
+  }
 
   public getPeerProfile() {
     return this.userId;

@@ -1,6 +1,47 @@
 @charset "utf-8";
 /* CSS Document */
 
+$size: 0;
+
+// descriptive colors
+// =============
+
+$hopbush:                   #c69;
+$bouquet:                   #b37399;
+$venus:                     #998099;
+$patina:                    #699;
+$nebula:                    #d2e1dd;
+$white:                     #fff;
+$dawn-pink:                 #f2ece4;
+$wafer:                     #e1d7d2;
+$iron:                      #dadbdf;
+$regent-grey:               #808c99;
+$pale-sky:                  #6b717f;
+$midnight-blue:             #036;
+$black:                     #000;
+$dark-grey:                #333;
+$grey:                     #666;
+$light-grey:               #999;
+$red:                      #f67864;
+
+
+// --------------------- Custom Mixin made by Mohit -----------------------
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin thumb($size){
+    width: $size+px;
+    height: $size+px;
+}
+
+@mixin lh($size){
+    line-height: $size+px;
+}
 
 @while $size <= 100 {
     .margin-top-#{$size} {
@@ -79,10 +120,6 @@
 .text-upper{ text-transform:uppercase; }
 .bg-black{ background-color: $black; color:$white; }
 .bg-white{ background-color: $white; color:$dark-grey; }
-
-@for $i from 10 through 25{
-	.fs-#{$i} {@include fs($i);}
-}
 
 .text-underline{text-decoration:underline !important;}
 .text-italic{ font-style:italic !important; }

@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { Observable } from 'rxjs/Rx';
-import { AuthService } from '../_services/auth/auth.service';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
 import { ProfileService } from '../_services/profile/profile.service';
 import {FormControl} from '@angular/forms';
@@ -72,7 +71,7 @@ export class AppHeaderComponent implements OnInit {
 
   getProfile() {
     if (this.loggedIn) {
-        this._profileService.getProfile().subscribe(profile => {
+        this._profileService.getCompactProfile().subscribe(profile => {
             this.profile = profile[0];
         });
     }
