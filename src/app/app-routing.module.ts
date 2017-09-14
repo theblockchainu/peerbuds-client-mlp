@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
-import { LoginComponent } from './login/login.component';
+import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponentDialog
   },
   {
     path: 'signup-social',

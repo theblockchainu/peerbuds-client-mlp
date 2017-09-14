@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Peerbuds Client</title>
@@ -21,16 +22,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <style>
-        .signup-box {
+         .signup-box {
             background-color: #fff;
-            padding: 20px 20px;
-            width: 500px;
+            padding: 10px 10px;
+            width: 400px;
         }
 
-        .signup-box.drop-shadow {
-            box-shadow: 0 0 10px #ccc;
-        }
-
+    
         .signup-box label {
             font-weight: normal;
             color: #666;
@@ -38,7 +36,7 @@
         }
 
         .login-section {
-            margin: 50px 0;
+            margin: 20px 0;
         }
 
         .form-control {
@@ -56,8 +54,7 @@
 
         .btn {
             height: 40px;
-            width: 200px;
-            padding: 9px 20px;
+            width: 180px;
             background-color: #FF5B5F;
         }
 
@@ -69,6 +66,7 @@
         .btn-primary {
             border-color: #fff;
             color: #fff;
+
         }
 
         .btn-primary:hover,
@@ -94,9 +92,9 @@
 
         .btn-social i {
             border-right: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 20px;
+            font-size: 13px;
             left: 16px;
-            padding-right: 15px;
+            padding-right: 7px;
             position: absolute;
             top: 15px;
         }
@@ -107,22 +105,12 @@
             border-right-color: #999;
         }
 
-        .btn-fb {
-            background-color: #fff;
-            border: 1px solid #999;
-        }
-
-        .btn-fb:hover {
-            background-color: #324B80;
-        }
-
-
         .btn-ggl,
-        .btn-fb 
+        .btn-fb
         {
             color: #666;
             background-color: #fff;
-            border: 1px solid #999;
+            border: 1px solid #d3d3d3;
         }
 
         .btn-email {
@@ -136,6 +124,10 @@
 
         .btn-email:hover {
             background-color: #FF5B5F;
+        }
+
+        .btn-fb:hover{
+            background-color: #324B80;
         }
 
         .btn-fb:active,
@@ -210,6 +202,15 @@
         .fs-13 {
             font-size: 13px;
         }
+        .container{
+            width: 500px;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        .col-md-offset-3,.col-md-6{
+            margin-left: 15%;
+            margin-right: 10%;
+        }
 
 .fa-facebook{
     background-color: #335397;
@@ -222,31 +223,26 @@
 }
 
 .circle-icon {
-    padding:6px;
-    border-radius: 50%;
+    padding:4px;
+    border-radius: 100%;
 }
 
     </style>
     <script>
-  
-            $(document).ready(function () {
+        $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
             $.validator.addMethod("check_date_of_birth", function (value, element) {
-
                 var day = $("#birthDay").val();
                 var month = $("#birthMonth").val();
                 var year = $("#birthYear").val();
                 var age = 18;
-
                 var mydate = new Date();
                 var mydate2 = mydate;
                 mydate.setFullYear(year, month - 1, day);
                 var currdate = new Date();
                 currdate.setFullYear(currdate.getFullYear() - age);
                 return currdate > mydate2;
-
             }, "You must be at least 18 years of age.");
-
             $("#signupForm").validate({
                 rules: {
                     first_name: "required",
@@ -300,7 +296,6 @@
             for (var i = maxYear; i >= maxYear - 100; i--) {
                 $("#birthYear").append(new Option(i, i));
             }
-
             //Load MONTH
             for (var i = 1; i <= 31; i++) {
                 var newI;
@@ -309,16 +304,12 @@
                 }
                 $("#birthDay").append(new Option(i, newI));
             }
-
         });
         function signupEmail() {
             $(".signupEmail").removeClass("hide");
             $(".btnSignupEmail").addClass("hide");
-            $(".btn-social").addClass("hide");
-            $(".btn-hide").addClass("hide");
         }
         function signup() {
-
             if ($('#promoOptIn').prop('checked')) {
                 $('#promoOptIn').val(true);
             }
@@ -330,43 +321,34 @@
     </script>
 
 </head>
-<body>
-<!--button-->
-<div class="container">
-<button type="button" data-toggle="modal" id="mybtn" data-target="#myModal">sign up</button>
 
-<!--dialog modal-->
- <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-lg">
+<body>
     <div class="login-section" id="content">
-        <!--<div class="container">-->
+        <div class="container">
             <div class="col-md-6 col-md-offset-3 position-relative">
                 <div class="signup-box drop-shadow">
                     <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification" method="POST">
                         <input type="hidden" name="dob" id="dob" value="" required/>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook"></i> Continue with Facebook</a>
+                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> Continue with Facebook</a>
                         </div>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google"></i> Continue with Google</a>
+                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> Continue with Google</a>
                         </div>
-                        <div class="btn-hide position-relative margin-bottom-20 text-center">
-                            <div class="or-seperator-vertical"></div>
-                            <span class="round-or-text or-text-vertical">or</span>
-                        </div>
-                        <div class="margin-bottom-20 btnSignupEmail">
-                            <a class="btn-social btn-email pi-margin-bottom-20" href="javascript:;" onclick="signupEmail()"><i class="fa fa-envelope"></i> Continue with Email</a>
-                        </div>
-                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;">Log In</a></div>
-                        
-                        <div class="signupEmail hide">
-                <div class="text-center">Sign up with <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;"">Facebook</a> or <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;"> Google</a></div>
-                        
                         <div class="position-relative margin-bottom-20 text-center">
                             <div class="or-seperator-vertical"></div>
-                            <span class="round-or-text or-text-vertical">or</span>
+                            <span class="round-or-text or-text-vertical">OR</span>
                         </div>
+                        <div class="margin-bottom-20 btnSignupEmail">
+                            <a class="btn-social btn-email pi-margin-bottom-20" href="javascript:;" onclick="signupEmail()"> Continue with Email</a>
+                        </div>
+                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link" style="font-size:14px;text-decoration: none;">Log In</a></div>
 
+                        <div class="signupEmail hide">
+                            <div class="margin-bottom-20 text-center">
+                                <strong>Complete your information</strong><br> Please review and provide any missing information
+                                to finish signing up.
+                            </div>
                             <div class="form-group">
                                 <div class="input-group input-group-first-name">
                                     <input type="text" class="form-control" name="first_name" placeholder="First Name" />
@@ -428,16 +410,16 @@
                                 <label><input type="checkbox" name="promoOptIn" id="promoOptIn"/> I'd like to receive coupons, promotions, surveys, and updates via email about Peerbuds and its partners.</label>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary center-block" type="submit" onclick="signup()">Continue</button><br>
-                                <div class="text-center">Have an account already? <a href="/login" class="btn-link" style="text-decoration: none;">Login</a></div>
+                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Signup</button>&nbsp;&nbsp;&nbsp;
+                                <a href="/" class="btn btn-primary">Cancel</a>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
+        </div>
     </div>
-    </div>
-    </div>
-    </div>
+
 </body>
+
 </html>

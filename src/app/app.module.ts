@@ -48,6 +48,6 @@ import { DialogsModule } from './_services/dialogs/dialogs.module';
     MdProgressBarModule,
     DialogsModule
   ],
-  bootstrap: [IndexComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
