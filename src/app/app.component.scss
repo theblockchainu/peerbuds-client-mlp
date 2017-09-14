@@ -10,3 +10,9 @@ a.active {
 .mat-list-item-content {
   height: fit-content !important;
 }
+
+.centerFlex {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}

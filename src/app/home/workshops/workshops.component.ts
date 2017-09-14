@@ -1,0 +1,178 @@
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { TopicService } from '../../_services/topic/topic.service';
+import { ProfileService } from '../../_services/profile/profile.service';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+import { AppConfig } from '../../app.config';
+import _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { MdDialog } from '@angular/material';
+import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
+import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
+import 'rxjs/add/operator/do';
+
+@Component({
+  selector: 'app-workshops',
+  templateUrl: './workshops.component.html',
+  styleUrls: ['./workshops.component.scss']
+})
+export class WorkshopsComponent implements OnInit {
+  public availableTopics: Array<any>;
+  public userId: string;
+  public workshops: Array<any>;
+  @ViewChild('topicButton') topicButton;
+  @ViewChild('priceButton') priceButton;
+  public availableRange: Array<number>;
+  public selectedRange: Array<number>;
+  public loading: boolean;
+  public initialized: boolean;
+  public selectedTopics: Array<any>;
+
+  constructor(
+    public _collectionService: CollectionService,
+    public _profileService: ProfileService,
+    private _cookieUtilsService: CookieUtilsService,
+    private _topicService: TopicService,
+    public config: AppConfig,
+    public dialog: MdDialog,
+    public elRef: ElementRef
+  ) {
+    this.userId = _cookieUtilsService.getValue('userId');
+  }
+  ngOnInit() {
+    this.fetchData().subscribe();
+  }
+
+  fetchData(): Observable<any> {
+    return this.fetchTopics().map(
+      response => {
+        this.availableTopics = response;
+        this.fetchWorkshops();
+      }, err => {
+        console.log(err);
+      });
+  }
+
+  setPriceRange(): void {
+    if (this.workshops) {
+      this.availableRange = [
+        _.minBy(this.workshops, function (o) {
+          return o.price;
+        }).price,
+        _.maxBy(this.workshops, function (o) { return o.price; }).price
+      ];
+      this.selectedRange = _.clone(this.availableRange);
+    }
+  }
+
+  fetchTopics(): Observable<Array<any>> {
+    const query = {};
+    return this._topicService.getTopics(query).map(
+      (response) => {
+        const availableTopics = [];
+        response.forEach(topic => {
+          availableTopics.push({ 'topic': topic, 'checked': false });
+        });
+        return availableTopics;
+      }, (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  fetchWorkshops(): void {
+    let query;
+    this.loading = true;
+    this.selectedTopics = [];
+    for (const topicObj of this.availableTopics) {
+      if (topicObj['checked']) {
+        this.selectedTopics.push({ 'name': topicObj['topic'].name });
+      }
+    }
+    if (this.selectedTopics.length < 1) {
+      for (const topicObj of this.availableTopics) {
+        this.selectedTopics.push({ 'name': topicObj['topic'].name });
+      }
+    }
+    query = {
+      'include': [
+        { 'collections': ['reviews'] }
+      ],
+      'where': { or: this.selectedTopics }
+    };
+
+    this._topicService.getTopics(query)
+      .subscribe(
+      (response) => {
+        const workshops = [];
+        for (const responseObj of response) {
+          responseObj.collections.forEach(collection => {
+            if (collection.reviews) {
+              collection.rating = this._collectionService.calculateRating(collection.reviews);
+            }
+            if (collection.price) {
+              if (this.selectedRange) {
+                if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
+                  workshops.push(collection);
+                }
+              } else {
+                workshops.push(collection);
+              }
+            } else {
+              console.log('price unavailable');
+            }
+          });
+        }
+        this.workshops = _.uniqBy(workshops, 'id');
+        this.loading = false;
+        if (!this.initialized) {
+          this.setPriceRange();
+          this.initialized = true;
+        }
+      }, (err) => {
+        console.log(err);
+      }
+      );
+  }
+
+  openTopicsDialog(): void {
+    const dialogRef = this.dialog.open(SelectTopicsComponent, {
+      width: '250px',
+      data: this.availableTopics,
+      disableClose: true,
+      position: {
+        top: this.topicButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
+        left: this.topicButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.availableTopics = result;
+        this.fetchWorkshops();
+      }
+    });
+  }
+
+  openPriceDialog(): void {
+    const dialogRef = this.dialog.open(SelectPriceComponent, {
+      width: '250px',
+      data: {
+        availableRange: this.availableRange,
+        selectedRange: this.selectedRange
+      },
+      disableClose: true,
+      position: {
+        top: this.priceButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
+        left: this.priceButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.selectedRange = result.selectedRange;
+        this.fetchWorkshops();
+      }
+    });
+  }
+}

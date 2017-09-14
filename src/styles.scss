@@ -1,90 +1,237 @@
-@charset 'utf-8';
-
-// ==========================================================================
-// Sassy Starter by Mina Markham
-// A SMACSS-based starter toolkit for SCSS projects
-//
-// The toolkit uses recommendations from Scalable and Modular Architecture for CSS (SMACSS)
-// @link http://smacss.com/book
-//
-// Site:    https://minamarkham.github.io/sassy-starter
-// Author:  Mina Markham
-// Email:   mina@mina.codes
-// Date:    10/25/15
-// ==========================================================================
-
-// CSS Debugging
-//
-// Toggle layout debugging with CSS Pesticide.
-//
-// $pesticide-debug-outline - {boolean} adds outlines to all elements.
-// $pesticide-debug-depth - {boolean} adds shadows to all elements.
-// @source - http://pesticide.io/
-
-$pesticide-debug-outline: false;
-$pesticide-debug-depth: false;
-
-// ==========================================================================
-// $Libs
-// ==========================================================================
-@import 'assets/styles/libs/index';
+@import '~@angular/material/theming';
 @import "~angular-calendar/dist/css/angular-calendar.css";
+@import "/assets/css/adaptive";
+@import "/assets/css/support";
+// Plus imports for other components in your app.
 
-// ==========================================================================
-// $Utilities
-// ==========================================================================
-@import 'assets/styles/utilities/index';
+$custom-typography: mat-typography-config(
+        $font-family: Lato,
+        $headline: mat-typography-level(45px, 40px, 700),
+        $title: mat-typography-level(28px, 31px, 700),
+        $subheading-2: mat-typography-level(19px, 31px, 400),
+        $body-2: mat-typography-level(14px, 19px, 400),
+        $body-1: mat-typography-level(14px, 19px, 300),
+        $caption: mat-typography-level(12px, 18px, 300),
+        $button: mat-typography-level(14px, 31px, 400)
+);
 
-// ==========================================================================
-// $Base
-// ==========================================================================
-@import 'assets/styles/base/index';
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core($custom-typography);
 
-// ==========================================================================
-// $Layout
-// ==========================================================================
-@import 'assets/styles/layout/index';
+$md-pbpink: (
+        50 : #ffebec,
+        100 : #ffcecf,
+        200 : #ffadaf,
+        300 : #ff8c8f,
+        400 : #ff7477,
+        500 : #ff5b5f,
+        600 : #ff5357,
+        700 : #ff494d,
+        800 : #ff4043,
+        900 : #ff2f32,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #ffdadb,
+        A700 : #ffc1c2,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #000000,
+                400 : #000000,
+                500 : #ffffff,
+                600 : #ffffff,
+                700 : #ffffff,
+                800 : #ffffff,
+                900 : #ffffff,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #000000,
+                A700 : #000000,
+        )
+);
 
-// ==========================================================================
-// $Atoms
-// ==========================================================================
-@import 'assets/styles/atoms/index';
+$md-pblightgreen: (
+        50 : #e7f7f3,
+        100 : #c2ebe2,
+        200 : #99decf,
+        300 : #70d1bb,
+        400 : #52c7ad,
+        500 : #33bd9e,
+        600 : #2eb796,
+        700 : #27ae8c,
+        800 : #20a682,
+        900 : #149870,
+        A100 : #ccffee,
+        A200 : #99ffdd,
+        A400 : #66ffcc,
+        A700 : #4dffc4,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #000000,
+                400 : #000000,
+                500 : #ffffff,
+                600 : #ffffff,
+                700 : #ffffff,
+                800 : #ffffff,
+                900 : #ffffff,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #000000,
+                A700 : #000000,
+        )
+);
 
-// ==========================================================================
-// $Molecules
-// ==========================================================================
-@import 'assets/styles/molecules/index';
+$md-pbdarkgreen: (
+        50 : #e4f5f1,
+        100 : #bbe6dd,
+        200 : #8ed6c6,
+        300 : #61c6af,
+        400 : #3fb99e,
+        500 : #1dad8d,
+        600 : #1aa685,
+        700 : #159c7a,
+        800 : #119370,
+        900 : #0a835d,
+        A100 : #b3ffe4,
+        A200 : #80ffd2,
+        A400 : #4dffc0,
+        A700 : #33ffb7,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #000000,
+                400 : #000000,
+                500 : #ffffff,
+                600 : #ffffff,
+                700 : #ffffff,
+                800 : #ffffff,
+                900 : #ffffff,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #000000,
+                A700 : #000000,
+        )
+);
 
-// ==========================================================================
-// $Organisms
-// ==========================================================================
-@import 'assets/styles/organisms/index';
+$md-pbdarkgrey: (
+        50 : #e9e9e9,
+        100 : #c8c8c8,
+        200 : #a4a4a4,
+        300 : #7f7f7f,
+        400 : #636363,
+        500 : #484848,
+        600 : #414141,
+        700 : #383838,
+        800 : #303030,
+        900 : #212121,
+        A100 : #f17d7d,
+        A200 : #eb4f4f,
+        A400 : #ff0808,
+        A700 : #ee0000,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #ffffff,
+                400 : #ffffff,
+                500 : #ffffff,
+                600 : #ffffff,
+                700 : #ffffff,
+                800 : #ffffff,
+                900 : #ffffff,
+                A100 : #000000,
+                A200 : #ffffff,
+                A400 : #ffffff,
+                A700 : #ffffff,
+        )
+);
 
-// ==========================================================================
-// $States
-// ==========================================================================
-@import 'assets/styles/states/index';
+$md-pblightgrey: (
+        50 : #efefef,
+        100 : #d6d6d6,
+        200 : #bbbbbb,
+        300 : #9f9f9f,
+        400 : #8b8b8b,
+        500 : #767676,
+        600 : #6e6e6e,
+        700 : #636363,
+        800 : #595959,
+        900 : #464646,
+        A100 : #f6b1b1,
+        A200 : #f18383,
+        A400 : #ff4242,
+        A700 : #ff2929,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #000000,
+                400 : #000000,
+                500 : #ffffff,
+                600 : #ffffff,
+                700 : #ffffff,
+                800 : #ffffff,
+                900 : #ffffff,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #ffffff,
+                A700 : #ffffff,
+        )
+);
 
-// ==========================================================================
-// $Overrides
-// ==========================================================================
-@import 'assets/styles/overrides/index';
+$md-pbred: (
+        50 : #fee7e8,
+        100 : #fcc4c5,
+        200 : #fa9c9f,
+        300 : #f87478,
+        400 : #f7575b,
+        500 : #f5393e,
+        600 : #f43338,
+        700 : #f22c30,
+        800 : #f02428,
+        900 : #ee171b,
+        A100 : #ffffff,
+        A200 : #ffebec,
+        A400 : #ffb8b9,
+        A700 : #ff9fa0,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #000000,
+                400 : #000000,
+                500 : #ffffff,
+                600 : #ffffff,
+                700 : #ffffff,
+                800 : #ffffff,
+                900 : #ffffff,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #000000,
+                A700 : #000000,
+        )
+);
 
-// ==========================================================================
-// $Print
-// ==========================================================================
-@import 'assets/styles/states/print';
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$candy-app-primary: mat-palette($md-pblightgreen);
+$candy-app-accent:  mat-palette($md-pbpink);
+$candy-app-foreground:  mat-palette($md-pblightgrey, 500, 50, 900);
 
-// ==========================================================================
-// $Fonts
-// ==========================================================================
-@import 'assets/styles/utilities/fonts';
+// The warn palette is optional (defaults to red).
+$candy-app-warn:    mat-palette($md-pbred);
 
-// ==========================================================================
-// $Shame
-// ==========================================================================
-@import 'assets/styles/shame';
+// Create the theme object (a Sass map containing all of the palettes).
+$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
 
-@import 'assets/css/style';
-@import 'assets/css/adaptive';
-@import 'assets/css/support';
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($candy-app-theme);

@@ -1,0 +1,40 @@
+<div md-dialog-content>
+  <form [formGroup]="submitEntryForm" (ngSubmit)="publishView()">
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Submit Entry to Project</h3>
+      </div>
+      <div class="col-sm-6" style="text-align: right;">
+        <div class="display-inline-block margin-right-10" *ngIf="savingDraft"><img src="{{loader}}" alt="loader" width="30px" /> <span class="text-grey fs-13">Saving Draft</span></div>
+        <button md-button class="mat-border-button">Publish</button>
+      </div>
+    </div>
+    <div class="fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload photo (jpg, png, gif)</div>
+    <div class="uploadContainer">
+      <p-fileUpload #fubauto name="image" customUpload="true" accept="image/*" maxFileSize="1000000" (uploadHandler)="uploadImage($event)" auto="true"></p-fileUpload>
+      <div *ngIf="imageUrl">
+        <div><img src="{{config.apiUrl+imageUrl}}" width="50"></div>
+        <div>{{imageUrl.split('/')[5]}}</div>
+      </div>
+    </div>
+    <div class="row margin-top-20">
+      <div class="col-sm-12">
+        <md-input-container class="pb-block margin-bottom-30">
+          <input mdInput #name formControlName="name" placeholder="Submission Name">
+          <md-hint align="end">{{name.value.length}}/200</md-hint>
+        </md-input-container>
+        <md-input-container class="pb-block margin-bottom-30">
+          <input mdInput #description formControlName="description" type="text" placeholder="Submission Description">
+          <md-hint align="end">{{description.value.length}}/200</md-hint>
+        </md-input-container>
+        <div class="margin-bottom-10">
+          <div class="margin-bottom-20; font-weight: 500;">Do you wish to make your submission public?</div>
+          <md-radio-group [formControlName]="'isPrivate'">
+            <md-radio-button value="true">Private</md-radio-button>&emsp;
+            <md-radio-button value="false">Public</md-radio-button>
+          </md-radio-group>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

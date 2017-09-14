@@ -1,0 +1,164 @@
+<div md-dialog-content *ngIf="data">
+  <div class="fs-13 text-grey margin-bottom-20">
+    <a href="javascript:;" class="text-grey" (click)="closeDialog()" style="outline: none;">
+      &lt; Back</a>
+  </div>
+  <h3 class="margin-bottom-0">{{ data.submission.name | titlecase }}</h3>
+  <div class="margin-bottom-20 clearfix">
+    <span class="fs-13 display-inline-block margin-top-10">
+      <i *ngIf="!iHaveUpvoted" class="fa fa-thumbs-o-up" style="cursor: pointer;" (click)="addSubmissionUpvote(data.submission)"></i>&nbsp;&nbsp;
+      <i *ngIf="iHaveUpvoted" class="fa fa-thumbs-o-up" style="color: #33bd9e"></i>&nbsp;&nbsp;
+      <span *ngIf="data.submission.upvotes !== undefined">{{data.submission.upvotes.length}}</span>
+      <span *ngIf="data.submission.upvotes === undefined">0</span>
+    </span>
+    <button class="pull-right mat-border-button" md-button *ngIf="data.userType==='participant' && isMySubmission">Edit</button>
+    <div class="pull-right" *ngIf="!isMySubmission">
+        <div class="position-relative" *ngIf="data.submission.peer && data.submission.peer.length>0">
+          <img class="circle-thumb" src="{{data.submission.peer[0].profiles[0].picture_url}}" alt="thumb" (error)="_collectionService.imgErrorHandler($event)" />
+          <div style="display: inline-block; position: relative; top: 11px;">
+            {{data.submission.peer[0].profiles[0].first_name}} {{data.submission.peer[0].profiles[0].last_name}}
+            <br>
+            <p style="font-size: 90%;">{{data.submission.peer[0].profiles[0].headline}}</p>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="content-image" *ngIf="data.submission.picture_url">
+    <img class="img-responsive media-middle" style="width: 100%" src="{{config.apiUrl+data.submission.picture_url}}" alt="image">
+  </div>
+  <div class="default-image" *ngIf="!data.submission.picture_url">
+    <i class="fa fa-picture-o"></i>
+  </div>
+  <div class="content-box">
+    <div class="margin-top-20 margin-bottom-20">
+      <div class="section-subhead"><b>Description</b></div>
+      <div class="section-description margin-top-20 margin-bottom-20">{{ data.submission.description }}</div>
+    </div>
+  </div>
+  <!--DISCUSSION THREAD-->
+  <div class="row Discussion" *ngIf="userType==='teacher' || userType==='participant'">
+    <div class="col-md-12">
+      <div class="margin-top-20 margin-bottom-20"><b>Discussion</b></div>
+      <form [formGroup]="chatForm" (ngSubmit)="postComment()">
+        <md-input-container class="full-width margin-top-10" [floatPlaceholder]="false" style="width: 100%;">
+          <input mdInput formControlName="description" placeholder="Post your thoughts on this submission">
+        </md-input-container>
+        <button md-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right">Post</button>
+      </form>
+    </div>
+    <div class="col-md-12 margin-bottom-20">
+      <div class="row">
+        <div class="col-md-12">
+          <b *ngIf="comments !==undefined">{{comments.length}} Comments</b>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="row lighterText" *ngIf="comments !== undefined && comments.length === 0">
+        <div class="col-md-12">
+          <div class="emptySectionText">Be the first one to start a discussion on this submission..</div>
+        </div>
+      </div>
+      <div class="row margin-top-10" *ngFor="let comment of comments">
+        <div class="col-md-1" style="text-align: center; color: #cccccc;">
+          <md-icon style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</md-icon>
+          <div>
+            {{comment.upvotes.length}}
+          </div>
+        </div>
+        <div class="col-md-11">
+          <button md-icon-button [mdMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;">
+            <md-icon style="color: #cccccc">more_vert</md-icon>
+          </button>
+          <md-menu #menuComment="mdMenu">
+            <button *ngIf="userType==='participant'" md-menu-item>
+              <md-icon>flag</md-icon>
+              <span>Flag</span>
+            </button>
+            <button *ngIf="userType==='teacher'" md-menu-item>
+              <md-icon>delete</md-icon>
+              <span>Delete</span>
+            </button>
+          </md-menu>
+          <div>{{comment.description}}</div>
+          <div style="margin-top: 10px; font-size: 85%" *ngIf="comment.peer.length>0">
+            <div style="float: left;">
+              <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+              <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp">
+            </div>
+            <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+              <div>
+                <div>
+                  <span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                  <span *ngIf="comment.peer[0].profiles[0].headline">{{comment.peer[0].profiles[0].headline}}</span>
+                </div>
+              </div>
+              <div style="font-size: 90%">
+                <span class="lighterText">{{comment.createdAt |extractTime:'hh:mm a, Do MMMM YYYY'}}</span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 15px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
+            <a href="javascript:void(0);" (click)="createReplyForm(comment)"><md-icon style="top: 5px;">reply</md-icon> Reply</a>
+          </div>
+          <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
+            <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
+              <img src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+              <md-input-container style="margin-left: 15px; width: 88%;">
+                <input mdInput type="text" formControlName="description" placeholder="Reply to above comment...">
+              </md-input-container>
+              <button [disabled]="!replyForm.valid" md-raised-button class="pull-right" color="primary">Post</button>
+            </form>
+          </div>
+          <div class="col-md-11 col-md-offset-1 margin-bottom-20">
+            <div class="row margin-top-20" *ngFor="let reply of comment.replies">
+              <button md-icon-button [mdMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;">
+                <md-icon style="color: #cccccc;">more_vert</md-icon>
+              </button>
+              <md-menu #menuReply="mdMenu">
+                <button *ngIf="userType==='participant'" md-menu-item>
+                  <md-icon>flag</md-icon>
+                  <span>Flag</span>
+                </button>
+                <button *ngIf="userType==='teacher'" md-menu-item>
+                  <md-icon>delete</md-icon>
+                  <span>Delete</span>
+                </button>
+              </md-menu>
+              <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px; margin-left: -60px;">
+                <md-icon style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</md-icon>
+                <div>
+                  <span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
+                  <span *ngIf="reply.upvotes === undefined">0</span>
+                </div>
+              </div>
+              <div style="display: inline-block">
+                <div>{{reply.description}}</div>
+                <div style="margin-top: 10px; font-size: 85%" *ngIf="reply.peer && reply.peer.length>0">
+                  <div style="float: left;">
+                    <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+                    <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp">
+                  </div>
+                  <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+                    <div>
+                      <div>
+                        <span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                        <span *ngIf="reply.peer[0].profiles[0].headline">{{reply.peer[0].profiles[0].headline}}</span>
+                      </div>
+                    </div>
+                    <div style="font-size: 90%">
+                      <span class="lighterText">{{reply.createdAt |extractTime:'hh:mm a, Do MMMM YYYY'}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <hr class="margin-top-10">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

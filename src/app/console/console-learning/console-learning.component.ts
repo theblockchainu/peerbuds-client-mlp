@@ -246,4 +246,9 @@ export class ConsoleLearningComponent implements OnInit {
     this.router.navigate(['session', collection.id]);
   }
 
+
+  imgErrorHandler(event) {
+      event.target.src = '/assets/images/user-placeholder.jpg';
+  }
+
 }

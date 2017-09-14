@@ -1,0 +1,44 @@
+.homefeed a{
+    color: black;  
+}
+
+.homefeed{
+    padding-top: 70px;      
+}
+
+.recommendation-thumb{
+    object-fit: cover;
+    height: 240px;
+    width: 200px;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 230px;
+    width: 165px;
+}
+
+.recommendation-card{
+    max-width: 230px;
+    height: 370px;
+}
+
+.homefeed label{
+    color: #484848;
+    font-size: 13px;    
+}
+
+.peer-recommendation-card{
+    max-width: 210px;
+}
+
+.workshop-feed .title {
+    font-size:17px !important;
+    color: #484848 !important;
+}
+
+.workshop-feed .headline {
+    font-size:16px !important;
+    color: #767676 !important;
+
+}

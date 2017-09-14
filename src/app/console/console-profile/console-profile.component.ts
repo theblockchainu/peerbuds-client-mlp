@@ -31,9 +31,6 @@ export class ConsoleProfileComponent implements OnInit {
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
 
-    // debugger;
-    // _profileService.getPeerProfile().subscribe((res)=> { debugger;this.profileId = res.id;});
-
     this.profileId = _profileService.getPeerProfile();
     this.activeTab = 'edit';
   }
@@ -65,5 +62,9 @@ export class ConsoleProfileComponent implements OnInit {
   public setActiveTab(value) {
     this.activeTab = value;
   }
+
+    imgErrorHandler(event) {
+        event.target.src = '/assets/images/user-placeholder.jpg';
+    }
 
 }

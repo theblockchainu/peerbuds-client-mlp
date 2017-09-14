@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 // import { Response } from '@angular/http';
 
 @Injectable()
@@ -21,11 +21,11 @@ export class ProfileService {
   private options;
 
   constructor(private http: Http,
-              private config: AppConfig,
-              private _cookieService: CookieService,
-              private route: ActivatedRoute,
-              public router: Router,
-              public _requestHeaderService: RequestHeaderService
+    private config: AppConfig,
+    private _cookieService: CookieService,
+    private route: ActivatedRoute,
+    public router: Router,
+    public _requestHeaderService: RequestHeaderService
   ) {
     this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
@@ -59,19 +59,24 @@ export class ProfileService {
       const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
       return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter, this.options)
         .map(
-          (response: Response) => response.json()
+        (response: Response) => response.json()
         );
     }
   }
 
+  public getCompactProfile() {
+      const profile = {};
+      if (this.userId) {
+          const filter = '{"include": "peer"}';
+          return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter, this.options)
+              .map(
+                  (response: Response) => response.json()
+              );
+      }
+  }
+
   public getPeerProfile() {
     return this.userId;
-    // if (this.userId) {
-    //   const options = '{"include": "profiles"}';
-    //   return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + options)
-    //     .map((response: Response) => response.json()
-    //     );
-    // }
   }
 
   public updatePeer(id: any, body: any) {
@@ -194,17 +199,92 @@ export class ProfileService {
   }
 
   /**
+   * Delete all work nodes of a profile
+   * @param profileId
+   * @param cb
+   */
+  public deleteProfileWorks(profileId, cb) {
+    this.http
+      .delete(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.options)
+      .map((response) => {
+        cb(null, response);
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public updateProfileWorks(profileId, work: any, cb: any) {
+    if (!(work.length > 0 && this.userId)) {
+      console.log('User not logged in');
+      cb(new Error('User not logged in or work body blank'));
+    } else {
+      this.http
+        .post(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.sanitize(work), this.options)
+        .map((response1) => {
+          cb(null, response1.json());
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
+  /**
+   * Delete all education nodes of a profile
+   * @param profileId
+   * @param cb
+   */
+  public deleteProfileEducations(profileId, cb) {
+    this.http
+      .delete(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.options)
+      .map((response) => {
+        cb(null, response);
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public updateProfileEducations(profileId, education: any, cb: any) {
+    if (!(education.length > 0 && this.userId)) {
+      console.log('User not logged in');
+      cb(new Error('User not logged in or education body blank'));
+    } else {
+      this.http
+        .post(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.sanitize(education), this.options)
+        .map((response1) => {
+          cb(null, response1.json());
+        }, (err) => {
+          cb(err);
+        }).subscribe();
+    }
+  }
+
+  /**
    * sanitize
    */
-  private sanitize(newprofile: any) {
-    delete newprofile.id;
-    delete newprofile.peer;
-    delete newprofile.work;
-    delete newprofile.education;
-    return newprofile;
+  private sanitize(object: any) {
+    delete object.id;
+    delete object.peer;
+    delete object.work;
+    delete object.education;
+    return object;
   }
 
   getUserId() {
     return this.getCookieValue(this.key);
   }
+
+  /**
+   * getAllPeers
+   */
+  public getAllPeers(query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers?filter=' + JSON.stringify(query));
+  }
+
+  /**
+   * getTopics
+   */
+  public getTopics(userId: string, query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning?filter=' + JSON.stringify(query));
+  }
+
 }

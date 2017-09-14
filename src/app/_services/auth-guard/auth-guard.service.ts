@@ -6,16 +6,16 @@ import {
   CanActivateChild,
   NavigationExtras,
   CanLoad, Route
-}                           from '@angular/router';
-import { AuthService }      from '../auth/auth.service';
+} from '@angular/router';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable()
 export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    let url: string = state.url;
+    const url: string = state.url;
     return this.checkLogin(url);
   }
 
@@ -24,16 +24,13 @@ export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad 
   }
 
   canLoad(route: Route): boolean {
-    let url = `/${route.path}`;
+    const url = `/${route.path}`;
 
     return this.checkLogin(url);
   }
 
   checkLogin(url: string): boolean {
     if (this.authService.isLoggedIn) { return true; }
-
-    // Store the attempted URL for redirecting
-    this.authService.redirectUrl = url;
 
     // Navigate to the login page with extras
     this.router.navigate(['/login'], { queryParams: { returnUrl: url }});

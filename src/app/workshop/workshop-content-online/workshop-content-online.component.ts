@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Http, Response, } from '@angular/http';
 import { AppConfig } from '../../app.config';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
-import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
+import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
 
 @Component({
     selector: 'app-workshop-content-online',
@@ -17,6 +17,9 @@ export class WorkshopContentOnlineComponent implements OnInit {
     public filesToUpload: number;
     public filesUploaded: number;
     public itenaryForm: FormGroup;
+    public image: any;
+    public attachments: any;
+    public attachmentUrls = [];
     public resultData = {
         status: 'discard',
         data: 0
@@ -25,7 +28,8 @@ export class WorkshopContentOnlineComponent implements OnInit {
 
     constructor(
         private _fb: FormBuilder,
-        private http: Http, private config: AppConfig,
+        private http: Http,
+        public config: AppConfig,
         private mediaUploader: MediaUploaderService,
         @Inject(MD_DIALOG_DATA) public inputData: any,
         public dialogRef: MdDialogRef<WorkshopContentOnlineComponent>
@@ -33,6 +37,12 @@ export class WorkshopContentOnlineComponent implements OnInit {
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+        this.image = contentForm.controls['imageUrl'];
+        this.attachments = contentForm.controls['supplementUrls'];
+        this.attachmentUrls = this.attachments.value;
+        console.log(this.attachments);
     }
 
     ngOnInit(): void {
@@ -79,12 +89,6 @@ export class WorkshopContentOnlineComponent implements OnInit {
     resetProgressBar() {
         delete this.filesToUpload;
         delete this.filesUploaded;
-    }
-
-    itemEditRemoved(event) {
-        delete this.filesToUpload;
-        this.filesUploaded = 0;
-        //this.deleteFromContainer(event);
     }
 
     /**
@@ -145,6 +149,33 @@ export class WorkshopContentOnlineComponent implements OnInit {
         else {
             return 'Edit';
         }
+    }
+
+    uploadImage(event) {
+        console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
+        const xhrResp = JSON.parse(event.xhr.response);
+        this.addImageUrl(xhrResp.url);
+    }
+
+    public addImageUrl(value: String) {
+        console.log('Adding image url: ' + value);
+        this.image.patchValue(value);
+    }
+
+    uploadAttachments(event) {
+        console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
+        const xhrResp = JSON.parse(event.xhr.response);
+        this.addAttachmentUrl(xhrResp.url);
+    }
+
+    public addAttachmentUrl(value: String) {
+        console.log('Adding image url: ' + value);
+        this.attachments.push(new FormControl(value));
+        this.attachmentUrls.push(value);
+    }
+
+    imgErrorHandler(event) {
+        event.target.src = '/assets/images/placeholder-image.jpg';
     }
 
 }
