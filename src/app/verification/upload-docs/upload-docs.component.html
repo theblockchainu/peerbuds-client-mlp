@@ -1,27 +1,34 @@
-<div class="verification-section" id="content">
+<div class="verification-section margin-top-40" id="content">
   <div class="container">
     <div class="col-md-8 col-md-offset-2 position-relative">
       <div class="verification-box drop-shadow">
         <div class="step-1" [hidden]="step!=1">
-          <div class="section-header">Confirm your identity</div>
-          <p>To make sure that this is your account, we need you to send us a photo or scanned copy of an item in group one
-            from this list of ID's.</p>
-          <p>Some of the item that we can use to confirm your identity include:</p>
-          <ul>
-            <li>Passport</li>
-            <li>Driver license</li>
-            <li>Marriage Certificate</li>
-            <li>National ID card</li>
-          </ul>
-          <p>Keep in mind that anything you directly upload here is encrypted and stored securely.</p>
-          <div class="bottom-section clearfix">
-            <div class="pull-right">
-              <button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
-              <button class="btn btn-primary" (click)="continue(2)">Continue</button>
+          <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+            <i class="fa fa-id-card-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+          </button>
+          <form [formGroup]="peer">
+            <h2 class="headline">Confirm Your Identity</h2>
+            <p class="description1 margin-bottom-40">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will help us ensure that you don't have multiple profiles in the platform.</p>
+            <p class="description2">This ID must:</p>
+            <ul class="description2">
+              <li>Be a government-issued (ex. Passport, Drivers License)</li>
+              <li>Clearly show your name, picture and birthday</li>
+              <li>Be in color</li>
+            </ul>
+            <div class="margin-bottom-30">
+                <p-fileUpload name="image" #idproof mode="basic" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+                  chooseLabel="Upload ID"></p-fileUpload>
             </div>
-          </div>
+            <p class="description1 margin-bottom-40">To learn more about why we require copy of your ID and what types of ID we accept, <a href="#">review our ID policy</a></p>
+            <div class="bottom-section clearfix">
+              <div class="pull-right">
+                <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
+                <button md-raised-button color="accent" (click)="continue(2)">Continue</button>
+              </div>
+            </div>
+          </form>
         </div> <!-- step 1 ends -->
-        <div class="step-2" [hidden]="step!=2">
+        <!-- <div class="step-2" [hidden]="step!=2">
           <form [formGroup]="peer">
             <div class="section-header">Confirm your identity</div>
             <p class="fs-16 fw-bold">To upload a photo or scan of an ID:</p>
@@ -36,48 +43,58 @@
               <p-fileUpload name="image" #idproof mode="basic" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
                 chooseLabel="Choose File"></p-fileUpload>
             </div>
-            <!--<p><input type="file" name="uploadId" required></p>-->
-            <!--<div class="checkbox">
-              <label class="check" style="position:relative;"><input type="checkbox"><i></i> I've attached an ID from group one in the Help Center article below</label>
-            </div>-->
             <div class="bottom-section clearfix">
               <div class="pull-right">
-                <button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
-                <button class="btn btn-primary" (click)="continue(3)" [disabled]="idProofImagePending">Continue</button>
+                <button md-raised-button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
+                <button md-raised-button class="btn btn-primary" (click)="continue(3)" [disabled]="idProofImagePending">Continue</button>
+              </div>
+            </div>
+          </form>
+        </div>  -->
+        <!-- step 2 ends -->
+        <div class="step-2" [hidden]="step!=2">
+          <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+            <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+          </button>
+          <form [formGroup]="peer">
+            <h2 class="headline">How can we reach you securely?</h2>
+            <p class="description1 margin-bottom-40">Please let us know how we can reach you by email. To help keep your Peerbuds account secure, make sure only you can log into this email address.</p>
+            <md-input-container style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
+              <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" /> -->
+              <input type="text" mdInput #email formControlName="email" placeholder="Email Address"/>
+            </md-input-container>
+            <div class="bottom-section clearfix">
+              <div class="pull-right">
+                <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
+                <button md-raised-button color="accent" (click)="continue(3)" [disabled]="email.value.length == 0">Continue</button>
               </div>
             </div>
           </form>
         </div> <!-- step 2 ends -->
         <div class="step-3" [hidden]="step!=3">
-          <form [formGroup]="peer">
-            <div class="section-header">How can we reach you securely?</div>
-            <p>Please let us know how we can reach you by email. To help keep your Peerbuds account secure, make sure only you can log into this email address.</p>
-            <div class="form-group">
-              <label class="inline">Email address:</label>
-              <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" />
-            </div>
-            <div class="bottom-section clearfix">
-              <div class="pull-right">
-                <button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
-                <button class="btn btn-primary" (click)="continue(4)">Continue</button>
-              </div>
-            </div>
-          </form>
-        </div> <!-- step 3 ends -->
-        <div class="step-4" [hidden]="step!=4">
+            <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+              <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+            </button>
           <form [formGroup]="otp">
-            <div class="section-header">Enter the OTP sent to your email</div>
-            <p>We have sent to 6 digit code to your email address. Please enter this code or click the link in your email to verify your email address.
-               Users on peerbuds need to verify their email IDs to receive notifications and updates from the platform.</p>
-            <div class="form-group">
+              <h2 class="headline">Enter the OTP sent to your email</h2>
+            <p class="description1 margin-bottom-40">We have sent to 4 digit code to {{email}}. Please enter this code or click the link in your email to verify your email address.
+               Users on Peerbuds need to verify their email IDs to receive notifications and updates from the platform.</p>
+            <!-- <div class="margin-bottom-10">
               <label class="display-block margin-bottom-0"><strong>OTP</strong></label>
-              <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" /><br>
-              <a class="fs-13 text-grey display-inline-block margin-top-5" (click)="resendOTP()" style="cursor: pointer;">Resend code?</a>
+              <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" />
+            </div> -->
+            <md-input-container style="width:20% !important" class="pb-block margin-bottom-10 ">
+                <input type="text" mdInput #inputOTP formControlName="inputOTP"/>
+            </md-input-container>
+            <div>
+              <p class="description1"> <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before<br/>
+              requesting another code or <a style="cursor: pointer;" (click)="continue(2)">Change Email</a></p>
+              
             </div>
-            <div class="bottom-section clearfix">
+            <div class="bottom-section clearfix margin-top-100">
               <div class="pull-right">
-                <a class="btn btn-link" [routerLink]="['/onboarding']">Skip for later</a>
-                <button class="btn btn-primary" (click)="verifyEmail()">Verify Email</button>
+                <a md-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding']">Skip</a>
+                <button md-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length == 0">Verify Email</button>
               </div>
             </div>
           </form>
