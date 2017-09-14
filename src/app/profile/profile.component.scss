@@ -97,22 +97,22 @@
 .recommendation-thumb{
     object-fit: cover;
     height: 240px;
-    width: 200px;
+    width: 230px;
 }
 
 .peer-recommendation-thumb{
     object-fit: cover;
     height: 230px;
-    width: 165px;
+    width: 230px;
 }
 
 .recommendation-card{
-    max-width: 230px;
+    max-width: 330px;
     height: 370px;
 }
 
 .peer-recommendation-card{
-    max-width: 230px;
+    max-width: 320px;
 }
 
 .workshop-feed .title {
@@ -141,12 +141,44 @@ a h4{
 .review h2{
     display:inline;        
 }
+
 .profile-page{
-    width: 1530px;
+    width: 1370px;
+    padding-top: 50px;
 }
 
 .profile-pic{
-    object-fit: contain;
-    height: 300px;
-    width: 300px;
+    object-fit: cover;
+    height: 285px;
+    width: 285px;
 }
+
+.center-feed p{
+    font-size: 16px;
+}
+
+.center-feed{
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .side-image{
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+  }
+
+  .left-panel .mat-button{
+    border: 1.5px solid #1C1D1D;
+    color: #292C2B;
+  }
+
+  .feed-horizontal a{
+      color: #1C1D1D
+  }

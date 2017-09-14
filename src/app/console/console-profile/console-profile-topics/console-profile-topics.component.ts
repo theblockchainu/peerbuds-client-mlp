@@ -79,6 +79,17 @@ topic:any   */
     });
   }
 
+  /**
+   * stopTeachingTopic
+   */
+  public stopTeachingTopic(topic: any) {
+    this._profileService.stopTeachingTopic(topic.id).subscribe((response) => {
+      this.getTopics();
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
   public selected(event) {
     this.newTopics = event;
   }
