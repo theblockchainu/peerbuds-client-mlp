@@ -9,7 +9,7 @@ import { CollectionService } from '../../../_services/collection/collection.serv
 import * as moment from 'moment';
 import _ from 'lodash';
 
-import { ViewConflictDialog } from '../view-conflict-dialog/view-conflict-dialog.component';
+import { ViewConflictDialogComponent } from '../view-conflict-dialog/view-conflict-dialog.component';
 
 import {
   startOfDay,
@@ -56,7 +56,7 @@ const colors: any = {
       }
     ]
 })
-export class EditCalendarDialog implements OnInit {
+export class EditCalendarDialogComponent implements OnInit {
 
     public collection;
     public contents;
@@ -196,7 +196,7 @@ export class EditCalendarDialog implements OnInit {
         return title.split(':');
     }
 
-    constructor(public dialogRef: MdDialogRef<EditCalendarDialog>,
+    constructor(public dialogRef: MdDialogRef<EditCalendarDialogComponent>,
         private _fb: FormBuilder,
         private _contentService: ContentService,
         private dialog: MdDialog,
@@ -360,7 +360,7 @@ export class EditCalendarDialog implements OnInit {
     }
 
     private extractDate(dateString: string) {
-        return dateString.split('T')[0];
+        return moment.utc(dateString).local().toDate();
     }
 
     private extractTime(dateString: string) {
@@ -440,9 +440,9 @@ export class EditCalendarDialog implements OnInit {
 
     // Modal
     public viewConflict() {
-        const dialogRef = this.dialog.open(ViewConflictDialog, {
-            width: '850px',
-            height: '650px',
+        const dialogRef = this.dialog.open(ViewConflictDialogComponent, {
+            width: '50vw',
+            height: '90vh',
             data: {
                 conflicts: this.computedConflict,
                 id: this.collection.id

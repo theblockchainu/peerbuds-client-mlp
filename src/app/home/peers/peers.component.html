@@ -1,4 +1,4 @@
-<div class="container feed peerFeed">
+<div class="feed peerFeed">
   <div class="row peer-feed">
     <div class="col-md-12">
       <div class="row">
@@ -22,24 +22,27 @@
           </a>
         </div> -->
       </div>
-      <div class="row feed-horizontal">
+      <div class="row feed-horizontal margin-top-20 margin-bottom-50">
         <div class="col-md-2 peer-recommendation-card" *ngFor="let peer of peers">
           <a [routerLink]="'/profile/'+peer.id">
-            <div class="col-md-12">
+            <div class="">
               <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}"
                 alt="workshpImg">
               <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png"
                 alt="workshpImg">
             </div>
-            <div class="col-md-12">
+            <div class="margin-top-20">
               <h4>{{peer.profiles[0].first_name}}</h4>
             </div>
-            <div class="col-md-8">
-              <p-rating [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
+            <div class="col-sm-12 padding-left-0">
+              <p-rating class="col-sm-7 padding-left-0" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
               </p-rating>
-            </div>
-            <div class="col-md-4" *ngIf="peer.reviewsAboutYou.length>0">
-              <label>{{peer.reviewsAboutYou.length}} Reviews</label>
+              <span class="col-sm-5 padding-left-0" *ngIf="peer.reviewsAboutYou.length>0">
+                <label>{{peer.reviewsAboutYou.length}} Reviews</label>
+              </span>
+              <span class="col-sm-5 padding-left-0" *ngIf="peer.reviewsAboutYou.length==0">
+                <label>0 Reviews</label>
+              </span>
             </div>
           </a>
         </div>

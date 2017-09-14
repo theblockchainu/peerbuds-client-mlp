@@ -1,15 +1,18 @@
 @import '~@angular/material/theming';
+@import "~angular-calendar/dist/css/angular-calendar.css";
+@import "/assets/css/adaptive";
+@import "/assets/css/support";
 // Plus imports for other components in your app.
 
 $custom-typography: mat-typography-config(
-        $font-family: Roboto,
+        $font-family: Lato,
         $headline: mat-typography-level(45px, 40px, 700),
         $title: mat-typography-level(28px, 31px, 700),
-        $subheading-2: mat-typography-level(19px, 31px, 500),
-        $body-2: mat-typography-level(14px, 19px, 500),
-        $body-1: mat-typography-level(14px, 19px, 400),
-        $caption: mat-typography-level(12px, 18px, 400),
-        $button: mat-typography-level(14px, 31px, 500)
+        $subheading-2: mat-typography-level(19px, 31px, 400),
+        $body-2: mat-typography-level(14px, 19px, 400),
+        $body-1: mat-typography-level(14px, 19px, 300),
+        $caption: mat-typography-level(12px, 18px, 300),
+        $button: mat-typography-level(14px, 31px, 400)
 );
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -215,9 +218,6 @@ $md-pbred: (
         )
 );
 
-
-
-
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
@@ -235,72 +235,3 @@ $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($candy-app-theme);
-
-
-$pesticide-debug-outline: false;
-$pesticide-debug-depth: false;
-
-// ==========================================================================
-// $Libs
-// ==========================================================================
-@import 'assets/styles/libs/index';
-// @import "~angular-calendar/dist/css/angular-calendar.css";
-
-// ==========================================================================
-// $Utilities
-// ==========================================================================
-@import 'assets/styles/utilities/index';
-
-// ==========================================================================
-// $Base
-// ==========================================================================
-@import 'assets/styles/base/index';
-
-// ==========================================================================
-// $Layout
-// ==========================================================================
-@import 'assets/styles/layout/index';
-
-// ==========================================================================
-// $Atoms
-// ==========================================================================
-@import 'assets/styles/atoms/index';
-
-// ==========================================================================
-// $Molecules
-// ==========================================================================
-@import 'assets/styles/molecules/index';
-
-// ==========================================================================
-// $Organisms
-// ==========================================================================
-@import 'assets/styles/organisms/index';
-
-// ==========================================================================
-// $States
-// ==========================================================================
-@import 'assets/styles/states/index';
-
-// ==========================================================================
-// $Overrides
-// ==========================================================================
-@import 'assets/styles/overrides/index';
-
-// ==========================================================================
-// $Print
-// ==========================================================================
-@import 'assets/styles/states/print';
-
-// ==========================================================================
-// $Fonts
-// ==========================================================================
-@import 'assets/styles/utilities/fonts';
-
-// ==========================================================================
-// $Shame
-// ==========================================================================
-@import 'assets/styles/shame';
-
-// @import 'assets/css/style';
-// @import 'assets/css/adaptive';
-@import 'assets/css/support';

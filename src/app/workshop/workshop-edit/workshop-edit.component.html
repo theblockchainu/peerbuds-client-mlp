@@ -276,14 +276,15 @@
                 give to everybody.
               </p>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <div class="col-sm-12">
+                <div class="col-sm-4 padding-left-0">
                   <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                    <input type="number" mdInput #maxSpots formControlName="maxSpots" placeholder="Enter Number">
+                    <input type="number" mdInput #maxSpots min="1" formControlName="maxSpots" placeholder="Enter Number">
                   </md-input-container>
                 </div>
+                <br/>
                 <div style="padding-top:60px;">
                   <!-- <a md-button (click)=goto(8)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
+                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0">Continue</button>
                 </div>
               </form>
             </div>
@@ -299,7 +300,7 @@
               </p>
               <div class="row" style="margin-top:25px;">
                 <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)" novalidate>
-                  <div class="row" style="margin-top:40px">
+                  <div class="row margin-left-0" style="margin-top:40px">
                     <div class="col-md-8">
                       <div class="stepHeader">Upload Video</div>
                       <p-fileUpload #fubauto name="video" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadVideo($event)"
@@ -345,7 +346,7 @@
                   </div>
 
                   <div class="row">
-                    <div style="margin-top:60px;">
+                    <div class="margin-top-60">
                       <!-- <a md-button (click)=goto(9)>Back</a> -->
                       <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
                     </div>
@@ -364,23 +365,30 @@
                 <p class="subtitle">
                   How much are you going to charge for this workshop?
                 </p>
-                <div class="col-sm-12">
-                  <md-input-container [floatPlaceholder]="false" style="margin: 20px 0px;">
-                    <input type="number" mdInput #price formControlName="price" placeholder="Enter Price">
-                  </md-input-container>
-                  <md-select [floatPlaceholder]="false" formControlName="currency" style="margin: 20px 0px;">
-                    <md-option *ngFor="let c of currencies" [value]="c">{{c}}</md-option>
-                  </md-select>
+                <h3 class="title">Price</h3>
+                <div class="row margin-left-0">
+                  <div class="col-sm-3 padding-left-0">
+                    <md-input-container [floatPlaceholder]="false" class="margin-top-20">
+                      <input type="number" mdInput #price formControlName="price" placeholder="" min="1">
+                    </md-input-container>
+                  </div>
+                  <div class="col-sm-2 priceAlignParent">
+                    <md-select [floatPlaceholder]="false" formControlName="currency" class="priceAlign padding-top-0 margin-top-20">
+                      <md-option *ngFor="let c of currencies" [value]="c">{{c}}</md-option>
+                    </md-select>
+                  </div>
                 </div>
-                <h2 class="title" style="margin-top: 50px;">Cancellation Policy</h2>
-                <div class="col-sm-12">
-                  <md-select [floatPlaceholder]="false" formControlName="cancellationPolicy" style="margin: 20px 0px;">
-                    <md-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</md-option>
-                  </md-select>
+                <h3 class="title">Cancellation Policy</h3>
+                <div class="row margin-left-0">
+                  <div class="col-sm-12 padding-left-0">
+                    <md-select [floatPlaceholder]="false" formControlName="cancellationPolicy" style="margin: 20px 0px;">
+                      <md-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</md-option>
+                    </md-select>
+                  </div>
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(10)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
+                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="price.value.length == 0 && !currency && !cancellationPolicy">Continue</button>
                 </div>
               </form>
             </div>
@@ -414,16 +422,16 @@
                 <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
                   <div class="row" style="margin: 30px 0px 15px 0;">
                     <div class="col-sm-6">
-                      <md-form-field>
+                      <md-form-field class="dateStyles">
                         <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
-                        <md-datepicker-toggle mdSuffix [for]="startDatePicker"></md-datepicker-toggle>
+                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
                     </div>
                     <div class="col-sm-6">
-                      <md-form-field>
+                      <md-form-field class="dateStyles">
                         <input mdInput [mdDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
-                        <md-datepicker-toggle mdSuffix [for]="endDatePicker"></md-datepicker-toggle>
+                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>
@@ -449,7 +457,7 @@
                 <div class="row">
                   <div style="margin-top:100px;">
                     <!-- <a md-button (click)=goto(12)>Back</a> -->
-                    <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate)">Continue</button>
                   </div>
                 </div>
               </form>
@@ -468,7 +476,7 @@
                 <div style="margin-top:20px;">
                   <md-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</md-checkbox>
                 </div>
-                <button md-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] && !selectedValues[1]"> Submit for Review</button>
+                <button md-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] || !selectedValues[1]"> Submit for Review</button>
               </div>
               <div *ngIf="isSubmitted" style="margin-top: 70px;">
                 Your workshop has been submitted for review and is awaiting approval from Peerbuds team.<br><br> We maintain
@@ -485,7 +493,7 @@
               <form [formGroup]="phoneDetails">
                 <div style="margin-top:50px;">
                   <md-radio-group>
-                    <md-radio-button class="pb-block" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</md-radio-button>
+                    <md-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</md-radio-button>
                     <div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
                       <md-input-container [floatPlaceholder]="true" class="pb-block" style="margin: 20px 0px;">
                         <input type="tel" mdInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" [readOnly]="isPhoneVerified">
@@ -506,7 +514,7 @@
                       </md-input-container>
                       <button md-raised-button color="accent" (click)="submitOTP()">Confirm OTP</button>
                     </div>
-                    <md-radio-button class="pb-block" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
+                    <md-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
                   </md-radio-group>
                 </div>
                 <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">Continue</button>
@@ -521,9 +529,9 @@
               <div class="subtitle">Payment gateway stripe, etc.</div>
               <form [formGroup]="paymentInfo">
                 <div style="margin-top:50px;">
-                  <button md-raised-button>PayTM</button> &emsp;
+                  <!--<button md-raised-button>PayTM</button> &emsp;-->
                   <button md-raised-button><a [href]="connectPaymentUrl" target="_blank">Stripe</a></button> &emsp;
-                  <button md-raised-button>Paypal</button> &emsp;
+                  <!--<button md-raised-button>Paypal</button> &emsp;-->
                 </div>
               </form>
             </div>
