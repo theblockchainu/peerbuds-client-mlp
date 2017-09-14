@@ -16,6 +16,7 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
 import 'hammerjs';
 
 import { DialogsModule } from './_services/dialogs/dialogs.module';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DialogsModule } from './_services/dialogs/dialogs.module';
     NoContentComponent,
     LoginComponent,
     AppHeaderComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,
