@@ -6,15 +6,15 @@
         <div style="margin-top: -30px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
           <md-icon>wb_sunny</md-icon>
           <input mdInput [mdDatepicker]="startDatePicker" formControlName="date" [hidden]="true">
-          <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: 5px 0 0 10px;" (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
-          <a *ngIf="itenaryForm.value.date" style="float: right; margin: 5px 0 0 10px;" >({{showItineraryDate(itenaryForm.value.date)}})</a>
+          <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: 3px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
+          <a *ngIf="itenaryForm.value.date" style="float: right; margin: 3px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" >({{showItineraryDate(itenaryForm.value.date)}})</a>
           <md-datepicker touchUi="true" #startDatePicker [startAt]="collectionStartDate"></md-datepicker>
-          <a style="cursor: pointer; float: right; margin: 5px 0 0 10px;">
+          <a style="cursor: pointer; float: right; margin: 3px 0 0 10px;font-size:16px;">
             Day {{itenaryId + 1}}
           </a>
         </div>
-        <div style="margin-top: -24px; width: fit-content; background-color: #fff; float: right; padding: 0px 10px;">
-          <md-icon style="font-size: 12px; cursor: pointer">close</md-icon>
+        <div style="margin-top: -28px; width: fit-content; background-color: #fff; float: right; padding: 0px 10px;">
+          <md-icon style="font-size: 16px; cursor: pointer" (click)="deleteDay(itenaryId)">close</md-icon>
         </div>
       </div>
     </div>
@@ -25,31 +25,36 @@
         <md-icon style="position: relative; top: 5px;">
           keyboard_arrow_up
         </md-icon>
-        Please select a date for this day to continue adding activities...
+        <span style="font-size:14px">Please select a date for this day to continue adding activities...</span>
       </div>
     </div>
   </div>
   <div *ngIf="itenaryForm.value.date">
-    <div class="col-md-10" style="padding-left: 0px; margin-bottom: 45px;">
+    <div class="col-md-10" style="padding-left: 0px;">
       <div formArrayName="contents">
-        <div class="selected-content-label" *ngIf="itenaryForm.controls.contents.controls.length > 0">
+        <div class="selected-content-label title" *ngIf="itenaryForm.controls.contents.controls.length > 0">
           Activity selected
         </div>
         <md-list style="margin-left: -20px">
           <md-list-item *ngFor="let Content of itenaryForm.controls.contents.controls; let i=index" style="margin: 20px 0px; padding: 0px 0px; height: fit-content;">
             <div class="col-md-3" style="padding-left: 0px;" (click)="findAndOpenDialog(i)">
               <img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
-              <img *ngIf="Content.value.imageUrl" src="{{config.apiUrl + Content.value.imageUrl}}" (error)="imgErrorHandler($event)" style="width: 140px;">
+              <img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{config.apiUrl + Content.value.imageUrl}}" (error)="imgErrorHandler($event)" style="width: 140px;">
+              <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" width="100%" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
+                <source src="{{config.apiUrl + Content.value.imageUrl}}" type="video/mp4">
+              </video>
+              <!-- <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" id="video" src="{{config.apiUrl + Content.value.imageUrl}}" type="video/mp4" controls></video> -->
             </div>
             <div class="col-md-7" (click)="findAndOpenDialog(i)">
               <div class="content-title">{{Content.value.title}}</div>
-              <div class="content-subtitle">{{getContentTimeRange(Content)}}</div>
+              <div *ngIf="Content.value.type === 'online'" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
+              <div *ngIf="Content.value.type === 'project'" class="content-subtitle">Deadline: {{getDeadline(Content)}}</div>
               <br>
-              <div class="content-type">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase }}</div>
+              <div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase }}</div>
             </div>
             <div class="col-md-2">
-              <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)" style="font-size: 12px; color: #777777;">close</md-icon>
-              <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="findAndOpenDialog(i)" style="font-size: 12px; color: #777777;">mode_edit</md-icon>
+              <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)" style="font-size: 16px; color: #777777;">close</md-icon>
+              <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="findAndOpenDialog(i)" style="font-size: 16px; color: #777777;">mode_edit</md-icon>
             </div>
             <!--<div class="col-md-2 pull-right">
               <span class="label label-warning" [hidden]="!Content.value.pending">Pending</span>
@@ -59,7 +64,7 @@
         </md-list>
       </div>
     </div>
-    <div class="row" style="margin-bottom: 80px; margin-top: 10px;">
+    <div class="row" style="margin-bottom: 80px; margin-top: 10px;font-size:16px;">
       <div class="col-md-12">
         <span class="activity-title">
           Add new activity
@@ -70,17 +75,17 @@
         </span>
         <br><br>
         <button md-button type="button" (click)="addContent('online'); findAndOpenDialog(-1);" style="padding-left: 0px">
-          <md-icon color="accent" style="font-size: 20px">add_circle</md-icon>
+          <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
           Online Session
         </button>&emsp;
 
         <button md-button type="button" (click)="addContent('video'); findAndOpenDialog(-1);">
-          <md-icon color="accent" style="font-size: 20px">add_circle</md-icon>
+          <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
           Video
         </button>&emsp;
 
         <button md-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">
-          <md-icon color="accent" style="font-size: 20px">add_circle</md-icon>
+          <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
           Project
         </button>&emsp;
       </div>

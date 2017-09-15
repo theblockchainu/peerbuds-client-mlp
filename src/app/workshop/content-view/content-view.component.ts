@@ -71,6 +71,13 @@ export class ContentViewComponent implements OnInit {
     this.addIndex();
   }
 
+  deleteDay(itenaryId) {
+    this.triggerSave.emit({
+      action: 'deleteDay',
+      value: itenaryId
+    });
+  }
+
   initContent() {
     return this._fb.group({
       id: [''],
@@ -85,7 +92,7 @@ export class ContentViewComponent implements OnInit {
       prerequisites: [''],
       schedule: this._fb.group({
         startDay: [''],
-        endDay: [''],
+        endDay: [null],
         startTime: [null],
         endTime: [null]
       }),
@@ -257,6 +264,10 @@ export class ContentViewComponent implements OnInit {
       return startTime + ' - ' + endTime;
   }
 
+  getDeadline(content) {
+    return moment.utc(content.controls.schedule.controls.endDay.value).local().format('YYYY-MM-DD 23:59');
+  }
+
   public showItineraryDate(date) {
     if (date) {
       return moment(date).format('DD/MM/YYYY');
@@ -281,13 +292,13 @@ export class ContentViewComponent implements OnInit {
       let dialogRef: any;
       switch (contentType) {
           case 'online':
-              dialogRef = this.dialog.open(WorkshopContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
+              dialogRef = this.dialog.open(WorkshopContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
               break;
           case 'project':
-              dialogRef = this.dialog.open(WorkshopContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
+              dialogRef = this.dialog.open(WorkshopContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
               break;
           case 'video':
-              dialogRef = this.dialog.open(WorkshopContentVideoComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '60vw', height: '90vh'});
+              dialogRef = this.dialog.open(WorkshopContentVideoComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
               break;
           default:
               break;

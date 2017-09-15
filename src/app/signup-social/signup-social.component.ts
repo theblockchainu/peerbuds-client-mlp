@@ -63,7 +63,7 @@ export class SignupSocialComponent implements OnInit {
 
   // Load month and year
   loadMonthAndYear() {
-    for (let index = this.maxYear ; index >= this.periodStarts; index--) {
+    for (let index = this.maxYear; index >= this.periodStarts; index--) {
       // var element = array[index];
       this.birthYear.push(index);
     }
@@ -76,7 +76,7 @@ export class SignupSocialComponent implements OnInit {
 
   continueWithSocialSignup() {
     console.log(this.signupSocialForm.value);
-    const email = {email: this.signupSocialForm.value.email};
+    const email = { email: this.signupSocialForm.value.email };
     this.dob = this.selectedYear + '-' + this.selectedMonth + '-' + this.selectedDay;
     const profile = {
       first_name: this.peerProfile.profiles[0].first_name,
@@ -85,7 +85,7 @@ export class SignupSocialComponent implements OnInit {
       promoOptIn: this.promoOptIn
     };
 
-    this.profileService.updatePeer((this.peerProfile.id), email).subscribe((response: Response) => response.json());
+    this.profileService.updatePeer(email).subscribe();
     this.profileService.updatePeerProfile((this.peerProfile.id), profile).subscribe((response: Response) => response.json());
 
     this.router.navigate(['identity-verification']);

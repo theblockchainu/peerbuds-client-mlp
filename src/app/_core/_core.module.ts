@@ -10,6 +10,7 @@ import { AlertService } from '../_services/alert/alert.service';
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileService } from '../_services/profile/profile.service';
+import { PaymentService } from '../_services/payment/payment.service';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { ProfileService } from '../_services/profile/profile.service';
     CookieService,
     AlertService,
     AuthenticationService,
-    ProfileService
+    ProfileService,
+    PaymentService
   ]
 })
 export class CoreModule {

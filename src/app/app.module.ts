@@ -19,6 +19,7 @@ import { IndexComponent } from './default/index/index.component';
 import 'hammerjs';
 
 import { DialogsModule } from './_services/dialogs/dialogs.module';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { DialogsModule } from './_services/dialogs/dialogs.module';
     NoContentComponent,
     AppHeaderComponent,
     AppFooterComponent,
-    IndexComponent
+    IndexComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,

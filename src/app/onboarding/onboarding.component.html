@@ -3,26 +3,26 @@
     <div class="">
       <div class="onboarding step-1" [hidden]="step!=1">
         <div class="row">
-          <div class="col-sm-6 col-sm-offset-3">
+          <div class="col-sm-4 col-sm-offset-4">
             <div class="welcome-box text-center">
-              <h1 class="title">Welcome to Peerbuds</h1>
-              <p class="text-grey margin-top-20 margin-bottom-20">You are entering a blockchain based community where peers can teach and learn from one another, while earning</p>
+              <h2 class="headline">Welcome to Peerbuds</h2>
+              <p class="description1 margin-top-20 margin-bottom-20">You are entering a blockchain based community where peers can teach and learn from one another, while earning</p>
               <!--<p class="margin-bottom-70">Your account is still under review and will soon be approved. Meanwhile, you can discover learning content
                 on the platform.</p>-->
-              <div class="checkbox">
-                <label class="check" style="position:relative;"><input type="checkbox" (change)="goToNext($event)">Yes, thats me</label>
+              <div class="margin-top-40">
+                  <button md-raised-button class="customBtn" type="button" color="accent" (click)="goToNext(2)">Yes, thats me</button>
               </div>
             </div>
           </div>
         </div>
       </div>
 <!-- step 2-->
-      <div class="onboarding step-2" [hidden]="step!=2">
+      <div class="onboarding step-2 margin-top-60" [hidden]="step!=2">
         <div class="row">
           <div class="col-sm-8 col-sm-offset-2">
             <div class="text-center margin-bottom-50">
-              <div class="title">What are your interests?</div>
-              <div class="text-grey fs-13">Choose atleast 3 topics to continue</div>
+              <h2 class="headline">What are your interests?</h2>
+              <p class="description1 margin-top-20 margin-bottom-20">Choose atleast 3 topics to continue</p>
             </div>
 
             <!--<multiselect-autocomplete (selectedOutput)="selected($event)" [list]="countries" [multiSelect]=false></multiselect-autocomplete>-->
@@ -36,8 +36,21 @@
                     </div>
                 
                     <div class="col-sm-4">
-                      <a class="text-right text-grey fs-14" (click)="socialModal.show()">Social</a>
-                      <div bsModal #socialModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
+                      <span *ngIf="!boolShowConnectedSocials">
+                        <a class="text-right syncSocial" (click)="showConnectedSocials()">
+                          <i class="fa fa-refresh" aria-hidden="true"></i>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Sync Social</a>
+                      </span>
+                      <span *ngIf="boolShowConnectedSocials">
+                        <!-- <a class="social-icons" href="{{social.profile._json.url}}" target="_blank" *ngFor="let social of peer.identities" title="{{social.profile._json.url}}"> -->
+                          <i *ngIf="connectedIdentities.google" class="fa fa-google-plus" color="primary"></i>
+                          <i *ngIf="connectedIdentities.fb" class="fa fa-facebook" color="primary"></i>
+                          <!-- <i *ngIf="social.provider=='behance'" class="fa fa-behance"></i>
+                          <i *ngIf="social.provider=='linkedin'" class="fa fa-linkedin"></i>
+                          <i *ngIf="social.provider=='twitter'" class="fa fa-twitter"></i> -->
+                        <!-- </a> -->
+                      </span>
+                      <!-- <div bsModal #socialModal="bs-modal" class="modal fade" [config]="{ ignoreBackdropClick: true }" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-sm">
                           <div class="modal-content">
@@ -50,7 +63,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                    </div>
 

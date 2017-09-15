@@ -1,28 +1,27 @@
-<div md-dialog-title>
-  <h4>Attendies</h4>
+<div md-dialog-title style="text-align: center">
+  <h3>Participants ({{data.participants.length}})</h3>
 </div>
-<div md-dialog-content class="container">
+<hr>
+<div md-dialog-content>
   <div class="row" *ngFor="let participant of data.participants">
     <div *ngIf="participant.profiles">
-      <div class="col-md-2">
-        <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="img-circle profile-thumb" alt="dp">
+      <div class="col-md-1 vcenter">
+        <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
       </div>
-      <div class="col-md-3">
-        {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}
+      <div class="col-md-6 vcenter">
+        <b>{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}</b> &emsp;
+        <span *ngIf="participant.profiles[0].headline">{{participant.profiles[0].headline}}</span>
       </div>
-      <div class="col-md-3">
-        <div *ngIf="participant.profiles[0].work">{{participant.profiles[0].work[0].position}}</div>
-      </div>
-      <div class="col-md-3">
-        <md-progress-bar [mode]="determinate" [value]="10">
+      <div class="col-md-3 vcenter">
+        <md-progress-bar [mode]="'determinate'" [value]="10">
         </md-progress-bar>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-1 vcenter">
         <button md-icon-button [mdMenuTriggerFor]="menu">
-              <md-icon>more_vert</md-icon>
+              <md-icon style="color: #cccccc; font-size: 80%;">more_vert</md-icon>
             </button>
         <md-menu #menu="mdMenu">
-          <button md-menu-item (click)="messageParticipant(participant)">Message</button>
+          <!--<button md-menu-item (click)="messageParticipant(participant)">Message</button>-->
           <button md-menu-item (click)="removeParticipant(participant.id)">Remove</button>
         </md-menu>
       </div>

@@ -64,15 +64,64 @@ export class ProfileService {
     }
   }
 
+  public getProfileData(filter: any) {
+    if (this.userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
+        .map(
+        (response: Response) => response.json()
+        );
+    }
+  }
+
+  /**
+   * getPeerData
+   */
+  public getPeerData(filter?: any) {
+    if (filter) {
+      if (this.userId) {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + JSON.stringify(filter), this.options)
+          .map(
+          (response: Response) => response.json()
+          );
+      }
+    } else {
+      if (this.userId) {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId, this.options)
+          .map(
+          (response: Response) => response.json()
+          );
+      }
+    }
+  }
+  public getCompactProfile() {
+    const profile = {};
+    if (this.userId) {
+      const filter = '{"include": "peer"}';
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter, this.options)
+        .map(
+        (response: Response) => response.json()
+        );
+    }
+  }
+
   public getPeerProfile() {
     return this.userId;
   }
 
-  public updatePeer(id: any, body: any) {
+  public updatePeer(body: any) {
     if (this.userId) {
-      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId, body, this.options);
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId, body, this.options).map(
+        response => response.json()
+      );
     }
   }
+  public updateProfile(body: any) {
+    if (this.userId) {
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body, this.options)
+        .map((response: Response) => response.json());
+    }
+  }
+
   public updatePeerProfile(id, body: any) {
     if (this.userId) {
       return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body, this.options);
@@ -172,20 +221,20 @@ export class ProfileService {
     }
   }
 
-  public updateProfile(profile: any, cb: any) {
-    const sanitizedProfile = profile;
-    if (!(profile !== undefined && this.userId)) {
-      console.log('User not logged in');
-    } else {
-      this.http
-        .patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', this.sanitize(sanitizedProfile), this.options)
-        .map((response) => {
-          cb(null, response.json());
-        }, (err) => {
-          cb(err);
-        }).subscribe();
-    }
-  }
+  // public updateProfile(profile: any, cb: any) {
+  //   const sanitizedProfile = profile;
+  //   if (!(profile !== undefined && this.userId)) {
+  //     console.log('User not logged in');
+  //   } else {
+  //     this.http
+  //       .patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', this.sanitize(sanitizedProfile), this.options)
+  //       .map((response) => {
+  //         cb(null, response.json());
+  //       }, (err) => {
+  //         cb(err);
+  //       }).subscribe();
+  //   }
+  // }
 
   /**
    * Delete all work nodes of a profile
@@ -200,6 +249,20 @@ export class ProfileService {
       }, (err) => {
         cb(err);
       }).subscribe();
+  }
+
+  public updateWork(profileId, work: any) {
+    if (!(work.length > 0 && this.userId)) {
+      console.log('User not logged in');
+    } else {
+      return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.options)
+        .flatMap(
+        (response) => {
+          return this.http
+            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.sanitize(work), this.options);
+        }
+        ).map((response) => response.json());
+    }
   }
 
   public updateProfileWorks(profileId, work: any, cb: any) {
@@ -247,10 +310,23 @@ export class ProfileService {
     }
   }
 
+  public updateEducation(profileId, education: any) {
+    if (!this.userId) {
+      console.log('User not logged in');
+    } else {
+      return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.options)
+        .flatMap((response) => {
+          return this.http
+            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.sanitize(education), this.options);
+        })
+        .map((result2) => result2.json()
+        );
+    }
+  }
   /**
    * sanitize
    */
-  private sanitize(object: any) {
+  public sanitize(object: any) {
     delete object.id;
     delete object.peer;
     delete object.work;
@@ -272,8 +348,64 @@ export class ProfileService {
   /**
    * getTopics
    */
-  public getTopics(userId: string, query: any) {
-    return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning?filter=' + JSON.stringify(query));
+  public getLearningTopics(query?: any) {
+    if (query) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning?filter=' + JSON.stringify(query))
+        .map(response => response.json());
+    } else {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning')
+        .map(response => response.json());
+    }
+
+  }
+
+  public getTeachingTopics(query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching?filter=' + JSON.stringify(query))
+      .map(response => response.json());
+  }
+
+  /**
+   * unfollowTopic
+   */
+  public unfollowTopic(topicId: string) {
+    return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId);
+  }
+
+  /**
+   * followTopic
+   */
+  public followTopic(topicId: string, body?: any) {
+    if (body) {
+      return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, body, this.options)
+        .map(response => response.json());
+    } else {
+      return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, {}, this.options)
+        .map(response => response.json());
+    }
+  }
+
+  public updateTeachingTopic(topicId: string, body?: any) {
+    if (body) {
+      console.log(topicId + ' ' + body.experience);
+      return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId, this.options)
+        .flatMap((response) => {
+          return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId, body, this.options);
+        }).map(response => response.json());
+    } else {
+      return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId, {}, this.options)
+        .map(response => response.json());
+    }
+  }
+
+
+  public followMultipleTopicsLearning(body: any) {
+    return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel', body, this.options)
+      .map(response => response.json());
+  }
+
+  public followMultipleTopicsTeaching(body: any) {
+    return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body, this.options)
+      .map(response => response.json());
   }
 
 }

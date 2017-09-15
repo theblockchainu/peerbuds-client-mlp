@@ -4,6 +4,7 @@ import {Http} from '@angular/http';
 import {AppConfig} from '../../app.config';
 import {MediaUploaderService} from '../../_services/mediaUploader/media-uploader.service';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
+import _ from 'lodash';
 
 @Component({
     selector: 'app-workshop-content-project',
@@ -22,6 +23,7 @@ export class WorkshopContentProjectComponent implements OnInit {
         data: 0
     };
     public isEdit = false;
+    public urlForVideo;
 
     constructor(
         private _fb: FormBuilder,
@@ -33,6 +35,9 @@ export class WorkshopContentProjectComponent implements OnInit {
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+        this.urlForVideo = contentForm.controls['imageUrl'].value;
     }
 
     ngOnInit(): void {
@@ -47,8 +52,25 @@ export class WorkshopContentProjectComponent implements OnInit {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 contentForm.controls['imageUrl'].patchValue(responseObj.url);
+                this.urlForVideo = responseObj.url;
             }).subscribe();
         }
+    }
+
+    deleteFromContainer(fileUrl, fileType) {
+        const fileurl = fileUrl;
+        fileUrl = _.replace(fileUrl, 'download', 'files');
+        this.http.delete(this.config.apiUrl + fileUrl)
+          .map((response) => {
+            console.log(response);
+            if (fileType === 'video') {
+              this.urlForVideo = '';
+              const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+              const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+              contentForm.controls['imageUrl'].patchValue(this.urlForVideo);
+            } 
+          }).subscribe();
+    
     }
 
     uploadNew(event) {
@@ -93,6 +115,7 @@ export class WorkshopContentProjectComponent implements OnInit {
      */
     getSaveDialogData() {
         console.log('changing result data to save');
+        console.log(this.resultData);
         this.resultData['status'] = 'save';
         return JSON.stringify(this.resultData);
     }
@@ -112,6 +135,7 @@ export class WorkshopContentProjectComponent implements OnInit {
      */
     getEditDialogData() {
         console.log('changing result data to save');
+        console.log(this.resultData);
         this.resultData['status'] = 'edit';
         return JSON.stringify(this.resultData);
     }

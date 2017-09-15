@@ -186,8 +186,8 @@ footer {
     border: 1px solid #eee;
 }
 
-h3.calendarTiitle  {
-    margin: 10px !important;
+h3.calendarTitle  {
+    font-weight: 400 !important;
 }
 
 .calendar .cal-month-view .cal-days {
@@ -228,7 +228,7 @@ h3.calendarTiitle  {
 
 .calendar .cal-month-view .cal-day-badge {
     float: right !important;
-    margin-right: 15px !important;
+    margin-right: 18px !important;
     font-size: 0px !important;
     width: 8px !important;
     height: 8px !important;
@@ -242,9 +242,9 @@ h3.calendarTiitle  {
 .calendar .cal-month-view .cal-day-cell.cal-today .cal-day-number {
     width: 30px;
     height: 30px;
-    background-color: #2EB127;
+    background-color: #33bd9e;
     border-radius: 15px;
-    padding: 7px 0px 7px 5px;
+    padding: 7px 0px 7px 6px;
     margin-top: 8px;
     margin-right: 20px !important;
 }
@@ -257,68 +257,71 @@ h3.calendarTiitle  {
     padding: 0px !important;
     margin-top: 0px !important;
     min-width: 8px !important;
+    position: relative !important;
+    top: 7px !important;
 }
 
+
 .margin-top-10 {
-    margin-top: 10px;
+    margin-top: 10px !important;
 }
 .margin-top-20 {
-    margin-top: 20px;
+    margin-top: 20px !important;
 }
 .margin-top-30 {
-    margin-top: 30px;
+    margin-top: 30px !important;
 }
 .margin-top-40 {
-    margin-top: 40px;
+    margin-top: 40px !important;
 }
 .margin-top-50 {
-    margin-top: 50px;
+    margin-top: 50px !important;
 }
 .margin-top-60 {
-    margin-top: 60px;
+    margin-top: 60px !important;
 }
 .margin-top-70 {
-    margin-top: 70px;
+    margin-top: 70px !important;
 }
 .margin-top-80 {
-    margin-top: 80px;
+    margin-top: 80px !important;
 }
 .margin-top-90 {
-    margin-top: 90px;
+    margin-top: 90px !important;
 }
 .margin-top-100 {
-    margin-top: 100px;
+    margin-top: 100px !important;
 }
 
 .margin-bottom-10 {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
 }
 .margin-bottom-20 {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
 }
 .margin-bottom-30 {
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
 }
 .margin-bottom-40 {
-    margin-bottom: 40px;
+    margin-bottom: 40px !important;
 }
 .margin-bottom-50 {
-    margin-bottom: 50px;
+    margin-bottom: 50px !important;
 }
 .margin-bottom-60 {
-    margin-bottom: 60px;
+    margin-bottom: 60px !important;
 }
 .margin-bottom-70 {
-    margin-bottom: 70px;
+    margin-bottom: 70px !important;
 }
 .margin-bottom-80 {
-    margin-bottom: 80px;
+    margin-bottom: 80px !important;
 }
 .margin-bottom-90 {
-    margin-bottom: 90px;
+    margin-bottom: 90px !important;
 }
 .margin-bottom-100 {
-    margin-bottom: 100px;
+    margin-bottom: 100px !important;
 }
 
 .ui-accordion .ui-accordion-header{
@@ -348,10 +351,10 @@ h3.calendarTiitle  {
 
 md-sidenav {
     width: 300px;
-    /*background: red; 
-    background: -webkit-linear-gradient(#FE8A8D, #FF9194); 
-    background: -o-linear-gradient(#FE8A8D, #FF9194); 
-    background: -moz-linear-gradient(#FE8A8D, #FF9194); 
+    /*background: red;
+    background: -webkit-linear-gradient(#FE8A8D, #FF9194);
+    background: -o-linear-gradient(#FE8A8D, #FF9194);
+    background: -moz-linear-gradient(#FE8A8D, #FF9194);
     background: linear-gradient(#FE8A8D, #FF9194); */
     /*rgba(255,166,170,0.8), rgba(255,109,113,0.8)*/
     background: -webkit-linear-gradient(top, #FFA6AA, #FF6D71); /* For Safari 5.1 to 6.0 */
@@ -432,6 +435,7 @@ body {
     height: 27px !important;
     left: -43px !important;
     padding-top: 5px !important;
+    top: 3px !important;
 }
 
 img {
@@ -827,9 +831,13 @@ img {
     padding-left: 0px !important;
 }
 
+.padding-right-0 {
+    padding-right: 0px !important;
+}
+
 .onboarding .mat-select-placeholder {
     font-size: 19px !important;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 .onboarding .mat-select-value-text {
@@ -839,4 +847,85 @@ img {
 
 .text-grey {
     color: #484848;
+}
+
+.margin-left-0 {
+    margin-left: 0px !important;
+}
+
+.padding-top-0 {
+    padding-top: 0px !important;
+}
+
+.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
+    font-size: 16px !important;
+}
+
+.dateStyles input.mat-input-element, .timeInput input.mat-input-element {
+    font-size: 18px !important;
+}
+
+.dateStyles .svgStyle md-icon {
+    font-size: 20px !important;
+}
+
+.timeInput .mat-input-element {
+    resize: none !important;
+}
+
+.noJustify a.mat-tab-link {
+    justify-content: left !important;
+    padding-left: 3px !important;
+    margin-left: 5px;
+    min-width: 100px !important;
+    margin-right: 20px  !important;
+    font-size: 18px  !important;
+    font-weight: bold  !important;
+}
+
+.noJustify .mat-ink-bar {
+    width: 100px !important;
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2px !important;
+}
+
+.rightLinks {
+    font-size:16px !important;
+    color: #767676;
+}
+
+.rightChevron {
+    color: #767676;
+}
+
+.emptySectionText {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border: 1px solid #eeeeee;
+    border-radius: 2px;
+    padding: 10px;
+}
+
+.square.mat-chip {
+    border-radius: 2px !important;
+}
+
+.ui-accordion .ui-accordion-header a {
+    color: #464646 !important;
+}
+
+.ui-accordion .ui-accordion-header a:focus {
+    outline: none;
+}
+
+.ui-accordion {
+    border-bottom: 0.5px solid #eee !important;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }
