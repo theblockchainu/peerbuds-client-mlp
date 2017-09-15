@@ -1,6 +1,3 @@
-.md-dialog-container {
-    padding:50px !important;
-}
 md-input-container md-icon {
     position: absolute;
     top: 5px;
@@ -16,14 +13,15 @@ md-dialog-content {
 
 .page-signin
 {
-
-    width: 600px;
     height: 450px;
 }
 
 .logincontent{
-    width: 600px;
+    // width: 600px;
     overflow: disable;
+    padding-top: 50px;
+    padding-bottom:50px;
+    border: 1px solid lightgrey;
 }
 
 .maincontent{
@@ -79,4 +77,5 @@ md-dialog-content {
 .circle-icon {
     padding:6px;
     border-radius: 50%;
+    
 }

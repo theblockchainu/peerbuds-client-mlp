@@ -744,7 +744,7 @@ export class WorkshopEditComponent implements OnInit {
         console.log('Workshop submitted for review');
         this.isSubmitted = true;
         let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: false, hasBackdrop: true, width: '40vw' });
+        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw' });
         // call to get status of workshop
         if (this.workshop.controls.status.value === 'active') {
           this.sidebarMenuItems[3].visible = false;
