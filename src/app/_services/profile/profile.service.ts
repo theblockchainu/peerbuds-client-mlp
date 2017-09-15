@@ -393,6 +393,9 @@ export class ProfileService {
     return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId);
   }
 
+  public stopTeachingTopic(topicId: string) {
+    return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId);
+  }
   /**
    * followTopic
    */

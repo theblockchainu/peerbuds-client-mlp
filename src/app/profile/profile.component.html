@@ -1,12 +1,12 @@
-<div class="container profile-page">
+<div class="container profile-page ">
     <div class="row" *ngIf="profileObj">
-        <div class="col-md-3 left-panel">
-            <div class="row">
+        <div class="col-md-3 {{offsetString}} left-panel">
+            <div class="row text-center">
                 <div class="col-md-12">
-                    <img class="profile-pic" src="{{config.apiUrl+profileObj.picture_url}}" alt="profile pic">
+                    <img class="img-rounded profile-pic" src="{{config.apiUrl+profileObj.picture_url}}" alt="profile pic">
                 </div>
-                <div class="col-md-12">
-                    <h3>{{profileObj.first_name}} {{profileObj.last_name}}</h3>
+                <div class="col-md-12" style="padding-top: 25px;">
+                    <h2>{{profileObj.first_name}} {{profileObj.last_name}}</h2>
                 </div>
                 <div class="col-md-12">
                     <h4>{{profileObj.headline}}</h4>
@@ -22,18 +22,23 @@
                         </div>
                     </div> -->
             <hr>
-            <div class="row">
-                <div class="col-md-12">
+            <div class="row" style="padding-top: 10px;
+            padding-bottom: 10px;">
+                <div class="col-md-1">
+                    <md-icon>mic_none</md-icon>
+                </div>
+                <div class="col-md-10">
                     <p>
-                        <md-icon>mic_none</md-icon>
                         {{profileObj.other_languages}}
                     </p>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-1">
+                    <md-icon>
+                        location_on
+                    </md-icon>
+                </div>
+                <div class="col-md-10">
                     <p>
-                        <md-icon>
-                            location_on
-                        </md-icon>
                         {{profileObj.location_string}}
                     </p>
                 </div>
@@ -58,12 +63,14 @@
                                         <md-chip *ngIf="i<maxVisibleInterest">{{interest}}</md-chip>
                                 </span>
                     </md-chip-list>
-                    <span *ngIf="interestsArray.length>maxVisibleInterest">
-                                <a (click)="toggleMaxInterest()"> +more </a>
-                            </span>
-                    <span *ngIf="interestsArray.length<maxVisibleInterest">
-                                    <a (click)="toggleMaxInterest()"> +less </a>
+                    <span *ngIf="interestsArray.length>3">
+                            <span *ngIf="interestsArray.length>maxVisibleInterest">
+                                    <a (click)="toggleMaxInterest()"> +more </a>
                                 </span>
+                    <span *ngIf="interestsArray.length<maxVisibleInterest">
+                                        <a (click)="toggleMaxInterest()"> +less </a>
+                                    </span>
+                    </span>
                 </div>
             </div>
             <hr>
@@ -77,16 +84,16 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h2>About Me</h2>
+                    <h3>About Me</h3>
                 </div>
                 <div class="col-md-12">
-                    <p>{{profileObj.description}}</p>
+                    <p>{{profileObj.description | shorten: 100: 'Read More...'}}</p>
                 </div>
             </div>
             <hr>
             <div class="row">
                 <div class=col-md-12>
-                    <h2>What I teach</h2>
+                    <h3>What I teach</h3>
                 </div>
                 <div class="col-md-12">
                     <div class="row" *ngFor="let topic of topicsTeaching">
@@ -110,25 +117,26 @@
             <div class="row ">
                 <div class="col-md-12 ">
                     <div class="row ">
-                        <div class="col-md-12 ">
-                            <h2>Resume</h2>
+                        <div class="col-md-12">
+                            <h3>Resume</h3>
                         </div>
                     </div>
-                    <div class="row " *ngIf="profileObj.work && profileObj.work.length>0">
+                    <div class="row" style="padding-top: 25px;" *ngIf="profileObj.work && profileObj.work.length>0">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
-                                    <md-icon>work</md-icon>
+                                    <md-icon style="font-size: 35px;">work</md-icon>
                                 </div>
                                 <div class="col-md-11">
-                                    <h4>Work Experience</h4>
+                                    <span style="font-size: 15px;font-weight: bolder;">Work Experience</span>
                                 </div>
                             </div>
-                            <div class="row" *ngFor="let workObj of profileObj.work">
+                            <div class="row" style="padding-top: 10px;" *ngFor="let workObj of profileObj.work">
                                 <div class="col-md-11 col-md-offset-1">
                                     <div class="row">
                                         <div class="col-md-12 work-title">
-                                            <h3>{{workObj.position}}</h3> <span>. {{workObj.company}}</span>
+                                            <span style="font-size: 16px;font-weight: bolder;">{{workObj.position}} </span>                                            &emsp;
+                                            <md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon> <span class="lighttext" style="font-size: 15px;"> {{workObj.company}}</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -141,21 +149,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" *ngIf="profileObj.education && profileObj.education.length>0">
+
+                    <div class="row" style="padding-top: 25px;" *ngIf="profileObj.education && profileObj.education.length>0">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
-                                    <md-icon>school</md-icon>
+                                    <md-icon style="font-size: 35px;">school</md-icon>
                                 </div>
                                 <div class="col-md-11">
-                                    <h4>Education</h4>
+                                    <span style="font-size: 15px;font-weight: bolder;">Education</span>
                                 </div>
                             </div>
-                            <div class="row" *ngFor="let educationObj of profileObj.education">
+                            <div class="row" style="padding-top: 10px;" *ngFor="let educationObj of profileObj.education">
                                 <div class="col-md-11 col-md-offset-1">
                                     <div class="row">
                                         <div class="col-md-12 education-title">
-                                            <h3>{{educationObj.degree}}</h3>
+                                            <span style="font-size: 16px;font-weight: bolder;">{{educationObj.degree}}</span>
                                             <!-- <h4>{{educationObj.major}}</h4> -->
                                         </div>
                                     </div>
@@ -163,7 +172,7 @@
                                         <div class="col-md-12">
                                             <!-- <h4 *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</h4>
                                                     <h4 *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</h4> -->
-                                            <h4>{{educationObj.school}}</h4>
+                                            <span>{{educationObj.school}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -178,8 +187,9 @@
                 <div class=col-md-12>
                     <div class="row">
                         <div class="col-md-12 review">
-                            <h2>Reviews</h2>
-                            <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false">
+                            <h3 style="display:inline">Reviews</h3>
+                            &emsp;
+                            <p-rating style="display: inline-block;" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false">
                             </p-rating>
                         </div>
                     </div>
@@ -187,17 +197,17 @@
                         <div class="col-md-12">
                             <h4>Review From Learners</h4>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-center">
                             <hr>
                             <p>No Review yet</p>
                             <hr>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="padding-top: 20px;">
                         <div class="col-md-12">
                             <h4>Review From Teachers</h4>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-center">
                             <hr>
                             <p>No Reviews yet</p>
                             <hr>
@@ -238,15 +248,8 @@
                                             </md-expansion-panel-header>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <img *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
-                                                    <img *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <h3>
-                                                        {{collectionObj.title}}
-                                                    </h3>
+                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -256,12 +259,12 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>{{collectionObj.description}}</p>
+                                                    <p>{{collectionObj.description|shorten: 130: '....readmore'}}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button md-raised-button [routerLink]="['/workshop',collectionObj.id]" color="accent">See Dates</button>
+                                                    <button md-raised-button class="center-block" [routerLink]="['/workshop',collectionObj.id]" color="accent">See Dates</button>
                                                 </div>
                                             </div>
                                             <!--TIMELINE-->
@@ -276,7 +279,8 @@
                                                                             <div>Day {{itenary.startDay}}</div>
                                                                         </div>
                                                                         <div class="row margin-top-30" style="cursor: pointer;" *ngFor="let content of itenary.contents">
-                                                                            <div class="col-md-5">
+                                                                            <div class="col-md-12">
+                                                                                <span>{{content.title}}</span>
                                                                                 <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive center-block itenary-media"
                                                                                     src="{{config.apiUrl+content.imageUrl}}"
                                                                                     (error)="_collectionService.imgErrorHandler($event)">
@@ -309,20 +313,20 @@
                 <div class="col-md-9">
                     <h4>Leanring Journey</h4>
                 </div>
-                <div class="col-md-3">
-                    <md-select>
+                <div class="col-md-2">
+                    <!-- <md-select>
                         <md-option *ngFor="let collection of collectionTypes" [value]="collection">
                             {{ collection }}
                         </md-option>
-                    </md-select>
-                    <a [routerLink]="'/home/workshops'">
+                    </md-select> -->
+                    <a class="pull-right" [routerLink]="'/home/workshops'">
                         <h4>See all</h4>
                     </a>
                 </div>
             </div>
             <div class="row feed-horizontal margin-top-20 margin-bottom-50">
                 <div class="col-md-3 recommendation-card" *ngFor="let workshop of participatingWorkshops; let i =index">
-                    <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
+                    <a *ngIf="i<4" [routerLink]="'/workshop/'+workshop.id">
                         <div class="">
                             <img class="mat-elevation-z3 recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
                                 alt="workshpImg">
@@ -358,18 +362,18 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-9">
-                    <h4>Leanring Journey</h4>
+                    <h4>Similar Teachers</h4>
                 </div>
-                <div class="col-md-3">
-                    <a [routerLink]="'/home/peers'">
+                <div class="col-md-2">
+                    <a class="pull-right" [routerLink]="'/home/peers'">
                         <h4>See all</h4>
                     </a>
                 </div>
             </div>
             <div class="row feed-horizontal margin-top-20 margin-bottom-50">
-                <div class="col-md-2 peer-recommendation-card" *ngFor="let peer of recommendedpeers">
+                <div class="col-md-3 peer-recommendation-card" *ngFor="let peer of recommendedpeers">
                     <a (click)="navigateTo(peer.id)">
-                        <div class="">
+                        <div class="peer-thumb">
                             <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}"
                                 alt="peerImg">
                             <img class="mat-elevation-z3 peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png"

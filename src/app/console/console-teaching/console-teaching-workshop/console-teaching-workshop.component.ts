@@ -46,7 +46,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
         this.outputResult.pastCount = 0;
         result.forEach((resultItem) => {
           switch (resultItem.status) {
-            case 'draft' || 'submitted':
+            case 'draft':
               draftCount++;
               break;
             case 'active':
@@ -54,6 +54,9 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
               break;
             case 'complete':
               pastCount++;
+              break;
+            case 'submitted':
+              draftCount++;
               break;
             default:
               break;
