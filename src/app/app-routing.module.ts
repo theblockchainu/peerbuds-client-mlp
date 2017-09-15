@@ -6,6 +6,7 @@ import { NoContentComponent } from './no-content/no-content.component';
 import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponentDialog
+  },
+  {
+    path: 'login1',
+    component: LoginComponent
   },
   {
     path: 'signup-social',

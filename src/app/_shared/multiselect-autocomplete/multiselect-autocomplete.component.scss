@@ -137,7 +137,7 @@ a.ui-autocomplete-token-icon.fa-close::before{
 }
 
 span.ui-autocomplete-multiple {
-    width: 80%;
+    width: 100%;
 }
 
 .ui-autocomplete-multiple-container {
@@ -165,4 +165,31 @@ span.ui-autocomplete-multiple {
 a.ui-autocomplete-token-icon.fa-close::before {
     color: gray !important;
 }
+
+
+.multiselectBox {
+    padding: 10px;
+    border: 1px solid lightgrey !important;
+}
+
+.ui-autocomplete-multiple-container {
+    border-bottom: none;
+}
+
+.vAlignMiddle {
+    vertical-align:middle;
+}
+
+.suggestions li {
+    width: 100%;
+    border: 1px solid lightgrey;
+    vertical-align: middle;
+    line-height: 40px;
+}
+
+.topic-bg {
+    width: 103px;
+    height: 79px;
+}
+
 

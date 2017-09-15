@@ -17,7 +17,7 @@
               </button>
             </div>
           </div>
-          <div class="row" style="margin-right: 20px; line-height: 120%">
+          <div class="row" style="margin-right: 110px; line-height: 120%">
             <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
               <md-input-container class="pb-block" style="margin-bottom: 20px">
                 <input mdInput formControlName="first_name" type="text" placeholder="First Name" required>
@@ -58,19 +58,18 @@
               </md-input-container>
               <div formArrayName="phones">
                 <p>Phone Numbers</p>
-                <md-input-container *ngFor="let phoneNumber of profileForm.controls['phones'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
-                  <input mdInput formControlName="{{i}}" type="number" placeholder="Phone Number" required>
-                  <md-error>This field is required</md-error>
-                  <md-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;" class="lighterText pull-right">
+                <md-form-field *ngFor="let phoneNumber of profileForm.controls['phones'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
+                  <md-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
                   </md-icon>
-                </md-input-container>
+                  <input mdInput formControlName="{{i}}" type="tel" placeholder="Phone Number" required>
+                  <md-error>This field is required</md-error>
+                </md-form-field>
                 <md-hint align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all
                   get in touch.</md-hint>
               </div>
-
-              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addPhoneControl()">
-                + Add a phone number
+              <div style="margin-bottom: 10px; cursor: pointer" (click)="addPhoneControl()">
+                <a>+ Add a phone number</a>
               </div>
               <br>
               <md-select placeholder="Preferred Language" style="margin-bottom: 20px" formControlName="preferred_language">
@@ -127,13 +126,13 @@
                     <md-datepicker-toggle mdSuffix [for]="endPicker"></md-datepicker-toggle>
                     <md-datepicker #endPicker></md-datepicker>
                   </md-form-field>
-                  <md-icon (click)="deletework(i)" style="cursor: pointer;" class="lighterText">
+                  <md-icon (click)="deletework(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
                     close
                   </md-icon>
                 </div>
               </div>
-              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addwork()">
-                + Add another work detail
+              <div style="margin-bottom: 10px; cursor: pointer" (click)="addwork()">
+                <a>+ Add another work detail</a>
               </div>
               <div style="font-weight: 600; margin-bottom: 25px;">
                 Education
@@ -148,41 +147,40 @@
                     <input mdInput formControlName="school" type="text" placeholder="School / College">
                     <!-- <md-error>This field is required</md-error> -->
                   </md-input-container>
-                  <md-select placeholder="Start Year" style="margin-bottom: 20px" formControlName="startYear">
+                  <md-select placeholder="Start Year" style="margin-bottom: 20px;width: 200px" formControlName="startYear">
                     <md-option *ngFor="let syear of years" [value]="syear">{{syear}}</md-option>
                   </md-select>
-                  <md-select placeholder="End Year" style="margin-bottom: 20px" formControlName="endYear">
+                  <md-select placeholder="End Year" style="margin-bottom: 20px;width: 200px" formControlName="endYear">
                     <md-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</md-option>
                   </md-select>
-                  <md-icon (click)="deleteeducation(i)" style="cursor: pointer;" class="lighterText">
+                  <md-icon (click)="deleteeducation(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
                     close
                   </md-icon>
                 </div>
               </div>
 
-              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addeducation()">
-                + Add another education detail
+              <div style="margin-bottom: 10px; cursor: pointer" (click)="addeducation()">
+                <a>+ Add another education detail</a>
               </div>
 
               <md-select placeholder="Timezone" style="margin-bottom: 20px" formControlName="timezone">
                 <md-option *ngFor="let timezone of timezones" [value]="timezone.value">{{timezone.text}}</md-option>
               </md-select>
-              <md-error>This field is required</md-error>
               <md-hint align="start">Your home time zone.</md-hint>
               <div formArrayName="other_languages">
                 <p>Other languages</p>
                 <div *ngFor="let languageObj of profileForm.controls['other_languages'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
-                  <md-select mdInput placeholder="Languages" class="pb-block" style="margin-bottom: 20px" formControlName="{{i}}">
-                    <md-option *ngFor="let language of languages" [value]="language.code">{{language.name}}</md-option>
-                  </md-select>
-                  <md-icon (click)="deleteLanguage(i)" style="cursor: pointer;" class="lighterText pull-right">
+                  <md-icon (click)="deleteLanguage(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
                   </md-icon>
+                  <md-select mdInput placeholder="Languages" class="pb-block" style="margin-bottom: 20px" formControlName="{{i}}">
+                    <md-option *ngFor="let language of languages" [value]="language.name">{{language.name}}</md-option>
+                  </md-select>
                 </div>
                 <md-hint align="start">Add any languages that others can use to speak with you on peerbuds.</md-hint>
               </div>
-              <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addlanguage()">
-                + Add a Language
+              <div style="margin-bottom: 10px; cursor: pointer" (click)="addlanguage()">
+                <a>+ Add a Language</a>
               </div>
               <md-input-container style="margin-bottom: 20px" class="pb-block">
                 <input mdInput formControlName="vat_number" type="text" placeholder="VAT Number">
@@ -194,16 +192,15 @@
               <div formArrayName="emergency_contact">
                 <md-input-container *ngFor="let emergency_contact_number of profileForm.controls['emergency_contact'].controls; let i = index;"
                   style="margin-bottom: 20px" class="pb-block">
-                  <input mdInput formControlName="{{i}}" type="number" placeholder="Emergency Contact">
-                  <!-- <md-error>This field is required</md-error> -->
-                  <md-icon (click)="deleteEmergencyContact(i)" style="cursor: pointer;" class="lighterText pull-right">
+                  <md-icon (click)="deleteEmergencyContact(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
                   </md-icon>
+                  <input mdInput formControlName="{{i}}" type="tel" placeholder="Emergency Contact">
+                  <!-- <md-error>This field is required</md-error> -->
                 </md-input-container>
                 <md-hint align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</md-hint>
-
-                <div class="lighterText" style="margin-bottom: 30px; margin-top: -5px; cursor: pointer" (click)="addEmergencyContact()">
-                  + Add Emergency Contact Number
+                <div style="margin-bottom: 10px; cursor: pointer" (click)="addEmergencyContact()">
+                  <a>+ Add Emergency Contact Number</a>
                 </div>
               </div>
               <md-checkbox class="example-margin" formControlName="isAdmin">

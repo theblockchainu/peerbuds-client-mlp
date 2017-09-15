@@ -73,6 +73,15 @@ export class ProfileService {
     }
   }
 
+  public getExternalProfileData(id: string, filter: any) {
+    if (this.userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + id + '/profiles?filter=' + JSON.stringify(filter), this.options)
+        .map(
+        (response: Response) => response.json()
+        );
+    }
+  }
+
   /**
    * getPeerData
    */
@@ -181,12 +190,21 @@ export class ProfileService {
   }
   /* Signup Verification Methods Ends*/
 
-  public getSocialIdentities() {
+  public getSocialIdentities(peerId?: string) {
+    let userId;
+    if (peerId) {
+      userId = peerId;
+    }
+    else {
+      userId = this.userId;
+    }
+
     return this.http
-      .get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities', this.options)
+      .get(this.config.apiUrl + '/api/peers/' + userId + '/identities', this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
+
   }
 
   /* get collections */
@@ -364,6 +382,10 @@ export class ProfileService {
       .map(response => response.json());
   }
 
+  public getTeachingExternalTopics(userId: string, query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching?filter=' + JSON.stringify(query))
+      .map(response => response.json());
+  }
   /**
    * unfollowTopic
    */
@@ -371,6 +393,9 @@ export class ProfileService {
     return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId);
   }
 
+  public stopTeachingTopic(topicId: string) {
+    return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId);
+  }
   /**
    * followTopic
    */
@@ -405,6 +430,14 @@ export class ProfileService {
 
   public followMultipleTopicsTeaching(body: any) {
     return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body, this.options)
+      .map(response => response.json());
+  }
+
+  /**
+   * reportProfile
+   */
+  public reportProfile(userId: string, body: any) {
+    return this.http.post(this.config.apiUrl + '/api/peers/' + userId + '/flags', body)
       .map(response => response.json());
   }
 

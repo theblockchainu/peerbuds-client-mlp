@@ -840,8 +840,13 @@ img {
     margin-bottom: 10px;
 }
 
+.onboarding .mat-input-placeholder {
+    font-size: 19px !important;
+    margin-bottom: 10px;
+}
+
 .onboarding .mat-select-value-text {
-    font-size: 18px !important;
+    /* font-size: 18px !important; */
     color: #767676 !important;
 }
 
@@ -851,6 +856,10 @@ img {
 
 .margin-left-0 {
     margin-left: 0px !important;
+}
+
+.margin-bottom-0 {
+    margin-bottom: 0px !important;
 }
 
 .padding-top-0 {
@@ -889,6 +898,10 @@ img {
 
 .margin-bottom-2 {
     margin-bottom: 2px !important;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
 }
 
 .rightLinks {

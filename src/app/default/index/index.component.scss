@@ -68,7 +68,6 @@ body,
 }
 .imgs{
  background: url('../images_landing/testimoni_2.png')no-repeat center;
-
     
 }
 .view7 {
@@ -150,9 +149,6 @@ md-input-container md-icon {
     width: 13%;
     border-color: #000;
 }
-.md-card{
-    border-shadow: unset;
-}
 
 .footer-btn{
     min-width: 280px;
@@ -166,4 +162,10 @@ md-input-container md-icon {
     font-family: Lato;
     line-height: 30px;
 
+}
+
+    
+.card-container {
+      display: flex;
+      flex-direction: row;
 }

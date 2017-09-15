@@ -8,6 +8,8 @@ import { AppConfig } from '../app.config';
 import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
 import { ContentService } from '../_services/content/content.service';
 import { ProfileService } from '../_services/profile/profile.service';
+import { TopicService } from '../_services/topic/topic.service';
+
 import _ from 'lodash';
 
 @Component({
@@ -38,13 +40,16 @@ export class OnboardingComponent implements OnInit {
   public maxTopics = 3;
   public removedInterests = [];
   public relTopics = [];
+  public showRequestNewTopic = false;
+  public topicForRequest = '';
 
   constructor(
     private http: Http, private config: AppConfig,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
     private _contentService: ContentService,
-    private _profileService: ProfileService
+    private _profileService: ProfileService,
+    private _topicService: TopicService
   ) {
     this.step = 1;
     this.interest1 = new FormGroup({
@@ -76,15 +81,26 @@ export class OnboardingComponent implements OnInit {
   }
 
   public selected(event) {
-    if (this.interests.length >= 3) {
-      this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
-    }
+    // if (this.interests.length >= 3) {
+    //   this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+    // }
     this.interests = event;
     this.suggestedTopics = event;
     this.suggestedTopics.map((obj) => {
       obj.checked = 'true';
       return obj;
     });
+  }
+
+  public requestNewTopicEnabled(event) {
+    if(event !== '') {
+      this.showRequestNewTopic = true;
+      this.topicForRequest = event;
+    }
+    else {
+      this.showRequestNewTopic = false;
+      this.topicForRequest = event;
+    }
   }
 
   public removed(event) {
@@ -119,16 +135,17 @@ export class OnboardingComponent implements OnInit {
   }
 
   public ngOnInit() {
-    if (this.interests.length == 0) {
-      this.http.get(this.config.searchUrl + '/api/search/topics')
-        .map((response: any) => {
-          this.suggestedTopics = response.json().slice(0, 10);
-        }).subscribe();
-    }
-    else {
-      this.suggestedTopics = this.interests;
-    }
+    // if (this.interests.length == 0) {
+    //   this.http.get(this.config.searchUrl + '/api/search/topics')
+    //     .map((response: any) => {
+    //       this.suggestedTopics = response.json().slice(0, 10);
+    //     }).subscribe();
+    // }
+    // else {
+    //   this.suggestedTopics = this.interests;
+    // }
   }
+
   goToNext(n) {
     this.step = n;
   }
@@ -152,5 +169,11 @@ export class OnboardingComponent implements OnInit {
     } else {
       this.interests.push(topic); // Otherwise add this topic.
     }
+  }
+
+  public requestNewTopic(topic: string) {
+    this._topicService.requestNewTopic(topic).subscribe((res)=> {
+      console.log(res);
+    })
   }
 }
