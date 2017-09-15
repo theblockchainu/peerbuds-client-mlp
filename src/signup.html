@@ -22,12 +22,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <style>
-         .signup-box {
-            background-color: #fff;
-            padding: 10px 10px;
-            width: 400px;
+        body {
+            /*font-family: Lato;*/
         }
 
+         .signup-box {
+            background-color: #fff;
+            padding: 60px 50px;
+            width: 400px;
+            border: 1px solid lightgrey;
+        }
+
+        .margin-top-100 {
+            margin-top: 100px;
+        }
     
         .signup-box label {
             font-weight: normal;
@@ -119,7 +127,7 @@
         }
 
         .btn-ggl:hover {
-            background-color: #dd3723;
+            /*background-color: #dd3723;*/
         }
 
         .btn-email:hover {
@@ -127,7 +135,7 @@
         }
 
         .btn-fb:hover{
-            background-color: #324B80;
+            /*background-color: #324B80;*/
         }
 
         .btn-fb:active,
@@ -325,24 +333,26 @@
 <body>
     <div class="login-section" id="content">
         <div class="container">
-            <div class="col-md-6 col-md-offset-3 position-relative">
+            <div class="col-md-12 margin-top-100">
                 <div class="signup-box drop-shadow">
                     <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification/1" method="POST">
                         <input type="hidden" name="dob" id="dob" value="" required/>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> Continue with Facebook</a>
+                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> 
+                                <span style="font-size:17px;color:#484848">Continue with Facebook</span></a>
                         </div>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> Continue with Google</a>
+                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> 
+                                <span style="font-size:17px;color:#484848">Continue with Google</span></a>
                         </div>
                         <div class="position-relative margin-bottom-20 text-center">
                             <div class="or-seperator-vertical"></div>
-                            <span class="round-or-text or-text-vertical">OR</span>
+                            <span class="round-or-text or-text-vertical">or</span>
                         </div>
                         <div class="margin-bottom-20 btnSignupEmail">
-                            <a class="btn-social btn-email pi-margin-bottom-20" href="javascript:;" onclick="signupEmail()"> Continue with Email</a>
+                            <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:17px;" href="javascript:;" onclick="signupEmail()"> Continue with Email</a>
                         </div>
-                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link" style="font-size:14px;text-decoration: none;">Log In</a></div>
+                        <div class="btn-hide text-center" style="font-size:16px;color:#767676">Have an account already? <a href="/login1" class="btn-link link" style="font-size:16px;text-decoration: none;">Log In</a></div>
 
                         <div class="signupEmail hide">
                             <div class="margin-bottom-20 text-center">
