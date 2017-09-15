@@ -5,9 +5,10 @@
 .onboarding{
   .title{
     font-size:29px;
-    margin:50px 0 20px 0;
+    margin:10px 0 20px 0;
     color:#000;
     font-weight:600;
+    padding-left: 40px;
   }
   .step
   {
@@ -101,8 +102,9 @@ label.check, label.radiobox{
   font-weight: normal;
   padding: 15px 45px;
   position: absolute;
-  top:2px;
+  top:40px;
   right:20px;
+  left: 80px;
   z-index: 1;
 }
 label.check i, label.radiobox i {
@@ -112,7 +114,7 @@ label.check i, label.radiobox i {
     display: inline-block;
     position: absolute;
     left: 2px;
-    top: 2px;
+    top: 30px;
     border-radius:5px;
     border:1px solid #ff5b5f;
     font-style:normal;
@@ -128,14 +130,16 @@ label.check [type=checkbox]:checked + i:before, label.radiobox [type=radio]:chec
   position: absolute;
   top: 2px;
   left: 4px;
+  right: 10px;
   color:#ff5b5f;
   font-family:"FontAwesome";
+  padding: 50px;
 }
 
 label.check {
   background-color: #ff5b5f!important;
   text-color: #fff!important;
-  position:absolute;
+  position:relative;
 }
 
 label.radiobox [type=radio]:checked + i:before {top:3px; left:5px;}
@@ -157,4 +161,15 @@ label.radiobox [type=radio]:checked + i:before {top:3px; left:5px;}
 .btn-start-explore{
   padding:25px 100px;
   text-transform: uppercase;
+}
+.text-grey{
+  color: #767676;
+}
+.btn-start-explore{
+  color: #fff;
+  position: relative;
+  padding: 50px 0 50px 0;
+}
+.title-explore{
+ padding: 100px 0 20px 0;
 }

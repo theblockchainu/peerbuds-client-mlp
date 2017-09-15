@@ -19,11 +19,19 @@ body,
     padding-left: 10px;
 }
 
+.vid{
+     background: url('../images_landing/Video.png')no-repeat center;
+      background-size: 900px;
+      padding-top: 750px;
+      padding-left: 10px;
+
+}
+
 .view2 {
     background: url('../images_landing/Illustration_1.png')no-repeat center;
     background-size: 50% 100%;
     height: 600px;
-    margin: 60px 30px 30px 20px;
+    margin: 300px 30px 30px 20px;
     background-position: left;
 }
 
@@ -46,7 +54,7 @@ body,
 .view5 {
     background: url('../images_landing/Shape_testimoni.png')no-repeat center;
     background-size: 95% 100%;
-    height: 2500px;
+    height: 1600px;
     background-position: right;
 }
 
@@ -57,6 +65,11 @@ body,
     width: 20px;
     padding: 1000px 900px 0 60px;
     background-position: left;
+}
+.imgs{
+ background: url('../images_landing/testimoni_2.png')no-repeat center;
+
+    
 }
 .view7 {
     background: url('../images_landing/shape_journey.png')no-repeat center;
@@ -100,12 +113,18 @@ body,
 	text-align: left;
 }
 
-.example-content{
-   width: 500px;
-   height: 400px;
-   background-position:right;
-}
+.example-content1{
+  margin-left: 640px;
+  text-align: justify;
+  padding-top: 10px;
+  box-shadow: none;
+  margin-top: -25px;;
 
+}
+.example-content2{
+    margin-right: 800px;
+    text-align: justify;
+}
 .txtcolor, .loginbtn{
     background-color: #000;
     color: #fff;
@@ -131,7 +150,20 @@ md-input-container md-icon {
     width: 13%;
     border-color: #000;
 }
+.md-card{
+    border-shadow: unset;
+}
 
+.footer-btn{
+    min-width: 280px;
+}
 
+.test{
+    margin: -500px 150px 20px 250px;
+    color: #767676;
+    font-size:22px;
+    font-style:italic;
+    font-family: Lato;
+    line-height: 30px;
 
-
+}

@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DefaultComponent } from './default.component';
 import { IndexComponent } from './index/index.component';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -12,9 +13,12 @@ const routes: Routes = [
       {
         path: '',
         // canActivateChild: [AuthGuard],
-        /* children: [
-          { path: '', component: IndexComponent }
-        ]*/
+         children: [
+          { path: '', component: IndexComponent },
+          { path: '/index-philosophy',
+    component: IndexComponent
+  }
+        ]
       }
     ]
   }

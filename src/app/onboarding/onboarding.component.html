@@ -84,8 +84,19 @@
       </div>
       <div class="onboarding step-3" [hidden]="step!=3">
         <div class="text-center">
-            <p class="margin-bottom-50">YOU'RE NOW READY TO TEACH AND LEARN ANYTHING YOUR HEART DESIRES</p>
-            <a [routerLink]="['/']" class="btn btn-default btn-start-explore">Start Exploring</a>
+         <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+            <div class="text-center">
+              <h2 class="title-explore text-center">You're now ready to teach and learn anything to your heart's desires</h2>
+              <p class="text-grey">Your account is still under review and will soon be approved. Meanwhile, you can discover learning content
+                on the platform.</p>
+              <div class="checkbox">
+                <label class="check btn btn-default btn-start-explore" [routerLink]="['/']" style="position:relative;left:170px;">Start Exploring</label>
+              </div>
+            </div>
+          </div>
+        </div>
+           
         </div>
       </div>
   </div>

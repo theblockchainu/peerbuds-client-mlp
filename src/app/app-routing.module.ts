@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DefaultComponent } from './default/default.component';
+import { IndexComponent } from './default/index/index.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
@@ -9,7 +9,7 @@ import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dia
 const routes: Routes = [
   {
     path: '',
-    component: DefaultComponent,
+    component: IndexComponent,
     pathMatch: 'full'
   },
   {
@@ -57,6 +57,7 @@ const routes: Routes = [
     path: '**',
     component: NoContentComponent
   }
+  
 
 ];
 
