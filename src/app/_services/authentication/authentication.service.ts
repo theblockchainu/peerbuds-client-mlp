@@ -4,7 +4,7 @@ import {
   , RequestOptionsArgs
 } from '@angular/http';
 // import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from "../requestHeader/request-header.service";
+import {RequestHeaderService} from '../requestHeader/request-header.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -82,7 +82,7 @@ export class AuthenticationService {
           this.removeCookie(this.key);
           this.removeCookie('userId');
           this.isLoginSubject.next(false);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/']);
         }).subscribe();
     }
   }
@@ -93,5 +93,21 @@ export class AuthenticationService {
    */
   private hasToken(): boolean {
     return !!this.getCookie(this.key);
+  }
+
+  getpwd(email: string): any {
+    let body = `{"email":"${email}"}`;
+    return this.http
+      .post(this.config.apiUrl + '/auth/local', body, this.options)
+      .map((response: Response) => {
+        // login successful if there's a jwt token in the response
+        let user = response.json();
+        if (user && user.access_token) {
+          this.isLoginSubject.next(true);
+          // responseStatus = true;
+        }
+      }, (err) => {
+        console.log('Error: ' + err);
+      });
   }
 }

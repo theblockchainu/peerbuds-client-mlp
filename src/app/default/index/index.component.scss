@@ -1,0 +1,137 @@
+.text-center{
+	text-align: center;
+}
+
+html,
+body,
+.view, .view2, .view3, .view4, .view5, .view6, view7 {
+    height: 100%;
+}
+
+.view {
+    background: url('../images_landing/Waves_above_the_fold.png')no-repeat center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 400px;
+    padding-top: 20px;
+    padding-left: 10px;
+}
+
+.view2 {
+    background: url('../images_landing/Illustration_1.png')no-repeat center;
+    background-size: 50% 100%;
+    height: 600px;
+    margin: 60px 30px 30px 20px;
+    background-position: left;
+}
+
+.view3 {
+    background: url('../images_landing/Illustration_2.png')no-repeat center;
+    background-size: 50% 100%;
+    height: 500px;
+    margin: 60px 20px 30px 30px;
+    background-position: right;
+}
+
+.view4{
+    background: url('../images_landing/Illustration_3.png')no-repeat center;
+    background-size: 50% 100%;
+    height: 500px;
+    margin: 60px 30px 30px 20px;
+    background-position: left;
+}
+
+.view5 {
+    background: url('../images_landing/Shape_testimoni.png')no-repeat center;
+    background-size: 95% 100%;
+    height: 2500px;
+    background-position: right;
+}
+
+.view6 {
+    background: url('../images_landing/Arrow.png')no-repeat center;
+    background-size: 7%;
+    height: 50px;
+    width: 20px;
+    padding: 1000px 900px 0 60px;
+    background-position: left;
+}
+.view7 {
+    background: url('../images_landing/shape_journey.png')no-repeat center;
+    background-size: 95% 100%;
+    height: 800px;
+    background-position: left;
+}
+.view8 {
+    background: url('../images_landing/shape_footer.png')no-repeat center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 300px;
+    padding-top: 20px;
+    padding-left: 10px;
+}
+
+.space{
+	padding: 10px 5px 10p 5px;
+	margin-top: 50px;
+}
+
+.h1-responsive{
+	color: #484848;
+}
+
+.txt{
+	color: #767676;
+}
+
+.content,
+.right{
+	text-align: right;
+	text-position: right;
+	color: #767676;
+    padding: 20px 30px 20px 30px;
+}
+
+.left{
+	text-align: left;
+}
+
+.example-content{
+   width: 500px;
+   height: 400px;
+   background-position:right;
+}
+
+.txtcolor, .loginbtn{
+    background-color: #000;
+    color: #fff;
+    position: left;
+}
+
+md-input-container md-icon {
+    position: right;
+    top: 5px;
+    left: 2px;
+    }
+
+.notif{
+    text-align: center;
+    color: #fff;
+    margin: 30px 0 30px 0;
+    font-size: 18px;
+    border-color: #000;
+}
+.md-raised{
+    color: #fff;
+    background-color: #000;
+    width: 13%;
+    border-color: #000;
+}
+
+
+
+

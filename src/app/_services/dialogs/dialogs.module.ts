@@ -5,6 +5,8 @@ import { SharedModule } from '../../_shared/_shared.module';
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 
 import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
+import { LoginComponentDialog } from './login-dialog/login-dialog.component';
+import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 
 @NgModule({
   imports: [
@@ -13,13 +15,13 @@ import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
     ReactiveFormsModule,
     SharedModule
   ],
-  exports: [SignupComponentDialog],
-  declarations: [SignupComponentDialog],
+  exports: [SignupComponentDialog,LoginComponentDialog,ForgotpwdComponentDialog],
+  declarations: [SignupComponentDialog,LoginComponentDialog,ForgotpwdComponentDialog],
   providers: [
     DialogsService,
   ],
   entryComponents: [
-    SignupComponentDialog
+    SignupComponentDialog,LoginComponentDialog,ForgotpwdComponentDialog
   ],
 })
 export class DialogsModule { }

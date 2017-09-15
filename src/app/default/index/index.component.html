@@ -1,3 +1,89 @@
-<p>
-  index works!
-</p>
+<md-toolbar class="layout-row" layout="row" color="white">
+   <span class="example-spacer"></span>
+   <span>
+      <button md-button *ngIf="!(isLoggedIn | async)">
+        Philosophy
+      </button>
+      <button md-button *ngIf="!(isLoggedIn | async)">
+        Journey
+      </button>
+      <button md-button *ngIf="!(isLoggedIn | async)">
+       About
+      </button>
+      <button md-button *ngIf="!(isLoggedIn | async)">
+       White Paper
+      </button>
+      </span>
+</md-toolbar>
+
+<div class="text-center space">
+<h1 class="h1-responsive">Learning is Earning</h1>
+<p class="txt">White Paper Coming Soon</p>
+           
+<div class="view">
+    <div class="full-bg-img flex-center">
+    </div>
+</div>
+
+<div class="view2">
+    <div class="half-bg-img flex-center text-center content"><h2 class="right">Everyone has something to teach and learn</h2></div>
+    <div flex=50 layout="row" layout-align="center none">
+    <md-card flex=50 class="example-content" style="border-color: white">
+    <md-card-actions align='end'> ontent Some content some content some content some content some content Some content some content some content some content some content Some content some content some content some content some content
+    </md-card-actions>
+    </md-card>
+    </div>
+</div>
+<div class="view3">
+    <div class="half-bg-img flex-center text-center content"><h2 class="left">Learn the way you want</h2>
+    <md-card class="example-content" style="border-color: white">
+    <md-card-content> ontent Some content some content some content some content some content Some content some content some content some content some content Some content some content some content some content some content</md-card-content>
+    </md-card>
+    </div>
+</div>
+<div class="view4">
+    <div class="half-bg-img flex-center text-center content"><h2 class="right">Join communitites, participate, discuss</h2></div>
+    <div class="row">
+    <md-card class="example-content" layout-align="flex-end">
+    <md-card-content> ontent Some content some content some content some content some content Some content some content some content some content some content Some content some content some content some content some content</md-card-content>
+    </md-card>
+    </div>
+    
+</div>
+<div class="view5">
+<div class="full-bg-img flex-center">
+  <div class="view6">
+    <div class="full-bg-img" style="padding-top: 800px;">
+    </div>
+  </div>
+  </div>
+  <p class="text-center"> "Peerbuds is the best platform i came across so far, to learn while you earn. I feel so grateful to the people who made this possible!"</p>
+  <div class="view7">
+    <div class="full-bg-img">
+    </div>
+  </div>
+
+</div>
+
+<div class="view8">
+<p class="notif text-center"> Be notified when peerbuds go live</p>
+  <md-input-container  class="md-block">
+      <!-- Use floating placeholder instead of label -->
+      <input mdInput class="em" type="email" placeholder="Email" ng-required="true">
+    </md-input-container>
+    <button md-button class="md-raised">Notify me!</button>
+</div>
+
+<div class="row">
+<md-card-footer> 
+<md-card-content>
+ <span class="example-spacer"></span>
+<span>
+  <a href="#"> About Us </a>
+  <a href="#"> Contact Us </a>
+  <a href="#"> White Paper </a>
+  <a href="#"> Privacy Policy </a>  
+</span>
+</md-card-content>
+</md-card-footer>
+</div>

@@ -30,4 +30,13 @@ export class TopicService {
       .map(res => res.json() || []);
   }
 
+  public requestNewTopic(topic: string): Observable<any> {
+    const body = {
+      name: topic,
+      type: 'user'
+    }
+    return this.http.post(this.config.apiUrl + '/api/requestedtopics/request-topic', body, this.options)
+      .map(res => res.json());
+  }
+
 }

@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { SharedModule } from '../_shared/_shared.module';
 import { ProfileComponent } from './profile.component';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { MdTabsModule } from '@angular/material';
+import { SeeDatesWorkshopComponent } from './see-dates-workshop/see-dates-workshop.component';
+import { ExtractLanguagePipe } from '../_shared/extract-language/extract-language.pipe';
+import { ReportProfileComponent } from './report-profile/report-profile.component';
 
 @NgModule({
   imports: [
@@ -13,6 +16,7 @@ import { MdTabsModule } from '@angular/material';
     ProfileRoutingModule,
     MdTabsModule
   ],
-  declarations: [ProfileComponent]
+  declarations: [ProfileComponent, SeeDatesWorkshopComponent, ExtractLanguagePipe, ReportProfileComponent],
+  bootstrap: [ReportProfileComponent]
 })
 export class ProfileModule { }

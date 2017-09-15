@@ -8,24 +8,28 @@ import { ExperienceWizardModule } from './experience-wizard/experience-wizard.mo
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
-import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+import { IndexComponent } from './default/index/index.component';
+
+
 import 'hammerjs';
 
 import { DialogsModule } from './_services/dialogs/dialogs.module';
 import {GlobalErrorHandler} from './error-handler/globalerrorhandler';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultComponent,
     NoContentComponent,
-    LoginComponent,
     AppHeaderComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    IndexComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,
@@ -53,4 +57,4 @@ import {GlobalErrorHandler} from './error-handler/globalerrorhandler';
       }
   ]
 })
-export class AppModule { }
+export class AppModule {}

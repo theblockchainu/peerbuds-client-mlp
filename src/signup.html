@@ -22,16 +22,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <style>
-        .signup-box {
+         .signup-box {
             background-color: #fff;
-            padding: 30px 40px;
-            border-radius: 10px;
+            padding: 10px 10px;
+            width: 400px;
         }
 
-        .signup-box.drop-shadow {
-            box-shadow: 0 0 10px #ccc;
-        }
-
+    
         .signup-box label {
             font-weight: normal;
             color: #666;
@@ -39,11 +36,11 @@
         }
 
         .login-section {
-            margin: 50px 0;
+            margin: 20px 0;
         }
 
         .form-control {
-            height: 40px;
+            height: 35px;
         }
 
         .form-control:focus {
@@ -57,7 +54,8 @@
 
         .btn {
             height: 40px;
-            padding: 9px 20px;
+            width: 180px;
+            background-color: #FF5B5F;
         }
 
         .btn:focus {
@@ -66,17 +64,17 @@
         }
 
         .btn-primary {
-            background-color: #fff;
-            border-color: #333;
-            color: #333;
+            border-color: #fff;
+            color: #fff;
+
         }
 
         .btn-primary:hover,
         .btn-primary:active .btn-primary:focus,
         .btn-primary:active:after {
-            background-color: #e5e5e5!important;
-            border-color: #333!important;
-            color: #333!important;
+            background-color: #ff5b5f!important;
+            border-color: #ff5b5f!important;
+            color: #fff!important;
         }
 
         .btn-social {
@@ -94,35 +92,30 @@
 
         .btn-social i {
             border-right: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 20px;
+            font-size: 13px;
             left: 16px;
-            padding-right: 15px;
+            padding-right: 7px;
             position: absolute;
             top: 15px;
         }
 
         .btn-social i.fa-google,
+        .btn-social i.fa-facebook,
         .btn-social i.fa-envelope {
             border-right-color: #999;
         }
 
-        .btn-fb {
-            background-color: #3B5999;
-        }
-
-        .btn-fb:hover {
-            background-color: #324B80;
-        }
-
         .btn-ggl,
-        .btn-email {
+        .btn-fb
+        {
+            color: #666;
             background-color: #fff;
-            color: #333;
-            border: 1px solid #999;
+            border: 1px solid #d3d3d3;
         }
 
         .btn-email {
-            background-color: #f4f4f4;
+            background-color: #FF5B5F;
+            color: #fff!important;
         }
 
         .btn-ggl:hover {
@@ -130,7 +123,11 @@
         }
 
         .btn-email:hover {
-            background-color: #999;
+            background-color: #FF5B5F;
+        }
+
+        .btn-fb:hover{
+            background-color: #324B80;
         }
 
         .btn-fb:active,
@@ -149,6 +146,13 @@
 
         .btn-email:hover i {
             border-right-color: #ccc;
+        }
+
+        .btn-link {
+            color: #33bd9e;
+        }
+        .btn-link:hover{
+            color: #1dad8d;
         }
 
         .or-seperator-vertical {
@@ -175,6 +179,7 @@
             background-color: #fff;
             color: rgba(74, 74, 74, 0.5);
             position: relative;
+            font-size: 13px;
         }
 
         .position-relative {
@@ -197,26 +202,47 @@
         .fs-13 {
             font-size: 13px;
         }
+        .container{
+            width: 500px;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        .col-md-offset-3,.col-md-6{
+            margin-left: 15%;
+            margin-right: 10%;
+        }
+
+.fa-facebook{
+    background-color: #335397;
+    color: #fff!important;
+}
+
+.fa-google{
+    background-color: #dd4a38;
+    color: #fff!important;
+}
+
+.circle-icon {
+    padding:4px;
+    border-radius: 100%;
+}
+
     </style>
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
             $.validator.addMethod("check_date_of_birth", function (value, element) {
-
                 var day = $("#birthDay").val();
                 var month = $("#birthMonth").val();
                 var year = $("#birthYear").val();
                 var age = 18;
-
                 var mydate = new Date();
                 var mydate2 = mydate;
                 mydate.setFullYear(year, month - 1, day);
                 var currdate = new Date();
                 currdate.setFullYear(currdate.getFullYear() - age);
                 return currdate > mydate2;
-
             }, "You must be at least 18 years of age.");
-
             $("#signupForm").validate({
                 rules: {
                     first_name: "required",
@@ -270,7 +296,6 @@
             for (var i = maxYear; i >= maxYear - 100; i--) {
                 $("#birthYear").append(new Option(i, i));
             }
-
             //Load MONTH
             for (var i = 1; i <= 31; i++) {
                 var newI;
@@ -279,14 +304,12 @@
                 }
                 $("#birthDay").append(new Option(i, newI));
             }
-
         });
         function signupEmail() {
             $(".signupEmail").removeClass("hide");
             $(".btnSignupEmail").addClass("hide");
         }
         function signup() {
-
             if ($('#promoOptIn').prop('checked')) {
                 $('#promoOptIn').val(true);
             }
@@ -304,21 +327,23 @@
         <div class="container">
             <div class="col-md-6 col-md-offset-3 position-relative">
                 <div class="signup-box drop-shadow">
-                    <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification" method="POST">
+                    <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification/1" method="POST">
                         <input type="hidden" name="dob" id="dob" value="" required/>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook"></i> Sign up with Facebook</a>
+                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> Continue with Facebook</a>
                         </div>
                         <div class="margin-bottom-20">
-                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google"></i> Sign up with Google</a>
+                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> Continue with Google</a>
                         </div>
                         <div class="position-relative margin-bottom-20 text-center">
                             <div class="or-seperator-vertical"></div>
                             <span class="round-or-text or-text-vertical">OR</span>
                         </div>
                         <div class="margin-bottom-20 btnSignupEmail">
-                            <a class="btn-social btn-email pi-margin-bottom-20" href="javascript:;" onclick="signupEmail()"><i class="fa fa-envelope"></i> Sign with Email</a>
+                            <a class="btn-social btn-email pi-margin-bottom-20" href="javascript:;" onclick="signupEmail()"> Continue with Email</a>
                         </div>
+                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link" style="font-size:14px;text-decoration: none;">Log In</a></div>
+
                         <div class="signupEmail hide">
                             <div class="margin-bottom-20 text-center">
                                 <strong>Complete your information</strong><br> Please review and provide any missing information
@@ -385,8 +410,8 @@
                                 <label><input type="checkbox" name="promoOptIn" id="promoOptIn"/> I'd like to receive coupons, promotions, surveys, and updates via email about Peerbuds and its partners.</label>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Signup</button>
-                                <a href="/login" class="btn btn-link">Cancel</a>
+                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Signup</button>&nbsp;&nbsp;&nbsp;
+                                <a href="/" class="btn btn-primary">Cancel</a>
                             </div>
                         </div>
                     </form>
