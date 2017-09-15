@@ -8,7 +8,7 @@ import { ExperienceWizardModule } from './experience-wizard/experience-wizard.mo
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
-//import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,7 +29,8 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     AppHeaderComponent,
     AppFooterComponent,
     IndexComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent, 
+    LoginComponent
   ],
   imports: [
     BrowserModule,
