@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
   public maxVisibleInterest = 3;
   public topicsTeaching: Array<any>;
   public isTeacher: boolean;
+  public offsetString = 'col-md-offset-1';
 
   constructor(
     public config: AppConfig,
@@ -48,6 +49,7 @@ export class ProfileComponent implements OnInit {
       if (this.urluserId !== calledUserId) {
         this.urluserId = calledUserId;
         this.fetchData();
+        window.scrollTo(0, 0);
       }
     });
   }
@@ -139,6 +141,7 @@ export class ProfileComponent implements OnInit {
       if (this.profileObj.peer['0'].ownedCollections && this.profileObj.peer['0'].ownedCollections.length > 0) {
         this.calculateCollectionDurations();
         this.isTeacher = true;
+        this.offsetString = '';
       }
       if (this.profileObj.peer[0].collections) {
         this.getRecommendedWorkshops(this.profileObj.peer[0].collections);

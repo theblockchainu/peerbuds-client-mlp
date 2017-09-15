@@ -37,6 +37,7 @@
                     </md-expansion-panel>
                   </div>
                 </div>
+                <br>
                 <div class="row">
                   <div class="col-md-8">
                     <div class="review-section">
@@ -46,7 +47,7 @@
                             <h4>{{topic['name']}}</h4>
                           </div>
                           <button class="topic-delete-button pull-right" (click)="unfollowTopic(topic)" md-icon-button color="warn">
-                              <md-icon class="md-24" >close</md-icon>
+                              <md-icon class="md-24" style="font-size: 100%;" >close</md-icon>
                               </button>
                         </div>
                       </div>
@@ -83,6 +84,7 @@
                     <button md-raised-button (click)="updateChanges()" color="primary">Update Changes</button>
                   </div>
                 </div>
+                <br>
                 <div class="row">
                   <div class="col-md-8">
                     <div class="row" *ngFor="let topic of topicsTeaching">
@@ -93,8 +95,11 @@
                           </div>
                           <div class="col-md-12">
                             <md-input-container class="pb-block" style="margin-bottom: 20px">
-                              <input mdInput #headline name="experience" maxlength="50" [(ngModel)]="topic['experience']" placeholder="Write headline">
-                              <md-hint *ngIf="topic['experience']" align="end">{{topic['experience'].length}} / 50</md-hint>
+                              <button class="md-24 pull-right" (click)="stopTeachingTopic(topic)" md-icon-button color="warn">
+                                    <md-icon class="md-24" style="font-size: 100%;" >close</md-icon>
+                                    </button>
+                              <input mdInput #headline name="experience" maxlength="100" [(ngModel)]="topic['experience']" placeholder="Write headline">
+                              <md-hint *ngIf="topic['experience']" align="end">{{topic['experience'].length}} / 100</md-hint>
                             </md-input-container>
                           </div>
                         </div>
