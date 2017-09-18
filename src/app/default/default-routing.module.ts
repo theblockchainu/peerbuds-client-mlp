@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { DefaultComponent } from './default.component';
 import { IndexComponent } from './index/index.component';
-
+import {IndexPhilComponent} from './index-philosophy/index-philosophy.component';
 
 const routes: Routes = [
   {

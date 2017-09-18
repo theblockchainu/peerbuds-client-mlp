@@ -7,11 +7,13 @@ import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { LoginComponent } from './login/login.component';
+import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    component: IndexComponent,
+    component: IndexPhilComponent,
     pathMatch: 'full'
   },
   {

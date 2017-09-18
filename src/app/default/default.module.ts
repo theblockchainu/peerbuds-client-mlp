@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { DefaultRoutingModule } from './default-routing.module';
 import { IndexComponent } from './index/index.component';
+import { IndexPhilComponent } from './index-philosophy/index-philosophy.component';
 
 @NgModule({
   imports: [
     CommonModule,
     DefaultRoutingModule
   ],
-  declarations: [IndexComponent]
+  declarations: [IndexPhilComponent]
 })
 export class DefaultModule { }
