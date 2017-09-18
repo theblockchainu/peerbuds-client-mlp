@@ -28,10 +28,10 @@ const { AotPlugin } = require('@ngtools/webpack');
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
 const genDirNodeModules = path.join(process.cwd(), 'src', '$$_gendir', 'node_modules');
-const entryPoints = ["inline","polyfills","sw-register","styles","vendor","main"];
+const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'vendor', 'main'];
 
-const baseHref = "";
-const deployUrl = "";
+const baseHref = '';
+const deployUrl = '';
 
 /**
  * Webpack Constants
@@ -59,42 +59,42 @@ module.exports = function(env){
      * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
      */
     devtool: 'source-map',
-    "resolve": {
-      "extensions": [
-        ".ts",
-        ".js"
+    'resolve': {
+      'extensions': [
+        '.ts',
+        '.js'
       ],
-      "modules": [
-        "./node_modules",
-        "./node_modules"
+      'modules': [
+        './node_modules',
+        './node_modules'
       ],
-      "symlinks": true
+      'symlinks': true
     },
-    "resolveLoader": {
-      "modules": [
-        "./node_modules",
-        "./node_modules"
+    'resolveLoader': {
+      'modules': [
+        './node_modules',
+        './node_modules'
       ]
     },
-    "entry": {
-      "main": [
-        "./src/main.ts"
+    'entry': {
+      'main': [
+        './src/main.ts'
       ],
-      "polyfills": [
-        "./src/polyfills.ts"
+      'polyfills': [
+        './src/polyfills.ts'
       ],
-      "styles": [
-        "./src/styles.scss"
+      'styles': [
+        './src/styles.scss'
       ]
     },
-    "output": {
-      "path": helpers.root('dist'), // path.join(process.cwd(), "dist"),
-      "filename": "[name].bundle.js",
-      "sourceMapFilename": "[name].[chunkhash].bundle.map",
-      "chunkFilename": "[id].chunk.js"
+    'output': {
+      'path': helpers.root('dist'), // path.join(process.cwd(), "dist"),
+      'filename': '[name].bundle.js',
+      'sourceMapFilename': '[name].[chunkhash].bundle.map',
+      'chunkFilename': '[id].chunk.js'
     },
-    "module": {
-      "rules": [
+    'module': {
+      'rules': [
         // {
         //   "enforce": "pre",
         //   "test": /\.js$/,
@@ -351,21 +351,21 @@ module.exports = function(env){
         // }
       ]
     },
-    "plugins": [
+    'plugins': [
       new OptimizeJsPlugin({
         sourceMap: false
       }),
       new ExtractTextPlugin('[name].[contenthash].css'),
       new NoEmitOnErrorsPlugin(),
       new GlobCopyWebpackPlugin({
-        "patterns": [
-          "assets",
-          "favicon.ico"
+        'patterns': [
+          'assets',
+          'favicon.ico'
         ],
-        "globOptions": {
-          "cwd": path.join(process.cwd(), "src"),
-          "dot": true,
-          "ignore": "**/.gitkeep"
+        'globOptions': {
+          'cwd': path.join(process.cwd(), 'src'),
+          'dot': true,
+          'ignore': '**/.gitkeep'
         }
       }),
       /**
@@ -389,28 +389,28 @@ module.exports = function(env){
       }),
       new ProgressPlugin(),
       new SourceMapDevToolPlugin({
-        "filename": "[file].map[query]",
-        "moduleFilenameTemplate": "[resource-path]",
-        "fallbackModuleFilenameTemplate": "[resource-path]?[hash]",
-        "sourceRoot": "webpack:///"
+        'filename': '[file].map[query]',
+        'moduleFilenameTemplate': '[resource-path]',
+        'fallbackModuleFilenameTemplate': '[resource-path]?[hash]',
+        'sourceRoot': 'webpack:///'
       }),
       new HtmlWebpackPlugin({
-        "template": "./src/index.html",
-        "filename": "./index.html",
-        "hash": false,
-        "inject": true,
-        "compile": true,
-        "favicon": false,
-        "minify": false,
-        "cache": true,
-        "showErrors": true,
-        "chunks": "all",
-        "excludeChunks": [],
-        "title": "Webpack App",
-        "xhtml": true,
-        "chunksSortMode": function sort(left, right) {
-          let leftIndex = entryPoints.indexOf(left.names[0]);
-          let rightindex = entryPoints.indexOf(right.names[0]);
+        'template': './src/index.html',
+        'filename': './index.html',
+        'hash': false,
+        'inject': true,
+        'compile': true,
+        'favicon': false,
+        'minify': false,
+        'cache': true,
+        'showErrors': true,
+        'chunks': 'all',
+        'excludeChunks': [],
+        'title': 'Webpack App',
+        'xhtml': true,
+        'chunksSortMode': function sort(left, right) {
+          const leftIndex = entryPoints.indexOf(left.names[0]);
+          const rightindex = entryPoints.indexOf(right.names[0]);
           if (leftIndex > rightindex) {
               return 1;
           }
@@ -424,27 +424,27 @@ module.exports = function(env){
       }),
       new BaseHrefWebpackPlugin({}),
       new CommonsChunkPlugin({
-        "minChunks": 2,
-        "async": "common"
+        'minChunks': 2,
+        'async': 'common'
       }),
       new CommonsChunkPlugin({
-        "name": [
-          "inline"
+        'name': [
+          'inline'
         ],
-        "minChunks": null
+        'minChunks': null
       }),
       new CommonsChunkPlugin({
-        "name": [
-          "vendor"
+        'name': [
+          'vendor'
         ],
-        "minChunks": (module) => {
+        'minChunks': (module) => {
                   return module.resource
                       && (module.resource.startsWith(nodeModules)
                           || module.resource.startsWith(genDirNodeModules)
                           || module.resource.startsWith(realNodeModules));
               },
-        "chunks": [
-          "main"
+        'chunks': [
+          'main'
         ]
       }),
       /**
@@ -542,13 +542,13 @@ module.exports = function(env){
       }),
       new NamedModulesPlugin({}),
       new AotPlugin({
-        "mainPath": "main.ts",
-        "hostReplacementPaths": {
-          "environments/environment.ts": "environments/environment.ts"
+        'mainPath': 'main.ts',
+        'hostReplacementPaths': {
+          'environments/environment.ts': 'environments/environment.ts'
         },
-        "exclude": [],
-        "tsConfigPath": "src/tsconfig.app.json",
-        "skipCodeGeneration": true
+        'exclude': [],
+        'tsConfigPath': 'src/tsconfig.app.json',
+        'skipCodeGeneration': true
       })
     ],
     // "node": {
@@ -562,13 +562,13 @@ module.exports = function(env){
     //   "clearImmediate": false,
     //   "setImmediate": false
     // }
-    "node": {
-      "global": true,
-      "crypto": "empty",
-      "process": false,
-      "module": false,
-      "clearImmediate": false,
-      "setImmediate": false
+    'node': {
+      'global': true,
+      'crypto': 'empty',
+      'process': false,
+      'module': false,
+      'clearImmediate': false,
+      'setImmediate': false
     }
   });
 };
