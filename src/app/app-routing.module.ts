@@ -16,6 +16,12 @@ const routes: Routes = [
     component: IndexComponent,
     pathMatch: 'full'
   },
+
+  {
+  path: 'philosophy',
+  component: IndexPhilComponent,
+  }, 
+
   {
     path: 'login',
     component: LoginComponentDialog

@@ -11,7 +11,8 @@
 .text-center{
 	text-align: center;
     font-weight: 15px;
-    padding-top: 100px;
+    padding-top: 40px;
+    padding-bottom: 40px;
     font-family: Lato;
     color: #767676;
     }
@@ -94,7 +95,7 @@ body,
     background-size: cover;
     height: 300px;
     padding-top: 20px;
-    padding-left: 10px;
+    padding-left: 20px;
 }
 .space{
 	padding: 10px 5px 10p 5px;
@@ -110,7 +111,9 @@ body,
     padding-top: 5px;
     padding-bottom: 60px;
     }
-
+.txt1{
+    padding-bottom: 10px;
+}
 .content,
 .right{
 	text-align: right;
@@ -212,10 +215,57 @@ background-position: center;
 
 .fa{
     color: #767676;
+    margin: 10px 10px 10px 10px;
 }
-.fa:hover a{
+.fa:hover {
     color: #FF5B5F;
 }
 .footer-btn{
-    min-width: 250px;
+    min-width: 280px;
+}
+
+.footer-btn:hover {
+    color: #fff;
+}
+
+#text1, #text2, #text3, #text4, #text5{
+display: none;
+    
+}
+
+.fa-users:hover ~ #text1 {
+  display: block;
+}
+
+.fa-heartbeat:hover ~ #text2 {
+  display: block;
+}
+
+.fa-smile:hover ~ #text3 {
+  display: block;
+}
+
+.fa-expand:hover ~ #text4 {
+  display: block;
+}
+
+.fa-connectdevelop:hover ~ #text5 {
+  display: block;
+}
+
+.hover-title{
+    color: #FF5B5F;
+    font-family: Lato;
+    font-size: 20px;
+    text-align: center;
+}
+
+.hover-content{
+    color: #767676;
+    font-family: Lato;
+    font-size: 15px;
+    text-align: center;
+}
+.border-bottom{
+    border-bottom-color: #fffff;
 }

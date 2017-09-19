@@ -87,12 +87,13 @@ body,
     padding-left: 10px;
 }
 .space{
-	padding: 10px 5px 10p 5px;
+	padding: 30px 5px 10p 5px;
 	margin-top: 50px;
 }
 
 .h1-responsive{
 	color: #484848;
+    font-weight: 400;
 }
 
 .txt{
@@ -104,7 +105,7 @@ body,
 	text-align: right;
 	text-position: right;
 	color: #767676;
-    padding: 20px 30px 20px 30px;
+    padding: 20px 30px 20px 20px;
 }
 
 .left{
@@ -112,16 +113,19 @@ body,
 }
 
 .example-content1{
-  margin-left: 640px;
+  margin-left: 653px;
   text-align: justify;
   padding-top: 10px;
-  box-shadow: none;
-  margin-top: -25px;;
+  margin-top: -25px;
+  font-size: 15px;
+  font-weight: 300;
 
 }
 .example-content2{
     margin-right: 800px;
     text-align: justify;
+    font-size: 20px;
+    font-weight: 300;
 }
 .txtcolor, .loginbtn{
     background-color: #000;

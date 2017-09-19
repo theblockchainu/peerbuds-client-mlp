@@ -15,7 +15,7 @@ const routes: Routes = [
         // canActivateChild: [AuthGuard],
          children: [
           { path: '', component: IndexComponent },
-          { path: '/index-philosophy',
+          { path: '/philosophy',
     component: IndexComponent
   }
         ]

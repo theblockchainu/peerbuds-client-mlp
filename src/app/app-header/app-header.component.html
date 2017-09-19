@@ -38,7 +38,7 @@
         </div>
       </button>
        
-      <button md-button *ngIf="!(isLoggedIn | async)">
+      <button md-button [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
         Philosophy
       </button>
       <button md-button *ngIf="!(isLoggedIn | async)">
