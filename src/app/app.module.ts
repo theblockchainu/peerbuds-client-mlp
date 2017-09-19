@@ -13,7 +13,6 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
-import { IndexComponent } from './default/index/index.component';
 
 
 import 'hammerjs';
@@ -21,6 +20,7 @@ import 'hammerjs';
 import { DialogsModule } from './_services/dialogs/dialogs.module';
 import {GlobalErrorHandler} from './error-handler/globalerrorhandler';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import {SignupComponent} from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +30,8 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     LoginComponent,
     AppHeaderComponent,
     AppFooterComponent,
-    IndexComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

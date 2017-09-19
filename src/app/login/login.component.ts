@@ -62,4 +62,8 @@ export class LoginComponent implements OnInit {
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
   }
+
+  public getpwd() {
+      // do nothing
+  }
 }

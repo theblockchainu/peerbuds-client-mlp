@@ -9,6 +9,7 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
 })
 export class IndexComponent implements OnInit {
 
+  public isLoggedIn = false;
   constructor() { }
 
   ngOnInit() {

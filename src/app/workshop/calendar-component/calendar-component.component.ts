@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialogModule, MdButtonModule, MdIconModule } from '@angular/material';
 import {
   startOfDay,
   endOfDay,
@@ -18,8 +17,6 @@ import {
   CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
-
-import { DialogsService } from '../../workshop/dialogs/dialog.service';
 
 const colors: any = {
   red: {
