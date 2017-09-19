@@ -8,8 +8,10 @@ import { IndexPhilComponent } from './index-philosophy/index-philosophy.componen
 @NgModule({
   imports: [
     CommonModule,
-    DefaultRoutingModule
+    DefaultRoutingModule, 
+    IndexComponent,
+    IndexPhilComponent
   ],
-  declarations: [IndexPhilComponent]
+  declarations: [IndexComponent]
 })
 export class DefaultModule { }

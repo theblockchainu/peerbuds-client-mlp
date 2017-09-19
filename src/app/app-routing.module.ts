@@ -13,7 +13,7 @@ import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.
 const routes: Routes = [
   {
     path: '',
-    component: IndexPhilComponent,
+    component: IndexComponent,
     pathMatch: 'full'
   },
   {
