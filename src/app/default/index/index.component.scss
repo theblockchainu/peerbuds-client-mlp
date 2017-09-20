@@ -151,8 +151,14 @@ md-input-container md-icon {
     background-color: #000;
     width: 13%;
     border-color: #000;
-}
+    height: 40px;
+    text-align: center;
 
+}
+.email-btn{
+    height:47px;
+    position: absolute;
+}
 .footer-btn{
     min-width: 280px;
 }
@@ -174,4 +180,11 @@ md-input-container md-icon {
 
 .md-grid-title {
 background: lightblue;
+}
+
+.mail-bg{
+    background-color: #FFFFFF;
+    padding: 8px;
+    height: 45px;
+    width: 40%;
 }
