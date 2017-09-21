@@ -2,6 +2,203 @@
 <div class="main-content review-pay-setion" *ngIf="collection">
     <div class="container-fluid">
         <div class="row">
+            <div class="col-sm-6">
+                <div class="title">Review and pay</div>
+                <div class="seperate-section margin-bottom-20">
+                    <div class="fw-bold margin-bottom-10">Guest requirements</div>
+                    <span class="text-grey">Must be above 18 and can't wear shoes</span>
+                </div>
+                <h3>Payment method</h3>
+                <form [formGroup]="makePaymentForm" (ngSubmit)="getToken()" novalidate>
+                    <div class="payment-message fs-13 text-center margin-top-20">{{message}}</div>
+                    <div class="row margin-bottom-30">
+                        <div class="col-sm-6">
+                            <label>Billing Country</label>
+                            <md-select formControlName="country" placeholder="Select Country">
+                                <md-option value="{{country.name}}" *ngFor="let country of countries">{{ country.name }}</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-50">
+                        <div class="col-sm-6">
+                            <label>Payment type</label>
+                            <md-select placeholder="Select card" (change)="getcardDetails($event)" *ngIf="isCardExist">
+                                <md-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} xxxx xxxx xxxx {{card.last4}}</md-option>
+                            </md-select>
+                            <md-select placeholder="Add new card" (change)="getCardType($event)" *ngIf="!isCardExist">
+                                <md-option value="Visa">Visa Card</md-option>
+                                <md-option value="Master">Master Card</md-option>
+                                <md-option value="Amex">American Express</md-option>
+                                <md-option value="Discover">Discover Card</md-option>
+                                <md-option value="Paypal">Paypal</md-option>
+                            </md-select>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="margin-top-35" *ngIf="!isCardExist">
+                                <span class="text-grey"><i class="fa fa-cc-visa fa-2x"></i></span>
+                                <span class="text-grey"><i class="fa fa-cc-mastercard fa-2x"></i></span>
+                                <span class="text-grey"><i class="fa fa-cc-amex fa-2x"></i></span>
+                                <span class="text-grey"><i class="fa fa-cc-discover fa-2x"></i></span>
+                                <span class="text-grey"><i class="fa fa-cc-paypal fa-2x"></i></span>
+                            </div>
+                            <div class="margin-top-35" *ngIf="cardDetails.id">
+                                <span class="text-grey" *ngIf="cardDetails.brand === 'Visa'"><i class="fa fa-cc-visa fa-2x"></i></span>
+                                <div class="display-inline-block fs-12 text-grey">
+                                    <span class="display-block lh-1">Name: <span class="text-black">{{cardDetails.name}}</span></span>
+                                    <span>Expires: <span class="text-black">{{cardDetails.exp_month}}/{{cardDetails.exp_year}}</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-details" *ngIf="!isCardExist">
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-9">
+                                <label class="small">Card number *</label>
+                                <md-form-field class="example-full-width">
+                                    <input mdInput type="text" formControlName="cardNumber" />
+                                    <md-icon mdSuffix><i class="fa fa-lock text-grey"></i></md-icon>
+                                </md-form-field>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-30">
+                            <div class="col-sm-3">
+                                <label class="small">Expires on *</label>
+                                <md-select placeholder="MM" formControlName="expiryMonth">
+                                    <md-option value="01">January</md-option>
+                                    <md-option value="02">February</md-option>
+                                    <md-option value="03">March</md-option>
+                                    <md-option value="04">April</md-option>
+                                    <md-option value="05">May</md-option>
+                                    <md-option value="06">June</md-option>
+                                    <md-option value="07">July</md-option>
+                                    <md-option value="08">August</md-option>
+                                    <md-option value="09">Sepetmber</md-option>
+                                    <md-option value="10">October</md-option>
+                                    <md-option value="11">November</md-option>
+                                    <md-option value="12">December</md-option>
+                                </md-select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="small">&nbsp;</label>
+                                <md-select placeholder="YYYY" formControlName="expiryYear">
+                                    <md-option value="{{ expiryyear }}" *ngFor="let expiryyear of expiryYear">{{ expiryyear }}</md-option>
+                                </md-select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="small">Security code *</label>
+                                <!--<md-form-field class="example-full-width">
+                                    <input mdInput type="text" formControlName="cvc" />
+                                    <md-icon mdSuffix><i class="fa fa-question-circle-o text-grey"></i></md-icon>
+                                </md-form-field>-->
+                                <md-form-field>
+                                    <input mdInput formControlName="cvc" type="text" placeholder="221">
+                                     <md-icon mdSuffix><i class="fa fa-question-circle-o text-grey"></i></md-icon>
+                                </md-form-field>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-20">
+                            <div class="col-sm-6">
+                                <label class="small">First Name</label>
+                                <md-form-field>
+                                    <input mdInput type="text" placeholder="Faria" formControlName="firstName" />
+                                </md-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="small">Last Name</label>
+                                <md-form-field>
+                                    <input mdInput type="text" placeholder="Anzum" formControlName="lastName" />
+                                </md-form-field>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-20">
+                            <div class="col-sm-6">
+                                <label class="small">Street Address *</label>
+                                <md-form-field>
+                                    <input mdInput type="text" formControlName="address_street" placeholder="street address" />
+                                </md-form-field>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="small">Apt #</label>
+                                <md-form-field>
+                                    <input mdInput type="text" formControlName="address_apt" placeholder="apt" />
+                                </md-form-field>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-20">
+                            <div class="col-sm-5">
+                                <label class="small">City *</label>
+                                <md-form-field class="example-full-width">
+                                    <input mdInput type="text" formControlName="address_city" />
+                                </md-form-field>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="small">State</label>
+                                <md-form-field class="example-full-width">
+                                    <input mdInput type="text" formControlName="address_state" />
+                                </md-form-field>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="small">Postal code *</label>
+                                <md-form-field class="example-full-width">
+                                    <input mdInput type="text" formControlName="address_postal_code" maxLength="5" minlength="5" />
+                                </md-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="terms-text">
+                        <div class="terms-title">Terms of Service</div>
+                        <p class="text-grey fs-15">By confirming this booking you are agree to the Peerbuds additional terms of service, Guest Release
+                            and Waiver, and the Cancellation Policy.</p>
+                    </div>
+                    <button md-raised-button color="primary" type="submit" class="text-center" *ngIf="!listAllCards?.length > 0" [disabled]="!makePaymentForm.valid">{{collection.price}} usd - Confirm Payment</button>
+                    <button md-raised-button color="primary" type="submit" class="text-center" *ngIf="listAllCards?.length > 0" [disabled]="!cardDetails.id">{{collection.price}} usd - Confirm Booking</button>
+                    <div class="text-center display-inline-block margin-left-10" *ngIf="savingData"><img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment</div>
+                    <div class="text-center text-grey small margin-top-10" *ngIf="!listAllCards?.length > 0">
+                        <i class="fa fa-lock"></i> Your Credit card information is encrypted
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-3 col-sm-offset-2">
+                <div class="sidebar-right">
+                    <div class="sidebar-box">
+                        <div class="seperate-section padding-top-0">
+                            <div class="display-table">
+                                <div class="margin-bottom-10">
+                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? config.apiUrl+collection.imageUrls[0] : defaultImageUrl" alt="image" />
+                                </div>
+                                <div class="fs-17">{{ collection.title }} <br>
+                                    <span class="display-inline-block fs-15 text-grey">{{collection.totalHours}} hour {{ collection.type }}</span>
+                                    <span class="display-inline-block pull-right fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">Hosted by {{collection.owners[0].username}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="">{{ collection.createdAt | date: 'EEE, MMM dd' }}</div>
+                            <div class="">1 snack, drink and equipment</div>
+                            <a href="#">See details</a>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="margin-bottom-10">
+                                <span class="text-grey">{{collection.price}} usd x {{ guestCount }} guest</span>
+                                <span class="pull-right">{{ collection.price * guestCount }} usd</span>
+                            </div>
+                            <a href="#" class="display-inline-block margin-bottom-10">Add coupan</a>
+                            <div class="margin-bottom-10">
+                                <span class="fw-bold">Total</span>
+                                <span class="pull-right fw-bold">{{ collection.price * guestCount }} usd</span>
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="fs-18 margin-bottom-10">Cancellation Policy</div>
+                            <div class="fs-14 text-grey">Get a <span class="text-black">full refund</span> if you cancel within 24 hours of purchase.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="container-fluid">
+        <div class="row">
             <div class="col-sm-4 col-sm-offset-4">
                 <div class="title">Review and pay</div>
                 <div class="seperate-section">
@@ -62,5 +259,5 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
