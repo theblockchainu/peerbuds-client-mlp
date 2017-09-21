@@ -16,11 +16,14 @@ md-dialog-content {
 
 .page-signin
 {
-
-    width: 600px;
-    height: 450px;
+    width: 400px;
+    height: 500px;
+  
 }
-
+.spacer{
+    width: 350px;
+    margin: 47px;
+}
 .logincontent{
     width: 600px;
     overflow: disable;
@@ -79,4 +82,8 @@ md-dialog-content {
 .circle-icon {
     padding:6px;
     border-radius: 50%;
+}
+.dialog-content{
+    width: 45vw;
+    height: 90vh;
 }

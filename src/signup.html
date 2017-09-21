@@ -61,10 +61,13 @@
         }
 
         .btn {
-            height: 40px;
+            height: 45px;
             width: 180px;
+            margin-left: 100px;
+            margin-top: 20px;
             background-color: #FF5B5F;
-        }
+        
+    }
 
         .btn:focus {
             outline: none;
@@ -316,6 +319,8 @@
         function signupEmail() {
             $(".signupEmail").removeClass("hide");
             $(".btnSignupEmail").addClass("hide");
+            $(".btn-social").addClass("hide");
+            $(".btn-hide").addClass("hide");
         }
         function signup() {
             if ($('#promoOptIn').prop('checked')) {
@@ -326,6 +331,7 @@
             $('#dob').val($('#birthYear').val() + "-" + $('#birthMonth').val() + "-" + $('#birthDay').val());
             $('#signupForm').submit();
         }
+
     </script>
 
 </head>
@@ -345,42 +351,44 @@
                             <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> 
                                 <span style="font-size:17px;color:#484848">Continue with Google</span></a>
                         </div>
-                        <div class="position-relative margin-bottom-20 text-center">
+                        <div class="btn-hide position-relative margin-bottom-20 text-center">
                             <div class="or-seperator-vertical"></div>
                             <span class="round-or-text or-text-vertical">or</span>
                         </div>
                         <div class="margin-bottom-20 btnSignupEmail">
                             <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:17px;" href="javascript:;" onclick="signupEmail()"> Continue with Email</a>
                         </div>
-                        <div class="btn-hide text-center" style="font-size:16px;color:#767676">Have an account already? <a href="/login1" class="btn-link link" style="font-size:16px;text-decoration: none;">Log In</a></div>
-
+                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;">Log In</a></div>
+                        
                         <div class="signupEmail hide">
-                            <div class="margin-bottom-20 text-center">
-                                <strong>Complete your information</strong><br> Please review and provide any missing information
-                                to finish signing up.
-                            </div>
+                <div class="text-center">Sign up with <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;"">Facebook</a> or <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;"> Google</a></div>
+                        
+                        <div class="position-relative margin-bottom-20 text-center">
+                            <div class="or-seperator-vertical"></div>
+                            <span class="round-or-text or-text-vertical">or</span>
+                        </div>
                             <div class="form-group">
                                 <div class="input-group input-group-first-name">
                                     <input type="text" class="form-control" name="first_name" placeholder="First Name" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-last-name">
                                     <input type="text" class="form-control" name="last_name" placeholder="Last Name" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-email">
                                     <input type="text" class="form-control" name="email" placeholder="Email" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                    
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-password">
                                     <input type="password" class="form-control" name="password" placeholder="Password" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                    
                                 </div>
                             </div>
                             <div class="margin-bottom-20">
@@ -420,8 +428,7 @@
                                 <label><input type="checkbox" name="promoOptIn" id="promoOptIn"/> I'd like to receive coupons, promotions, surveys, and updates via email about Peerbuds and its partners.</label>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Signup</button>&nbsp;&nbsp;&nbsp;
-                                <a href="/" class="btn btn-primary">Cancel</a>
+                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Continue</button>&nbsp;&nbsp;&nbsp;
                             </div>
                         </div>
                     </form>
