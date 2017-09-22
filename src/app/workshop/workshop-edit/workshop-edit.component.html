@@ -44,7 +44,7 @@
               <h2 class="title">What topics does this Workshop cover?</h2>
               <p class="subtitle">Select topics that this workshop covers</p>
               <br/>
-              <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
+              <form [formGroup]="interest1" (ngSubmit)="submitInterests()">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="row">
@@ -304,7 +304,7 @@
                     <div class="col-md-8">
                       <div class="stepHeader">Upload Video</div>
                       <p-fileUpload #fubauto name="video" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadVideo($event)"
-                        maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+                        maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')">
                         <ng-template pTemplate="toolbar">
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
                         </ng-template>
@@ -325,7 +325,7 @@
                       </p-fileUpload>
                       <div class="stepHeader" style="margin-top: 40px;">Upload Images</div>
                       <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImages($event)"
-                        maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+                        maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
                         <ng-template pTemplate="toolbar">
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
                         </ng-template>

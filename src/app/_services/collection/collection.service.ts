@@ -133,6 +133,14 @@ export class CollectionService {
   }
 
   /**
+   * delete Calendar
+   */
+  public deleteCalendar(calendarId: string) {
+      return this.http.delete(this.config.apiUrl +
+          '/api/calendars/' + calendarId);
+  }
+
+  /**
    * sanitize
    */
   public sanitize(collection: any) {
@@ -569,10 +577,10 @@ collectionID:string,userId:string,calendarId:string   */
           }).subscribe();
   }
 
-  public getReviews(workshopId: string, query: any, cb) {
+  public getReviews(peerId: string, query: any, cb) {
     const filter = JSON.stringify(query);
     this.http
-      .get(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews' + '?filter=' + filter, this.options)
+      .get(this.config.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou' + '?filter=' + filter, this.options)
       .map((response) => {
         cb(null, response.json());
       }, (err) => {
@@ -628,9 +636,9 @@ collectionID:string,userId:string,calendarId:string   */
   /**
    * postReview
    */
-  public postReview(workshopId: string, reviewBody: any) {
+  public postReview(peerId: string, reviewBody: any) {
     return this.http
-      .post(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews', reviewBody, this.options);
+      .post(this.config.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou', reviewBody, this.options);
   }
 
   public calculateRating(reviewArray?: any) {

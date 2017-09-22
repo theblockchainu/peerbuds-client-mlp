@@ -134,6 +134,19 @@ module.exports = {
       "sourceMapFilename": "[name].[chunkhash].bundle.map",
       "chunkFilename": "[id].chunk.js"
     },
+    "node": {
+        "global": true,
+        "crypto": "empty",
+        "process": false,
+        "module": false,
+        "clearImmediate": false,
+        "setImmediate": false
+    },
+    'devServer': {
+        'historyApiFallback': true,
+        'host': '0.0.0.0',
+        'port': 80
+    },
     "module": {
       "rules": [
         {
@@ -591,13 +604,5 @@ module.exports = {
         "tsConfigPath": "src/tsconfig.app.json",
         "skipCodeGeneration": true
       })
-    ],
-    "node": {
-      "global": true,
-      "crypto": "empty",
-      "process": false,
-      "module": false,
-      "clearImmediate": false,
-      "setImmediate": false
-    }
+    ]
   };

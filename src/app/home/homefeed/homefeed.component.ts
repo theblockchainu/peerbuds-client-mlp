@@ -49,6 +49,7 @@ export class HomefeedComponent implements OnInit {
           });
         }
         this.workshops = _.uniqBy(this.workshops, 'id');
+        this.workshops = _.chunk(this.workshops, 5)[0];
 
       }, (err) => {
         console.log(err);

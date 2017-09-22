@@ -27,7 +27,7 @@ import {ViewConflictDialogComponent} from './view-conflict-dialog/view-conflict-
     AddTopicDialogComponent,
     DeleteDialogComponent,
     AddLanguageDialogComponent,
-      ViewConflictDialogComponent
+    ViewConflictDialogComponent,
   ],
 })
 export class DialogsModule { }
