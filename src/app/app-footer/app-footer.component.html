@@ -1,23 +1,23 @@
 
 <footer *ngIf="isVisible">
-  <md-toolbar class="layout-row" layout="row" color="white">
-    <div layout="row">
-          <button class="footer-btn" md-button> About Us </button>
-          <button class="footer-btn" md-button>
+  <div class="layout-row footer" layout="row" color="white">
+    <div layout="row" class="col-sm-8">
+          <button class="footer-btn footerButtons col-sm-2" md-button> About Us </button>
+          <button class="footer-btn footerButtons col-sm-2" md-button>
             Contact Us
           </button>
-          <span>
-          <a href="#" class="brand" aria-label="Peerbuds Homepage">
-                <img src="/assets/images/pb_logo.png" alt="logo">
-          </a>
-        </span>
-          <button class="footer-btn" md-button>
+          <span class="center">
+            <a href="#" class="brand col-sm-2" aria-label="Peerbuds Homepage">
+                  <img src="/assets/images/pb_logo.png" alt="logo">
+            </a>
+          </span>
+          <button class="footer-btn footerButtons col-sm-2" md-button>
            White Paper
           </button>
-          <button class="footer-btn" md-button>
+          <button class="footer-btn footerButtons col-sm-2" md-button>
            Privacy Policy
           </button>
     
     </div>
-  </md-toolbar>
+  </div>
 </footer>

@@ -934,3 +934,26 @@ img {
     clear: both;
     display: block;
 }
+
+/* Landing Page */
+
+md-input-container.mail-bg .mat-input-wrapper {
+    text-align: left;
+    padding-left: 20px;
+}
+
+md-input-container.mail-bg .mat-form-field-wrapper {
+    padding-bottom: 0px !important;
+}
+
+md-input-container.mail-bg .mat-form-field-underline {
+    display: none !important;
+}
+
+md-input-container.mail-bg .mat-input-subscript-wrapper {
+    display: none !important;
+}
+
+.footerButtons .mat-button-focus-overlay {
+    background: none;
+}

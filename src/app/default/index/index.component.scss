@@ -111,6 +111,48 @@
     left: 815px;
 }
 
+.journey{
+    position: absolute;
+    bottom: 500px;
+    width: 270px;
+    height: 270px;
+}
+
+.journey1 {
+    left: 120px;
+}
+
+.journey2 {
+    left: 430px;
+}
+
+.journey3 {
+    left: 740px;
+}
+
+.journey4 {
+    right: 120px;
+}
+
+.journeyText {
+    bottom: 840px;
+    position: absolute;
+    left: 650px;
+    text-align: justify;
+    color: white;
+    font-weight: 100 !important;
+}
+
+.journeyDesc {
+    bottom: 800px;
+    position: absolute;
+    left: 680px;
+    font-size: 17px;
+    font-weight: 300;
+    text-align: justify;
+    color: #979797;
+}
+
 .footer {
     position: absolute;
     bottom: 104px;
@@ -120,16 +162,35 @@
     bottom: 0;
     position: absolute;
 }
-.view8 {
-    background: url('')no-repeat center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    height: 300px;
-    padding-top: 20px;
-    padding-left: 10px;
+
+.notif{
+    position: absolute;
+    left: 600px;
+    bottom: 280px;
+    font-size: 16px;
+    color: white;
 }
+
+.mail-bg {
+    position: absolute;
+    bottom: 220px;
+    width: 600px;
+    left: 350px;
+    background: white;
+    line-height: 16px;
+}
+
+.email-btn {
+    position: absolute;
+    bottom: 220px;
+    left: 950px;
+    background: black;
+    color: white;
+    line-height: 40px;
+    width: 10%;
+    box-shadow:0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
 .space{
 	padding: 30px 5px 10p 5px;
 	margin-top: 50px;
@@ -148,89 +209,15 @@
     color: #979797;
     font-weight: 300;
 }
-.right{
-	text-align: right;
-	color: #767676;
-    padding: 20px 30px 20px 20px;
-}
 
-.left{
-	text-align: left;
-}
-
-.example-content1{
-  margin-left: 653px;
-  text-align: justify;
-  padding-top: 10px;
-  margin-top: -25px;
-  font-size: 15px;
-  font-weight: 300;
-
-}
-.example-content2{
-    margin-right: 800px;
-    text-align: justify;
-    font-size: 20px;
-    font-weight: 300;
-}
-.txtcolor, .loginbtn{
-    background-color: #000;
-    color: #fff;
-    position: left;
-}
-
-md-input-container md-icon {
-    position: right;
-    top: 5px;
-    left: 2px;
-    }
-
-.notif{
-    text-align: center;
-    color: #fff;
-    margin: 30px 0 30px 0;
-    font-size: 18px;
-    border-color: #000;
-}
-.md-raised{
-    color: #fff;
-    background-color: #000;
-    width: 13%;
-    border-color: #000;
-    height: 40px;
-    text-align: center;
-
-}
-.email-btn{
-    height:47px;
-    position: absolute;
-}
-.footer-btn{
-    min-width: 280px;
-}
-
-.test{
-    margin: -500px 150px 20px 250px;
-    color: #767676;
-    font-size:22px;
-    font-style:italic;
-    font-family: Lato;
-    line-height: 30px;
-
-}
-    
-.card-container {
-      display: flex;
-      flex-direction: row;
-}
-
-.md-grid-title {
-background: lightblue;
-}
-
-.mail-bg{
-    background-color: #FFFFFF;
-    padding: 8px;
-    height: 45px;
-    width: 40%;
-}
+// .email-btn:after {
+//     content: '';
+//     position: absolute;
+//     bottom: 150px;
+//     left: 950px;
+//     width: 90%;
+//     height: 8%;
+//     border-radius: 50%;
+//     box-shadow: 0px 10px 5px yellow;
+//     background-color: yellow;
+// }
