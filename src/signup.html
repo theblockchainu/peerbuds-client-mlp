@@ -29,8 +29,10 @@
          .signup-box {
             background-color: #fff;
             padding: 60px 50px;
-            width: 500px;
+            width: 415px;
+            height: 373px;
             border: 1px solid lightgrey;
+            font-family: Lato;
         }
 
         .margin-top-100 {
@@ -91,7 +93,7 @@
         .btn-social {
             color: #fff;
             display: block;
-            padding: 10px 20px;
+            padding: 7px 20px;
             position: relative;
             font-size: 15px;
             font-weight: 500;
@@ -105,9 +107,10 @@
             border-right: 1px solid rgba(255, 255, 255, 0.2);
             font-size: 13px;
             left: 16px;
-            padding-right: 7px;
+            padding: 4px 6px 4px 6px;
             position: absolute;
-            top: 15px;
+            top: 13px;
+           
         }
 
         .btn-social i.fa-google,
@@ -122,11 +125,15 @@
             color: #666;
             background-color: #fff;
             border: 1px solid #d3d3d3;
+            height: 45px;
+            width: 299px;
         }
 
         .btn-email {
             background-color: #FF5B5F;
             color: #fff!important;
+            height: 45px;
+            width: 299px;
         }
 
         .btn-ggl:hover {
@@ -138,7 +145,7 @@
         }
 
         .btn-fb:hover{
-            /*background-color: #324B80;*/
+           /* background-color: #324B80;*/
         }
 
         .btn-fb:active,
@@ -149,10 +156,10 @@
         .btn-ggl:hover,
         .btn-email:active,
         .btn-email:focus,
-        .btn-email:hover {
+        .btn-email:hover{
             color: #fff!important;
             text-decoration: none;
-            border-color: transparent;
+            border: 1px solid #d3d3d3;
         }
 
         .btn-email:hover i {
@@ -237,7 +244,6 @@
     padding:4px;
     border-radius: 100%;
 }
-
     </style>
     <script>
         $(document).ready(function () {
@@ -316,11 +322,14 @@
                 $("#birthDay").append(new Option(i, newI));
             }
         });
+        
         function signupEmail() {
             $(".signupEmail").removeClass("hide");
             $(".btnSignupEmail").addClass("hide");
             $(".btn-social").addClass("hide");
             $(".btn-hide").addClass("hide");
+
+            
         }
         function signup() {
             if ($('#promoOptIn').prop('checked')) {
@@ -331,9 +340,7 @@
             $('#dob').val($('#birthYear').val() + "-" + $('#birthMonth').val() + "-" + $('#birthDay').val());
             $('#signupForm').submit();
         }
-
     </script>
-
 </head>
 
 <body>
@@ -345,22 +352,23 @@
                         <input type="hidden" name="dob" id="dob" value="" required/>
                         <div class="margin-bottom-20">
                             <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> 
-                                <span style="font-size:17px;color:#484848">Continue with Facebook</span></a>
+                                <span style="font-size:16px;color:#484848">Continue with Facebook</span></a>
                         </div>
                         <div class="margin-bottom-20">
                             <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> 
-                                <span style="font-size:17px;color:#484848">Continue with Google</span></a>
+                                <span style="font-size:16px;color:#484848">Continue with Google</span></a>
                         </div>
                         <div class="btn-hide position-relative margin-bottom-20 text-center">
                             <div class="or-seperator-vertical"></div>
                             <span class="round-or-text or-text-vertical">or</span>
                         </div>
                         <div class="margin-bottom-20 btnSignupEmail">
-                            <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:17px;" href="javascript:;" onclick="signupEmail()"> Continue with Email</a>
+                            <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()"> Continue with email</a>
                         </div>
-                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;">Log In</a></div>
-                        
-                        <div class="signupEmail hide">
+                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;">Log in</a></div>
+
+
+                        <div class="signupEmail hide" style="width: 633px; height: 662px;">
                 <div class="text-center">Sign up with <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;"">Facebook</a> or <a href="#" class="btn-link link display-block margin-top-10" style="font-size:14px;text-decoration: none;"> Google</a></div>
                         
                         <div class="position-relative margin-bottom-20 text-center">
@@ -431,12 +439,11 @@
                                 <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Continue</button>&nbsp;&nbsp;&nbsp;
                             </div>
                         </div>
+                        
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
-
 </html>
