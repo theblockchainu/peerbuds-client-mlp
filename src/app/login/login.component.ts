@@ -6,6 +6,7 @@ import { AuthenticationService } from '../_services/authentication/authenticatio
 import { Observable } from "rxjs";
 
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import {AppConfig} from '../app.config';
 
 @Component({
   selector: 'login',  // <login></login>
@@ -33,6 +34,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public router: Router,
+    public config: AppConfig,
     public authenticationService: AuthenticationService,
     private alertService: AlertService,
     private _fb: FormBuilder) {

@@ -21,6 +21,7 @@ import { DialogsModule } from './_services/dialogs/dialogs.module';
 import {GlobalErrorHandler} from './error-handler/globalerrorhandler';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import {SignupComponent} from './signup/signup.component';
+import { AppDesignComponent } from './app-design/app-design.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {SignupComponent} from './signup/signup.component';
     AppHeaderComponent,
     AppFooterComponent,
     AccessDeniedComponent,
-    SignupComponent
+    SignupComponent,
+    AppDesignComponent
   ],
   imports: [
     BrowserModule,

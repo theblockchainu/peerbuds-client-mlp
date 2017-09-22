@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import {ForgotpwdComponentDialog} from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
+import {AppConfig} from '../../../app.config';
 
 @Component({
   selector: 'app-login-dialog',  // <login></login>
@@ -36,6 +37,7 @@ export class LoginComponentDialog implements OnInit {
     private alertService: AlertService,
     public dialogRef: MdDialogRef<LoginComponentDialog>,
     private _fb: FormBuilder,
+    public config: AppConfig,
     @Inject(MD_DIALOG_DATA) public data: any) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
     }

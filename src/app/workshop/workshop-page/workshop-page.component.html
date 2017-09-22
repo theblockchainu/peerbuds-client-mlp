@@ -21,7 +21,7 @@
           <div class="col-md-8">
             <div class="row">
               <div class="col-md-12">
-                <h1>{{workshop.title | titlecase}}</h1>
+                <p class="mat-display-1" style="margin-bottom: 20px !important;">{{workshop.title | titlecase}}</p>
                 <div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
                   <span *ngIf="currentCalendar">{{currentCalendar.startDate | date:'d MMM'}} - {{currentCalendar.endDate| date:'d MMM'}} &emsp;<md-icon style="font-size: 5px; top: -2px; height: 20px;">fiber_manual_record</md-icon></span>
                   <span> {{totalDuration}} Hours &emsp;<md-icon style="font-size: 5px; top: -2px; height: 20px;">fiber_manual_record</md-icon>{{workshop.contents.length}} parts &emsp;</span>
@@ -103,7 +103,7 @@
                           <div class="row margin-top-30" style="cursor: pointer;" *ngFor="let content of itenary.contents" (click)="openDialog(content)">
                             <div class="col-md-5">
                               <img style="width: 100%; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}" (error)="_collectionService.imgErrorHandler($event)">
-                              <video width="100%" height="120px" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
+                              <video width="100%" height="120px" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
                                 <source src="{{config.apiUrl+content.imageUrl}}">
                               </video>
                             </div>
@@ -112,7 +112,7 @@
                                 <div class="col-md-12">
                                   <h3> {{content.title | titlecase}}</h3>
                                   <p>{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
-                                    <span *ngIf="content.schedules[0].startTime !== undefined" class="lighterText" style="font-size: 80%">
+                                    <span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined">
                                       &emsp;<md-icon style="font-size: 5px; top: -2px; height: 20px;">fiber_manual_record</md-icon>
                                       {{content.schedules[0].startTime | date: 'hh:mm a'}} - {{content.schedules[0].endTime | date: 'hh:mm a'}}
                                     </span>
@@ -204,10 +204,10 @@
                         </button>
                       </md-menu>
                       <div>{{comment.description}}</div>
-                      <div style="margin-top: 10px; font-size: 85%" *ngIf="comment.peer.length>0">
+                      <div style="margin-top: 10px;" class="mat-h5" *ngIf="comment.peer.length>0">
                         <div style="float: left;">
-                          <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
-                          <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp">
+                          <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+                          <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp">
                         </div>
                         <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                           <div>
@@ -216,7 +216,7 @@
                               <span *ngIf="comment.peer[0].profiles[0].headline">{{comment.peer[0].profiles[0].headline}}</span>
                             </div>
                           </div>
-                          <div style="font-size: 90%">
+                          <div class="mat-h5">
                             <span class="lighterText">{{comment.createdAt |extractTime:'hh:mm a, Do MMMM YYYY'}}</span>
                           </div>
                         </div>
@@ -226,7 +226,7 @@
                       </div>
                       <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
                         <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
-                          <img src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+                          <img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
                           <md-input-container style="margin-left: 15px; width: 88%;">
                             <input mdInput type="text" formControlName="description" placeholder="Reply to above comment...">
                           </md-input-container>
@@ -257,10 +257,10 @@
                           </div>
                           <div style="display: inline-block">
                             <div>{{reply.description}}</div>
-                            <div style="margin-top: 10px; font-size: 85%" *ngIf="reply.peer && reply.peer.length>0">
+                            <div class="mat-h5" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
                               <div style="float: left;">
-                                <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
-                                <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp">
+                                <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+                                <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp">
                               </div>
                               <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                                 <div>
@@ -269,7 +269,7 @@
                                     <span *ngIf="reply.peer[0].profiles[0].headline">{{reply.peer[0].profiles[0].headline}}</span>
                                   </div>
                                 </div>
-                                <div style="font-size: 90%">
+                                <div class="mat-h5">
                                   <span class="lighterText">{{reply.createdAt |extractTime:'hh:mm a, Do MMMM YYYY'}}</span>
                                 </div>
                               </div>
@@ -321,10 +321,10 @@
                         <div class="row">
                           <div class="col-md-12">
                             <div class="row">
-                              <div style="margin-top: 10px; font-size: 85%">
+                              <div style="margin-top: 10px;" class="mat-h5">
                                 <div style="float: left;">
-                                  <img *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
-                                  <img *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
+                                  <img *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
+                                  <img *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
                                 </div>
                                 <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                                   <div>
@@ -333,7 +333,7 @@
                                       <span *ngIf="review.peer[0].profiles[0].headline">{{review.peer[0].profiles[0].headline}}</span>
                                     </div>
                                   </div>
-                                  <div style="font-size: 90%">
+                                  <div class="mat-h5">
                                     <span class="lighterText">{{review.createdAt | date:'mediumDate'}}</span>
                                   </div>
                                 </div>
@@ -396,7 +396,7 @@
           <!--RIGHT SIDEBAR-->
           <div class="col-md-4 col-md-offset-1 right-content">
             <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
-              <h3 class="">Participants</h3>
+              <h3 class="margin-bottom-20">Participants</h3>
               <div>
                 <div>
                   <div class="row lighterText" *ngIf="participants.length === 0">
@@ -406,20 +406,20 @@
                   </div>
                 </div>
                 <div *ngFor="let participant of participants; let i=index">
-                  <div class="row margin-top-20 margin-bottom-20" *ngIf="participant.profiles && i<4">
+                  <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter">
-                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" style="margin-left: 0px;">
-                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb" alt="dp" style="margin-left: 0px;">
+                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
+                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
                     </div>
                     <div class="col-md-9 vcenter">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
-                      <span *ngIf="participant.profiles[0].headline" style="font-weight: 300;">{{participant.profiles[0].headline}}</span>
+                      <span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
                     </div>
                   </div>
                 </div>
                 <div>
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 margin-top-20">
                       <a (click)="viewParticipants()" style="cursor: pointer;" *ngIf="participants.length > 0"> View all participants </a>
                     </div>
                   </div>
@@ -442,7 +442,7 @@
             <div *ngIf="userType==='teacher' && workshop.isApproved">
               <div>
                 <h3 style="display: inline-block;">Workshop Batches</h3>
-                <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;"><md-icon style="font-size: 14px; top: 15px;">edit</md-icon></span>
+                <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;"><md-icon style="font-size: 1rem; top: 15px;">edit</md-icon></span>
                 <br>
                 <span class="text-muted h6">{{workshop.calendars.length}} Cohorts</span>
               </div>
@@ -532,15 +532,15 @@
                     <div class="row margin-top-20 margin-bottom-20">
                       <div class="col-md-12">
                         <div style="display: inline-flex">
-                          <img *ngIf="!workshop.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" style="margin-left: 0px;">
-                          <img *ngIf="workshop.owners[0].profiles[0].picture_url" src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px;">
+                          <img *ngIf="!workshop.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
+                          <img *ngIf="workshop.owners[0].profiles[0].picture_url" src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" style="margin-left: 0px;">
                         </div>
                         <div style="display: inline-block; margin-left: 10px;">
                           <div class="row">
                             <div class="col-md-12">
                               {{workshop.owners[0].profiles[0].first_name}} {{workshop.owners[0].profiles[0].last_name}}
                             </div>
-                            <div class="col-md-12" *ngIf="workshop.owners[0].profiles[0].work" style="font-size: 90%">
+                            <div class="col-md-12 mat-h5" *ngIf="workshop.owners[0].profiles[0].work">
                               {{workshop.owners[0].profiles[0].work[0].position}}
                             </div>
                           </div>
@@ -602,12 +602,12 @@
                 <a>Invite friends</a>
               </div>
               <div class="col-md-4">
-                <md-icon style="font-size: 14px; top: 2px;">bookmark</md-icon>Bookmark
+                <md-icon style="font-size: 1rem; top: 2px;">bookmark</md-icon>Bookmark
               </div>
               <div class="col-md-4">
                 Share&nbsp;
-                <i class="fa fa-facebook-square" aria-hidden="true" style="font-size: 14px;"></i>
-                <i class="fa fa-twitter-square" aria-hidden="true" style="font-size: 14px;"></i>
+                <i class="fa fa-facebook-square" aria-hidden="true" style="font-size: 1rem;"></i>
+                <i class="fa fa-twitter-square" aria-hidden="true" style="font-size: 1rem;"></i>
               </div>
             </div>
           </div>
@@ -644,7 +644,7 @@
                     </p-rating>
                   </div>
                   <div class="col-md-5 margin-top-10" *ngIf="workshop.reviews">
-                    <p class="lighterText" style="font-size: 80%">{{workshop.reviews.length}} Reviews</p>
+                    <p class="mat-caption">{{workshop.reviews.length}} Reviews</p>
                   </div>
                 </a>
               </div>
