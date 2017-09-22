@@ -1,83 +1,127 @@
-.text-center{
-	text-align: center;
+.outerContainer {
+    border: 0;
+    float: left;
+    position: relative;
 }
 
-html,
-body,
-.view, .view2, .view3, .view4, .view5, .view6, view7 {
-    height: 100%;
-}
-
-.view {
-    background: url('../images_landing/Waves_above_the_fold.png')no-repeat center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+.centerVideo {
+    border: 0;
+    position: absolute;
+    top: 150px;
+    margin-left: 25%;
+    width: auto;
     height: 400px;
-    padding-top: 20px;
-    padding-left: 10px;
 }
 
-.vid{
-     background: url('../images_landing/Video.png')no-repeat center;
-      background-size: 900px;
-      padding-top: 750px;
-      padding-left: 10px;
-
+.centerPlayButton {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 335px;
+    left: 30px;
+    right: 0;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.view2 {
-    background: url('../images_landing/Illustration_1.png')no-repeat center;
-    background-size: 50% 100%;
-    height: 600px;
-    margin: 300px 30px 30px 20px;
-    background-position: left;
+.view2Image {
+    width: 45%;
+    margin-left: 10%;
 }
 
-.view3 {
-    background: url('../images_landing/Illustration_2.png')no-repeat center;
-    background-size: 50% 100%;
-    height: 500px;
-    margin: 60px 20px 30px 30px;
-    background-position: right;
+.view3Image {
+    width: 50%;
+    top: -22px;
 }
 
-.view4{
-    background: url('../images_landing/Illustration_3.png')no-repeat center;
-    background-size: 50% 100%;
-    height: 500px;
-    margin: 60px 30px 30px 20px;
-    background-position: left;
+.view4Image {
+    width: 50%;
+    margin-left: 7%;
+    margin-top: 20px;
 }
 
-.view5 {
-    background: url('../images_landing/Shape_testimoni.png')no-repeat center;
-    background-size: 95% 100%;
-    height: 1600px;
-    background-position: right;
+.view5Image {
+    width: 90%;
 }
 
-.view6 {
-    background: url('../images_landing/Arrow.png')no-repeat center;
-    background-size: 7%;
-    height: 50px;
-    width: 20px;
-    padding: 1000px 900px 0 60px;
-    background-position: left;
+.view6Image {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 370px;
+    width: 90%;
 }
-.imgs{
- background: url('../images_landing/testimoni_2.png')no-repeat center;
-    
+
+.arrow {
+    position: absolute;
+    width: 57px;
+    height: 26px;
 }
-.view7 {
-    background: url('../images_landing/shape_journey.png')no-repeat center;
-    background-size: 95% 100%;
-    height: 800px;
-    background-position: left;
+
+.arrow-left{
+    left: 127px;
+    bottom: 1250px;
+}
+
+.text {
+    bottom: 1220px;
+    position: absolute;
+    left: 500px;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    text-align: justify;
+    color: #979797;
+}
+
+.author {
+    bottom: 1160px;
+    position: absolute;
+    left: 690px;
+    font-size: 16px;
+    font-weight: 400; 
+    color: #484848;
+}
+
+.arrow-right {
+    right: 150px;
+    bottom: 1250px;
+}
+
+.testimonial {
+    position: absolute;
+    bottom: 1350px;
+    width: 64px;
+    height: 64px;
+}
+
+.testimonial1 {
+    left: 600px;
+}
+
+.testimonial2 {
+    left: 665px;
+    width: 150px;
+    height: 150px;
+    bottom: 1300px;
+}
+
+.testimonial3 {
+    left: 815px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 104px;
+}
+
+.oval {
+    bottom: 0;
+    position: absolute;
 }
 .view8 {
-    background: url('../images_landing/shape_footer.png')no-repeat center;
+    background: url('')no-repeat center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -91,19 +135,21 @@ body,
 	margin-top: 50px;
 }
 
-.h1-responsive{
-	color: #484848;
-    font-weight: 400;
-}
-
 .txt{
-	color: #767676;
+    color: #979797;
+    font-weight: 400;
+    font-size: 16px;
 }
 
-.content,
+.content {
+    word-wrap: break-word;
+    text-align: justify;
+    font-size: 16px;
+    color: #979797;
+    font-weight: 300;
+}
 .right{
 	text-align: right;
-	text-position: right;
 	color: #767676;
     padding: 20px 30px 20px 20px;
 }
