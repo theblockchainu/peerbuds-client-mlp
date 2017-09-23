@@ -44,10 +44,10 @@
                 <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
                   Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will be visible both here and on your public profile.
                 </div>
-                <div class="review-section-title" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined">
+                <div class="review-section-title" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined && getPendingReviewCollections(profile.peer[0]).length > 0">
                   Reviews To Write
                 </div>
-                <div class="row" style="margin-left: -12px; margin-bottom: 20px;">
+                <div class="row" style="margin-left: -12px; margin-bottom: 20px;" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined && getPendingReviewCollections(profile.peer[0]).length > 0">
                   <div>
                     <div style="margin-top:20px;" class="col-md-12">
                       <div class="row">

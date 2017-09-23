@@ -13,7 +13,7 @@ export class SocialSyncComponent implements OnInit {
 
   public socialIdentitiesConnected: any = [];
 
-  private connectedIdentities = {
+  public connectedIdentities = {
     'fb': false,
     'google': false
   };

@@ -9,6 +9,7 @@ import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dia
 import { LoginComponent } from './login/login.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 
+import {AppDesignComponent} from "./app-design/app-design.component";
 
 const routes: Routes = [
   {
@@ -22,6 +23,13 @@ const routes: Routes = [
   component: IndexPhilComponent,
   }, 
 
+<<<<<<< HEAD
+=======
+  {
+      path: 'design',
+      component: AppDesignComponent
+  },
+>>>>>>> origin/develop-material
   {
     path: 'login',
     component: LoginComponentDialog

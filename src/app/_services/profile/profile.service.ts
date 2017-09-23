@@ -105,7 +105,7 @@ export class ProfileService {
   public getCompactProfile() {
     const profile = {};
     if (this.userId) {
-      const filter = '{"include": "peer"}';
+      const filter = '{"include": {"peer": "ownedCollections"}}';
       return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter, this.options)
         .map(
         (response: Response) => response.json()

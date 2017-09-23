@@ -2,10 +2,7 @@ import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { AppConfig } from '../../app.config';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
-import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
-import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
 import {Http, URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs} from '@angular/http';
-import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -59,7 +56,7 @@ export class ExperienceContentComponent implements OnInit {
 
       let deleteIndex = 0;
 
-      while (deleteIndex != contents.length) {
+      while (deleteIndex !== contents.length) {
 
           this.http.delete(this.config.apiUrl + '/api/contents/' + contents[deleteIndex].id, options)
               .map((response: Response) => {
@@ -89,7 +86,7 @@ export class ExperienceContentComponent implements OnInit {
       headers.append('Accept', 'application/json');
       const options = new RequestOptions({ headers: headers, withCredentials: true });
 
-      if (event.action == 'add') {
+      if (event.action === 'add') {
           const itenaryObj = this.myForm.value.itenary[i];
           const scheduleDate = itenaryObj.date;
           const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
@@ -154,7 +151,7 @@ export class ExperienceContentComponent implements OnInit {
               })
               .subscribe();
 
-      } else if (event.action == 'update') {
+      } else if (event.action === 'update') {
           const itenary = <FormArray>this.myForm.controls.itenary;
           const form = <FormGroup>itenary.controls[i];
           const contentsArray = <FormArray>form.controls.contents;
@@ -192,7 +189,7 @@ export class ExperienceContentComponent implements OnInit {
               .map((response: Response) => {
                   this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, options)
                       .map((response: Response) => {
-                          if (response.status == 200) {
+                          if (response.status === 200) {
                               contentGroup.controls.pending.setValue(false);
                           }
                           console.log(response);
@@ -200,7 +197,7 @@ export class ExperienceContentComponent implements OnInit {
                       .subscribe();
                   this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, options)
                       .map((response: Response) => {
-                          if (response.status == 200) {
+                          if (response.status === 200) {
                               contentGroup.controls.pending.setValue(false);
                           }
                           console.log(response);
