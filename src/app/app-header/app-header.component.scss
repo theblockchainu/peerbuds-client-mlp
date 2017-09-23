@@ -1,9 +1,6 @@
-// .header-container {
-//   position:fixed;
-//   top: 0px;
-//   width: 100%;
-//   z-index: 10;
-// }
+.mat-elevation-header .headerButtons {
+    color: #767676;
+}
 
 // .header-container header {
 //   margin: 0px auto;
@@ -81,4 +78,8 @@
 a, a:active, a:visited {
     color: #000000;
     text-decoration: none;
+}
+
+.mat-elevation-header .headerButtons .mat-button-focus-overlay {
+    background: none;
 }

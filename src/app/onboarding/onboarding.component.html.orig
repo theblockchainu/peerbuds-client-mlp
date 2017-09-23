@@ -1,0 +1,99 @@
+
+  <div id="content" class="onboarding-content">
+    <div class="">
+      <div class="onboarding step-1" [hidden]="step!=1">
+        <div class="row">
+          <div class="col-sm-4 col-sm-offset-4">
+            <div class="welcome-box text-center">
+              <h2 class="headline">Welcome to Peerbuds</h2>
+              <p class="description1 margin-top-20 margin-bottom-20">You are entering a blockchain based community where peers can teach and learn from one another, while earning</p>
+              <div class="margin-top-40">
+                  <button md-raised-button class="customBtn" type="button" color="accent" (click)="goToNext(2)">Yes, thats me</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- step 2-->
+      <div class="onboarding step-2 margin-top-60" [hidden]="step!=2">
+        <div class="row">
+          <div class="col-sm-8 col-sm-offset-2">
+            <div class="text-center margin-bottom-50">
+              <h2 class="headline">What are your interests?</h2>
+              <p class="description1 margin-top-20 margin-bottom-20">Choose atleast 3 topics to continue</p>
+            </div>
+
+            <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
+              <div class="row">
+                <div class="col-sm-12 margin-bottom-30">
+                  <div class="row margin-left-0">
+                    <div class="col-sm-8">
+                      <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" (anyTopicNotFound)="requestNewTopicEnabled($event)" [searchUrl]=searchTopicURL [title]=placeholderStringTopic
+                          [maxSelection]=maxTopics></multiselect-autocomplete>
+                    </div>
+                
+                    <div class="col-sm-4">
+                      <span *ngIf="!boolShowConnectedSocials" style="line-height:50px">
+                        <a class="text-right syncSocial" (click)="showConnectedSocials()">
+                          <md-icon class="vAlignTextTop">cached</md-icon>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Sync Social</a>
+                      </span>
+                      <span *ngIf="boolShowConnectedSocials">
+                        <i *ngIf="connectedIdentities.google" class="fa fa-google-plus" color="primary"></i>
+                        <i *ngIf="connectedIdentities.fb" class="fa fa-facebook" color="primary"></i>
+                      </span>
+                    </div>
+                   </div>
+                </div>
+              </div>
+              <div class="row center" *ngIf="showRequestNewTopic">
+                <div class="col-sm-8">
+                    <div class="margin-bottom-20">
+                    <i class="twa twa-3x twa-pensive"></i>
+                    </div>
+                    <div class="margin-bottom-20">
+                    <div class="suggestions description1 margin-bottom-20"> Topic you are looking for cannot be found</div>
+                      <button md-button class="outline-btn" (click)="requestNewTopic(topicForRequest)"> Request for {{topicForRequest}} topic</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row bottom-section clearfix margin-left-10">
+                <div class="col-sm-8"> 
+                  <i class="twa twa-2x twa-relieved-face"></i><span class="rightLinks" style="vertical-align:super">&nbsp;&nbsp;&nbsp;&nbsp;You are almost there</span>
+                  <div class="pull-right">
+                    <button md-button style="margin-right:20px; color:#767676">Back</button>
+                    <button md-raised-button (click)="goToNext(3)" color="accent" [disabled]="interests.length < 3">Done</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+<<<<<<< HEAD
+      <div class="onboarding step-3" [hidden]="step!=3">
+        <div class="text-center">
+         <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+            <div class="text-center">
+              <h2 class="title-explore text-center">You're now ready to teach and learn anything to your heart's desires</h2>
+              <p class="text-grey">Your account is still under review and will soon be approved. Meanwhile, you can discover learning content
+                on the platform.</p>
+              <div class="checkbox">
+                <label class="check btn btn-default btn-start-explore" [routerLink]="['/']" style="position:relative;left:170px;">Start Exploring</label>
+              </div>
+            </div>
+          </div>
+        </div>
+           
+=======
+      <div class="onboarding step-3  margin-top-100 col-sm-4 col-sm-offset-4" [hidden]="step!=3">
+        <div class="center" style="padding-top:60px">
+            <h2 class="headline">You're now ready to teach and learn anything your heart desire</h2>
+            <p class="description1">Your account is still under review and will soon be approved. Meanwhile you can discover learning content on the platform.</p>
+            <button class="margin-top-40" [routerLink]="['/home/homefeed']" md-raised-button color="accent">Start Exploring</button>
+>>>>>>> develop-material
+        </div>
+      </div>
+  </div>

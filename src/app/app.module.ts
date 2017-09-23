@@ -17,7 +17,6 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
 import { IndexComponent } from './default/index/index.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 
-
 import 'hammerjs';
 
 import { DialogsModule } from './_services/dialogs/dialogs.module';

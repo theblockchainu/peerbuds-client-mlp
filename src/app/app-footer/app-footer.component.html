@@ -1,4 +1,25 @@
-<footer *ngIf="isVisible" style="border-top: 1px solid #cccccc;">
+
+<footer *ngIf="!(isLoggedIn | async)">
+  <div class="layout-row footer" layout="row" color="white">
+    <div layout="row" class="col-sm-8">
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="."> About Us </a>
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+            Contact Us
+          </a>
+          <span class="center">
+            <a routerLink="/" class="brand col-sm-2" aria-label="Peerbuds Homepage">
+                  <img src="/assets/images/pb_logo.png" alt="logo">
+            </a>
+          </span>
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+           White Paper
+          </a>
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+           Privacy Policy
+          </a>
+    
+    </div>
+<footer *ngIf="(isLoggedIn | async)" style="border-top: 1px solid #cccccc;">
   <div class="text-center" style="padding: 25px 0;">
     <a href="#">About Us</a>
     <a href="#">Help</a>

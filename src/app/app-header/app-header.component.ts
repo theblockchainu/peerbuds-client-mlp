@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { Observable } from 'rxjs/Rx';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
 import { ProfileService } from '../_services/profile/profile.service';
-import {FormControl} from '@angular/forms';
-import {AppConfig} from '../app.config';
-import {Http} from '@angular/http';
-import {CookieService} from 'ngx-cookie-service';
-import {Router} from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { AppConfig } from '../app.config';
+import { Http } from '@angular/http';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
@@ -41,7 +41,6 @@ export class AppHeaderComponent implements OnInit {
               private router: Router,
               private dialog: MdDialog,
               private dialogsService: DialogsService) {
-
                 this.isLoggedIn = authService.isLoggedIn();
                 authService.isLoggedIn().subscribe((res) => {
                 this.loggedIn = res;
