@@ -23,13 +23,10 @@ const routes: Routes = [
   component: IndexPhilComponent,
   }, 
 
-<<<<<<< HEAD
-=======
   {
       path: 'design',
       component: AppDesignComponent
   },
->>>>>>> origin/develop-material
   {
     path: 'login',
     component: LoginComponentDialog
