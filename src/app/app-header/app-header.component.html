@@ -36,8 +36,6 @@
           <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
           <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
         </div>
-<<<<<<< HEAD
-      </button>
        
       <button md-button [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
         Philosophy
@@ -51,9 +49,9 @@
       <button md-button *ngIf="!(isLoggedIn | async)">
        White Paper
       </button>
-=======
+
       </div>
->>>>>>> 59032ff9228134db2c8daf02500ea2e2005f4612
+
 
       <a md-button href="/signup.html" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
         Sign Up
@@ -62,6 +60,9 @@
       <!-- trying dialog-->
       <button md-button (click)="openLogin()" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
         Log In
+      </button>
+      <button md-button (click)="forgotPwd()" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
+        Forgot password
       </button>
       
     </span>

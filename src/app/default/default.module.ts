@@ -16,9 +16,7 @@ import {
     CommonModule,
     DefaultRoutingModule, 
     IndexComponent,
-    IndexPhilComponent
-
-    DefaultRoutingModule,
+    IndexPhilComponent,
     MdCardModule,
     MdButtonModule,
     MdToolbarModule,
