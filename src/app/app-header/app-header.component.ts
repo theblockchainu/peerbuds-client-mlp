@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { Observable } from 'rxjs/Rx';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
 import { ProfileService } from '../_services/profile/profile.service';
-import {FormControl} from '@angular/forms';
-import {AppConfig} from '../app.config';
-import {Http} from '@angular/http';
-import {CookieService} from 'ngx-cookie-service';
-import {Router} from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { AppConfig } from '../app.config';
+import { Http } from '@angular/http';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
@@ -30,6 +30,7 @@ export class AppHeaderComponent implements OnInit {
   private key = 'userId';
   public options: any[];
   public defaultProfileUrl = '/assets/images/default-user.jpg';
+  public isTeacher = false;
 
   constructor(public authService: AuthenticationService,
               public requestHeaderService: RequestHeaderService,
@@ -40,7 +41,6 @@ export class AppHeaderComponent implements OnInit {
               private router: Router,
               private dialog: MdDialog,
               private dialogsService: DialogsService) {
-
                 this.isLoggedIn = authService.isLoggedIn();
                 authService.isLoggedIn().subscribe((res) => {
                 this.loggedIn = res;
@@ -74,6 +74,9 @@ export class AppHeaderComponent implements OnInit {
     if (this.loggedIn) {
         this._profileService.getCompactProfile().subscribe(profile => {
             this.profile = profile[0];
+            if(this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
+                this.isTeacher = true;
+            }
         });
     }
     else {
@@ -166,14 +169,18 @@ export class AppHeaderComponent implements OnInit {
 
   public openSignup() {
     this.dialogsService.openSignup().subscribe();
-  } 
+  }
 
 
    public openLogin() {
     this.dialogsService.openLogin().subscribe();
   }
 
-  public forgotPwd(){
+  public forgotPwd() {
   this.dialogsService.forgotPwd().subscribe();
-  }  
+  }
+
+  public goToHome() {
+      this.router.navigate(['home', 'homefeed']);
+  }
 }

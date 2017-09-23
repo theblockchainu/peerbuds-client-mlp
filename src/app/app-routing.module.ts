@@ -9,6 +9,7 @@ import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dia
 import { LoginComponent } from './login/login.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 
+import {AppDesignComponent} from "./app-design/app-design.component";
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   component: IndexPhilComponent,
   }, 
 
+  {
+      path: 'design',
+      component: AppDesignComponent
+  },
   {
     path: 'login',
     component: LoginComponentDialog

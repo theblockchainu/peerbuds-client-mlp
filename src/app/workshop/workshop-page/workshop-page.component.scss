@@ -283,10 +283,10 @@ div.event span:first-child {
 }
 
 .pending-actions{
-    background-color: #F44336;
+    background-color: #ff5b5f;
     color: white;
-    padding: 20px 0px;
-    font-size: large;
+    padding: 12px 0px;
+    font-size: 14px;
 }
 
 h3 {
@@ -330,4 +330,8 @@ h3 {
 
 .workshop-suggestions p {
     margin-bottom: 0px !important;
+}
+
+.workshopCohortCalendar {
+    background-color: #f17d7d;
 }

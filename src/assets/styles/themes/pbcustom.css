@@ -1,10 +1,41 @@
-/* Custom Changes */
+/* Core Classes */
+
+html {
+    font-size: 87.5%;
+}
 
 body {
     margin: 0;
+    font-size: 1rem;
+    color: rgba(0,0,0,0.87);
 }
 
-/* Material Classes Starts */
+footer {
+    padding: 20px;
+}
+
+a, a:active, a:visited {
+    color: #33bd9e;
+    text-decoration: none;
+}
+
+a:focus {
+    color: #1dab8d;
+    text-decoration: none;
+    outline: 0;
+    cursor: pointer;
+}
+
+img {
+    width: 100%;
+}
+
+/* Material Classes Starts*/
+
+.mat-caption, .mat-display-1, .mat-display-2, .mat-display-3, .mat-display-4 {
+    color: rgba(0,0,0,0.54);
+}
+
 md-input-container .mat-has-icon {
     padding-right: 36px
 }
@@ -42,7 +73,8 @@ md-subheader {
 }
 
 .mat-toolbar {
-    font: 400 16px/32px Roboto, "Helvetica Neue", sans-serif;
+    position: fixed !important;
+    z-index: 1000 !important;
 }
 
 .mat-white {
@@ -60,6 +92,20 @@ md-subheader {
 
 .mat-menu-item {
     font-size: 14px !important;
+}
+
+.mat-list-item {
+    cursor: pointer;
+    font-size: 14px !important;
+}
+
+.mat-list-item-content {
+    min-height: 48px;
+    height: fit-content !important;
+}
+
+.mat-list-item-focus {
+    outline: none;
 }
 
 .mat-toolbar-tools {
@@ -177,7 +223,7 @@ md-subheader {
 .mat-button.mat-raised.mat-dribble,.mat-button.mat-raised.mat-dribble:focus,.mat-button.mat-raised.mat-dribble:hover {
     color: #fff;
     background: #ea73a0;
-    border-color: #ea73a0
+    border-color: #ea73a0;
 }
 
 .mat-button.mat-raised.mat-stumbleupon,.mat-button.mat-raised.mat-stumbleupon:focus,.mat-button.mat-raised.mat-stumbleupon:hover {
@@ -236,20 +282,6 @@ md-subheader {
 .mat-raised-button.mat-primary[disabled], .mat-raised-button.mat-accent[disabled], .mat-raised-button.mat-warn[disabled], .mat-raised-button[disabled][disabled], .mat-fab.mat-primary[disabled], .mat-fab.mat-accent[disabled], .mat-fab.mat-warn[disabled], .mat-fab[disabled][disabled], .mat-mini-fab.mat-primary[disabled], .mat-mini-fab.mat-accent[disabled], .mat-mini-fab.mat-warn[disabled], .mat-mini-fab[disabled][disabled] {
     background-color: rgba(0, 0, 0, 0.12) !important;
     color: rgba(0, 0, 0, 0.38) !important;
-}
-
-.mat-list-item {
-    cursor: pointer;
-    font-size: 14px !important;
-}
-
-.mat-list-item-content {
-    min-height: 48px;
-    height: fit-content !important;
-}
-
-.mat-list-item-focus {
-    outline: none;
 }
 /* Material Classes Ends */
 
@@ -327,6 +359,7 @@ md-subheader {
 .margin-bottom-100 {
     margin-bottom: 100px !important;
 }
+
 .margin-left-0 {
     margin-left: 0px !important;
 }
@@ -346,97 +379,6 @@ md-subheader {
 
 .padding-right-0 {
     padding-right: 0px !important;
-}
-
-
-.example-spacer {
-    flex: 1 1 auto;
-}
-
-.main-content {
-    min-height: 90vh;
-    overflow-y: auto;
-}
-
-.search-box {
-    width: 100%;
-    padding: .4rem;
-    background-color: #ffb;
-}
-
-.search-form {
-    margin: 0 2rem;
-    flex-grow: 1; /* <-- THE SECRET SAUCE! */
-    min-width: 18rem;
-    font-size: 14px;
-}
-
-.search-form .mat-input-container {
-    display: inline;
-}
-
-.search-form .mat-input-underline {
-    display: none;
-}
-
-.search-form .mat-input-wrapper {
-    padding-bottom: 0.69688em;
-}
-
-footer {
-    padding: 20px;
-}
-
-.bold {
-    font-weight:700;
-}
-
-.lightText {
-    color: #777777;
-}
-
-.lighterText {
-    color: #cccccc;
-}
-
-.center {
-    text-align: center;
-}
-
-.pb-block {
-    display: block !important;
-    width: 100% !important;
-}
-
-.circle-thumb img, .circle-thumb{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    /* background-color: #eee; */
-    margin-left: -15px;
-    display: inline-block;
-    border: 3px solid #ffffff;
-}
-
-.circle-thumb-overlap, .circle-thumb-overlap img{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-left: -15px;
-    display: inline-block;
-    border: 3px solid #ffffff;
-}
-
-.image-inline {
-    display: inline;
-}
-
-.display-inline-block {
-    display: inline-block;
-}
-
-.display-block {
-    display: block;
 }
 
 /* Calendar Starts */
@@ -464,16 +406,14 @@ h3.calendarTitle  {
     min-height: 50px !important;
 }
 
-.calendar .cal-month-view .cal-day-number {
-    font-size: 16px !important;
-}
-
 .calendar .cal-month-view .cal-cell-top {
     min-height: 40px !important;
+    margin: 2px 0px;
 }
 
 .calendar .cal-month-view .cal-day-number {
     margin-right: 27px !important;
+    margin-left: 5px !important;
 }
 
 .calendar .cal-month-view .cal-events {
@@ -491,6 +431,11 @@ h3.calendarTitle  {
     width: 8px !important;
     height: 8px !important;
     background-color: #F0951B !important;
+    padding: 0px !important;
+    margin-top: 0px !important;
+    min-width: 8px !important;
+    position: relative !important;
+    top: 7px !important;
 }
 
 .calendar .cal-month-view .cal-day-cell.cal-has-events .cal-day-number {
@@ -511,14 +456,25 @@ h3.calendarTitle  {
     margin-left: 10px;
 }
 
-.calendar .cal-month-view .cal-day-badge {
-    padding: 0px !important;
-    margin-top: 0px !important;
-    min-width: 8px !important;
-    position: relative !important;
-    top: 7px !important;
+.cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
+    border-bottom: 1.5px solid rgba(0,0,0,0.27);
 }
 
+.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
+    font-size: 16px !important;
+}
+
+.dateStyles input.mat-input-element, .timeInput input.mat-input-element {
+    font-size: 18px !important;
+}
+
+.dateStyles .svgStyle md-icon {
+    font-size: 20px !important;
+}
+
+.timeInput .mat-input-element {
+    resize: none !important;
+}
 /* Calendar Ends */
 
 /* Bootstrap Starts */
@@ -563,6 +519,82 @@ h3.calendarTitle  {
 }
 /* Bootstrap Ends */
 
+
+/* General Classes */
+.flex {
+    flex: 1;
+}
+
+.flexContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.main-content {
+    min-height: 90vh;
+    overflow-y: auto;
+    padding-top: 64px;
+}
+
+.bold {
+    font-weight:400;
+}
+
+.lightText {
+    color: #777777;
+}
+
+.lighterText {
+    color: #cccccc;
+}
+
+.center {
+    text-align: center;
+}
+
+.pb-block {
+    display: block !important;
+    width: 100% !important;
+}
+
+.circle-thumb img, .circle-thumb{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: -15px;
+    display: inline-block;
+    border: 3px solid #ffffff;
+}
+
+.circle-thumb-overlap, .circle-thumb-overlap img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: -15px;
+    display: inline-block;
+    border: 3px solid #ffffff;
+}
+
+.image-inline {
+    display: inline;
+}
+
+.display-inline-block {
+    display: inline-block;
+}
+
+.display-block {
+    display: block;
+}
+
 .fullframe {
     width: 100%;
     height: auto;
@@ -577,26 +609,19 @@ h3.calendarTitle  {
     width: 40px;
 }
 
-a, a:active, a:visited {
-    color: #33bd9e;
-    text-decoration: none;
-}
-
-a:focus {
-    color: #1dab8d;
-    text-decoration: none;
-}
-
 .message-item:after {
-    width: 27px !important;
-    height: 27px !important;
-    left: -43px !important;
-    padding-top: 5px !important;
-    top: 3px !important;
+    width: 18px !important;
+    height: 18px !important;
+    left: -39px !important;
+    padding-top: 0px !important;
+    top: 14px !important;
+    font-size: 8px !important;
 }
 
-img {
-    width: 100%;
+.message-item:before {
+    bottom: -41px !important;
+    height: 105% !important;
+    left: -30px !important;
 }
 
 .profile-header {
@@ -764,7 +789,7 @@ img {
 
 .page-contact .contact-info-container>ul li>i {
     margin-right: 10px;
-    font-size: 22px
+    font-size: 22px;
 }
 
 .page-contact .contact-info-container>ul li a {
@@ -782,7 +807,6 @@ img {
 
 .page-err-header {
     border-bottom: 4px solid #dedede;
-    background: url(../images/background/bg_weather1.png) center/cover;
     padding-bottom: 100px;
     padding-top: 100px;
     text-align: center;
@@ -839,72 +863,23 @@ img {
     min-width: 100% !important;
 }
 
-
-
-.flex {
-    flex: 1;
-}
-
-.flexContainer {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-    -webkit-justify-content: flex-start;
-    justify-content: flex-start;
-}
-
-.onboarding .mat-select-placeholder {
-    font-size: 19px !important;
-    margin-bottom: 10px;
-}
-
-.onboarding .mat-input-placeholder {
-    font-size: 19px !important;
-    margin-bottom: 10px;
-}
-
-.onboarding .mat-select-value-text {
-    /* font-size: 18px !important; */
-    color: #767676 !important;
-}
-
 .text-grey {
     color: #484848;
 }
 
-.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
-    font-size: 16px !important;
-}
-
-.dateStyles input.mat-input-element, .timeInput input.mat-input-element {
-    font-size: 18px !important;
-}
-
-.dateStyles .svgStyle md-icon {
-    font-size: 20px !important;
-}
-
-.timeInput .mat-input-element {
-    resize: none !important;
-}
-
 .noJustify a.mat-tab-link {
     justify-content: left !important;
-    padding-left: 3px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
     margin-left: 5px;
-    min-width: 100px !important;
-    margin-right: 20px  !important;
-    font-size: 18px  !important;
-    font-weight: bold  !important;
-}
-
-.noJustify .mat-ink-bar {
-    width: 100px !important;
+    min-width: auto !important;
+    margin-right: 12px  !important;
+    font-size: 1rem  !important;
+    font-weight: 400  !important;
 }
 
 .rightLinks {
-    font-size:16px !important;
+    font-size: 16px !important;
     color: #767676;
 }
 
@@ -935,7 +910,22 @@ img {
     display: block;
 }
 
-/* Landing Page */
+/* Onboarding Starts */
+.onboarding .mat-select-placeholder {
+    font-size: 1rem !important;
+    margin-bottom: 10px;
+}
+
+.onboarding .mat-input-placeholder {
+    font-size: 1rem !important;
+    margin-bottom: 10px;
+}
+
+.onboarding .mat-select-value-text {
+    color: #767676 !important;
+}
+
+/* Landing Page Starts*/
 
 md-input-container.mail-bg .mat-input-wrapper {
     text-align: left;
@@ -953,7 +943,40 @@ md-input-container.mail-bg .mat-form-field-underline {
 md-input-container.mail-bg .mat-input-subscript-wrapper {
     display: none !important;
 }
+/* Landing Page Ends */
 
 .footerButtons .mat-button-focus-overlay {
     background: none;
+}
+
+/* App Header */
+
+.mat-elevation-header {
+    box-shadow: 0px 3px 40px -2px rgba(180, 180, 180, 0.2), 0px 3px 40px 0px rgba(180, 180, 180, 0.14), 0px 1px 40px 0px rgba(180, 180, 180, 0.12);
+}
+
+/* Search */
+.search-box {
+    width: 100%;
+    padding: .4rem;
+    background-color: #ffb;
+}
+
+.search-form {
+    margin: 0 2rem;
+    flex-grow: 1; /* <-- THE SECRET SAUCE! */
+    min-width: 18rem;
+    font-size: 14px;
+}
+
+.search-form .mat-input-container {
+    display: inline;
+}
+
+.search-form .mat-input-underline {
+    display: none;
+}
+
+.search-form .mat-input-wrapper {
+    padding-bottom: 0.69688em;
 }

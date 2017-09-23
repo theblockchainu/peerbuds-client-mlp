@@ -5,7 +5,6 @@ import { Http, Response, } from '@angular/http';
 import { SubmitEntryComponent } from '../submit-entry/submit-entry.component';
 import { SubmissionViewComponent } from '../submission-view/submission-view.component';
 import { ProjectSubmissionService } from '../../../_services/project-submission/project-submission.service';
-import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-content-project',
@@ -24,12 +23,14 @@ export class ContentProjectComponent implements OnInit {
     public dialog: MdDialog,
     public projectSubmissionService: ProjectSubmissionService
   ) {
-    data.content.submissions.forEach(submission => {
-      if (submission.isPrivate === 'false') {
-        this.hasPublicSubmission = true;
-        this.publicSubmissionCount++;
-      }
-    });
+    if (data.content.submissions !== undefined) {
+        data.content.submissions.forEach(submission => {
+            if (submission.isPrivate === 'false') {
+                this.hasPublicSubmission = true;
+                this.publicSubmissionCount++;
+            }
+        });
+    }
   }
   ngOnInit() {
   }

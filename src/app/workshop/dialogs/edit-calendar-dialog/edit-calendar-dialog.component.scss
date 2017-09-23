@@ -4,7 +4,7 @@
   }
   
 .repeat-workshop-button {
-    margin: 5px;
+    margin: 10px 5px;
 }
 
 .flex-row {
@@ -287,5 +287,9 @@ div.event span:first-child {
     color: white;
     padding: 20px 0px;
     font-size: large;
+}
+
+.mat-select {
+    padding-top: 5px !important;
 }
 

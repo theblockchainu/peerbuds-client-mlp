@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-md-12 padding-left-60">
-    <h3 md-dialog-title>When do you want to attend?</h3>
+    <h3 md-dialog-title *ngIf="mode === 'chooseDate'">When do you want to attend?</h3>
+    <h3 md-dialog-title *ngIf="mode === 'editDelete'">Existing workshop cohorts</h3>
   </div>
 </div>
 <div class="row">
@@ -10,7 +11,7 @@
 </div>
 <div md-dialog-content>
   <p-accordion (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">
-    <p-accordionTab *ngFor="let itenaryObj of data; let i=index" tabindex="-1">
+    <p-accordionTab *ngFor="let itenaryObj of itineraries; let i=index" tabindex="-1">
       <p-header>
         <div>
           <div class="row">
@@ -20,6 +21,8 @@
                   <b>
                     {{itenaryObj.calendar.startDate | date:'EEE, MMMM d'}} - {{itenaryObj.calendar.endDate | date:'EEE, MMMM d'}}
                   </b>
+                  <br>
+                    {{itenaryObj.participantCount}} participants
                 </div>
               </div>
               <div class="col-md-12">
@@ -31,7 +34,8 @@
               <br>
               <br>
               <div class="col-md-12">
-                <button md-button md-dialog-close="{{itenaryObj.calendar.id}}" class="mat-border-button">Choose Date</button>
+                <button *ngIf="mode === 'chooseDate'" md-button md-dialog-close="{{itenaryObj.calendar.id}}" class="mat-border-button">Select this cohort</button>
+                <button *ngIf="mode === 'editDelete'" md-button color="warn" md-dialog-close="{{itenaryObj.calendar.id}}" [disabled]="itenaryObj.participantCount > 0" class="mat-border-button" style="border-color: #f5393e !important;">Delete this cohort</button>
               </div>
             </div>
           </div>
@@ -44,7 +48,7 @@
               <div class="col-md-12" style="margin: 10px 0px 3px 0px;">{{itenary.startDate | date:'EE MMM d'}}</div>
             </div>
             <div class="col-md-12">
-              <div class="col-md-12" style="margin: 3px 0px 10px 0px;">{{itenary.contents[0].schedules[0].startTime | extractTime:'HH:mm a'}} - {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime | extractTime:'HH:mm a'}}</div>
+              <div class="col-md-12" style="margin: 3px 0px 10px 0px;">{{itenary.contents[0].schedules[0].startTime | extractTime:'hh:mm a'}} - {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime | extractTime:'h:mm a'}}</div>
             </div>
           </div>
         </div>

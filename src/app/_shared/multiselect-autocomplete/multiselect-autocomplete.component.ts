@@ -55,7 +55,7 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   private postURL:string = '';
 
   @Input('title')
-  private title:string =  '';
+  public title:string =  '';
 
   @Input('preSelectedTopics')
   private preselectedTopics:any = [];
@@ -126,7 +126,7 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
     console.log(this.selected);
   }
 
-  private filter() {
+  public filter() {
     if (!this.isMultiSelect) {
       if (this.filteredList.length !== 0) {
         //Force only 1 selection

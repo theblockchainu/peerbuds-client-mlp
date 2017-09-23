@@ -5,7 +5,7 @@
 
                 <!--itenary-->
                 <div formArrayName="itenary">
-                    <div *ngFor="let Itenary of myForm.controls.itenary.controls; let i=index" class="panel panel-default">
+                    <div *ngFor="let Itenary of myForm.controls.itenary; let i=index" class="panel panel-default">
                         <div class="panel-heading">
                             <span>Itenary {{i + 1}}</span>
                             <span class="glyphicon glyphicon-remove pull-right" (click)="removeItenary(i)"></span>

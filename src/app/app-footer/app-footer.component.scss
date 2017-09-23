@@ -1,6 +1,16 @@
 .footer {
-    bottom: 50px;
+    bottom: 60px;
     position: relative;
     left: 21%;
-    color: #979797;
+    // color: #979797 !important;
+}
+
+.footer-btn {
+    color: #979797 !important;
+    margin: 0px;
+}
+
+a {
+  color: rgba(0,0,0,0.87);
+  margin: 0px 25px;
 }
