@@ -1,137 +1,218 @@
-.text-center{
-	text-align: center;
+.outerContainer {
+    border: 0;
+    float: left;
+    position: relative;
 }
 
-html,
-body,
-.view, .view2, .view3, .view4, .view5, .view6, view7 {
-    height: 100%;
-}
-
-.view {
-    background: url('../images_landing/Waves_above_the_fold.png')no-repeat center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+.centerVideo {
+    border: 0;
+    position: absolute;
+    top: 150px;
+    margin-left: 25%;
+    width: auto;
     height: 400px;
-    padding-top: 20px;
-    padding-left: 10px;
 }
 
-.view2 {
-    background: url('../images_landing/Illustration_1.png')no-repeat center;
-    background-size: 50% 100%;
-    height: 600px;
-    margin: 60px 30px 30px 20px;
-    background-position: left;
+.centerPlayButton {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 335px;
+    left: 30px;
+    right: 0;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.view3 {
-    background: url('../images_landing/Illustration_2.png')no-repeat center;
-    background-size: 50% 100%;
-    height: 500px;
-    margin: 60px 20px 30px 30px;
-    background-position: right;
+.view2Image {
+    width: 45%;
+    margin-left: 10%;
 }
 
-.view4{
-    background: url('../images_landing/Illustration_3.png')no-repeat center;
-    background-size: 50% 100%;
-    height: 500px;
-    margin: 60px 30px 30px 20px;
-    background-position: left;
+.view3Image {
+    width: 50%;
+    top: -22px;
 }
 
-.view5 {
-    background: url('../images_landing/Shape_testimoni.png')no-repeat center;
-    background-size: 95% 100%;
-    height: 2500px;
-    background-position: right;
+.view4Image {
+    width: 50%;
+    margin-left: 7%;
+    margin-top: 20px;
 }
 
-.view6 {
-    background: url('../images_landing/Arrow.png')no-repeat center;
-    background-size: 7%;
-    height: 50px;
-    width: 20px;
-    padding: 1000px 900px 0 60px;
-    background-position: left;
+.view5Image {
+    width: 90%;
 }
-.view7 {
-    background: url('../images_landing/shape_journey.png')no-repeat center;
-    background-size: 95% 100%;
-    height: 800px;
-    background-position: left;
+
+.view6Image {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 370px;
+    width: 90%;
 }
-.view8 {
-    background: url('../images_landing/shape_footer.png')no-repeat center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    height: 300px;
-    padding-top: 20px;
-    padding-left: 10px;
+
+.arrow {
+    position: absolute;
+    width: 57px;
+    height: 26px;
+}
+
+.arrow-left{
+    left: 127px;
+    bottom: 1250px;
+}
+
+.text {
+    bottom: 1245px;
+    position: absolute;
+    left: 450px;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    text-align: justify;
+    color: #979797;
+    margin-bottom:0px;
+}
+
+.author {
+    bottom: 1185px;
+    position: absolute;
+    left: 690px;
+    font-size: 16px;
+    font-weight: 400; 
+    color: #484848;
+}
+
+.arrow-right {
+    right: 150px;
+    bottom: 1250px;
+}
+
+.testimonial {
+    position: absolute;
+    bottom: 1350px;
+    width: 64px;
+    height: 64px;
+}
+
+.testimonial1 {
+    left: 600px;
+}
+
+.testimonial2 {
+    left: 665px;
+    width: 150px;
+    height: 150px;
+    bottom: 1300px;
+}
+
+.testimonial3 {
+    left: 815px;
+}
+
+.journey{
+    position: absolute;
+    bottom: 500px;
+    width: 270px;
+    height: 270px;
+}
+
+.journey1 {
+    left: 120px;
+}
+
+.journey2 {
+    left: 430px;
+}
+
+.journey3 {
+    left: 740px;
+}
+
+.journey4 {
+    right: 120px;
+}
+
+.journeyText {
+    bottom: 815px;
+    position: absolute;
+    left: 665px;
+    text-align: justify;
+    color: white;
+    font-weight: 100 !important;
+}
+
+.journeyDesc {
+    bottom: 800px;
+    position: absolute;
+    left: 680px;
+    font-size: 17px;
+    font-weight: 300;
+    text-align: justify;
+    color: #979797;
+}
+
+.footer {
+    position: absolute;
+    bottom: 104px;
+}
+
+.oval {
+    bottom: 0;
+    position: absolute;
+}
+
+.notif{
+    position: absolute;
+    left: 600px;
+    bottom: 280px;
+    font-size: 16px;
+    color: white;
+}
+
+.mail-bg {
+    position: absolute;
+    bottom: 220px;
+    width: 600px;
+    left: 350px;
+    background: white;
+    line-height: 16px;
+}
+
+.email-btn {
+    position: absolute;
+    bottom: 220px;
+    left: 950px;
+    background: black;
+    color: white;
+    line-height: 40px;
+    width: 10%;
+    box-shadow:0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 .space{
-	padding: 10px 5px 10p 5px;
+	padding: 30px 5px 10p 5px;
 	margin-top: 50px;
 }
 
-.h1-responsive{
-	color: #484848;
+.content {
+    word-wrap: break-word;
+    text-align: justify;
+    // font-size: 16px;
+    color: #979797 !important;
+    font-weight: 300;
 }
 
-.txt{
-	color: #767676;
-}
-
-.content,
-.right{
-	text-align: right;
-	text-position: right;
-	color: #767676;
-    padding: 20px 30px 20px 30px;
-}
-
-.left{
-	text-align: left;
-}
-
-.example-content{
-   width: 500px;
-   height: 400px;
-   background-position:right;
-}
-
-.txtcolor, .loginbtn{
-    background-color: #000;
-    color: #fff;
-    position: left;
-}
-
-md-input-container md-icon {
-    position: right;
-    top: 5px;
-    left: 2px;
-    }
-
-.notif{
-    text-align: center;
-    color: #fff;
-    margin: 30px 0 30px 0;
-    font-size: 18px;
-    border-color: #000;
-}
-.md-raised{
-    color: #fff;
-    background-color: #000;
-    width: 13%;
-    border-color: #000;
-}
-
-
-
-
+// .email-btn:after {
+//     content: '';
+//     position: absolute;
+//     bottom: 150px;
+//     left: 950px;
+//     width: 90%;
+//     height: 8%;
+//     border-radius: 50%;
+//     box-shadow: 0px 10px 5px yellow;
+//     background-color: yellow;
+// }

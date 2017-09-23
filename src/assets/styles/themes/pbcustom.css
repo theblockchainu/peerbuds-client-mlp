@@ -30,8 +30,7 @@ img {
     width: 100%;
 }
 
-
-/* Other classes */
+/* Material Classes Starts*/
 
 .mat-caption, .mat-display-1, .mat-display-2, .mat-display-3, .mat-display-4 {
     color: rgba(0,0,0,0.54);
@@ -49,39 +48,28 @@ md-input-container.mat-block {
     display: block
 }
 
-.example-spacer {
-    flex: 1 1 auto;
+md-sidenav {
+    width: 300px;
+    background: -webkit-linear-gradient(top, #FFA6AA, #FF6D71); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom, #FFA6AA, #FF6D71); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom, #FFA6AA, #FF6D71); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom, #FFA6AA, #FF6D71); /* Standard syntax (must be last) */
+    padding: 20px 30px;
+    color: #fff;
 }
 
-.mat-white {
-    background-color: white !important;
+md-sidenav a {
+    color: #eaeaea;
+    cursor: pointer;
 }
 
-.main-content {
-    padding-top: 64px;
-    min-height: 85vh;
-    overflow-y: auto;
+md-sidenav a:hover {
+    text-decoration: none;
+    color: #eaeaea;
 }
 
-.search-box {
-    width: 100%;
-    padding: .4rem;
-    background-color: #ffb;
-}
-
-.search-form {
-    margin: 0 2rem;
-    flex-grow: 1; /* <-- THE SECRET SAUCE! */
-    min-width: 18rem;
-    font-size: 1rem;
-}
-
-.search-form .mat-input-container {
-    display: inline;
-}
-
-.search-form .mat-input-underline {
-    display: none;
+md-subheader {
+    margin: 1.5rem 0;
 }
 
 .mat-toolbar {
@@ -89,28 +77,27 @@ md-input-container.mat-block {
     z-index: 1000 !important;
 }
 
-.search-form .mat-input-wrapper {
-    padding-bottom: 0.69688em;
+.mat-white {
+    background-color: white !important;
+    /* border-bottom: 4px solid #dedede; */
 }
 
-.bold {
-    font-weight:400;
+.mat-tab-link {
+    color: rgba(0,0,0,0.87) !important;
 }
 
-.lightText {
-    color: rgba(0,0,0,0.54);
+.mat-border-button {
+    border: 0.5px solid #ccc !important;
 }
 
-.lighterText {
-    color: rgba(0,0,0,0.54);
-}
-
-.center {
-    text-align: center;
+.mat-menu-item {
+    /* font-size: 14px !important; */
+    font-size: 1rem !important;
 }
 
 .mat-list-item {
     cursor: pointer;
+    /* font-size: 14px !important; */
     font-size: 1rem !important;
 }
 
@@ -121,6 +108,458 @@ md-input-container.mat-block {
 
 .mat-list-item-focus {
     outline: none;
+}
+
+.mat-toolbar-tools {
+    font-size: 20px;
+    letter-spacing: .005em;
+    box-sizing: border-box;
+    font-weight: 400;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    width: 100%;
+    height: 64px;
+    max-height: 64px;
+    padding: 0 16px;
+    margin: 0;
+}
+
+.mat-content {
+    color: rgba(0,0,0,0.87);
+    background-color: rgb(255,255,255);
+    display: block;
+    position: relative;
+    overflow: auto;
+}
+
+.mat-titles p.text-muted {
+    color:grey;
+    margin-top: 0px;
+}
+
+.mat-icon-small {
+    font-size: 1rem !important;
+}
+
+.mat-select-trigger {
+    font-size: 14px !important;
+}
+
+.mat-button.mat-raised.mat-twitter,.mat-button.mat-raised.mat-twitter:focus,.mat-button.mat-raised.mat-twitter:hover {
+    color: #fff;
+    background: #00c7f7;
+    border-color: #00c7f7
+}
+
+.mat-facebook {
+    color: #000!important;
+    background-color: #fff
+}
+    
+.mat-facebook:focus,.mat-facebook:hover{
+    color: #fff!important;
+    background: #335397 !important;
+    border-color: #335397 !important
+}
+
+.mat-google-plus,.mat-gplus{
+    color: #000!important;
+    background-color: #fff
+}
+
+.mat-google-plus:focus,.mat-google-plus:hover,.mat-gplus:focus,.mat-gplus:hover {
+    color: #fff!important;
+    background: #dd4a38 !important;
+    border-color: #dd4a38 !important
+}
+
+.mat-button.mat-raised.mat-instagram,.mat-button.mat-raised.mat-instagram:focus,.mat-button.mat-raised.mat-instagram:hover {
+    color: #fff;
+    background: #82685a;
+    border-color: #82685a
+}
+
+.mat-button.mat-raised.mat-vimeo,.mat-button.mat-raised.mat-vimeo:focus,.mat-button.mat-raised.mat-vimeo:hover {
+    color: #fff;
+    background: #63879c;
+    border-color: #63879c
+}
+
+.mat-button.mat-raised.mat-flickr,.mat-button.mat-raised.mat-flickr:focus,.mat-button.mat-raised.mat-flickr:hover {
+    color: #fff;
+    background: #0061db;
+    border-color: #0061db
+}
+
+.mat-button.mat-raised.mat-github,.mat-button.mat-raised.mat-github:focus,.mat-button.mat-raised.mat-github:hover {
+    color: #fff;
+    background: #3b3b3b;
+    border-color: #3b3b3b
+}
+
+.mat-button.mat-raised.mat-pinterest,.mat-button.mat-raised.mat-pinterest:focus,.mat-button.mat-raised.mat-pinterest:hover {
+    color: #fff;
+    background: #bc2725;
+    border-color: #bc2725
+}
+
+.mat-button.mat-raised.mat-tumblr,.mat-button.mat-raised.mat-tumblr:focus,.mat-button.mat-raised.mat-tumblr:hover {
+    color: #fff;
+    background: #586980;
+    border-color: #586980
+}
+
+.mat-button.mat-raised.mat-linkedin,.mat-button.mat-raised.mat-linkedin:focus,.mat-button.mat-raised.mat-linkedin:hover {
+    color: #fff;
+    background: #018faf;
+    border-color: #018faf
+}
+
+.mat-button.mat-raised.mat-dribble,.mat-button.mat-raised.mat-dribble:focus,.mat-button.mat-raised.mat-dribble:hover {
+    color: #fff;
+    background: #ea73a0;
+    border-color: #ea73a0;
+}
+
+.mat-button.mat-raised.mat-stumbleupon,.mat-button.mat-raised.mat-stumbleupon:focus,.mat-button.mat-raised.mat-stumbleupon:hover {
+    color: #fff;
+    background: #ea4b24;
+    border-color: #ea4b24
+}
+
+.mat-button.mat-raised.mat-lastfm,.mat-button.mat-raised.mat-lastfm:focus,.mat-button.mat-raised.mat-lastfm:hover {
+    color: #fff;
+    background: #b80638;
+    border-color: #b80638
+}
+
+.mat-button.mat-raised.mat-evernote,.mat-button.mat-raised.mat-evernote:focus,.mat-button.mat-raised.mat-evernote:hover {
+    color: #fff;
+    background: #3bab27;
+    border-color: #3bab27
+}
+
+.mat-button.mat-raised.mat-skype,.mat-button.mat-raised.mat-skype:focus,.mat-button.mat-raised.mat-skype:hover {
+    color: #fff;
+    background: #12A5F4;
+    border-color: #12A5F4
+}
+
+.mat-button.mat-raised.mat-soundcloud,.mat-button.mat-raised.mat-soundcloud:focus,.mat-button.mat-raised.mat-soundcloud:hover {
+    color: #fff;
+    background: #06f;
+    border-color: #06f
+}
+
+.mat-button.mat-raised.mat-behance,.mat-button.mat-raised.mat-behance:focus,.mat-button.mat-raised.mat-behance:hover {
+    color: #fff;
+    background: #b80638;
+    border-color: #b80638
+}
+
+.mat-button.mat-raised.mat-rss,.mat-button.mat-raised.mat-rss:focus,.mat-button.mat-raised.mat-rss:hover {
+    color: #fff;
+    background: #f79638;
+    border-color: #f79638
+}
+
+.mat-button.mat-raised.mat-youtube,.mat-button.mat-raised.mat-youtube:focus,.mat-button.mat-raised.mat-youtube:hover {
+    color: #fff;
+    background: #cc181e;
+    border-color: #cc181e
+}
+
+.mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+    background-color: #ff6d71 !important;
+    color: white !important;
+}
+
+.mat-raised-button.mat-primary[disabled], .mat-raised-button.mat-accent[disabled], .mat-raised-button.mat-warn[disabled], .mat-raised-button[disabled][disabled], .mat-fab.mat-primary[disabled], .mat-fab.mat-accent[disabled], .mat-fab.mat-warn[disabled], .mat-fab[disabled][disabled], .mat-mini-fab.mat-primary[disabled], .mat-mini-fab.mat-accent[disabled], .mat-mini-fab.mat-warn[disabled], .mat-mini-fab[disabled][disabled] {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+    color: rgba(0, 0, 0, 0.38) !important;
+}
+/* Material Classes Ends */
+
+/* Custom Margins Starts */
+.margin-top-10 {
+    margin-top: 10px !important;
+}
+.margin-top-20 {
+    margin-top: 20px !important;
+}
+.margin-top-30 {
+    margin-top: 30px !important;
+}
+.margin-top-40 {
+    margin-top: 40px !important;
+}
+.margin-top-50 {
+    margin-top: 50px !important;
+}
+.margin-top-60 {
+    margin-top: 60px !important;
+}
+.margin-top-70 {
+    margin-top: 70px !important;
+}
+.margin-top-80 {
+    margin-top: 80px !important;
+}
+.margin-top-90 {
+    margin-top: 90px !important;
+}
+.margin-top-100 {
+    margin-top: 100px !important;
+}
+
+.margin-top-270 {
+    margin-top: 270px;
+}
+
+.margin-bottom-0 {
+    margin-bottom: 0px !important;
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2px !important;
+}
+
+.margin-bottom-10 {
+    margin-bottom: 10px !important;
+}
+.margin-bottom-20 {
+    margin-bottom: 20px !important;
+}
+.margin-bottom-30 {
+    margin-bottom: 30px !important;
+}
+.margin-bottom-40 {
+    margin-bottom: 40px !important;
+}
+.margin-bottom-50 {
+    margin-bottom: 50px !important;
+}
+.margin-bottom-60 {
+    margin-bottom: 60px !important;
+}
+.margin-bottom-70 {
+    margin-bottom: 70px !important;
+}
+.margin-bottom-80 {
+    margin-bottom: 80px !important;
+}
+.margin-bottom-90 {
+    margin-bottom: 90px !important;
+}
+.margin-bottom-100 {
+    margin-bottom: 100px !important;
+}
+
+.margin-left-0 {
+    margin-left: 0px !important;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}
+/* Custom Margins Ends */
+
+.padding-top-0 {
+    padding-top: 0px !important;
+}
+
+.padding-left-0 {
+    padding-left: 0px !important;
+}
+
+.padding-right-0 {
+    padding-right: 0px !important;
+}
+
+/* Calendar Starts */
+.border-calendar {
+    border: 1px solid #eee;
+}
+
+h3.calendarTitle  {
+    font-weight: 400 !important;
+}
+
+.calendar .cal-month-view .cal-days {
+    border: none !important;
+}
+
+.calendar .cal-month-view .cal-days .cal-cell-row {
+    border: none !important;
+}
+
+.calendar .cal-month-view .cal-day-cell:not(:last-child) {
+    border: none !important;
+}
+
+.calendar .cal-month-view .cal-day-cell {
+    min-height: 50px !important;
+}
+
+.calendar .cal-month-view .cal-cell-top {
+    min-height: 40px !important;
+    margin: 2px 0px;
+}
+
+.calendar .cal-month-view .cal-day-number {
+    margin-right: 27px !important;
+    margin-left: 5px !important;
+}
+
+.calendar .cal-month-view .cal-events {
+    display: none !important;
+}
+
+.calendar .cal-month-view .cal-day-cell.cal-today {
+    background: none !important;
+}
+
+.calendar .cal-month-view .cal-day-badge {
+    float: right !important;
+    margin-right: 18px !important;
+    font-size: 0px !important;
+    width: 8px !important;
+    height: 8px !important;
+    background-color: #F0951B !important;
+    padding: 0px !important;
+    margin-top: 0px !important;
+    min-width: 8px !important;
+    position: relative !important;
+    top: 7px !important;
+}
+
+.calendar .cal-month-view .cal-day-cell.cal-has-events .cal-day-number {
+    margin-top: 8px;
+}
+
+.calendar .cal-month-view .cal-day-cell.cal-today .cal-day-number {
+    width: 30px;
+    height: 30px;
+    background-color: #33bd9e;
+    border-radius: 15px;
+    padding: 7px 0px 7px 6px;
+    margin-top: 8px;
+    margin-right: 20px !important;
+}
+
+.calendar .cal-month-view .cal-day-cell.cal-out-month.cal-has-events .cal-day-number {
+    margin-left: 10px;
+}
+
+.cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
+    border-bottom: 1.5px solid rgba(0,0,0,0.27);
+}
+
+.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
+    font-size: 16px !important;
+}
+
+.dateStyles input.mat-input-element, .timeInput input.mat-input-element {
+    font-size: 18px !important;
+}
+
+.dateStyles .svgStyle md-icon {
+    font-size: 20px !important;
+}
+
+.timeInput .mat-input-element {
+    resize: none !important;
+}
+/* Calendar Ends */
+
+/* Bootstrap Starts */
+.ui-accordion .ui-accordion-header{
+    background:rgba(255, 255, 255, 0.00);
+
+}
+.ui-accordion .ui-accordion-header .fa-caret-right,.ui-accordion .ui-accordion-header .fa-caret-down{
+    display: none;
+}
+
+.ui-state-default {
+    border: 0px solid #d6d6d6;
+}
+
+.ui-widget-header {
+    border: 0px !important;
+}
+
+.ui-widget-content {
+    border: 0px !important;
+}
+
+.ui-fileupload-buttonbar {
+    background-color: #fff !important;
+}
+
+.ui-autocomplete-token {
+    margin-bottom: 10px;
+}
+
+.ui-accordion .ui-accordion-header a {
+    color: #464646 !important;
+}
+
+.ui-accordion .ui-accordion-header a:focus {
+    outline: none;
+}
+
+.ui-accordion {
+    border-bottom: 0.5px solid #eee !important;
+}
+/* Bootstrap Ends */
+
+
+/* General Classes */
+.flex {
+    flex: 1;
+}
+
+.flexContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.main-content {
+    min-height: 90vh;
+    overflow-y: auto;
+    padding-top: 64px;
+}
+
+.bold {
+    font-weight:400;
+}
+
+.lightText {
+    color: #777777;
+}
+
+.lighterText {
+    color: #cccccc;
+}
+
+.center {
+    text-align: center;
 }
 
 .pb-block {
@@ -158,169 +597,9 @@ md-input-container.mat-block {
     display: block;
 }
 
-.flex {
-    flex: 1;
-}
-
-.mat-toolbar-tools {
-    font-size: 20px;
-    letter-spacing: .005em;
-    box-sizing: border-box;
-    font-weight: 400;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    width: 100%;
-    height: 64px;
-    max-height: 64px;
-    padding: 0 16px;
-    margin: 0;
-}
-
-.mat-content {
-    color: rgba(0,0,0,0.87);
-    background-color: rgb(255,255,255);
-    display: block;
-    position: relative;
-    overflow: auto;
-}
-
-.mat-titles p.text-muted {
-    color:grey;
-    margin-top: 0px;
-}
-
-.border-calendar {
-    border: 1px solid #eee;
-}
-
-h3.calendarTitle  {
-    font-weight: 400 !important;
-}
-
-.calendar .cal-month-view .cal-days {
-    border: none !important;
-}
-
-.calendar .cal-month-view .cal-days .cal-cell-row {
-    border: none !important;
-}
-
-.calendar .cal-month-view .cal-day-cell:not(:last-child) {
-    border: none !important;
-}
-
-.calendar .cal-month-view .cal-day-cell {
-    min-height: 50px !important;
-}
-
-.calendar .cal-month-view .cal-day-number {
-    font-size: 1rem !important;
-}
-
-.calendar .cal-month-view .cal-cell-top {
-    min-height: 40px !important;
-    margin: 2px 0px;
-}
-
-.calendar .cal-month-view .cal-day-number {
-    margin-right: 15px !important;
-    margin-left: 5px !important;
-}
-
-.calendar .cal-month-view .cal-events {
-    display: none !important;
-}
-
-.calendar .cal-month-view .cal-day-cell.cal-today {
-    background: none !important;
-}
-
-.calendar .cal-month-view .cal-day-badge {
-    float: right !important;
-    margin-right: 18px !important;
-    font-size: 0px !important;
-    width: 0px !important;
-    height: 0px !important;
-    background-color: #ffeaea !important;
-    padding: 0px !important;
-    margin-top: 8px !important;
-    min-width: 8px !important;
-    position: relative !important;
-    top: 7px !important;
-}
-
-.calendar .cal-month-view .cal-day-cell.cal-has-events .cal-day-number {
-    margin-top: 8px;
-}
-
-.calendar .cal-month-view .cal-day-cell.cal-today .cal-day-number {
-    width: 30px;
-    height: 30px;
-    background-color: #33bd9e;
-    border-radius: 15px;
-    padding: 5px 0px 7px 6px;
-    margin-top: 1px;
-    margin-right: 20px !important;
-}
-
-.calendar .cal-month-view .cal-day-cell.cal-out-month.cal-has-events .cal-day-number {
-    margin-left: 10px;
-}
-
-.calendar .cal-month-view .cal-day-badge {
-
-}
-
-.ui-accordion .ui-accordion-header{
-    background:rgba(255, 255, 255, 0.00);
-
-}
-.ui-accordion .ui-accordion-header .fa-caret-right,.ui-accordion .ui-accordion-header .fa-caret-down{
-    display: none;
-}
-
-.ui-state-default {
-    border: 0px solid #d6d6d6;
-}
-
 .fullframe {
     width: 100%;
     height: auto;
-}
-
-.mat-icon-small {
-    font-size: 1rem !important;
-}
-
-.mat-select-trigger {
-    font-size: 14px !important;
-}
-
-md-sidenav {
-    width: 300px;
-    background: -webkit-linear-gradient(top, #FFA6AA, #FF6D71); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(bottom, #FFA6AA, #FF6D71); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(bottom, #FFA6AA, #FF6D71); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to bottom, #FFA6AA, #FF6D71); /* Standard syntax (must be last) */
-    padding: 20px 30px;
-    color: #fff;
-}
-
-md-sidenav a {
-    color: #eaeaea;
-    cursor: pointer;
-}
-
-md-sidenav a:hover {
-    text-decoration: none;
-    color: #eaeaea;
 }
 
 .sidenav-divider {
@@ -328,40 +607,8 @@ md-sidenav a:hover {
     border-top-color: rgba(255, 255, 255, 0.3);
 }
 
-md-subheader {
-    margin: 1.5rem 0;
-}
-
-.ui-widget-header {
-    border: 0px !important;
-}
-
-.ui-widget-content {
-    border: 0px !important;
-}
-
-.ui-fileupload-buttonbar {
-    background-color: #fff !important;
-}
-
-.ui-autocomplete-token {
-    margin-bottom: 10px;
-}
-
 .brand img {
     width: 40px;
-}
-
-.mat-tab-link {
-    color: rgba(0,0,0,0.87) !important;
-}
-
-.mat-border-button {
-    border: 0.5px solid #ccc !important;
-}
-
-.mat-menu-item {
-    font-size: 1rem !important;
 }
 
 .message-item:after {
@@ -618,201 +865,8 @@ md-subheader {
     min-width: 100% !important;
 }
 
-.mat-button.mat-raised.mat-twitter,.mat-button.mat-raised.mat-twitter:focus,.mat-button.mat-raised.mat-twitter:hover {
-    color: #fff;
-    background: #00c7f7;
-    border-color: #00c7f7
-}
-
-.mat-facebook {
-    color: #000!important;
-    background-color: #fff
-}
-    
-.mat-facebook:focus,.mat-facebook:hover{
-    color: #fff!important;
-    background: #335397 !important;
-    border-color: #335397 !important
-}
-
-.mat-google-plus,.mat-gplus{
-    color: #000!important;
-    background-color: #fff
-}
-
-.mat-google-plus:focus,.mat-google-plus:hover,.mat-gplus:focus,.mat-gplus:hover {
-    color: #fff!important;
-    background: #dd4a38 !important;
-    border-color: #dd4a38 !important
-}
-
-.mat-button.mat-raised.mat-instagram,.mat-button.mat-raised.mat-instagram:focus,.mat-button.mat-raised.mat-instagram:hover {
-    color: #fff;
-    background: #82685a;
-    border-color: #82685a
-}
-
-.mat-button.mat-raised.mat-vimeo,.mat-button.mat-raised.mat-vimeo:focus,.mat-button.mat-raised.mat-vimeo:hover {
-    color: #fff;
-    background: #63879c;
-    border-color: #63879c
-}
-
-.mat-button.mat-raised.mat-flickr,.mat-button.mat-raised.mat-flickr:focus,.mat-button.mat-raised.mat-flickr:hover {
-    color: #fff;
-    background: #0061db;
-    border-color: #0061db
-}
-
-.mat-button.mat-raised.mat-github,.mat-button.mat-raised.mat-github:focus,.mat-button.mat-raised.mat-github:hover {
-    color: #fff;
-    background: #3b3b3b;
-    border-color: #3b3b3b
-}
-
-.mat-button.mat-raised.mat-pinterest,.mat-button.mat-raised.mat-pinterest:focus,.mat-button.mat-raised.mat-pinterest:hover {
-    color: #fff;
-    background: #bc2725;
-    border-color: #bc2725
-}
-
-.mat-button.mat-raised.mat-tumblr,.mat-button.mat-raised.mat-tumblr:focus,.mat-button.mat-raised.mat-tumblr:hover {
-    color: #fff;
-    background: #586980;
-    border-color: #586980
-}
-
-.mat-button.mat-raised.mat-linkedin,.mat-button.mat-raised.mat-linkedin:focus,.mat-button.mat-raised.mat-linkedin:hover {
-    color: #fff;
-    background: #018faf;
-    border-color: #018faf
-}
-
-.mat-button.mat-raised.mat-dribble,.mat-button.mat-raised.mat-dribble:focus,.mat-button.mat-raised.mat-dribble:hover {
-    color: #fff;
-    background: #ea73a0;
-    border-color: #ea73a0
-}
-
-.mat-button.mat-raised.mat-stumbleupon,.mat-button.mat-raised.mat-stumbleupon:focus,.mat-button.mat-raised.mat-stumbleupon:hover {
-    color: #fff;
-    background: #ea4b24;
-    border-color: #ea4b24
-}
-
-.mat-button.mat-raised.mat-lastfm,.mat-button.mat-raised.mat-lastfm:focus,.mat-button.mat-raised.mat-lastfm:hover {
-    color: #fff;
-    background: #b80638;
-    border-color: #b80638
-}
-
-.mat-button.mat-raised.mat-evernote,.mat-button.mat-raised.mat-evernote:focus,.mat-button.mat-raised.mat-evernote:hover {
-    color: #fff;
-    background: #3bab27;
-    border-color: #3bab27
-}
-
-.mat-button.mat-raised.mat-skype,.mat-button.mat-raised.mat-skype:focus,.mat-button.mat-raised.mat-skype:hover {
-    color: #fff;
-    background: #12A5F4;
-    border-color: #12A5F4
-}
-
-.mat-button.mat-raised.mat-soundcloud,.mat-button.mat-raised.mat-soundcloud:focus,.mat-button.mat-raised.mat-soundcloud:hover {
-    color: #fff;
-    background: #06f;
-    border-color: #06f
-}
-
-.mat-button.mat-raised.mat-behance,.mat-button.mat-raised.mat-behance:focus,.mat-button.mat-raised.mat-behance:hover {
-    color: #fff;
-    background: #b80638;
-    border-color: #b80638
-}
-
-.mat-button.mat-raised.mat-rss,.mat-button.mat-raised.mat-rss:focus,.mat-button.mat-raised.mat-rss:hover {
-    color: #fff;
-    background: #f79638;
-    border-color: #f79638
-}
-
-.mat-button.mat-raised.mat-youtube,.mat-button.mat-raised.mat-youtube:focus,.mat-button.mat-raised.mat-youtube:hover {
-    color: #fff;
-    background: #cc181e;
-    border-color: #cc181e
-}
-
-.flexContainer {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-    -webkit-justify-content: flex-start;
-    justify-content: flex-start;
-}
-
-.mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
-    background-color: #ff6d71 !important;
-    color: white !important;
-}
-
-.mat-raised-button.mat-primary[disabled], .mat-raised-button.mat-accent[disabled], .mat-raised-button.mat-warn[disabled], .mat-raised-button[disabled][disabled], .mat-fab.mat-primary[disabled], .mat-fab.mat-accent[disabled], .mat-fab.mat-warn[disabled], .mat-fab[disabled][disabled], .mat-mini-fab.mat-primary[disabled], .mat-mini-fab.mat-accent[disabled], .mat-mini-fab.mat-warn[disabled], .mat-mini-fab[disabled][disabled] {
-    background-color: rgba(0, 0, 0, 0.12) !important;
-    color: rgba(0, 0, 0, 0.38) !important;
-}
-
-.padding-left-0 {
-    padding-left: 0px !important;
-}
-
-.padding-right-0 {
-    padding-right: 0px !important;
-}
-
-.onboarding .mat-select-placeholder {
-    font-size: 1rem !important;
-    margin-bottom: 10px;
-}
-
-.onboarding .mat-input-placeholder {
-    font-size: 1rem !important;
-    margin-bottom: 10px;
-}
-
-.onboarding .mat-select-value-text {
-    color: #767676 !important;
-}
-
 .text-grey {
     color: #484848;
-}
-
-.margin-left-0 {
-    margin-left: 0px !important;
-}
-
-.margin-bottom-0 {
-    margin-bottom: 0px !important;
-}
-
-.padding-top-0 {
-    padding-top: 0px !important;
-}
-
-.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
-    font-size: 16px !important;
-}
-
-.dateStyles input.mat-input-element, .timeInput input.mat-input-element {
-    font-size: 18px !important;
-}
-
-.dateStyles .svgStyle md-icon {
-    font-size: 20px !important;
-}
-
-.timeInput .mat-input-element {
-    resize: none !important;
 }
 
 .noJustify a.mat-tab-link {
@@ -824,10 +878,6 @@ md-subheader {
     margin-right: 12px  !important;
     font-size: 1rem  !important;
     font-weight: 400  !important;
-}
-
-.margin-bottom-2 {
-    margin-bottom: 2px !important;
 }
 
 .rightLinks {
@@ -851,28 +901,84 @@ md-subheader {
     border-radius: 2px !important;
 }
 
-.ui-accordion .ui-accordion-header a {
-    color: #464646 !important;
-}
-
-.ui-accordion .ui-accordion-header a:focus {
-    outline: none;
-}
-
-.ui-accordion {
-    border-bottom: 0.5px solid #eee !important;
-}
-
 .vcenter {
     display: inline-block;
     vertical-align: middle;
     float: none;
 }
 
-.cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
-    border-bottom: 1.5px solid rgba(0,0,0,0.27);
+.clearfix {
+    clear: both;
+    display: block;
 }
+
+/* Onboarding Starts */
+.onboarding .mat-select-placeholder {
+    font-size: 1rem !important;
+    margin-bottom: 10px;
+}
+
+.onboarding .mat-input-placeholder {
+    font-size: 1rem !important;
+    margin-bottom: 10px;
+}
+
+.onboarding .mat-select-value-text {
+    color: #767676 !important;
+}
+
+/* Landing Page Starts*/
+
+md-input-container.mail-bg .mat-input-wrapper {
+    text-align: left;
+    padding-left: 20px;
+}
+
+md-input-container.mail-bg .mat-form-field-wrapper {
+    padding-bottom: 0px !important;
+}
+
+md-input-container.mail-bg .mat-form-field-underline {
+    display: none !important;
+}
+
+md-input-container.mail-bg .mat-input-subscript-wrapper {
+    display: none !important;
+}
+/* Landing Page Ends */
+
+.footerButtons .mat-button-focus-overlay {
+    background: none;
+}
+
+/* App Header */
 
 .mat-elevation-header {
     box-shadow: 0px 3px 40px -2px rgba(180, 180, 180, 0.2), 0px 3px 40px 0px rgba(180, 180, 180, 0.14), 0px 1px 40px 0px rgba(180, 180, 180, 0.12);
+}
+
+/* Search */
+.search-box {
+    width: 100%;
+    padding: .4rem;
+    background-color: #ffb;
+}
+
+.search-form {
+    margin: 0 2rem;
+    flex-grow: 1; /* <-- THE SECRET SAUCE! */
+    min-width: 18rem;
+    font-size: 14px;
+}
+
+.search-form .mat-input-container {
+    display: inline;
+}
+
+.search-form .mat-input-underline {
+    display: none;
+}
+
+.search-form .mat-input-wrapper {
+    padding-bottom: 0.69688em;
 }

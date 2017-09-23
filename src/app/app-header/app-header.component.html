@@ -1,9 +1,9 @@
 <md-toolbar class="layout-row mat-elevation-header" layout="row" color="white">
   <span>
-      <a href="javascript:void(0);" class="brand" aria-label="Peerbuds Homepage" (click)="goToHome()">
-            <img src="/assets/images/pb_logo.png" alt="logo">
-      </a>
-    </span>
+    <a href="javascript:void(0);" class="brand" aria-label="Peerbuds Homepage" (click)="goToHome()">
+          <img src="/assets/images/pb_logo.png" alt="logo">
+    </a>
+  </span>
   <span class="search-form">
       <md-input-container floatPlaceholder="never" class="mat-block" *ngIf="(isLoggedIn | async)">
         <input name="search" class="mat-block search-box" mdInput [formControl]="myControl" [mdAutocomplete]="auto" placeholder="Search people, topic...">
@@ -22,28 +22,41 @@
   <!-- This fills the remaining space of the current row -->
   <span class="example-spacer"></span>
   <span>
-      <button md-button [mdMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem">
+      <button md-button class="headerButtons" [mdMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
         Teach
       </button>
-      <button md-button [mdMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem">
+      <button md-button class="headerButtons" [mdMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
         Learn
       </button>
-      <button md-button [mdMenuTriggerFor]="headerNotificationsMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem">
-        Notifications
+      <button md-button class="headerButtons" [mdMenuTriggerFor]="headerNotificationsMenu" *ngIf="(isLoggedIn | async)">
+        <md-icon>notifications</md-icon>
       </button>
-      <div [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 25px;">
+      <button md-button class="headerButtons" [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)">
         <div>
           <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
           <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
         </div>
-      </div>
+      </button>
+       
+      <button md-button class="headerButtons" [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
+        Philosophy
+      </button>
+      <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+        Journey
+      </button>
+      <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+       About
+      </button>
+      <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+       White Paper
+      </button>
 
-      <a md-button href="/signup.html" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
+      <a md-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
         Sign Up
       </a>
 
       <!-- trying dialog-->
-      <button md-button (click)="openLogin()" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
+      <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
         Log In
       </button>
       
