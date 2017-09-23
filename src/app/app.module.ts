@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
 
@@ -13,13 +13,20 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+<<<<<<< HEAD
 import { IndexComponent } from './default/index/index.component';
 import {IndexPhilComponent} from './default/index-philosophy/index-philosophy.component';
+=======
+
+>>>>>>> 59032ff9228134db2c8daf02500ea2e2005f4612
 
 import 'hammerjs';
 
 import { DialogsModule } from './_services/dialogs/dialogs.module';
+import {GlobalErrorHandler} from './error-handler/globalerrorhandler';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import {SignupComponent} from './signup/signup.component';
+import { AppDesignComponent } from './app-design/app-design.component';
 
 @NgModule({
   declarations: [
@@ -28,10 +35,16 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     NoContentComponent,
     AppHeaderComponent,
     AppFooterComponent,
+<<<<<<< HEAD
     IndexComponent,
     IndexPhilComponent,
     AccessDeniedComponent, 
     LoginComponent
+=======
+    AccessDeniedComponent,
+    SignupComponent,
+    AppDesignComponent
+>>>>>>> 59032ff9228134db2c8daf02500ea2e2005f4612
   ],
   imports: [
     BrowserModule,
@@ -51,6 +64,12 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     MdProgressBarModule,
     DialogsModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+      {
+        provide: ErrorHandler,
+        useClass: GlobalErrorHandler
+      }
+  ]
 })
 export class AppModule {}

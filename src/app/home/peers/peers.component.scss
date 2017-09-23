@@ -3,24 +3,27 @@
 }
 
 .peerFeed{
-    padding-top: 70px;      
+    padding-top: 50px;
 }
 
 .recommendation-thumb{
     object-fit: cover;
-    height: 240px;
-    width: 200px;
+    height: 290px;
+    width: 100%;
 }
 
 .peer-recommendation-thumb{
     object-fit: cover;
-    height: 230px;
-    width: 165px;
+    height: 238px;
+    width: 100%;
 }
 
 .recommendation-card{
-    max-width: 230px;
-    height: 370px;
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 20%;
+    float: left;
 }
 
 .peerFeed label{
@@ -29,7 +32,11 @@
 }
 
 .peer-recommendation-card{
-    max-width: 230px;
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 16.66%;
+    float: left;
 }
 
 .peerFeed .title {
@@ -46,4 +53,8 @@
 .rightLinks span {
     color: #767676 !important;
     font-size:16px !important;
+}
+
+.mat-display-1 {
+    margin-bottom: 25px !important;
 }

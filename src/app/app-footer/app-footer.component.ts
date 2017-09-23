@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -8,8 +9,12 @@ import { Component, OnInit } from '@angular/core';
 export class AppFooterComponent implements OnInit {
 
   public isVisible = true;
+  public activePage = '';
 
-  constructor() { }
+  constructor(
+      public activatedRoute: ActivatedRoute
+  ) {
+  }
 
   ngOnInit() {
   }

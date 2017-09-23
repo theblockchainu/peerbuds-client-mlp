@@ -145,8 +145,8 @@
                     </md-card-footer>
                   </md-card>
                 </ng-template>
-                <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'active'">
-                  <div *ngIf="_collectionService.getCurrentCalendar(collection.calendars) !== undefined">
+                <div *ngIf="_collectionService.getCurrentCalendar(collection.calendars) !== undefined">
+                  <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'active'">
                     <div *ngIf="_collectionService.getCurrentCalendar(collection.calendars).startDate > now; then ongoingCard else upcomingCard">
                       <!--show card template here-->
                     </div>
