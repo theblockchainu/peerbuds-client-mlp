@@ -1,9 +1,9 @@
 <md-toolbar class="layout-row mat-elevation-header" layout="row" color="white">
   <span>
-      <a href="javascript:void(0);" class="brand" aria-label="Peerbuds Homepage" (click)="goToHome()">
-            <img src="/assets/images/pb_logo.png" alt="logo">
-      </a>
-    </span>
+    <a href="javascript:void(0);" class="brand" aria-label="Peerbuds Homepage" (click)="goToHome()">
+          <img src="/assets/images/pb_logo.png" alt="logo">
+    </a>
+  </span>
   <span class="search-form">
       <md-input-container floatPlaceholder="never" class="mat-block" *ngIf="(isLoggedIn | async)">
         <input name="search" class="mat-block search-box" mdInput [formControl]="myControl" [mdAutocomplete]="auto" placeholder="Search people, topic...">

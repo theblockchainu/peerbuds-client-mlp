@@ -79,7 +79,7 @@ md-subheader {
 
 .mat-white {
     background-color: white !important;
-    border-bottom: 4px solid #dedede;
+    /* border-bottom: 4px solid #dedede; */
 }
 
 .mat-tab-link {
@@ -91,12 +91,14 @@ md-subheader {
 }
 
 .mat-menu-item {
-    font-size: 14px !important;
+    /* font-size: 14px !important; */
+    font-size: 1rem !important;
 }
 
 .mat-list-item {
     cursor: pointer;
-    font-size: 14px !important;
+    /* font-size: 14px !important; */
+    font-size: 1rem !important;
 }
 
 .mat-list-item-content {
@@ -143,7 +145,7 @@ md-subheader {
 }
 
 .mat-icon-small {
-    font-size: 16px !important;
+    font-size: 1rem !important;
 }
 
 .mat-select-trigger {
