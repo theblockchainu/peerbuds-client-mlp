@@ -33,7 +33,7 @@ export class HomefeedComponent implements OnInit {
   fetchWorkshops() {
     const query = {
       'include': [
-        { 'collections': ['reviews'] }
+        { 'collections': [{'owners': 'reviewsAboutYou'}] }
       ]
     };
 
@@ -42,8 +42,9 @@ export class HomefeedComponent implements OnInit {
         this.workshops = [];
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
-            if (collection.reviews) {
-              collection.rating = this._collectionService.calculateRating(collection.reviews);
+            if (collection.owners[0].reviewsAboutYou) {
+              collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+              collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
             }
             this.workshops.push(collection);
           });
@@ -64,15 +65,16 @@ export class HomefeedComponent implements OnInit {
         'reviewsAboutYou',
         'profiles'
       ],
+      'where': {
+        'id': {'neq': this.userId}
+      },
       'limit': 6
     };
     this._profileService.getAllPeers(query).subscribe((result) => {
       this.peers = [];
       for (const responseObj of result.json()) {
-        if (responseObj.id !== this.userId) {
-          responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-          this.peers.push(responseObj);
-        }
+        responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
+        this.peers.push(responseObj);
       }
     }, (err) => {
       console.log(err);

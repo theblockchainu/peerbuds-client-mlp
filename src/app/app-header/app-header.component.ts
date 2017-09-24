@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { Observable } from 'rxjs/Rx';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
@@ -12,6 +12,7 @@ import {Router} from '@angular/router';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
 import { DialogsService } from '../_services/dialogs/dialog.service';
+import {AppNotificationDialogComponent} from './dialogs/app-notification-dialog/app-notification-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -26,6 +27,7 @@ export class AppHeaderComponent implements OnInit {
   public profile: any = {};
   public userType = '';
   public myControl = new FormControl('');
+    @ViewChild('notificationsButton') notificationsButton;
   public userId: string;
   private key = 'userId';
   public options: any[];
@@ -75,7 +77,7 @@ export class AppHeaderComponent implements OnInit {
     if (this.loggedIn) {
         this._profileService.getCompactProfile().subscribe(profile => {
             this.profile = profile[0];
-            if(this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
+            if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
                 this.isTeacher = true;
             }
         });
@@ -184,4 +186,24 @@ export class AppHeaderComponent implements OnInit {
   public goToHome() {
       this.router.navigate(['home', 'homefeed']);
   }
+
+    openNotificationsDialog(): void {
+        const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
+            width: '350px',
+            data: {
+
+            },
+            disableClose: false,
+            position: {
+                top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
+                left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 170 + 'px'
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                // do something here..
+            }
+        });
+    }
 }

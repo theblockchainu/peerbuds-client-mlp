@@ -28,7 +28,7 @@
       <button md-button [mdMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem">
         Learn
       </button>
-      <button md-button [mdMenuTriggerFor]="headerNotificationsMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem">
+      <button md-button #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async)" style="font-size: 1rem">
         Notifications
       </button>
       <div [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 25px;">
@@ -90,19 +90,6 @@
   <button md-menu-item [routerLink]="['/console/calendar']">
       Calendar
     </button>
-</md-menu>
-
-
-<md-menu #headerNotificationsMenu>
-  <div class="notificationsDiv dropdown-menu notification-sub-box">
-    <ul id="notificationsUL"></ul>
-    <div class="noNotiExists">
-      <div class="notificationLiContent">
-        <span class="text-grey conDesc">No notifications</span>
-      </div>
-    </div>
-    <div class='seeAllLi hide'><a class='seeAllAnc' href="${baseUrl}/notifications/all-notifications">See All</a></div>
-  </div>
 </md-menu>
 
 <md-menu #headerUserMenu>

@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="mat-body-2">Notifications</div>
+  </div>
+  <div class="col-md-4" style="text-align: right">
+    <p>View all</p>
+  </div>
+</div>
+<div class="row margin-top-20">
+  <div class="col-md-12">
+    <md-list>
+      <md-list-item>
+        <div [ngClass]="{'row': true, 'notificationsRow': true, 'notificationsRowUnread': false}">
+          <div class="col-md-2">
+            <img *ngIf="!picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
+            <img *ngIf="picture_url" src="{{config.apiUrl + picture_url}}" alt="A" class="circle-thumb notificationsImage">
+          </div>
+          <div class="col-md-8" style="padding-left: 25px;">
+            <!--Content here-->
+            <div>Notification content</div>
+            <div class="mat-caption" style="margin-top: 0px;">15 mins ago</div>
+          </div>
+          <div class="col-md-1" style="top: 10px;">
+            <md-icon class="lightText" style="font-size: 10px; cursor: pointer;">close</md-icon>
+          </div>
+        </div>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>

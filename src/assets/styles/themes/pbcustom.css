@@ -117,6 +117,7 @@ md-input-container.mat-block {
 .mat-list-item-content {
     min-height: 48px;
     height: fit-content !important;
+    padding-left: 0px !important;
 }
 
 .mat-list-item-focus {

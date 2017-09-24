@@ -156,7 +156,7 @@ export class WorkshopsComponent implements OnInit {
 
   openPriceDialog(): void {
     const dialogRef = this.dialog.open(SelectPriceComponent, {
-      width: '250px',
+      width: '200px',
       data: {
         availableRange: this.availableRange,
         selectedRange: this.selectedRange

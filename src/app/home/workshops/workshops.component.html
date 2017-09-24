@@ -8,16 +8,16 @@
         <div class="col-md-7">
           <div class="mat-display-1" *ngIf="!selectedTopics || selectedTopics.length<1">Workshops</div>
           <div *ngIf="selectedTopics && selectedTopics.length>0">
-            <div class="mat-display-1" style="display:inline;">Workshops in <span>{{selectedTopics[0].name | titlecase}}</span></div>
+            <div class="mat-display-1" style="display:inline-block;">Workshops in <span>{{selectedTopics[0].name | titlecase}}</span></div>
             <span *ngIf="selectedTopics.length>1" class="mat-h4 lightText">&emsp;  and {{selectedTopics.length-1}} more topics</span>
           </div>
         </div>
         <div class="col-md-3 pull-right">
-          <div class="col-md-6" style="text-align: right">
-            <button md-button #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important;">Topics <md-icon>arrow_drop_down</md-icon> </button>
-          </div>
-          <div class="col-md-6">
+          <div style="text-align: right; float: right;">
             <button md-button #priceButton (click)="openPriceDialog()" style="color: rgba(0,0,0,0.54) !important;">Price Range <md-icon>arrow_drop_down</md-icon> </button>
+          </div>
+          <div style="text-align: right; float: right;">
+            <button md-button #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important;">Topics <md-icon>arrow_drop_down</md-icon> </button>
           </div>
         </div>
       </div>
