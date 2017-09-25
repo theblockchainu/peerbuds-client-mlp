@@ -26,7 +26,7 @@
     width: 100%;
     left: 0;
     z-index: 0;
-    top: 12%;
+    top: 10.5%;
 }
 
 .problem {
@@ -34,8 +34,8 @@
 }
 
 .headline {
-    margin-left: 25%;
     color: black;
+    font-size: 4rem;
 }
 
 .content {
@@ -44,23 +44,90 @@
 }
 
 .quote {
-    // top: 900px;
-    // left: 700px;
     width: 87px;
 }
 
-.quoteText {
-    // top: 980px;
-    // left: 450px;
+.quoteText, .coreTopic {
     color:#ff5b5f;
 }
 
 .quoteAuthor {
-    // top: 1020px;
-    // left: 650px;
     font-size: 16px;
     font-weight: 400; 
     color: #979797;
+}
+
+.corevalue {
+    width: 20%;
+    float: left;
+}
+
+.selected1, .selected2,  .selected3, .selected4, .selected5 {
+    width: 13px;
+    top: 112%;
+}
+
+.selected1{
+    left: 11%;
+}
+
+.selected2{
+    left: 30%;
+}
+
+.selected3{
+    left: 50%;
+}
+
+.selected4{
+    left: 69%;
+}
+
+.selected5{
+    left: 88%;
+}
+.default-circle, .active-circle {
+    width: 130px;
+}
+
+.default-transformation {
+    width: 55px;
+    left: 8.5%;
+    top: 38px;
+}
+
+.default-pplFocussed {
+    width: 50px; 
+    left: 28%;
+    top: 35px;
+
+}
+
+.default-courage {
+    width: 60px; 
+    left: 47%;
+    top: 44px;
+
+}
+
+.default-collab {
+    width: 55px;
+    left: 66.5%;
+    top: 42px;
+
+}
+
+.default-optmism {
+    width: 52px;   
+    left: 86%;
+    top: 38px;
+
+}
+
+.coreTopic {
+    font-size: 2.25rem;
+    font-weight: 400;    
+    margin-bottom: 20px;
 }
 
 .view5Image {
