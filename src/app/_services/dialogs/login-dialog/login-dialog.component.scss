@@ -1,4 +1,4 @@
-.md-dialog-container {
+md-dialog-container {
     padding:10px !important;
 }
 md-input-container md-icon {
@@ -16,8 +16,8 @@ md-dialog-content {
 
 .page-signin
 {
-    width: 440px;
-    height: 480px;
+    width: 434px;
+    height: 448px;
   
 }
 .spacer{
@@ -63,6 +63,7 @@ md-dialog-content {
 
 .loginbtn{
     background-color: #ff5b5f;
+    font-size:17px;
 }
 
 .txtcolor{
@@ -79,12 +80,23 @@ md-dialog-content {
     color: #fff!important;
 }
 
-.circle-icon {
-    padding:3px 8px 5px 4px;
-    border-radius: 50%;
-    position:relative;
+.circle-icon1 {
+    padding:4px 6px 4px 6px;
+    border-radius: 100%;
+    margin: 0 21px 0 1px;
 }
+.circle-icon2{
+    padding:4px 5.5px 4px 5.75px;
+    border-radius: 100%;
+    margin: 0 21px 0 1px;
+}
+
 .dialog-content{
     width: 45vw;
     height: 90vh;
+}
+
+.btn-block{
+   font-size:15px;
+   color:#484848;
 }

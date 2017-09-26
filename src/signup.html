@@ -119,14 +119,15 @@
         }
 
         .btn-social i {
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        
             font-size: 13px;
             left: 16px;
-            padding: 4px 6px 4px 6px;
+            padding:4px 5.5px 4px 5.75px;
             position: absolute;
             top: 13px;
            
         }
+
 
         .btn-social i.fa-google,
         .btn-social i.fa-facebook,
@@ -150,6 +151,18 @@
             height: 45px;
             width: 299px;
         }
+
+        .btn-ggl:hover i {
+            background-color: #fff;
+            color: #dd3723 !important;
+
+        }
+         .btn-fb:hover i {
+            background-color: #fff;
+            color: #324B80 !important;
+
+        }
+
 
         .btn-ggl:hover {
             background-color: #dd3723;
@@ -267,7 +280,7 @@
 }
 
 .circle-icon {
-    padding:4px;
+    padding:4px 5px 4px 5px;
     border-radius: 100%;
 }
 
@@ -584,9 +597,8 @@ input:focus ~ .highlight {
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Continue</button>
                             </div>
-                               <div class="text-center">Have an account already? <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Log in</a></div>
+                               <div class="text-center">Have an account already? <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;" onclick="login()">Log in</a></div>
                         </div>
-                       
                     </form>
                 </div>
             </div>
