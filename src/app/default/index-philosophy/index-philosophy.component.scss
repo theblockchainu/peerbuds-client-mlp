@@ -1,301 +1,611 @@
-.example-card {
-  width: 1500px;
-  height: 800px;
+.outerContainer {
+    border: 0;
+    float: left;
+    position: relative;
+    width: 100%;
 }
 
-.example-header-image {
-  background-image: url('/assets/images/images_landing/Waves_above_the_fold.png');
-  background-size: cover;
+.absolute {
+    position: absolute;
 }
 
-.text-center{
-    text-align: center;
-    font-weight: normal;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    font-family: Lato;
-    color: #767676;
-    }
-
-.text-left{
-    text-align: left;
-    padding-left: 90px;
-    padding-top: 30px;
-    
-}
-.top{
-    text-align: top;
-    position:relative;
+.right {
+    right: 0;
 }
 
-html,
-body,
-.view, .view2, .view3, .view4, .view5, .view6, view7 {
-    height: 100%;
+.rightRhombus {
+    width: 342px;
+}
+.rightImage {
+    width: 578px;
+    height: auto;
+    z-index: 10;
 }
 
-.view {
-    background: url('/assets/images/images_landing/Waves_above_the_fold.png')no-repeat center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    height: 400px;
-    padding-left: 10px;
+.wavesPhilosophy {
+    width: 100%;
+    left: 0;
+    z-index: 0;
+    top: 10.5%;
 }
 
-.side-img{
-     background: url('/assets/images/images_landing/philosophy2.png')no-repeat right;
-      background-size: 460px;
-      padding-top: 250px;
-      padding-left: 10px;
-
-}
-.view2 {
-    background-size: 50% 100%;
-    height: 600px;
-    margin: 30px 30px 30px 20px;
-    background-position: left;
-    font-family: Lato;
-}
-
-.view3 {
-    background-size: 50% 100%;
-    height: 500px;
-    margin: 60px 20px 30px 30px;
-    background-position: right;
-}
-
-.view4{
-    background: url('/assets/images/images_landing/Illustration_3.png')no-repeat center;
-    background-size: 50% 100%;
-    height: 500px;
-    margin: 60px 30px 30px 20px;
-    background-position: left;
-}
-
-.view5 {
-    background: url('/assets/images/images_landing/Shape_testimoni.png')no-repeat center;
-    background-size: 95% 100%;
-    height: 1600px;
-    background-position: right;
-}
-
-.view6 {
-    background: url('/assets/images/images_landing/Arrow.png')no-repeat center;
-    background-size: 7%;
-    height: 50px;
-    width: 20px;
-    padding: 1000px 900px 0 60px;
-    background-position: left;
-}
-.imgs{
- background: url('/assets/images/images_landing/testimoni_2.png')no-repeat center;
-    
-}
-.view7 {
-    background: url('/assets/images/images_landing/shape_journey.png')no-repeat center;
-    background-size: 95% 100%;
-    height: 800px;
-    background-position: left;
-}
-.view8 {
-    background: url('/assets/images/images_landing/shape_footer.png')no-repeat center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    height: 300px;
-    padding-top: 20px;
-    padding-left: 20px;
+.problem {
     text-align: center;
 }
-.space{
-    padding: 10px 5px 10p 5px;
-    margin-top: 50px;
+
+.headline {
+    color: black;
+    font-size: 4rem;
 }
 
-.h1-responsive{
+.content {
+    word-wrap: break-word;
+    color: #979797 !important;
+}
+
+.quote {
+    width: 87px;
+}
+
+.quoteText, .coreTopic {
+    color:#ff5b5f;
+}
+
+.quoteAuthor {
+    font-size: 16px;
+    font-weight: 400; 
+    color: #979797;
+}
+
+.corevalue {
+    width: 20%;
+    float: left;
+}
+
+.selected1, .selected2,  .selected3, .selected4, .selected5 {
+    width: 13px;
+    top: 112%;
+}
+
+.selected1{
+    left: 11%;
+}
+
+.selected2{
+    left: 30%;
+}
+
+.selected3{
+    left: 50%;
+}
+
+.selected4{
+    left: 69%;
+}
+
+.selected5{
+    left: 88%;
+}
+.default-circle, .active-circle {
+    width: 130px;
+}
+
+.default-transformation {
+    width: 55px;
+    left: 8.5%;
+    top: 38px;
+}
+
+.default-pplFocussed {
+    width: 50px; 
+    left: 28%;
+    top: 35px;
+
+}
+
+.default-courage {
+    width: 60px; 
+    left: 47%;
+    top: 44px;
+
+}
+
+.default-collab {
+    width: 55px;
+    left: 66.5%;
+    top: 42px;
+
+}
+
+.default-optmism {
+    width: 52px;   
+    left: 86%;
+    top: 38px;
+
+}
+
+.coreTopic {
+    font-size: 2.25rem;
+    font-weight: 400;    
+    margin-bottom: 20px;
+}
+
+.view5Image {
+    width: 90%;
+}
+
+.view6Image {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 370px;
+    width: 90%;
+}
+
+.arrow {
+    position: absolute;
+    width: 57px;
+    height: 26px;
+}
+
+.arrow-left{
+    left: 127px;
+    bottom: 1250px;
+}
+
+.text {
+    bottom: 1245px;
+    position: absolute;
+    left: 450px;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    text-align: justify;
+    color: #979797;
+    margin-bottom:0px;
+}
+
+.author {
+    bottom: 1185px;
+    position: absolute;
+    left: 690px;
+    font-size: 16px;
+    font-weight: 400; 
     color: #484848;
 }
 
-.txt{
-    color: #000;
-    padding-bottom: 60px;
-    line-height: 60px;
-    font-weight: 300;
-    font-size: 45px;
-    }
-.txt1{
-    padding-bottom: 10px;
-}
-.content,
-.right{
-    text-align: right;
-    text-position: right;
-    color: #767676;
-    padding: 100px 30px 40px 30px;
+.arrow-right {
+    right: 150px;
+    bottom: 1250px;
 }
 
-.left{
-    text-align: left;
+.testimonial {
+    position: absolute;
+    bottom: 1350px;
+    width: 64px;
+    height: 64px;
 }
 
-.example-content1{
-  margin-left: 350px;
-  text-align: justify;
-  padding-top: 10px;
-  box-shadow: none;
-  margin-top: -25px;
-  margin-right:300px;
-  font-size: 18px;
-  line-height: 28px;
-
+.testimonial1 {
+    left: 600px;
 }
-.example-content2{
-    margin-right: 800px;
+
+.testimonial2 {
+    left: 665px;
+    width: 150px;
+    height: 150px;
+    bottom: 1300px;
+}
+
+.testimonial3 {
+    left: 815px;
+}
+
+.journey{
+    position: absolute;
+    bottom: 500px;
+    width: 270px;
+    height: 270px;
+}
+
+.journey1 {
+    left: 120px;
+}
+
+.journey2 {
+    left: 430px;
+}
+
+.journey3 {
+    left: 740px;
+}
+
+.journey4 {
+    right: 120px;
+}
+
+.journeyText {
+    bottom: 815px;
+    position: absolute;
+    left: 665px;
     text-align: justify;
-}
-.txtcolor, .loginbtn{
-    background-color: #000;
-    color: #fff;
-    position: left;
+    color: white;
+    font-weight: 100 !important;
 }
 
-md-input-container md-icon {
-    position: right;
-    top: 5px;
-    left: 2px;
-    }
+.journeyDesc {
+    bottom: 800px;
+    position: absolute;
+    left: 680px;
+    font-size: 17px;
+    font-weight: 300;
+    text-align: justify;
+    color: #979797;
+}
+
+.footer {
+    position: absolute;
+    bottom: 104px;
+    left: 0;
+}
+
+.oval {
+    bottom: 0;
+    position: absolute;
+    left: 0;
+}
 
 .notif{
-    text-align: center;
-    color: #fff;
-    margin: 30px 0 30px 0;
-    font-size: 18px;
-    border-color: #000;
-}
-.md-raised{
-    color: #fff;
-    background-color: #000;
-    width: 13%;
-    border-color: #000;
-    height: 40px;
-    text-align: center;
-
-}
-.footer-btn{
-    min-width: 280px;
-}
-
-.test{
-    margin: -500px 150px 20px 250px;
-    color: #767676;
-    font-size:22px;
-    font-style:italic;
-    font-family: Lato;
-    line-height: 30px;
-
-}
-    
-.card-container {
-      display: flex;
-      flex-direction: row;
-}
-
-.md-grid-title {
-background: lightblue;
-}
-
-.quote{
-    text-align: justify; 
-    text-align-last: center;
-    font-famly: Lato;
-    font-size: 26px;
-    color: #FF5B5F;
-    font-weight: 800;
-    line-height: 40px;
-}
-
-.author{
-    text-align: justify; 
-    text-align-last: center;
-    font-size: 15px;
-}
-
-.quote-img{
-background-image: url('/assets/images/images_landing/2.png')no-repeat center;
-background-size: 10%;
-background-position: center;
-    
-}
-
-.fa{
-    color: #767676;
-    margin: 10px 10px 10px 10px;
-}
-.fa:hover {
-    color: #FF5B5F;
-}
-.footer-btn, .footer-btn1{
-    min-width: 280px;
-}
-
-.footer-btn1:hover {
-    color: #fff;
-}
-
-#text1, #text2, #text3, #text4, #text5{
-display: none;
-    
-}
-
-.fa-users:hover ~ #text1 {
-  display: block;
-}
-
-.fa-heartbeat:hover ~ #text2 {
-  display: block;
-}
-
-.fa-smile:hover ~ #text3 {
-  display: block;
-}
-
-.fa-expand:hover ~ #text4 {
-  display: block;
-}
-
-.fa-connectdevelop:hover ~ #text5 {
-  display: block;
-}
-
-.hover-title{
-    color: #FF5B5F;
-    font-family: Lato;
-    font-size: 20px;
-    text-align: center;
-}
-
-.hover-content{
-    color: #767676;
-    font-family: Lato;
-    font-size: 15px;
-    text-align: center;
-}
-.border-bottom{
-    border-bottom-color: #ffffff;
-}
-
-.email-btn{
-    height:47px;
     position: absolute;
-    text-align:center;
+    left: 600px;
+    bottom: 280px;
+    font-size: 16px;
+    color: white;
 }
 
-.mail-bg{
-    background-color: #FFFFFF;
-    padding: 8px;
-    height: 45px;
-    width: 40%;
+.mail-bg {
+    position: absolute;
+    bottom: 220px;
+    width: 600px;
+    left: 350px;
+    background: white;
+    line-height: 16px;
 }
+
+.email-btn {
+    position: absolute;
+    bottom: 220px;
+    left: 950px;
+    background: black;
+    color: white;
+    line-height: 40px;
+    width: 10%;
+    box-shadow:0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.space{
+    padding: 30px 5px 10p 5px;
+    margin-top: 50px;
+}
+
+
+// .example-card {
+//   width: 1500px;
+//   height: 800px;
+// }
+
+// .example-header-image {
+//   background-image: url('/assets/images/images_landing/Waves_above_the_fold.png');
+//   background-size: cover;
+// }
+
+// .text-center{
+//  text-align: center;
+//     font-weight: normal;
+//     padding-top: 40px;
+//     padding-bottom: 40px;
+//     font-family: Lato;
+//     color: #767676;
+//     }
+
+// .text-left{
+//     text-align: left;
+//     padding-left: 90px;
+//     padding-top: 30px;
+    
+// }
+// .top{
+//     text-align: top;
+//     position:relative;
+// }
+
+// html,
+// body,
+// .view, .view2, .view3, .view4, .view5, .view6, view7 {
+//     height: 100%;
+// }
+
+// .view {
+//     background: url('/assets/images/images_landing/Waves_above_the_fold.png')no-repeat center;
+//     -webkit-background-size: cover;
+//     -moz-background-size: cover;
+//     -o-background-size: cover;
+//     background-size: cover;
+//     height: 400px;
+//     padding-left: 10px;
+// }
+
+// .side-img{
+//      background: url('/assets/images/images_landing/philosophy2.png')no-repeat right;
+//       background-size: 460px;
+//       padding-top: 250px;
+//       padding-left: 10px;
+
+// }
+// .view2 {
+//     background-size: 50% 100%;
+//     height: 600px;
+//     margin: 30px 30px 30px 20px;
+//     background-position: left;
+//     font-family: Lato;
+// }
+
+// .view3 {
+//     background-size: 50% 100%;
+//     height: 500px;
+//     margin: 60px 20px 30px 30px;
+//     background-position: right;
+// }
+
+// .view4{
+//     background: url('/assets/images/images_landing/Illustration_3.png')no-repeat center;
+//     background-size: 50% 100%;
+//     height: 500px;
+//     margin: 60px 30px 30px 20px;
+//     background-position: left;
+// }
+
+// .view5 {
+//     background: url('/assets/images/images_landing/Shape_testimoni.png')no-repeat center;
+//     background-size: 95% 100%;
+//     height: 1600px;
+//     background-position: right;
+// }
+
+// .view6 {
+//     background: url('/assets/images/images_landing/Arrow.png')no-repeat center;
+//     background-size: 7%;
+//     height: 50px;
+//     width: 20px;
+//     padding: 1000px 900px 0 60px;
+//     background-position: left;
+// }
+// .imgs{
+//  background: url('/assets/images/images_landing/testimoni_2.png')no-repeat center;
+    
+// }
+// .view7 {
+//     background: url('/assets/images/images_landing/shape_journey.png')no-repeat center;
+//     background-size: 95% 100%;
+//     height: 800px;
+//     background-position: left;
+// }
+// .view8 {
+//     background: url('/assets/images/images_landing/shape_footer.png')no-repeat center;
+//     -webkit-background-size: cover;
+//     -moz-background-size: cover;
+//     -o-background-size: cover;
+//     background-size: cover;
+//     height: 300px;
+//     padding-top: 20px;
+//     padding-left: 20px;
+//     text-align: center;
+// }
+// .space{
+//  padding: 10px 5px 10p 5px;
+//  margin-top: 50px;
+// }
+
+// .h1-responsive{
+//  color: #484848;
+// }
+
+// .txt{
+//  color: #000;
+//     padding-bottom: 60px;
+//     line-height: 60px;
+//     font-weight: 300;
+//     font-size: 45px;
+//     }
+// .txt1{
+//     padding-bottom: 10px;
+// }
+// .content,
+// .right{
+//  text-align: right;
+//  text-position: right;
+//  color: #767676;
+//     padding: 100px 30px 40px 30px;
+// }
+
+// .left{
+//  text-align: left;
+// }
+
+// .example-content1{
+//   margin-left: 350px;
+//   text-align: justify;
+//   padding-top: 10px;
+//   box-shadow: none;
+//   margin-top: -25px;
+//   margin-right:300px;
+//   font-size: 18px;
+//   line-height: 28px;
+
+// }
+// .example-content2{
+//     margin-right: 800px;
+//     text-align: justify;
+// }
+// .txtcolor, .loginbtn{
+//     background-color: #000;
+//     color: #fff;
+//     position: left;
+// }
+
+// md-input-container md-icon {
+//     position: right;
+//     top: 5px;
+//     left: 2px;
+//     }
+
+// .notif{
+//     text-align: center;
+//     color: #fff;
+//     margin: 30px 0 30px 0;
+//     font-size: 18px;
+//     border-color: #000;
+// }
+// .md-raised{
+//     color: #fff;
+//     background-color: #000;
+//     width: 13%;
+//     border-color: #000;
+//     height: 40px;
+//     text-align: center;
+
+// }
+// .footer-btn{
+//     min-width: 280px;
+// }
+
+// .test{
+//     margin: -500px 150px 20px 250px;
+//     color: #767676;
+//     font-size:22px;
+//     font-style:italic;
+//     font-family: Lato;
+//     line-height: 30px;
+
+// }
+    
+// .card-container {
+//       display: flex;
+//       flex-direction: row;
+// }
+
+// .md-grid-title {
+// background: lightblue;
+// }
+
+// .quote{
+//     text-align: justify; 
+//     text-align-last: center;
+//     font-famly: Lato;
+//     font-size: 26px;
+//     color: #FF5B5F;
+//     font-weight: 800;
+//     line-height: 40px;
+// }
+
+// .author{
+//     text-align: justify; 
+//     text-align-last: center;
+//     font-size: 15px;
+// }
+
+// .quote-img{
+// background-image: url('/assets/images/images_landing/2.png')no-repeat center;
+// background-size: 10%;
+// background-position: center;
+    
+// }
+
+// .fa{
+//     color: #767676;
+//     margin: 10px 10px 10px 10px;
+// }
+// .fa:hover {
+//     color: #FF5B5F;
+// }
+// .footer-btn, .footer-btn1{
+//     min-width: 280px;
+// }
+
+// .footer-btn1:hover {
+//     color: #fff;
+// }
+
+// #text1, #text2, #text3, #text4, #text5{
+// display: none;
+    
+// }
+
+// .fa-users:hover ~ #text1 {
+//   display: block;
+// }
+
+// .fa-heartbeat:hover ~ #text2 {
+//   display: block;
+// }
+
+// .fa-smile:hover ~ #text3 {
+//   display: block;
+// }
+
+// .fa-expand:hover ~ #text4 {
+//   display: block;
+// }
+
+// .fa-connectdevelop:hover ~ #text5 {
+//   display: block;
+// }
+
+// .hover-title{
+//     color: #FF5B5F;
+//     font-family: Lato;
+//     font-size: 20px;
+//     text-align: center;
+// }
+
+// .hover-content{
+//     color: #767676;
+//     font-family: Lato;
+//     font-size: 15px;
+//     text-align: center;
+// }
+// .border-bottom{
+//     border-bottom-color: #ffffff;
+// }
+
+// .email-btn{
+//     height:47px;
+//     position: absolute;
+//     text-align:center;
+// }
+
+// .mail-bg{
+//     background-color: #FFFFFF;
+//     padding: 8px;
+//     height: 45px;
+//     width: 40%;
+// }
+
+// .small-img{
+//     width: 1%;
+// }
+
+// .journey img{
+//     width: 25%;
+//     height: 300px;
+//     padding: 20px 10px 30px 30px;
+//     margin-top: 600px 10px 0 15px;
+//     white-space: nowrap;
+//     float: left;
+// }
+// .spacer{
+//     margin-top: 180px;
+//     color: #fff;
+//     padding: 200px 0 25px 0;
+//     font-weight: 200;
+//     }
