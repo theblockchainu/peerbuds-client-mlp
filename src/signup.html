@@ -23,7 +23,7 @@
     <!--<link rel="stylesheet" type="text/css" href="assets/styles/themes/pbcustom.css">-->
     <style>
         body {
-            /*font-family: Lato;*/
+            font-family: Lato;
         }
 
          .signup-box {
@@ -33,6 +33,7 @@
             height: 373px;
             border: 1px solid lightgrey;
             font-family: Lato;
+            margin-bottom: 70px;
         }
         
         .signup-box2{
@@ -43,10 +44,11 @@
             border: 1px solid lightgrey;
             font-family: Lato;
             margin: -170px;
+            margin-bottom: 70px;
 
         }
         .margin-top-100 {
-            margin-top: 100px;
+            margin-top: 90px;
         }
     
         .signup-box label {
@@ -56,14 +58,20 @@
         }
 
         .login-section {
-            margin: 0;
+            margin: -3%;
         }
 
         .form-control {
             height: 35px;
             width:100%;
+            box-shadow: none !important;
+            border-radius: none !important;
+            border:none;
+            border-bottom: 1px solid #ccc !important;
         }
-
+        .form-control.error{
+            border-bottom: 1px solid #ff6d71 !important;
+        }
         .form-control:focus {
             outline: none;
             outline-color: transparent;
@@ -76,15 +84,20 @@
         .form-control[readonly] {
             background-color: inherit!important;
         }
-
+    
         .btn {
             height: 45px;
             width: 208px;
-            margin-left: 182px;
+            margin-left: 30%;
             margin-top: 14px;
-            background-color: #FF5B5F;
-        
-    }
+            background-color: #ff6d71;
+            border-radius: 3px;
+        }
+
+        .small-font{
+        color: #666 !important;
+        font-size: 14px;
+        }
 
         .btn:focus {
             outline: none;
@@ -94,7 +107,6 @@
         .btn-primary {
             border-color: #fff;
             color: #fff;
-
         }
 
         .btn-primary:hover,
@@ -112,7 +124,7 @@
             position: relative;
             font-size: 15px;
             font-weight: 500;
-            border-radius: 4px;
+            border-radius: 3px;
             text-align: center;
             height: 50px;
             line-height: 29px;
@@ -122,7 +134,7 @@
         
             font-size: 13px;
             left: 16px;
-            padding:4px 5.5px 4px 5.75px;
+            padding:4px 6.5px 4px 6.5px;
             position: absolute;
             top: 13px;
            
@@ -213,6 +225,7 @@
             top: 17px;
             width: 100%;
         }
+   
 
         .round-or-text {
             border-radius: 24px;
@@ -229,6 +242,7 @@
             color: rgba(74, 74, 74, 0.5);
             position: relative;
             font-size: 13px;
+            font-weight: 800;
         }
 
         .position-relative {
@@ -244,7 +258,7 @@
         }
 
         label.error {
-            color: #f00 !important;
+            color: #fff !important;
             font-size: 13px !important;
         }
 
@@ -265,9 +279,11 @@
             margin-left: 0%;
             width: 50%;
             padding:0;
-
-
         }
+        .p-1{
+        color:#999 !important; 
+        
+    }
 
 .fa-facebook{
     background-color: #335397;
@@ -307,13 +323,16 @@ input
   border-bottom:1px solid #d3d3d3;
   margin-bottom: 19px;
 }
+input.error{
+    border-bottom: 1px solid #ff6d71 !important;
+}
 
 input:focus        
- { outline:none; }
+ { outline: none; }
 
 label               
  {
-  color:#999; 
+  color:#ccc; 
   font-size:18px;
   font-weight:normal;
   position:absolute;
@@ -330,11 +349,10 @@ label
 input:focus ~ label, input:valid ~ label{
   top:-15px;
   font-size:13px;
-  border-bottom: #ff5b5f !important;
 }
 
 .bar    { position:relative; display:block; width:300px; }
-.bar:before, .bar:after     {
+.bar:before, .bar:after{
   content:'';
   height:5px; 
   width:0;
@@ -365,8 +383,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
   left:0;
   pointer-events:none;
   opacity:0.5;
-  border-bottom: #ff5b5f;
-}
+  }
 
 /* active state */
 input:focus ~ .highlight {
@@ -388,6 +405,49 @@ input:focus ~ .highlight {
   to    { width:0; background:transparent; }
 }
 
+header {
+    padding: 4em;
+    color: white;
+    background-color: #fff;
+    clear: left;
+    text-align: center;
+}
+footer{
+    padding: 2em;
+    background-color: #fff;
+    clear: left;
+    text-align: center;
+    margin-left:9%;
+}
+.btn-login{
+    float: right;
+    height: 34px;
+    width: 96px;
+    margin-left: 30%;
+    margin-top: 7px;
+    background-color: #fff;
+    border-radius: 1px;
+    color: #777;
+    border: 1px solid #ccc;
+}
+.logo{
+    width: 39px;
+    float: left;
+    padding: 3px;
+}
+.hr{
+    height: 10px;
+    border: 0;
+    box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}
+.fr{
+    height: 10px;
+    border: 0;
+    box-shadow: inset 0 1px 1px 0.001px rgba(0, 0, 0, 0.3);
+}
+.footer-btn{
+    color: #999;
+}
 </style>
 
     <script>
@@ -404,7 +464,7 @@ input:focus ~ .highlight {
                 var currdate = new Date();
                 currdate.setFullYear(currdate.getFullYear() - age);
                 return currdate > mydate2;
-            }, "You must be at least 18 years of age.");
+            });
             $("#signupForm").validate({
                 rules: {
                     first_name: "required",
@@ -425,14 +485,14 @@ input:focus ~ .highlight {
                     first_name: "Please enter your first name",
                     last_name: "Please enter your last name",
                     email: {
-                        required: "Please enter email address",
+                        required: "Please enter your email",
                         email: "Please enter a valid email address"
                     },
                     password: "Please enter password",
-                    birthMonth: "Please select a month",
-                    birthDay: "Please select a date",
+                    birthMonth: "",
+                    birthDay: "",
                     birthYear: {
-                        required: "Please select a year"
+                        required: ""
                     },
                 },
                 errorPlacement: function (error, element) {
@@ -482,19 +542,28 @@ input:focus ~ .highlight {
             }
             else
                 $('#promoOptIn').val(false);
-            $('#dob').val($('#birthYear').val() + "-" + $('#birthMonth').val() + "-" + $('#birthDay').val());
             $('#signupForm').submit();
         }
     </script>
 </head>
 
 <body>
+
+<div class="main-content">
     <div class="login-section" id="content">
+      <header>
+      <span class="logo"><img src="/assets/images/images_landing/Pb_logo.png" alt="logo"></span>
+      <button type="submit" class="btn-login" type="submit" onclick="login()">Log in</button>
+
+      </header>
+      <div class="hr"></div>
         <div class="container">
+
             <div class="col-md-12 margin-top-100">
                 <div class="signup-box drop-shadow">
+
                     <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification/1" method="POST">
-                        <input type="hidden" name="dob" id="dob" value="" required/>
+                   
                         <div class="margin-bottom-20">
                             <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> 
                                 <span style="font-size:16px">Continue with Facebook</span></a>
@@ -510,7 +579,7 @@ input:focus ~ .highlight {
                         <div class="margin-bottom-20 btnSignupEmail">
                             <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()"> Continue with email</a>
                         </div>
-                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Log in</a></div>
+                        <div class="small-font btn-hide text-center">Have an account already? <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Log in</a></div>
 
                 
                 <div class="signupEmail hide signup-box2">
@@ -521,14 +590,14 @@ input:focus ~ .highlight {
                             <div class="or-seperator-vertical"></div>
                             <span class="round-or-text or-text-vertical">or</span>
                         </div>
-                               
+                          
                         <div class="group">
                                 <div class="row col-sm-6">
                                     <div class="input-group input-group-first-name">
                                             <input type="text" required style="width: 250px">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
-                                           <label>First Name</label>
+                                           <label style="color:#999 !important;">First Name</label>
                                             
                                     </div>
                                     </div>
@@ -537,7 +606,7 @@ input:focus ~ .highlight {
                                             <input type="text" required style="width: 295px">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
-                                           <label>Last Name</label>
+                                           <label style="color:#999 !important;">Last Name</label>
                                     </div>
                                    </div>
                         </div>
@@ -546,7 +615,7 @@ input:focus ~ .highlight {
                         <input type="text" required>
                         <span class="highlight"></span>
                           <span class="bar"></span>
-                          <label>Email</label>
+                          <label style="color:#999 !important;">Email</label>
                         </div>
                         </div>
 
@@ -555,18 +624,18 @@ input:focus ~ .highlight {
                         <input type="password" required>
                         <span class="highlight"></span>
                           <span class="bar"></span>
-                          <label>Password</label>
+                          <label style="color:#999 !important;">Password</label>
                         </div>
                         </div>
-
+                       
                             <div class="margin-bottom-20">
-                                <p>Birthday</p>
-                                <p class="fs-13">To sign up, you must be 18 or older. Other people won't see your birthday.</p>
+                                <p class="p-1">Birthday</p>
+                                <!--<p class="fs-13">To sign up, you must be 18 or older. Other people won't see your birthday.</p>-->
 
                                 <div class="row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4" style="color:#999 !important;">
                                         <select class="form-control" name="birthMonth" id="birthMonth">
-                                            <option value="" selected>Month</option>
+                                            <option value="" selected style="color:#999 !important;">Month</option>
                                             <option value="01">January</option>
                                             <option value="02">February</option>
                                             <option value="03">March</option>
@@ -581,12 +650,12 @@ input:focus ~ .highlight {
                                             <option value="12">December</option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4" style="color:#999 !important;">
                                         <select class="form-control" name="birthDay" id="birthDay">
                                             <option value="" selected>Day</option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4" style="color:#999 !important;">
                                         <select class="form-control" name="birthYear" id="birthYear">
                                             <option value="" selected>Year</option>
                                         </select>
@@ -597,12 +666,36 @@ input:focus ~ .highlight {
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Continue</button>
                             </div>
-                               <div class="text-center">Have an account already? <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;" onclick="login()">Log in</a></div>
+                               <div class="text-center small-font">Have an account already? <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;" onclick="login()">Log in</a></div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    </div>
+     <div class="fr"></div>
+    <footer>
+        <div class="layout-row footer" layout="row" color="white">
+        <div layout="row">
+          <a class="footer-btn footerButtons col-sm-2"> About Us </a>
+          <a class="footer-btn footerButtons col-sm-2">
+            Contact Us
+          </a>
+          <span class="center">
+            <a routerLink="/" class="brand col-sm-2" aria-label="Peerbuds Homepage">
+                  <img src="/assets/images/images_landing/Pb_logo.png" alt="logo">
+            </a>
+          </span>
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+           White Paper
+          </a>
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+           Privacy Policy
+          </a>
+    
+    </div> 
+
+    </footer>
 </body>
 </html>

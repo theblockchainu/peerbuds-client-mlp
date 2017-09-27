@@ -176,10 +176,6 @@ export class AppHeaderComponent implements OnInit {
     this.dialogsService.openLogin().subscribe();
   }
 
-  public forgotPwd() {
-  this.dialogsService.forgotPwd().subscribe();
-  }
-
   public goToHome() {
       this.router.navigate(['home', 'homefeed']);
   }
