@@ -2,6 +2,8 @@
 
 html {
     font-size: 87.5%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -322,6 +324,10 @@ md-subheader {
 
 .margin-top-270 {
     margin-top: 270px;
+}
+
+.margin-top-850 {
+    margin-top: 850px;
 }
 
 .margin-bottom-0 {

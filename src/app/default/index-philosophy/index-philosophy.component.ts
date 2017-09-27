@@ -9,9 +9,57 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
 })
 export class IndexPhilComponent implements OnInit {
 
-  constructor() { }
+  public transformationSelected = false
+  public pplFocussedSelected = false;
+  public courageSelected = false;
+  public collabSelected = false;
+  public optimismSelected = false;
+
+  constructor() { 
+    this.transformationSelected = true;
+  }
 
   ngOnInit() {
+  }
+
+  public showTransformation(state) {
+    this.transformationSelected = state;
+    this.pplFocussedSelected = !state;
+    this.courageSelected = !state;
+    this.collabSelected = !state;
+    this.optimismSelected = !state;
+  }
+  
+  public showPplFocussed(state) {
+    this.transformationSelected = !state;
+    this.pplFocussedSelected = state;
+    this.courageSelected = !state;
+    this.collabSelected = !state;
+    this.optimismSelected = !state;
+  }
+  
+  public showCourage(state) {
+    this.transformationSelected = !state;
+    this.pplFocussedSelected = !state;
+    this.courageSelected = state;
+    this.collabSelected = !state;
+    this.optimismSelected = !state;
+  }
+  
+  public showCollab(state) {
+    this.transformationSelected = !state;
+    this.pplFocussedSelected = !state;
+    this.courageSelected = !state;
+    this.collabSelected = state;
+    this.optimismSelected = !state;
+  }
+  
+  public showOptimism(state) {
+    this.transformationSelected = !state;
+    this.pplFocussedSelected = !state;
+    this.courageSelected = !state;
+    this.collabSelected = !state;
+    this.optimismSelected = state;
   }
 
 }
