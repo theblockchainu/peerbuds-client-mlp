@@ -45,7 +45,6 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     BrowserModule,
     CoreModule,
     ExperienceWizardModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MdCardModule,
     MdButtonModule,
@@ -57,7 +56,8 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     MdNativeDateModule,
     MdProgressSpinnerModule,
     MdProgressBarModule,
-    DialogsModule
+    DialogsModule,
+    AppRoutingModule,
   ],
   bootstrap: [AppComponent],
   providers: [
