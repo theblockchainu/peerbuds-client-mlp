@@ -13,7 +13,10 @@
           </a>
         </div>
       </div>
-      <div class="row feed-horizontal margin-top-20 margin-bottom-60" style="padding: 0px 7px;">
+      <div class="loading-container" [hidden]="!loadingWorkshops">
+        <ngx-loading [show]="true"></ngx-loading>
+      </div>
+      <div *ngIf="!loadingWorkshops" class="row feed-horizontal margin-top-20 margin-bottom-60" style="padding: 0px 7px;">
         <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
           <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
             <div class="">
@@ -53,7 +56,10 @@
           </a>
         </div>
       </div>
-      <div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
+      <div class="loading-container" [hidden]="!loadingPeers">
+        <ngx-loading [show]="true"></ngx-loading>
+      </div>
+      <div *ngIf="!loadingPeers" class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
         <div class="peer-recommendation-card" *ngFor="let peer of peers">
           <a [routerLink]="'/profile/'+peer.id">
             <div class="">

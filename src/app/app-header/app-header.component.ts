@@ -3,16 +3,17 @@ import { AuthenticationService } from '../_services/authentication/authenticatio
 import { Observable } from 'rxjs/Rx';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
 import { ProfileService } from '../_services/profile/profile.service';
-import {FormControl} from '@angular/forms';
-import {AppConfig} from '../app.config';
-import {Http} from '@angular/http';
-import {CookieService} from 'ngx-cookie-service';
-import {Router} from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { AppConfig } from '../app.config';
+import { Http } from '@angular/http';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import {AppNotificationDialogComponent} from './dialogs/app-notification-dialog/app-notification-dialog.component';
+import {NotificationService} from '../_services/notification/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -24,6 +25,7 @@ import {AppNotificationDialogComponent} from './dialogs/app-notification-dialog/
 export class AppHeaderComponent implements OnInit {
   isLoggedIn: Observable<boolean>;
   loggedIn: boolean;
+  public hasNewNotification = false;
   public profile: any = {};
   public userType = '';
   public myControl = new FormControl('');
@@ -33,6 +35,7 @@ export class AppHeaderComponent implements OnInit {
   public options: any[];
   public defaultProfileUrl = '/assets/images/default-user.jpg';
   public isTeacher = false;
+  public makeOldNotification = [];
 
   constructor(public authService: AuthenticationService,
               public requestHeaderService: RequestHeaderService,
@@ -42,8 +45,8 @@ export class AppHeaderComponent implements OnInit {
               private _profileService: ProfileService,
               private router: Router,
               private dialog: MdDialog,
+              private _notificationService: NotificationService,
               private dialogsService: DialogsService) {
-
                 this.isLoggedIn = authService.isLoggedIn();
                 authService.isLoggedIn().subscribe((res) => {
                 this.loggedIn = res;
@@ -53,6 +56,7 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.getProfile();
+    this.getNotifications();
     this.myControl.valueChanges.subscribe((value) => {
       this.getAllSearchResults(value, (err, result) => {
         if (!err) {
@@ -114,7 +118,7 @@ export class AppHeaderComponent implements OnInit {
       case 'topic':
         return option.data.name;
       case 'peer':
-        if (option.data.profiles[0].first_name === undefined) {
+        if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
           return option.data.id;
         } else {
           return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
@@ -187,11 +191,29 @@ export class AppHeaderComponent implements OnInit {
       this.router.navigate(['home', 'homefeed']);
   }
 
+  public getNotifications() {
+      this._notificationService.getNotifications('{}', (err, result) => {
+          if (err) {
+              console.log(err);
+          } else {
+              result.forEach(resultItem => {
+                  if (resultItem.new) {
+                      this.hasNewNotification = true;
+                      resultItem.new = false;
+                      delete resultItem.seen;
+                      delete resultItem.createdAt;
+                      delete resultItem.updatedAt;
+                      this.makeOldNotification.push(resultItem);
+                  }
+              });
+          }
+      });
+  }
+
     openNotificationsDialog(): void {
         const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
             width: '350px',
             data: {
-
             },
             disableClose: false,
             position: {
@@ -201,8 +223,15 @@ export class AppHeaderComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                // do something here..
+            if (this.makeOldNotification.length > 0) {
+                this.makeOldNotification.forEach(notifItem => {
+                    this._notificationService.updateNotification(notifItem, (err, patchResult) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                });
+                this.hasNewNotification = false;
             }
         });
     }

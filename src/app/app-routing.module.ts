@@ -1,20 +1,28 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DefaultComponent } from './default/default.component';
+import { IndexComponent } from './default/index/index.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { LoginComponent } from './login/login.component';
+import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
+
 import {AppDesignComponent} from "./app-design/app-design.component";
 
 const routes: Routes = [
   {
     path: '',
-    component: DefaultComponent,
+    component: IndexComponent,
     pathMatch: 'full'
   },
+
+  {
+  path: 'philosophy',
+  component: IndexPhilComponent,
+  }, 
+
   {
       path: 'design',
       component: AppDesignComponent
@@ -77,6 +85,7 @@ const routes: Routes = [
     path: '**',
     component: NoContentComponent
   }
+  
 
 ];
 

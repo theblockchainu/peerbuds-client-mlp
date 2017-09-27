@@ -15,6 +15,8 @@ export class HomefeedComponent implements OnInit {
   public workshops: Array<any>;
   public userId: string;
   public peers: Array<any>;
+  public loadingWorkshops = false;
+  public loadingPeers = false;
   constructor(
     public _collectionService: CollectionService,
     public _profileService: ProfileService,
@@ -36,9 +38,10 @@ export class HomefeedComponent implements OnInit {
         { 'collections': [{'owners': 'reviewsAboutYou'}] }
       ]
     };
-
+    this.loadingWorkshops = true;
     this._topicService.getTopics(query).subscribe(
       (response) => {
+        this.loadingWorkshops = false;
         this.workshops = [];
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
@@ -70,7 +73,9 @@ export class HomefeedComponent implements OnInit {
       },
       'limit': 6
     };
+    this.loadingPeers = true;
     this._profileService.getAllPeers(query).subscribe((result) => {
+      this.loadingPeers = false;
       this.peers = [];
       for (const responseObj of result.json()) {
         responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);

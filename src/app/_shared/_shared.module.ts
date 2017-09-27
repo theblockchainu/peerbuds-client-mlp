@@ -40,6 +40,7 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
 import { DialogsService } from '../workshop/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CommentService } from '../_services/comment/comment.service';
+import {NotificationService} from '../_services/notification/notification.service';
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -65,7 +66,8 @@ import { CommentService } from '../_services/comment/comment.service';
     CurrencypickerService,
     DialogsService,
     CommentService,
-    TopicService
+    TopicService,
+    NotificationService
   ],
   exports: [
     CommonModule,

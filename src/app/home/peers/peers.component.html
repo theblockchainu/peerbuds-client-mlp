@@ -22,7 +22,10 @@
           </a>
         </div> -->
       </div>
-      <div class="row feed-horizontal margin-top-20 margin-bottom-70" style="padding: 0px 7px;">
+      <div class="loading-container" [hidden]="!loading">
+        <ngx-loading [show]="true"></ngx-loading>
+      </div>
+      <div *ngIf="!loading" class="row feed-horizontal margin-top-20 margin-bottom-70" style="padding: 0px 7px;">
         <div class="peer-recommendation-card" *ngFor="let peer of peers">
           <a [routerLink]="'/profile/'+peer.id">
             <div class="">

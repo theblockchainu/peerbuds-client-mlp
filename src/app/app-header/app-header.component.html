@@ -31,6 +31,7 @@
       <button md-button #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async)" style="font-size: 1rem">
         Notifications
       </button>
+      <div style="display: inline-block;"><md-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</md-icon></div>
       <div [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 25px;">
         <div>
           <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
