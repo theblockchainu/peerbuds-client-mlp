@@ -27,6 +27,7 @@ export class AppHeaderComponent implements OnInit {
   public userType = '';
   public myControl = new FormControl('');
   public userId: string;
+  public userIdObservable;
   private key = 'userId';
   public options: any[];
   public defaultProfileUrl = '/assets/images/default-user.jpg';
@@ -43,9 +44,21 @@ export class AppHeaderComponent implements OnInit {
               private dialogsService: DialogsService) {
                 this.isLoggedIn = authService.isLoggedIn();
                 authService.isLoggedIn().subscribe((res) => {
-                this.loggedIn = res;
-              });
-            this.userId = this.getCookieValue(this.key);
+                  this.loggedIn = res;
+                });
+
+                authService.getLoggedInUser.subscribe((userId) => {
+                  if(userId !== 0) {
+                    this.userId = userId;
+                    this.getProfile();
+                  }
+                  else {
+                    this.loggedIn = false;
+                  }
+                });
+
+                this.userId = this.userIdObservable || this.getCookieValue(this.key);
+
           }
 
   ngOnInit() {
@@ -72,7 +85,7 @@ export class AppHeaderComponent implements OnInit {
 
   getProfile() {
     if (this.loggedIn) {
-        this._profileService.getCompactProfile().subscribe(profile => {
+        this._profileService.getCompactProfile(this.userId).subscribe(profile => {
             this.profile = profile[0];
             if(this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
                 this.isTeacher = true;

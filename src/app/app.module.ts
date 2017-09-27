@@ -43,7 +43,6 @@ import { AppDesignComponent } from './app-design/app-design.component';
     BrowserModule,
     CoreModule,
     ExperienceWizardModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MdCardModule,
     MdButtonModule,
@@ -55,7 +54,8 @@ import { AppDesignComponent } from './app-design/app-design.component';
     MdNativeDateModule,
     MdProgressSpinnerModule,
     MdProgressBarModule,
-    DialogsModule
+    DialogsModule,
+    AppRoutingModule,
   ],
   bootstrap: [AppComponent],
   providers: [
