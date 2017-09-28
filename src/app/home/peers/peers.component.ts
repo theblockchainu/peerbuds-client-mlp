@@ -15,6 +15,7 @@ export class PeersComponent implements OnInit {
   public peers: Array<any>;
   public availableTopics: Array<any>;
   public userId: string;
+  public loading = false;
 
   @ViewChild('topicButton') topicButton;
   @ViewChild('priceButton') priceButton;
@@ -38,9 +39,11 @@ export class PeersComponent implements OnInit {
         'reviewsAboutYou',
         'profiles'
       ],
-      'limit': 6
+      'limit': 50
     };
+    this.loading = true;
     this._profileService.getAllPeers(query).subscribe((result) => {
+      this.loading = false;
       this.peers = [];
       for (const responseObj of result.json()) {
         if (responseObj.id !== this.userId) {

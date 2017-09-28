@@ -1,7 +1,7 @@
 <div md-dialog-content>
   <md-list>
     <md-list-item *ngFor="let topicObj of data">
-      <md-checkbox [(ngModel)]="topicObj.checked">{{topicObj.topic.name}}</md-checkbox>
+      <md-checkbox [(ngModel)]="topicObj.checked">{{topicObj.topic.name | titlecase}}</md-checkbox>
     </md-list-item>
   </md-list>
 </div>

@@ -1,7 +1,8 @@
 <div md-dialog-content>
   <p-slider [(ngModel)]="data.selectedRange" [range]="true" [min]="data.availableRange[0]" [max]="data.availableRange[1]"></p-slider>
-  <p> Min: {{data.selectedRange[0]}} - Max: {{data.selectedRange[1]}}</p>
+  <p class="mat-body-2"> {{data.selectedRange[0] | currency:'INR':true:'1.0-0'}} - {{data.selectedRange[1] | currency:'INR':true:'1.0-0'}}</p>
 </div>
 <div md-dialog-actions>
   <button md-raised-button [md-dialog-close]="data" color="accent">Apply</button>
 </div>
+

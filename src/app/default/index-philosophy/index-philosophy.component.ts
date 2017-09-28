@@ -62,4 +62,8 @@ export class IndexPhilComponent implements OnInit {
     this.optimismSelected = state;
   }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e2a5a26ab31422d3638acd29ccdb325e56a3f975
