@@ -24,9 +24,9 @@ export class WorkshopsComponent implements OnInit {
   @ViewChild('priceButton') priceButton;
   public availableRange: Array<number>;
   public selectedRange: Array<number>;
-  public loading: boolean;
   public initialized: boolean;
   public selectedTopics: Array<any>;
+  public loading = false;
 
   constructor(
     public _collectionService: CollectionService,
@@ -44,11 +44,14 @@ export class WorkshopsComponent implements OnInit {
   }
 
   fetchData(): Observable<any> {
+    this.loading = true;
     return this.fetchTopics().map(
       response => {
+        this.loading = false;
         this.availableTopics = response;
         this.fetchWorkshops();
       }, err => {
+        this.loading = false;
         console.log(err);
       });
   }
@@ -82,7 +85,6 @@ export class WorkshopsComponent implements OnInit {
 
   fetchWorkshops(): void {
     let query;
-    this.loading = true;
     this.selectedTopics = [];
     for (const topicObj of this.availableTopics) {
       if (topicObj['checked']) {
@@ -124,7 +126,6 @@ export class WorkshopsComponent implements OnInit {
           });
         }
         this.workshops = _.uniqBy(workshops, 'id');
-        this.loading = false;
         if (!this.initialized) {
           this.setPriceRange();
           this.initialized = true;
@@ -156,7 +157,7 @@ export class WorkshopsComponent implements OnInit {
 
   openPriceDialog(): void {
     const dialogRef = this.dialog.open(SelectPriceComponent, {
-      width: '250px',
+      width: '200px',
       data: {
         availableRange: this.availableRange,
         selectedRange: this.selectedRange

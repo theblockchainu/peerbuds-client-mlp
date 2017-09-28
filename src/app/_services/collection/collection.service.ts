@@ -649,6 +649,24 @@ collectionID:string,userId:string,calendarId:string   */
     return (reviewScore / (reviewArray.length * 5)) * 5;
   }
 
+  public calculateCollectionRating(collectionId, reviewArray?: any) {
+      let reviewScore = 0;
+      for (const reviewObject of reviewArray) {
+          if (reviewObject.collectionId !== undefined && reviewObject.collectionId === collectionId)
+            reviewScore += reviewObject.score;
+      }
+      return (reviewScore / (reviewArray.length * 5)) * 5;
+  }
+
+  public calculateCollectionRatingCount(collectionId, reviewArray?: any) {
+      let reviewCount = 0;
+      for (const reviewObject of reviewArray) {
+          if (reviewObject.collectionId !== undefined && reviewObject.collectionId === collectionId)
+              reviewCount ++;
+      }
+      return reviewCount;
+  }
+
   public imgErrorHandler(event) {
     event.target.src = '/assets/images/placeholder-image.jpg';
   }

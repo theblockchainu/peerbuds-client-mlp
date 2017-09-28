@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import {
   Http, Headers, Response, BaseRequestOptions, RequestOptions
   , RequestOptionsArgs
@@ -6,7 +6,7 @@ import {
 // import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import 'rxjs/add/operator/map';
 
 import { CookieService } from 'ngx-cookie-service';
@@ -16,6 +16,9 @@ import {RequestHeaderService} from '../requestHeader/request-header.service';
 
 @Injectable()
 export class AuthenticationService {
+
+  @Output() 
+  getLoggedInUser: EventEmitter<any> = new EventEmitter();
 
   public key = 'access_token';
   private options;
@@ -28,6 +31,17 @@ export class AuthenticationService {
         public _requestHeaderService: RequestHeaderService
   ) {
       this.options = this._requestHeaderService.getOptions();
+      // this.router.routeReuseStrategy.shouldReuseRoute = function(){
+      //    return false;
+      // }
+      // this.router.events.subscribe((evt) => {
+      //   if (evt instanceof NavigationEnd) {
+      //       // trick the Router into believing it's last link wasn't previously loaded
+      //       this.router.navigated = false;
+      //       // if you need to scroll back to top, here is the right place
+      //       window.scrollTo(0, 0);
+      //   }
+      // });
   }
 
   /**
@@ -50,6 +64,7 @@ export class AuthenticationService {
     this._cookieService.delete(key);
   }
 
+
   /**
   *  Login the user then tell all the subscribers about the new status
   */
@@ -64,6 +79,7 @@ export class AuthenticationService {
         let user = response.json();
         if (user && user.access_token) {
           this.isLoginSubject.next(true);
+          this.getLoggedInUser.emit(user.userId);
           // responseStatus = true;
         }
       }, (err) => {
@@ -82,6 +98,7 @@ export class AuthenticationService {
           this.removeCookie(this.key);
           this.removeCookie('userId');
           this.isLoginSubject.next(false);
+          this.getLoggedInUser.emit(0);
           this.router.navigate(['/']);
         }).subscribe();
     }

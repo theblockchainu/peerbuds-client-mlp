@@ -22,12 +22,65 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--<link rel="stylesheet" type="text/css" href="assets/styles/themes/pbcustom.css">-->
     <style>
-        /*body {
-            font-family: Lato;
+        body {
+            font-family:'Lato';
         }
-        */
+        .example-spacer {
+            flex: 1 1 auto;
+        }  
+        
+        .headerButtons {
+            margin-left: 20px;
+        }
 
-         .signup-box {
+        .rightSpan {
+            float: right;
+            padding: 5px 10px 0px 10px;
+            width: 44%;
+        }
+
+        .mat-button, .mat-fab, .mat-icon-button, .mat-mini-fab, .mat-raised-button {
+            box-sizing: border-box;
+            position: relative;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: pointer;
+            outline: 0;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+            display: inline-block;
+            white-space: nowrap;
+            text-decoration: none;
+            vertical-align: baseline;
+            text-align: center;
+            margin: 0;
+            min-width: 88px;
+            line-height: 36px;
+            padding: 0 16px;
+            border-radius: 2px;
+
+            color: #767676;
+            background: none;
+        }  
+        
+        a.headerButtons, a.headerButtons:active, a.headerButtons:visited, a.headerButtons:hover {
+            color: #767676;
+            text-decoration: none;
+        }
+
+        .footer-btn {
+            color: #979797 !important;
+            margin: 0px;
+        }
+
+        footer a {
+        color: rgba(0,0,0,0.87);
+        margin: 0px 25px;
+        }
+
+        .signup-box {
             background-color: #fff;
             padding: 60px 50px;
             width: 415px;
@@ -48,8 +101,8 @@
             margin-bottom: 70px;
 
         }
-        .margin-top-100 {
-            margin-top: 90px;
+        .margin-top-40 {
+            margin-top: 40px;
         }
     
         .signup-box label {
@@ -65,11 +118,17 @@
         .form-control {
             height: 35px;
             width:100%;
+        }
+
+        .birthDetails {
+            border-bottom-right-radius: 0px !important;
+            border-bottom-left-radius: 0px!important;
             box-shadow: none !important;
-            border-radius: 0 !important;
+            border-radius: 0px !important;
             border:none;
             border-bottom: 1px solid #ccc !important;
         }
+
         .form-control.error{
             border-bottom: 1px solid #ff6d71 !important;
         }
@@ -131,11 +190,13 @@
             line-height: 29px;
         }
 
+        .btn-social i.fa-facebook {
+            padding:4px 6.5px 4px 6.5px;
+        }
+
         .btn-social i {
-        
             font-size: 13px;
             left: 16px;
-            padding:4px 6.5px 4px 6.5px;
             position: absolute;
             top: 13px;
            
@@ -189,7 +250,7 @@
 
         .btn-fb:hover{
             background-color: #324B80;
-             color:#fff;
+            color:#fff;
         }
 
         .btn-fb:active,
@@ -203,7 +264,7 @@
         .btn-email:hover{
             color: #fff!important;
             text-decoration: none;
-            border: 1px solid #d3d3d3;
+            border: none;
         }
 
         .btn-email:hover i {
@@ -282,187 +343,188 @@
             padding:0;
         }
         .p-1{
-        color:#999 !important; 
+            color:#999 !important;  
+        }
+
+        .fa-facebook{
+            background-color: #335397;
+            color: #fff!important;
+        }
+
+        .fa-google{
+            background-color: #dd4a38;
+            color: #fff!important;
+        }
+
+        .circle-icon {
+            padding:4px 5px 4px 5px;
+            border-radius: 100%;
+        }
+
+
+
+        /* Material CSS */
+        * { box-sizing:border-box; }
+
+        body                
+        .container      { 
+        font-family:'Lato';
+        width:600px; 
+        margin:30px auto 0; 
+        display:block; 
+        background:#FFF;
+        padding:8px 50px 50px;
+        }
+
+        input              
+        {
+        font-size:13px;
+        padding:8px 5px 10px 2px;
+        display:block;
+        width:568px;
+        border:none;
+        border-bottom:1px solid #d3d3d3;
+        margin-bottom: 19px;
+        }
+        input.error{
+            border-bottom: 1px solid #ff6d71 !important;
+        }
+
+        input:focus        
+        { outline: none; }
+
+        label               
+        {
+        color:#ccc; 
+        font-size:18px;
+        font-weight:normal;
+        position:absolute;
+        pointer-events:none;
+        left:5px;
+        top:10px;
+        bottom: 10px;
+        transition:0.2s ease all; 
+        -moz-transition:0.2s ease all; 
+        -webkit-transition:0.2s ease all;
+        }
+
+        /* active state */
+        input:focus ~ label, input:valid ~ label{
+        top:-15px;
+        font-size:13px;
+        }
+
+        .bar    { position:relative; display:block; width:300px; }
+        .bar:before, .bar:after{
+        content:'';
+        height:5px; 
+        width:0;
+        bottom:3px; 
         
-    }
+        background:#ff5b5f; 
+        transition:0.2s ease all; 
+        -moz-transition:0.2s ease all; 
+        -webkit-transition:0.2s ease all;
+        }
+        .bar:before {
+        left:50%;
+        }
+        .bar:after {
+        right:50%; 
+        }
 
-.fa-facebook{
-    background-color: #335397;
-    color: #fff!important;
-}
+        /* active state */
+        input:focus ~ .bar:before, input:focus ~ .bar:after {
+        width:50%;
+        }
 
-.fa-google{
-    background-color: #dd4a38;
-    color: #fff!important;
-}
+        .highlight {
+        position:absolute;
+        height:20%; 
+        width:568px; 
+        top:25%; 
+        left:0;
+        pointer-events:none;
+        opacity:0.5;
+        }
 
-.circle-icon {
-    padding:4px 5px 4px 5px;
-    border-radius: 100%;
-}
+        /* active state */
+        input:focus ~ .highlight {
+        -webkit-animation:inputHighlighter 0.3s ease;
+        -moz-animation:inputHighlighter 0.3s ease;
+        animation:inputHighlighter 0.3s ease;
+        }
 
-/* Material CSS */
-* { box-sizing:border-box; }
+        @-webkit-keyframes inputHighlighter {
+            from { background:#fff; }
+        to    { width:0; background:transparent; }
+        }
+        @-moz-keyframes inputHighlighter {
+            from { background:#fff; }
+        to    { width:0; background:transparent; }
+        }
+        @keyframes inputHighlighter {
+            from { background:#fff; }
+        to    { width:0; background:transparent; }
+        }
 
-body                
-.container      { 
-  font-family:'Lato';
-  width:600px; 
-  margin:30px auto 0; 
-  display:block; 
-  background:#FFF;
-  padding:8px 50px 50px;
-}
-
-input              
- {
-  font-size:13px;
-  padding:8px 5px 10px 2px;
-  display:block;
-  width:568px;
-  border:none;
-  border-bottom:1px solid #d3d3d3;
-  margin-bottom: 19px;
-}
-input.error{
-    border-bottom: 1px solid #ff6d71 !important;
-}
-
-input:focus        
- { outline: none; }
-
-label               
- {
-  color:#ccc; 
-  font-size:18px;
-  font-weight:normal;
-  position:absolute;
-  pointer-events:none;
-  left:5px;
-  top:10px;
-  bottom: 10px;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
-  -webkit-transition:0.2s ease all;
-}
-
-/* active state */
-input:focus ~ label, input:valid ~ label{
-  top:-15px;
-  font-size:13px;
-}
-
-.bar    { position:relative; display:block; width:300px; }
-.bar:before, .bar:after{
-  content:'';
-  height:5px; 
-  width:0;
-  bottom:3px; 
-  
-  background:#ff5b5f; 
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
-  -webkit-transition:0.2s ease all;
-}
-.bar:before {
-  left:50%;
-}
-.bar:after {
-  right:50%; 
-}
-
-/* active state */
-input:focus ~ .bar:before, input:focus ~ .bar:after {
-  width:50%;
-}
-
-.highlight {
-  position:absolute;
-  height:20%; 
-  width:568px; 
-  top:25%; 
-  left:0;
-  pointer-events:none;
-  opacity:0.5;
-  }
-
-/* active state */
-input:focus ~ .highlight {
-  -webkit-animation:inputHighlighter 0.3s ease;
-  -moz-animation:inputHighlighter 0.3s ease;
-  animation:inputHighlighter 0.3s ease;
-}
-
-@-webkit-keyframes inputHighlighter {
-    from { background:#fff; }
-  to    { width:0; background:transparent; }
-}
-@-moz-keyframes inputHighlighter {
-    from { background:#fff; }
-  to    { width:0; background:transparent; }
-}
-@keyframes inputHighlighter {
-    from { background:#fff; }
-  to    { width:0; background:transparent; }
-}
-
-header {
-    padding: 4em;
-    color: white;
-    background-color: #fff;
-    clear: left;
-    text-align: center;
-}
-footer{
-    padding: 2em;
-    background-color: #fff;
-    clear: left;
-    text-align: center;
-    margin-left:9%;
-}
-.btn-login{
-    float: right;
-    height: 34px;
-    width: 96px;
-    margin-left: 30%;
-    margin-top: 7px;
-    background-color: #fff;
-    border-radius: 1px;
-    color: #777;
-    border: 1px solid #ccc;
-}
-.logo{
-    width: 39px;
-    float: left;
-    padding: 3px;
-}
-.hr{
-    height: 10px;
-    border: 0;
-    box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
-}
-.fr{
-    height: 10px;
-    border: 0;
-    box-shadow: inset 0 1px 1px 0.001px rgba(0, 0, 0, 0.3);
-}
-.footer-btn{
-    color: #999;
-}
-.header-btn{
-   color: #999;
-}
-.a{
-    color: #999 !important;
-}
-.col-md-1{
-    margin-top: 1%;
-    float: right;
-    text-align: right;
-    padding-right: 0px;
-    margin-right: 3%;
-}
-</style>
+        header {
+            padding: 3.9em;
+            color: white;
+            background-color: #fff;
+            clear: left;
+            text-align: center;
+        }
+        footer{
+            padding: 2em;
+            background-color: #fff;
+            clear: left;
+            text-align: center;
+            /* margin-left:9%; */
+        }
+        .btn-login{
+            float: right;
+            height: 34px;
+            width: 96px;
+            margin-left: 30%;
+            margin-top: 7px;
+            background-color: #fff;
+            border-radius: 1px;
+            color: #777;
+            border: 1px solid #ccc;
+        }
+        .logo{
+            width: 39px;
+            float: left;
+            padding: 3px;
+        }
+        .hr{
+            height: 10px;
+            border: 0;
+            box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+        }
+        .fr{
+            height: 10px;
+            border: 0;
+            box-shadow: inset 0 1px 1px 0.001px rgba(0, 0, 0, 0.3);
+        }
+        .footer-btn{
+            color: #999;
+        }
+        .header-btn{
+        color: #999;
+        }
+        .a{
+            color: #999 !important;
+        }
+        .col-md-1{
+            margin-top: 1%;
+            float: right;
+            text-align: right;
+            padding-right: 0px;
+            margin-right: 3%;
+        }
+    </style>
 
     <script>
         $(document).ready(function () {
@@ -558,6 +620,14 @@ footer{
                 $('#promoOptIn').val(false);
             $('#signupForm').submit();
         }
+
+        function goToHome() {
+            location.href='/';
+        }
+
+        function goToPhilosophy() {
+            location.href= 'philosophy';
+        }
     </script>
 </head>
 
@@ -565,29 +635,37 @@ footer{
 
 <div class="main-content">
     <div class="login-section" id="content">
-      <header>
-      <span class="logo"><img src="/assets/images/images_landing/Pb_logo.png" alt="logo"></span>
-      <div class="layout-row header" layout="row" color="white">
-        <div layout="row">
-          <a class="header-btn headerButtons col-md-1"> Login </a>
-          <a class="header-btn headerButtons  col-md-1">
-            White Paper
-          </a>
-          <a class="header-btn headerButtons col-md-1 " md-button routerLink=".">
-           About 
-          </a>
-          <a class="header-btn headerButtons col-md-1" md-button routerLink=".">
-          Journey
-          </a>
-           <a class="header-btn headerButtons col-md-1" md-button routerLink=".">
-           Philosophy
-          </a>
-    
+        <header>
+            <span class="logo" onclick="goToHome()"><img src="/assets/images/images_landing/Pb_logo.png" alt="logo"></span>
+            <span class="example-spacer"></span>
+            <span class="rightSpan">
+                <button class="headerButtons mat-button" onclick="goToPhilosophy()" *ngIf="!(isLoggedIn | async)">
+                    Philosophy
+                </button>
+                <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+                    Journey
+                </button>
+                <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+                About
+                </button>
+                <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+                White Paper
+                </button>
+            
+                <a class="headerButtons mat-button" href="/signup.html" *ngIf="!(isLoggedIn | async)">
+                    Sign Up
+                </a>
+            
+                <!-- trying dialog-->
+                <button class="headerButtons mat-button" onclick="openLogin()" *ngIf="!(isLoggedIn | async)">
+                    Log In
+                </button>
+                </span>
       </header>
       <div class="hr"></div>
         <div class="container">
 
-            <div class="col-md-12 margin-top-100">
+            <div class="col-md-12 margin-top-40">
                 <div class="signup-box drop-shadow">
 
                     <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification/1" method="POST">
@@ -662,7 +740,7 @@ footer{
 
                                 <div class="row">
                                     <div class="col-sm-4" style="color:#999 !important;">
-                                        <select class="form-control" name="birthMonth" id="birthMonth">
+                                        <select class="form-control birthDetails" name="birthMonth" id="birthMonth">
                                             <option value="" selected style="color:#999 !important;">Month</option>
                                             <option value="01">January</option>
                                             <option value="02">February</option>
@@ -679,12 +757,12 @@ footer{
                                         </select>
                                     </div>
                                     <div class="col-sm-4" style="color:#999 !important;">
-                                        <select class="form-control" name="birthDay" id="birthDay">
+                                        <select class="form-control birthDetails" name="birthDay" id="birthDay">
                                             <option value="" selected>Day</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-4" style="color:#999 !important;">
-                                        <select class="form-control" name="birthYear" id="birthYear">
+                                        <select class="form-control birthDetails" name="birthYear" id="birthYear">
                                             <option value="" selected>Year</option>
                                         </select>
                                     </div>
@@ -702,28 +780,29 @@ footer{
         </div>
     </div>
     </div>
-     <div class="fr"></div>
-    <footer>
-        <div class="layout-row footer" layout="row" color="white">
-        <div layout="row">
-          <a class="footer-btn footerButtons col-sm-2"> About Us </a>
-          <a class="footer-btn footerButtons col-sm-2">
-            Contact Us
-          </a>
-          <span class="center">
-            <a routerLink="/" class="brand col-sm-2" aria-label="Peerbuds Homepage">
-                  <img src="/assets/images/images_landing/Pb_logo.png" alt="logo">
-            </a>
-          </span>
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
-           White Paper
-          </a>
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
-           Privacy Policy
-          </a>
-    
-    </div> 
+    <div class="fr"></div>
 
+    <footer *ngIf="!(isLoggedIn | async)" style="margin-bottom: 40px;">
+        <div class="layout-row footer col-md-offset-2 col-md-8" layout="row" color="white">
+          <div layout="row" class="col-sm-12">
+                <a class="footer-btn footerButtons col-sm-2" md-button routerLink="."> About Us </a>
+                <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+                  Contact Us
+                </a>
+                <span class="center">
+                  <a onclick="goToHome()" class="brand col-sm-2" aria-label="Peerbuds Homepage" style="margin-top: -1%;">
+                        <img src="/assets/images/images_landing/Pb_logo.png" alt="logo">
+                  </a>
+                </span>
+                <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+                 White Paper
+                </a>
+                <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+                 Privacy Policy
+                </a>
+          
+          </div>
+        </div>
     </footer>
 </body>
 </html>

@@ -11,12 +11,21 @@ import { HomefeedComponent } from './homefeed/homefeed.component';
 import { SharedModule } from '../_shared/_shared.module';
 import { SelectTopicsComponent } from './dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from './dialogs//select-price/select-price.component';
+import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 @NgModule({
   imports: [
     CommonModule,
     HomeRoutingModule,
     MdTabsModule,
-    SharedModule
+    SharedModule,
+    LoadingModule.forRoot({
+        animationType: ANIMATION_TYPES.threeBounce,
+        backdropBackgroundColour: 'rgba(0,0,0,0)',
+        backdropBorderRadius: '0px',
+        primaryColour: '#33bd9e',
+        secondaryColour: '#ff5b5f',
+        tertiaryColour: '#ff6d71'
+    })
   ],
   declarations: [HomeComponent, WorkshopsComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent, SelectPriceComponent],
   providers: [],
