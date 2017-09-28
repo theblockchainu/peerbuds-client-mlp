@@ -22,9 +22,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--<link rel="stylesheet" type="text/css" href="assets/styles/themes/pbcustom.css">-->
     <style>
-        body {
+        /*body {
             font-family: Lato;
         }
+        */
 
          .signup-box {
             background-color: #fff;
@@ -65,7 +66,7 @@
             height: 35px;
             width:100%;
             box-shadow: none !important;
-            border-radius: none !important;
+            border-radius: 0 !important;
             border:none;
             border-bottom: 1px solid #ccc !important;
         }
@@ -112,8 +113,8 @@
         .btn-primary:hover,
         .btn-primary:active .btn-primary:focus,
         .btn-primary:active:after {
-            background-color: #ff5b5f!important;
-            border-color: #ff5b5f!important;
+            background-color: #ff6d71!important;
+            border-color: #ff6d71!important;
             color: #fff!important;
         }
 
@@ -158,7 +159,7 @@
         }
 
         .btn-email {
-            background-color: #FF5B5F;
+            background-color: #ff6d71;
             color: #fff!important;
             height: 45px;
             width: 299px;
@@ -182,7 +183,7 @@
         }
 
         .btn-email:hover {
-            background-color: #FF5B5F;
+            background-color: #ff6d71;
            
         }
 
@@ -448,6 +449,19 @@ footer{
 .footer-btn{
     color: #999;
 }
+.header-btn{
+   color: #999;
+}
+.a{
+    color: #999 !important;
+}
+.col-md-1{
+    margin-top: 1%;
+    float: right;
+    text-align: right;
+    padding-right: 0px;
+    margin-right: 3%;
+}
 </style>
 
     <script>
@@ -482,13 +496,13 @@ footer{
                     }
                 },
                 messages: {
-                    first_name: "Please enter your first name",
-                    last_name: "Please enter your last name",
+                    first_name: "",
+                    last_name: "",
                     email: {
-                        required: "Please enter your email",
-                        email: "Please enter a valid email address"
+                        required: "",
+                        email: ""
                     },
-                    password: "Please enter password",
+                    password: "",
                     birthMonth: "",
                     birthDay: "",
                     birthYear: {
@@ -553,8 +567,22 @@ footer{
     <div class="login-section" id="content">
       <header>
       <span class="logo"><img src="/assets/images/images_landing/Pb_logo.png" alt="logo"></span>
-      <button type="submit" class="btn-login" type="submit" onclick="login()">Log in</button>
-
+      <div class="layout-row header" layout="row" color="white">
+        <div layout="row">
+          <a class="header-btn headerButtons col-md-1"> Login </a>
+          <a class="header-btn headerButtons  col-md-1">
+            White Paper
+          </a>
+          <a class="header-btn headerButtons col-md-1 " md-button routerLink=".">
+           About 
+          </a>
+          <a class="header-btn headerButtons col-md-1" md-button routerLink=".">
+          Journey
+          </a>
+           <a class="header-btn headerButtons col-md-1" md-button routerLink=".">
+           Philosophy
+          </a>
+    
       </header>
       <div class="hr"></div>
         <div class="container">
@@ -563,7 +591,7 @@ footer{
                 <div class="signup-box drop-shadow">
 
                     <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification/1" method="POST">
-                   
+                    
                         <div class="margin-bottom-20">
                             <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> 
                                 <span style="font-size:16px">Continue with Facebook</span></a>
@@ -594,7 +622,7 @@ footer{
                         <div class="group">
                                 <div class="row col-sm-6">
                                     <div class="input-group input-group-first-name">
-                                            <input type="text" required style="width: 250px">
+                                            <input type="text" name="first_name" required style="width: 250px">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                            <label style="color:#999 !important;">First Name</label>
@@ -603,7 +631,7 @@ footer{
                                     </div>
                                     <div class="row col-sm-6">
                                     <div class="input-group input-group-last-name">
-                                            <input type="text" required style="width: 295px">
+                                            <input type="text" name="last_name" required style="width: 295px">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                            <label style="color:#999 !important;">Last Name</label>
@@ -612,7 +640,7 @@ footer{
                         </div>
                        <div class="group">   
                        <div class="input-group input-group-email">   
-                        <input type="text" required>
+                        <input type="text" name="email" required>
                         <span class="highlight"></span>
                           <span class="bar"></span>
                           <label style="color:#999 !important;">Email</label>
@@ -621,7 +649,7 @@ footer{
 
                         <div class="group">   
                        <div class="input-group input-group-password">   
-                        <input type="password" required>
+                        <input type="password" name="password" required>
                         <span class="highlight"></span>
                           <span class="bar"></span>
                           <label style="color:#999 !important;">Password</label>
