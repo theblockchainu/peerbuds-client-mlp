@@ -23,6 +23,7 @@ import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
+import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,11 +34,12 @@ import { AppDesignComponent } from './app-design/app-design.component';
     AppFooterComponent,
     IndexComponent,
     IndexPhilComponent,
-    AccessDeniedComponent, 
+    AccessDeniedComponent,
     LoginComponent,
     AccessDeniedComponent,
     SignupComponent,
-    AppDesignComponent
+    AppDesignComponent,
+    AppNotificationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +65,7 @@ import { AppDesignComponent } from './app-design/app-design.component';
         provide: ErrorHandler,
         useClass: GlobalErrorHandler
       }
-  ]
+  ],
+  entryComponents: [AppNotificationDialogComponent]
 })
 export class AppModule {}

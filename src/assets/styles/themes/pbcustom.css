@@ -113,6 +113,7 @@ md-subheader {
 .mat-list-item-content {
     min-height: 48px;
     height: fit-content !important;
+    padding-left: 0px !important;
 }
 
 .mat-list-item-focus {
@@ -421,13 +422,17 @@ h3.calendarTitle  {
     min-height: 50px !important;
 }
 
+.calendar .cal-month-view .cal-day-number {
+    font-size: 1rem !important;
+}
+
 .calendar .cal-month-view .cal-cell-top {
     min-height: 40px !important;
     margin: 2px 0px;
 }
 
 .calendar .cal-month-view .cal-day-number {
-    margin-right: 27px !important;
+    margin-right: 15px !important;
     margin-left: 5px !important;
 }
 
@@ -443,11 +448,11 @@ h3.calendarTitle  {
     float: right !important;
     margin-right: 18px !important;
     font-size: 0px !important;
-    width: 8px !important;
-    height: 8px !important;
-    background-color: #F0951B !important;
+    width: 0px !important;
+    height: 0px !important;
+    background-color: #ffeaea !important;
     padding: 0px !important;
-    margin-top: 0px !important;
+    margin-top: 8px !important;
     min-width: 8px !important;
     position: relative !important;
     top: 7px !important;
@@ -462,17 +467,13 @@ h3.calendarTitle  {
     height: 30px;
     background-color: #33bd9e;
     border-radius: 15px;
-    padding: 7px 0px 7px 6px;
-    margin-top: 8px;
+    padding: 5px 0px 7px 6px;
+    margin-top: 1px;
     margin-right: 20px !important;
 }
 
 .calendar .cal-month-view .cal-day-cell.cal-out-month.cal-has-events .cal-day-number {
     margin-left: 10px;
-}
-
-.cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
-    border-bottom: 1.5px solid rgba(0,0,0,0.27);
 }
 
 .dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
@@ -489,6 +490,10 @@ h3.calendarTitle  {
 
 .timeInput .mat-input-element {
     resize: none !important;
+}
+
+.cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
+    border-bottom: 1.5px solid rgba(0,0,0,0.27);
 }
 /* Calendar Ends */
 
@@ -994,4 +999,12 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .search-form .mat-input-wrapper {
     padding-bottom: 0.69688em;
+}
+
+/* Loading */
+
+.loading-container {
+    position: relative;
+    width:50px;
+    margin: 40px 0px 100px 0px;
 }
