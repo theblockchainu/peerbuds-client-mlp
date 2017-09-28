@@ -37,7 +37,8 @@ import { AppDesignComponent } from './app-design/app-design.component';
     AccessDeniedComponent, 
     LoginComponent,
     SignupComponent,
-    AppDesignComponent
+    AppDesignComponent,
+    GlobalErrorHandler
   ],
   imports: [
     BrowserModule,

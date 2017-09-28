@@ -9,6 +9,7 @@ import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dia
 import { LoginComponent } from './login/login.component';
 import {AppDesignComponent} from "./app-design/app-design.component";
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
+import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 
 const routes: Routes = [
   {
@@ -18,13 +19,13 @@ const routes: Routes = [
   },
 
   {
-  path: 'philosophy',
-  component: IndexPhilComponent,
+    path: 'philosophy',
+    component: IndexPhilComponent,
   }, 
 
   {
-      path: 'design',
-      component: AppDesignComponent
+    path: 'design',
+    component: AppDesignComponent
   },
   {
     path: 'login',
@@ -81,11 +82,14 @@ const routes: Routes = [
   }
   ,
   {
+    path: 'error',
+    component: GlobalErrorHandler
+  }
+  ,
+  {
     path: '**',
     component: NoContentComponent
   }
-  
-
 ];
 
 @NgModule({
