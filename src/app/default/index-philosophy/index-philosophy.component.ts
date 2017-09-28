@@ -61,5 +61,10 @@ export class IndexPhilComponent implements OnInit {
     this.collabSelected = !state;
     this.optimismSelected = state;
   }
+<<<<<<< HEAD
 }
 
+=======
+
+}
+>>>>>>> fe71d294a3adcebf7ad84d0d3a95e3f77d5b5197
