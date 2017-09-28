@@ -100,7 +100,6 @@ export class AuthenticationService {
           this.isLoginSubject.next(false);
           this.getLoggedInUser.emit(0);
           this.router.navigate(['/']);
-          //location.href = '/';
         }).subscribe();
     }
   }
