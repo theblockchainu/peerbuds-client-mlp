@@ -24,6 +24,7 @@ import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
+import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,13 +38,14 @@ import { AppDesignComponent } from './app-design/app-design.component';
     AccessDeniedComponent, 
     LoginComponent,
     SignupComponent,
-    AppDesignComponent
+    AppDesignComponent,
+    GlobalErrorHandler,
+    AppNotificationDialogComponent
   ],
   imports: [
     BrowserModule,
     CoreModule,
     ExperienceWizardModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MdCardModule,
     MdButtonModule,
@@ -55,7 +57,8 @@ import { AppDesignComponent } from './app-design/app-design.component';
     MdNativeDateModule,
     MdProgressSpinnerModule,
     MdProgressBarModule,
-    DialogsModule
+    DialogsModule,
+    AppRoutingModule,
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -63,6 +66,7 @@ import { AppDesignComponent } from './app-design/app-design.component';
         provide: ErrorHandler,
         useClass: GlobalErrorHandler
       }
-  ]
+  ],
+  entryComponents: [AppNotificationDialogComponent]
 })
 export class AppModule {}

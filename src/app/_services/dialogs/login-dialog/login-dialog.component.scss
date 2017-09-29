@@ -16,8 +16,8 @@ md-dialog-content {
 
 .page-signin
 {
-    width: 434px;
-    height: 448px;
+    width: 442px;
+    height: 434px;
   
 }
 .spacer{
@@ -62,8 +62,10 @@ md-dialog-content {
         }
 
 .loginbtn{
-    background-color: #ff5b5f;
+    background-color: #ff6d71;
     font-size:17px;
+    padding-top:5px;
+    padding-bottom:5px;
 }
 
 .txtcolor{
@@ -83,12 +85,12 @@ md-dialog-content {
 .circle-icon1 {
     padding:4px 6px 4px 6px;
     border-radius: 100%;
-    margin: 0 21px 0 1px;
+    margin:2px 21px 6px -22px;
 }
 .circle-icon2{
     padding:4px 5.5px 4px 5.75px;
     border-radius: 100%;
-    margin: 0 21px 0 1px;
+    margin:2px 21px 6px -46px;
 }
 
 .dialog-content{

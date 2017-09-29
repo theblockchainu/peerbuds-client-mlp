@@ -7,8 +7,9 @@ import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { LoginComponent } from './login/login.component';
-import {AppDesignComponent} from "./app-design/app-design.component";
+import { AppDesignComponent } from "./app-design/app-design.component";
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
+import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 
 const routes: Routes = [
   {
@@ -18,13 +19,13 @@ const routes: Routes = [
   },
 
   {
-  path: 'philosophy',
-  component: IndexPhilComponent,
+    path: 'philosophy',
+    component: IndexPhilComponent,
   }, 
 
   {
-      path: 'design',
-      component: AppDesignComponent
+    path: 'design',
+    component: AppDesignComponent
   },
   {
     path: 'login',
@@ -59,7 +60,7 @@ const routes: Routes = [
     loadChildren: 'app/workshop/workshop.module#WorkshopModule'
   },
   {
-    path: 'identity-verification',
+    path: 'app-upload-docs',
     loadChildren: 'app/verification/verification.module#VerificationModule'
   },
   {
@@ -81,11 +82,14 @@ const routes: Routes = [
   }
   ,
   {
+    path: 'error',
+    component: GlobalErrorHandler
+  }
+  ,
+  {
     path: '**',
     component: NoContentComponent
   }
-  
-
 ];
 
 @NgModule({
