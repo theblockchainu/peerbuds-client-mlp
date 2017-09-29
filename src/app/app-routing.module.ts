@@ -60,7 +60,7 @@ const routes: Routes = [
     loadChildren: 'app/workshop/workshop.module#WorkshopModule'
   },
   {
-    path: 'identity-verification',
+    path: 'app-upload-docs',
     loadChildren: 'app/verification/verification.module#VerificationModule'
   },
   {
