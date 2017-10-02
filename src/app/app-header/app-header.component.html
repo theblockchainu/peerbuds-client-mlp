@@ -32,7 +32,7 @@
         Notifications
       </button>
       <div style="display: inline-block;"><md-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</md-icon></div>
-      <div class="headerButtons" [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 25px;">
+      <div class="headerButtons" [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">
         <div>
           <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
           <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">

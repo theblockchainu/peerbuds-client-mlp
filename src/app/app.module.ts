@@ -13,6 +13,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+
 import { IndexComponent } from './default/index/index.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 
@@ -36,7 +37,6 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     IndexPhilComponent,
     AccessDeniedComponent,
     LoginComponent,
-    AccessDeniedComponent,
     SignupComponent,
     AppDesignComponent,
     AppNotificationDialogComponent
