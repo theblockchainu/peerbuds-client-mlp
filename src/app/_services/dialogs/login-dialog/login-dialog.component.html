@@ -1,51 +1,50 @@
 <div class="mat-dialog-focus-trap"></div>
 <section id="content" class="maincontent">
- <div class="signin-header">
-       </div>
-       <div class="logincontent">
-       <div class="page-signin">
-       <div class="signin-form mat-whiteframe-z1">
+ <div class="signin-header"></div>
+ <div class="logincontent">
+   <div class="page-signin">
+     <div class="signin-form mat-whiteframe-z1">
        <div class="md-content__body extra-padding">
 
-<form [formGroup]="loginForm" class="form-horizontal"> 
-   <md-dialog-content>
-       <div class="flex-body">
-          
-               <div class="margin-bottom-20">
-                       <a md-raised-button class="btn-width-large btn-block" href="{{config.apiUrl}}/auth/facebook?returnTo=/">
-                           <i class="fa fa-facebook circle-icon1"></i>Continue with Facebook</a>
-                   </div>
+        <form [formGroup]="loginForm" class="form-horizontal"> 
+         <md-dialog-content>
+             <div class="flex-body">
 
-                   <div class="margin-bottom-20">
-                       <a md-raised-button class="btn-width-large btn-block" href="{{config.apiUrl}}/auth/google?returnTo=/">
-                           <i class="fa fa-google circle-icon2"></i>Continue with Gmail</a>
+               <div class="margin-bottom-20">
+                 <a md-raised-button class="btn-width-large btn-block" href="{{config.apiUrl}}/auth/facebook?returnTo=/">
+                   <i class="fa fa-facebook circle-icon1"></i>Continue with Facebook</a>
+                 </div>
+
+                 <div class="margin-bottom-20">
+                   <a md-raised-button class="btn-width-large btn-block" href="{{config.apiUrl}}/auth/google?returnTo=/">
+                     <i class="fa fa-google circle-icon2"></i>Continue with Gmail</a>
                    </div>
                    <div class="btn-hide position-relative margin-bottom-20 text-center">
-                           <div class="or-seperator-vertical"></div>
-                           <span class="round-or-text or-text-vertical">or</span>
-                       </div>
+                     <div class="or-seperator-vertical"></div>
+                     <span class="round-or-text or-text-vertical">or</span>
+                   </div>
 
                    <div class="margin-bottom-20">
-                       <md-input-container class="pb-block">
-                           <input mdInput placeholder="Email" formControlName="email">
-                       </md-input-container>
+                     <md-input-container class="pb-block">
+                       <input mdInput placeholder="Email" formControlName="email">
+                     </md-input-container>
                    </div>
                    <div class="margin-bottom-20">
-                       <md-input-container class="pb-block">
-                           <input mdInput placeholder="Password" formControlName="password" type="password">
-                       </md-input-container>
+                     <md-input-container class="pb-block">
+                       <input mdInput placeholder="Password" formControlName="password" type="password">
+                     </md-input-container>
                    </div>
                    <div class="margin-bottom-20">
-                        <button md-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="login()"><span class="txtcolor">Log in</span></button><br><br>
-                        <a class="link margin-top-10" (click)="getpwd()" style="font-size: 14px;color: #767676;">Forgot password?</a>&nbsp;&nbsp;<a href="/signup.html" style="font-size:14px;">Sign up</a>
+                    <button md-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="login()"><span class="txtcolor">Log in</span></button><br><br>
+                    <a (click)="openForgot()" *ngIf="!(isLoggedIn | async)"> Forgot Password </a>&nbsp;&nbsp;
+                    <a href="/signup.html" style="font-size:14px;">Sign up</a>
 
-                   </div>
-               
-               </div>
-       </md-dialog-content>
-        </form>
+                  </div>
+                </div>
+            </md-dialog-content>
+          </form>
         </div>
-       </div>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 </section>
