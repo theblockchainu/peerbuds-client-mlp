@@ -139,6 +139,7 @@ export class WorkshopsComponent implements OnInit {
   openTopicsDialog(): void {
     const dialogRef = this.dialog.open(SelectTopicsComponent, {
       width: '250px',
+      height: '300px',
       data: this.availableTopics,
       disableClose: true,
       position: {
@@ -158,6 +159,7 @@ export class WorkshopsComponent implements OnInit {
   openPriceDialog(): void {
     const dialogRef = this.dialog.open(SelectPriceComponent, {
       width: '200px',
+      height: '190px',
       data: {
         availableRange: this.availableRange,
         selectedRange: this.selectedRange

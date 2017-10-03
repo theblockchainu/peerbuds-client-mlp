@@ -506,7 +506,7 @@ export class WorkshopPageComponent implements OnInit {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
       width: '50vw',
       height: '90vh',
-      data: {itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants}
+      data: {itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -798,7 +798,7 @@ content:any   */
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
       width: '50vw',
       height: '90vh',
-      data: {itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants}
+      data: {itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
