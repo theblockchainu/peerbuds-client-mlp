@@ -1,7 +1,7 @@
 /* Core Classes */
 
 html {
-    font-size: 87.5%;
+    font-size: 93.8%;
     max-width: 100%;
     overflow-x: hidden;
 }
@@ -500,8 +500,15 @@ h3.calendarTitle  {
 /* Bootstrap Starts */
 .ui-accordion .ui-accordion-header{
     background:rgba(255, 255, 255, 0.00);
+    border-bottom: 0.5px solid #eeeeee;
+    border-top: 0px;
 
 }
+
+.ui-accordion .ui-accordion-header:not(.ui-state-active):not(.ui-state-disabled):hover {
+    background: #ffffff !important;
+}
+
 .ui-accordion .ui-accordion-header .fa-caret-right,.ui-accordion .ui-accordion-header .fa-caret-down{
     display: none;
 }
@@ -636,6 +643,7 @@ h3.calendarTitle  {
     padding-top: 0px !important;
     top: 14px !important;
     font-size: 8px !important;
+    line-height: 19px;
 }
 
 .message-item:before {
@@ -910,8 +918,6 @@ h3.calendarTitle  {
 .emptySectionText {
     margin-top: 25px;
     margin-bottom: 25px;
-    border: 1px solid #eeeeee;
-    border-radius: 2px;
     padding: 10px;
 }
 
