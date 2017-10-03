@@ -30,8 +30,9 @@
                 </button>
               </div>
             </div> -->
-            <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImages($event)"
-              maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+            <!--url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImages($event)" auto="true" -->
+            <p-fileUpload #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)"
+              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
               <ng-template pTemplate="toolbar">
                 <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
               </ng-template>

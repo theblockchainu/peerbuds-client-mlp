@@ -80,8 +80,8 @@ export class UploadDocsComponent implements OnInit {
     this.peer.controls['email'].setValue(this.email);
     console.log(event.files);
     for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
+      this.mediaUploader.upload(file).map((responseObj) => {
+        // this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
         this.idProofImagePending = false;
       }).subscribe();
     }
