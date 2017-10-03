@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { LoginComponent } from './login/login.component';
+import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,6 +38,7 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     IndexPhilComponent,
     AccessDeniedComponent, 
     LoginComponent,
+    LoginComponentDialog,
     SignupComponent,
     AppDesignComponent,
     GlobalErrorHandler,
