@@ -1,12 +1,16 @@
 import { AppConfig } from '../../app.config';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable()
 export class MediaUploaderService {
+  private options;
 
-  constructor(private http: HttpClient, private config: AppConfig, private sanitizer: DomSanitizer) { }
+  constructor(private http: HttpClient, 
+              private config: AppConfig, 
+              private sanitizer: DomSanitizer) {}
 
   public upload(file) {
     if (!file.objectURL) {
@@ -15,8 +19,11 @@ export class MediaUploaderService {
     file.src = file.objectURL.changingThisBreaksApplicationSecurity;
     console.log(file);
     const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData);
+    formData.append('files', file, file.name);
+    return this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290',
+                          formData, 
+                          { withCredentials: true
+                          });
   }
 
 }

@@ -48,11 +48,11 @@ export class WorkshopContentVideoComponent implements OnInit {
 
     imageUploadNew(event) {
         for (const file of event.files) {
-            this.mediaUploader.upload(file).map((responseObj: Response) => {
+            this.mediaUploader.upload(file).map((responseObj) => {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                contentForm.controls['imageUrl'].patchValue(responseObj.url);
-                this.urlForVideo = responseObj.url;
+                // contentForm.controls['imageUrl'].patchValue(responseObj.url);
+                // this.urlForVideo = responseObj.url;
             }).subscribe();
         }
     }
@@ -103,12 +103,12 @@ export class WorkshopContentVideoComponent implements OnInit {
         this.filesToUpload = event.files.length;
         this.filesUploaded = 0;
         for (const file of event.files) {
-            this.mediaUploader.upload(file).map((responseObj: Response) => {
+            this.mediaUploader.upload(file).map((responseObj) => {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
                 supplementUrls.reset();
-                supplementUrls.push(this._fb.control(responseObj.url));
+                // supplementUrls.push(this._fb.control(responseObj.url));
                 this.filesUploaded++;
             }).subscribe();
         }

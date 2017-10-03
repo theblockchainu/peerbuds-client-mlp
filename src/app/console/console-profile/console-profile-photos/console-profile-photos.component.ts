@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleProfileComponent } from '../console-profile.component';
 import { ProfileService } from '../../../_services/profile/profile.service';
+import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
 import { AppConfig } from '../../../app.config';
 
 declare var moment: any;
@@ -21,6 +22,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
     public consoleProfileComponent: ConsoleProfileComponent,
     public router: Router,
     public _profileService: ProfileService,
+    public mediaUploader: MediaUploaderService,
     public config: AppConfig,
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
@@ -51,16 +53,30 @@ export class ConsoleProfilePhotosComponent implements OnInit {
     });
   }
 
-  uploadImages(event) {
-    const xhrResp = JSON.parse(event.xhr.response);
-    console.log(xhrResp);
-    this._profileService.updateProfile({
-      'picture_url': xhrResp.url
-    }).subscribe(response => {
-      this.picture_url = response.picture_url;
-    }, err => {
-      console.log(err);
-    });
+  // uploadImages(event) {
+  //   const xhrResp = JSON.parse(event.xhr.response);
+  //   console.log(xhrResp);
+  //   this._profileService.updateProfile({
+  //     'picture_url': xhrResp.url
+  //   }).subscribe(response => {
+  //     this.picture_url = response.picture_url;
+  //   }, err => {
+  //     console.log(err);
+  //   });
+  // }
+
+  uploadImage(event) {
+    // console.log(event.files);
+    debugger;
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).map(
+        (response) => {
+          debugger;
+          //response.json();  
+        }).subscribe((response) => {
+        debugger;
+      });
+    }
   }
 
 
