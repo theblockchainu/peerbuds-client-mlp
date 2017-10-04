@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { ConsoleTeachingComponent } from '../console-teaching.component';
-import {AppConfig} from '../../../app.config';
+import { AppConfig } from '../../../app.config';
 
 declare var moment: any;
 
@@ -27,8 +27,12 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     public config: AppConfig
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
-      console.log(urlSegment[0].path);
-      consoleTeachingComponent.setActiveTab(urlSegment[0].path);
+      if (urlSegment[0] === undefined) {
+        consoleTeachingComponent.setActiveTab('workshops');
+      } else {
+        console.log(urlSegment[0].path);
+        consoleTeachingComponent.setActiveTab(urlSegment[0].path);
+      }
     });
   }
 

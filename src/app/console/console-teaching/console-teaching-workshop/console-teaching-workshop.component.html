@@ -14,7 +14,7 @@
       </div>
     </div>
     <div *ngIf="collections.activeCount > 0">
-      <div style="display:inline;" >
+      <div style="display:inline;">
         <h2>Ongoing & Upcoming</h2>
       </div>
       <div class="row">
@@ -25,11 +25,11 @@
                 <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
                 <ng-template #noTopicText>No Topics</ng-template>
                 <ng-template #ongoingCard>
-                  <md-card style="text-align: center; padding: 20px;" >
+                  <md-card style="text-align: center; padding: 20px;">
                     <md-card-content>
                       <div style="text-align: right">
                         <div class="pull-right">
-                          <a [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
+                          <a md-icon-button [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
@@ -87,7 +87,7 @@
                     <md-card-content>
                       <div style="text-align: right">
                         <div class="pull-right">
-                          <a [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
+                          <a md-icon-button [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
@@ -173,9 +173,9 @@
                     <md-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
-                          <a md-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
+                          <button md-icon-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
-                          </a>
+                          </button>
                         </div>
                       </div>
                       <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' }} </div>
@@ -186,8 +186,7 @@
                       </ng-template>
                       <ng-template #submittedMessage>
                         <p class="lightText" style="margin-top:20px">
-                          Submitted for review <br>
-                          Awaiting approval
+                          Submitted for review <br> Awaiting approval
                         </p>
                       </ng-template>
                       <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
@@ -217,7 +216,7 @@
                     <md-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
-                          <a md-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
+                          <a md-icon-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
@@ -230,8 +229,7 @@
                       </ng-template>
                       <ng-template #submittedMessage>
                         <p class="lightText" style="margin-top:20px">
-                          Submitted for review <br>
-                          Awaiting approval
+                          Submitted for review <br> Awaiting approval
                         </p>
                       </ng-template>
                       <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
@@ -251,9 +249,9 @@
                     <button md-menu-item>
                       Message Students
                     </button>
-                    <button md-menu-item (click)="_collectionService.approveCollection(collection)">
+                    <!-- <button md-menu-item (click)="_collectionService.approveCollection(collection)">
                       Approve Workshop
-                    </button>
+                    </button> -->
                     <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
                       View Workshop
                     </button>
@@ -282,7 +280,7 @@
                     <md-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
-                          <a md-button [mdMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
+                          <a md-icon-button [mdMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
