@@ -2,13 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IndexComponent } from './default/index/index.component';
+import { IndexComponent1 } from './default/index1/index1.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { LoginComponent } from './login/login.component';
-import {AppDesignComponent} from "./app-design/app-design.component";
+import { AppDesignComponent } from "./app-design/app-design.component";
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
+import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
+import { DialogsService } from './_services/dialogs/dialog.service';
 
 const routes: Routes = [
   {
@@ -16,19 +19,17 @@ const routes: Routes = [
     component: IndexComponent,
     pathMatch: 'full'
   },
-
   {
-  path: 'philosophy',
-  component: IndexPhilComponent,
+    path: 'philosophy',
+    component: IndexPhilComponent,
   }, 
-
   {
-      path: 'design',
-      component: AppDesignComponent
+    path: 'design',
+    component: AppDesignComponent
   },
   {
     path: 'login',
-    component: LoginComponentDialog
+    component: IndexComponent1
   },
   {
     path: 'login1',
@@ -81,16 +82,19 @@ const routes: Routes = [
   }
   ,
   {
+    path: 'error',
+    component: GlobalErrorHandler
+  }
+  ,
+  {
     path: '**',
     component: NoContentComponent
   }
-  
-
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: []
+  providers: [LoginComponentDialog]
 })
 export class AppRoutingModule { }

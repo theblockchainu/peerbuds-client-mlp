@@ -2,132 +2,43 @@
     border: 0;
     float: left;
     position: relative;
-    width: 100%;
 }
 
-.absolute {
+.centerVideo {
+    border: 0;
     position: absolute;
+    top: 150px;
+    margin-left: 25%;
+    width: auto;
+    height: 400px;
 }
 
-.right {
+.centerPlayButton {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 335px;
+    left: 30px;
     right: 0;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.rightRhombus {
-    width: 342px;
-}
-.rightImage {
-    width: 578px;
-    height: auto;
-    z-index: 10;
+.view2Image {
+    width: 45%;
+    margin-left: 10%;
 }
 
-.wavesPhilosophy {
-    width: 100%;
-    left: 0;
-    z-index: 0;
-    top: 10.5%;
+.view3Image {
+    width: 50%;
+    top: -22px;
 }
 
-.problem {
-    text-align: center;
-}
-
-.headline {
-    color: black;
-    font-size: 4rem;
-}
-
-.content {
-    word-wrap: break-word;
-    color: #979797 !important;
-}
-
-.quote {
-    width: 87px;
-}
-
-.quoteText, .coreTopic {
-    color:#ff5b5f;
-}
-
-.quoteAuthor {
-    font-size: 16px;
-    font-weight: 400; 
-    color: #979797;
-}
-
-.corevalue {
-    width: 20%;
-    float: left;
-}
-
-.selected1, .selected2,  .selected3, .selected4, .selected5 {
-    width: 13px;
-    top: 112%;
-}
-
-.selected1{
-    left: 11%;
-}
-
-.selected2{
-    left: 30%;
-}
-
-.selected3{
-    left: 50%;
-}
-
-.selected4{
-    left: 69%;
-}
-
-.selected5{
-    left: 88%;
-}
-.default-circle, .active-circle {
-    width: 130px;
-}
-
-.default-transformation {
-    width: 55px;
-    left: 8.5%;
-    top: 38px;
-}
-
-.default-pplFocussed {
-    width: 50px; 
-    left: 28%;
-    top: 35px;
-
-}
-
-.default-courage {
-    width: 60px; 
-    left: 47%;
-    top: 44px;
-
-}
-
-.default-collab {
-    width: 55px;
-    left: 66.5%;
-    top: 42px;
-
-}
-
-.default-optmism {
-    width: 52px;   
-    left: 86%;
-    top: 38px;
-
-}
-
-.coreTopic {
-    font-size: 2.25rem;
-    font-weight: 400;    
-    margin-bottom: 20px;
+.view4Image {
+    width: 50%;
+    margin-left: 7%;
+    margin-top: 20px;
 }
 
 .view5Image {
@@ -246,13 +157,11 @@
 .footer {
     position: absolute;
     bottom: 104px;
-    left: 0;
 }
 
 .oval {
     bottom: 0;
     position: absolute;
-    left: 0;
 }
 
 .notif{
@@ -290,3 +199,26 @@
     padding: 30px 5px 10p 5px;
     margin-top: 50px;
 }
+
+.content {
+    word-wrap: break-word;
+    text-align: justify;
+    // font-size: 16px;
+    color: #979797 !important;
+    font-weight: 300;
+}
+
+// .email-btn:after {
+//     content: '';
+//     position: absolute;
+//     bottom: 150px;
+//     left: 950px;
+//     width: 90%;
+//     height: 8%;
+//     border-radius: 50%;
+//     box-shadow: 0px 10px 5px yellow;
+//     background-color: yellow;
+
+// }
+
+// }

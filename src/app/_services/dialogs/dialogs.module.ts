@@ -19,7 +19,7 @@ import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
   exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent],
   declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent],
   providers: [
-    DialogsService,
+    DialogsService
   ],
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog

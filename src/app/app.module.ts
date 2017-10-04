@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
 
 import { IndexComponent } from './default/index/index.component';
+import { IndexComponent1 } from './default/index1/index1.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 
 import 'hammerjs';
@@ -34,11 +35,13 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     AppHeaderComponent,
     AppFooterComponent,
     IndexComponent,
+    IndexComponent1,
     IndexPhilComponent,
-    AccessDeniedComponent,
+    AccessDeniedComponent, 
     LoginComponent,
     SignupComponent,
     AppDesignComponent,
+    GlobalErrorHandler,
     AppNotificationDialogComponent
   ],
   imports: [

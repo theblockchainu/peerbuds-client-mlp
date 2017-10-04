@@ -11,6 +11,7 @@ import {
 
 import { SpinnerService } from './_services/spinner/spinner.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,6 +32,7 @@ export class AppComponent {
       this.navigationInterceptor(event);
     });
   }
+
 
   // Shows and hides the loading spinner during RouterEvent changes
   navigationInterceptor(event: RouterEvent): void {
@@ -53,5 +55,6 @@ export class AppComponent {
       this.loading = this._spinnerService.getSpinnerState();
     }
   }
+
 
 }
