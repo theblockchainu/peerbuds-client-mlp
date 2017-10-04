@@ -6,7 +6,7 @@
           <div class="col-sm-4 col-sm-offset-4">
             <div class="welcome-box text-center">
               <h2 class="headline">Welcome to Peerbuds</h2>
-              <p class="description1 margin-top-20 margin-bottom-20">You are entering a blockchain based community where peers can teach and learn from one another, while earning</p>
+              <p class="description1 margin-top-10 margin-bottom-20">You are entering a blockchain based community <br>where peers can teach and learn from one another, while earning</p>
               <div class="margin-top-40">
                   <button md-raised-button class="customBtn" type="button" color="accent" (click)="goToNext(2)">Yes, thats me</button>
               </div>
@@ -27,12 +27,12 @@
               <div class="row">
                 <div class="col-sm-12 margin-bottom-30">
                   <div class="row margin-left-0">
-                    <div class="col-sm-8">
+                    <div class="col-sm-10">
                       <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" (anyTopicNotFound)="requestNewTopicEnabled($event)" [searchUrl]=searchTopicURL [title]=placeholderStringTopic
                           [maxSelection]=maxTopics></multiselect-autocomplete>
                     </div>
                 
-                    <div class="col-sm-4">
+                    <div class="col-sm-2">
                       <span *ngIf="!boolShowConnectedSocials" style="line-height:50px">
                         <a class="text-right syncSocial" (click)="showConnectedSocials()">
                           <md-icon class="vAlignTextTop">cached</md-icon>
@@ -52,16 +52,16 @@
                     <i class="twa twa-3x twa-pensive"></i>
                     </div>
                     <div class="margin-bottom-20">
-                    <div class="suggestions description1 margin-bottom-20"> Topic you are looking for cannot be found</div>
+                    <div class="suggestions"> Topic you are looking for cannot be found</div>
                       <button md-button class="outline-btn" (click)="requestNewTopic(topicForRequest)"> Request for {{topicForRequest}} topic</button>
                   </div>
                 </div>
               </div>
               <div class="row bottom-section clearfix margin-left-10">
-                <div class="col-sm-8"> 
+                <div class="col-sm-12"> 
                   <i class="twa twa-2x twa-relieved-face"></i><span class="rightLinks" style="vertical-align:super">&nbsp;&nbsp;&nbsp;&nbsp;You are almost there</span>
                   <div class="pull-right">
-                    <button md-button style="margin-right:20px; color:#767676">Back</button>
+                    <button md-button style="margin-right:15px; color:#767676">Back</button>
                     <button md-raised-button (click)="goToNext(3)" color="accent" [disabled]="interests.length < 3">Done</button>
                   </div>
                 </div>
@@ -77,22 +77,23 @@
          <div class="row">
           <div class="col-sm-6 col-sm-offset-3">
             <div class="text-center">
-              <h2 class="title-explore text-center">You're now ready to teach and learn anything to your heart's desires</h2>
-              <p class="text-grey">Your account is still under review and will soon be approved. Meanwhile, you can discover learning content
-                on the platform.</p>
+              <h1 class="mat-title title-explore text-center">You're now ready to teach<br> and learn anything to your heart's desires</h1>
+              <!--<p class="text-grey">Your account is still under review and will soon be approved. Meanwhile, you can discover learning content
+                on the platform.</p>-->
               <div class="checkbox">
-                <label class="check btn btn-default btn-start-explore" [routerLink]="['/']" style="position:relative;left:170px;">Start Exploring</label>
+                <label class="check btn btn-default btn-start-explore" [routerLink]="['/']" style="position:relative;left:0px;">Start Exploring</label>
               </div>
             </div>
           </div>
         </div>
            
 
-      <div class="onboarding step-3  margin-top-100 col-sm-4 col-sm-offset-4" [hidden]="step!=3">
+     <!-- <div class="onboarding step-3  margin-top-100 col-sm-4 col-sm-offset-4" [hidden]="step!=3">
         <div class="center" style="padding-top:60px">
             <h2 class="headline">You're now ready to teach and learn anything your heart desire</h2>
             <p class="description1">Your account is still under review and will soon be approved. Meanwhile you can discover learning content on the platform.</p>
             <button class="margin-top-40" [routerLink]="['/home/homefeed']" md-raised-button color="accent">Start Exploring</button>
         </div>
       </div>
+      -->
   </div>

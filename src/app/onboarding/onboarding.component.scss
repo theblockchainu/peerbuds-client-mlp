@@ -1,6 +1,6 @@
 .onboarding-content{
-  margin-bottom:0!important;
-  padding-bottom:136px;
+  margin-bottom:27% !important;
+  //padding-bottom:136px;
 }
 .onboarding{
   .title{
@@ -189,6 +189,7 @@ label.check {
     color:#fff;
     padding:100px 100px;
     border-radius:5px;
+    padding:147px 10px 77px 26px;
     .title{
         color:#000;
     }
@@ -213,16 +214,21 @@ label.check {
   padding: 50px 0 50px 0;
 }
 .title-explore{
- padding: 100px 0 20px 0;
+ padding: 130px 0 12px 0;
+ margin: 2%;
 }
 
 .headline {
   color: #484848;
+  padding: 28px 0 0 0;
+  
 }
 
 .description1 {
   font-size: 16px;
   color: #767676;
+  margin: -30%;
+  
 }
 
 .customBtn {
@@ -232,7 +238,7 @@ label.check {
 
 .syncSocial {
   color: #33BD9E;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: lighter;
 }
 
@@ -243,11 +249,17 @@ label.check {
 .bottom-section{
   border-top:1px solid #ccc;
   padding-top:15px;
-  margin-top:20px;
+  margin-top:30%;
+  margin-bottom: -38%;
 }
 
 .outline-btn {
   border: 1.5px solid #767676;
   color: #484848;
   background-color: white;
+}
+.suggestions{
+  text-align:center;
+  padding: 10px;
+
 }

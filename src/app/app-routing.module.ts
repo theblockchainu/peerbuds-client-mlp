@@ -21,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: 'philosophy',
-    component: IndexPhilComponent,
+    component: IndexPhilComponent
   }, 
   {
     path: 'design',
@@ -84,8 +84,7 @@ const routes: Routes = [
   {
     path: 'error',
     component: GlobalErrorHandler
-  }
-  ,
+  },
   {
     path: '**',
     component: NoContentComponent
