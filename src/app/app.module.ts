@@ -9,13 +9,13 @@ import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { LoginComponent } from './login/login.component';
-import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
 
 import { IndexComponent } from './default/index/index.component';
+import { IndexComponent1 } from './default/index1/index1.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 
 import 'hammerjs';
@@ -35,10 +35,10 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     AppHeaderComponent,
     AppFooterComponent,
     IndexComponent,
+    IndexComponent1,
     IndexPhilComponent,
     AccessDeniedComponent, 
     LoginComponent,
-    LoginComponentDialog,
     SignupComponent,
     AppDesignComponent,
     GlobalErrorHandler,
