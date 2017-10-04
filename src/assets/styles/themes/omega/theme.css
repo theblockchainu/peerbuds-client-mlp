@@ -1,9 +1,9 @@
 @charset "UTF-8";
 .ui-widget {
-  font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: "Lato", "Trebuchet MS", Arial, Helvetica, sans-serif;
   font-size: 1em; }
   .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-    font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: "Lato", "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 1em; }
   .ui-widget :active {
     outline: none; }
@@ -536,7 +536,7 @@ p-togglebutton.ng-dirty.ng-invalid .ui-button {
 
 /* roboto-regular - latin */
 @font-face {
-  font-family: 'Roboto';
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
   src: url("fonts/roboto-v15-latin-regular.eot");

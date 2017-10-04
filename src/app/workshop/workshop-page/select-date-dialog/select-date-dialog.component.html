@@ -1,12 +1,15 @@
 <div class="row">
-  <div class="col-md-12 padding-left-60">
-    <h3 md-dialog-title *ngIf="mode === 'chooseDate'">When do you want to attend?</h3>
-    <h3 md-dialog-title *ngIf="mode === 'editDelete'">Existing workshop cohorts</h3>
+  <div class="col-md-12">
+    <button md-button class="mat-icon-button" type="button" (click)="dialogRef.close()" style="top: -3px; left: -10px;"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+    <div style="display: inline-block">
+      <h2 md-dialog-title *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</h2>
+      <h2 md-dialog-title *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
+      <h2 md-dialog-title *ngIf="mode === 'editDelete'">Existing workshop cohorts</h2>
+    </div>
   </div>
 </div>
 <div class="row">
   <div class="col-md-12">
-    <hr>
   </div>
 </div>
 <div md-dialog-content>
@@ -18,16 +21,18 @@
             <div class="col-md-8">
               <div class="col-md-12">
                 <div class="margin-top-20 margin-bottom-20">
-                  <b>
-                    {{itenaryObj.calendar.startDate | date:'EEE, MMMM d'}} - {{itenaryObj.calendar.endDate | date:'EEE, MMMM d'}}
-                  </b>
+                  <span class="mat-body-2">
+                    {{itenaryObj.calendar.startDate | date:'EEE, MMM d'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d'}}
+                  </span>
                   <br>
+                  <span class="mat-caption">
                     {{itenaryObj.participantCount}} participants
+                  </span>
                 </div>
               </div>
               <div class="col-md-12">
-                <p *ngIf="i!==selectedIndex" style="font-size: 90%">View Schedule</p>
-                <p *ngIf="i===selectedIndex" style="font-size: 90%">Hide Schedule</p>
+                <h5 *ngIf="i!==selectedIndex"><b>View Schedule</b></h5>
+                <h5 *ngIf="i===selectedIndex"><b>Hide Schedule</b></h5>
               </div>
             </div>
             <div class="col-md-4">
@@ -41,14 +46,18 @@
           </div>
         </div>
       </p-header>
-      <div>
+      <div class="accordianContent">
         <div class="row">
           <div class="col-md-12" *ngFor="let itenary of itenaryObj.itenary">
             <div class="col-md-12">
-              <div class="col-md-12" style="margin: 10px 0px 3px 0px;">{{itenary.startDate | date:'EE MMM d'}}</div>
+              <div class="col-md-12" style="margin: 10px 0px 3px 0px;">
+                {{itenary.startDate | date:'EE, MMM d'}}
+              </div>
             </div>
             <div class="col-md-12">
-              <div class="col-md-12" style="margin: 3px 0px 10px 0px;">{{itenary.contents[0].schedules[0].startTime | extractTime:'hh:mm a'}} - {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime | extractTime:'h:mm a'}}</div>
+              <div class="col-md-12" style="margin: 3px 0px 10px 0px;">
+                {{itenary.contents[0].schedules[0].startTime | extractTime:'hh:mm a'}} to {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime | extractTime:'h:mm a'}}
+              </div>
             </div>
           </div>
         </div>

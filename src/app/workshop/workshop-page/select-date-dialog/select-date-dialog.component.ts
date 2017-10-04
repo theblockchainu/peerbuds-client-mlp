@@ -13,12 +13,14 @@ export class SelectDateDialogComponent implements OnInit {
   public itineraries;
   public participants;
   public mode;
+  public userType;
 
   constructor(public dialogRef: MdDialogRef<SelectDateDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any) {
     this.itineraries = data.itineraries;
     this.mode = data.mode;
     this.participants = data.participants;
+    this.userType = data.userType;
 
     this.itineraries.forEach(itinerary => {
       let thisParticipantCount = 0;
