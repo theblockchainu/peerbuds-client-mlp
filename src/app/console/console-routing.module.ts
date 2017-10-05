@@ -28,6 +28,8 @@ import { ConsoleAccountTransactionhistoryComponent } from './console-account/con
 import { ConsoleAccountSecurityComponent } from './console-account/console-account-security/console-account-security.component';
 import { ConsoleAccountPrivacyComponent } from './console-account/console-account-privacy/console-account-privacy.component';
 import { ConsoleAccountSettingsComponent } from './console-account/console-account-settings/console-account-settings.component';
+import { ConsoleAdminComponent } from './console-admin/console-admin.component';
+
 const routes: Routes = [{
   path: '',
   component: ConsoleComponent,
@@ -160,6 +162,10 @@ const routes: Routes = [{
           component: ConsoleAccountNotificationsComponent
         }
       ]
+    },
+    {
+      path: 'admin',
+      component: ConsoleAdminComponent
     }
   ]
 }];
@@ -168,4 +174,6 @@ const routes: Routes = [{
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ConsoleRoutingModule { }
+export class ConsoleRoutingModule {
+
+}

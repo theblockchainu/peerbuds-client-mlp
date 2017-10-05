@@ -36,6 +36,7 @@ import { ConsoleAccountSettingsComponent } from './console-account/console-accou
 
 import { TimezonePickerService } from '../_services/timezone-picker/timezone-picker.service';
 import { CohortDetailDialogComponent } from './console-teaching/console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
+import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 
 @NgModule({
   imports: [
@@ -85,7 +86,8 @@ import { CohortDetailDialogComponent } from './console-teaching/console-teaching
     ConsoleAccountSecurityComponent,
     ConsoleAccountPrivacyComponent,
     ConsoleAccountSettingsComponent,
-    CohortDetailDialogComponent
+    CohortDetailDialogComponent,
+    ConsoleAdminComponent
   ],
   providers: [TimezonePickerService],
   bootstrap: [CohortDetailDialogComponent]

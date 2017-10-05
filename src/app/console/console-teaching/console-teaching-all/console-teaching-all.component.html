@@ -254,9 +254,6 @@
                     <button md-menu-item>
                       Message Students
                     </button>
-                    <button md-menu-item (click)="_collectionService.approveCollection(collection)">
-                      Approve {{collection.type | titlecase}}
-                    </button>
                     <button md-menu-item (click)="_collectionService.openCollection(collection)">
                       View {{collection.type | titlecase}}
                     </button>
@@ -317,9 +314,6 @@
                     </button>
                     <button md-menu-item>
                       Message Students
-                    </button>
-                    <button md-menu-item (click)="_collectionService.approveCollection(collection)">
-                      Approve {{collection.type | titlecase}}
                     </button>
                     <button md-menu-item (click)="_collectionService.openCollection(collection)">
                       View {{collection.type | titlecase}}
