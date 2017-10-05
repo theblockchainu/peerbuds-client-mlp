@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../_services/collection/collection.service';
+import { ProfileService } from '../_services/profile/profile.service';
+
 import { AppConfig } from '../app.config';
 
 @Component({
@@ -12,10 +14,13 @@ export class ConsoleComponent implements OnInit {
 
   public activeTab: string;
   public userId: string;
+  public isAdmin: boolean;
+
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
     private cookieUtilsService: CookieUtilsService,
     private _collectionService: CollectionService,
+    private _profileService: ProfileService,
     private appConfig: AppConfig) {
     this.activatedRoute.firstChild.url.subscribe((urlSegment) => {
       console.log('activated route is: ' + JSON.stringify(urlSegment));
@@ -25,6 +30,13 @@ export class ConsoleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._profileService.getPeerData().subscribe(
+      result => {
+        this.isAdmin = result.isAdmin;
+      }, err => {
+        console.log(err);
+      }
+    );
   }
 
   /**
