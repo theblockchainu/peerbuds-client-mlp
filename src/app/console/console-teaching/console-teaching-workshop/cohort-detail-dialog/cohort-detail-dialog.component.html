@@ -1,0 +1,11 @@
+<h1 md-dialog-title>Past Cohort Details</h1>
+<div md-dialog-content>
+  <div class="row" *ngFor="let cohort of cohortsDataArray">
+    <div class="col-md-9">
+      <p>{{cohort.startDate |extractTime:'Do MMM'}} - {{cohort.endDate| extractTime:'Do MMM'}}</p>
+    </div>
+    <div class="col-md-3">
+      <p>{{cohort.participants.length}} participants</p>
+    </div>
+  </div>
+</div>
