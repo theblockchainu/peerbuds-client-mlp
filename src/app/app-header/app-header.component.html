@@ -16,8 +16,8 @@
             <span>
               {{getSearchOptionText(option)}}
             </span>
-  </md-option>
-  </md-autocomplete>
+        </md-option>
+      </md-autocomplete>
   </span>
   <!-- This fills the remaining space of the current row -->
   <span class="example-spacer"></span>
@@ -28,16 +28,17 @@
       <button md-button class="headerButtons" [mdMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
         Learn
       </button>
-      <button md-button class="headerButtons" [mdMenuTriggerFor]="headerNotificationsMenu" *ngIf="(isLoggedIn | async)">
-        <md-icon>notifications</md-icon>
+      <button md-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async)">
+        Notifications
       </button>
-      <button md-button class="headerButtons" [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)">
+      <div style="display: inline-block;"><md-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</md-icon></div>
+      <div class="headerButtons" [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">
         <div>
           <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
           <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
         </div>
-      </button>
-       
+      </div>
+
       <button md-button class="headerButtons" [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
         Philosophy
       </button>
@@ -51,12 +52,12 @@
        White Paper
       </button>
 
-      <a md-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
+      <a md-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
         Sign Up
       </a>
 
       <!-- trying dialog-->
-      <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)" style="font-size: 1rem">
+      <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
         Log In
       </button>
       
@@ -103,19 +104,6 @@
   <button md-menu-item [routerLink]="['/console/calendar']">
       Calendar
     </button>
-</md-menu>
-
-
-<md-menu #headerNotificationsMenu>
-  <div class="notificationsDiv dropdown-menu notification-sub-box">
-    <ul id="notificationsUL"></ul>
-    <div class="noNotiExists">
-      <div class="notificationLiContent">
-        <span class="text-grey conDesc">No notifications</span>
-      </div>
-    </div>
-    <div class='seeAllLi hide'><a class='seeAllAnc' href="${baseUrl}/notifications/all-notifications">See All</a></div>
-  </div>
 </md-menu>
 
 <md-menu #headerUserMenu>

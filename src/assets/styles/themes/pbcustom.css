@@ -1,7 +1,7 @@
 /* Core Classes */
 
 html {
-    font-size: 87.5%;
+    font-size: 93.8%;
     max-width: 100%;
     overflow-x: hidden;
 }
@@ -30,6 +30,10 @@ a:focus {
 
 img {
     width: 100%;
+}
+
+.primaryColor {
+    color: #33bd9e;
 }
 
 /* Scroll Bar custom Starts*/
@@ -79,6 +83,13 @@ img {
 
 
 /* Scroll Bar custom Ends */
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
 
 /* Material Classes Starts*/
 
@@ -154,6 +165,7 @@ md-subheader {
 .mat-list-item-content {
     min-height: 48px;
     height: fit-content !important;
+    padding-left: 0px !important;
 }
 
 .mat-list-item-focus {
@@ -433,8 +445,16 @@ md-subheader {
     padding-left: 0px !important;
 }
 
+.padding-left-15 {
+    padding-left: 15px;
+}
+
 .padding-right-0 {
     padding-right: 0px !important;
+}
+
+.padding-right-0pt5 {
+    padding-right: 0.5% !important;
 }
 
 /* Calendar Starts */
@@ -462,13 +482,17 @@ h3.calendarTitle  {
     min-height: 50px !important;
 }
 
+.calendar .cal-month-view .cal-day-number {
+    font-size: 1rem !important;
+}
+
 .calendar .cal-month-view .cal-cell-top {
     min-height: 40px !important;
     margin: 2px 0px;
 }
 
 .calendar .cal-month-view .cal-day-number {
-    margin-right: 27px !important;
+    margin-right: 15px !important;
     margin-left: 5px !important;
 }
 
@@ -484,11 +508,11 @@ h3.calendarTitle  {
     float: right !important;
     margin-right: 18px !important;
     font-size: 0px !important;
-    width: 8px !important;
-    height: 8px !important;
-    background-color: #F0951B !important;
+    width: 0px !important;
+    height: 0px !important;
+    background-color: #ffeaea !important;
     padding: 0px !important;
-    margin-top: 0px !important;
+    margin-top: 8px !important;
     min-width: 8px !important;
     position: relative !important;
     top: 7px !important;
@@ -503,17 +527,13 @@ h3.calendarTitle  {
     height: 30px;
     background-color: #33bd9e;
     border-radius: 15px;
-    padding: 7px 0px 7px 6px;
-    margin-top: 8px;
+    padding: 5px 0px 7px 6px;
+    margin-top: 1px;
     margin-right: 20px !important;
 }
 
 .calendar .cal-month-view .cal-day-cell.cal-out-month.cal-has-events .cal-day-number {
     margin-left: 10px;
-}
-
-.cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
-    border-bottom: 1.5px solid rgba(0,0,0,0.27);
 }
 
 .dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
@@ -531,13 +551,24 @@ h3.calendarTitle  {
 .timeInput .mat-input-element {
     resize: none !important;
 }
+
+.cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
+    border-bottom: 1.5px solid rgba(0,0,0,0.27);
+}
 /* Calendar Ends */
 
 /* Bootstrap Starts */
 .ui-accordion .ui-accordion-header{
     background:rgba(255, 255, 255, 0.00);
+    border-bottom: 0.5px solid #eeeeee;
+    border-top: 0px;
 
 }
+
+.ui-accordion .ui-accordion-header:not(.ui-state-active):not(.ui-state-disabled):hover {
+    background: #ffffff !important;
+}
+
 .ui-accordion .ui-accordion-header .fa-caret-right,.ui-accordion .ui-accordion-header .fa-caret-down{
     display: none;
 }
@@ -672,6 +703,7 @@ h3.calendarTitle  {
     padding-top: 0px !important;
     top: 14px !important;
     font-size: 8px !important;
+    line-height: 19px;
 }
 
 .message-item:before {
@@ -946,8 +978,6 @@ h3.calendarTitle  {
 .emptySectionText {
     margin-top: 25px;
     margin-bottom: 25px;
-    border: 1px solid #eeeeee;
-    border-radius: 2px;
     padding: 10px;
 }
 
@@ -1035,4 +1065,12 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .search-form .mat-input-wrapper {
     padding-bottom: 0.69688em;
+}
+
+/* Loading */
+
+.loading-container {
+    position: relative;
+    width:50px;
+    margin: 40px 0px 100px 0px;
 }

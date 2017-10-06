@@ -15,7 +15,6 @@ import {
     DefaultRoutingModule, 
     IndexComponent,
     IndexPhilComponent,
-    DefaultRoutingModule,
     MdCardModule,
     MdButtonModule,
     MdToolbarModule,

@@ -34,6 +34,10 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   public elementRef;
   private options;
   public placeholderString;
+  public entryInSelected = undefined;
+  public selectedQueries = [];
+  public maxTopicMsg;
+  public loadingSuggestions = false;
 
 
   // Input parameter - jsonObject of collection
@@ -60,6 +64,9 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   @Input('preSelectedTopics')
   private preselectedTopics:any = [];
 
+  @Input('minSelection')
+  private minSelection: number = -1;
+
   @Input('maxSelection')
   private maxSelection: number = -1;
 
@@ -70,23 +77,13 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   removedOutput = new EventEmitter<any>();
 
   @Output()
-  anyTopicNotFound = new EventEmitter<any>();
-
-
-  // writeValue(value: any) {
-  //   if (value !== undefined) {
-  //     this.selected = value;
-  //   }
-  // }
+  anyItemNotFound = new EventEmitter<any>();
   
-  // propagateChange = (_: any) => {};
-
-  // registerOnChange(fn) {
-  //   this.propagateChange = fn;
-  // }
-
-  // registerOnTouched() {}
-
+  @Output()
+  queries = new EventEmitter<any>(); 
+  
+  @Output()
+  active = new EventEmitter<any>();
 
   constructor(myElement: ElementRef,
               private http: Http,
@@ -113,7 +110,6 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   }
 
   ngOnChanges() {
-    console.log("ngChanges");
     if(!!this.preselectedTopics){       
         console.log(this.preselectedTopics);         
     }
@@ -121,12 +117,13 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   }
 
   ngViewInitChanges() {
-    console.log("View");
     this.selected = _.union(this.preselectedTopics, this.selected);
     console.log(this.selected);
   }
 
   public filter() {
+    this.loadingSuggestions = true;
+    let showItemNotFound = true;
     if (!this.isMultiSelect) {
       if (this.filteredList.length !== 0) {
         //Force only 1 selection
@@ -134,31 +131,47 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
       }
     }
     if (this.query !== '') {
-      if (this.inputCollection) {
+      this.active.emit(true);
+      let query = _.find(this.selectedQueries, 
+          (entry) => { 
+            return entry == this.query; 
+          });
+      if(!query) {
+        this.selectedQueries.push(this.query);
+      }
+      if (Object.keys(this.inputCollection).length !== 0 && this.inputCollection.constructor === Object) {
           this.filteredList = _.filter(this.inputCollection, (item) => {
                 return item.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
           });
-          if(this.filteredList.length == 0) {
-             this.anyTopicNotFound.emit(this.query);
-          }
-          else {
-            this.anyTopicNotFound.emit('');
-          }
+          this.emitRequestTopic();
       }
       if (this.searchURL) {
           let finalSearchURL = this.searchURL + this.query;
           this.http.get(finalSearchURL) 
                    .map(res => { 
+                    this.loadingSuggestions = false;
                     this.filteredList = [];
                     res.json().map(item => { 
+                      this.entryInSelected = _.find(this.selected, function(entry) { return entry.id == item.id; });
+                      if(!this.entryInSelected) {
+                        showItemNotFound = true;
+                      }
+                      else {
+                        showItemNotFound = false;
+                      }
+
                       let obj = {};
                       obj['id'] = item.id;
                       obj['name'] = item.name;
                       obj['type'] = item.type;
                       obj['createdAt'] = item.createdAt;
                       obj['updatedAt'] = item.updatedAt;
+                      obj['inSelect'] = !!this.entryInSelected;
                       this.filteredList.push(obj);
                     });
+                    if(showItemNotFound) {
+                      this.emitRequestTopic();
+                    }
                     // if(this.filteredList.length === 0 && this.canCreate)
                     // {
                     //   //Post the new item into the respective collection
@@ -176,24 +189,43 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
                   .subscribe();
       }
     } else {
+      this.active.emit(false);
       this.filteredList = [];
-      this.anyTopicNotFound.emit('');
+      this.anyItemNotFound.emit('');
       this.selectedOutput.emit(this.selected);
     }
   }
 
+  private emitRequestTopic() {
+    if(this.filteredList.length == 0) {
+        this.anyItemNotFound.emit(this.query);
+    }
+    else {
+      this.anyItemNotFound.emit('');
+    }
+  }
+
   private select(item) {
-    if(this.selected.length >= this.maxSelection && this.maxSelection != -1)
-    {
-      this.query = '';
-      this.filteredList = [];
-      return;
+    let itemPresent = _.find(this.selected, function(entry) { return item.id == entry.id; });
+    if (itemPresent) {
+      this.selected = _.remove(this.selected, function(entry) {return item.id != entry.id;});
+      this.removedOutput.emit(this.removed);
     }
-    if(this.preselectedTopics.length != 0){
-      this.selected = _.union(this.preselectedTopics, this.selected);
+    else {
+      if (this.selected.length >= this.maxSelection && this.maxSelection != -1)
+      {
+        this.query = '';
+        this.filteredList = [];
+        this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+        return;
+      }
+      if (this.preselectedTopics.length != 0){
+        this.selected = _.union(this.preselectedTopics, this.selected);
+      }
+      this.selected.push(item);
     }
-    this.selected.push(item);
     this.selectedOutput.emit(this.selected);
+    this.queries.emit(this.selectedQueries);
     this.query = '';
     this.filteredList = [];
   }

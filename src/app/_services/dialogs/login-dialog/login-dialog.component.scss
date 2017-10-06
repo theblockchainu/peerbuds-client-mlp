@@ -1,5 +1,5 @@
-.md-dialog-container {
-    padding:50px !important;
+md-dialog-container {
+    padding:10px !important;
 }
 md-input-container md-icon {
     position: absolute;
@@ -16,13 +16,16 @@ md-dialog-content {
 
 .page-signin
 {
-
-    width: 600px;
-    height: 450px;
+    width: 442px;
+    height: 434px;
+  
 }
-
+.spacer{
+    width: 350px;
+    margin: 47px;
+}
 .logincontent{
-    width: 600px;
+    width: 440px;
     overflow: disable;
 }
 
@@ -59,7 +62,10 @@ md-dialog-content {
         }
 
 .loginbtn{
-    background-color: #ff5b5f;
+    background-color: #ff6d71;
+    font-size:17px;
+    padding-top:5px;
+    padding-bottom:5px;
 }
 
 .txtcolor{
@@ -76,7 +82,23 @@ md-dialog-content {
     color: #fff!important;
 }
 
-.circle-icon {
-    padding:6px;
-    border-radius: 50%;
+.circle-icon1 {
+    padding:4px 6px 4px 6px;
+    border-radius: 100%;
+    margin:2px 21px 6px -22px;
+}
+.circle-icon2{
+    padding:4px 5.5px 4px 5.75px;
+    border-radius: 100%;
+    margin:2px 21px 6px -46px;
+}
+
+.dialog-content{
+    width: 45vw;
+    height: 90vh;
+}
+
+.btn-block{
+   font-size:15px;
+   color:#484848;
 }

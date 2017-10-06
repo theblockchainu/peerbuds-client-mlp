@@ -304,7 +304,7 @@ h3 {
 .announcement {
     padding: 30px;
     background-color: #efefef;
-    margin: 15px 15px 25px;
+    margin: 15px 15px 0px;
 }
 
 .recommendation-thumb{
@@ -334,4 +334,31 @@ h3 {
 
 .workshopCohortCalendar {
     background-color: #f17d7d;
+}
+
+.timelineRowItem {
+    cursor: pointer;
+    margin-left: -40px;
+    padding-left: 25px;
+    border-left: 0px;
+}
+
+.timelineRowItem:hover {
+    border-left: 3px solid #767676;
+    padding-left: 22px;
+}
+
+.message-item-wrapper:last-child::after {
+    background: #aaaaaa;
+    border-radius: 50%;
+    box-shadow: none;
+    content: "";
+    height: 8px;
+    width: 8px;
+    left: -33px;
+    position: absolute;
+    bottom: -48px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
 }
