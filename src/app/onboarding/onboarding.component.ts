@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import {
   URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
 } from '@angular/http';
@@ -44,6 +45,7 @@ export class OnboardingComponent implements OnInit {
   public topicForRequest = '';
 
   constructor(
+    public router: Router,
     private http: Http, private config: AppConfig,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
@@ -146,8 +148,9 @@ export class OnboardingComponent implements OnInit {
     // }
   }
 
-  goToNext(n) {
-    this.step = n;
+  continue(p) {
+    this.step = p;
+    this.router.navigate(['onboarding', +this.step]);
   }
 
   public showConnectedSocials() {

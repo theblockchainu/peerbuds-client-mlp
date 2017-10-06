@@ -28,7 +28,6 @@ export class IndexComponent1 implements OnInit {
    }
 
   ngOnInit(){
-
   }
 
   ngAfterViewInit() {

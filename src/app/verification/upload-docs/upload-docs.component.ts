@@ -14,7 +14,6 @@ import { ProfileService } from '../../_services/profile/profile.service';
   styleUrls: ['./upload-docs.component.scss']
 })
 export class UploadDocsComponent implements OnInit {
-
   public step = 1;
   private idProofImagePending: Boolean;
   public peer: FormGroup;
@@ -39,7 +38,7 @@ export class UploadDocsComponent implements OnInit {
   ngOnInit() {
     this.idProofImagePending = true;
     this.peer = this._fb.group({
-      email: '',
+      email: ['', Validators.email],
       verificationIdUrl: ['', Validators.required]
     });
 
@@ -55,7 +54,7 @@ export class UploadDocsComponent implements OnInit {
       this.resendOTP();
     }
     this.step = p;
-    this.router.navigate(['identity-verification', +this.step]);
+    this.router.navigate(['app-upload-docs', +this.step]);
   }
 
   public resendOTP() {
@@ -87,5 +86,5 @@ export class UploadDocsComponent implements OnInit {
     }
     this.idProofImagePending = false;
   }
-
 }
+

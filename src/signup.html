@@ -268,7 +268,7 @@
             background-color: #fff;
             color: rgba(74, 74, 74, 0.5);
             position: relative;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 800;
         }
         .position-relative {
@@ -283,6 +283,7 @@
         label.error {
             color: #fff !important;
             font-size: 13px !important;
+            margin: 50px;
         }
         .fs-13 {
             font-size: 13px;
@@ -481,7 +482,7 @@
                 var day = $("#birthDay").val();
                 var month = $("#birthMonth").val();
                 var year = $("#birthYear").val();
-                var age = 18;
+                var age = 0;
                 var mydate = new Date();
                 var mydate2 = mydate;
                 mydate.setFullYear(year, month - 1, day);
@@ -516,7 +517,7 @@
                     birthMonth: "",
                     birthDay: "",
                     birthYear: {
-                        required: ""
+                        required: "hey"
                     },
                 },
                 errorPlacement: function (error, element) {
@@ -579,7 +580,6 @@
         }
     </script>
 </head>
-
 <body>
 
 <div class="main-content">
