@@ -189,7 +189,9 @@
             border-right-color: #999;
         }
         .btn-ggl,
-        .btn-fb
+        .btn-ggl:visited,
+        .btn-fb,
+        .btn-fb:visited
         {
             color: #666;
             background-color: #fff;
@@ -606,7 +608,7 @@
                 </a>
             
                 <!-- trying dialog-->
-                <button class="headerButtons mat-button" onclick="openLogin()" *ngIf="!(isLoggedIn | async)">
+                <button class="headerButtons mat-button" onclick="goToLogin()" *ngIf="!(isLoggedIn | async)">
                     Log In
                 </button>
                 </span>
@@ -638,7 +640,7 @@
 
                 
                 <div class="signupEmail hide signup-box2">
-                    <div class="text-center">Sign up with <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;"> Google</a></div>
+                    <div class="text-center">Sign up with <a href="http://localhost:3000/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or <a href="http://localhost:3000/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;"> Google</a></div>
 
                         
                         <div class="position-relative margin-bottom-20 text-center">

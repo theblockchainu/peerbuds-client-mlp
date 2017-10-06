@@ -1,6 +1,7 @@
 .verification-box {
     background-color: #fff;
-    padding: 32px;
+    padding: 20px;
+
     /*border-radius: 4px;
     border:1px solid #e5e5e5;*/
     font-size:14px;
@@ -15,15 +16,16 @@
         margin-bottom:20px;
         font-size:16px;
     }
+    
     label{
         font-weight:normal;
         color:#666;
         font-size:14px;
     }
     .bottom-section{
-        border-top:1px solid #ccc;
-        padding-top:15px;
-        margin-top:20px;
+        //border-top: 1px solid rgba(199, 199, 199, 0.5);
+        padding-top:22px;
+       
     }
     .email-address-input, .otp-input{
         width:200px;
@@ -49,6 +51,9 @@
     .description1 {
         font-size: 16px;
         color: #767676;
+        padding-top:7px;
+        padding-bottom: 30px;
+
     }
 
     .headline {
@@ -60,9 +65,10 @@
         color: #484848;
         font-weight: 400;
     }
-    .step-1{
-    padding: 28px;
+    .step-2{
+    padding: 21px;
     }
+   
     input[type='number'] {
   appearance: textfield;
 }

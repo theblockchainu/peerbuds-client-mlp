@@ -19,10 +19,10 @@ import _ from 'lodash';
   styleUrls: ['./onboarding.component.scss']
 })
 export class OnboardingComponent implements OnInit {
-
+  public step = 1;
   public userId: string;
   public placeholderStringTopic = 'Search for a topic ';
-  public step: number;
+ 
   public suggestedTopics = [];
   public interests = [];
   public interest1: FormGroup;
@@ -46,6 +46,7 @@ export class OnboardingComponent implements OnInit {
 
   constructor(
     public router: Router,
+    private activatedRoute: ActivatedRoute,
     private http: Http, private config: AppConfig,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
@@ -53,7 +54,10 @@ export class OnboardingComponent implements OnInit {
     private _profileService: ProfileService,
     private _topicService: TopicService
   ) {
-    this.step = 1;
+    
+    this.activatedRoute.params.subscribe(params => {
+        this.step = params['step'];
+      });
     this.interest1 = new FormGroup({
     });
     this.countryPickerService.getCountries()

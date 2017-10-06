@@ -1,14 +1,14 @@
 <div class="verification-section margin-top-40" id="content">
-  <div class="container">
+  <div class="main-content">
     <div class="col-md-8 col-md-offset-2 position-relative">
-      <div class="verification-box drop-shadow margin-top-70">
+      <div class="verification-box drop-shadow margin-top-30">
         <div class="step-1" [hidden]="step!=1">
           <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
             <i class="fa fa-id-card-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
           </button>
           <form [formGroup]="peer">
             <h2 class="headline">Confirm Your Identity</h2>
-            <p class="description1 margin-bottom-40">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will help us ensure that you don't have multiple profiles in the platform.</p>
+            <p class="description1">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will help us ensure that you don't have multiple profiles in the platform.</p>
             <p class="description2">This ID must:</p>
             <p class="description2">
               <li>Be a government-issued (ex. Passport, Drivers License)</li>
@@ -20,10 +20,12 @@
                   chooseLabel="Upload ID"></p-fileUpload>
             </div>
             <p class="description1 margin-bottom-40">To learn more about why we require copy of your ID and what types of ID we accept, <a href="#">review our ID policy</a></p>
+              <hr style=" border-color: #cccccc; width:166%; margin: 8% 0 0 -35%;">
             <div class="bottom-section clearfix">
               <div class="pull-right">
                 <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
                 <button md-raised-button color="accent" (click)="continue(2)">Continue</button>
+
               </div>
             </div>
           </form>
@@ -63,10 +65,11 @@
               <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" /> -->
               <input type="email" mdInput #email formControlName="email" placeholder="Email Address"/>
             </md-input-container>
+             <hr style="border-color: #cccccc; width:170%; margin: 22% 0 0 -35%;">
             <div class="bottom-section clearfix">
               <div class="pull-right">
                 <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
-                <button md-raised-button color="accent" (click)="continue(3)" [disabled]="email.value.length == 0">Continue</button>
+                <button md-raised-button color="accent" (click)="continue(3)" [disabled]="email.value.length == 0 || email.invalid">Continue</button>
               </div>
             </div>
           </form>
@@ -89,13 +92,15 @@
             <div>
               <p class="description1"> <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before<br/>
               requesting another code or <a style="cursor: pointer;" (click)="continue(2)">Change Email</a></p>
-              
             </div>
-            <div class="bottom-section clearfix margin-top-100">
+            <hr style="border-color: #cccccc; width:166%; margin: 14% 0 0 -35%;">
+            <div class="bottom-section clearfix">
               <div class="pull-right">
-                <a md-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding']">Skip</a>
+                <a md-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding/1']">Skip</a>
                 <button md-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length !=6">Verify Email</button>
+              
               </div>
+          
             </div>
           </form>
         </div> <!-- step 4 ends -->

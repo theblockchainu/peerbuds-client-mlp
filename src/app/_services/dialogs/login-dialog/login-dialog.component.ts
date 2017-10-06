@@ -46,6 +46,8 @@ export class LoginComponentDialog implements OnInit {
     }
 
   public ngOnInit() {
+    //reset login status
+   this.authenticationService.logout();
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home/homefeed';
 
@@ -71,6 +73,7 @@ export class LoginComponentDialog implements OnInit {
               (error) => {
                   this.alertService.error(error._body);
                   // this.loading = false;
+                  console.log(error._body);
               });
   }
 /*

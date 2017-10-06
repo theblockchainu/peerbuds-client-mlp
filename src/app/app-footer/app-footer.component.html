@@ -1,5 +1,6 @@
 
 <footer *ngIf="!(isLoggedIn | async)">
+ 
   <div class="layout-row footer" layout="row" color="white">
     <div layout="row" class="col-sm-8">
           <a class="footer-btn footerButtons col-sm-2" md-button routerLink="."> About Us </a>
@@ -21,7 +22,8 @@
     </div>
   </div>
 </footer>
-<footer *ngIf="(isLoggedIn | async)" style="border-top: 1px solid #cccccc;">
+
+<footer *ngIf="(isLoggedIn | async) && showFooter" style="border-top: 1px solid #cccccc;">
   <div class="text-center" style="padding: 9px 0;">
     <a href="#">About Us</a>
     <a href="#">Help</a>
@@ -29,4 +31,6 @@
     <a href="#">Community</a>
     <a href="#">Invite Friends</a>
   </div>
+
 </footer>
+

@@ -27,6 +27,7 @@ import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
