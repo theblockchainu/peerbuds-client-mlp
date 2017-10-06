@@ -42,15 +42,20 @@ export class ConsoleProfilePhotosComponent implements OnInit {
   }
 
   uploadVideo(event) {
-    const xhrResp = JSON.parse(event.xhr.response);
-    console.log(xhrResp);
-    this._profileService.updateProfile({
-      'profile_video': xhrResp.url
-    }).subscribe(response => {
-      this.profile_video = response.profile_video;
-    }, err => {
-      console.log(err);
-    });
+    // const xhrResp = JSON.parse(event.xhr.response);
+    // console.log(xhrResp);
+    // this._profileService.updateProfile({
+    //   'profile_video': xhrResp.url
+    // }).subscribe(response => {
+    //   this.profile_video = response.profile_video;
+    // }, err => {
+    //   console.log(err);
+    // });
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).subscribe((response) => {
+          this.profile_video = response.url;
+        });
+    }
   }
 
   // uploadImages(event) {
@@ -67,15 +72,10 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 
   uploadImage(event) {
     // console.log(event.files);
-    debugger;
     for (const file of event.files) {
-      this.mediaUploader.upload(file).map(
-        (response) => {
-          debugger;
-          //response.json();  
-        }).subscribe((response) => {
-        debugger;
-      });
+      this.mediaUploader.upload(file).subscribe((response) => {
+          this.picture_url = response.url;
+        });
     }
   }
 

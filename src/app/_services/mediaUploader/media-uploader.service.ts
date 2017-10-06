@@ -13,17 +13,28 @@ export class MediaUploaderService {
               private sanitizer: DomSanitizer) {}
 
   public upload(file) {
+    let type = file;;
     if (!file.objectURL) {
       file.objectURL = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
     }
     file.src = file.objectURL.changingThisBreaksApplicationSecurity;
     console.log(file);
     const formData = new FormData();
-    formData.append('files', file, file.name);
+    if(file.type.includes('image/'))
+    {
+      type = 'image';
+    }
+    else if(file.type.includes('video/')) {
+      type = 'video';
+    }
+    else {
+      type = 'file';
+    }
+    formData.append(type, file, file.name);
     return this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290',
                           formData, 
-                          { withCredentials: true
-                          });
+                          { withCredentials: true })
+                    .map((response: Response) => response);
   }
 
 }
