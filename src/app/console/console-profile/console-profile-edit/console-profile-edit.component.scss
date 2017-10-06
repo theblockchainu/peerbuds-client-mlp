@@ -3,3 +3,7 @@ md-hint{
         color:#999;
     }
 }
+
+md-input-container .mat-form-field-infix-override {
+    padding-top: 0.9em !important;
+}

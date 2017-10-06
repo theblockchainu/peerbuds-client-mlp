@@ -5,32 +5,32 @@
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12" *ngIf="loaded">
+<div class="row" *ngIf="loaded" >
+  <div class="col-md-7" style="position: fixed">
+    <button md-raised-button color="accent" (click)="saveProfile()" class="pull-right">
+      Update Profile
+    </button>
+  </div>
+</div>
+<div class="row" *ngIf="loaded">
+  <div class="col-md-8">
     <div class="row">
       <div>
         <div style="margin-top:20px;" class="col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-              <button md-raised-button color="accent" (click)="saveProfile()" class="pull-right" style="margin-bottom: 20px;">
-                Update Profile
-              </button>
-            </div>
-          </div>
           <div class="row" style="margin-right: 110px; line-height: 120%">
             <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
+              <md-input-container class="pb-block margin-bottom-30">
                 <input mdInput formControlName="first_name" type="text" placeholder="First Name" required>
                 <md-error>This field is required</md-error>
                 <md-hint align="start">Your public profile only shows your first name.</md-hint>
               </md-input-container>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
+              <md-input-container class="pb-block margin-bottom-30">
                 <input mdInput formControlName="last_name" type="text" placeholder="Last Name" required>
                 <md-error>This field is required</md-error>
                 <md-hint align="start"> When you request a booking, your host will see your first and last name.</md-hint>
               </md-input-container>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput formControlName="headline" type="text" placeholder="Profile Credential" required>
+              <md-input-container class="pb-block margin-bottom-30">
+                <textarea mdInput rows="2" formControlName="headline" type="text" placeholder="Profile Credential" required></textarea>
                 <md-error>This field is required</md-error>
                 <md-hint align="start">Ex. mechanical engineer, electric car enthusiast</md-hint>
                 <md-hint align="end">{{profileForm.value.headline.length}} / 200</md-hint>
