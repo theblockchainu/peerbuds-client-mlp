@@ -115,7 +115,7 @@
 
 .ui-autocomplete-input-token input {
     border: 0 none;
-    width: 300px;
+    // width: 300px;
     outline: medium none;
     background-color: transparent;
     margin: 0;
@@ -150,6 +150,7 @@ span.ui-autocomplete-multiple {
     background-color: #eeeeee;
     border: 0.5px solid #ccc;
     color: #4a4a4a;
+    margin-bottom: 10px !important;
 }
 
 
@@ -167,9 +168,8 @@ a.ui-autocomplete-token-icon.fa-close::before {
 }
 
 
-.multiselectBox {
-    padding: 10px;
-    border: 1px solid lightgrey !important;
+.multiselectBox { 
+    border-bottom: 1px solid lightgrey !important;
 }
 
 .ui-autocomplete-multiple-container {
@@ -190,6 +190,15 @@ a.ui-autocomplete-token-icon.fa-close::before {
 .topic-bg {
     width: 103px;
     height: 79px;
+}
+
+.topic {
+    cursor: pointer;
+}
+
+.input-topic {
+    width: 95%;
+    float: none;
 }
 
 

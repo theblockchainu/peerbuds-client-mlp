@@ -53,7 +53,7 @@ export class PaymentService {
 
   createCharge(collectionId: any, body: any) {
     if (this.userId) {
-      return this.http.post(this.config.apiUrl + '/api/transactions/create-charge/collection/'+ collectionId, body, this.options);
+      return this.http.post(this.config.apiUrl + '/api/transactions/create-charge/collection/' + collectionId, body, this.options);
     }
   }
 
@@ -61,6 +61,16 @@ export class PaymentService {
     if (this.userId) {
       return this.http.get(this.config.apiUrl + '/api/transactions/list-all-cards/' + customerId, this.options);
     }
+  }
+
+  public getCollectionDetails(id: string) {
+    const filter = `{"include": "owners"}`;
+    return this.http
+      .get(this.config.apiUrl + '/api/collections/' + id + '?filter=' + filter)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
   }
 
 }
