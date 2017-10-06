@@ -1,0 +1,18 @@
+<div class="mat-dialog-focus-trap"></div>
+  <div class="signin-header"></div>
+ <div class="dialog1">
+ <form [formGroup]="forgotpwdForm" class="form-horizontal"> 
+    <md-dialog-content>
+    
+                    <div class="margin-bottom-20">
+                        <md-input-container class="pb-block">
+                            <input mdInput placeholder="Email" formControlName="email">
+                        </md-input-container>
+                    </div>
+                    <div class="margin-bottom-20">
+                                <button md-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="getpwd()"><span class="txtcolor">Request for password</span></button><br><br>          
+                    </div>
+        </md-dialog-content>
+         </form>
+         </div>
+         

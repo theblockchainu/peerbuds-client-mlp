@@ -3,31 +3,63 @@
 }
 
 .workshopsFeed{
-    padding-top: 30px;      
+    padding-top: 50px;
+}
+
+.workshop-feed label{
+    color: #484848;
+    font-size: 13px;    
+}
+
+.workshop-feed .title {
+    font-size:17px !important;
+    color: #484848 !important;
+}
+
+.workshop-feed .headline {
+    font-size:16px !important;
+    color: #767676 !important;
+
+}
+
+.rightLinks span {
+    color: #767676 !important;
+    font-size:16px !important;
+}
+
+.homefeed{
+    padding-top: 50px;
 }
 
 .recommendation-thumb{
     object-fit: cover;
-    height: 240px;
-    width: 200px;
+    height: 290px;
+    width: 100%;
 }
 
 .peer-recommendation-thumb{
     object-fit: cover;
-    height: 240px;
-    width: 185px;
+    height: 238px;
+    width: 100%;
 }
 
 .recommendation-card{
-width: 230px;
-height: 370px;
-}
-
-.workshopsFeed label{
-    color: black;
-    font-size: smaller;    
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 20%;
+    float: left;
+    margin-bottom: 35px;
 }
 
 .peer-recommendation-card{
-    width: 194px;    
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 16.66%;
+    float: left;
+}
+
+.mat-display-1 {
+    margin-bottom: 25px !important;
 }

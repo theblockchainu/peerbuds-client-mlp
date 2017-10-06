@@ -1,19 +1,37 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DefaultComponent } from './default/default.component';
+import { IndexComponent } from './default/index/index.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { LoginComponent } from './login/login.component';
+import {AppDesignComponent} from "./app-design/app-design.component";
+import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DefaultComponent,
+    component: IndexComponent,
     pathMatch: 'full'
+  },
+
+  {
+  path: 'philosophy',
+  component: IndexPhilComponent,
+  }, 
+
+  {
+      path: 'design',
+      component: AppDesignComponent
   },
   {
     path: 'login',
+    component: LoginComponentDialog
+  },
+  {
+    path: 'login1',
     component: LoginComponent
   },
   {
@@ -41,7 +59,7 @@ const routes: Routes = [
     loadChildren: 'app/workshop/workshop.module#WorkshopModule'
   },
   {
-    path: 'identity-verification',
+    path: 'app-upload-docs',
     loadChildren: 'app/verification/verification.module#VerificationModule'
   },
   {
@@ -58,9 +76,15 @@ const routes: Routes = [
   }
   ,
   {
+    path: 'access-denied',
+    component: AccessDeniedComponent
+  }
+  ,
+  {
     path: '**',
     component: NoContentComponent
   }
+  
 
 ];
 

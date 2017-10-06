@@ -30,4 +30,40 @@ export class TopicService {
       .map(res => res.json() || []);
   }
 
+  public requestNewTopic(topic: string): Observable<any> {
+    const body = {
+      name: topic,
+      type: 'user'
+    }
+    return this.http.post(this.config.apiUrl + '/api/requestedtopics/request-topic', body, this.options)
+      .map(res => res.json());
+  }
+
+  public deleteRelTopic(userId, topic): Observable<any> {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + userId + '/topics/rel/' + topic, this.options)
+      .map(res => res.json());
+  }
+
+  public getDefaultTopics() {
+    return this.http.get(this.config.searchUrl + '/api/search/topics', this.options)
+                    .map(res => res.json() || []);
+
+  }
+  
+  public addNewTopic(topicName: string) {
+    const body = {
+      'name': topicName,
+      'type': 'user'
+    };
+    return this.http.post(this.config.apiUrl + '/api/topics', body, this.options)
+                    .map((response) => response.json(), (err) => {
+                      console.log('Error: ' + err);
+                      });
+  }
+
+  public suggestionPerQuery(query: string): Observable<any> {
+    return this.http.get(this.config.searchUrl + '/api/search/topics/suggest?field=name&query=' + query)
+                    .map(res => res.json() || []);
+  }
+
 }

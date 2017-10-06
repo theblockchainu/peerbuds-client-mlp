@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
-import {ConsoleComponent} from '../console.component';
+import { ConsoleComponent } from '../console.component';
 
 declare var moment: any;
 @Component({
@@ -86,7 +86,7 @@ export class ConsoleTeachingComponent implements OnInit {
   }
 
   imgErrorHandler(event) {
-      event.target.src = '/assets/images/user-placeholder.jpg';
+    event.target.src = '/assets/images/user-placeholder.jpg';
   }
 
 }

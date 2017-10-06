@@ -14,34 +14,96 @@
             <md-tab-group>
               <md-tab label="Topics Learning">
                 <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
-                  Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics you learn about will be visible both here and on your public profile.
+                  Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics
+                  you learn about will be visible both here and on your public profile.
                 </div>
-                <div class="review-section" *ngFor="let topic of profile.peer[0].topicsLearning">
-                    <div class="topic-row">
-                      <div class="topic-name pull-left">
-                        {{topic.name}}
+                <div class="row">
+                  <div class="col-md-8">
+                    <md-expansion-panel #expansionpanelLearning>
+                      <md-expansion-panel-header>
+                        <md-panel-title>
+                          + Follow More Topics
+                        </md-panel-title>
+                      </md-expansion-panel-header>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [searchUrl]=searchTopicURL
+                            [title]=placeholderStringTopic></multiselect-autocomplete>
+                        </div>
+                        <div class="col-md-4">
+                          <button md-raised-button (click)="AddTopics('learning')" color="primary">Add</button>
+                        </div>
                       </div>
-                      <div class="topic-delete-button pull-right">
-                        x
+                    </md-expansion-panel>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="review-section">
+                      <div class="topic-row" *ngFor="let topic of topicsLearning">
+                        <div class="col-md-12">
+                          <div class="topic-name pull-left">
+                            <h4>{{topic['name']}}</h4>
+                          </div>
+                          <button class="topic-delete-button pull-right" (click)="unfollowTopic(topic)" md-icon-button color="warn">
+                              <md-icon class="md-24" style="font-size: 100%;" >close</md-icon>
+                              </button>
+                        </div>
                       </div>
                     </div>
+                  </div>
                 </div>
+
               </md-tab>
               <md-tab label="Topics Teaching">
                 <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
-                  Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics you learn about will be visible both here and on your public profile.
+                  Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics
+                  you learn about will be visible both here and on your public profile.
                 </div>
-                <div class="review-section" *ngFor="let topic of profile.peer[0].topicsTeaching">
-                  <div class="topic-row">
-                    <div class="topic-name pull-left">
-                      {{topic.name}}
-                    </div>
-                    <div class="topic-experience pull-right">
-                      <md-input-container class="pb-block" style="margin-bottom: 20px">
-                        <textarea mdInput #experience name="experience" rows="4" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?" required></textarea>
-                        <md-error>This field is required</md-error>
-                        <md-hint align="end">{{experience.value.length}} / 1000</md-hint>
-                      </md-input-container>
+                <div class="row">
+                  <div class="col-md-8">
+                    <md-expansion-panel #expansionpanelTeaching>
+                      <md-expansion-panel-header>
+                        <md-panel-title>
+                          + Follow More Topics
+                        </md-panel-title>
+                      </md-expansion-panel-header>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [searchUrl]=searchTopicURL
+                            [title]=placeholderStringTopic></multiselect-autocomplete>
+                        </div>
+                        <div class="col-md-4">
+                          <button md-raised-button (click)="AddTopics('teaching')" color="primary">Add</button>
+                        </div>
+                      </div>
+                    </md-expansion-panel>
+                  </div>
+                  <div class="col-md-4">
+                    <button md-raised-button (click)="updateChanges()" color="primary">Update Changes</button>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="row" *ngFor="let topic of topicsTeaching">
+                      <div class="col-md-12">
+                        <div class="topic-row">
+                          <div class="col-md-12">
+                            {{topic['name']}}
+                          </div>
+                          <div class="col-md-12">
+                            <md-input-container class="pb-block" style="margin-bottom: 20px">
+                              <button class="md-24 pull-right" (click)="stopTeachingTopic(topic)" md-icon-button color="warn">
+                                    <md-icon class="md-24" style="font-size: 100%;" >close</md-icon>
+                                    </button>
+                              <input mdInput #headline name="experience" maxlength="100" [(ngModel)]="topic['experience']" placeholder="Write headline">
+                              <md-hint *ngIf="topic['experience']" align="end">{{topic['experience'].length}} / 100</md-hint>
+                            </md-input-container>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

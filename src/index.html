@@ -10,8 +10,9 @@
   <base href="/">
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-
+  <!--font awesome
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+-->
   <!-- base url -->
   <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
   <!-- bootstrap css -->
@@ -20,12 +21,10 @@
   <link rel="stylesheet" type="text/css" href="assets/styles/themes/omega/theme.css" />
   <link rel="stylesheet" type="text/css" href="assets/styles/themes/primeng.min.css" />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css' />
-  <!--<link rel="stylesheet" type="text/css" href="assets/styles/themes/rebeccapurple.css">-->
   <link rel="stylesheet" type="text/css" href="assets/styles/themes/pbcustom.css">
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -35,25 +34,29 @@
 </head>
 
 <body class="mat-typography">
-  <app-root></app-root>
-  <script>
-    if (window.location.hash && window.location.hash === "#_=_") {
-      if (window.history && history.pushState) {
-        window.history.pushState("", document.title, window.location.pathname);
-      } else {
-        // Prevent scrolling by storing the page's current scroll offset
-        var _scroll = {
-          top: document.body.scrollTop,
-          left: document.body.scrollLeft
-        };
-        window.location.hash = "";
-        // Restore the scroll offset, should be flicker free
-        document.body.scrollTop = _scroll.top;
-        document.body.scrollLeft = _scroll.left;
+    <!-- <div class="scrollbar" id="style-3"> -->
+
+      <app-root class="content"></app-root>
+    <!-- </div> -->
+
+    <script>
+      if (window.location.hash && window.location.hash === "#_=_") {
+        if (window.history && history.pushState) {
+          window.history.pushState("", document.title, window.location.pathname);
+        } else {
+          // Prevent scrolling by storing the page's current scroll offset
+          var _scroll = {
+            top: document.body.scrollTop,
+            left: document.body.scrollLeft
+          };
+          window.location.hash = "";
+          // Restore the scroll offset, should be flicker free
+          document.body.scrollTop = _scroll.top;
+          document.body.scrollLeft = _scroll.left;
+        }
       }
-    }
-    Stripe.setPublishableKey('pk_test_i9RmJ8HN4UygSzCchZMEGgwn');
-  </script>
+      Stripe.setPublishableKey('pk_test_i9RmJ8HN4UygSzCchZMEGgwn');
+    </script>
 </body>
 
 </html>

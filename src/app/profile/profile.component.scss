@@ -1,530 +1,184 @@
-// component css goes here
-.profile-setion{
-    padding: 3% 0 5% 0 !important;
-    overflow-y: inherit;
-}
-.title{
-    margin-top:0!important;
-    margin-bottom:15px;
-    font-size:28px;
-    font-weight:400;
-    line-height: 0.8;
-}
-.sub-title{
-    color:#666;
-    font-size:0.8750em;
-}
-.heading{
-    color:#4a4a4a;
-    margin:0 0 20px 0;
-    font-size:1.2500em
-}
-.online-status{
-        &{
-            width:10px;
-            height:10px;
-            display:inline-block;
-            border-radius:50%;
-            background-color:#ccc;
-        }
-        &.online{
-            background-color: #7ed321;
-        }
-        &.offline{
-            background-color: #bbb;
-        }
-    }
-.bullet{
-    display:inline-block;
-    position:relative;
-    padding-left: 30px;
-    &:before{
-        display: inline-block;
-        position: absolute;
-        content:"";
-        width:6px;
-        height:6px;
-        background-color: #ccc;
-        border-radius: 50%;
-        top:6px;
-        left:10px;
-    }
-}
-.profile-image-right-content{
-    &{
-        margin-bottom:30px
-    }
-    span{
-        margin-right:17px;
-        width:100px;
-        display:inline-block;
-        position:relative;
-        padding-left: 30px;
-        vertical-align: top;
-        
-        &:before{
-            display: inline-block;
-            position: absolute;
-            content:"";
-            width:16px;
-            height:16px;
-            background-color: #bbb;
-            top:0;
-            left:0;
-        }
-    }
-}
-.sidebar-right{
-    .sidebar-box{
-        .sidebar-tabs{
-            list-style: none;
-            width:100%;
-            // border:1px solid #ccc!important;
-            border-radius:4px;
-            height: 40px;
-            padding:0;
-            margin-bottom:30px;
-            li{
-                float:left;
-                width:33.33%;
-                text-align: center;
-                padding:10px 0;
-                a{
-                    border-right:1px solid #ccc;
-                    color:#999;
-                    width:100%;
-                    display:inline-block;
-                }
-                &.active{
-                    background-color:#33bd9e;
-                    a{
-                        color:#fff;
-                    }
-                }
-                &:last-child{
-                    a{
-                        border-right:none;
-                    }
-                }
-            }
-        }
-        .sidebar-section{
-            &{
-                margin-bottom:25px;
-                padding-bottom:25px;
-                border-bottom:1px solid #ccc;
-                cursor:pointer;
-            }
-            &:hover{
-                opacity: 0.8;
-            }
-            .heading{
-                font-size:18px;
-                margin-bottom:10px;
-                font-weight:bold;
-            }
-            .desc{
-                //font-size:0.8750em;
-                color:#999;
-            }
-        }
-        .sidebar-details{
-            text-align: center;
-            font-size:0.8750em;
-            color:#666;
-            span{
-                line-height: 22px;
-            }
-        }
-    }
-    .sidebar-bottom{
-        &{
-            color:#666;
-            margin-top:20px;
-            font-size:0.8750em;
-            padding:0 15px;
-        }
-        
-        .interested-tags{
-            .tag{
-                display: inline-block;
-                margin-right:10px;
-                background-color:#e5e5e5;
-                padding:5px 10px;
-                border-radius:4px;
-            }
-        }
-    }
-    
-}
-.social-icons{
-    &{
-        display: inline-block;
-        margin-right:5px;
-        width:25px;
-        height: 25px;
-        line-height: 20px;
-        text-align: center;
-        border:1px solid #06d6a0;
-        border-radius: 50%;
-        color:#06d6a0;
-    }
-    i{
-        vertical-align: middle;
-        padding-top:3px;
-        font-size:14px;
-    }
-}
-.btn-book{
-    background-color:#ff5b5f;
-    border-color:#ff5b5f;
-    color:#fff;
-    padding:10px 30px;
-    &:hover, &:active, &:focus, &:active:after{
-        background-color: #ff888b!important;
-        border-color:#ff888b!important;
-    }
-}
-.interest{
-    span{
-        display: inline-block;
-        margin:0 5px 10px 0;
-        background-color:#f8f8f8;
-        padding:0 18px;
-        height: 30px;
-        font-size:14px;
-        line-height: 30px;
-        border-radius: 30px;
-        color:#666;
-    }
-    .more{
-        color:#06d6a0;
-        display:block;
-        text-align: center;
-        margin-top:10px;
-    }
-}
-.read-more{
-    color:#06d6a0;
-}
-.text-green{
-    color:#06d6a0;
-}
-.what-i-teach{
-    margin-bottom:30px;
-    &:last-child{
-        margin-bottom:0;
-    }
-    .topic{
-        font-weight: bold;
-        margin-bottom:10px;
-    }
-}
-.seperate-section{
-    &{
-        border-bottom:1px solid #ccc;
-        padding:30px 0;
-    }
-    .section-description{
-        color:#999;
-        line-height: 28px;
-    }
-    .resume-list{
-        margin-bottom:30px;
-        &:last-child{
-            margin-bottom:0;
-        }
-        .resume-thumb{
-            display:inline-block;
-            width:35px;
-            height:35px;
-            margin-right:20px;
-            vertical-align: top;
-            i{
-                font-size:35px;
-                color:#bbb;
-            }
-        }
-    }
-}
-.review-section{
-    margin-bottom:40px;
-    &:last-child{margin-bottom:0;}
-    .review-thumb{
-        width:62px;
-        height:62px;
-        margin-right:15px;
-    }
-    .review-title{
-        margin:0;
-        font-size:18px;
-        display: inline-block;
-    }
-    .review-content{
-        &{
-            color:#999;
-            margin-top:15px
-        }
-        .review-desc{
-            line-height: 28px;
-        }
-        .review-bottom{
-            font-size:14px;
-            margin-top:15px;
-        }
-    }
-}
-p-rating{
-    color:#33bd9e;
-    font-size:16px;
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 14px;
-    margin-left:10px;
-    .ui-rating a{
-        color:#33bd9e;
-    }
-}
-.review-all{
-    border-top:1px solid #ccc;
-    border-bottom:1px solid #ccc;
-    text-align:center;
-    a{
-        color:#06d6a0;
-        line-height:34px;
-    }
-}
-.border-bottom{
-    border-bottom:1px solid #ccc;
-}
-.full-section{
-    margin-top:50px;
-    .section-dropdown{
-        width:150px;
-        height:auto;
-        display:inline-block;
-        margin-right:10px;
-    }
-    .full-section-list{
-        font-size:13px;
-        color:#999;
-        line-height: 18px;
-        .section-head{
-            font-size:16px;
-            color:#333;
-            margin:15px 0 10px;
-        }
-        .section-des{
-            margin-bottom:10px;
-        }
-    }
-}
-.interested-category{
-    span{
-        display:inline-block;
-        margin-right:30px;
-        font-size:0.8750em;
-        color:#666;
-        &:last-child{
-            margin-right:0;
-        }
-    }
-}
-.learning-journey{
-    p{
-        &{
-            display:inline-block;
-            margin-right:50px;
-            font-size:0.8750em;
-            color:#666;
-            text-align: center;
-        }
-        &:last-child{
-            margin-right:0;
-        }
-        .lj-thumb{
-            width:68px;
-            height:50px;
-            background-color:#ccc;
-            border:2px solid #999;
-            display:block;
-            margin:0 auto 20px auto;
-        }
-    }
-}
-.pCommunities{
-    &{
-        margin-bottom:50px;
-    }
-    .pCommunities-select{
-        width:150px;
-        height:auto;
-        display:inline-block;
-        margin-right:10px;
-    }
-    .pCommunitiesUl{
-        list-style: none;
-        margin: 0;
-        padding:0;
-        li{
-            width: calc(25% - 15px);
-            height: 15vw;
-            float: left;
-            margin-right: 22px;
-            background-color: #777;
-            &:last-child{
-                margin-right:0;
-            }
-        }
-    }
-}
-.similar-peers-head{
-    margin:30px 0;
-    font-weight:300;
-}
-.similar-peers-col{
-    &{
-        color:#666;
-        border:1px solid #ccc;
-        padding-bottom:15px;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-    img{
-        margin:0 auto 20px;
-        width:100%;
-    }
-    .peers-name{
-        font-size:23px;
-        font-weight:300;
-        margin-bottom:10px;
-        padding-left:15px;
 
-    }
-    .peers-topic{
-        font-size:1em;
-        padding-left:15px;
-        color:#999;
-    }
+.message-item {
+    margin-bottom: 25px;
+    margin-left: 40px;
+    position: relative;
 }
-label{
-    font-weight:normal;
-    margin-bottom:15px;
-    &:last-child{
-        margin-bottom:0;
-    }
-    .fw-bold{
-        font-weight: bold;
-    }
+
+.message-item .message-inner {
+    border-radius: 3px;
+    padding: 10px;
+    position: relative;
 }
-textarea{
-    resize:none;
+
+.message-item:before {
+    background:#ccc;
+    bottom: -30px;
+    box-shadow: none;
+    content: "";
+    height: 100%;
+    left: -30px;
+    position: absolute;
+    width: 1px;
 }
-.btn-continue{
-    padding:10px 50px!important;
+
+.message-item:after {
+    background: #000000;
+    border-radius: 50%;
+    box-shadow: none;
+    content: "\2714";
+    position: absolute;
+    font-size: 12px;
+    text-align: center;
+    color:#fff;
+    width: 10px !important;
+    height: 10px !important;
+    left: -35px !important;
+    padding-top: 6px !important;
+    top: 17px !important;
 }
-.session-join-thumb{
-    position:absolute;
-    width:60px;
-    height:60px;
-    background: #ccc;
-    border:1px solid #999;
-    top:0;
-    left:0;
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
 }
-.session-join-content{
-    &{
-        font-family: "ProximaNovaRegular";
-    }
-    .session-head{
-        margin-bottom:0;
-        padding-bottom:15px;
-        border-bottom:1px solid #ccc;
-    }
-    .session-list{
-        font-size:0.8125em;
-        color:#999;
-        margin-bottom:50px;
-        &:last-child{
-            margin-bottom:20px;
-        }
-    }
+
+.message-item .message-head {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
 }
-.session-join-btn{
-    position:absolute;
-    right:0;
-    padding:10px 30px;
+
+.message-item .message-head .avatar {
+    margin-right: 20px;
 }
-.edit-session-content{
-    &{
-        font-family: "ProximaNovaRegular";
-    }
-    .session-list{
-        font-size:0.8125em;
-        margin-bottom:50px;
-        &:last-child{
-            margin-bottom:20px;
-        }
-    }
+
+.message-item .message-head .user-detail {
+    overflow: hidden;
 }
-.slider-section{
-    &{
-        padding-bottom:50px;
-        border-bottom:1px solid #ccc;
-    }
-    .session-slider-wrapper {
-        &{
-            background-color: #fff;
-            width: 100%;
-            height: 250px;
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-        .session-slider{
-            display: flex;
-            align-items: center;
-            .slides{
-                &{
-                    text-align: center;
-                    width: 130px;
-                    height: 130px;
-                    float: left;
-                    position: relative;
-                    margin-right:30px;
-                }
-                
-                &.active{
-                    width:240px;
-                    height:240px;
-                    & + div{
-                        width:200px;
-                        height:200px;
-                    }
-                }
-                &.slidePrev{
-                    width:200px;
-                    height:200px;
-                }
-                &:last-child{
-                    padding-right:0;
-                }
-                .slides-content{
-                    box-shadow:0 3px 10px #999;
-                    img{
-                        border: none;
-                        width: 100%;
-                        height: auto;
-                    }
-                }
-            }
-        }
-    }
+
+.message-item .message-head .user-detail h5 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
 }
-@media (min-width: 992px){
-    .modal-dialog {
-        width: 865px;
-    }
+
+.message-item .message-head .post-meta {
+    float: left;
+    padding: 0 15px 0 0;
 }
+
+.message-item .message-head .post-meta>div {
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+
+.post-meta>div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+.message-item .message-head .post-meta>div {
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+
+.post-meta>div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+
+.recommendation-thumb{
+    object-fit: cover;
+    height: 240px;
+    width: 230px;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 230px;
+    width: 230px;
+}
+
+.recommendation-card{
+    max-width: 330px;
+    height: 370px;
+}
+
+.peer-recommendation-card{
+    max-width: 320px;
+}
+
+.workshop-feed .title {
+    font-size:17px !important;
+    color: #484848 !important;
+}
+
+.workshop-feed .headline {
+    font-size:16px !important;
+    color: #767676 !important;
+}
+
+
+a h4{
+    display:inline;
+    }
+
+.work-title h3{
+    display:inline;    
+}
+
+.education-title h3{
+    display:inline;    
+}
+
+.review h2{
+    display:inline;        
+}
+
+.profile-page{
+    width: 1370px;
+    padding-top: 120px;
+}
+
+.profile-pic{
+    object-fit: cover;
+    height: 285px;
+    width: 285px;
+}
+
+.center-feed p{
+    font-size: 16px;
+}
+
+.center-feed{
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .side-image{
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+  }
+
+  .left-panel .mat-button{
+    border: 1.5px solid #1C1D1D;
+    color: #292C2B;
+  }
+
+  .feed-horizontal a{
+      color: #1C1D1D
+  }

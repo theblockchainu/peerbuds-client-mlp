@@ -82,6 +82,12 @@ export class CollectionService {
     }
   }
 
+  public getAllCollections(options: any) {
+    return this.http
+      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + JSON.stringify(options))
+      .map(response => response.json());
+  }
+
   public getCollectionDetails(id: string) {
     return this.http
       .get(this.config.apiUrl + '/api/collections/' + id)
@@ -130,6 +136,14 @@ export class CollectionService {
   public deleteCollection(collectionId: string) {
     return this.http.delete(this.config.apiUrl +
       '/api/collections/' + collectionId);
+  }
+
+  /**
+   * delete Calendar
+   */
+  public deleteCalendar(calendarId: string) {
+    return this.http.delete(this.config.apiUrl +
+      '/api/calendars/' + calendarId);
   }
 
   /**
@@ -432,6 +446,15 @@ export class CollectionService {
   }
 
   /**
+   * getParticipants
+   */
+  public getParticipants(collectionId, query) {
+    const filter = JSON.stringify(query);
+    return this.http
+      .get(this.config.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.options);
+  }
+
+  /**
    * addParticipant
 collectionID:string,userId:string,calendarId:string   */
   public addParticipant(collectionId: string, userId: string, calendarId: string, cb) {
@@ -447,12 +470,6 @@ collectionID:string,userId:string,calendarId:string   */
       }).subscribe();
   }
 
-  /**
-   * getParticipants
-   */
-  public getParticipants() {
-
-  }
 
   /**
    * Approve this collection
@@ -460,11 +477,9 @@ collectionID:string,userId:string,calendarId:string   */
    * @returns {Observable<any>}
    */
   public approveCollection(collection) {
-    this.http.post(this.config.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.options).map(
+    return this.http.post(this.config.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.options).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
-      }).subscribe(() => {
-        this.router.navigate(['/console/teaching/all']);
       });
   }
 
@@ -532,10 +547,44 @@ collectionID:string,userId:string,calendarId:string   */
       }).subscribe();
   }
 
-  public getReviews(workshopId: string, query: any, cb) {
+  /**
+   * get comments of given content
+   * @param {string} contentId
+   * @param query
+   * @param cb
+   */
+  public getContentComments(contentId: string, query: any, cb) {
     const filter = JSON.stringify(query);
     this.http
-      .get(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews' + '?filter=' + filter, this.options)
+      .get(this.config.apiUrl + '/api/contents/' + contentId + '/comments' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * get comments of given submission
+   * @param {string} submissionId
+   * @param query
+   * @param cb
+   */
+  public getSubmissionComments(submissionId: string, query: any, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/submissions/' + submissionId + '/comments' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public getReviews(peerId: string, query: any, cb) {
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou' + '?filter=' + filter, this.options)
       .map((response) => {
         cb(null, response.json());
       }, (err) => {
@@ -557,11 +606,43 @@ collectionID:string,userId:string,calendarId:string   */
   }
 
   /**
+   * Post a comment on submission
+   * @param {string} submissionId
+   * @param commentBody
+   * @param cb
+   */
+  public postSubmissionComments(submissionId: string, commentBody: any, cb) {
+    this.http
+      .post(this.config.apiUrl + '/api/submissions/' + submissionId + '/comments', commentBody, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
+   * post a comment on content
+   * @param {string} contentId
+   * @param commentBody
+   * @param cb
+   */
+  public postContentComments(contentId: string, commentBody: any, cb) {
+    this.http
+      .post(this.config.apiUrl + '/api/contents/' + contentId + '/comments', commentBody, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  /**
    * postReview
    */
-  public postReview(workshopId: string, reviewBody: any) {
+  public postReview(peerId: string, reviewBody: any) {
     return this.http
-      .post(this.config.apiUrl + '/api/collections/' + workshopId + '/reviews', reviewBody, this.options);
+      .post(this.config.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou', reviewBody, this.options);
   }
 
   public calculateRating(reviewArray?: any) {
@@ -570,6 +651,24 @@ collectionID:string,userId:string,calendarId:string   */
       reviewScore += reviewObject.score;
     }
     return (reviewScore / (reviewArray.length * 5)) * 5;
+  }
+
+  public calculateCollectionRating(collectionId, reviewArray?: any) {
+    let reviewScore = 0;
+    for (const reviewObject of reviewArray) {
+      if (reviewObject.collectionId !== undefined && reviewObject.collectionId === collectionId)
+        reviewScore += reviewObject.score;
+    }
+    return (reviewScore / (reviewArray.length * 5)) * 5;
+  }
+
+  public calculateCollectionRatingCount(collectionId, reviewArray?: any) {
+    let reviewCount = 0;
+    for (const reviewObject of reviewArray) {
+      if (reviewObject.collectionId !== undefined && reviewObject.collectionId === collectionId)
+        reviewCount++;
+    }
+    return reviewCount;
   }
 
   public imgErrorHandler(event) {

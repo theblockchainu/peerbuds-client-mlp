@@ -3,7 +3,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig, MdIconModule, MD_DIALOG_DATA } f
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
-import { ContentService } from '../../../_services/content/content.service';
+import { TopicService } from '../../../_services/topic/topic.service';
 
 @Component({
   selector: 'app-add-topic-dialog',
@@ -14,7 +14,7 @@ export class AddTopicDialogComponent implements OnInit {
   public newTopic: FormGroup;
 
   constructor(public dialogRef: MdDialogRef<AddTopicDialogComponent>,
-              public _contentService: ContentService,
+              public _topicService: TopicService,
               private _fb: FormBuilder) { }
 
   ngOnInit() {
@@ -24,7 +24,7 @@ export class AddTopicDialogComponent implements OnInit {
   }
 
   addNewTopic() {
-    this._contentService.addNewTopic(this.newTopic.controls['topicName'].value)
+    this._topicService.addNewTopic(this.newTopic.controls['topicName'].value)
         .map((res) => {
           this.dialogRef.close(res);
         })

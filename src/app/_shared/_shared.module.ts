@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CdkTableModule } from '@angular/cdk/table';
 
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
   MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
   MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule
+  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -39,6 +40,9 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
 import { DialogsService } from '../workshop/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CommentService } from '../_services/comment/comment.service';
+import { NotificationService } from '../_services/notification/notification.service';
+import { ExtractTimePipe } from '../_shared/extract-time/extract-time.pipe';
+
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -50,7 +54,7 @@ import { CommentService } from '../_services/comment/comment.service';
     PopoverModule.forRoot(),
     CalendarModule.forRoot()
   ],
-  declarations: [],
+  declarations: [ExtractTimePipe],
   providers: [
     CollectionService,
     CountryPickerService,
@@ -64,7 +68,8 @@ import { CommentService } from '../_services/comment/comment.service';
     CurrencypickerService,
     DialogsService,
     CommentService,
-    TopicService
+    TopicService,
+    NotificationService
   ],
   exports: [
     CommonModule,
@@ -96,7 +101,7 @@ import { CommentService } from '../_services/comment/comment.service';
     MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule,
-    SliderModule, MdProgressSpinnerModule
+    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe
   ]
 })
 export class SharedModule { }

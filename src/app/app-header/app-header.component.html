@@ -1,9 +1,9 @@
-<md-toolbar class="layout-row" layout="row" color="white">
+<md-toolbar class="layout-row mat-elevation-header" layout="row" color="white">
   <span>
-      <a href="#" class="brand" aria-label="Peerbuds Homepage">
-            <img src="/assets/images/pb_logo.png" alt="logo">
-      </a>
-    </span>
+    <a href="javascript:void(0);" class="brand" aria-label="Peerbuds Homepage" (click)="goToHome()">
+          <img src="/assets/images/pb_logo.png" alt="logo">
+    </a>
+  </span>
   <span class="search-form">
       <md-input-container floatPlaceholder="never" class="mat-block" *ngIf="(isLoggedIn | async)">
         <input name="search" class="mat-block search-box" mdInput [formControl]="myControl" [mdAutocomplete]="auto" placeholder="Search people, topic...">
@@ -13,59 +13,77 @@
             <span class="lightText">
               {{getSearchOptionType(option)}}
             </span>
-  <span>
+            <span>
               {{getSearchOptionText(option)}}
             </span>
-  </md-option>
-  </md-autocomplete>
+        </md-option>
+      </md-autocomplete>
   </span>
   <!-- This fills the remaining space of the current row -->
   <span class="example-spacer"></span>
   <span>
-      <button md-button [mdMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
+      <button md-button class="headerButtons" [mdMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
         Teach
       </button>
-      <button md-button [mdMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
+      <button md-button class="headerButtons" [mdMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
         Learn
       </button>
-      <button md-button [mdMenuTriggerFor]="headerNotificationsMenu" *ngIf="(isLoggedIn | async)">
-        <md-icon>notifications</md-icon>
+      <button md-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async)">
+        Notifications
       </button>
-      <button md-button [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)">
+      <div style="display: inline-block;"><md-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</md-icon></div>
+      <div class="headerButtons" [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">
         <div>
           <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
           <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
         </div>
+      </div>
+
+      <button md-button class="headerButtons" [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
+        Philosophy
       </button>
-      <a md-button (click)="openSignup()" *ngIf="!(isLoggedIn | async)">
+      <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+        Journey
+      </button>
+      <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+       About
+      </button>
+      <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+       White Paper
+      </button>
+
+      <a md-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
         Sign Up
       </a>
-      <button md-button [routerLink]="['/login']" *ngIf="!(isLoggedIn | async)">
+
+      <!-- trying dialog-->
+      <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
         Log In
       </button>
+      
     </span>
 </md-toolbar>
 
 <md-menu #headerTeachMenu>
-  <button md-menu-item [routerLink]="['/console/dashboard']">
+  <button md-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
       Dashboard
     </button>
-  <button md-menu-item [routerLink]="['/console/teaching/all']">
+  <button md-menu-item [routerLink]="['/console/teaching/workshops']" *ngIf="isTeacher">
       Teaching Journey
     </button>
-  <button md-menu-item [routerLink]="['/console/account/transactions']">
+  <button md-menu-item [routerLink]="['/console/account/transactions']" *ngIf="isTeacher">
       Transaction History
     </button>
-  <button md-menu-item [routerLink]="['/editSessions']">
+  <!--<button md-menu-item [routerLink]="['/editSessions']">
       Enable Sessions
-    </button>
+    </button>-->
   <button md-menu-item [routerLink]="['/console/teaching/workshops']">
       Create a Workshop
     </button>
-  <button md-menu-item [routerLink]="['/console/teaching/experiences']">
+  <!--<button md-menu-item [routerLink]="['/console/teaching/experiences']">
       Create an Experience
-    </button>
-  <button md-menu-item [routerLink]="['/console/calendar']">
+    </button>-->
+  <button md-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
       Calendar
     </button>
 </md-menu>
@@ -74,31 +92,18 @@
   <button md-menu-item [routerLink]="['/console/dashboard']">
       Dashboard
     </button>
+    <button md-menu-item [routerLink]="['/console/learning/workshops']">
+        Learning Journey
+    </button>
   <button md-menu-item [routerLink]="['/console/account/transactions']">
       Transaction History
     </button>
   <button md-menu-item [routerLink]="['/console/learning/workshops']">
       Workshops
     </button>
-  <button md-menu-item [routerLink]="['/console/learning/experiences']">
-      Experiences
-    </button>
   <button md-menu-item [routerLink]="['/console/calendar']">
       Calendar
     </button>
-</md-menu>
-
-
-<md-menu #headerNotificationsMenu>
-  <div class="notificationsDiv dropdown-menu notification-sub-box">
-    <ul id="notificationsUL"></ul>
-    <div class="noNotiExists">
-      <div class="notificationLiContent">
-        <span class="text-grey conDesc">No notifications</span>
-      </div>
-    </div>
-    <div class='seeAllLi hide'><a class='seeAllAnc' href="${baseUrl}/notifications/all-notifications">See All</a></div>
-  </div>
 </md-menu>
 
 <md-menu #headerUserMenu>

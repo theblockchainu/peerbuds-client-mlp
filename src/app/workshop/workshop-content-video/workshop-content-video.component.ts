@@ -4,6 +4,7 @@ import {AppConfig} from '../../app.config';
 import {Http} from '@angular/http';
 import {MediaUploaderService} from '../../_services/mediaUploader/media-uploader.service';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
+import _ from 'lodash';
 
 @Component({
     selector: 'app-workshop-content-video',
@@ -22,6 +23,7 @@ export class WorkshopContentVideoComponent implements OnInit {
         data: 0
     };
     public isEdit = false;
+    public urlForVideo;
 
     constructor(
         private _fb: FormBuilder,
@@ -33,6 +35,9 @@ export class WorkshopContentVideoComponent implements OnInit {
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+        this.urlForVideo = contentForm.controls['imageUrl'].value;
     }
 
     ngOnInit(): void {
@@ -47,9 +52,51 @@ export class WorkshopContentVideoComponent implements OnInit {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 contentForm.controls['imageUrl'].patchValue(responseObj.url);
+                this.urlForVideo = responseObj.url;
             }).subscribe();
         }
     }
+
+    deleteFromContainer(fileUrl, fileType) {
+        const fileurl = fileUrl;
+        fileUrl = _.replace(fileUrl, 'download', 'files');
+        this.http.delete(this.config.apiUrl + fileUrl)
+          .map((response) => {
+            console.log(response);
+            if (fileType === 'video') {
+              this.urlForVideo = '';
+              const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+              const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+              contentForm.controls['imageUrl'].patchValue(this.urlForVideo);
+            } 
+          }).subscribe();
+    
+    }
+    
+    //   deleteFromContainerArr(event, fileType) {
+    //     for (let i = 0; i < event.target.files.length; i++) {
+    //       let file = event.target.files[i];
+    //       const fileurl = file;
+    //       file = _.replace(file, 'download', 'files');
+    //       this.http.delete(this.config.apiUrl + file)
+    //         .map((response) => {
+    //           console.log(response);
+    //           if (fileType === 'video') {
+    //             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
+    //               return n !== fileurl;
+    //             });
+    //             this.workshop.controls.videoUrls.patchValue(this.urlForVideo);
+    //           } else if (fileType === 'image') {
+    //             this.urlForImages = _.remove(this.urlForImages, function (n) {
+    //               return n !== fileurl;
+    //             });
+    //             this.workshop.controls.imageUrls.patchValue(this.urlForImages);
+    //           }
+    //         }).subscribe();
+    
+    //     }
+    //   }
+    
 
     uploadNew(event) {
         console.log(event.files);

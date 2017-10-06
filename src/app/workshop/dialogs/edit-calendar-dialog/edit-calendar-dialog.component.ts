@@ -9,7 +9,7 @@ import { CollectionService } from '../../../_services/collection/collection.serv
 import * as moment from 'moment';
 import _ from 'lodash';
 
-import { ViewConflictDialog } from '../view-conflict-dialog/view-conflict-dialog.component';
+import { ViewConflictDialogComponent } from '../view-conflict-dialog/view-conflict-dialog.component';
 
 import {
   startOfDay,
@@ -29,6 +29,8 @@ import {
   CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from '../../workshop-page/custom-date-formatter.provider';
+import {SelectDateDialogComponent} from '../../workshop-page/select-date-dialog/select-date-dialog.component';
+import {Router} from '@angular/router';
 
 const colors: any = {
     red: {
@@ -56,10 +58,12 @@ const colors: any = {
       }
     ]
 })
-export class EditCalendarDialog implements OnInit {
+export class EditCalendarDialogComponent implements OnInit {
 
     public collection;
     public contents;
+    public calendars;
+    public participants;
     public inpEvents: CalendarEvent[];
     public userId: string;
     public startDate;
@@ -111,6 +115,9 @@ export class EditCalendarDialog implements OnInit {
         action: string;
         event: CalendarEvent;
     };
+
+    public allItenaries = [];
+    public itenariesObj = {};
 
     events: CalendarEvent[] = [
     ];
@@ -196,10 +203,11 @@ export class EditCalendarDialog implements OnInit {
         return title.split(':');
     }
 
-    constructor(public dialogRef: MdDialogRef<EditCalendarDialog>,
+    constructor(public dialogRef: MdDialogRef<EditCalendarDialogComponent>,
         private _fb: FormBuilder,
         private _contentService: ContentService,
         private dialog: MdDialog,
+        private router: Router,
         private _collectionService: CollectionService) {
     }
     public ngOnInit() {
@@ -360,7 +368,7 @@ export class EditCalendarDialog implements OnInit {
     }
 
     private extractDate(dateString: string) {
-        return dateString.split('T')[0];
+        return moment.utc(dateString).local().toDate();
     }
 
     private extractTime(dateString: string) {
@@ -440,9 +448,9 @@ export class EditCalendarDialog implements OnInit {
 
     // Modal
     public viewConflict() {
-        const dialogRef = this.dialog.open(ViewConflictDialog, {
-            width: '850px',
-            height: '650px',
+        const dialogRef = this.dialog.open(ViewConflictDialogComponent, {
+            width: '50vw',
+            height: '90vh',
             data: {
                 conflicts: this.computedConflict,
                 id: this.collection.id
@@ -456,6 +464,22 @@ export class EditCalendarDialog implements OnInit {
                         return item.startDate !== this.recurringCalendar[i].startDate && item.endDate !== this.recurringCalendar[i].endDate;
                     });
                 }
+            }
+        });
+    }
+
+    /**
+     * viewCohorts
+     */
+    public viewCohorts() {
+        const dialogRef = this.dialog.open(SelectDateDialogComponent, {
+            width: '50vw',
+            height: '90vh',
+            data: {itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants}
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this._collectionService.deleteCalendar(result);
             }
         });
     }

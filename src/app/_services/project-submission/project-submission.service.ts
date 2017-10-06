@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 // import { Response } from '@angular/http';
 
 @Injectable()
@@ -21,11 +21,11 @@ export class ProjectSubmissionService {
   private options;
 
   constructor(private http: Http,
-              private config: AppConfig,
-              private _cookieService: CookieService,
-              private route: ActivatedRoute,
-              public router: Router,
-              public _requestHeaderService: RequestHeaderService
+    private config: AppConfig,
+    private _cookieService: CookieService,
+    private route: ActivatedRoute,
+    public router: Router,
+    public _requestHeaderService: RequestHeaderService
   ) {
     this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
@@ -46,19 +46,42 @@ export class ProjectSubmissionService {
     }
   }
 
+  public editProject(contentId: any, body: any) {
+    if (this.userId) {
+      return this.http.put(this.config.apiUrl + '/api/contents/' + contentId + '/submissions', body, this.options);
+    }
+  }
+
   public saveSubmissionTags(submissionId, body: any) {
     if (this.userId) {
       return this.http.patch(this.config.apiUrl + '/api/submissions/' + submissionId + '/topics', body, this.options);
     }
   }
 
-  public viewSubmission(submissionId) {
+  public viewSubmission(submissionId, query: any) {
     if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/submissions/' + submissionId);
+      return this.http.get(this.config.apiUrl + '/api/submissions/' + submissionId + '?filter=' + query);
+    }
+  }
+
+  public addPeerSubmissionRelation(submissionId) {
+    if (this.userId) {
+      return this.http.put(this.config.apiUrl + '/api/submissions/' + submissionId + '/peer/rel/' + this.userId, null, this.options);
     }
   }
 
   getUserId() {
     return this.getCookieValue(this.key);
   }
+
+    /**
+     * Add submission upvote
+     * @param replyId
+     * @param upvoteBody
+     * @returns {Observable<Response>}
+     */
+    public addSubmissionUpvote(submissionId, upvoteBody) {
+        return this.http
+            .post(this.config.apiUrl + '/api/submissions/' + submissionId + '/upvotes', upvoteBody, this.options);
+    }
 }

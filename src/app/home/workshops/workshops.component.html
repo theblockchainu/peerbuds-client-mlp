@@ -1,47 +1,46 @@
-<!-- <div *ngIf="loading" class="col-md-2 col-md-offset-5">
-  <md-spinner></md-spinner>
-</div> -->
-<div class="container feed workshopsFeed">
+<div class="feed workshopsFeed">
   <div class="row workshop-feed">
     <div class="col-md-12">
       <div class="row">
-        <div class="col-md-5">
-          <h2 *ngIf="!selectedTopics || selectedTopics.length<1">Workshops</h2>
-          <h2 *ngIf="selectedTopics && selectedTopics.length>0 "> <span>{{selectedTopics[0].name}}</span> Workshops <span *ngIf="selectedTopics.length>1"> +{{selectedTopics.length-1}} more</span></h2>
+        <div class="col-md-7">
+          <div class="mat-display-1" *ngIf="!selectedTopics || selectedTopics.length<1">Workshops</div>
+          <div *ngIf="selectedTopics && selectedTopics.length>0">
+            <div class="mat-display-1" style="display:inline-block;">Workshops in <span>{{selectedTopics[0].name | titlecase}}</span></div>
+            <span *ngIf="selectedTopics.length>1" class="mat-h4 lightText">&emsp;  and {{selectedTopics.length-1}} more topics</span>
+          </div>
         </div>
         <div class="col-md-3 pull-right">
-          <div class="col-md-6">
-            <button md-button #topicButton (click)="openTopicsDialog()">Topics <md-icon>arrow_drop_down</md-icon> </button>
+          <div style="text-align: right; float: right;">
+            <button md-button #priceButton (click)="openPriceDialog()" style="color: rgba(0,0,0,0.54) !important;">Price Range <md-icon>arrow_drop_down</md-icon> </button>
           </div>
-          <div class="col-md-6">
-            <button md-button #priceButton (click)="openPriceDialog()">Price Range <md-icon>arrow_drop_down</md-icon> </button>
+          <div style="text-align: right; float: right;">
+            <button md-button #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important;">Topics <md-icon>arrow_drop_down</md-icon> </button>
           </div>
         </div>
       </div>
-      <div class="row feed-horizontal">
-        <div class="col-md-2 recommendation-card" *ngFor="let workshop of workshops">
+      <div class="loading-container" [hidden]="!loading">
+        <ngx-loading [show]="true"></ngx-loading>
+      </div>
+      <div *ngIf="!loading" class="row feed-horizontal margin-top-20 margin-bottom-40" style="padding: 0px 7px;">
+        <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
           <a [routerLink]="'/workshop/'+workshop.id">
-            <div class="col-md-12">
-              <img class="mat-elevation-z3 recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
-                alt="workshpImg">
-              <img class="mat-elevation-z3 recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
-                alt="workshpImg">
+            <div class="">
+              <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
+              <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
             </div>
-            <div class="col-md-12">
-              <h4>{{workshop.currency}} {{workshop.price}}</h4>
-            </div>
-            <div class="col-md-12">
-              <h4>{{workshop.title}}</h4>
-            </div>
-            <div class="col-md-12">
-              <p>{{workshop.headline | shorten: 10 : '...'}}</p>
-            </div>
-            <div class="col-md-7">
-              <p-rating [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+            <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
+            <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
+            <div class="mat-body-2" style="margin-top: 5px;">{{workshop.title | titlecase}}</div>
+            <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
+            <div class="col-sm-12 padding-left-0" style="margin-top: 12px;">
+              <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
               </p-rating>
-            </div>
-            <div class="col-md-5">
-              <label *ngIf="workshop.reviews">{{workshop.reviews.length}} Reviews</label>
+              <span class="padding-left-10" *ngIf="workshop.reviews" style="text-align: left">
+                <label>{{workshop.reviews.length}} Reviews</label>
+              </span>
+              <span class="padding-left-10" *ngIf="!workshop.reviews" style="text-align: left">
+                <label>0 Reviews</label>
+              </span>
             </div>
           </a>
         </div>

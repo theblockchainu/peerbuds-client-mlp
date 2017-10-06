@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
 
@@ -13,24 +13,38 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+
+import { IndexComponent } from './default/index/index.component';
+import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
+
 import 'hammerjs';
 
 import { DialogsModule } from './_services/dialogs/dialogs.module';
+import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { SignupComponent } from './signup/signup.component';
+import { AppDesignComponent } from './app-design/app-design.component';
+import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultComponent,
     NoContentComponent,
-    LoginComponent,
     AppHeaderComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    IndexComponent,
+    IndexPhilComponent,
+    AccessDeniedComponent,
+    LoginComponent,
+    SignupComponent,
+    AppDesignComponent,
+    AppNotificationDialogComponent
   ],
   imports: [
     BrowserModule,
     CoreModule,
     ExperienceWizardModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MdCardModule,
     MdButtonModule,
@@ -42,8 +56,16 @@ import { DialogsModule } from './_services/dialogs/dialogs.module';
     MdNativeDateModule,
     MdProgressSpinnerModule,
     MdProgressBarModule,
-    DialogsModule
+    DialogsModule,
+    AppRoutingModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+      {
+        provide: ErrorHandler,
+        useClass: GlobalErrorHandler
+      }
+  ],
+  entryComponents: [AppNotificationDialogComponent]
 })
-export class AppModule { }
+export class AppModule {}

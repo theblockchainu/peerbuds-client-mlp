@@ -14,6 +14,9 @@ import { SelectPriceComponent } from '../dialogs/select-price/select-price.compo
 export class PeersComponent implements OnInit {
   public peers: Array<any>;
   public availableTopics: Array<any>;
+  public userId: string;
+  public loading = false;
+
   @ViewChild('topicButton') topicButton;
   @ViewChild('priceButton') priceButton;
   constructor(
@@ -22,7 +25,9 @@ export class PeersComponent implements OnInit {
     private _cookieUtilsService: CookieUtilsService,
     public config: AppConfig,
     public dialog: MdDialog
-  ) { }
+  ) {
+    this.userId = _cookieUtilsService.getValue('userId');
+  }
 
   ngOnInit() {
     this.fetchPeers();
@@ -34,13 +39,17 @@ export class PeersComponent implements OnInit {
         'reviewsAboutYou',
         'profiles'
       ],
-      'limit': 6
+      'limit': 50
     };
+    this.loading = true;
     this._profileService.getAllPeers(query).subscribe((result) => {
+      this.loading = false;
       this.peers = [];
       for (const responseObj of result.json()) {
-        responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-        this.peers.push(responseObj);
+        if (responseObj.id !== this.userId) {
+          responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
+          this.peers.push(responseObj);
+        }
       }
     }, (err) => {
       console.log(err);

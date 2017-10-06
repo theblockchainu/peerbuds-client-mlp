@@ -5,9 +5,10 @@
 .onboarding{
   .title{
     font-size:29px;
-    margin:0 0 20px 0;
-    color:#666;
-    font-weight:300;
+    margin:10px 0 20px 0;
+    color:#000;
+    font-weight:600;
+    padding-left: 40px;
   }
   .step
   {
@@ -53,21 +54,6 @@
           left:50%;
           top:50%;
           margin:-50px 0 0 -50px;
-        //   &.personal{
-        //     background:url("../../images/man-user.svg") no-repeat scroll center center / 100%;
-        //   }
-        //   &.professional{
-        //     background:url("../../images/man.svg") no-repeat scroll center center / 100%;
-        //   }
-        //   &.intellectual{
-        //     background:url("../../images/intellectual.svg") no-repeat scroll center center / 100%;
-        //   }
-        //   &.auditory{
-        //     background:url("../../images/auditory.svg") no-repeat scroll center center / 100%;
-        //   }
-        //   &.read-write{
-        //     background:url("../../images/read-write.svg") no-repeat scroll center center / 100%;
-        //   }
         }
       }
       .learner{
@@ -95,25 +81,28 @@
       }
   }
 }
+
 label.check > input, label.radiobox > input{display: none;}
 label.check, label.radiobox{
-  font-size: 14px;
+  font-size: 18px;
   font-weight: normal;
-  position:absolute;
-  top:5px;
-  right:25px;
+  padding: 15px 45px;
+  position: absolute;
+  top:40px;
+  right:20px;
+  left: 80px;
   z-index: 1;
 }
 label.check i, label.radiobox i {
-    height: 24px;
-    width: 24px;
-    background-color: #fff;
+    height: 12px;
+    width: 12px;
+    background-color: #ff5b5f;
     display: inline-block;
-    position: relative;
-    left: 0px;
-    top: 5px;
+    position: absolute;
+    left: 2px;
+    top: 30px;
     border-radius:5px;
-    border:1px solid #ccc;
+    border:1px solid #ff5b5f;
     font-style:normal;
 }
 label.radiobox i{border-radius:50%;}
@@ -127,19 +116,27 @@ label.check [type=checkbox]:checked + i:before, label.radiobox [type=radio]:chec
   position: absolute;
   top: 2px;
   left: 4px;
-  color:#fff;
+  right: 10px;
+  color:#ff5b5f;
   font-family:"FontAwesome";
+  padding: 50px;
 }
-label.radiobox [type=radio]:checked + i:before {top:3px; left:5px;}
+
+label.check {
+  background-color: #ff5b5f!important;
+  text-color: #fff!important;
+  position:relative;
+}
+
 .welcome-box{
-    background-color: #757575;
+    background-color: #fff;
     color:#fff;
-    padding:50px 100px;
+    padding:100px 100px;
     border-radius:5px;
     .title{
-        color:#fff;
+        color:#000;
     }
-}
+    }
 .input-topic{
   border:none;
   border-radius:0;
@@ -149,4 +146,72 @@ label.radiobox [type=radio]:checked + i:before {top:3px; left:5px;}
 .btn-start-explore{
   padding:25px 100px;
   text-transform: uppercase;
+}
+
+.text-grey{
+  color: #767676;
+}
+.btn-start-explore{
+  color: #fff;
+  position: relative;
+  padding: 50px 0 50px 0;
+}
+.title-explore{
+ padding: 100px 0 20px 0;
+}
+
+.headline {
+  color: #484848;
+}
+
+.description1 {
+  font-size: 16px;
+  color: #767676;
+}
+
+.customBtn {
+  padding: 8px 40px;
+  font-size: 16px;
+}
+
+.syncSocial {
+  color: #33BD9E;
+  font-size: 18px;
+  font-weight: lighter;
+}
+
+.vAlignTextTop{
+  vertical-align:text-top;
+}
+
+.bottom-section{
+  border-top:1px solid #ccc;
+  padding-top:15px;
+  margin-top:20px;
+}
+
+.outline-btn {
+  border: 1.5px solid #767676;
+  color: #484848;
+  background-color: white;
+}
+
+.suggestions li, .selected li {
+  // width: 100%;
+  border: 1px solid lightgrey;
+  vertical-align: middle;
+  line-height: 40px;
+}
+
+.topic-bg {
+  width: 103px;
+  height: 79px;
+}
+
+.topic {
+  cursor: pointer;
+}
+
+.suggestions > ul:first-child {
+  margin-top: 0px;
 }

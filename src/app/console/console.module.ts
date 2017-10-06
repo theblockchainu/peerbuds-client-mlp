@@ -5,7 +5,7 @@ import { ConsoleRoutingModule } from './console-routing.module';
 import { ConsoleComponent } from './console.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule, MdChipsModule, MdInputModule, MdSelectModule, MdSnackBarModule } from '@angular/material';
-import {RatingModule} from 'primeng/primeng';
+import { RatingModule } from 'primeng/primeng';
 import 'hammerjs';
 import { ConsoleDashboardComponent } from './console-dashboard/console-dashboard.component';
 import { ConsoleInboxComponent } from './console-inbox/console-inbox.component';
@@ -33,6 +33,10 @@ import { ConsoleAccountTransactionhistoryComponent } from './console-account/con
 import { ConsoleAccountSecurityComponent } from './console-account/console-account-security/console-account-security.component';
 import { ConsoleAccountPrivacyComponent } from './console-account/console-account-privacy/console-account-privacy.component';
 import { ConsoleAccountSettingsComponent } from './console-account/console-account-settings/console-account-settings.component';
+
+import { TimezonePickerService } from '../_services/timezone-picker/timezone-picker.service';
+import { CohortDetailDialogComponent } from './console-teaching/console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
+import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 
 @NgModule({
   imports: [
@@ -81,7 +85,11 @@ import { ConsoleAccountSettingsComponent } from './console-account/console-accou
     ConsoleAccountTransactionhistoryComponent,
     ConsoleAccountSecurityComponent,
     ConsoleAccountPrivacyComponent,
-    ConsoleAccountSettingsComponent
-  ]
+    ConsoleAccountSettingsComponent,
+    CohortDetailDialogComponent,
+    ConsoleAdminComponent
+  ],
+  providers: [TimezonePickerService],
+  bootstrap: [CohortDetailDialogComponent]
 })
 export class ConsoleModule { }

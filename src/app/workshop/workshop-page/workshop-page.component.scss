@@ -283,10 +283,10 @@ div.event span:first-child {
 }
 
 .pending-actions{
-    background-color: #F44336;
+    background-color: #ff5b5f;
     color: white;
-    padding: 20px 0px;
-    font-size: large;
+    padding: 12px 0px;
+    font-size: 14px;
 }
 
 h3 {
@@ -295,4 +295,70 @@ h3 {
 
 .About video {
     width: 100%;
+}
+
+.workshop-content {
+    margin-bottom: 20px;
+}
+
+.announcement {
+    padding: 30px;
+    background-color: #efefef;
+    margin: 15px 15px 0px;
+}
+
+.recommendation-thumb{
+    object-fit: cover;
+    height: 240px;
+    width: 200px;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 230px;
+    width: 165px;
+}
+
+.recommendation-card{
+    width: 220px;
+    height: 370px;
+}
+
+.workshop-suggestions a {
+    color: #464646;
+}
+
+.workshop-suggestions p {
+    margin-bottom: 0px !important;
+}
+
+.workshopCohortCalendar {
+    background-color: #f17d7d;
+}
+
+.timelineRowItem {
+    cursor: pointer;
+    margin-left: -40px;
+    padding-left: 25px;
+    border-left: 0px;
+}
+
+.timelineRowItem:hover {
+    border-left: 3px solid #767676;
+    padding-left: 22px;
+}
+
+.message-item-wrapper:last-child::after {
+    background: #aaaaaa;
+    border-radius: 50%;
+    box-shadow: none;
+    content: "";
+    height: 8px;
+    width: 8px;
+    left: -33px;
+    position: absolute;
+    bottom: -48px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
 }

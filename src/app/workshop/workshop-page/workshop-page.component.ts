@@ -99,6 +99,10 @@ export class WorkshopPageComponent implements OnInit {
   public reviews;
   public defaultProfileUrl = '/assets/images/avatar.png';
   public noWrapSlides = true;
+  public peerHasSubmission = false;
+  public contentHasSubmission = {};
+  public participants = [];
+  public allParticipants = [];
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
@@ -112,6 +116,10 @@ export class WorkshopPageComponent implements OnInit {
   // Calendar Start
   public dateClicked = false;
   public clickedDate;
+  public clickedCohort;
+  public clickedCohortId;
+  public clickedCohortStartDate;
+  public clickedCohortEndDate;
   public eventsForTheDay = {};
   objectKeys = Object.keys;
 
@@ -146,32 +154,37 @@ export class WorkshopPageComponent implements OnInit {
       this.dateClicked = true; // !this.dateClicked;
     }
     this.clickedDate = date;
+    this.clickedCohort = this.parseTitle(events[0].title)[0];
+    this.clickedCohortId = this.parseTitle(events[0].title)[1];
+    this.clickedCohortStartDate = events[0].start;
+    this.clickedCohortEndDate = events[0].end;
     for (const event of events) {
       const titleCalIdArray = this.parseTitle(event.title);
       const calId = titleCalIdArray[1];
       const title = titleCalIdArray[0];
-      if (!this.eventsForTheDay.hasOwnProperty(calId)) {
-        this.eventsForTheDay[calId] = [{
-          title: title,
-          color: event.color,
-          start: event.start,
-          end: event.end
-        }];
-      }
-      else {
-        this.eventsForTheDay[calId].push({
-          title: title,
-          color: event.color,
-          start: event.start,
-          end: event.end
-        });
+      const type = titleCalIdArray[2];
+      if (type !== 'cohort') {
+          if (!this.eventsForTheDay.hasOwnProperty(calId)) {
+              this.eventsForTheDay[calId] = [{
+                  title: title,
+                  color: event.color,
+                  start: event.start,
+                  end: event.end
+              }];
+          }
+          else {
+              this.eventsForTheDay[calId].push({
+                  title: title,
+                  color: event.color,
+                  start: event.start,
+                  end: event.end
+              });
+          }
       }
     }
     if (isSameMonth(date, this.viewDate)) {
       if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0) {
         this.activeDayIsOpen = false;
       } else {
         this.activeDayIsOpen = true;
@@ -215,7 +228,7 @@ export class WorkshopPageComponent implements OnInit {
   // Modal
   public editCalendar() {
     this.dialogsService
-      .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
+      .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.workshop.calendars, this.allItenaries, this.allParticipants, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
       .subscribe(res => this.result = res);
   }
 
@@ -250,7 +263,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private initializeAllItenaries() {
-    this.workshop.calendars.forEach(calendar => {
+    this.workshop.calendars.forEach((calendar, index) => {
       const calendarItenary = [];
       for (const key in this.itenariesObj) {
         if (this.itenariesObj.hasOwnProperty(key)) {
@@ -271,6 +284,14 @@ export class WorkshopPageComponent implements OnInit {
           calendar: calendar,
           itenary: calendarItenary
         });
+        index++;
+        this.events.push({
+            title: 'Cohort ' + index + ':' + calendar.id + ':cohort',
+            color: colors.red,
+            start: moment.utc(calendar.startDate, 'YYYY-MM-DD HH:mm:ss').local().toDate(),
+            end: moment.utc(calendar.endDate, 'YYYY-MM-DD HH:mm:ss').local().toDate(),
+            cssClass: 'workshopCohortCalendar'
+        });
     });
 
     console.log(this.allItenaries);
@@ -283,19 +304,15 @@ export class WorkshopPageComponent implements OnInit {
           const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss');
           const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss');
           this.events.push({
-            title: iterinary.contents[i].title + ':' + calendarId,
+            title: iterinary.contents[i].title + ':' + calendarId + ':content',
             color: colors.red,
             start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
             end: moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
           });
         }
-        // this.refresh.next();
-
       }
     }
-
     console.log(this.events);
-
   }
 
   private initializeWorkshop() {
@@ -305,7 +322,9 @@ export class WorkshopPageComponent implements OnInit {
         'calendars',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules', 'submissions'] }]
+        { 'contents': ['schedules', { 'submissions': [{'upvotes': 'peer'}, { 'peer': 'profiles' } ] }] }
+      ],
+      'relInclude': 'calendarId'
     };
 
     if (this.workshopId) {
@@ -320,21 +339,42 @@ export class WorkshopPageComponent implements OnInit {
             } else {
               this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
             }
+
+            if (contentObj.submissions && contentObj.submissions.length > 0) {
+              contentObj.submissions.forEach(submission => {
+                if (submission.peer) {
+                  if (this.userId === submission.peer[0].id) {
+                    this.peerHasSubmission = true;
+                  }
+                }
+              });
+            }
+
           });
+
           for (const key in this.itenariesObj) {
             if (this.itenariesObj.hasOwnProperty(key)) {
-              let eventDate;
+              let startDate, endDate;
               if (this.currentCalendar) {
-                eventDate = this.calculateDate(this.currentCalendar.startDate, key);
+                startDate = this.calculateDate(this.currentCalendar.startDate, key);
+                endDate = this.calculateDate(this.currentCalendar.startDate, key);
               } else {
-                eventDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+                  startDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+                  endDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
               }
               this.itenariesObj[key].sort(function (a, b) {
                 return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
               });
+              this.itenariesObj[key].forEach(content => {
+                if (content.schedules[0].startTime !== undefined) {
+                    content.schedules[0].startTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].startTime.split('T')[1];
+                    content.schedules[0].endTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].endTime.split('T')[1];
+                }
+              });
               const itenary = {
                 startDay: key,
-                startDate: eventDate,
+                startDate: startDate,
+                endDate: endDate,
                 contents: this.itenariesObj[key]
               };
               this.itenaryArray.push(itenary);
@@ -343,7 +383,7 @@ export class WorkshopPageComponent implements OnInit {
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
-          console.log(this.itenaryArray);
+
 
         },
         err => console.log('error'),
@@ -354,6 +394,7 @@ export class WorkshopPageComponent implements OnInit {
           this.fixTopics();
           this.getReviews();
           this.getRecommendations();
+          this.getParticipants();
           this.getDiscussions();
         });
 
@@ -363,8 +404,24 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
   private getReviews() {
-    const query = { 'peer': ['profiles'] };
-    this._collectionService.getReviews(this.workshopId, query, (err, response) => {
+    let query = {};
+    if (this.calendarId) {
+        query = {'include': [
+            {
+                'peer': ['profiles']
+            }],
+            'where': {'and': [{'collectionId': this.workshopId},{'collectionCalendarId': this.calendarId}]}
+        };
+    }
+    else {
+        query = {'include': [
+            {
+                'peer': ['profiles']
+            }],
+            'where': {'collectionId': this.workshopId}
+        };
+    }
+    this._collectionService.getReviews(this.workshop.owners[0].id, query, (err, response) => {
       if (err) {
         console.log(err);
       } else {
@@ -391,8 +448,14 @@ export class WorkshopPageComponent implements OnInit {
                   'profiles': ['work']
                 }
               ]
+            },
+            {
+              'upvotes': 'peer'
             }
           ]
+        },
+        {
+            'upvotes': 'peer'
         }
       ],
       'order': 'createdAt DESC'
@@ -413,7 +476,7 @@ export class WorkshopPageComponent implements OnInit {
   private initializeForms() {
     this.chatForm = this._fb.group({
       description: ['', Validators.required],
-      announce: ''
+      isAnnouncement: [false]
     });
   }
 
@@ -441,9 +504,9 @@ export class WorkshopPageComponent implements OnInit {
    */
   public changeDates() {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
-      width: '800px',
-      height: '500px',
-      data: this.allItenaries
+      width: '50vw',
+      height: '90vh',
+      data: {itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -451,6 +514,7 @@ export class WorkshopPageComponent implements OnInit {
       }
     });
   }
+
   /**
    * joinGroupChat
    */
@@ -501,7 +565,6 @@ export class WorkshopPageComponent implements OnInit {
    * postComment
    */
   public postComment() {
-    delete this.chatForm.value.announce;
     this._collectionService.postComments(this.workshopId, this.chatForm.value, (err, response) => {
       if (err) {
         console.log(err);
@@ -589,17 +652,19 @@ content:any   */
   }
 
   openDeleteDialog(action: string) {
-    this.dialogsService
-      .deleteCollection(action)
-      .subscribe((result) => {
-        if (result === 'delete') {
-          this.deleteWorkshop();
-        } else if (result === 'cancel') {
-          this.cancelWorkshop();
-        } else {
-          console.log(result);
-        }
-      });
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: action
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'delete') {
+        this.deleteWorkshop();
+      } else if (result === 'cancel') {
+        this.cancelWorkshop();
+      } else {
+        console.log(result);
+      }
+    });
   }
 
   workshopVideoDialog() {
@@ -611,16 +676,17 @@ content:any   */
   viewParticipants() {
     const dialogRef = this.dialog.open(ViewParticipantsComponent, {
       data: {
-        participants: this.workshop.participants,
+        participants: this.participants,
         workshopId: this.workshopId
       },
-      width: '800px'
+      width: '50vw',
+        height: '90vh'
     });
   }
 
   /**
- * openDialog
-content:any   */
+  * openDialog
+  content:any   */
   public openDialog(content: any) {
     this.modalContent = content;
     switch (content.type) {
@@ -629,10 +695,11 @@ content:any   */
           const dialogRef = this.dialog.open(ContentOnlineComponent, {
             data: {
               content: content,
-              userType: this.userType
+              userType: this.userType,
+              collectionId: this.workshopId
             },
-            width: '800px',
-            height: '700px'
+            width: '50vw',
+            height: '90wh'
           });
           break;
         }
@@ -641,21 +708,27 @@ content:any   */
           const dialogRef = this.dialog.open(ContentVideoComponent, {
             data: {
               content: content,
-              userType: this.userType
+              userType: this.userType,
+              collectionId: this.workshopId
             },
-            width: '800px',
-            height: '600px'
-          }); break;
+            width: '50vw',
+            height: '90wh'
+          });
+          break;
         }
       case 'project':
         {
           const dialogRef = this.dialog.open(ContentProjectComponent, {
             data: {
               content: content,
-              userType: this.userType
+              userType: this.userType,
+              peerHasSubmission: this.peerHasSubmission,
+              collectionId: this.workshopId
             },
-            width: '660px'
-          }); break;
+            width: '50vw',
+            height: '90wh'
+          });
+          break;
         }
       default:
         break;
@@ -665,7 +738,7 @@ content:any   */
 
   /**
   * timetoSession
-content:any   */
+  content:any   */
   public timetoSession(content: any) {
     const startMoment = moment(this.workshop.calendars[0].startDate);
     const endMoment = moment(this.workshop.calendars[0].startDate);
@@ -701,7 +774,8 @@ content:any   */
         'topics',
         'participants'
       ],
-      'limit': 4
+      'limit': 5,
+      'where': {'id': {'neq': this.workshopId}}
     };
     this._collectionService.getRecommendations(query).subscribe(
       (response: any) => {
@@ -722,9 +796,9 @@ content:any   */
    */
   public selectJoiningDates() {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
-      width: '800px',
-      height: '500px',
-      data: this.allItenaries
+      width: '50vw',
+      height: '90vh',
+      data: {itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -821,7 +895,7 @@ content:any   */
    * postReview
    */
   public postReview() {
-    this._collectionService.postReview(this.workshopId, this.reviewForm.value).subscribe(
+    this._collectionService.postReview(this.workshop.owners[0].id, this.reviewForm.value).subscribe(
       result => {
         if (result) {
           this.getReviews();
@@ -831,5 +905,67 @@ content:any   */
         console.log(err);
       }
     );
+  }
+
+  addCommentUpvote(comment: any) {
+      this._commentService.addCommentUpvote(comment.id, {}).subscribe(
+          response => {
+              if (comment.upvotes !== undefined) {
+                  comment.upvotes.push(response.json());
+              }
+              else {
+                  comment.upvotes = [];
+                  comment.upvotes.push(response.json());
+              }
+          }, err => {
+              console.log(err);
+          }
+      );
+  }
+
+  addReplyUpvote(reply: any) {
+      this._commentService.addReplyUpvote(reply.id, {}).subscribe(
+          response => {
+              console.log(response);
+              if (reply.upvotes !== undefined) {
+                reply.upvotes.push(response.json());
+              }
+              else {
+                reply.upvotes = [];
+                reply.upvotes.push(response.json());
+              }
+          }, err => {
+              console.log(err);
+          }
+      );
+  }
+
+  public getParticipants() {
+      const query = {
+          'relInclude': 'calendarId',
+          'include': ['profiles']
+      };
+      let isCurrentUserParticipant = false;
+      let currentUserParticipatingCalendar = '';
+      this._collectionService.getParticipants(this.workshopId, query).subscribe(
+          (response: any) => {
+              this.allParticipants = response.json();
+              for (const responseObj of response.json()) {
+                  if (this.calendarId && this.calendarId === responseObj.calendarId) {
+                    this.participants.push(responseObj);
+                  }
+                  if (this.calendarId === undefined && responseObj.id === this.userId) {
+                    // current user is a participant of this workshop
+                      isCurrentUserParticipant = true;
+                      currentUserParticipatingCalendar = responseObj.calendarId;
+                  }
+              }
+              if (isCurrentUserParticipant) {
+                this.router.navigate(['workshop', this.workshopId, 'calendar', currentUserParticipatingCalendar]);
+              }
+          }, (err) => {
+              console.log(err);
+          }
+      );
   }
 }

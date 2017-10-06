@@ -56,7 +56,7 @@ export class ConsoleProfileReviewsComponent implements OnInit {
         return collection.id === collectionId;
       });
     }
-    if(foundCollection === undefined) {
+    if (foundCollection === undefined) {
       foundCollection = {};
     }
     return foundCollection;
@@ -99,7 +99,7 @@ export class ConsoleProfileReviewsComponent implements OnInit {
       const completeCollections = this._collectionService.filerCompleteCollections(peer.ownedCollections);
       completeCollections.forEach(collection => {
         let hasPending = false;
-        if(collection.participants !== undefined) {
+        if (collection.participants !== undefined) {
           collection.participants.forEach(participant => {
             // If one of the participant of a collection does not have a review
             if (peer.reviewsByYou === undefined || !peer.reviewsByYou.some(review => {

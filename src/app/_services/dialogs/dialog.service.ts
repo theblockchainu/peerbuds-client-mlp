@@ -1,4 +1,7 @@
 import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
+import { LoginComponentDialog } from './login-dialog/login-dialog.component';
+import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
+
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
@@ -6,7 +9,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DialogsService {
 
-    constructor(private dialog: MdDialog) { }
+    constructor(public dialog: MdDialog) { }
 
     public openSignup() {
         let dialogRef: MdDialogRef<SignupComponentDialog>;
@@ -14,6 +17,22 @@ export class DialogsService {
         dialogRef = this.dialog.open(SignupComponentDialog);
 
         return dialogRef.afterClosed();
+    }
+
+    public openLogin() {
+        let dialogRef1: MdDialogRef<LoginComponentDialog>;
+
+        dialogRef1= this.dialog.open(LoginComponentDialog);
+
+        return dialogRef1.afterClosed();
+    }
+
+    public forgotPwd(){
+    let dialogRef3: MdDialogRef<ForgotpwdComponentDialog>;
+
+        dialogRef3= this.dialog.open(ForgotpwdComponentDialog);
+
+        return dialogRef3.afterClosed();
     }
 
 }
