@@ -1,19 +1,19 @@
 <div class="row" style="margin-top: 20px;">
   <div class="col-md-3">
     <md-list>
-      <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
+      <!-- <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
         View All
-      </md-list-item>
+      </md-list-item> -->
       <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
           Workshops
       </md-list-item>
-      <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
+      <!-- <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
         Experiences
-      </md-list-item>
-      <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
+      </md-list-item> -->
+      <!-- <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
         Sessions
-      </md-list-item>
-      <md-list-item *ngIf="getActiveTab() === 'workshops'">
+      </md-list-item> -->
+      <md-list-item *ngIf="getActiveTab() === 'workshops' ">
         <button md-raised-button (click)="createWorkshop()" color="primary">New Workshop</button>
       </md-list-item>
       <md-list-item *ngIf="activeTab === 'experiences'">
