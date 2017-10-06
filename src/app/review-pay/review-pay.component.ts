@@ -63,7 +63,6 @@ export class ReviewPayComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.collectionId = params['collectionId'];
     });
-
     this.userId = cookieUtilsService.getValue('userId');
   }
 
@@ -92,7 +91,6 @@ export class ReviewPayComponent implements OnInit {
         // console.log(JSON.stringify(this.collection));
       }
     });
-
     this.profileService.getPeer(this.userId).subscribe(peer => {
       if (peer) {
         this.createSourceData.email = peer.email;
