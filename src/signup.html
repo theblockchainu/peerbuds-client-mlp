@@ -513,7 +513,7 @@
                     last_name: "",
                     email: {
                         required: "",
-                        email: ""
+                        email: "already there"
                     },
                     password: "",
                     birthMonth: "",
@@ -569,21 +569,21 @@
             else
                 $('#promoOptIn').val(false);
             // $('#signupForm').submit();     
-          var xhttp;
-          xhttp=new XMLHttpRequest();
+           
+          var xhttp = new XMLHttpRequest();
           xhttp.onreadystatechange = function() {
-            if (this.readyState == 4  && this.status == 401) {
-              cFunction(this);
+            if (this.readyState == 4 && this.status == 401) {
+              document.getElementById("signupForm").innerHTML =
+              this.responseText;
             }
           };
-          xhttp.open("GET", url, true);
-          xhttp.send();
-        }
-        function myFunction(xhttp) {
-        document.getElementById("signupForm").innerHTML =
-        xhttp.responseText;
-        }
+ 
+  xhttp.open("GET",'http://localhost:3000/auth/local', true);
+  xhttp.setRequestHeader("Content-type", "application/json");   
+  xhttp.send();
+  var response = JSON.parse(xhttp.responseText);
 
+}
         function goToHome() {
             location.href='/';
         }
@@ -735,7 +735,7 @@
                             </div>
                            
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup('http://localhost:3000/auth/local', myFunction)">Continue</button>
+                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Continue</button>
                             </div>
                                <div class="text-center small-font">Have an account already? <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()"style="font-size:14px;text-decoration: none;">Log in</a></div>
                         </div>

@@ -47,10 +47,10 @@ export class ForgotpwdComponentDialog implements OnInit {
     });
   }
 
-  public getpwd() {
+  public sendmail() {
       // this.loading = true;
       this.email = this.forgotpwdForm.controls['email'].value;
-      this.authenticationService.getpwd(this.email)
+      this.authenticationService.sendmail(this.email)
           .subscribe(
               (data) => {
                   this.dialogRef.close();

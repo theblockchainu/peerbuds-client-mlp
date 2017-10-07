@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -113,19 +113,32 @@ export class AuthenticationService {
     return !!this.getCookie(this.key);
   }
 
-  getpwd(email: string): any {
+  sendmail(email): any {
     let body = `{"email":"${email}"}`;
     return this.http
-      .post(this.config.apiUrl + '/auth/local', body, this.options)
-      .map((response: Response) => {
-        // login successful if there's a jwt token in the response
-        let user = response.json();
-        if (user && user.access_token) {
-          this.isLoginSubject.next(true);
-          // responseStatus = true;
-        }
-      }, (err) => {
+      .post(this.config.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
+  }
+ 
+ 
+  resetpwd(email): any {
+    let body = `"password":"${password}"`;
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+  }
+
+  public confirmSmsOTP(inputToken) {
+    const body = {};
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
   }
 }

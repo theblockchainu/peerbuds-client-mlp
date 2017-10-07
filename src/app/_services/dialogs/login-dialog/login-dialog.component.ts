@@ -26,7 +26,7 @@ export class LoginComponentDialog implements OnInit {
   // public loading = false;
   public returnUrl: string;
   isLoggedIn: Observable<boolean>;
-  public email: string;
+  private email: string;
   public passWord: string;
   public loginForm: FormGroup;
   public forgotpwdForm: FormGroup;

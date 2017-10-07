@@ -420,6 +420,7 @@ export class CollectionService {
       });
   }
 
+
   public confirmSmsOTP(inputToken) {
     const body = {};
     return this.http
