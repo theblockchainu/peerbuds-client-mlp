@@ -122,15 +122,16 @@ export class AuthenticationService {
       });
   }
  
- 
-  resetpwd(email): any {
+ /*
+  resetpwd(password): any {
     let body = `"password":"${password}"`;
     return this.http
-      .post(this.config.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this.options)
+      .post(this.config.apiUrl + '/api/peers/resetPassword?pwd=' + password, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
   }
+  */
 
   public confirmSmsOTP(inputToken) {
     const body = {};
