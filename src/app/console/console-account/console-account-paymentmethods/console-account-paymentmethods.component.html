@@ -37,7 +37,10 @@
                                 </div>
                                 <div class="row" style="padding-top: 30px">
                                     <div class="col-md-10">
-
+                                        <a class="lightText" (click)="deleteCard(card.id)">
+                                            Remove
+                                            <md-icon style="font-size: 14px">help</md-icon>
+                                        </a>
                                     </div>
                                     <div class="col-md-2">
                                         <img class="card-brand" src="/assets/icon/payment-icons/svg/single/{{card.brand.split(' ')[0] | lowercase}}.svg" alt="{{card.brand}}">

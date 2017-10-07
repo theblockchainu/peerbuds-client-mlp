@@ -46,6 +46,8 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
         this.paymentService.listAllCards(this.custId).subscribe(cards => {
           if (cards) {
             this.listAllCards = cards.json().data;
+            console.log(this.listAllCards);
+
             this.loadingCards = false;
           }
         });
@@ -67,5 +69,15 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
     }, err => {
       console.log(err);
     });
+  }
+
+  public deleteCard(cardId: string) {
+    this.paymentService.deleteCard(this.custId, cardId).subscribe((res: any) => {
+      if (res) {
+        console.log(res.json());
+        this.fetchCards();
+      }
+    });
+
   }
 }
