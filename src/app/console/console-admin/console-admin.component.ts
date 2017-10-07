@@ -30,7 +30,12 @@ export class ConsoleAdminComponent implements OnInit {
 
   private fetchCollections() {
     this.loaded = false;
-    const query = { 'where': { 'type': 'workshop', 'isApproved': false } };
+    const query = {
+      'where': { 'type': 'workshop', 'isApproved': false },
+      'include': [
+        'calendars'
+      ]
+    };
     this._collectionService.getAllCollections(query).subscribe(
       result => {
         this.unapprovedCollections = result;

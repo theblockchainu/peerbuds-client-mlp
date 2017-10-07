@@ -22,39 +22,38 @@
         <div>
           <div style="margin-top:20px;" class="col-md-12">
             <div class="row">
-              <div *ngFor="let collection of ongoingArray">
-                <div class="col-md-4" style="margin-top: 20px;">
-                  <md-card style="text-align: center; padding: 20px;">
-                    <md-card-content>
-                      <div style="text-align: right">
-                        <div class="pull-right">
-                          <a md-icon-button [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
-                          </a>
-                        </div>
+              <div *ngFor="let collection of ongoingArray" class="col-md-4" style="margin-top: 20px;">
+                <md-card class="upcoming-card">
+                  <md-card-content>
+                    <div style="text-align: right">
+                      <div class="pull-right">
+                        <a md-icon-button [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
+                          <md-icon>more_vert</md-icon>
+                        </a>
                       </div>
-                      <div class="collectionParticipantImageCarousel">
-                        <div class="image-inline" *ngFor="let participant of collection.participants">
-                          <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
-                        </div>
-                        <div class="image-inline" *ngIf="collection.participants.length === 0">
-                          <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
-                        </div>
+                    </div>
+                    <div class="collectionParticipantImageCarousel">
+                      <div class="image-inline" *ngFor="let participant of collection.participants">
+                        <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
                       </div>
-                      <div class="participantCount">
-                        <span>{{collection.participants.length}} Participants </span>
+                      <div class="image-inline" *ngIf="collection.participants.length === 0">
+                        <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
                       </div>
-                      <div class="cohortDate">
-                        <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
-                      </div>
-                      <br>
-                      <div class="collectionTitle" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
-                      <!-- <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar> -->
-                      <div class="collectionSubtitle" (click)="_collectionService.openCollection(collection)">
-                        {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
-                        <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
-                      </div>
-                      <span *ngIf="_collectionService.getUpcomingEvent(collection).timeToStart >= 0">
+                    </div>
+                    <div class="participantCount">
+                      <span>{{collection.participants.length}} Participants </span>
+                    </div>
+                    <div class="cohortDate">
+                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
+                    </div>
+                    <br>
+                    <div class="collectionTitle" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                    <!-- <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar> -->
+                    <div class="collectionSubtitle" (click)="_collectionService.openCollection(collection)">
+                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                      <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                    </div>
+                    <span *ngIf="_collectionService.getUpcomingEvent(collection).timeToStart >= 0">
                       <p class="upcomingEventLabel">
                         Up Next
                       </p>
@@ -66,7 +65,7 @@
                         + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
                       </div>
                     </span>
-                      <span *ngIf="_collectionService.getUpcomingEvent(collection).timeToStart < 0">
+                    <span *ngIf="_collectionService.getUpcomingEvent(collection).timeToStart < 0">
                           <p class="upcomingEventLabel">
                               Last Event
                             </p>
@@ -78,90 +77,87 @@
                               + ' was ' + -(_collectionService.getUpcomingEvent(collection).timeToStart) + ' Days ago' }}
                             </div>
                     </span>
-                    </md-card-content>
-                    <md-menu #ongoingCardMenu>
-                      <button md-menu-item>
+                  </md-card-content>
+                  <md-menu #ongoingCardMenu>
+                    <button md-menu-item>
                         Delete
                       </button>
 
-                      <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
+                    <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
                         Edit Workshop
                       </button>
-                    </md-menu>
-                    <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
-                      <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
-                    </md-card-actions>
-                    <br><br>
-                    <md-card-footer class="cardFooter">
-                      <button md-button [routerLink]="['/workshop/'+collection.id+'/calendar/'+collection.calendars[0].id]">Continue Teaching</button>
-                    </md-card-footer>
-                  </md-card>
-                </div>
+                  </md-menu>
+                  <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
+                    <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
+                  </md-card-actions>
+                  <br><br>
+                  <md-card-footer class="cardFooter" style="margin-top: -4px">
+                    <button md-button [routerLink]="['/workshop/'+collection.id+'/calendar/'+collection.calendars[0].id]">Continue Teaching</button>
+                  </md-card-footer>
+                </md-card>
               </div>
-              <div *ngFor="let collection of upcomingArray">
-                <div class="col-md-4" style="margin-top: 20px;">
-                  <md-card style="text-align: center; padding: 20px;">
-                    <md-card-content>
-                      <div style="text-align: right">
-                        <div class="pull-right">
-                          <a md-icon-button [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
-                          </a>
-                        </div>
+              <div *ngFor="let collection of upcomingArray" class="col-md-4" style="margin-top: 20px;">
+                <md-card class="upcoming-card">
+                  <md-card-content>
+                    <div style="text-align: right">
+                      <div class="pull-right">
+                        <a md-icon-button [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
+                          <md-icon>more_vert</md-icon>
+                        </a>
                       </div>
-                      <div class="collectionParticipantImageCarousel">
-                        <div class="image-inline" *ngFor="let participant of collection.participants">
-                          <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
-                        </div>
-                        <div class="image-inline" *ngIf="collection.participants.length === 0">
-                          <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
-                        </div>
+                    </div>
+                    <div class="collectionParticipantImageCarousel">
+                      <div class="image-inline" *ngFor="let participant of collection.participants">
+                        <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
                       </div>
-                      <div class="participantCount">
-                        <span>{{collection.participants.length}} Participants </span>
+                      <div class="image-inline" *ngIf="collection.participants.length === 0">
+                        <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
                       </div>
-                      <div class="cohortDate">
-                        <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
-                      </div>
-                      <div class="lightText">
-                        <span>{{collection.maxSpots - collection.participants.length}} seats available </span>
-                      </div>
-                      <div class="collectionTitle">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
-                      <!-- <div class="lighterText">
+                    </div>
+                    <div class="participantCount">
+                      <span>{{collection.participants.length}} Participants </span>
+                    </div>
+                    <div class="cohortDate">
+                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
+                    </div>
+                    <div class="lightText">
+                      <span>{{collection.maxSpots - collection.participants.length}} seats available </span>
+                    </div>
+                    <div class="collectionTitle">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                    <!-- <div class="lighterText">
                           Approved {{_collectionService.getDaysBetween(collection.updatedAt, now)}}
                         </div> -->
-                      <div class="collectionSubtitle">
-                        {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
-                        <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
-                      </div>
-                      <p class="upcomingEventLabel">
-                        First Session
-                      </p>
-                      <div class="upcomingEventTitle">
-                        {{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
-                      </div>
-                      <div class="upcomingEventTime">
-                        {{ _collectionService.getUpcomingEvent(collection).type + ' ' + _collectionService.getUpcomingEvent(collection).fillerWord
-                        + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
-                      </div>
-                    </md-card-content>
-                    <md-menu #upcomingCardMenu>
-                      <button md-menu-item>
+                    <div class="collectionSubtitle">
+                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                      <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                    </div>
+                    <p class="upcomingEventLabel">
+                      First Session
+                    </p>
+                    <div class="upcomingEventTitle">
+                      {{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+                    </div>
+                    <div class="upcomingEventTime">
+                      {{ _collectionService.getUpcomingEvent(collection).type + ' ' + _collectionService.getUpcomingEvent(collection).fillerWord
+                      + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
+                    </div>
+                  </md-card-content>
+                  <md-menu #upcomingCardMenu>
+                    <button md-menu-item>
                           Delete
                         </button>
-                      <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
+                    <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
                           Edit Workshop
                         </button>
-                    </md-menu>
-                    <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
-                      <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
-                    </md-card-actions>
-                    <br><br>
-                    <md-card-footer class="cardFooter" style="height: 60px">
-                      <a (click)="_collectionService.viewWorkshop(collection)">Is this a recurring workshop?</a>
-                    </md-card-footer>
-                  </md-card>
-                </div>
+                  </md-menu>
+                  <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
+                    <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
+                  </md-card-actions>
+                  <br><br>
+                  <md-card-footer class="cardFooter" style="line-height: 30px">
+                    <a style="font-size: 1.077rem" (click)="_collectionService.viewWorkshop(collection)">Is this a recurring workshop?</a>
+                  </md-card-footer>
+                </md-card>
               </div>
             </div>
           </div>
