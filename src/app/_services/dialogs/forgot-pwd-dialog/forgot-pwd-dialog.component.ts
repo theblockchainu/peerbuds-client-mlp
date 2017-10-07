@@ -22,7 +22,7 @@ export class ForgotpwdComponentDialog implements OnInit {
   // public loading = false;
   public returnUrl: string;
   isLoggedIn: Observable<boolean>;
-  public email: string;
+  private email: string;
   public passWord: string;
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
@@ -43,7 +43,7 @@ export class ForgotpwdComponentDialog implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     this.forgotpwdForm = this._fb.group({
-      email : ['', Validators.required] /* putting reg ex as well */
+      email : ['', Validators.email] /* putting reg ex as well */
     });
   }
 
@@ -59,6 +59,7 @@ export class ForgotpwdComponentDialog implements OnInit {
               (error) => {
                   this.alertService.error(error._body);
                   // this.loading = false;
+
               });
   }
 

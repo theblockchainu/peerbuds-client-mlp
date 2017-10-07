@@ -9,7 +9,7 @@
         <form [formGroup]="loginForm" class="form-horizontal">
          <md-dialog-content>
              <div class="flex-body">
-
+               
                <div class="margin-bottom-20">
                  <a md-raised-button class="btn-width-large btn-block" href="{{config.apiUrl}}/auth/facebook?returnTo=/">
                    <i class="fa fa-facebook circle-icon1"></i>Continue with Facebook</a>
@@ -23,10 +23,14 @@
                      <div class="or-seperator-vertical"></div>
                      <span class="round-or-text or-text-vertical">or</span>
                    </div>
+                   <!-- error handling-->
+                    <div *ngIf="showError" class="alert alert-success box-msg" role="alert">
+                      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Wrong Username/password<br>
+                    </div>
 
                    <div class="margin-bottom-20">
                      <md-input-container class="pb-block">
-                       <input mdInput placeholder="Email" formControlName="email">
+                       <input mdInput placeholder="Email" formControlName="email" type="email">
                      </md-input-container>
                    </div>
                    <div class="margin-bottom-20">

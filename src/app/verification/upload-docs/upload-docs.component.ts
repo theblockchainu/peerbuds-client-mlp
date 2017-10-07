@@ -72,7 +72,7 @@ export class UploadDocsComponent implements OnInit {
   }
 
   redirectToOnboarding() {
-    this.router.navigate(['onboarding']);
+    this.router.navigate(['onboarding/1']);
   }
 
   uploadImage(event) {

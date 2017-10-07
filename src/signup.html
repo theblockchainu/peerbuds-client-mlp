@@ -562,14 +562,28 @@
             $(".btn-hide").addClass("hide");
             
         }
-        function signup() {
+        function signup(url, cFuntion) {
             if ($('#promoOptIn').prop('checked')) {
                 $('#promoOptIn').val(true);
             }
             else
                 $('#promoOptIn').val(false);
-            $('#signupForm').submit();
+            // $('#signupForm').submit();     
+          var xhttp;
+          xhttp=new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4  && this.status == 401) {
+              cFunction(this);
+            }
+          };
+          xhttp.open("GET", url, true);
+          xhttp.send();
         }
+        function myFunction(xhttp) {
+        document.getElementById("signupForm").innerHTML =
+        xhttp.responseText;
+        }
+
         function goToHome() {
             location.href='/';
         }
@@ -721,7 +735,7 @@
                             </div>
                            
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Continue</button>
+                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup('http://localhost:3000/auth/local', myFunction)">Continue</button>
                             </div>
                                <div class="text-center small-font">Have an account already? <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()"style="font-size:14px;text-decoration: none;">Log in</a></div>
                         </div>

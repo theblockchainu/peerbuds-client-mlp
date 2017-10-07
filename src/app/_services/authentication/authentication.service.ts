@@ -73,8 +73,9 @@ export class AuthenticationService {
     // this.isLoginSubject.next(true);
     let body = `{"email":"${email}","password":"${password}"}`;
     return this.http
-      .post(this.config.apiUrl + '/auth/local', body, JSON.stringify({ email: email, password: password }))
+      .post(this.config.apiUrl + '/auth/local', body, this.options)
       .map((response: Response) => {
+      //if res code is xxx and response "error"
         // login successful if there's a jwt token in the response
         let user = response.json();
         if (user && user.access_token) {

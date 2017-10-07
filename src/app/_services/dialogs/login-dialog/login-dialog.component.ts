@@ -32,6 +32,9 @@ export class LoginComponentDialog implements OnInit {
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
 
+ 
+  public showError = false;
+
   constructor(
     private route: ActivatedRoute,
     public router: Router,
@@ -52,11 +55,11 @@ export class LoginComponentDialog implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home/homefeed';
 
     this.loginForm = this._fb.group({
-      email : ['', Validators.required], /* putting reg ex as well */
+      email : ['', Validators.email], /* putting reg ex as well */
       password : ['', Validators.required]
     });
       this.forgotpwdForm = this._fb.group({
-      email : ['', Validators.required] /* putting reg ex as well */
+      email : ['', Validators.email] /* putting reg ex as well */
     });
   }
 
@@ -73,25 +76,15 @@ export class LoginComponentDialog implements OnInit {
               (error) => {
                   this.alertService.error(error._body);
                   // this.loading = false;
-                  console.log(error._body);
+                  //console.log(error._body);
+                  this.showError = true;
+                  setTimeout(function() {
+                  this.showError = false;
+                  console.log(this.showError);
+                }.bind(this), 3000);
               });
   }
-/*
-  public getpwd() {
-      // this.loading = true;
-      this.email = this.forgotpwdForm.controls['email'].value;
-      this.authenticationService.getpwd(this.email)
-          .subscribe(
-              (data) => {
-                  this.dialogRef.close();
-                  this.router.navigate([this.returnUrl]);
-              },
-              (error) => {
-                  this.alertService.error(error._body);
-                  // this.loading = false;
-              });
-  }
-*/
+
    public openForgot() {
     this.dialogsService.openForgot().subscribe();
   }
