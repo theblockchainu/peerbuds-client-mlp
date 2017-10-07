@@ -4,6 +4,7 @@ import { AppConfig } from '../../../app.config';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CommentService} from '../../../_services/comment/comment.service';
 import {CollectionService} from '../../../_services/collection/collection.service';
+import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-content-video',
@@ -18,6 +19,7 @@ export class ContentVideoComponent implements OnInit {
   public replyForm: FormGroup;
   public replyingToCommentId: string;
   public comments: Array<any>;
+  public userId;
 
   constructor(
     public config: AppConfig,
@@ -26,9 +28,11 @@ export class ContentVideoComponent implements OnInit {
     public dialogRef: MdDialogRef<ContentVideoComponent>,
     private _fb: FormBuilder,
     private _commentService: CommentService,
+    private cookieUtilsService: CookieUtilsService
   ) {
       this.userType = data.userType;
       this.workshopId = data.collectionId;
+      this.userId = cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -144,6 +148,27 @@ export class ContentVideoComponent implements OnInit {
                 console.log(err);
             }
         );
+    }
+
+    public hasUpvoted(upvotes) {
+        let result = false;
+        if (upvotes !== undefined) {
+            upvotes.forEach(upvote => {
+                if (upvote.peer !== undefined) {
+                    if (upvote.peer[0].id === this.userId) {
+                        result = true;
+                    }
+                }
+                else {
+                    result = true;
+                }
+            });
+        }
+        return result;
+    }
+
+    public isMyComment(comment) {
+        return comment.peer[0].id === this.userId;
     }
 
 }

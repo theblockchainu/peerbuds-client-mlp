@@ -123,54 +123,61 @@ export class EditCalendarDialogComponent implements OnInit {
     ];
 
     activeDayIsOpen = true;
-
-    handleEvent(action: string, event: CalendarEvent): void {
-        this.modalData = { event, action };
-    }
+    private clickedCohort: any;
+    private clickedCohortId: any;
+    private clickedCohortStartDate: Date;
+    private clickedCohortEndDate: Date;
 
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
         this.eventsForTheDay = {};
         if (events.length === 0) {
-          this.dateClicked = false;
-          return;
+            this.dateClicked = false;
+            return;
         }
         else {
-          this.dateClicked = true; // !this.dateClicked;
+            this.dateClicked = true; // !this.dateClicked;
         }
         this.clickedDate = date;
+        this.clickedCohort = this.parseTitle(events[0].title)[0];
+        this.clickedCohortId = this.parseTitle(events[0].title)[1];
+        this.clickedCohortStartDate = events[0].start;
+        this.clickedCohortEndDate = events[0].end;
         for (const event of events) {
-          const titleCalIdArray = this.parseTitle(event.title);
-          const calId = titleCalIdArray[1];
-          const title = titleCalIdArray[0];
-          if (!this.eventsForTheDay.hasOwnProperty(calId)) {
-            this.eventsForTheDay[calId] = [{
-                                          title: title,
-                                          color: event.color,
-                                          start: event.start,
-                                          end:  event.end
-                                          }];
-          }
-          else {
-            this.eventsForTheDay[calId].push({
-              title: title,
-              color: event.color,
-              start: event.start,
-              end:  event.end
-            });
-          }
+            const titleCalIdArray = this.parseTitle(event.title);
+            const calId = titleCalIdArray[1];
+            const title = titleCalIdArray[0];
+            const type = titleCalIdArray[2];
+            const eventId = titleCalIdArray[3];
+            if (type !== 'cohort') {
+                if (!this.eventsForTheDay.hasOwnProperty(calId)) {
+                    this.eventsForTheDay[calId] = [{
+                        id: eventId,
+                        title: title,
+                        color: event.color,
+                        start: event.start,
+                        end: event.end
+                    }];
+                }
+                else {
+                    this.eventsForTheDay[calId].push({
+                        id: eventId,
+                        title: title,
+                        color: event.color,
+                        start: event.start,
+                        end: event.end
+                    });
+                }
+            }
         }
         if (isSameMonth(date, this.viewDate)) {
-          if (
-            (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-            events.length === 0
-          ) {
-            this.activeDayIsOpen = false;
-          } else {
-            this.activeDayIsOpen = true;
-            this.viewDate = date;
-          }
+            if (
+                (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0) {
+                this.activeDayIsOpen = false;
+            } else {
+                this.activeDayIsOpen = true;
+                this.viewDate = date;
+            }
         }
-        console.log(this.eventsForTheDay);
     }
 
     // Calendar Ends
@@ -181,7 +188,7 @@ export class EditCalendarDialogComponent implements OnInit {
      */
     public getDaysArray() {
         const days = [];
-        for (let i = 0; i <= 30; i++) {
+        for (let i = 1; i <= 30; i++) {
         days.push(i);
         }
         return days;
@@ -193,7 +200,7 @@ export class EditCalendarDialogComponent implements OnInit {
      */
     public getMonthArray() {
         const months = [];
-        for (let i = 0; i <= 15; i++) {
+        for (let i = 1; i <= 15; i++) {
         months.push(i);
         }
         return months;
@@ -235,7 +242,7 @@ export class EditCalendarDialogComponent implements OnInit {
     public saveCalendar(): void {
         this._collectionService.postCalendars(this.collection.id, this.recurringCalendar)
         .subscribe((response) => {
-            this.dialogRef.close();
+            this.dialogRef.close('calendarsSaved');
         });
     }
 
@@ -419,31 +426,31 @@ export class EditCalendarDialogComponent implements OnInit {
     }
 
     public overlap() {
-        const result = this.computedEventCalendar.reduce((result, current, idx, arr) => {
-        // get the previous range
-        if (idx === 0) { return result; }
-        const previous = arr[idx - 1];
-        // check for any overlap
-        const previousEnd = moment(previous.endDateTime).toDate().getTime();
-        const currentStart = moment(current.startDateTime).toDate().getTime();
-        const overlap = (previousEnd >= currentStart);
-        // store the result
-        if (overlap) {
-            // yes, there is overlap
-            result.overlap = true;
-            // store the specific ranges that overlap
-            result.ranges.push({
-            previous: previous,
-            current: current
-            });
-        }
-        return result;
-        // seed the reduce
+        const result = this.computedEventCalendar.reduce((result1, current, idx, arr) => {
+            // get the previous range
+            if (idx === 0) { return result1; }
+            const previous = arr[idx - 1];
+            // check for any overlap
+            const previousEnd = moment(previous.endDateTime).toDate().getTime();
+            const currentStart = moment(current.startDateTime).toDate().getTime();
+            const overlap = (previousEnd >= currentStart);
+            // store the result
+            if (overlap) {
+                // yes, there is overlap
+                result1.overlap = true;
+                // store the specific ranges that overlap
+                result1.ranges.push({
+                previous: previous,
+                current: current
+                });
+            }
+            return result;
+            // seed the reduce
         }, {overlap: false, ranges: []});
+
         console.log(result);
         // return the final results
         return result;
-
     }
 
     // Modal
@@ -475,7 +482,7 @@ export class EditCalendarDialogComponent implements OnInit {
         const dialogRef = this.dialog.open(SelectDateDialogComponent, {
             width: '50vw',
             height: '90vh',
-            data: {itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants}
+            data: {itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher'}
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {

@@ -39,6 +39,10 @@ button:focus {
     outline: none;
 }
 
+md-icon {
+    position: relative !important;
+}
+
 /* Material Classes Starts*/
 
 .mat-caption, .mat-display-1, .mat-display-2, .mat-display-3, .mat-display-4 {
@@ -96,6 +100,14 @@ md-subheader {
 }
 
 .mat-border-button {
+    border: 0.5px solid #ccc !important;
+}
+
+.mat-border-button.mat-button.mat-warn {
+    border: 0.5px solid #ff393e !important;
+}
+
+.mat-border-button.mat-button.mat-warn[disabled] {
     border: 0.5px solid #ccc !important;
 }
 
@@ -467,9 +479,10 @@ h3.calendarTitle  {
     height: 30px;
     background-color: #33bd9e;
     border-radius: 15px;
-    padding: 5px 0px 7px 6px;
+    text-align: center;
+    padding-top: 3px;
     margin-top: 1px;
-    margin-right: 20px !important;
+    margin-right: 0px !important;
 }
 
 .calendar .cal-month-view .cal-day-cell.cal-out-month.cal-has-events .cal-day-number {
@@ -568,6 +581,7 @@ h3.calendarTitle  {
 .main-content {
     min-height: 90vh;
     overflow-y: auto;
+    overflow-x: hidden;
     padding-top: 64px;
 }
 
@@ -622,6 +636,10 @@ h3.calendarTitle  {
     display: block;
 }
 
+.full-width{
+    width: 100% !important;
+}
+
 .fullframe {
     width: 100%;
     height: auto;
@@ -636,19 +654,10 @@ h3.calendarTitle  {
     width: 40px;
 }
 
-.message-item:after {
-    width: 18px !important;
-    height: 18px !important;
-    left: -39px !important;
-    padding-top: 0px !important;
-    top: 14px !important;
-    font-size: 8px !important;
-    line-height: 19px;
-}
 
 .message-item:before {
-    bottom: -41px !important;
-    height: 105% !important;
+    bottom: -45px !important;
+    height: 105.5% !important;
     left: -30px !important;
 }
 
@@ -918,7 +927,7 @@ h3.calendarTitle  {
 .emptySectionText {
     margin-top: 25px;
     margin-bottom: 25px;
-    padding: 10px;
+    padding: 10px 0px;
 }
 
 .square.mat-chip {
@@ -1011,6 +1020,13 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .loading-container {
     position: relative;
-    width:50px;
+    width:30px;
     margin: 40px 0px 100px 0px;
+}
+
+/* Dialogs*/
+
+.dialog-close-button {
+    top: -3px;
+    left: -10px;
 }

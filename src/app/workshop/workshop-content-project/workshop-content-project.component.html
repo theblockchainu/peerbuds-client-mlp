@@ -1,3 +1,4 @@
+<div class="mat-dialog-focus-trap"></div>
 <h3 md-dialog-title>{{getAddOrEditText()}} project activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
 <button md-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [md-dialog-close]="getCloseDialogData()" *ngIf="isEdit">
     <md-icon style="color: #777777; font-size: 20px;">close</md-icon>
@@ -7,11 +8,11 @@
         <md-dialog-content>
             <div class="row">
                 <div class="col-sm-12 margin-bottom-30">
-                    <md-input-container class="pb-block margin-top-20 margin-bot-20">
+                    <md-input-container class="pb-block margin-top-20 margin-bottom-20">
                         <input mdInput #title formControlName="title" placeholder="Project Title" class="title" [required]="true">
                     </md-input-container>
 
-                    <div formGroupName="schedule" class="margin-top-20 margin-bot-20">
+                    <div formGroupName="schedule" class="margin-top-20 margin-bottom-20">
                         <md-form-field class="dateStyles">
                             <input mdInput [mdDatepicker]="endDayDatePicker" placeholder="Deadline" formControlName="endDay" [required]="true">
                             <md-datepicker-toggle mdSuffix [for]="endDayDatePicker" class="svgStyle"></md-datepicker-toggle>
@@ -26,12 +27,12 @@
                         </div>
                     </div>
 
-                    <md-input-container class="pb-block margin-top-20 margin-bot-20">
+                    <md-input-container class="pb-block margin-top-20 margin-bottom-20">
                         <textarea mdInput #description maxlength="500" rows="5" formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
                         <md-hint align="end">{{description.value.length}} / 500</md-hint>
                     </md-input-container>
 
-                    <md-input-container class="pb-block margin-top-20 margin-bot-20">
+                    <md-input-container class="pb-block margin-top-20 margin-bottom-20">
                         <textarea mdInput #prerequisites maxlength="500" rows="5" formControlName="prerequisites" placeholder="What do learners need to know?" [required]="true"></textarea>
                         <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
                     </md-input-container>
@@ -72,3 +73,4 @@
         </md-dialog-actions>
     </form>
 </div>
+<div class="mat-dialog-focus-trap"></div>
