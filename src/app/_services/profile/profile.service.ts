@@ -114,6 +114,7 @@ export class ProfileService {
   }
 
   public getPeerProfile() {
+    debugger;
     return this.userId;
   }
 
