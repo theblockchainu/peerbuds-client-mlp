@@ -27,31 +27,12 @@ export class ContentService {
       this.options = requestHeaderService.getOptions();
     }
 
-  public getTopics() {
-    return this.http.get(this.config.apiUrl + '/api/topics', this.options)
-                    .map((response: Response) => response.json(), (err) => {
-                        console.log('Error: ' + err);
-                    });
-
-  }
-
   public getEvents(userId: string) {
     return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/eventCalendar', this.options)
                     .map((response: Response) => response.json(), (err) => {
                         console.log('Error: ' + err);
                     });
 
-  }
-
-  public addNewTopic(topicName: string) {
-    const body = {
-      'name': topicName,
-      'type': 'user'
-    };
-    return this.http.post(this.config.apiUrl + '/api/topics', body, this.options)
-                    .map((response: Response) => response.json(), (err) => {
-                      console.log('Error: ' + err);
-                     });
   }
 
   public addNewLanguage(name: string) {

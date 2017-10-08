@@ -78,7 +78,6 @@ export class SignupSocialComponent implements OnInit {
   }
 
   continueWithSocialSignup(signupSocialForm) {
-    debugger;
     console.log(this.signupSocialForm.value);
     const email = { email: this.signupSocialForm.value.email };
     const profile = {

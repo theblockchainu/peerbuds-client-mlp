@@ -67,14 +67,11 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 
   uploadImage(event) {
     // console.log(event.files);
-    debugger;
     for (const file of event.files) {
       this.mediaUploader.upload(file).map(
         (response) => {
-          debugger;
           //response.json();  
         }).subscribe((response) => {
-        debugger;
       });
     }
   }

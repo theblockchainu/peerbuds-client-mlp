@@ -50,7 +50,9 @@ export class UploadDocsComponent implements OnInit {
       inputOTP: [null]
     });
     this._profileService.getPeerNode()
-      .subscribe((res) => this.email = res.email);
+      .subscribe((res) => {
+        this.peer.controls.email.setValue(res.email);
+      });
   }
 
   continue(p) {

@@ -54,21 +54,6 @@
           left:50%;
           top:50%;
           margin:-50px 0 0 -50px;
-        //   &.personal{
-        //     background:url("../../images/man-user.svg") no-repeat scroll center center / 100%;
-        //   }
-        //   &.professional{
-        //     background:url("../../images/man.svg") no-repeat scroll center center / 100%;
-        //   }
-        //   &.intellectual{
-        //     background:url("../../images/intellectual.svg") no-repeat scroll center center / 100%;
-        //   }
-        //   &.auditory{
-        //     background:url("../../images/auditory.svg") no-repeat scroll center center / 100%;
-        //   }
-        //   &.read-write{
-        //     background:url("../../images/read-write.svg") no-repeat scroll center center / 100%;
-        //   }
         }
       }
       .learner{
@@ -143,47 +128,6 @@ label.check {
   position:relative;
 }
 
-// label.check > input, label.radiobox > input{display: none;}
-// label.check, label.radiobox{
-//   font-size: 18px;
-//   font-weight: normal;
-//   padding: 15px 45px;
-//   top:2px;
-//   right:20px;
-//   z-index: 1;
-// }
-// label.check i, label.radiobox i {
-//     height: 12px;
-//     width: 12px;
-//     background-color: #ff5b5f;
-//     display: inline-block;
-//     left: 2px;
-//     top: 2px;
-//     border-radius:5px;
-//     border:1px solid #ff5b5f;
-//     font-style:normal;
-// }
-// label.radiobox i{border-radius:50%;}
-// label.check [type=checkbox]:checked + i, label.radiobox input[type=radio]:checked+i{
-//   background-color: #0091ea;
-//   border:none;
-// }
-// label.check [type=checkbox]:checked + i:before, label.radiobox [type=radio]:checked + i:before {
-//   display:inline-block;
-//   content: '\f00c';
-//   top: 2px;
-//   left: 4px;
-//   color:#ff5b5f;
-//   font-family:"FontAwesome";
-// }
-
-// label.check {
-//   background-color: #ff5b5f!important;
-//   text-color: #fff!important;
-// }
-
-
-// label.radiobox [type=radio]:checked + i:before {top:3px; left:5px;}
 .welcome-box{
     background-color: #fff;
     color:#fff;
@@ -249,19 +193,54 @@ label.check {
   vertical-align:text-top;
 }
 
-.bottom-section{
-  padding-top:2px;
-  margin-top:2%;
- 
-}
-
 .outline-btn {
   border: 1.5px solid #767676;
   color: #484848;
   background-color: white;
 }
-.suggestions{
-  text-align:center;
-  padding: 10px;
 
+.suggestions li, .selected li {
+  // width: 100%;
+  border: 1px solid lightgrey;
+  vertical-align: middle;
+  line-height: 40px;
+}
+
+.topic-bg {
+  width: 103px;
+  height: 79px;
+}
+
+.topic {
+  cursor: pointer;
+}
+
+.suggestions > ul:first-child {
+  margin-top: 0px;
+}
+
+.dcSocial {
+  color: grey;
+  cursor: pointer;
+}
+
+.defaultFB {
+  color: #335397;
+}
+
+.defaultGoogle {
+  color: #dd4a38;
+}
+
+.socialIcons {
+  padding-right: 10px;
+}
+
+.fixedFooter {
+  position: fixed;;
+  bottom:0;
+  border-top: 1px solid #cccccc;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  background: white;
 }
