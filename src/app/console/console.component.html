@@ -4,9 +4,9 @@
       <a md-tab-link [routerLink]="'/console/dashboard'" [active]="getActiveTab() === 'dashboard'">
         Dashboard
       </a>
-      <a md-tab-link [routerLink]="'/console/inbox'" [active]="getActiveTab() === 'inbox'">
+      <!-- <a md-tab-link [routerLink]="'/console/inbox'" [active]="getActiveTab() === 'inbox'">
         Inbox
-      </a>
+      </a> -->
       <a md-tab-link [routerLink]="'/console/teaching'" [active]="getActiveTab() === 'teaching'">
         Teaching
       </a>
@@ -18,6 +18,9 @@
       </a>
       <a md-tab-link [routerLink]="'/console/account'" [active]="getActiveTab() === 'account'">
         Account
+      </a>
+      <a *ngIf="isAdmin" md-tab-link [routerLink]="'/console/admin'" [active]="getActiveTab() === 'admin'">
+        Admin
       </a>
     </nav>
     <div class="row">

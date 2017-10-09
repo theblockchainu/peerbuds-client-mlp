@@ -82,6 +82,12 @@ export class CollectionService {
     }
   }
 
+  public getAllCollections(options: any) {
+    return this.http
+      .get(this.config.apiUrl + '/api/collections?' + 'filter=' + JSON.stringify(options))
+      .map(response => response.json());
+  }
+
   public getCollectionDetails(id: string) {
     return this.http
       .get(this.config.apiUrl + '/api/collections/' + id)
@@ -136,8 +142,8 @@ export class CollectionService {
    * delete Calendar
    */
   public deleteCalendar(calendarId: string) {
-      return this.http.delete(this.config.apiUrl +
-          '/api/calendars/' + calendarId);
+    return this.http.delete(this.config.apiUrl +
+      '/api/calendars/' + calendarId);
   }
 
   /**
@@ -468,9 +474,9 @@ export class CollectionService {
    * getParticipants
    */
   public getParticipants(collectionId, query) {
-      const filter = JSON.stringify(query);
-      return this.http
-          .get(this.config.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.options);
+    const filter = JSON.stringify(query);
+    return this.http
+      .get(this.config.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.options);
   }
 
   /**
@@ -496,11 +502,9 @@ collectionID:string,userId:string,calendarId:string   */
    * @returns {Observable<any>}
    */
   public approveCollection(collection) {
-    this.http.post(this.config.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.options).map(
+    return this.http.post(this.config.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.options).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
-      }).subscribe(() => {
-        this.router.navigate(['/console/teaching/all']);
       });
   }
 
@@ -575,14 +579,14 @@ collectionID:string,userId:string,calendarId:string   */
    * @param cb
    */
   public getContentComments(contentId: string, query: any, cb) {
-      const filter = JSON.stringify(query);
-      this.http
-          .get(this.config.apiUrl + '/api/contents/' + contentId + '/comments' + '?filter=' + filter, this.options)
-          .map((response) => {
-              cb(null, response.json());
-          }, (err) => {
-              cb(err);
-          }).subscribe();
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/contents/' + contentId + '/comments' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
   }
 
   /**
@@ -592,14 +596,14 @@ collectionID:string,userId:string,calendarId:string   */
    * @param cb
    */
   public getSubmissionComments(submissionId: string, query: any, cb) {
-      const filter = JSON.stringify(query);
-      this.http
-          .get(this.config.apiUrl + '/api/submissions/' + submissionId + '/comments' + '?filter=' + filter, this.options)
-          .map((response) => {
-              cb(null, response.json());
-          }, (err) => {
-              cb(err);
-          }).subscribe();
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/submissions/' + submissionId + '/comments' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
   }
 
   public getReviews(peerId: string, query: any, cb) {
@@ -633,13 +637,13 @@ collectionID:string,userId:string,calendarId:string   */
    * @param cb
    */
   public postSubmissionComments(submissionId: string, commentBody: any, cb) {
-      this.http
-          .post(this.config.apiUrl + '/api/submissions/' + submissionId + '/comments', commentBody, this.options)
-          .map((response) => {
-              cb(null, response.json());
-          }, (err) => {
-              cb(err);
-          }).subscribe();
+    this.http
+      .post(this.config.apiUrl + '/api/submissions/' + submissionId + '/comments', commentBody, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
   }
 
   /**
@@ -649,13 +653,13 @@ collectionID:string,userId:string,calendarId:string   */
    * @param cb
    */
   public postContentComments(contentId: string, commentBody: any, cb) {
-      this.http
-          .post(this.config.apiUrl + '/api/contents/' + contentId + '/comments', commentBody, this.options)
-          .map((response) => {
-              cb(null, response.json());
-          }, (err) => {
-              cb(err);
-          }).subscribe();
+    this.http
+      .post(this.config.apiUrl + '/api/contents/' + contentId + '/comments', commentBody, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
   }
 
   /**
@@ -675,21 +679,21 @@ collectionID:string,userId:string,calendarId:string   */
   }
 
   public calculateCollectionRating(collectionId, reviewArray?: any) {
-      let reviewScore = 0;
-      for (const reviewObject of reviewArray) {
-          if (reviewObject.collectionId !== undefined && reviewObject.collectionId === collectionId)
-            reviewScore += reviewObject.score;
-      }
-      return (reviewScore / (reviewArray.length * 5)) * 5;
+    let reviewScore = 0;
+    for (const reviewObject of reviewArray) {
+      if (reviewObject.collectionId !== undefined && reviewObject.collectionId === collectionId)
+        reviewScore += reviewObject.score;
+    }
+    return (reviewScore / (reviewArray.length * 5)) * 5;
   }
 
   public calculateCollectionRatingCount(collectionId, reviewArray?: any) {
-      let reviewCount = 0;
-      for (const reviewObject of reviewArray) {
-          if (reviewObject.collectionId !== undefined && reviewObject.collectionId === collectionId)
-              reviewCount ++;
-      }
-      return reviewCount;
+    let reviewCount = 0;
+    for (const reviewObject of reviewArray) {
+      if (reviewObject.collectionId !== undefined && reviewObject.collectionId === collectionId)
+        reviewCount++;
+    }
+    return reviewCount;
   }
 
   public imgErrorHandler(event) {

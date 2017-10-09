@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@a
 import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { ModalDirective } from 'ngx-bootstrap';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
@@ -33,7 +32,6 @@ import {
   addHours
 } from 'date-fns';
 import { Subject } from 'rxjs/Subject';
-// import { NgModal } from 'ngx-bootstrap';
 import {
   CalendarEvent,
   CalendarEventAction,
@@ -62,7 +60,6 @@ const colors: any = {
 
 @Component({
   selector: 'app-workshop-page',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './workshop-page.component.html',
   styleUrls: ['./workshop-page.component.scss'],
   providers: [

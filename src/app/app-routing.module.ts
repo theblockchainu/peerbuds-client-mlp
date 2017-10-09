@@ -73,13 +73,11 @@ const routes: Routes = [
   {
     path: 'review-pay',
     loadChildren: 'app/review-pay/review-pay.module#ReviewPayModule'
-  }
-  ,
+  },
   {
     path: 'access-denied',
     component: AccessDeniedComponent
-  }
-  ,
+  },
   {
     path: '**',
     component: NoContentComponent

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CdkTableModule } from '@angular/cdk/table';
 
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
@@ -40,7 +39,10 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
 import { DialogsService } from '../workshop/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CommentService } from '../_services/comment/comment.service';
-import {NotificationService} from '../_services/notification/notification.service';
+import { NotificationService } from '../_services/notification/notification.service';
+import { ExtractTimePipe } from './extract-time/extract-time.pipe';
+import {SocketService} from '../_services/socket/socket.service';
+
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -52,7 +54,7 @@ import {NotificationService} from '../_services/notification/notification.servic
     PopoverModule.forRoot(),
     CalendarModule.forRoot()
   ],
-  declarations: [],
+  declarations: [ExtractTimePipe],
   providers: [
     CollectionService,
     CountryPickerService,
@@ -67,7 +69,8 @@ import {NotificationService} from '../_services/notification/notification.servic
     DialogsService,
     CommentService,
     TopicService,
-    NotificationService
+    NotificationService,
+    SocketService
   ],
   exports: [
     CommonModule,
@@ -99,7 +102,7 @@ import {NotificationService} from '../_services/notification/notification.servic
     MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule,
-    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule
+    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe
   ]
 })
 export class SharedModule { }

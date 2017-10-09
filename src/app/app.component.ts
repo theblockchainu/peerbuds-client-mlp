@@ -10,6 +10,7 @@ import {
 } from '@angular/router';
 
 import { SpinnerService } from './_services/spinner/spinner.service';
+import {SocketService} from './_services/socket/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,9 @@ export class AppComponent {
   loading;
 
   constructor(private router: Router,
-              private _spinnerService: SpinnerService) {
+              private _spinnerService: SpinnerService,
+              private _socketService: SocketService
+  ) {
     this.loading = this._spinnerService.getSpinnerState();
     router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);

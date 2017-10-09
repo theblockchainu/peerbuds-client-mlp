@@ -10,8 +10,9 @@ import { MdTabsModule } from '@angular/material';
 import { HomefeedComponent } from './homefeed/homefeed.component';
 import { SharedModule } from '../_shared/_shared.module';
 import { SelectTopicsComponent } from './dialogs/select-topics/select-topics.component';
-import { SelectPriceComponent } from './dialogs//select-price/select-price.component';
-import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
+import { SelectPriceComponent } from './dialogs/select-price/select-price.component';
+import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
+
 @NgModule({
   imports: [
     CommonModule,
