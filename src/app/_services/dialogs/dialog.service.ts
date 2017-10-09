@@ -1,6 +1,7 @@
 import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
+import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
@@ -22,17 +23,28 @@ export class DialogsService {
     public openLogin() {
         let dialogRef1: MdDialogRef<LoginComponentDialog>;
 
-        dialogRef1= this.dialog.open(LoginComponentDialog);
+        dialogRef1 = this.dialog.open(LoginComponentDialog);
 
         return dialogRef1.afterClosed();
     }
 
     public openForgot(){
-    let dialogRef3: MdDialogRef<ForgotpwdComponentDialog>;
+        let dialogRef3: MdDialogRef<ForgotpwdComponentDialog>;
 
-        dialogRef3= this.dialog.open(ForgotpwdComponentDialog);
+        dialogRef3 = this.dialog.open(ForgotpwdComponentDialog);
 
         return dialogRef3.afterClosed();
+    }
+
+    public addCard() {
+        let dialogRef4: MdDialogRef<AddCardDialogComponent>;
+
+        dialogRef4 = this.dialog.open(AddCardDialogComponent, {
+            width: '610px',
+            height: '380px'
+        });
+
+        return dialogRef4.afterClosed();
     }
 
 }

@@ -7,7 +7,6 @@ import { ProfileService } from '../_services/profile/profile.service';
 import * as moment from 'moment';
 import { PaymentService } from '../_services/payment/payment.service';
 import { Response } from '@angular/http';
-// import { CollectionService } from '../_services/collection/collection.service';
 import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
 
 @Component({
