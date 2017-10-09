@@ -64,7 +64,6 @@ export class AuthenticationService {
     this._cookieService.delete(key);
   }
 
-
   /**
   *  Login the user then tell all the subscribers about the new status
   */
@@ -122,16 +121,15 @@ export class AuthenticationService {
       });
   }
  
- /*
-  resetpwd(options): any {
-    let body = `"options":"${options}"`;
+  resetpwd(email: string, password: string): any {
+    let body = `{"email":"${email}","password":"${password}"}`;
     return this.http
-      .post(this.config.apiUrl + '/api/peers/reset?pwd=' + options, body, this.options)
+      .post(this.config.apiUrl + '/api/peers/reset', body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
   }
-  */
+  
 
   public confirmSmsOTP(inputToken) {
     const body = {};
@@ -140,6 +138,5 @@ export class AuthenticationService {
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
-
   }
 }

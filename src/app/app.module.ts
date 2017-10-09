@@ -26,6 +26,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     SignupComponent,
     AppDesignComponent,
     GlobalErrorHandler,
-    AppNotificationDialogComponent
+    AppNotificationDialogComponent,
+    ResetPasswordComponent
   
   ],
   imports: [

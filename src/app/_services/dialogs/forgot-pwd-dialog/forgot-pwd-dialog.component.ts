@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
+
 @Component({
   selector: 'app-forgot-pwd-dialog',  // <login></login>
   providers: [],
@@ -46,7 +47,7 @@ export class ForgotpwdComponentDialog implements OnInit {
       email : ['', Validators.email] /* putting reg ex as well */
     });
   }
-
+  
   public sendmail() {
       // this.loading = true;
       this.email = this.forgotpwdForm.controls['email'].value;

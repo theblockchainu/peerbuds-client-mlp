@@ -21,9 +21,12 @@ export class ResetPasswordComponent implements OnInit {
   // Set our default values
   // public loading = false;
   public returnUrl: string;
+
   isLoggedIn: Observable<boolean>;
   public passWord: string;
+  public email: string;
   public resetpwdForm: FormGroup;
+
   // TypeScript public modifiers
 
   constructor(
@@ -31,32 +34,37 @@ export class ResetPasswordComponent implements OnInit {
     public router: Router,
     public authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private _fb: FormBuilder) {
+    private _fb: FormBuilder,
+    ) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
+      console.log(this.route);
+      console.log(this.route.queryParams['value'].email);
     }
 
   public ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = '/reset' || '/';
 
     this.resetpwdForm = this._fb.group({
        password : ['', Validators.required] 
     });
   }
-/*
-  public resetpwd() {
+  
+   public resetpwd(value: string) {
       // this.loading = true;
-      const body = {
-      name: password
-    };
-       return this.http.post(this.config.apiUrl + '/api/peers/'
-      + this.userId + '/reset', body, this.options).map(
-      (response) => response.json(), (err) => {
-        console.log('Error: ' + err);
-      }
-      );
+      this.email = this.resetpwdForm.controls['email'].value;
+      this.passWord = this.resetpwdForm.controls['password'].value;
+      this.authenticationService.resetpwd(this.email, this.passWord)
+          .subscribe(
+              (data) => {
+                  this.router.navigate([this.returnUrl]);
+              },
+              (error) => {
+                  this.alertService.error(error._body);
+                  // this.loading = false;
+              });
   }
-  */
+
 
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here

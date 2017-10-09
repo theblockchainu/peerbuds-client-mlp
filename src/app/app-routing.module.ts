@@ -12,7 +12,7 @@ import { AppDesignComponent } from "./app-design/app-design.component";
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { DialogsService } from './_services/dialogs/dialog.service';
-
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -32,6 +32,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: IndexComponent1
+  },
+  {
+    path: 'reset',
+    component: ResetPasswordComponent
   },
   {
     path: 'login1',
