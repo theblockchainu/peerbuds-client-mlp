@@ -1,19 +1,19 @@
 <div class="main-content" style="background: #fff;">
-  <md-sidenav-container style="max-height: 90vh; min-height: 90vh; overflow-y: scroll">
-    <md-sidenav mode="side" opened="true">
+  <mat-sidenav-container style="max-height: 90vh; min-height: 90vh; overflow-y: scroll">
+    <mat-sidenav mode="side" opened="true">
       <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
-    </md-sidenav>
+    </mat-sidenav>
     <!-- Page Content -->
     <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 90vh; min-height: 90vh; overflow-y: scroll">
-      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value !== 'active'"><button md-button (click)="saveandexit()">Save &amp; Exit</button></div>
-      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value === 'active'"><button md-button (click)="exit()">Exit</button></div>
-      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12"><button md-button (click)="openWorkshop()">Preview</button></div>
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value !== 'active'"><button mat-button (click)="saveandexit()">Save &amp; Exit</button></div>
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value === 'active'"><button mat-button (click)="exit()">Exit</button></div>
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12"><button mat-button (click)="openWorkshop()">Preview</button></div>
       <div class="pull-left">
-        <md-chip-list>
-          <md-chip>
+        <mat-chip-list>
+          <mat-chip>
             {{workshop.controls['status'].value | titlecase}}
-          </md-chip>
-        </md-chip-list>
+          </mat-chip>
+        </mat-chip-list>
       </div>
       <br/><br/><br/>
       <!--Disclaimer-->
@@ -31,7 +31,7 @@
               <li>Respect Others</li>
             </ol>
             <div class="margin-top-20">
-              <a md-raised-button (click)="goto(2)" color="accent" class="pull-right">Continue</a>
+              <a mat-raised-button (click)="goto(2)" color="accent" class="pull-right">Continue</a>
             </div>
           </div>
         </div>
@@ -61,10 +61,10 @@
                 </div>
                 
                 <div class="flex flexContainer margin-top-30">
-                  <button md-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
-                      <md-icon class="iconVC" color="accent">
+                  <button mat-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
+                      <mat-icon class="iconVC" color="accent">
                         add
-                      </md-icon><span class="addIconText">Add New Topic</span></button>
+                      </mat-icon><span class="addIconText">Add New Topic</span></button>
                   <span class="flex"></span>
                   <!-- <div class="col-sm-12 margin-top-30">
                     <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
@@ -72,10 +72,10 @@
                   <div class="col-sm-3">
                     <div class="lookingFor interest">
                       <div class="lookingFor-thumb" style="text-align: center; padding-top: 20%">
-                        <a md-button [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
-                          <md-icon style="font-size: 30px">
+                        <a mat-button [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
+                          <mat-icon style="font-size: 30px">
                             add
-                          </md-icon>
+                          </mat-icon>
                         </a>
                       </div>
                     </div>
@@ -83,9 +83,9 @@
                   <!-- <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
                     <div class="lookingFor interest">
                       <label class="check">
-                        <md-icon *ngIf="topic.checked" color="accent">
+                        <mat-icon *ngIf="topic.checked" color="accent">
                           check_circle
-                        </md-icon>
+                        </mat-icon>
                       </label>
                       <div class="lookingFor-thumb">
                         <i class="topic.id"></i>
@@ -95,8 +95,8 @@
                   </div> -->
                 </div>
                 <div style="margin-top:60px;">
-                  <!-- <a md-button (click)=goto(1)>Back</a> -->
-                  <a md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">Continue</a>
+                  <!-- <a mat-button (click)=goto(1)>Back</a> -->
+                  <a mat-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">Continue</a>
                 </div>
               </form>
             </div>
@@ -111,21 +111,23 @@
               <br/>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row margin-top-60">
-                  <md-select placeholder="Select Language" style="margin-bottom: 20px" class="col-md-4" name="other_languages" formControlName="selectedLanguage" (change)="languageChange($event)">
-                    <md-option [value]="">--Select--</md-option>
-                    <md-option *ngFor="let l of languagesArray" [value]="l.name">{{l.name}}</md-option>
-                  </md-select>
+                  <mat-form-field>
+                    <mat-select placeholder="Select Language" style="margin-bottom: 20px" class="col-md-4" name="other_languages" formControlName="selectedLanguage" (change)="languageChange($event)">
+                      <mat-option [value]="">--Select--</mat-option>
+                      <mat-option *ngFor="let l of languagesArray" [value]="l.name">{{l.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
                 <div class="row flex flexContainer margin-top-30">
-                  <button md-button class="" type="button" color="grey" (click)="addNewLanguage()">
-                      <md-icon class="iconVC" color="accent">
+                  <button mat-button class="" type="button" color="grey" (click)="addNewLanguage()">
+                      <mat-icon class="iconVC" color="accent">
                         add
-                      </md-icon><span class="addIconText">Add New Language</span></button>
+                      </mat-icon><span class="addIconText">Add New Language</span></button>
                   <span class="flex"></span>
                 </div>
                 <div style="margin-top:100px;">
-                  <!-- <a md-button (click)=goto(2)>Back</a> -->
-                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages==undefined">Continue</button>
+                  <!-- <a mat-button (click)=goto(2)>Back</a> -->
+                  <button mat-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages==undefined">Continue</button>
                 </div>
               </form>
             </div>
@@ -141,15 +143,15 @@
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
                   <div class="col-sm-10">
-                    <md-input-container class="pb-block" style="margin-bottom: 20px">
-                      <textarea mdInput #aboutHost maxlength="500" rows="4" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
-                      <md-hint align="end">{{aboutHost.value.length}} / 500</md-hint>
-                    </md-input-container>
+                    <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                      <textarea matInput #aboutHost maxlength="500" rows="4" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
+                      <mat-hint align="end">{{aboutHost.value.length}} / 500</mat-hint>
+                    </mat-input-container>
                   </div>
                 </div>
                 <div style="margin-top:50px;">
-                  <!-- <a md-button (click)=goto(3)>Back</a> -->
-                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">Continue</button>
+                  <!-- <a mat-button (click)=goto(3)>Back</a> -->
+                  <button mat-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">Continue</button>
                 </div>
               </form>
             </div>
@@ -165,7 +167,7 @@
               </p>
               <br/>
               <div style="margin-top:60px;">
-                <a md-raised-button (click)="goto(6)" color="accent" class="pull-right">Continue</a>
+                <a mat-raised-button (click)="goto(6)" color="accent" class="pull-right">Continue</a>
               </div>
             </div>
           </div>
@@ -183,11 +185,11 @@
                         Make it sweet and simple
                       </p>
                       <br/>
-                      <md-input-container class="pb-block" style="margin-bottom: 20px">
-                        <input mdInput #title formControlName="title" maxlength="50" placeholder="Enter Name">
-                        <md-hint align="start">{{50 - title.value.length}} more characters needed</md-hint>
-                        <md-hint align="end">{{title.value.length}} / 50</md-hint>
-                      </md-input-container>
+                      <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                        <input matInput #title formControlName="title" maxlength="50" placeholder="Enter Name">
+                        <mat-hint align="start">{{50 - title.value.length}} more characters needed</mat-hint>
+                        <mat-hint align="end">{{title.value.length}} / 50</mat-hint>
+                      </mat-input-container>
                     </div>
                   </div>
                   <div class="col-sm-12 margin-bottom-30">
@@ -198,17 +200,17 @@
                         on what they'll do.
                       </p>
                       <br/>
-                      <md-input-container class="pb-block" style="margin-bottom: 20px">
-                        <input mdInput #headline formControlName="headline" maxlength="50" placeholder="Write headline">
-                        <md-hint align="start">{{50 - headline.value.length}} more characters needed</md-hint>
-                        <md-hint align="end">{{headline.value.length}} / 50</md-hint>
-                      </md-input-container>
+                      <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                        <input matInput #headline formControlName="headline" maxlength="50" placeholder="Write headline">
+                        <mat-hint align="start">{{50 - headline.value.length}} more characters needed</mat-hint>
+                        <mat-hint align="end">{{headline.value.length}} / 50</mat-hint>
+                      </mat-input-container>
                     </div>
                   </div>
                 </div>
                 <div style="margin-top:60px;">
-                  <!-- <a md-button (click)=goto(5)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
+                  <!-- <a mat-button (click)=goto(5)>Back</a> -->
+                  <button class="pull-right" mat-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
                 </div>
               </form>
             </div>
@@ -223,15 +225,15 @@
                   <div class="col-sm-12 margin-bottom-30">
                     <h2 class="title">What’s the workshop about?</h2>
                     <p class="subtitle">Give a detailed description to learners of what they will do in this workshop</p>
-                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                      <textarea mdInput #description maxlength="800" rows="5" formControlName="description" placeholder="What we'll do in this workshop?"></textarea>
-                      <md-hint align="end">{{description.value.length}} / 800</md-hint>
-                    </md-input-container>
+                    <mat-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                      <textarea matInput #description maxlength="800" rows="5" formControlName="description" placeholder="What we'll do in this workshop?"></textarea>
+                      <mat-hint align="end">{{description.value.length}} / 800</mat-hint>
+                    </mat-input-container>
                   </div>
                 </div>
                 <div style="margin-top:60px;">
-                  <!-- <a md-button (click)=goto(6)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Continue</button>
+                  <!-- <a mat-button (click)=goto(6)>Back</a> -->
+                  <button class="pull-right" mat-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Continue</button>
                 </div>
               </form>
             </div>
@@ -245,22 +247,24 @@
                 <h2 class="title">Who should come?</h2>
                 <p class="subtitle">Start with a level of difficulty</p>
                 <div class="col-sm-12 margin-bottom-30 padding-left-0">
-                  <md-select [floatPlaceholder]="false" class="margin-bottom-50" formControlName="difficultyLevel">
-                    <md-option [value]="">--Select--</md-option>
-                    <md-option *ngFor="let d of difficulties" [value]="d">{{d}}</md-option>
-                  </md-select>
+                  <mat-form-field>
+                    <mat-select class="margin-bottom-50" formControlName="difficultyLevel">
+                      <mat-option [value]="">--Select--</mat-option>
+                      <mat-option *ngFor="let d of difficulties" [value]="d">{{d}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
                 <h3 class="title">Notes</h3>
                 <p class="subtitle">Describe the knowledge prerequisites, if there is any, that learners should know of.</p>
                 <div class="col-sm-12 margin-bottom-30 padding-left-0">
-                  <md-input-container class="pb-block">
-                    <textarea mdInput #notes maxlength="500" rows="5" formControlName="notes"></textarea>
-                    <md-hint align="end">{{notes.value.length}} / 500</md-hint>
-                  </md-input-container>
+                  <mat-input-container class="pb-block">
+                    <textarea matInput #notes maxlength="500" rows="5" formControlName="notes"></textarea>
+                    <mat-hint align="end">{{notes.value.length}} / 500</mat-hint>
+                  </mat-input-container>
                 </div>
                 <div style="margin-top:60px;">
-                  <!-- <a md-button (click)=goto(7)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="difficultyLevel && notes.value.length == 0">Continue</button>
+                  <!-- <a mat-button (click)=goto(7)>Back</a> -->
+                  <button class="pull-right" mat-raised-button color="accent" type="Submit" [disabled]="difficultyLevel && notes.value.length == 0">Continue</button>
                 </div>
               </form>
             </div>
@@ -277,14 +281,14 @@
               </p>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="col-sm-4 padding-left-0">
-                  <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                    <input type="number" mdInput #maxSpots min="1" formControlName="maxSpots" placeholder="Enter Number">
-                  </md-input-container>
+                  <mat-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                    <input type="number" matInput #maxSpots min="1" formControlName="maxSpots" placeholder="Enter Number">
+                  </mat-input-container>
                 </div>
                 <br/>
                 <div style="padding-top:60px;">
-                  <!-- <a md-button (click)=goto(8)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0">Continue</button>
+                  <!-- <a mat-button (click)=goto(8)>Back</a> -->
+                  <button class="pull-right" mat-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0">Continue</button>
                 </div>
               </form>
             </div>
@@ -311,16 +315,16 @@
                         <ng-template #file pTemplate="file">
                         </ng-template>
                         <ng-template pTemplate="content">
-                          <md-grid-list cols="2" rowHeight="280px" gutterSize="10px" *ngIf="urlForVideo.length">
-                            <md-grid-tile *ngFor="let file of urlForVideo">
+                          <mat-grid-list cols="2" rowHeight="280px" gutterSize="10px" *ngIf="urlForVideo.length">
+                            <mat-grid-tile *ngFor="let file of urlForVideo">
                               <div style="position: absolute; cursor: pointer;">
-                                <md-icon (click)="deleteFromContainer(file, 'video')" style="color: black;">close</md-icon>
+                                <mat-icon (click)="deleteFromContainer(file, 'video')" style="color: black;">close</mat-icon>
                               </div>
                               <video controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
                                 <source src="{{config.apiUrl + file}}"> Your browser does not support the video tag.
                               </video>
-                            </md-grid-tile>
-                          </md-grid-list>
+                            </mat-grid-tile>
+                          </mat-grid-list>
                         </ng-template>
                       </p-fileUpload>
                       <div class="stepHeader" style="margin-top: 40px;">Upload Images</div>
@@ -332,14 +336,14 @@
                         <ng-template #file pTemplate="file">
                         </ng-template>
                         <ng-template pTemplate="content">
-                          <md-grid-list cols="4" gutterSize="10px" *ngIf="urlForImages.length">
-                            <md-grid-tile *ngFor="let file of urlForImages">
+                          <mat-grid-list cols="4" gutterSize="10px" *ngIf="urlForImages.length">
+                            <mat-grid-tile *ngFor="let file of urlForImages">
                               <div style="position: absolute; cursor: pointer;">
-                                <md-icon (click)="deleteFromContainer(file, 'image')" style="color: black;">close</md-icon>
+                                <mat-icon (click)="deleteFromContainer(file, 'image')" style="color: black;">close</mat-icon>
                               </div>
                               <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
-                            </md-grid-tile>
-                          </md-grid-list>
+                            </mat-grid-tile>
+                          </mat-grid-list>
                         </ng-template>
                       </p-fileUpload>
                     </div>
@@ -347,8 +351,8 @@
 
                   <div class="row">
                     <div class="margin-top-60">
-                      <!-- <a md-button (click)=goto(9)>Back</a> -->
-                      <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
+                      <!-- <a mat-button (click)=goto(9)>Back</a> -->
+                      <button class="pull-right" mat-raised-button color="accent" type="Submit">Continue</button>
                     </div>
                   </div>
                 </form>
@@ -368,27 +372,31 @@
                 <h3 class="title">Price</h3>
                 <div class="row margin-left-0">
                   <div class="col-sm-3 padding-left-0">
-                    <md-input-container [floatPlaceholder]="false" class="margin-top-20">
-                      <input type="number" mdInput #price formControlName="price" placeholder="" min="1">
-                    </md-input-container>
+                    <mat-input-container [floatPlaceholder]="false" class="margin-top-20">
+                      <input type="number" matInput #price formControlName="price" placeholder="" min="1">
+                    </mat-input-container>
                   </div>
                   <div class="col-sm-2 priceAlignParent">
-                    <md-select [floatPlaceholder]="false" formControlName="currency" class="priceAlign padding-top-0 margin-top-20">
-                      <md-option *ngFor="let c of currencies" [value]="c">{{c}}</md-option>
-                    </md-select>
+                    <mat-form-field>
+                      <mat-select formControlName="currency" class="priceAlign padding-top-0 margin-top-20">
+                        <mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
                 </div>
                 <h3 class="title">Cancellation Policy</h3>
                 <div class="row margin-left-0">
                   <div class="col-sm-12 padding-left-0">
-                    <md-select [floatPlaceholder]="false" formControlName="cancellationPolicy" style="margin: 20px 0px;">
-                      <md-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</md-option>
-                    </md-select>
+                    <mat-form-field>
+                      <mat-select formControlName="cancellationPolicy" style="margin: 20px 0px;">
+                        <mat-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
                 </div>
                 <div style="margin-top:100px;">
-                  <!-- <a md-button (click)=goto(10)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="price.value.length == 0 && !currency && !cancellationPolicy">Continue</button>
+                  <!-- <a mat-button (click)=goto(10)>Back</a> -->
+                  <button class="pull-right" mat-raised-button color="accent" type="Submit" [disabled]="price.value.length == 0 && !currency && !cancellationPolicy">Continue</button>
                 </div>
               </form>
             </div>
@@ -403,8 +411,8 @@
                 <p class="subtitle">Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
                   see this before they sign up for your workshop.</p>
                 <div style="margin-top:60px;">
-                  <!-- <a md-button (click)=goto(11)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
+                  <!-- <a mat-button (click)=goto(11)>Back</a> -->
+                  <button class="pull-right" mat-raised-button color="accent" type="Submit">Continue</button>
                 </div>
               </form>
             </div>
@@ -422,18 +430,18 @@
                 <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
                   <div class="row" style="margin: 30px 0px 15px 0;">
                     <div class="col-sm-6">
-                      <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
-                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle"></md-datepicker-toggle>
-                      </md-form-field>
-                      <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
+                      <mat-form-field class="dateStyles">
+                        <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
+                        <mat-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle"></mat-datepicker-toggle>
+                      </mat-form-field>
+                      <mat-datepicker touchUi="true" #startDatePicker></mat-datepicker>
                     </div>
                     <div class="col-sm-6">
-                      <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
-                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle"></md-datepicker-toggle>
-                      </md-form-field>
-                      <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
+                      <mat-form-field class="dateStyles">
+                        <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
+                        <mat-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle"></mat-datepicker-toggle>
+                      </mat-form-field>
+                      <mat-datepicker touchUi="true" #endDatePicker></mat-datepicker>
                     </div>
                   </div>
                 </div>
@@ -442,9 +450,9 @@
                     <div class="col-md-12 selected-dates">
                       {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd
                       MMM'}} &emsp;
-                      <md-icon color="accent">
+                      <mat-icon color="accent">
                         date_range
-                      </md-icon>
+                      </mat-icon>
                       <a style="cursor: pointer; color: #33bd9e;" (click)="makeDatesEditable()">Change dates</a>
                     </div>
                   </div>
@@ -456,8 +464,8 @@
                 </div>
                 <div class="row">
                   <div style="margin-top:100px;">
-                    <!-- <a md-button (click)=goto(12)>Back</a> -->
-                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate)">Continue</button>
+                    <!-- <a mat-button (click)=goto(12)>Back</a> -->
+                    <button class="pull-right" mat-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate)">Continue</button>
                   </div>
                 </div>
               </form>
@@ -471,12 +479,12 @@
               <h2 class="title">Review and submit</h2>
               <div *ngIf="!isSubmitted">
                 <div style="margin-top:40px;">
-                  <md-checkbox value="val1" [(ngModel)]="selectedValues[0]">You meet our standards.</md-checkbox>
+                  <mat-checkbox value="val1" [(ngModel)]="selectedValues[0]">You meet our standards.</mat-checkbox>
                 </div>
                 <div style="margin-top:20px;">
-                  <md-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</md-checkbox>
+                  <mat-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</mat-checkbox>
                 </div>
-                <button md-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] || !selectedValues[1]"> Submit for Review</button>
+                <button mat-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] || !selectedValues[1]"> Submit for Review</button>
               </div>
               <div *ngIf="isSubmitted" style="margin-top: 70px;">
                 Your workshop has been submitted for review and is awaiting approval from Peerbuds team.<br><br> We maintain
@@ -492,32 +500,32 @@
               <div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
               <form [formGroup]="phoneDetails">
                 <div style="margin-top:50px;">
-                  <md-radio-group>
-                    <md-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</md-radio-button>
+                  <mat-radio-group>
+                    <mat-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</mat-radio-button>
                     <div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
-                      <md-input-container [floatPlaceholder]="true" class="pb-block" style="margin: 20px 0px;">
-                        <input type="tel" mdInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" [readOnly]="isPhoneVerified">
-                        <md-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</md-hint>
-                        <md-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this workshop</md-hint>
-                      </md-input-container>
-                      <button md-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')" *ngIf="!isPhoneVerified">
+                      <mat-input-container [floatPlaceholder]="true" class="pb-block" style="margin: 20px 0px;">
+                        <input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" [readOnly]="isPhoneVerified">
+                        <mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
+                        <mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this workshop</mat-hint>
+                      </mat-input-container>
+                      <button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')" *ngIf="!isPhoneVerified">
                         Send OTP
                       </button>
-                      <button md-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
-                        <md-icon md-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</md-icon> Phone Verified
+                      <button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
+                        <mat-icon md-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone Verified
                       </button>
                     </div>
                     <div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
                       <p>Type the 4 digit verification code</p>
-                      <md-input-container class="pb-block" style="margin: 20px 0px;">
-                        <input type="text" mdInput #inputOTP formControlName="inputOTP" placeholder="OTP">
-                      </md-input-container>
-                      <button md-raised-button color="accent" (click)="submitOTP()">Confirm OTP</button>
+                      <mat-input-container class="pb-block" style="margin: 20px 0px;">
+                        <input type="text" matInput #inputOTP formControlName="inputOTP" placeholder="OTP">
+                      </mat-input-container>
+                      <button mat-raised-button color="accent" (click)="submitOTP()">Confirm OTP</button>
                     </div>
-                    <md-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
-                  </md-radio-group>
+                    <mat-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</mat-radio-button>
+                  </mat-radio-group>
                 </div>
-                <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">Continue</button>
+                <button mat-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">Continue</button>
               </form>
             </div>
           </div>
@@ -529,9 +537,9 @@
               <div class="subtitle">Payment gateway stripe, etc.</div>
               <form [formGroup]="paymentInfo">
                 <div style="margin-top:50px;">
-                  <!--<button md-raised-button>PayTM</button> &emsp;-->
-                  <button md-raised-button><a [href]="connectPaymentUrl" target="_blank">Stripe</a></button> &emsp;
-                  <!--<button md-raised-button>Paypal</button> &emsp;-->
+                  <!--<button mat-raised-button>PayTM</button> &emsp;-->
+                  <button mat-raised-button><a [href]="connectPaymentUrl" target="_blank">Stripe</a></button> &emsp;
+                  <!--<button mat-raised-button>Paypal</button> &emsp;-->
                 </div>
               </form>
             </div>
@@ -540,5 +548,5 @@
       </div>
       <div class="clearfix"></div>
     </div>
-  </md-sidenav-container>
+  </mat-sidenav-container>
 </div>

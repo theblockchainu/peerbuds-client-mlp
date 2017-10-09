@@ -12,91 +12,103 @@
         <div style="margin-top:20px;" class="col-md-12">
           <div class="row">
             <div class="col-md-12">
-              <button md-raised-button color="accent" (click)="saveProfile()" class="pull-right" style="margin-bottom: 20px;">
+              <button mat-raised-button color="accent" (click)="saveProfile()" class="pull-right" style="margin-bottom: 20px;">
                 Update Profile
               </button>
             </div>
           </div>
           <div class="row" style="margin-right: 110px; line-height: 120%">
             <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput formControlName="first_name" type="text" placeholder="First Name" required>
-                <md-error>This field is required</md-error>
-                <md-hint align="start">Your public profile only shows your first name.</md-hint>
-              </md-input-container>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput formControlName="last_name" type="text" placeholder="Last Name" required>
-                <md-error>This field is required</md-error>
-                <md-hint align="start"> When you request a booking, your host will see your first and last name.</md-hint>
-              </md-input-container>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput formControlName="headline" type="text" placeholder="Profile Credential" required>
-                <md-error>This field is required</md-error>
-                <md-hint align="start">Ex. mechanical engineer, electric car enthusiast</md-hint>
-                <md-hint align="end">{{profileForm.value.headline.length}} / 200</md-hint>
-              </md-input-container>
+              <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                <input matInput formControlName="first_name" type="text" placeholder="First Name" required>
+                <mat-error>This field is required</mat-error>
+                <mat-hint align="start">Your public profile only shows your first name.</mat-hint>
+              </mat-input-container>
+              <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                <input matInput formControlName="last_name" type="text" placeholder="Last Name" required>
+                <mat-error>This field is required</mat-error>
+                <mat-hint align="start"> When you request a booking, your host will see your first and last name.</mat-hint>
+              </mat-input-container>
+              <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                <input matInput formControlName="headline" type="text" placeholder="Profile Credential" required>
+                <mat-error>This field is required</mat-error>
+                <mat-hint align="start">Ex. mechanical engineer, electric car enthusiast</mat-hint>
+                <mat-hint align="end">{{profileForm.value.headline.length}} / 200</mat-hint>
+              </mat-input-container>
               <br>
-              <md-select placeholder="Gender" style="margin-bottom: 20px" formControlName="gender">
-                <md-option [value]="'Male'">Male</md-option>
-                <md-option [value]="'Female'">Female</md-option>
-              </md-select>
+              <mat-form-field>
+                  <mat-select placeholder="Gender" style="margin-bottom: 20px" formControlName="gender">
+                    <mat-option [value]="'Male'">Male</mat-option>
+                    <mat-option [value]="'Female'">Female</mat-option>
+                  </mat-select>
+              </mat-form-field>
               <br><br>
-              <md-select placeholder="Birth Month" style="margin-bottom: 20px" formControlName="dobMonth">
-                <md-option *ngFor="let month of months" [value]="month">{{month}}</md-option>
-              </md-select>
-              <md-select placeholder="Day" style="margin-bottom: 20px" formControlName="dobDay">
-                <md-option *ngFor="let day of days" [value]="day">{{day}}</md-option>
-              </md-select>
-              <md-select placeholder="Year" style="margin-bottom: 20px" formControlName="dobYear">
-                <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
-              </md-select>
+              <mat-form-field>
+                <mat-select placeholder="Birth Month" style="margin-bottom: 20px" formControlName="dobMonth">
+                  <mat-option *ngFor="let month of months" [value]="month">{{month}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select placeholder="Day" style="margin-bottom: 20px" formControlName="dobDay">
+                  <mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select placeholder="Year" style="margin-bottom: 20px" formControlName="dobYear">
+                  <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+                </mat-select>
+              </mat-form-field>
               <br><br>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput formControlName="email" type="email" placeholder="Email Address" required>
-                <md-error>This field is required</md-error>
-                <md-hint align="start">We wonʼt share your private email address with other peerbuds users. Learn more.</md-hint>
-              </md-input-container>
+              <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                <input matInput formControlName="email" type="email" placeholder="Email Address" required>
+                <mat-error>This field is required</mat-error>
+                <mat-hint align="start">We wonʼt share your private email address with other peerbuds users. Learn more.</mat-hint>
+              </mat-input-container>
               <div formArrayName="phones">
                 <p>Phone Numbers</p>
-                <md-form-field *ngFor="let phoneNumber of profileForm.controls['phones'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
-                  <md-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
+                <mat-form-field *ngFor="let phoneNumber of profileForm.controls['phones'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
+                  <mat-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
-                  </md-icon>
-                  <input mdInput formControlName="{{i}}" type="tel" placeholder="Phone Number" required>
-                  <md-error>This field is required</md-error>
-                </md-form-field>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all
-                  get in touch.</md-hint>
+                  </mat-icon>
+                  <input matInput formControlName="{{i}}" type="tel" placeholder="Phone Number" required>
+                  <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <mat-hint align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all
+                  get in touch.</mat-hint>
               </div>
               <div style="margin-bottom: 10px; cursor: pointer" (click)="addPhoneControl()">
                 <a>+ Add a phone number</a>
               </div>
               <br>
-              <md-select placeholder="Preferred Language" style="margin-bottom: 20px" formControlName="preferred_language">
-                <md-option *ngIf="!languages">languages not available</md-option>
-                <md-option *ngFor="let language of languages" [value]="language.code">{{language.name}}</md-option>
-                <md-hint align="start">We'll send you messages in this language.</md-hint>
-              </md-select>
+              <mat-form-field>
+                <mat-select placeholder="Preferred Language" style="margin-bottom: 20px" formControlName="preferred_language">
+                  <mat-option *ngIf="!languages">languages not available</mat-option>
+                  <mat-option *ngFor="let language of languages" [value]="language.code">{{language.name}}</mat-option>
+                  <mat-hint align="start">We'll send you messages in this language.</mat-hint>
+                </mat-select>
+              </mat-form-field>
               <br><br><br>
-              <md-select placeholder="Preferred Currency" style="margin-bottom: 20px" formControlName="currency">
-                <md-option *ngIf="!currencies">currencies not available</md-option>
-                <md-option *ngFor="let currency of currencies" [value]="currency.code">{{currency.name}}</md-option>
-                <md-hint align="start">Weʼll show you prices in this currency.</md-hint>
-              </md-select>
+              <mat-form-field>
+                <mat-select placeholder="Preferred Currency" style="margin-bottom: 20px" formControlName="currency">
+                  <mat-option *ngIf="!currencies">currencies not available</mat-option>
+                  <mat-option *ngFor="let currency of currencies" [value]="currency.code">{{currency.name}}</mat-option>
+                  <mat-hint align="start">Weʼll show you prices in this currency.</mat-hint>
+                </mat-select>
+              </mat-form-field>
               <br><br>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput formControlName="location_string" type="text" placeholder="Where do you live" required>
-                <md-error>This field is required</md-error>
-              </md-input-container>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <textarea mdInput #description formControlName="description" rows="4" placeholder="Describe yourself" required></textarea>
-                <md-error>This field is required</md-error>
-                <md-hint align="start">Peerbuds is built on relationships. Help other people get to know you. Tell them about the things you like:
+              <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                <input matInput formControlName="location_string" type="text" placeholder="Where do you live" required>
+                <mat-error>This field is required</mat-error>
+              </mat-input-container>
+              <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                <textarea matInput #description formControlName="description" rows="4" placeholder="Describe yourself" required></textarea>
+                <mat-error>This field is required</mat-error>
+                <mat-hint align="start">Peerbuds is built on relationships. Help other people get to know you. Tell them about the things you like:
                   What are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows,
                   music, food. Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning?
-                  Of peerbuds teaching? Tell them about you: Do you have a life motto?</md-hint>
-                <md-hint align="end">{{description.value.length}} / 1000</md-hint>
-              </md-input-container>
+                  Of peerbuds teaching? Tell them about you: Do you have a life motto?</mat-hint>
+                <mat-hint align="end">{{description.value.length}} / 1000</mat-hint>
+              </mat-input-container>
 
               <div style="margin-top: 90px; margin-bottom: 20px; color: #333333;">
                 Additional Details
@@ -107,28 +119,28 @@
 
               <div formArrayName="work" class="well well-lg">
                 <div *ngFor="let workObj of profileForm.controls['work'].controls; let i=index" [formGroupName]="i">
-                  <md-input-container>
-                    <input mdInput formControlName="position" type="text" placeholder="Position">
-                    <!-- <md-error>This field is required</md-error> -->
-                  </md-input-container>
-                  <md-input-container>
-                    <input mdInput formControlName="company" type="text" placeholder="Company">
-                    <!-- <md-error>This field is required</md-error> -->
-                  </md-input-container>
-                  <md-form-field>
-                    <input mdInput formControlName="startDate" [mdDatepicker]="startPicker" placeholder="Choose a date">
-                    <md-datepicker-toggle mdSuffix [for]="startPicker"></md-datepicker-toggle>
-                    <md-datepicker #startPicker></md-datepicker>
-                  </md-form-field>
-                  <!-- <md-error>This field is required</md-error> -->
-                  <md-form-field>
-                    <input mdInput formControlName="endDate" [mdDatepicker]="endPicker" placeholder="Choose a date">
-                    <md-datepicker-toggle mdSuffix [for]="endPicker"></md-datepicker-toggle>
-                    <md-datepicker #endPicker></md-datepicker>
-                  </md-form-field>
-                  <md-icon (click)="deletework(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
+                  <mat-input-container>
+                    <input matInput formControlName="position" type="text" placeholder="Position">
+                    <!-- <mat-error>This field is required</mat-error> -->
+                  </mat-input-container>
+                  <mat-input-container>
+                    <input matInput formControlName="company" type="text" placeholder="Company">
+                    <!-- <mat-error>This field is required</mat-error> -->
+                  </mat-input-container>
+                  <mat-form-field>
+                    <input matInput formControlName="startDate" [matDatepicker]="startPicker" placeholder="Choose a date">
+                    <mat-datepicker-toggle mdSuffix [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                  </mat-form-field>
+                  <!-- <mat-error>This field is required</mat-error> -->
+                  <mat-form-field>
+                    <input matInput formControlName="endDate" [matDatepicker]="endPicker" placeholder="Choose a date">
+                    <mat-datepicker-toggle mdSuffix [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                  </mat-form-field>
+                  <mat-icon (click)="deletework(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
                     close
-                  </md-icon>
+                  </mat-icon>
                 </div>
               </div>
               <div style="margin-bottom: 10px; cursor: pointer" (click)="addwork()">
@@ -139,73 +151,80 @@
               </div>
               <div formArrayName="education">
                 <div *ngFor="let educationObj of profileForm.controls['education'].controls; let i = index" [formGroupName]="i">
-                  <md-input-container>
-                    <input mdInput formControlName="degree" type="text" placeholder="Degree">
-                    <!-- <md-error>This field is required</md-error> -->
-                  </md-input-container>
-                  <md-input-container>
-                    <input mdInput formControlName="school" type="text" placeholder="School / College">
-                    <!-- <md-error>This field is required</md-error> -->
-                  </md-input-container>
-                  <md-select placeholder="Start Year" style="margin-bottom: 20px;width: 200px" formControlName="startYear">
-                    <md-option *ngFor="let syear of years" [value]="syear">{{syear}}</md-option>
-                  </md-select>
-                  <md-select placeholder="End Year" style="margin-bottom: 20px;width: 200px" formControlName="endYear">
-                    <md-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</md-option>
-                  </md-select>
-                  <md-icon (click)="deleteeducation(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
+                  <mat-input-container>
+                    <input matInput formControlName="degree" type="text" placeholder="Degree">
+                    <!-- <mat-error>This field is required</mat-error> -->
+                  </mat-input-container>
+                  <mat-input-container>
+                    <input matInput formControlName="school" type="text" placeholder="School / College">
+                    <!-- <mat-error>This field is required</mat-error> -->
+                  </mat-input-container>
+                  <mat-form-field>
+                    <mat-select placeholder="Start Year" style="margin-bottom: 20px;width: 200px" formControlName="startYear">
+                      <mat-option *ngFor="let syear of years" [value]="syear">{{syear}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-select placeholder="End Year" style="margin-bottom: 20px;width: 200px" formControlName="endYear">
+                      <mat-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-icon (click)="deleteeducation(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
                     close
-                  </md-icon>
+                  </mat-icon>
                 </div>
               </div>
 
               <div style="margin-bottom: 10px; cursor: pointer" (click)="addeducation()">
                 <a>+ Add another education detail</a>
               </div>
-
-              <md-select placeholder="Timezone" style="margin-bottom: 20px" formControlName="timezone">
-                <md-option *ngFor="let timezone of timezones" [value]="timezone.value">{{timezone.text}}</md-option>
-              </md-select>
-              <md-hint align="start">Your home time zone.</md-hint>
+              <mat-form-field>
+                <mat-select placeholder="Timezone" style="margin-bottom: 20px" formControlName="timezone">
+                  <mat-option *ngFor="let timezone of timezones" [value]="timezone.value">{{timezone.text}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-hint align="start">Your home time zone.</mat-hint>
               <div formArrayName="other_languages">
                 <p>Other languages</p>
                 <div *ngFor="let languageObj of profileForm.controls['other_languages'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
-                  <md-icon (click)="deleteLanguage(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
+                  <mat-icon (click)="deleteLanguage(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
-                  </md-icon>
-                  <md-select mdInput placeholder="Languages" class="pb-block" style="margin-bottom: 20px" formControlName="{{i}}">
-                    <md-option *ngFor="let language of languages" [value]="language.name">{{language.name}}</md-option>
-                  </md-select>
+                  </mat-icon>
+                  <mat-form-field>
+                    <mat-select matInput placeholder="Languages" class="pb-block" style="margin-bottom: 20px" formControlName="{{i}}">
+                      <mat-option *ngFor="let language of languages" [value]="language.name">{{language.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
-                <md-hint align="start">Add any languages that others can use to speak with you on peerbuds.</md-hint>
+                <mat-hint align="start">Add any languages that others can use to speak with you on peerbuds.</mat-hint>
               </div>
               <div style="margin-bottom: 10px; cursor: pointer" (click)="addlanguage()">
                 <a>+ Add a Language</a>
               </div>
-              <md-input-container style="margin-bottom: 20px" class="pb-block">
-                <input mdInput formControlName="vat_number" type="text" placeholder="VAT Number">
-                <md-error>This field is required</md-error>
-                <md-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be assessed on our Service
+              <mat-input-container style="margin-bottom: 20px" class="pb-block">
+                <input matInput formControlName="vat_number" type="text" placeholder="VAT Number">
+                <mat-error>This field is required</mat-error>
+                <mat-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be assessed on our Service
                   Fees. If you live in a country where we need to charge VAT, you will not be charged VAT if you enter a
-                  valid VAT ID Number. Visit VAT FAQs »</md-hint>
-              </md-input-container>
+                  valid VAT ID Number. Visit VAT FAQs »</mat-hint>
+              </mat-input-container>
               <div formArrayName="emergency_contact">
-                <md-input-container *ngFor="let emergency_contact_number of profileForm.controls['emergency_contact'].controls; let i = index;"
+                <mat-input-container *ngFor="let emergency_contact_number of profileForm.controls['emergency_contact'].controls; let i = index;"
                   style="margin-bottom: 20px" class="pb-block">
-                  <md-icon (click)="deleteEmergencyContact(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
+                  <mat-icon (click)="deleteEmergencyContact(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
-                  </md-icon>
-                  <input mdInput formControlName="{{i}}" type="tel" placeholder="Emergency Contact">
-                  <!-- <md-error>This field is required</md-error> -->
-                </md-input-container>
-                <md-hint align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</md-hint>
+                  </mat-icon>
+                  <input matInput formControlName="{{i}}" type="tel" placeholder="Emergency Contact">
+                  <!-- <mat-error>This field is required</mat-error> -->
+                </mat-input-container>
+                <mat-hint align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</mat-hint>
                 <div style="margin-bottom: 10px; cursor: pointer" (click)="addEmergencyContact()">
                   <a>+ Add Emergency Contact Number</a>
                 </div>
               </div>
-              <md-checkbox class="example-margin" formControlName="isAdmin">
+              <mat-checkbox class="example-margin" formControlName="isAdmin">
                 Is Admin
-              </md-checkbox>
+              </mat-checkbox>
             </form>
           </div>
         </div>

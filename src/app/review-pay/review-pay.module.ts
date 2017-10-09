@@ -4,14 +4,14 @@ import { SharedModule } from '../_shared/_shared.module';
 
 import { ReviewPayRoutingModule } from './review-pay-routing.module';
 import { ReviewPayComponent } from './review-pay.component';
-import { MdTooltipModule } from '@angular/material';
+import { MatTooltipModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     ReviewPayRoutingModule,
-    MdTooltipModule
+    MatTooltipModule
   ],
   declarations: [ReviewPayComponent]
 })

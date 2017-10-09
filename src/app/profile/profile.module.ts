@@ -4,7 +4,7 @@ import { SharedModule } from '../_shared/_shared.module';
 import { ProfileComponent } from './profile.component';
 
 import { ProfileRoutingModule } from './profile-routing.module';
-import { MdTabsModule } from '@angular/material';
+import { MatTabsModule } from '@angular/material';
 import { SeeDatesWorkshopComponent } from './see-dates-workshop/see-dates-workshop.component';
 import { ExtractLanguagePipe } from '../_shared/extract-language/extract-language.pipe';
 import { ReportProfileComponent } from './report-profile/report-profile.component';
@@ -14,7 +14,7 @@ import { ReportProfileComponent } from './report-profile/report-profile.componen
     CommonModule,
     SharedModule,
     ProfileRoutingModule,
-    MdTabsModule
+    MatTabsModule
   ],
   declarations: [ProfileComponent, SeeDatesWorkshopComponent, ExtractLanguagePipe, ReportProfileComponent],
   bootstrap: [ReportProfileComponent]

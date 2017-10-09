@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkTableModule } from '@angular/cdk/table';
-
+// import { MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
 import {
-  MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
-  MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
-  MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
-  MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule
+  MatChipsModule, MatDialogModule, MatMenuModule, MatButtonModule,
+  MatCardModule, MatToolbarModule, MatIconModule, MatProgressBarModule,
+  MatListModule, MatTabsModule, MatTableModule, MatInputModule, MatCheckboxModule,
+  MatSidenavModule, MatSelectModule, MatDatepickerModule, MatGridListModule, MatRadioModule,
+  MatNativeDateModule, MatSliderModule, MatProgressSpinnerModule, MatExpansionModule, MatSnackBarModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -78,7 +78,8 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
     DialogsService,
     CommentService,
     TopicService,
-    NotificationService
+    NotificationService//,
+    // {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}
   ],
   exports: [
     CommonModule,
@@ -105,12 +106,12 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
     FinishingTouchesModule,
     NgPipesModule,
     AccordionModule,
-    MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
-    MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
-    MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
-    MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-    MdNativeDateModule, MdSliderModule,
-    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
+    MatChipsModule, MatDialogModule, MatMenuModule, MatButtonModule,
+    MatCardModule, MatToolbarModule, MatIconModule, MatProgressBarModule,
+    MatListModule, MatTabsModule, MatTableModule, MatInputModule, MatCheckboxModule,
+    MatSidenavModule, MatSelectModule, MatDatepickerModule, MatGridListModule, MatRadioModule,
+    MatNativeDateModule, MatSliderModule,
+    SliderModule, MatProgressSpinnerModule, MatExpansionModule, MatSnackBarModule, ExtractTimePipe,
     LoadingModule
   ]
 })

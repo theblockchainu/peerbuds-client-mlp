@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
 
 @Component({
@@ -15,8 +15,8 @@ export class SelectDateDialogComponent implements OnInit {
   public mode;
   public userType;
 
-  constructor(public dialogRef: MdDialogRef<SelectDateDialogComponent>,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<SelectDateDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.itineraries = data.itineraries;
     this.mode = data.mode;
     this.participants = data.participants;

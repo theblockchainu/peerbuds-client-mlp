@@ -8,7 +8,7 @@
               <h2 class="headline">Welcome to Peerbuds</h2>
               <p class="description1 margin-top-20 margin-bottom-20">You are entering a blockchain based community where peers can teach and learn from one another, while earning</p>
               <div class="margin-top-40">
-                  <button md-raised-button class="customBtn" type="button" color="accent" (click)="goToNext(2)">Yes, thats me</button>
+                  <button mat-raised-button class="customBtn" type="button" color="accent" (click)="goToNext(2)">Yes, thats me</button>
               </div>
             </div>
           </div>
@@ -35,7 +35,7 @@
                     <div class="col-sm-4">
                       <span *ngIf="!boolShowConnectedSocials" style="line-height:50px">
                         <a class="text-right syncSocial" (click)="showConnectedSocials()">
-                          <md-icon class="vAlignTextTop">cached</md-icon>
+                          <mat-icon class="vAlignTextTop">cached</mat-icon>
                         &nbsp;&nbsp;&nbsp;&nbsp;Sync Social</a>
                       </span>
                       <span *ngIf="boolShowConnectedSocials">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="margin-bottom-20">
                     <div class="suggestions description1 margin-bottom-20"> Topic you are looking for cannot be found</div>
-                      <button md-button class="outline-btn" (click)="requestNewTopic(topicForRequest)"> Request for {{topicForRequest}} topic</button>
+                      <button mat-button class="outline-btn" (click)="requestNewTopic(topicForRequest)"> Request for {{topicForRequest}} topic</button>
                   </div>
                 </div>
               </div>
@@ -61,8 +61,8 @@
                 <div class="col-sm-8"> 
                   <i class="twa twa-2x twa-relieved-face"></i><span class="rightLinks" style="vertical-align:super">&nbsp;&nbsp;&nbsp;&nbsp;You are almost there</span>
                   <div class="pull-right">
-                    <button md-button style="margin-right:20px; color:#767676">Back</button>
-                    <button md-raised-button (click)="goToNext(3)" color="accent" [disabled]="interests.length < 3">Done</button>
+                    <button mat-button style="margin-right:20px; color:#767676">Back</button>
+                    <button mat-raised-button (click)="goToNext(3)" color="accent" [disabled]="interests.length < 3">Done</button>
                   </div>
                 </div>
               </div>
@@ -92,7 +92,7 @@
         <div class="center" style="padding-top:60px">
             <h2 class="headline">You're now ready to teach and learn anything your heart desire</h2>
             <p class="description1">Your account is still under review and will soon be approved. Meanwhile you can discover learning content on the platform.</p>
-            <button class="margin-top-40" [routerLink]="['/home/homefeed']" md-raised-button color="accent">Start Exploring</button>
+            <button class="margin-top-40" [routerLink]="['/home/homefeed']" mat-raised-button color="accent">Start Exploring</button>
 >>>>>>> develop-material
         </div>
       </div>

@@ -4,7 +4,7 @@ import { SharedModule } from '../_shared/_shared.module';
 import { ConsoleRoutingModule } from './console-routing.module';
 import { ConsoleComponent } from './console.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdProgressBarModule, MdListModule, MdTabsModule, MdChipsModule, MdInputModule, MdSelectModule, MdSnackBarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatProgressBarModule, MatListModule, MatTabsModule, MatChipsModule, MatInputModule, MatSelectModule, MatSnackBarModule } from '@angular/material';
 import { RatingModule } from 'primeng/primeng';
 import 'hammerjs';
 import { ConsoleDashboardComponent } from './console-dashboard/console-dashboard.component';
@@ -45,18 +45,18 @@ import { ConsoleAdminComponent } from './console-admin/console-admin.component';
     ConsoleRoutingModule,
     // BrowserAnimationsModule,
     RatingModule,
-    MdCardModule,
-    MdButtonModule,
-    MdMenuModule,
-    MdToolbarModule,
-    MdIconModule,
-    MdProgressBarModule,
-    MdListModule,
-    MdTabsModule,
-    MdChipsModule,
-    MdInputModule,
-    MdSelectModule,
-    MdSnackBarModule
+    MatCardModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatListModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSnackBarModule
   ],
   declarations: [
     ConsoleComponent,

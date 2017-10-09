@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentService } from '../../payment/payment.service';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 declare var Stripe: any;
 
@@ -19,7 +19,7 @@ export class AddCardDialogComponent implements OnInit {
   constructor(
     public activatedRoute: ActivatedRoute,
     public paymentService: PaymentService,
-    public dialogRef: MdDialogRef<AddCardDialogComponent>
+    public dialogRef: MatDialogRef<AddCardDialogComponent>
   ) {
   }
 

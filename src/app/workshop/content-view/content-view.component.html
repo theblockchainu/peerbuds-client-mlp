@@ -4,17 +4,17 @@
       <div style="text-align: center; margin-top: 0px; margin-bottom: 30px;">
         <hr>
         <div style="margin-top: -30px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
-          <md-icon>wb_sunny</md-icon>
-          <input mdInput [mdDatepicker]="startDatePicker" formControlName="date" [hidden]="true">
+          <mat-icon>wb_sunny</mat-icon>
+          <input matInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true">
           <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: 3px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
           <a *ngIf="itenaryForm.value.date" style="float: right; margin: 3px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" >({{showItineraryDate(itenaryForm.value.date)}})</a>
-          <md-datepicker touchUi="true" #startDatePicker [startAt]="collectionStartDate"></md-datepicker>
+          <mat-datepicker touchUi="true" #startDatePicker [startAt]="collectionStartDate"></mat-datepicker>
           <a style="cursor: pointer; float: right; margin: 3px 0 0 10px;font-size:16px;">
             Day {{itenaryId + 1}}
           </a>
         </div>
         <div style="margin-top: -28px; width: fit-content; background-color: #fff; float: right; padding: 0px 10px;">
-          <md-icon style="font-size: 16px; cursor: pointer" (click)="deleteDay(itenaryId)">close</md-icon>
+          <mat-icon style="font-size: 16px; cursor: pointer" (click)="deleteDay(itenaryId)">close</mat-icon>
         </div>
       </div>
     </div>
@@ -22,9 +22,9 @@
   <div class="row" *ngIf="!itenaryForm.value.date">
     <div class="col-md-12">
       <div style="text-align: center; color: #777777; font-size: 90%;">
-        <md-icon style="position: relative; top: 5px;">
+        <mat-icon style="position: relative; top: 5px;">
           keyboard_arrow_up
-        </md-icon>
+        </mat-icon>
         <span style="font-size:14px">Please select a date for this day to continue adding activities...</span>
       </div>
     </div>
@@ -35,8 +35,8 @@
         <div class="selected-content-label title" *ngIf="itenaryForm.controls.contents.controls.length > 0">
           Activity selected
         </div>
-        <md-list style="margin-left: -20px">
-          <md-list-item *ngFor="let Content of itenaryForm.controls.contents.controls; let i=index" style="margin: 20px 0px; padding: 0px 0px; height: fit-content;">
+        <mat-list style="margin-left: -20px">
+          <mat-list-item *ngFor="let Content of itenaryForm.controls.contents.controls; let i=index" style="margin: 20px 0px; padding: 0px 0px; height: fit-content;">
             <div class="col-md-3" style="padding-left: 0px;" (click)="findAndOpenDialog(i)">
               <img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
               <img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{config.apiUrl + Content.value.imageUrl}}" (error)="imgErrorHandler($event)" style="width: 140px;">
@@ -53,15 +53,15 @@
               <div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase }}</div>
             </div>
             <div class="col-md-2">
-              <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)" style="font-size: 16px; color: #777777;">close</md-icon>
-              <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="findAndOpenDialog(i)" style="font-size: 16px; color: #777777;">mode_edit</md-icon>
+              <mat-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)" style="font-size: 16px; color: #777777;">close</mat-icon>
+              <mat-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="findAndOpenDialog(i)" style="font-size: 16px; color: #777777;">mode_edit</mat-icon>
             </div>
             <!--<div class="col-md-2 pull-right">
               <span class="label label-warning" [hidden]="!Content.value.pending">Pending</span>
               <span class="label label-success" [hidden]="Content.value.pending">Success</span>
             </div>-->
-          </md-list-item>
-        </md-list>
+          </mat-list-item>
+        </mat-list>
       </div>
     </div>
     <div class="row" style="margin-bottom: 80px; margin-top: 10px;font-size:16px;">
@@ -74,18 +74,18 @@
           (Must have at least one online session)
         </span>
         <br><br>
-        <button md-button type="button" (click)="addContent('online'); findAndOpenDialog(-1);" style="padding-left: 0px">
-          <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
+        <button mat-button type="button" (click)="addContent('online'); findAndOpenDialog(-1);" style="padding-left: 0px">
+          <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
           Online Session
         </button>&emsp;
 
-        <button md-button type="button" (click)="addContent('video'); findAndOpenDialog(-1);">
-          <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
+        <button mat-button type="button" (click)="addContent('video'); findAndOpenDialog(-1);">
+          <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
           Video
         </button>&emsp;
 
-        <button md-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">
-          <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
+        <button mat-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">
+          <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
           Project
         </button>&emsp;
       </div>

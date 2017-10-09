@@ -7,7 +7,7 @@ import { ProfileService } from '../_services/profile/profile.service';
 import { CollectionService } from '../_services/collection/collection.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { ReportProfileComponent } from './report-profile/report-profile.component';
-import { MdDialog, MdSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 import * as moment from 'moment';
 import _ from 'lodash';
@@ -41,8 +41,8 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     public _collectionService: CollectionService,
     private _topicService: TopicService,
-    public dialog: MdDialog,
-    public snackBar: MdSnackBar
+    public dialog: MatDialog,
+    public snackBar: MatSnackBar
   ) {
     this.activatedRoute.params.subscribe((param) => {
       const calledUserId = param['profileId'];

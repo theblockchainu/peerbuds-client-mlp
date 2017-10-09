@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA, MdButtonModule } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatButtonModule } from '@angular/material';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
@@ -14,8 +14,8 @@ export class ViewConflictDialogComponent implements OnInit {
 
     public conflicts: FormGroup;
 
-    constructor(public dialogRef1: MdDialogRef<ViewConflictDialogComponent>,
-    @Inject(MD_DIALOG_DATA) public data: any,
+    constructor(public dialogRef1: MatDialogRef<ViewConflictDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _fb: FormBuilder) { }
 
     ngOnInit() {

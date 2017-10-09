@@ -1,13 +1,13 @@
 
-<h3 md-dialog-title>Add New Language</h3>
-<div md-dialog-content>
+<h3 mat-dialog-title>Add New Language</h3>
+<div mat-dialog-content>
   <form [formGroup]="newLanguage" (ngSubmit)="addNewLanguage()">
-    <md-form-field class="form-group" [ngClass]="{'has-error':!newLanguage.controls['name'].valid}">
-      <input mdInput tabindex="1" formControlName="name">
-    </md-form-field>
+    <mat-form-field class="form-group" [ngClass]="{'has-error':!newLanguage.controls['name'].valid}">
+      <input matInput tabindex="1" formControlName="name">
+    </mat-form-field>
     <div>
-      <button md-button tabindex="2" type="submit" [disabled]="!newLanguage.valid">Add</button>
-      <button md-button tabindex="-1" type="button" (click)="dialogRef.close()">Cancel</button>
+      <button mat-button tabindex="2" type="submit" [disabled]="!newLanguage.valid">Add</button>
+      <button mat-button tabindex="-1" type="button" (click)="dialogRef.close()">Cancel</button>
     </div>
   </form>
 </div>

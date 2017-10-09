@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import {CollectionService} from '../../../_services/collection/collection.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -22,8 +22,8 @@ export class ContentOnlineComponent implements OnInit {
   constructor(
     public config: AppConfig,
     public _collectionService: CollectionService,
-    @Inject(MD_DIALOG_DATA) public data: any,
-    public dialogRef: MdDialogRef<ContentOnlineComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ContentOnlineComponent>,
     private _fb: FormBuilder,
     private _commentService: CommentService,
   ) {

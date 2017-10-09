@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConsoleComponent } from '../console.component';
 import { CollectionService } from '../../_services/collection/collection.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-console-admin',
@@ -16,7 +16,7 @@ export class ConsoleAdminComponent implements OnInit {
     activatedRoute: ActivatedRoute,
     consoleComponent: ConsoleComponent,
     public _collectionService: CollectionService,
-    public snackBar: MdSnackBar
+    public snackBar: MatSnackBar
   ) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);

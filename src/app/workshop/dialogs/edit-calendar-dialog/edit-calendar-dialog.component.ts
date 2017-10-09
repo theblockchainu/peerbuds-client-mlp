@@ -1,4 +1,4 @@
-import { MdDialogRef, MdDialog, MdDialogConfig, MdIconModule, MdSelectModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig, MatIconModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
@@ -203,10 +203,10 @@ export class EditCalendarDialogComponent implements OnInit {
         return title.split(':');
     }
 
-    constructor(public dialogRef: MdDialogRef<EditCalendarDialogComponent>,
+    constructor(public dialogRef: MatDialogRef<EditCalendarDialogComponent>,
         private _fb: FormBuilder,
         private _contentService: ContentService,
-        private dialog: MdDialog,
+        private dialog: MatDialog,
         private router: Router,
         private _collectionService: CollectionService) {
     }

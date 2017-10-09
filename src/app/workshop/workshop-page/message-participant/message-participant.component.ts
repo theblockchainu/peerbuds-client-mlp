@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MD_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 @Component({
   selector: 'app-message-participant',
   templateUrl: './message-participant.component.html',
@@ -10,7 +10,7 @@ export class MessageParticipantComponent implements OnInit {
   public messageForm: FormGroup;
 
   constructor(private _fb: FormBuilder,
-    @Inject(MD_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit() {

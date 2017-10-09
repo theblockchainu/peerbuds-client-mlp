@@ -1,4 +1,4 @@
-md-icon {
+mat-icon {
     position: relative;
     top: 0px;
 }
@@ -25,14 +25,14 @@ md-icon {
         border-bottom:1px solid #ccc;
         padding-bottom:1rem;
     }
-    md-icon{
+    mat-icon{
         &.mat-icon-setting{
             float:right;
             padding-top:5px;
             cursor: pointer;
         }
     }
-    md-chip{
+    mat-chip{
         &.mat-elevation-z3{
             box-shadow: none;
             border-radius: 0;

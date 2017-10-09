@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA, MdDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import {CollectionService} from '../../../_services/collection/collection.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -25,9 +25,9 @@ export class SubmissionViewComponent implements OnInit {
   public comments: Array<any>;
 
   constructor( public config: AppConfig,
-     @Inject(MD_DIALOG_DATA) public data: any,
+     @Inject(MAT_DIALOG_DATA) public data: any,
      public _collectionService: CollectionService,
-     public dialogRef: MdDialogRef<SubmissionViewComponent>,
+     public dialogRef: MatDialogRef<SubmissionViewComponent>,
      private _fb: FormBuilder,
      private _commentService: CommentService,
        private _submissionService: ProjectSubmissionService,

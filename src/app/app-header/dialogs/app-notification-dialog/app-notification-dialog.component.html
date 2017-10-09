@@ -8,8 +8,8 @@
 </div>
 <div class="row margin-top-20">
   <div class="col-md-12">
-    <md-list>
-      <md-list-item *ngFor="let notification of notifications">
+    <mat-list>
+      <mat-list-item *ngFor="let notification of notifications">
         <div *ngIf="!notification.hidden">
           <div [ngClass]="{'row': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.read}">
             <div class="col-md-2">
@@ -22,11 +22,11 @@
               <h6 class="mat-caption" style="margin-top: 0px;">{{getNotificationTime(notification)}}</h6>
             </div>
             <div class="col-md-1" style="top: 10px;">
-              <md-icon class="lightText" style="font-size: 10px; cursor: pointer;" (click)="hideNotification(notification)">close</md-icon>
+              <mat-icon class="lightText" style="font-size: 10px; cursor: pointer;" (click)="hideNotification(notification)">close</mat-icon>
             </div>
           </div>
         </div>
-      </md-list-item>
-    </md-list>
+      </mat-list-item>
+    </mat-list>
   </div>
 </div>

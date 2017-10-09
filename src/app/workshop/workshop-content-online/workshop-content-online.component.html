@@ -1,24 +1,24 @@
 
-    <h3 md-dialog-title>{{getAddOrEditText()}} online session for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
-    <button md-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [md-dialog-close]="getCloseDialogData()" *ngIf="isEdit">
-        <md-icon style="color: #777777; font-size: 20px;">close</md-icon>
+    <h3 mat-dialog-title>{{getAddOrEditText()}} online session for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
+    <button mat-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [mat-dialog-close]="getCloseDialogData()" *ngIf="isEdit">
+        <mat-icon style="color: #777777; font-size: 20px;">close</mat-icon>
     </button>
     <div *ngIf="lastIndex>-1">
         <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
-            <md-dialog-content>
+            <mat-dialog-content>
                 <div class="row">
                     <div class="col-sm-12 margin-bottom-30">
-                        <md-input-container class="pb-block margin-top-20 margin-bot-20">
-                            <input mdInput #title formControlName="title" placeholder="Title" class="title" [required]="true">
-                        </md-input-container>
+                        <mat-input-container class="pb-block margin-top-20 margin-bot-20">
+                            <input matInput #title formControlName="title" placeholder="Title" class="title" [required]="true">
+                        </mat-input-container>
 
                         <div formGroupName="schedule">
-                            <md-input-container class="timeInput margin-top-20 margin-bot-20" style="width:20%">
-                                <input mdInput type="time" #startTime formControlName="startTime" placeholder="Start Time">
-                            </md-input-container>
-                            <md-input-container class="timeInput margin-top-20 margin-bot-20" style="margin-left: 20px; width:20%">
-                                <input mdInput type="time" #endTime formControlName="endTime" placeholder="End Time">
-                            </md-input-container>
+                            <mat-input-container class="timeInput margin-top-20 margin-bot-20" style="width:20%">
+                                <input matInput type="time" #startTime formControlName="startTime" placeholder="Start Time">
+                            </mat-input-container>
+                            <mat-input-container class="timeInput margin-top-20 margin-bot-20" style="margin-left: 20px; width:20%">
+                                <input matInput type="time" #endTime formControlName="endTime" placeholder="End Time">
+                            </mat-input-container>
                         </div>
 
                         <div class="form-group margin-top-20">
@@ -31,26 +31,26 @@
                                     <ng-template #file pTemplate="file">
                                     </ng-template>
                                     <ng-template pTemplate="content">
-                                        <md-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
-                                            <md-grid-tile>
+                                        <mat-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
+                                            <mat-grid-tile>
                                                 <div style="position: absolute; cursor: pointer;">
-                                                    <md-icon style="color: black;">close</md-icon>
+                                                    <mat-icon style="color: black;">close</mat-icon>
                                                 </div>
                                                 <img src="{{config.apiUrl + image.value}}" width="150" (error)="imgErrorHandler($event)">
-                                            </md-grid-tile>
-                                        </md-grid-list>
+                                            </mat-grid-tile>
+                                        </mat-grid-list>
                                     </ng-template>
                                 </p-fileUpload>
                             </div>
                         </div>
-                        <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                            <textarea mdInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true" class="title"></textarea>
-                            <md-hint align="end">{{description.value.length}} / 500</md-hint>
-                        </md-input-container>
-                        <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                            <textarea mdInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?" class="title" [required]="true"></textarea>
-                            <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
-                        </md-input-container>
+                        <mat-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                            <textarea matInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true" class="title"></textarea>
+                            <mat-hint align="end">{{description.value.length}} / 500</mat-hint>
+                        </mat-input-container>
+                        <mat-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                            <textarea matInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?" class="title" [required]="true"></textarea>
+                            <mat-hint align="end">{{prerequisites.value.length}} / 500</mat-hint>
+                        </mat-input-container>
                         <div class="form-group">
                             <label class="display-block title">Add supporting material</label>
                             <p-fileUpload #fubauto name="file" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadAttachments($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse">
@@ -60,25 +60,25 @@
                                 <ng-template #file pTemplate="file">
                                 </ng-template>
                                 <ng-template pTemplate="content">
-                                    <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachments.length">
-                                        <md-grid-tile *ngFor="let file of attachments">
+                                    <mat-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachments.length">
+                                        <mat-grid-tile *ngFor="let file of attachments">
                                             <div style="float: left; margin-right: 15px; cursor: pointer;">
-                                                <md-icon style="color: black;">close</md-icon>
+                                                <mat-icon style="color: black;">close</mat-icon>
                                             </div>
                                             <a href="{{config.apiUrl + file}}">{{file}}</a>
-                                        </md-grid-tile>
-                                    </md-grid-list>
+                                        </mat-grid-tile>
+                                    </mat-grid-list>
                                 </ng-template>
                             </p-fileUpload>
                         </div>
                     </div>
                 </div>
-            </md-dialog-content>
-            <md-dialog-actions>
-                <button md-raised-button [md-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length==0 && description.value.length == 0 && prerequisites.value.length == 0">Save</button> &emsp;
-                <button md-raised-button [md-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
-                <button md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
-                <button md-button [md-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
-            </md-dialog-actions>
+            </mat-dialog-content>
+            <mat-dialog-actions>
+                <button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length==0 && description.value.length == 0 && prerequisites.value.length == 0">Save</button> &emsp;
+                <button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
+                <button mat-button [mat-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
+                <button mat-button [mat-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
+            </mat-dialog-actions>
         </form>
     </div>

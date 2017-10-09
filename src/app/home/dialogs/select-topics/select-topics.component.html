@@ -1,10 +1,10 @@
-<div md-dialog-content>
-  <md-list>
-    <md-list-item *ngFor="let topicObj of data">
-      <md-checkbox [(ngModel)]="topicObj.checked">{{topicObj.topic.name | titlecase}}</md-checkbox>
-    </md-list-item>
-  </md-list>
+<div mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let topicObj of data">
+      <mat-checkbox [(ngModel)]="topicObj.checked">{{topicObj.topic.name | titlecase}}</mat-checkbox>
+    </mat-list-item>
+  </mat-list>
 </div>
-<div md-dialog-actions>
-  <button md-raised-button [md-dialog-close]="data" color="accent">Apply</button>
+<div mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]="data" color="accent">Apply</button>
 </div>

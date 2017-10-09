@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@ang
 import { Http, Response, } from '@angular/http';
 import { AppConfig } from '../../app.config';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
-import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
     selector: 'app-workshop-content-online',
@@ -31,8 +31,8 @@ export class WorkshopContentOnlineComponent implements OnInit {
         private http: Http,
         public config: AppConfig,
         private mediaUploader: MediaUploaderService,
-        @Inject(MD_DIALOG_DATA) public inputData: any,
-        public dialogRef: MdDialogRef<WorkshopContentOnlineComponent>
+        @Inject(MAT_DIALOG_DATA) public inputData: any,
+        public dialogRef: MatDialogRef<WorkshopContentOnlineComponent>
     ) {
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;

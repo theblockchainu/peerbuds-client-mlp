@@ -26,12 +26,12 @@
                 <ng-template #topicName>{{collection.topics[0].name}}</ng-template>
                 <ng-template #noTopicText>No Topics</ng-template>
                 <ng-template #ongoingCard>
-                  <md-card style="text-align: center; padding: 20px;" >
-                    <md-card-content>
+                  <mat-card style="text-align: center; padding: 20px;" >
+                    <mat-card-content>
                       <div style="text-align: right">
                         <div class="pull-right">
-                          <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
+                          <a [matMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                            <mat-icon>more_vert</mat-icon>
                           </a>
                         </div>
                       </div>
@@ -47,7 +47,7 @@
                         <span>{{collection.owners[0].profiles[0].headline}} </span>
                       </div>
                       <div class="collectionTitle">{{ collection.title || 'No Title' }} </div>
-                      <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
+                      <mat-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></mat-progress-bar>
                       <div class="collectionSubtitle" >
                         {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Parts | <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                       </div>
@@ -60,23 +60,23 @@
                       <div class="upcomingEventTime">
                         {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type + ' ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord  + ' in ' +  consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' Days' }}
                       </div>
-                    </md-card-content>
-                    <md-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).hasStarted">
-                      <button md-raised-button (click)="onSelect(collection)">{{consoleLearningComponent.getLearnerUpcomingEvent(collection).upcomingEventButtonText}}</button>
-                    </md-card-actions>
+                    </mat-card-content>
+                    <mat-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).hasStarted">
+                      <button mat-raised-button (click)="onSelect(collection)">{{consoleLearningComponent.getLearnerUpcomingEvent(collection).upcomingEventButtonText}}</button>
+                    </mat-card-actions>
                     <br><br>
-                    <!-- <md-card-footer class="cardFooter">
-                      <button md-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
-                    </md-card-footer> -->
-                  </md-card>
+                    <!-- <mat-card-footer class="cardFooter">
+                      <button mat-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
+                    </mat-card-footer> -->
+                  </mat-card>
                 </ng-template>
                 <ng-template #upcomingCard>
-                  <md-card style="text-align: center; padding: 20px;" >
-                    <md-card-content>
+                  <mat-card style="text-align: center; padding: 20px;" >
+                    <mat-card-content>
                       <div style="text-align: right">
                         <div class="pull-right">
-                          <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
+                          <a [matMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                            <mat-icon>more_vert</mat-icon>
                           </a>
                         </div>
                       </div>
@@ -107,15 +107,15 @@
                       <div class="upcomingEventTime">
                         {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type + ' ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord  + ' in ' +  consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' Days' }}
                       </div>
-                    </md-card-content>
-                    <md-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).hasStarted">
-                      <button md-raised-button (click)="onSelect(collection)">{{consoleLearningComponent.getLearnerUpcomingEvent(collection).upcomingEventButtonText}}</button>
-                    </md-card-actions>
+                    </mat-card-content>
+                    <mat-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).hasStarted">
+                      <button mat-raised-button (click)="onSelect(collection)">{{consoleLearningComponent.getLearnerUpcomingEvent(collection).upcomingEventButtonText}}</button>
+                    </mat-card-actions>
                     <br><br>
-                    <!-- <md-card-footer class="cardFooter">
-                      <button md-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
-                    </md-card-footer> -->
-                  </md-card>
+                    <!-- <mat-card-footer class="cardFooter">
+                      <button mat-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
+                    </mat-card-footer> -->
+                  </mat-card>
                 </ng-template>
                 <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'active'">
                   <div *ngIf="consoleLearningComponent.getLearnerCalendar(collection).startDate > now; then ongoingCard else upcomingCard">
@@ -139,12 +139,12 @@
             <div class="row">
               <div *ngFor="let collection of collections.data" [ngSwitch]="collection.status">
                 <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete' || 'canceled'" >
-                  <md-card style="text-align: center; padding: 20px;">
-                    <md-card-content>
+                  <mat-card style="text-align: center; padding: 20px;">
+                    <mat-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
-                          <a md-icon-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
+                          <a md-icon-button [matMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                            <mat-icon>more_vert</mat-icon>
                           </a>
                         </div>
                       </div>
@@ -160,22 +160,22 @@
                         <span>{{collection.owners[0].profiles[0].headline}} </span>
                       </div>
                       <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' }} </div>
-                      <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
+                      <mat-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></mat-progress-bar>
                       <div class="collectionSubtitle" >
                         {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Parts | <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                       </div>
-                    </md-card-content>
-                    <md-card-actions>
-                      <button md-raised-button (click)="consoleLearningComponent.viewWorkshop(collection)">View Details</button>
-                    </md-card-actions>
+                    </mat-card-content>
+                    <mat-card-actions>
+                      <button mat-raised-button (click)="consoleLearningComponent.viewWorkshop(collection)">View Details</button>
+                    </mat-card-actions>
                     <p class="upcomingEventLabel" *ngIf="consoleLearningComponent.peerHasReview(collection)">
                       {{collection.owners[0].profiles[0].first_name}} gave you a review
                     </p>
                     <br><br>
-                    <!-- <md-card-footer class="cardFooter">
-                      <button md-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
-                    </md-card-footer> -->
-                  </md-card>
+                    <!-- <mat-card-footer class="cardFooter">
+                      <button mat-button (click)="consoleLearningComponent.viewReceipt(collection)">Receipt</button>
+                    </mat-card-footer> -->
+                  </mat-card>
                 </div>
               </div>
             </div>
@@ -185,11 +185,11 @@
     </div>
   </div>
 </div>
-<md-menu #collectionCardMenu>
-  <button md-menu-item>
+<mat-menu #collectionCardMenu>
+  <button mat-menu-item>
     Cancel
   </button>
-  <!-- <button md-menu-item>
+  <!-- <button mat-menu-item>
     Message Teacher
   </button> -->
-</md-menu>
+</mat-menu>

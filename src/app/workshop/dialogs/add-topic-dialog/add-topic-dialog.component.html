@@ -1,13 +1,13 @@
 
-<h3 md-dialog-title>Add New Topic</h3>
-<div md-dialog-content>
+<h3 mat-dialog-title>Add New Topic</h3>
+<div mat-dialog-content>
   <form [formGroup]="newTopic" (ngSubmit)="addNewTopic()">
-    <md-form-field class="form-group" [ngClass]="{'has-error':!newTopic.controls['topicName'].valid}">
-      <input mdInput tabindex="1" formControlName="topicName">
-    </md-form-field>
+    <mat-form-field class="form-group" [ngClass]="{'has-error':!newTopic.controls['topicName'].valid}">
+      <input matInput tabindex="1" formControlName="topicName">
+    </mat-form-field>
     <div>
-      <button md-button tabindex="2" type="submit" [disabled]="!newTopic.valid">Add</button>
-      <button md-button tabindex="-1" type="button" (click)="dialogRef.close()">Cancel</button>
+      <button mat-button tabindex="2" type="submit" [disabled]="!newTopic.valid">Add</button>
+      <button mat-button tabindex="-1" type="button" (click)="dialogRef.close()">Cancel</button>
     </div>
   </form>
 </div>

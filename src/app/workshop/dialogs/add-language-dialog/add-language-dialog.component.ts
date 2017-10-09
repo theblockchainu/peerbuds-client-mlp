@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialogRef, MdDialog, MdDialogConfig, MdIconModule, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig, MatIconModule, MAT_DIALOG_DATA } from '@angular/material';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
@@ -13,7 +13,7 @@ import { ContentService } from '../../../_services/content/content.service';
 export class AddLanguageDialogComponent implements OnInit {
   public newLanguage: FormGroup;
 
-  constructor(public dialogRef: MdDialogRef<AddLanguageDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<AddLanguageDialogComponent>,
               public _contentService: ContentService,
               private _fb: FormBuilder) { }
 

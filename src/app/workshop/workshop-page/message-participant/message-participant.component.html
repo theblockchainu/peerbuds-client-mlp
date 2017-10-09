@@ -1,16 +1,16 @@
-<div md-dialog-content class="container">
+<div mat-dialog-content class="container">
   <div class="row" *ngIf="data">
     <div class="col-md-12">
       <h4>Send message to {{data.profiles[0].first_name}}</h4>
     </div>
     <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
       <div class="col-md-12">
-        <md-input-container>
-          <input mdInput type="text" formControlName="message" class="form-control" placeholder="Type something to send...">
-        </md-input-container>
+        <mat-input-container>
+          <input matInput type="text" formControlName="message" class="form-control" placeholder="Type something to send...">
+        </mat-input-container>
       </div>
       <div class="col-md-12">
-        <button type="submit" [disabled]="!messageForm.valid" md-button class="pull-right">Submit</button>
+        <button type="submit" [disabled]="!messageForm.valid" mat-button class="pull-right">Submit</button>
       </div>
     </form>
   </div>

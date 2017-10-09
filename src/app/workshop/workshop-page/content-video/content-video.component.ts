@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CommentService} from '../../../_services/comment/comment.service';
@@ -21,9 +21,9 @@ export class ContentVideoComponent implements OnInit {
 
   constructor(
     public config: AppConfig,
-    @Inject(MD_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public _collectionService: CollectionService,
-    public dialogRef: MdDialogRef<ContentVideoComponent>,
+    public dialogRef: MatDialogRef<ContentVideoComponent>,
     private _fb: FormBuilder,
     private _commentService: CommentService,
   ) {

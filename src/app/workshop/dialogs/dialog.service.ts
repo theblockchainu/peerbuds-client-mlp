@@ -4,7 +4,7 @@ import { AddTopicDialogComponent } from './add-topic-dialog/add-topic-dialog.com
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { AddLanguageDialogComponent } from './add-language-dialog/add-language-dialog.component';
 
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
 import {
   CalendarEvent
@@ -13,10 +13,10 @@ import {
 @Injectable()
 export class DialogsService {
 
-    constructor(private dialog: MdDialog) { }
+    constructor(private dialog: MatDialog) { }
 
     public editCalendar(collection, contents, calendars, allItinerary, participants, events: CalendarEvent[], userId: string, startDate: Date, endDate: Date): Observable<boolean> {
-        let dialogRef: MdDialogRef<EditCalendarDialogComponent>;
+        let dialogRef: MatDialogRef<EditCalendarDialogComponent>;
 
         dialogRef = this.dialog.open(EditCalendarDialogComponent);
 
@@ -34,7 +34,7 @@ export class DialogsService {
     }
 
     public deleteCollection(action) {
-        let dialogRef: MdDialogRef<DeleteDialogComponent>;
+        let dialogRef: MatDialogRef<DeleteDialogComponent>;
 
         dialogRef = this.dialog.open(DeleteDialogComponent);
         dialogRef.componentInstance.action = action;
@@ -44,7 +44,7 @@ export class DialogsService {
     }
 
     public addNewTopic() {
-        let dialogRef: MdDialogRef<AddTopicDialogComponent>;
+        let dialogRef: MatDialogRef<AddTopicDialogComponent>;
 
         dialogRef = this.dialog.open(AddTopicDialogComponent);
 
@@ -53,7 +53,7 @@ export class DialogsService {
     }
 
     public addNewLanguage() {
-        let dialogRef: MdDialogRef<AddLanguageDialogComponent>;
+        let dialogRef: MatDialogRef<AddLanguageDialogComponent>;
 
         dialogRef = this.dialog.open(AddLanguageDialogComponent);
 

@@ -1,7 +1,7 @@
 <app-header></app-header>
 <main>
   <div class="centerFlex">
-    <md-progress-bar *ngIf="loading | async" mode="indeterminate" color="primary" style="top: 64px;position: fixed;"></md-progress-bar>
+    <mat-progress-bar *ngIf="loading | async" mode="indeterminate" color="primary" style="top: 64px;position: fixed;"></mat-progress-bar>
   </div>
   <router-outlet></router-outlet>
 </main>

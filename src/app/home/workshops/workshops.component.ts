@@ -6,7 +6,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { AppConfig } from '../../app.config';
 import _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import 'rxjs/add/operator/do';
@@ -34,7 +34,7 @@ export class WorkshopsComponent implements OnInit {
     private _cookieUtilsService: CookieUtilsService,
     private _topicService: TopicService,
     public config: AppConfig,
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     public elRef: ElementRef
   ) {
     this.userId = _cookieUtilsService.getValue('userId');

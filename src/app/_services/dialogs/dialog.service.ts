@@ -4,16 +4,16 @@ import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 
 
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DialogsService {
 
-    constructor(public dialog: MdDialog) { }
+    constructor(public dialog: MatDialog) { }
 
     public openSignup() {
-        let dialogRef: MdDialogRef<SignupComponentDialog>;
+        let dialogRef: MatDialogRef<SignupComponentDialog>;
 
         dialogRef = this.dialog.open(SignupComponentDialog);
 
@@ -21,7 +21,7 @@ export class DialogsService {
     }
 
     public openLogin() {
-        let dialogRef1: MdDialogRef<LoginComponentDialog>;
+        let dialogRef1: MatDialogRef<LoginComponentDialog>;
 
         dialogRef1 = this.dialog.open(LoginComponentDialog);
 
@@ -29,7 +29,7 @@ export class DialogsService {
     }
 
     public forgotPwd() {
-        let dialogRef3: MdDialogRef<ForgotpwdComponentDialog>;
+        let dialogRef3: MatDialogRef<ForgotpwdComponentDialog>;
 
         dialogRef3 = this.dialog.open(ForgotpwdComponentDialog);
 
@@ -37,7 +37,7 @@ export class DialogsService {
     }
 
     public addCard() {
-        let dialogRef4: MdDialogRef<AddCardDialogComponent>;
+        let dialogRef4: MatDialogRef<AddCardDialogComponent>;
 
         dialogRef4 = this.dialog.open(AddCardDialogComponent, {
             width: '610px',

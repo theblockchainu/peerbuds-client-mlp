@@ -18,7 +18,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import _ from 'lodash';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { WorkshopSubmitDialogComponent } from './workshop-submit-dialog/workshop-submit-dialog.component';
 import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-clone-dialog.component';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
@@ -125,7 +125,7 @@ export class WorkshopEditComponent implements OnInit {
     private mediaUploader: MediaUploaderService,
     private cookieUtilsService: CookieUtilsService,
     public requestHeaderService: RequestHeaderService,
-    private dialog: MdDialog,
+    private dialog: MatDialog,
     private _leftSideBarService: LeftSidebarService,
     private dialogsService: DialogsService
   ) {

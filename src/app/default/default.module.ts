@@ -5,8 +5,8 @@ import { DefaultRoutingModule } from './default-routing.module';
 import { IndexComponent } from './index/index.component';
 import { IndexPhilComponent } from './index-philosophy/index-philosophy.component';
 import {
-    MdButtonModule, MdCardModule, MdIconModule, MdInputModule, MdProgressBarModule, MdSelectModule,
-    MdToolbarModule
+    MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatProgressBarModule, MatSelectModule,
+    MatToolbarModule
 } from '@angular/material';
 
 @NgModule({
@@ -15,13 +15,13 @@ import {
     DefaultRoutingModule, 
     IndexComponent,
     IndexPhilComponent,
-    MdCardModule,
-    MdButtonModule,
-    MdToolbarModule,
-    MdIconModule,
-    MdProgressBarModule,
-    MdInputModule,
-    MdSelectModule
+    MatCardModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatInputModule,
+    MatSelectModule
   ],
   declarations: [IndexComponent]
 })

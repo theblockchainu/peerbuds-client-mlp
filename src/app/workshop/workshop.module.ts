@@ -8,7 +8,6 @@ import { WorkshopContentProjectComponent } from './workshop-content-project/work
 import { WorkshopContentVideoComponent } from './workshop-content-video/workshop-content-video.component';
 import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
-import { } from '@angular/material';
 import 'hammerjs';
 import { WorkshopSubmitDialogComponent } from './workshop-edit/workshop-submit-dialog/workshop-submit-dialog.component';
 import { WorkshopCloneDialogComponent } from './workshop-edit/workshop-clone-dialog/workshop-clone-dialog.component';

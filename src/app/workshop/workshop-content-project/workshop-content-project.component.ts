@@ -3,7 +3,7 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {Http} from '@angular/http';
 import {AppConfig} from '../../app.config';
 import {MediaUploaderService} from '../../_services/mediaUploader/media-uploader.service';
-import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import _ from 'lodash';
 
 @Component({
@@ -29,8 +29,8 @@ export class WorkshopContentProjectComponent implements OnInit {
         private _fb: FormBuilder,
         private http: Http, private config: AppConfig,
         private mediaUploader: MediaUploaderService,
-        @Inject(MD_DIALOG_DATA) public inputData: any,
-        public dialogRef: MdDialogRef<WorkshopContentProjectComponent>
+        @Inject(MAT_DIALOG_DATA) public inputData: any,
+        public dialogRef: MatDialogRef<WorkshopContentProjectComponent>
     ) {
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;

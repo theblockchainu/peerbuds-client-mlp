@@ -7,12 +7,12 @@
     <span class="flex"></span>
 
     <div class="prevNext">
-      <button md-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
-        <md-icon class="" aria-hidden="true">chevron_left</md-icon>
+      <button mat-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+        <mat-icon class="" aria-hidden="true">chevron_left</mat-icon>
       </button>
 
-      <button md-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
-        <md-icon class="" aria-hidden="true">chevron_right</md-icon>
+      <button mat-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+        <mat-icon class="" aria-hidden="true">chevron_right</mat-icon>
       </button>
     </div>
   </div>
@@ -38,6 +38,6 @@
     <span>{{ event.title }}</span>
   </div>
   <div class="prevNext margin-top-20">
-    <button md-raised-button (click)="viewDetails()" color="primary">View Details</button>
+    <button mat-raised-button (click)="viewDetails()" color="primary">View Details</button>
   </div>
 </div>

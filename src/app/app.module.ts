@@ -12,7 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatAutocompleteModule, MatInputModule, MatNativeDateModule, MatProgressSpinnerModule, MatProgressBarModule } from '@angular/material';
 
 import { IndexComponent } from './default/index/index.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
@@ -46,16 +46,16 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     CoreModule,
     ExperienceWizardModule,
     BrowserAnimationsModule,
-    MdCardModule,
-    MdButtonModule,
-    MdMenuModule,
-    MdToolbarModule,
-    MdIconModule,
-    MdAutocompleteModule,
-    MdInputModule,
-    MdNativeDateModule,
-    MdProgressSpinnerModule,
-    MdProgressBarModule,
+    MatCardModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
     DialogsModule,
     AppRoutingModule,
   ],

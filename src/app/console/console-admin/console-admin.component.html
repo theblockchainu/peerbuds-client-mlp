@@ -22,12 +22,12 @@
             <div class="row">
               <div *ngFor="let collection of unapprovedCollections">
                 <div class="col-md-3" style="margin-top: 20px;">
-                  <md-card style="text-align: center; padding: 20px;height: 200px">
-                    <md-card-content style="height: 110px">
+                  <mat-card style="text-align: center; padding: 20px;height: 200px">
+                    <mat-card-content style="height: 110px">
                       <div style="text-align: right">
                         <div class="pull-right">
-                          <a md-icon-button [mdMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
+                          <a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+                            <mat-icon>more_vert</mat-icon>
                           </a>
                         </div>
                       </div>
@@ -36,19 +36,19 @@
                       </div>
                       <br>
                       <div class="collectionTitle" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
-                    </md-card-content>
-                    <md-menu #approvalCardMenu>
-                      <button md-menu-item>
+                    </mat-card-content>
+                    <mat-menu #approvalCardMenu>
+                      <button mat-menu-item>
                         Delete
                       </button>
-                      <button md-menu-item [routerLink]="['/workshop/'+collection.id]">
+                      <button mat-menu-item [routerLink]="['/workshop/'+collection.id]">
                         View Workshop
                       </button>
-                    </md-menu>
-                    <md-card-footer class="cardFooter" style="line-height: 30px">
-                      <button md-button (click)="approveWorkshop(collection)">Approve</button>
-                    </md-card-footer>
-                  </md-card>
+                    </mat-menu>
+                    <mat-card-footer class="cardFooter" style="line-height: 30px">
+                      <button mat-button (click)="approveWorkshop(collection)">Approve</button>
+                    </mat-card-footer>
+                  </mat-card>
                 </div>
               </div>
             </div>

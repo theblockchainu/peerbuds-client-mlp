@@ -1,28 +1,28 @@
 <div class="row" style="margin-top: 20px;">
   <div class="col-md-3">
-    <md-list>
-      <!-- <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
+    <mat-list>
+      <!-- <mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
         View All
-      </md-list-item> -->
-      <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
+      </mat-list-item> -->
+      <mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
           Workshops
-      </md-list-item>
-      <!-- <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
+      </mat-list-item>
+      <!-- <mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
         Experiences
-      </md-list-item> -->
-      <!-- <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
+      </mat-list-item> -->
+      <!-- <mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
         Sessions
-      </md-list-item> -->
-      <md-list-item *ngIf="getActiveTab() === 'workshops' ">
-        <button md-raised-button (click)="createWorkshop()" color="primary">New Workshop</button>
-      </md-list-item>
-      <md-list-item *ngIf="activeTab === 'experiences'">
-        <button md-raised-button (click)="createExperience()" color="primary">New Experience</button>
-      </md-list-item>
-      <md-list-item *ngIf="getActiveTab() === 'sessions'">
-        <button md-raised-button (click)="enableSessions()" color="primary">Enable Sessions</button>
-      </md-list-item>
-    </md-list>
+      </mat-list-item> -->
+      <mat-list-item *ngIf="getActiveTab() === 'workshops' ">
+        <button mat-raised-button (click)="createWorkshop()" color="primary">New Workshop</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="activeTab === 'experiences'">
+        <button mat-raised-button (click)="createExperience()" color="primary">New Experience</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="getActiveTab() === 'sessions'">
+        <button mat-raised-button (click)="enableSessions()" color="primary">Enable Sessions</button>
+      </mat-list-item>
+    </mat-list>
   </div>
   <div class="col-md-9">
     <router-outlet></router-outlet>

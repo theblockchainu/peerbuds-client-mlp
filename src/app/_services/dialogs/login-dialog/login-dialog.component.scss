@@ -1,13 +1,13 @@
-md-dialog-container {
+mat-dialog-container {
     padding:10px !important;
 }
-md-input-container md-icon {
+mat-input-container mat-icon {
     position: absolute;
     top: 5px;
     left: 2px;
     }
 
-md-dialog-content {
+mat-dialog-content {
     display: block;   
     margin: 0 -67px 0 -67px;
     max-height: 50vh;

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ForgotpwdComponentDialog } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AppConfig } from '../../../app.config';
 
@@ -35,10 +35,10 @@ export class LoginComponentDialog implements OnInit {
     public router: Router,
     public authenticationService: AuthenticationService,
     private alertService: AlertService,
-    public dialogRef: MdDialogRef<LoginComponentDialog>,
+    public dialogRef: MatDialogRef<LoginComponentDialog>,
     private _fb: FormBuilder,
     public config: AppConfig,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
     }
 

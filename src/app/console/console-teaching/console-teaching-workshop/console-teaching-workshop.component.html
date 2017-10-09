@@ -23,12 +23,12 @@
           <div style="margin-top:20px;" class="col-md-12">
             <div class="row">
               <div *ngFor="let collection of ongoingArray" class="col-md-4" style="margin-top: 20px;">
-                <md-card class="upcoming-card">
-                  <md-card-content>
+                <mat-card class="upcoming-card">
+                  <mat-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
-                        <a md-icon-button [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
-                          <md-icon>more_vert</md-icon>
+                        <a mat-icon-button [matMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
+                          <mat-icon>more_vert</mat-icon>
                         </a>
                       </div>
                     </div>
@@ -48,7 +48,7 @@
                     </div>
                     <br>
                     <div class="collectionTitle" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
-                    <!-- <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar> -->
+                    <!-- <mat-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></mat-progress-bar> -->
                     <div class="collectionSubtitle" (click)="_collectionService.openCollection(collection)">
                       {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
@@ -77,32 +77,32 @@
                               + ' was ' + -(_collectionService.getUpcomingEvent(collection).timeToStart) + ' Days ago' }}
                             </div>
                     </span>
-                  </md-card-content>
-                  <md-menu #ongoingCardMenu>
-                    <button md-menu-item>
+                  </mat-card-content>
+                  <mat-menu #ongoingCardMenu>
+                    <button mat-menu-item>
                         Delete
                       </button>
 
-                    <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
+                    <button mat-menu-item (click)="_collectionService.openEditWorkshop(collection)">
                         Edit Workshop
                       </button>
-                  </md-menu>
-                  <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
-                    <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
-                  </md-card-actions>
+                  </mat-menu>
+                  <mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
+                    <button mat-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
+                  </mat-card-actions>
                   <br><br>
-                  <md-card-footer class="cardFooter" style="margin-top: -4px">
-                    <button md-button [routerLink]="['/workshop/'+collection.id+'/calendar/'+collection.calendars[0].id]">Continue Teaching</button>
-                  </md-card-footer>
-                </md-card>
+                  <mat-card-footer class="cardFooter" style="margin-top: -4px">
+                    <button mat-button [routerLink]="['/workshop/'+collection.id+'/calendar/'+collection.calendars[0].id]">Continue Teaching</button>
+                  </mat-card-footer>
+                </mat-card>
               </div>
               <div *ngFor="let collection of upcomingArray" class="col-md-4" style="margin-top: 20px;">
-                <md-card class="upcoming-card">
-                  <md-card-content>
+                <mat-card class="upcoming-card">
+                  <mat-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
-                        <a md-icon-button [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
-                          <md-icon>more_vert</md-icon>
+                        <a mat-icon-button [matMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
+                          <mat-icon>more_vert</mat-icon>
                         </a>
                       </div>
                     </div>
@@ -141,23 +141,23 @@
                       {{ _collectionService.getUpcomingEvent(collection).type + ' ' + _collectionService.getUpcomingEvent(collection).fillerWord
                       + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
                     </div>
-                  </md-card-content>
-                  <md-menu #upcomingCardMenu>
-                    <button md-menu-item>
+                  </mat-card-content>
+                  <mat-menu #upcomingCardMenu>
+                    <button mat-menu-item>
                           Delete
                         </button>
-                    <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
+                    <button mat-menu-item (click)="_collectionService.openEditWorkshop(collection)">
                           Edit Workshop
                         </button>
-                  </md-menu>
-                  <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
-                    <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
-                  </md-card-actions>
+                  </mat-menu>
+                  <mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
+                    <button mat-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
+                  </mat-card-actions>
                   <br><br>
-                  <md-card-footer class="cardFooter" style="line-height: 30px">
+                  <mat-card-footer class="cardFooter" style="line-height: 30px">
                     <a style="font-size: 1.077rem" (click)="_collectionService.viewWorkshop(collection)">Is this a recurring workshop?</a>
-                  </md-card-footer>
-                </md-card>
+                  </mat-card-footer>
+                </mat-card>
               </div>
             </div>
           </div>
@@ -175,18 +175,18 @@
             <div class="row">
               <div *ngFor="let collection of drafts" [ngSwitch]="collection.status">
                 <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'draft'">
-                  <md-card style="text-align: center; padding: 20px;">
-                    <md-card-content>
+                  <mat-card style="text-align: center; padding: 20px;">
+                    <mat-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
-                          <button md-icon-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
+                          <button mat-icon-button [matMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
+                            <mat-icon>more_vert</mat-icon>
                           </button>
                         </div>
                       </div>
                       <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
                       <ng-template #draftMessage>
-                        <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
+                        <mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
                         <p class="lightText" style="margin-top:20px">
                           You still have to complete filling up your workshop details
                         </p>
@@ -197,36 +197,36 @@
                         </p>
                       </ng-template>
                       <span *ngIf="collection.status == 'draft'; then draftMessage else submittedMessage"></span>
-                    </md-card-content>
-                    <md-card-actions>
-                      <button md-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
-                    </md-card-actions>
-                    <md-card-footer>
+                    </mat-card-content>
+                    <mat-card-actions>
+                      <button mat-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+                    </mat-card-actions>
+                    <mat-card-footer>
 
-                    </md-card-footer>
-                  </md-card>
-                  <md-menu #draftCardMenu>
-                    <button md-menu-item>
+                    </mat-card-footer>
+                  </mat-card>
+                  <mat-menu #draftCardMenu>
+                    <button mat-menu-item>
                       Delete
                     </button>
-                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                    <button mat-menu-item (click)="_collectionService.viewWorkshop(collection)">
                       View Workshop
                     </button>
-                  </md-menu>
+                  </mat-menu>
                 </div>
                 <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'submitted'">
-                  <md-card style="text-align: center; padding: 20px;">
-                    <md-card-content>
+                  <mat-card style="text-align: center; padding: 20px;">
+                    <mat-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
-                          <a md-icon-button [mdMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
+                          <a mat-icon-button [matMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
+                            <mat-icon>more_vert</mat-icon>
                           </a>
                         </div>
                       </div>
                       <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
                       <ng-template #draftMessage>
-                        <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
+                        <mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
                         <p class="lightText" style="margin-top:20px">
                           You still have to complete filling up your workshop details
                         </p>
@@ -237,22 +237,22 @@
                         </p>
                       </ng-template>
                       <span *ngIf="collection.status == 'draft'; then draftMessage else submittedMessage"></span>
-                    </md-card-content>
-                    <md-card-actions>
-                      <button md-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
-                    </md-card-actions>
-                    <md-card-footer>
+                    </mat-card-content>
+                    <mat-card-actions>
+                      <button mat-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+                    </mat-card-actions>
+                    <mat-card-footer>
 
-                    </md-card-footer>
-                  </md-card>
-                  <md-menu #draftCardMenu>
-                    <button md-menu-item>
+                    </mat-card-footer>
+                  </mat-card>
+                  <mat-menu #draftCardMenu>
+                    <button mat-menu-item>
                       Delete
                     </button>
-                    <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                    <button mat-menu-item (click)="_collectionService.viewWorkshop(collection)">
                       View Workshop
                     </button>
-                  </md-menu>
+                  </mat-menu>
                 </div>
               </div>
             </div>
@@ -273,12 +273,12 @@
                 <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
                 <ng-template #noTopicText>No Topics</ng-template>
                 <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete' || 'canceled'">
-                  <md-card style="text-align: center; padding: 20px;">
-                    <md-card-content>
+                  <mat-card style="text-align: center; padding: 20px;">
+                    <mat-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
-                          <a md-icon-button [mdMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
-                            <md-icon>more_vert</md-icon>
+                          <a mat-icon-button [matMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
+                            <mat-icon>more_vert</mat-icon>
                           </a>
                         </div>
                       </div>
@@ -304,25 +304,25 @@
                       <div class="teachingRatingReminder" (click)="consoleTeachingComponent.showRateStudentsPopup()">
                         Rate your students now
                       </div>
-                    </md-card-content>
-                    <md-menu #pastCardMenu>
-                      <button md-menu-item>
+                    </mat-card-content>
+                    <mat-menu #pastCardMenu>
+                      <button mat-menu-item>
                         Delete
                       </button>
-                      <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
+                      <button mat-menu-item (click)="_collectionService.viewWorkshop(collection)">
                         View Workshop
                       </button>
-                    </md-menu>
-                    <md-card-actions>
-                      <button md-raised-button [routerLink]="['/workshop/'+collection.id+'/calendar/'+collection.calendars[0].id]">
+                    </mat-menu>
+                    <mat-card-actions>
+                      <button mat-raised-button [routerLink]="['/workshop/'+collection.id+'/calendar/'+collection.calendars[0].id]">
                         View Details
                       </button>
-                    </md-card-actions>
+                    </mat-card-actions>
                     <br><br>
-                    <!-- <md-card-footer class="cardFooter">
-                      <button md-button (click)="_collectionService.viewTransactions()">View Transactions</button>
-                    </md-card-footer> -->
-                  </md-card>
+                    <!-- <mat-card-footer class="cardFooter">
+                      <button mat-button (click)="_collectionService.viewTransactions()">View Transactions</button>
+                    </mat-card-footer> -->
+                  </mat-card>
                 </div>
               </div>
             </div>

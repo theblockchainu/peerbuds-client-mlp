@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
-import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
@@ -202,7 +202,7 @@ export class WorkshopPageComponent implements OnInit {
     private _commentService: CommentService,
     public config: AppConfig,
     private _fb: FormBuilder,
-    private dialog: MdDialog,
+    private dialog: MatDialog,
     private dialogsService: DialogsService
   ) {
     this.activatedRoute.params.subscribe(params => {

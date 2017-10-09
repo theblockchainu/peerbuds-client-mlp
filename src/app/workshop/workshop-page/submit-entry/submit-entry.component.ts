@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Http, Response, } from '@angular/http';
-import { MdDialogRef, MD_DIALOG_DATA, MdDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
 import { FileUploadModule } from 'primeng/primeng';
@@ -33,8 +33,8 @@ export class SubmitEntryComponent implements OnInit {
   public maxTopicMsg = 'Choose max 3 related tags';
 
   constructor(public config: AppConfig,
-    @Inject(MD_DIALOG_DATA) public data: any,
-    public dialog: MdDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog,
     private _fb: FormBuilder, public http: Http,
     private mediaUploader: MediaUploaderService,
     public projectSubmissionService: ProjectSubmissionService

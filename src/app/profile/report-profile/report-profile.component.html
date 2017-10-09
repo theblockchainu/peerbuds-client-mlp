@@ -1,11 +1,11 @@
-<h1 md-dialog-title>Report User</h1>
-<div md-dialog-content>
+<h1 mat-dialog-title>Report User</h1>
+<div mat-dialog-content>
   <p>Please Specify the reason for which you want to report this profile</p>
-  <md-form-field>
-    <input mdInput type="text" [(ngModel)]="reason">
-  </md-form-field>
+  <mat-form-field>
+    <input matInput type="text" [(ngModel)]="reason">
+  </mat-form-field>
 </div>
-<div md-dialog-actions>
-  <button md-button [md-dialog-close]="reason" tabindex="2">Report</button>
-  <button md-button [md-dialog-close] tabindex="-1">Cancel</button>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="reason" tabindex="2">Report</button>
+  <button mat-button [mat-dialog-close] tabindex="-1">Cancel</button>
 </div>

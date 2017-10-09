@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { MultiselectAutocomplete } from './multiselect-autocomplete.component';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 
@@ -9,7 +9,7 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
     imports: [
         CommonModule,
         FormsModule,
-        MdIconModule,
+        MatIconModule,
         LoadingModule.forRoot({
             animationType: ANIMATION_TYPES.threeBounce,
             backdropBackgroundColour: 'rgba(0,0,0,0)',

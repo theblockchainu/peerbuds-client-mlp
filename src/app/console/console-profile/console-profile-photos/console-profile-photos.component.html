@@ -16,16 +16,16 @@
             </div>
             <!-- <div class="uploadContainer">
               <div style="margin-bottom: 15px">
-                <md-icon color="#cccccc">cloud_upload</md-icon>
+                <mat-icon color="#cccccc">cloud_upload</mat-icon>
               </div>
               <div>
-                <button md-raised-button color="primary">
+                <button mat-raised-button color="primary">
                   Upload from computer
                 </button>
               </div>
               <br>
               <div>
-                <button md-button>
+                <button mat-button>
                   Upload from webcam
                 </button>
               </div>
@@ -40,7 +40,7 @@
               <ng-template pTemplate="content">
                 <div *ngIf="picture_url">
                   <div style="cursor: pointer;">
-                    <md-icon (click)="deleteFromContainer(picture_url, 'image')" style="color: black;">close</md-icon>
+                    <mat-icon (click)="deleteFromContainer(picture_url, 'image')" style="color: black;">close</mat-icon>
                   </div>
                   <img class="uploaded_picture" src="{{config.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
 
@@ -59,16 +59,16 @@
             </div>
             <!-- <div class="uploadContainer">
               <div style="margin-bottom: 15px">
-                <md-icon color="#cccccc">cloud_upload</md-icon>
+                <mat-icon color="#cccccc">cloud_upload</mat-icon>
               </div>
               <div>
-                <button md-raised-button color="primary">
+                <button mat-raised-button color="primary">
                   Upload from computer
                 </button>
               </div>
               <br>
               <div>
-                <button md-button>
+                <button mat-button>
                   Upload from webcam
                 </button>
               </div>
@@ -83,7 +83,7 @@
               <ng-template pTemplate="content">
                 <div *ngIf="profile_video">
                   <div style="cursor: pointer;">
-                    <md-icon (click)="deleteFromContainer(profile_video,'video')" style="color: black;">close</md-icon>
+                    <mat-icon (click)="deleteFromContainer(profile_video,'video')" style="color: black;">close</mat-icon>
                   </div>
                   <video width="150" style="border: 0.5px solid #ccc" preload="metadata">
                     <source src="{{config.apiUrl + profile_video}}"> Your browser does not support the video tag.

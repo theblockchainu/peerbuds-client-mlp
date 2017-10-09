@@ -22,36 +22,12 @@
             <p class="description1 margin-bottom-40">To learn more about why we require copy of your ID and what types of ID we accept, <a href="#">review our ID policy</a></p>
             <div class="bottom-section clearfix">
               <div class="pull-right">
-                <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
-                <button md-raised-button color="accent" (click)="continue(2)">Continue</button>
+                <button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
+                <button mat-raised-button color="accent" (click)="continue(2)">Continue</button>
               </div>
             </div>
           </form>
         </div> <!-- step 1 ends -->
-        <!-- <div class="step-2" [hidden]="step!=2">
-          <form [formGroup]="peer">
-            <div class="section-header">Confirm your identity</div>
-            <p class="fs-16 fw-bold">To upload a photo or scan of an ID:</p>
-            <ol>
-              <li>Coverup anything we don't need to see on your ID, like your address or Social Security number</li>
-              <li>Scan or take a close-up photo of your ID so that the information on it can be easily read</li>
-              <li>Click "Choose file" below to upload your ID</li>
-            </ol>
-            <span class="label label-warning" [hidden]="!idProofImagePending">Pending</span>
-            <span class="label label-success" [hidden]="idProofImagePending">Success</span>
-            <div>
-              <p-fileUpload name="image" #idproof mode="basic" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-                chooseLabel="Choose File"></p-fileUpload>
-            </div>
-            <div class="bottom-section clearfix">
-              <div class="pull-right">
-                <button md-raised-button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
-                <button md-raised-button class="btn btn-primary" (click)="continue(3)" [disabled]="idProofImagePending">Continue</button>
-              </div>
-            </div>
-          </form>
-        </div>  -->
-        <!-- step 2 ends -->
         <div class="step-2" [hidden]="step!=2">
           <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
             <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
@@ -59,14 +35,14 @@
           <form [formGroup]="peer">
             <h2 class="headline">How can we reach you securely?</h2>
             <p class="description1 margin-bottom-40">Please let us know how we can reach you by email. To help keep your Peerbuds account secure, make sure only you can log into this email address.</p>
-            <md-input-container style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
+            <mat-input-container style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
               <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" /> -->
-              <input type="text" mdInput #email formControlName="email" placeholder="Email Address"/>
-            </md-input-container>
+              <input type="text" matInput #email formControlName="email" placeholder="Email Address"/>
+            </mat-input-container>
             <div class="bottom-section clearfix">
               <div class="pull-right">
-                <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
-                <button md-raised-button color="accent" (click)="continue(3)" [disabled]="email.value.length == 0">Continue</button>
+                <button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
+                <button mat-raised-button color="accent" (click)="continue(3)" [disabled]="email.value.length == 0">Continue</button>
               </div>
             </div>
           </form>
@@ -83,9 +59,9 @@
               <label class="display-block margin-bottom-0"><strong>OTP</strong></label>
               <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" />
             </div> -->
-            <md-input-container style="width:20% !important" class="pb-block margin-bottom-10 ">
-                <input type="text" mdInput #inputOTP formControlName="inputOTP"/>
-            </md-input-container>
+            <mat-input-container style="width:20% !important" class="pb-block margin-bottom-10 ">
+                <input type="text" matInput #inputOTP formControlName="inputOTP"/>
+            </mat-input-container>
             <div>
               <p class="description1"> <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before<br/>
               requesting another code or <a style="cursor: pointer;" (click)="continue(2)">Change Email</a></p>
@@ -93,8 +69,8 @@
             </div>
             <div class="bottom-section clearfix margin-top-100">
               <div class="pull-right">
-                <a md-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding']">Skip</a>
-                <button md-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length == 0">Verify Email</button>
+                <a mat-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding']">Skip</a>
+                <button mat-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length == 0">Verify Email</button>
               </div>
             </div>
           </form>

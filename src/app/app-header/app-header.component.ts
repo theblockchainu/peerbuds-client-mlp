@@ -9,7 +9,7 @@ import { Http } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 
-import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import {AppNotificationDialogComponent} from './dialogs/app-notification-dialog/app-notification-dialog.component';
@@ -45,7 +45,7 @@ export class AppHeaderComponent implements OnInit {
               private _cookieService: CookieService,
               private _profileService: ProfileService,
               private router: Router,
-              private dialog: MdDialog,
+              private dialog: MatDialog,
               private _notificationService: NotificationService,
               private dialogsService: DialogsService) {
                 this.isLoggedIn = authService.isLoggedIn();

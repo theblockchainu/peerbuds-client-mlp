@@ -6,7 +6,7 @@ import { ConsoleTeachingComponent } from '../console-teaching.component';
 import { AppConfig } from '../../../app.config';
 import * as _ from 'lodash';
 declare var moment: any;
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { CohortDetailDialogComponent } from './cohort-detail-dialog/cohort-detail-dialog.component';
 
 @Component({
@@ -32,7 +32,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     public _collectionService: CollectionService,
     public router: Router,
     public config: AppConfig,
-    public dialog: MdDialog
+    public dialog: MatDialog
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {

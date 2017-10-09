@@ -12,14 +12,14 @@
                     <h4>{{profileObj.headline}}</h4>
                 </div>
                 <!-- <div class="col-md-12">
-                    <button md-button>Message</button>
+                    <button mat-button>Message</button>
                 </div> -->
             </div>
             <hr>
             <div class="row" style="padding-top: 10px;
             padding-bottom: 10px;">
                 <div class="col-md-1">
-                    <md-icon>mic_none</md-icon>
+                    <mat-icon>mic_none</mat-icon>
                 </div>
                 <div class="col-md-10">
                     <p>
@@ -27,9 +27,9 @@
                     </p>
                 </div>
                 <div class="col-md-1">
-                    <md-icon>
+                    <mat-icon>
                         location_on
-                    </md-icon>
+                    </mat-icon>
                 </div>
                 <div class="col-md-10">
                     <p>
@@ -52,11 +52,11 @@
                     <h3>Interest</h3>
                 </div>
                 <div class="col-md-12">
-                    <md-chip-list>
+                    <mat-chip-list>
                         <span *ngFor="let interest of interestsArray;let i=index">
-                                        <md-chip *ngIf="i<maxVisibleInterest">{{interest}}</md-chip>
+                                        <mat-chip *ngIf="i<maxVisibleInterest">{{interest}}</mat-chip>
                                 </span>
-                    </md-chip-list>
+                    </mat-chip-list>
                     <span *ngIf="interestsArray.length>3">
                             <span *ngIf="interestsArray.length>maxVisibleInterest">
                                     <a (click)="toggleMaxInterest()"> +more </a>
@@ -119,7 +119,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
-                                    <md-icon style="font-size: 35px;">work</md-icon>
+                                    <mat-icon style="font-size: 35px;">work</mat-icon>
                                 </div>
                                 <div class="col-md-11">
                                     <span style="font-size: 15px;font-weight: bolder;">Work Experience</span>
@@ -130,7 +130,7 @@
                                     <div class="row">
                                         <div class="col-md-12 work-title">
                                             <span style="font-size: 16px;font-weight: bolder;">{{workObj.position}} </span>                                            &emsp;
-                                            <md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon> <span class="lighttext" style="font-size: 15px;"> {{workObj.company}}</span>
+                                            <mat-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</mat-icon> <span class="lighttext" style="font-size: 15px;"> {{workObj.company}}</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -148,7 +148,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
-                                    <md-icon style="font-size: 35px;">school</md-icon>
+                                    <mat-icon style="font-size: 35px;">school</mat-icon>
                                 </div>
                                 <div class="col-md-11">
                                     <span style="font-size: 15px;font-weight: bolder;">Education</span>
@@ -215,31 +215,31 @@
         <div class="col-md-3 right-panel" *ngIf="isTeacher">
             <div class="row">
                 <div class="col-md-12">
-                    <md-tab-group>
-                        <!-- <md-tab label="Session">
+                    <mat-tab-group>
+                        <!-- <mat-tab label="Session">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p>No Sessions</p>
                                         </div>
                                     </div>
-                                </md-tab>
-                                <md-tab label="Experience">
+                                </mat-tab>
+                                <mat-tab label="Experience">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p>No Experiences</p>
                                         </div>
                                     </div>
-                                </md-tab> -->
-                        <md-tab label="Workshops">
+                                </mat-tab> -->
+                        <mat-tab label="Workshops">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <md-accordion>
-                                        <md-expansion-panel *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index" hideToggle="true">
-                                            <md-expansion-panel-header>
-                                                <md-panel-title>
+                                    <mat-accordion>
+                                        <mat-expansion-panel *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index" hideToggle="true">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
                                                     {{collectionObj.title}}
-                                                </md-panel-title>
-                                            </md-expansion-panel-header>
+                                                </mat-panel-title>
+                                            </mat-expansion-panel-header>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
@@ -248,7 +248,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12" *ngIf="collectionObj.contents">
-                                                    <span>{{collectionObj.itenaryArray.length}} days / {{collectionObj.totalDuration}} Hours &emsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon>{{collectionObj.contents.length}} parts</span>
+                                                    <span>{{collectionObj.itenaryArray.length}} days / {{collectionObj.totalDuration}} Hours &emsp;<mat-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</mat-icon>{{collectionObj.contents.length}} parts</span>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -258,7 +258,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button md-raised-button class="center-block" [routerLink]="['/workshop',collectionObj.id]" color="accent">See Dates</button>
+                                                    <button mat-raised-button class="center-block" [routerLink]="['/workshop',collectionObj.id]" color="accent">See Dates</button>
                                                 </div>
                                             </div>
                                             <!--TIMELINE-->
@@ -291,12 +291,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </md-expansion-panel>
-                                    </md-accordion>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
                                 </div>
                             </div>
-                        </md-tab>
-                    </md-tab-group>
+                        </mat-tab>
+                    </mat-tab-group>
                 </div>
             </div>
         </div>
@@ -308,11 +308,11 @@
                     <h4>Leanring Journey</h4>
                 </div>
                 <div class="col-md-2">
-                    <!-- <md-select>
-                        <md-option *ngFor="let collection of collectionTypes" [value]="collection">
+                    <!-- <mat-select>
+                        <mat-option *ngFor="let collection of collectionTypes" [value]="collection">
                             {{ collection }}
-                        </md-option>
-                    </md-select> -->
+                        </mat-option>
+                    </mat-select> -->
                     <a class="pull-right" [routerLink]="'/home/workshops'">
                         <h4>See all</h4>
                     </a>

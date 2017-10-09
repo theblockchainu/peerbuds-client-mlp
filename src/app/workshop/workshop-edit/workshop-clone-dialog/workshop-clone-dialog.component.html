@@ -1,15 +1,15 @@
-<h1 md-dialog-title>Active Workshop Warning</h1>
-<button md-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [md-dialog-close]="'close'">
-  <md-icon style="color: #777777; font-size: 20px;">close</md-icon>
+<h1 mat-dialog-title>Active Workshop Warning</h1>
+<button mat-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [mat-dialog-close]="'close'">
+  <mat-icon style="color: #777777; font-size: 20px;">close</mat-icon>
 </button>
-<md-dialog-content>
+<mat-dialog-content>
   <div style="margin-top: 50px; margin-bottom: 40px;">
     You are editing an active workshop!
     <br><br>
     We will create a new copy of your current workshop with all your changes which will be in draft status.
   </div>
-</md-dialog-content>
-<md-dialog-actions>
-  <button md-raised-button [md-dialog-close]="'accept'" color="accent">Accept</button> &emsp;
-  <button md-raised-button [md-dialog-close]="'reject'">No, Thanks</button>
-</md-dialog-actions>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]="'accept'" color="accent">Accept</button> &emsp;
+  <button mat-raised-button [mat-dialog-close]="'reject'">No, Thanks</button>
+</mat-dialog-actions>

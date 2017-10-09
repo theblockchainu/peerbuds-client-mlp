@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA, MdDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import { Http, Response, } from '@angular/http';
 import { SubmitEntryComponent } from '../submit-entry/submit-entry.component';
@@ -19,8 +19,8 @@ export class ContentProjectComponent implements OnInit {
   public publicSubmissionCount = 0;
 
   constructor(public config: AppConfig,
-    @Inject(MD_DIALOG_DATA) public data: any,
-    public dialog: MdDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog,
     public projectSubmissionService: ProjectSubmissionService
   ) {
     if (data.content.submissions !== undefined) {

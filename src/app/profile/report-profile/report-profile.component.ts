@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-report-profile',
@@ -11,7 +11,7 @@ export class ReportProfileComponent implements OnInit {
   public reason: string;
 
   constructor(
-    public dialogRef: MdDialogRef<ReportProfileComponent>,
+    public dialogRef: MatDialogRef<ReportProfileComponent>,
   ) { }
 
 

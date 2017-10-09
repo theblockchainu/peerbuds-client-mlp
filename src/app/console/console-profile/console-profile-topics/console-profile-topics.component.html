@@ -11,30 +11,30 @@
       <div>
         <div style="margin-top:20px;" class="col-md-12">
           <div class="row" style="margin-right: 20px;">
-            <md-tab-group>
-              <md-tab label="Topics Learning">
+            <mat-tab-group>
+              <mat-tab label="Topics Learning">
                 <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
                   Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics
                   you learn about will be visible both here and on your public profile.
                 </div>
                 <div class="row">
                   <div class="col-md-8">
-                    <md-expansion-panel #expansionpanelLearning>
-                      <md-expansion-panel-header>
-                        <md-panel-title>
+                    <mat-expansion-panel #expansionpanelLearning>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
                           + Follow More Topics
-                        </md-panel-title>
-                      </md-expansion-panel-header>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
                       <div class="row">
                         <div class="col-md-8">
                           <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [searchUrl]=searchTopicURL
                             [title]=placeholderStringTopic></multiselect-autocomplete>
                         </div>
                         <div class="col-md-4">
-                          <button md-raised-button (click)="AddTopics('learning')" color="primary">Add</button>
+                          <button mat-raised-button (click)="AddTopics('learning')" color="primary">Add</button>
                         </div>
                       </div>
-                    </md-expansion-panel>
+                    </mat-expansion-panel>
                   </div>
                 </div>
                 <br>
@@ -47,7 +47,7 @@
                             <h4>{{topic['name']}}</h4>
                           </div>
                           <button class="topic-delete-button pull-right" (click)="unfollowTopic(topic)" md-icon-button color="warn">
-                              <md-icon class="md-24" style="font-size: 100%;" >close</md-icon>
+                              <mat-icon class="md-24" style="font-size: 100%;" >close</mat-icon>
                               </button>
                         </div>
                       </div>
@@ -55,33 +55,33 @@
                   </div>
                 </div>
 
-              </md-tab>
-              <md-tab label="Topics Teaching">
+              </mat-tab>
+              <mat-tab label="Topics Teaching">
                 <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
                   Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics
                   you learn about will be visible both here and on your public profile.
                 </div>
                 <div class="row">
                   <div class="col-md-8">
-                    <md-expansion-panel #expansionpanelTeaching>
-                      <md-expansion-panel-header>
-                        <md-panel-title>
+                    <mat-expansion-panel #expansionpanelTeaching>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
                           + Follow More Topics
-                        </md-panel-title>
-                      </md-expansion-panel-header>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
                       <div class="row">
                         <div class="col-md-8">
                           <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [searchUrl]=searchTopicURL
                             [title]=placeholderStringTopic></multiselect-autocomplete>
                         </div>
                         <div class="col-md-4">
-                          <button md-raised-button (click)="AddTopics('teaching')" color="primary">Add</button>
+                          <button mat-raised-button (click)="AddTopics('teaching')" color="primary">Add</button>
                         </div>
                       </div>
-                    </md-expansion-panel>
+                    </mat-expansion-panel>
                   </div>
                   <div class="col-md-4">
-                    <button md-raised-button (click)="updateChanges()" color="primary">Update Changes</button>
+                    <button mat-raised-button (click)="updateChanges()" color="primary">Update Changes</button>
                   </div>
                 </div>
                 <br>
@@ -94,21 +94,21 @@
                             {{topic['name']}}
                           </div>
                           <div class="col-md-12">
-                            <md-input-container class="pb-block" style="margin-bottom: 20px">
-                              <button class="md-24 pull-right" (click)="stopTeachingTopic(topic)" md-icon-button color="warn">
-                                    <md-icon class="md-24" style="font-size: 100%;" >close</md-icon>
+                            <mat-input-container class="pb-block" style="margin-bottom: 20px">
+                              <button class="md-24 pull-right" (click)="stopTeachingTopic(topic)" mat-icon-button color="warn">
+                                    <mat-icon class="md-24" style="font-size: 100%;" >close</mat-icon>
                                     </button>
-                              <input mdInput #headline name="experience" maxlength="100" [(ngModel)]="topic['experience']" placeholder="Write headline">
-                              <md-hint *ngIf="topic['experience']" align="end">{{topic['experience'].length}} / 100</md-hint>
-                            </md-input-container>
+                              <input matInput #headline name="experience" maxlength="100" [(ngModel)]="topic['experience']" placeholder="Write headline">
+                              <mat-hint *ngIf="topic['experience']" align="end">{{topic['experience'].length}} / 100</mat-hint>
+                            </mat-input-container>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </md-tab>
-            </md-tab-group>
+              </mat-tab>
+            </mat-tab-group>
           </div>
         </div>
       </div>

@@ -1,28 +1,28 @@
 <div class="row" style="margin-top: 20px;">
   <div class="col-md-3">
-    <md-list>
-      <md-list-item [routerLink]="'/console/account/notifications'" [class.bold]="getActiveTab() === 'notifications'">
+    <mat-list>
+      <mat-list-item [routerLink]="'/console/account/notifications'" [class.bold]="getActiveTab() === 'notifications'">
         Notifications
-      </md-list-item>
-      <md-list-item [routerLink]="'/console/account/paymentmethods'" [class.bold]="getActiveTab() === 'paymentmethods'">
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/paymentmethods'" [class.bold]="getActiveTab() === 'paymentmethods'">
         Payment Methods
-      </md-list-item>
-      <md-list-item [routerLink]="'/console/account/payoutmethods'" [class.bold]="getActiveTab() === 'payoutmethods'">
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/payoutmethods'" [class.bold]="getActiveTab() === 'payoutmethods'">
         Payout Methods
-      </md-list-item>
-      <md-list-item [routerLink]="'/console/account/transactions'" [class.bold]="getActiveTab() === 'transactions'">
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/transactions'" [class.bold]="getActiveTab() === 'transactions'">
         Transactions
-      </md-list-item>
-      <md-list-item [routerLink]="'/console/account/privacy'" [class.bold]="getActiveTab() === 'privacy'">
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/privacy'" [class.bold]="getActiveTab() === 'privacy'">
         Privacy
-      </md-list-item>
-      <md-list-item [routerLink]="'/console/account/security'" [class.bold]="getActiveTab() === 'security'">
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/security'" [class.bold]="getActiveTab() === 'security'">
         Security
-      </md-list-item>
-      <md-list-item [routerLink]="'/console/account/settings'" [class.bold]="getActiveTab() === 'settings'">
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/settings'" [class.bold]="getActiveTab() === 'settings'">
         Settings
-      </md-list-item>
-    </md-list>
+      </mat-list-item>
+    </mat-list>
   </div>
   <div class="col-md-9">
     <router-outlet></router-outlet>

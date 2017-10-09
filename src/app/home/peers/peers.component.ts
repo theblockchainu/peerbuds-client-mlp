@@ -3,7 +3,7 @@ import { CollectionService } from '../../_services/collection/collection.service
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { AppConfig } from '../../app.config';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 @Component({
@@ -24,7 +24,7 @@ export class PeersComponent implements OnInit {
     public _profileService: ProfileService,
     private _cookieUtilsService: CookieUtilsService,
     public config: AppConfig,
-    public dialog: MdDialog
+    public dialog: MatDialog
   ) {
     this.userId = _cookieUtilsService.getValue('userId');
   }
