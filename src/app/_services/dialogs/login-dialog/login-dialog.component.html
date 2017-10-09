@@ -19,13 +19,13 @@
                    <a md-raised-button class="btn-width-large btn-block" href="{{config.apiUrl}}/auth/google?returnTo=/">
                      <i class="fa fa-google circle-icon2"></i>Continue with Gmail</a>
                    </div>
-                   <div class="btn-hide position-relative margin-bottom-20 text-center">
+                   <div class="btn-hide position-relative margin-bottom-10 text-center">
                      <div class="or-seperator-vertical"></div>
                      <span class="round-or-text or-text-vertical">or</span>
                    </div>
                    <!-- error handling-->
-                    <div *ngIf="showError" class="alert alert-success box-msg" role="alert">
-                      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Wrong Username/password<br>
+                    <div *ngIf="showError" class="alert alert-success box-msg margin-bottom-10" role="alert">
+                      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Wrong Username/password
                     </div>
 
                    <div class="margin-bottom-20">

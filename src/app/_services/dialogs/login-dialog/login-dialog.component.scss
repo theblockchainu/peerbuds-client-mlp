@@ -26,7 +26,7 @@ md-dialog-content {
 }
 .logincontent{
     width: 440px;
-    height: 515px;
+    height: 526px;
     overflow: disable;
 }
 
@@ -105,4 +105,8 @@ md-dialog-content {
 .btn-block{
    font-size:15px;
    color:#484848;
+}
+.alert{
+    text-align: left;
+    color: #ff0000;
 }

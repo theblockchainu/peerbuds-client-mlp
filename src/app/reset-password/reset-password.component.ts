@@ -7,15 +7,15 @@ import { Observable } from 'rxjs';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+
 
 @Component({
   selector: 'app-reset-pwd',  // <login></login>
   providers: [],
   // Our list of styles in our component. We may add more to compose many styles together
-  styleUrls: [ './app-reset-pwd.component.scss' ],
+  styleUrls: [ './reset-password.component.scss' ],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
-  templateUrl: './app-reset-pwd.component.html'
+  templateUrl: './reset-password.component.html'
 })
 export class ResetPasswordComponent implements OnInit {
   // Set our default values
@@ -31,9 +31,7 @@ export class ResetPasswordComponent implements OnInit {
     public router: Router,
     public authenticationService: AuthenticationService,
     private alertService: AlertService,
-    public dialogRef: MdDialogRef<ResetPasswordComponent>,
-    private _fb: FormBuilder,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+    private _fb: FormBuilder) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
     }
 
@@ -48,26 +46,20 @@ export class ResetPasswordComponent implements OnInit {
 /*
   public resetpwd() {
       // this.loading = true;
-      this.password = this.resetpwdForm.controls['password'].value;
-      this.authenticationService.resetpwd(this.password)
-          .subscribe(
-              (data) => {
-                  this.router.navigate([this.returnUrl]);
-              },
-              (error) => {
-                  this.alertService.error(error._body);
-                  // this.loading = false;
-
-              });
+      const body = {
+      name: password
+    };
+       return this.http.post(this.config.apiUrl + '/api/peers/'
+      + this.userId + '/reset', body, this.options).map(
+      (response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      }
+      );
   }
-*/
+  */
+
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
   }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
 }
 

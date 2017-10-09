@@ -59,7 +59,6 @@ export class ForgotpwdComponentDialog implements OnInit {
               (error) => {
                   this.alertService.error(error._body);
                   // this.loading = false;
-
               });
   }
 

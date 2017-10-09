@@ -13,6 +13,8 @@ import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.
 import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { DialogsService } from './_services/dialogs/dialog.service';
 
+
+
 const routes: Routes = [
   {
     path: '',

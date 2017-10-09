@@ -123,10 +123,10 @@ export class AuthenticationService {
   }
  
  /*
-  resetpwd(password): any {
-    let body = `"password":"${password}"`;
+  resetpwd(options): any {
+    let body = `"options":"${options}"`;
     return this.http
-      .post(this.config.apiUrl + '/api/peers/resetPassword?pwd=' + password, body, this.options)
+      .post(this.config.apiUrl + '/api/peers/reset?pwd=' + options, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });

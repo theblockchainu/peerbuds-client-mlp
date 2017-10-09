@@ -44,6 +44,7 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     AppDesignComponent,
     GlobalErrorHandler,
     AppNotificationDialogComponent
+  
   ],
   imports: [
     BrowserModule,

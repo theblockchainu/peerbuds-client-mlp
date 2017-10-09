@@ -81,7 +81,7 @@ export class LoginComponentDialog implements OnInit {
                   setTimeout(function() {
                   this.showError = false;
                   console.log(this.showError);
-                }.bind(this), 3000);
+                }.bind(this), 300000);
               });
   }
 
