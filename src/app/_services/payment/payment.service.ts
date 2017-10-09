@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 @Injectable()
 export class PaymentService {
@@ -20,17 +20,17 @@ export class PaymentService {
   private options;
 
   constructor(private http: Http,
-              private config: AppConfig,
-              private _cookieService: CookieService,
-              private route: ActivatedRoute,
-              public router: Router,
-              public _requestHeaderService: RequestHeaderService
+    private config: AppConfig,
+    private _cookieService: CookieService,
+    private route: ActivatedRoute,
+    public router: Router,
+    public _requestHeaderService: RequestHeaderService
   ) {
     this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
-   }
+  }
 
-   private getCookieValue(key: string) {
+  private getCookieValue(key: string) {
     const cookie = this._cookieService.get(key);
     if (cookie) {
       const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
@@ -40,12 +40,12 @@ export class PaymentService {
   }
 
   makePayment(customerId: any, body: any) {
-     if (this.userId) {
+    if (this.userId) {
       return this.http.post(this.config.apiUrl + '/api/create-source/' + customerId, body, this.options);
     }
   }
 
-  createSource(customerId: any, body: any ) {
+  createSource(customerId: any, body: any) {
     if (this.userId) {
       return this.http.post(this.config.apiUrl + '/api/transactions/create-source/' + customerId, body, this.options);
     }
@@ -53,7 +53,7 @@ export class PaymentService {
 
   createCharge(collectionId: any, body: any) {
     if (this.userId) {
-      return this.http.post(this.config.apiUrl + '/api/transactions/create-charge/collection/'+ collectionId, body, this.options);
+      return this.http.post(this.config.apiUrl + '/api/transactions/create-charge/collection/' + collectionId, body, this.options);
     }
   }
 
@@ -61,6 +61,22 @@ export class PaymentService {
     if (this.userId) {
       return this.http.get(this.config.apiUrl + '/api/transactions/list-all-cards/' + customerId, this.options);
     }
+  }
+
+  deleteCard(customerId: string, cardId: string) {
+    if (this.userId) {
+      return this.http.delete(this.config.apiUrl + '/api/transactions/delete-card/' + customerId + '/' + cardId, this.options);
+    }
+  }
+
+  public getCollectionDetails(id: string) {
+    const filter = `{"include": "owners"}`;
+    return this.http
+      .get(this.config.apiUrl + '/api/collections/' + id + '?filter=' + filter)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
   }
 
 }

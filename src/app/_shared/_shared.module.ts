@@ -40,7 +40,10 @@ import { CurrencypickerService } from '../_services/currencypicker/currencypicke
 import { DialogsService } from '../workshop/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CommentService } from '../_services/comment/comment.service';
-import {NotificationService} from '../_services/notification/notification.service';
+import { NotificationService } from '../_services/notification/notification.service';
+import { ExtractTimePipe } from '../_shared/extract-time/extract-time.pipe';
+import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
+
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -50,9 +53,17 @@ import {NotificationService} from '../_services/notification/notification.servic
     FileUploadModule,
     CommonModule,
     PopoverModule.forRoot(),
-    CalendarModule.forRoot()
+    CalendarModule.forRoot(),
+    LoadingModule.forRoot({
+      animationType: ANIMATION_TYPES.threeBounce,
+      backdropBackgroundColour: 'rgba(0,0,0,0)',
+      backdropBorderRadius: '0px',
+      primaryColour: '#33bd9e',
+      secondaryColour: '#ff5b5f',
+      tertiaryColour: '#ff6d71'
+    })
   ],
-  declarations: [],
+  declarations: [ExtractTimePipe],
   providers: [
     CollectionService,
     CountryPickerService,
@@ -99,7 +110,8 @@ import {NotificationService} from '../_services/notification/notification.servic
     MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule,
-    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule
+    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
+    LoadingModule
   ]
 })
 export class SharedModule { }

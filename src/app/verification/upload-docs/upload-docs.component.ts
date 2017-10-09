@@ -8,6 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 @Component({
   selector: 'app-upload-docs',
   templateUrl: './upload-docs.component.html',
@@ -38,7 +40,9 @@ export class UploadDocsComponent implements OnInit {
   ngOnInit() {
     this.idProofImagePending = true;
     this.peer = this._fb.group({
-      email: ['', Validators.email],
+      email: ['',
+      [Validators.required,
+      Validators.pattern(EMAIL_REGEX)]],
       verificationIdUrl: ['', Validators.required]
     });
 
@@ -46,7 +50,9 @@ export class UploadDocsComponent implements OnInit {
       inputOTP: [null]
     });
     this._profileService.getPeerNode()
-      .subscribe((res) => this.email = res.email);
+      .subscribe((res) => {
+        this.peer.controls.email.setValue(res.email);
+      });
   }
 
   continue(p) {

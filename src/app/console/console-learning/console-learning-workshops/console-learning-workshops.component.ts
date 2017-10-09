@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ConsoleLearningComponent} from '../console-learning.component';
-import {CollectionService} from '../../../_services/collection/collection.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConsoleLearningComponent } from '../console-learning.component';
+import { CollectionService } from '../../../_services/collection/collection.service';
 
 @Component({
   selector: 'app-console-learning-workshops',
@@ -23,8 +23,12 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     public router: Router
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
-      console.log(urlSegment[0].path);
-      consoleLearningComponent.setActiveTab(urlSegment[0].path);
+      if (urlSegment[0] === undefined) {
+        consoleLearningComponent.setActiveTab('workshops');
+      } else {
+        console.log(urlSegment[0].path);
+        consoleLearningComponent.setActiveTab(urlSegment[0].path);
+      }
     });
   }
 
