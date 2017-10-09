@@ -92,7 +92,7 @@
                                 </md-form-field>-->
                                 <md-form-field>
                                     <input mdInput formControlName="cvc" type="text" placeholder="221">
-                                     <md-icon mdSuffix><i class="fa fa-question-circle-o text-grey"></i></md-icon>
+                                    <md-icon mdSuffix><i class="fa fa-question-circle-o text-grey"></i></md-icon>
                                 </md-form-field>
                             </div>
                         </div>
@@ -164,7 +164,8 @@
                         <div class="seperate-section padding-top-0">
                             <div class="display-table">
                                 <div class="margin-bottom-10">
-                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? config.apiUrl+collection.imageUrls[0] : defaultImageUrl" alt="image" />
+                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? config.apiUrl+collection.imageUrls[0] : defaultImageUrl"
+                                        alt="image" />
                                 </div>
                                 <div class="fs-17">{{ collection.title }} <br>
                                     <span class="display-inline-block fs-15 text-grey">{{collection.totalHours}} hour {{ collection.type }}</span>
