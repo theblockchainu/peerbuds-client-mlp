@@ -39,11 +39,12 @@
               <ng-template #file pTemplate="file">
               </ng-template>
               <ng-template pTemplate="content">
-                <div *ngIf="picture_url">
-                  <div style="cursor: pointer;">
-                    <md-icon (click)="deleteFromContainer(picture_url, 'image')" style="color: black;">close</md-icon>
+                <div *ngFor="let pp of profile_picture_array"  class="profilePic">
+                  <div *ngIf="pp" class="icon-remove delete">
+                    <img class="uploaded_picture" src="{{config.apiUrl + pp}}" width="150" style="border: 0.5px solid #ccc">
+                    <md-icon (click)="deleteFromContainer(pp, 'image')" class="delete-button">close</md-icon>
+                    <button md-button class="setPP" (click)="setProfilePic(pp, 'image')">Set as profile pic</button>
                   </div>
-                  <img class="uploaded_picture" src="{{config.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
                 </div>
               </ng-template>
             </p-fileUpload>

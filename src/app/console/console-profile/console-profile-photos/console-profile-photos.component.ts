@@ -14,6 +14,7 @@ declare var moment: any;
 })
 export class ConsoleProfilePhotosComponent implements OnInit {
   public picture_url: string;
+  public profile_picture_array = [];
   public profile_video: string;
 
   public loaded: boolean;
@@ -74,9 +75,19 @@ export class ConsoleProfilePhotosComponent implements OnInit {
     // console.log(event.files);
     for (const file of event.files) {
       this.mediaUploader.upload(file).subscribe((response) => {
-          this.picture_url = response.url;
+          this.profile_picture_array.push(response.url);
         });
     }
+  }
+
+  setProfilePic(image, type) {
+    this._profileService.updateProfile({
+      'picture_url': image
+    }).subscribe(response => {
+        this.picture_url = response.url;
+      }, err => {
+        console.log(err);
+    });
   }
 
 
