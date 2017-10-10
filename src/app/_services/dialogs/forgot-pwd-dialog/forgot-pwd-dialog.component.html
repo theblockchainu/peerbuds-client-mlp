@@ -1,20 +1,19 @@
  <div class="mat-dialog-focus-trap"></div>
-
  
   <form [formGroup]="forgotpwdForm" class="form-horizontal"> 
    <md-dialog-content>
     <div class="dialog1">
+      <div *ngIf="showMessage" class="alert alert-success box-msg" role="alert">
+       <i class="fa fa-check-circle fa-lg" aria-hidden="true"></i><br>Email sent! Please click on the link to change your password
+      </div>
     <div>
      <md-input-container class="pb-block">
-      <input mdInput placeholder="Email" formControlName="email">
+      <input mdInput #email placeholder="Email" formControlName="email" type="email">
      </md-input-container>
     </div>
     <div>
-     <button md-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="getpwd()"><span class="txtcolor">Request for password</span></button><br><br>          
+     <button md-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="sendForgotPwdMail()" [disabled]="email.value.length == 0 || email.invalid"><span class="txtcolor">Request for password</span></button><br><br>          
     </div>
     </div>
    </md-dialog-content>
   </form>
-
- 
- 

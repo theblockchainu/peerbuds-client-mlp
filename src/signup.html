@@ -189,7 +189,9 @@
             border-right-color: #999;
         }
         .btn-ggl,
-        .btn-fb
+        .btn-ggl:visited,
+        .btn-fb,
+        .btn-fb:visited
         {
             color: #666;
             background-color: #fff;
@@ -268,7 +270,7 @@
             background-color: #fff;
             color: rgba(74, 74, 74, 0.5);
             position: relative;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 800;
         }
         .position-relative {
@@ -283,6 +285,7 @@
         label.error {
             color: #fff !important;
             font-size: 13px !important;
+            margin: 50px;
         }
         .fs-13 {
             font-size: 13px;
@@ -319,7 +322,6 @@
         }
         /* Material CSS */
         * { box-sizing:border-box; }
-
         body                
         .container      { 
         width:600px; 
@@ -481,7 +483,7 @@
                 var day = $("#birthDay").val();
                 var month = $("#birthMonth").val();
                 var year = $("#birthYear").val();
-                var age = 18;
+                var age = 0;
                 var mydate = new Date();
                 var mydate2 = mydate;
                 mydate.setFullYear(year, month - 1, day);
@@ -510,7 +512,7 @@
                     last_name: "",
                     email: {
                         required: "",
-                        email: ""
+                        email: "Email already exists"
                     },
                     password: "",
                     birthMonth: "",
@@ -559,13 +561,26 @@
             $(".btn-hide").addClass("hide");
             
         }
-        function signup() {
-            if ($('#promoOptIn').prop('checked')) {
-                $('#promoOptIn').val(true);
+        function signup(cFuntion) {
+            // $('#signupForm').submit();  
+            var formElement = document.querySelector("form");
+            var formData = {};
+            for(var field in formElement) {
+                if(+field < 8) {
+                    formData[formElement[+field].name] = formElement[+field].value;
+                }
             }
-            else
-                $('#promoOptIn').val(false);
-            $('#signupForm').submit();
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST",'http://localhost:3000/signup', true);
+            xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8'); //
+            xhttp.setRequestHeader('Accept', 'application/json');
+            xhttp.withCredentials = true; 
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    location.href = 'app-upload-docs/1';
+                }
+            };
+            xhttp.send(JSON.stringify(formData));
         }
         function goToHome() {
             location.href='/';
@@ -573,9 +588,12 @@
         function goToPhilosophy() {
             location.href= 'philosophy';
         }
+        function goToLogin()
+        {
+            location.href="/login";
+        }
     </script>
 </head>
-
 <body>
 
 <div class="main-content">
@@ -602,7 +620,7 @@
                 </a>
             
                 <!-- trying dialog-->
-                <button class="headerButtons mat-button" onclick="openLogin()" *ngIf="!(isLoggedIn | async)">
+                <button class="headerButtons mat-button" onclick="goToLogin()" *ngIf="!(isLoggedIn | async)">
                     Log In
                 </button>
                 </span>
@@ -613,7 +631,7 @@
             <div class="col-md-12 margin-top-40">
                 <div class="signup-box drop-shadow">
 
-                    <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=app-upload-docs/1" method="POST">
+                    <form id="signupForm" name="form" method="POST" onsubmit="signup(this); return false;">
                     
                         <div class="margin-bottom-20">
                             <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> 
@@ -630,11 +648,11 @@
                         <div class="margin-bottom-20 btnSignupEmail">
                             <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()"> Continue with email</a>
                         </div>
-                        <div class="small-font btn-hide text-center">Have an account already? <a href="/login" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Log in</a></div>
+                        <div class="small-font btn-hide text-center">Have an account already? <a class="btn-link link margin-top-10" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a></div>
 
                 
                 <div class="signupEmail hide signup-box2">
-                    <div class="text-center">Sign up with <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;"> Google</a></div>
+                    <div class="text-center">Sign up with <a href="http://localhost:3000/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or <a href="http://localhost:3000/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;"> Google</a></div>
 
                         
                         <div class="position-relative margin-bottom-20 text-center">
@@ -715,12 +733,12 @@
                             </div>
                            
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Continue</button>
+                                <button type="submit" class="btn btn-primary" type="submit">Continue</button>
                             </div>
-                               <div class="text-center small-font">Have an account already? <a href="#" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;" onclick="login()">Log in</a></div>
+                               <div class="text-center small-font">Have an account already? <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()"style="font-size:14px;text-decoration: none;">Log in</a></div>
                         </div>
                     </form>
-                </div>
+                </div>  
             </div>
         </div>
     </div>

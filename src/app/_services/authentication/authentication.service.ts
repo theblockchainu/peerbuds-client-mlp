@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -64,7 +64,6 @@ export class AuthenticationService {
     this._cookieService.delete(key);
   }
 
-
   /**
   *  Login the user then tell all the subscribers about the new status
   */
@@ -75,6 +74,7 @@ export class AuthenticationService {
     return this.http
       .post(this.config.apiUrl + '/auth/local', body, this.options)
       .map((response: Response) => {
+      //if res code is xxx and response "error"
         // login successful if there's a jwt token in the response
         let user = response.json();
         if (user && user.access_token) {
@@ -112,19 +112,22 @@ export class AuthenticationService {
     return !!this.getCookie(this.key);
   }
 
-  getpwd(email: string): any {
+  sendForgotPwdMail(email): any {
     let body = `{"email":"${email}"}`;
     return this.http
-      .post(this.config.apiUrl + '/auth/local', body, this.options)
-      .map((response: Response) => {
-        // login successful if there's a jwt token in the response
-        let user = response.json();
-        if (user && user.access_token) {
-          this.isLoginSubject.next(true);
-          // responseStatus = true;
-        }
-      }, (err) => {
+      .post(this.config.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
   }
+ 
+  resetpwd(email: string, password: string): any {
+    let body = `{"email":"${email}","password":"${password}"}`;
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/reset', body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+  }
+
 }

@@ -190,17 +190,25 @@ export class ProfileService {
   }
   /* Signup Verification Methods Ends*/
 
-  public getSocialIdentities(peerId?: string) {
+  public getSocialIdentities(query: any, peerId?: string) {
     let userId;
+    let url;
     if (peerId) {
       userId = peerId;
     }
     else {
       userId = this.userId;
     }
+    if(query) {
+      const filter = JSON.stringify(query);
+      url = this.config.apiUrl + '/api/peers/' + userId + '?filter=' + filter;
+    }
+    else {
+      url = this.config.apiUrl + '/api/peers/' + userId;
+    }
 
     return this.http
-      .get(this.config.apiUrl + '/api/peers/' + userId + '/identities', this.options)
+      .get(url, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });

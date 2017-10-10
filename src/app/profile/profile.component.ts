@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
     this.getTeachingTopics();
   }
   private getIdentities() {
-    this._profileService.getSocialIdentities(this.urluserId).subscribe(
+    this._profileService.getSocialIdentities(null, this.urluserId).subscribe(
       (result) => {
         this.socialIdentities = result;
       }

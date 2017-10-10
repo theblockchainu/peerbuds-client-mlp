@@ -1,67 +1,61 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
-import { AlertService } from '../../alert/alert.service';
-import { AuthenticationService } from '../../authentication/authentication.service';
+
+import { AlertService } from '../_services/alert/alert.service';
+import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { Observable } from 'rxjs';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 
 @Component({
-  selector: 'app-forgot-pwd-dialog',  // <login></login>
+  selector: 'app-reset-pwd',  // <login></login>
   providers: [],
   // Our list of styles in our component. We may add more to compose many styles together
-  styleUrls: [ './forgot-pwd-dialog.component.scss' ],
+  styleUrls: [ './reset-password.component.scss' ],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
-  templateUrl: './forgot-pwd-dialog.component.html'
+  templateUrl: './reset-password.component.html'
 })
-export class ForgotpwdComponentDialog implements OnInit {
+export class ResetPasswordComponent implements OnInit {
   // Set our default values
   // public loading = false;
   public returnUrl: string;
-  isLoggedIn: Observable<boolean>;
-  private email: string;
-  public passWord: string;
-  public forgotpwdForm: FormGroup;
-  // TypeScript public modifiers
 
-  public showMessage = false;
+  isLoggedIn: Observable<boolean>;
+  public passWord: string;
+  public email: string;
+  public resetpwdForm: FormGroup;
+
+  // TypeScript public modifiers
 
   constructor(
     private route: ActivatedRoute,
     public router: Router,
     public authenticationService: AuthenticationService,
     private alertService: AlertService,
-    public dialogRef: MdDialogRef<ForgotpwdComponentDialog>,
     private _fb: FormBuilder,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+    ) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
+      this.email = this.route.queryParams['value'].email;
     }
 
   public ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = '/';
 
-    this.forgotpwdForm = this._fb.group({
-      email : ['', Validators.email] /* putting reg ex as well */
+    this.resetpwdForm = this._fb.group({
+       password : ['', Validators.required] 
     });
   }
   
-  public sendForgotPwdMail() {
+   public resetpwd(value: string) {
       // this.loading = true;
-      this.email = this.forgotpwdForm.controls['email'].value;
-      this.authenticationService.sendForgotPwdMail(this.email)
+      this.passWord = this.resetpwdForm.controls['password'].value;
+      this.authenticationService.resetpwd(this.email, this.passWord)
           .subscribe(
               (data) => {
                   this.router.navigate([this.returnUrl]);
-                  this.showMessage = true;
-                  setTimeout(function() {
-                  this.showMessage = false;
-                  console.log(this.showMessage);
-                }.bind(this), 300000);
               },
               (error) => {
                   this.alertService.error(error._body);
@@ -69,13 +63,8 @@ export class ForgotpwdComponentDialog implements OnInit {
               });
   }
 
+
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
   }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
 }
-

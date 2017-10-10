@@ -26,7 +26,7 @@ md-dialog-content {
 }
 .logincontent{
     width: 440px;
-    height: 500px;
+    height: 526px;
     overflow: disable;
 }
 
@@ -40,7 +40,7 @@ md-dialog-content {
             display: inline-block;
             left: 0;
             position: relative;
-            top: 17px;
+            top: 22px;
             width: 100%;
         }
 
@@ -59,9 +59,12 @@ md-dialog-content {
             background-color: #fff;
             color: rgba(74, 74, 74, 0.5);
             position: relative;
-            font-size: 13px;
+            font-size: 15px;
+            font-weight:800;
         }
-
+.check {
+    margin-right: 56%;
+}
 .loginbtn{
     background-color: #ff6d71;
     font-size:17px;
@@ -102,4 +105,8 @@ md-dialog-content {
 .btn-block{
    font-size:15px;
    color:#484848;
+}
+.alert{
+    text-align: left;
+    color: #ff0000;
 }

@@ -1,7 +1,12 @@
 .signup-box {
     background-color: #fff;
-    padding: 30px 40px;
-    border-radius: 10px;
+    padding: 60px 50px;
+    border: 1px solid lightgrey;
+    margin-bottom: 70px;
+    width: 48%;
+    margin-left: 26%;
+    margin-right: 26%;
+    height: auto;
 }
 
 .signup-box.drop-shadow {
@@ -14,9 +19,25 @@
     font-size: 14px;
 }
 
-.login-section {
-    margin: 50px 0;
-}
 .promoOptIn{
     -webkit-appearance: checkbox;
+}
+
+.description1 {
+    font-size: 16px;
+    color: #767676;
+    padding-top:7px;
+    padding-bottom: 30px;
+
+}
+
+.headline {
+    color: #484848;
+}
+
+.signupBtn {
+    width: 35%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 32%
 }

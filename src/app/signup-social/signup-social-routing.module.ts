@@ -7,7 +7,7 @@ import { AuthService } from '../_services/auth/auth.service';
 
 const routes: Routes = [
   {
-    path: 'signup-social',
+    path: '',
     children: [
       {
         path: '',
