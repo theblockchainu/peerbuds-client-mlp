@@ -141,11 +141,6 @@
             margin-top: 14px;
             background-color: #ff6d71;
             border-radius: 3px;
-            color: #ffffff;
-        }
-        .btn:active .btn:focus, .btn:hover, .btn-primary:active:after {
-            color: #ffffff!important;
-            border-color: #ff6d71!important;
         }
         .small-font{
         color: #666 !important;
@@ -327,7 +322,6 @@
         }
         /* Material CSS */
         * { box-sizing:border-box; }
-
         body                
         .container      { 
         width:600px; 
@@ -518,13 +512,13 @@
                     last_name: "",
                     email: {
                         required: "",
-                        email: "already there"
+                        email: "Email already exists"
                     },
                     password: "",
                     birthMonth: "",
                     birthDay: "",
                     birthYear: {
-                        required: "hey"
+                        required: ""
                     },
                 },
                 errorPlacement: function (error, element) {
@@ -567,20 +561,26 @@
             $(".btn-hide").addClass("hide");
             
         }
-        function signup(url, cFuntion) {
+        function signup(cFuntion) {
             // $('#signupForm').submit();  
             var formElement = document.querySelector("form");
+            var formData = {};
+            for(var field in formElement) {
+                if(+field < 8) {
+                    formData[formElement[+field].name] = formElement[+field].value;
+                }
+            }
             var xhttp = new XMLHttpRequest();
-            xhttp.open("POST",'http://localhost:3000/signup?returnTo=app-upload-docs/1', true);
-            xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+            xhttp.open("POST",'http://localhost:3000/signup', true);
+            xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8'); //
             xhttp.setRequestHeader('Accept', 'application/json');
+            xhttp.withCredentials = true; 
             xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 401) {
-                document.getElementById("signupForm").innerHTML =
-                this.responseText;
+                if (this.readyState == 4) {
+                    location.href = 'app-upload-docs/1';
                 }
             };
-            xhttp.send(new FormData(formElement));
+            xhttp.send(JSON.stringify(formData));
         }
         function goToHome() {
             location.href='/';
@@ -631,7 +631,7 @@
             <div class="col-md-12 margin-top-40">
                 <div class="signup-box drop-shadow">
 
-                    <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=app-upload-docs/1" method="POST">
+                    <form id="signupForm" name="form" method="POST" onsubmit="signup(this); return false;">
                     
                         <div class="margin-bottom-20">
                             <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> 
@@ -733,7 +733,7 @@
                             </div>
                            
                             <div class="form-group">
-                                <button type="submit" class="btn" type="submit" onclick="signup()">Continue</button>
+                                <button type="submit" class="btn btn-primary" type="submit">Continue</button>
                             </div>
                                <div class="text-center small-font">Have an account already? <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()"style="font-size:14px;text-decoration: none;">Log in</a></div>
                         </div>

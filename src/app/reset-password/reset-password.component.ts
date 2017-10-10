@@ -21,9 +21,10 @@ export class ResetPasswordComponent implements OnInit {
   // Set our default values
   // public loading = false;
   public returnUrl: string;
+
   isLoggedIn: Observable<boolean>;
-  private email: string;
   public passWord: string;
+  public email: string;
   public resetpwdForm: FormGroup;
 
   // TypeScript public modifiers
@@ -36,23 +37,20 @@ export class ResetPasswordComponent implements OnInit {
     private _fb: FormBuilder,
     ) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
-      //console.log(this.route);
-     // console.log(this.route.queryParams['value'].email);
-     this.email = this.route.queryParams['value'].email;
+      this.email = this.route.queryParams['value'].email;
     }
 
   public ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.returnUrl = '/reset' || '/';
+    this.returnUrl = '/';
 
     this.resetpwdForm = this._fb.group({
        password : ['', Validators.required] 
     });
   }
   
-   public resetpwd() {
+   public resetpwd(value: string) {
       // this.loading = true;
-      //this.email = this.resetpwdForm.controls['email'].value;
       this.passWord = this.resetpwdForm.controls['password'].value;
       this.authenticationService.resetpwd(this.email, this.passWord)
           .subscribe(
@@ -70,4 +68,3 @@ export class ResetPasswordComponent implements OnInit {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
   }
 }
-
