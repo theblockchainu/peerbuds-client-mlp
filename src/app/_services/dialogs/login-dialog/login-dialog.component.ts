@@ -85,7 +85,7 @@ export class LoginComponentDialog implements OnInit {
               });
   }
 
-   public openForgotPwd() {
+  public openForgotPwd() {
     this.dialogsService.openForgotPwd().subscribe();
   }
 
@@ -96,4 +96,4 @@ export class LoginComponentDialog implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  }
+}
