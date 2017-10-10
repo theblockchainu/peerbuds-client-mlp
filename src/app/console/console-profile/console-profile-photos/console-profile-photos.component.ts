@@ -83,29 +83,6 @@ export class ConsoleProfilePhotosComponent implements OnInit {
     }
   }
 
-<<<<<<< HEAD
-  // uploadImages(event) {
-  //   const xhrResp = JSON.parse(event.xhr.response);
-  //   console.log(xhrResp);
-  //   this._profileService.updateProfile({
-  //     'picture_url': xhrResp.url
-  //   }).subscribe(response => {
-  //     this.picture_url = response.picture_url;
-  //   }, err => {
-  //     console.log(err);
-  //   });
-  // }
-
-  uploadImage(event) {
-    // console.log(event.files);
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map(
-        (response) => {
-          //response.json();  
-        }).subscribe((response) => {
-      });
-    }
-=======
   setProfilePic(image, type) {
     this._profileService.updateProfile({
       'picture_url': image
@@ -114,7 +91,6 @@ export class ConsoleProfilePhotosComponent implements OnInit {
       }, err => {
         console.log(err);
     });
->>>>>>> origin/develop-material
   }
 
 

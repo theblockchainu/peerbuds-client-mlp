@@ -45,6 +45,7 @@ export class OnboardingComponent implements OnInit {
   public showRequestNewTopic = false;
   public topicForRequest = '';
   public queriesSearchedArray = [];
+  private queryForSocialIdentities = {'include': ['identities', 'credentials']};
 
   constructor(
     public router: Router,
@@ -66,18 +67,41 @@ export class OnboardingComponent implements OnInit {
       .subscribe((countries) => this.countries = countries);
     this.userId = _profileService.getUserId();
     
-    this._profileService.getSocialIdentities()
+    this._profileService.getSocialIdentities(this.queryForSocialIdentities)
     .subscribe((response: Response) => {
+      debugger;
       this.socialIdentitiesConnected = response;
 
-      this.socialIdentitiesConnected.forEach(socialIdentity => {
-        if (socialIdentity.provider === 'google') {
-          this.connectedIdentities.google = true;
+      // this.socialIdentitiesConnected.forEach(socialIdentity => {
+        if(this.socialIdentitiesConnected.identities.length > 0) {
+          this.boolShowConnectedSocials = true;
+          this.socialIdentitiesConnected.identities.forEach(element => {
+            if(element.provider === 'google') {
+                this.connectedIdentities.google = true;
+            }
+            else if (element.provider === 'facebook') {
+              this.connectedIdentities.fb = true;
+            }
+          });
         }
-        if (socialIdentity.provider === 'facebook') {
-          this.connectedIdentities.fb = true;
+        if(this.socialIdentitiesConnected.credentials.length > 0) {
+          this.boolShowConnectedSocials = true;
+          this.socialIdentitiesConnected.credentials.forEach(element => {
+            if(element.provider === 'google') {
+                this.connectedIdentities.google = true;
+            }
+            else if (element.provider === 'facebook') {
+              this.connectedIdentities.fb = true;
+            }
+          });
         }
-      });
+        // if (socialIdentity.provider === 'google') {
+        //   this.connectedIdentities.google = true;
+        // }
+        // if (socialIdentity.provider === 'facebook') {
+        //   this.connectedIdentities.fb = true;
+        // }
+      // });
     },
     (err) => {
       console.log('Error: ' + err);

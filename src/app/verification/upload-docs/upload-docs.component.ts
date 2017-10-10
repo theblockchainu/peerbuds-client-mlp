@@ -98,18 +98,12 @@ export class UploadDocsComponent implements OnInit {
     this.uploadingImage = true;
     console.log(event.files);
     for (const file of event.files) {
-<<<<<<< HEAD
-      this.mediaUploader.upload(file).map((responseObj) => {
-        // this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
-        this.idProofImagePending = false;
-=======
       this.fileName = file.name;
       this.mediaUploader.upload(file).map((responseObj) => {
         this.verificationIdUrl = responseObj.url;
         this.fileType = responseObj.type;
         this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
         this.uploadingImage = false;
->>>>>>> origin/develop-material
       }).subscribe();
     }
   }

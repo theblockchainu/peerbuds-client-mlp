@@ -14,39 +14,6 @@
             <div class="profilePhotoHeading">
               Profile Photo
             </div>
-<<<<<<< HEAD
-            <!-- <div class="uploadContainer">
-              <div style="margin-bottom: 15px">
-                <md-icon color="#cccccc">cloud_upload</md-icon>
-              </div>
-              <div>
-                <button md-raised-button color="primary">
-                  Upload from computer
-                </button>
-              </div>
-              <br>
-              <div>
-                <button md-button>
-                  Upload from webcam
-                </button>
-              </div>
-            </div> -->
-            <!--url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImages($event)" auto="true" -->
-            <p-fileUpload #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)"
-              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
-              <ng-template pTemplate="toolbar">
-                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
-              </ng-template>
-              <ng-template #file pTemplate="file">
-              </ng-template>
-              <ng-template pTemplate="content">
-                <div *ngIf="picture_url">
-                  <div style="cursor: pointer;">
-                    <md-icon (click)="deleteFromContainer(picture_url, 'image')" style="color: black;">close</md-icon>
-                  </div>
-                  <img class="uploaded_picture" src="{{config.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
-=======
->>>>>>> origin/develop-material
 
             <div class="loading-container" [hidden]="!uploadingImage">
               <ngx-loading [show]="true"></ngx-loading>
