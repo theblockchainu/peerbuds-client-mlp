@@ -40,9 +40,9 @@
                           </div>
                         <div *ngIf="boolShowConnectedSocials" style="margin-top:5px">
                           <i *ngIf="connectedIdentities.fb" class="fa fa-facebook defaultFB socialIcons"></i>
-                          <a *ngIf="!connectedIdentities.fb" href="{{config.apiUrl + '/link/Facebook'}}"><i class="fa fa-facebook dcSocial socialIcons"></i></a>
+                          <a *ngIf="!connectedIdentities.fb" href="{{config.apiUrl + '/link/Facebook?returnTo=onboarding/2'}}"><i class="fa fa-facebook dcSocial socialIcons"></i></a>
                           <i *ngIf="connectedIdentities.google" class="fa fa-google defaultGoogle socialIcons"></i>
-                          <a *ngIf="!connectedIdentities.google" href="{{config.apiUrl + '/link/Google'}}"><i class="fa fa-google dcSocial socialIcons"></i></a>
+                          <a *ngIf="!connectedIdentities.google" href="{{config.apiUrl + '/link/Google?returnTo=onboarding/2'}}"><i class="fa fa-google dcSocial socialIcons"></i></a>
                         </div>
                       </div>
                     </div>

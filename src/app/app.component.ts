@@ -42,7 +42,7 @@ export class AppComponent implements OnInit{
 
   modifyFooter(location) {
 
-   if(location.url == "/app-upload-docs" && location.url == "/onboarding")
+   if(location.url == "/app-upload-docs" || location.url == "/onboarding")
       {
        this.showFooter= false;
       }
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit{
 
    modifyHeader(location) {
    // alert(location.url)
-     if (location.url == "/workshop" &&  location.url == "/")
+     if (location.url == "/workshop" ||  location.url == "/")
       {
        this.showHeader= false;
       }
