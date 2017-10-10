@@ -85,8 +85,8 @@ export class LoginComponentDialog implements OnInit {
               });
   }
 
-   public openForgot() {
-    this.dialogsService.openForgot().subscribe();
+   public openForgotPwd() {
+    this.dialogsService.openForgotPwd().subscribe();
   }
 
   private redirect() {

@@ -34,7 +34,7 @@
                   
                       <div class="col-sm-2" style="margin-top:5px">
                         <div *ngIf="!boolShowConnectedSocials" style="line-height:30px">
-                          <a class="text-right syncSocial" (click)="showConnectedSocials()">
+                          <a class="text-right syncSocial" style="cursor: pointer;"  (click)="showConnectedSocials()">
                             <md-icon class="vAlignTextTop">cached</md-icon>
                           &nbsp;&nbsp;&nbsp;&nbsp;Sync Social</a>
                           </div>
@@ -86,11 +86,10 @@
               </div>
             </div>
             <div class="fixedFooter col-sm-12">
-              <div class="col-sm-6" style="margin-left:12%">
+              <div class="col-md-9" style="margin-left:12%">
                 <div class="pull-right">
                   <button md-button style="margin-right:15px; color:#767676">Back</button>
                   <button md-raised-button (click)="continue(3)" color="accent" [disabled]="interests.length < 3">Done</button>
-                  
                 </div>
               </div>
             </div>

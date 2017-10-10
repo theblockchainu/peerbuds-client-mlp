@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { MatSnackBar } from '@angular/material';
 import { AlertService } from '../../alert/alert.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { Observable } from 'rxjs';
@@ -28,6 +28,8 @@ export class ForgotpwdComponentDialog implements OnInit {
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
 
+  public showMessage = false;
+
   constructor(
     private route: ActivatedRoute,
     public router: Router,
@@ -48,14 +50,18 @@ export class ForgotpwdComponentDialog implements OnInit {
     });
   }
   
-  public sendmail() {
+  public sendForgotPwdMail() {
       // this.loading = true;
       this.email = this.forgotpwdForm.controls['email'].value;
-      this.authenticationService.sendmail(this.email)
+      this.authenticationService.sendForgotPwdMail(this.email)
           .subscribe(
               (data) => {
-                  this.dialogRef.close();
                   this.router.navigate([this.returnUrl]);
+                  this.showMessage = true;
+                  setTimeout(function() {
+                  this.showMessage = false;
+                  console.log(this.showMessage);
+                }.bind(this), 300000);
               },
               (error) => {
                   this.alertService.error(error._body);

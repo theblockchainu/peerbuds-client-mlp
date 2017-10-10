@@ -112,7 +112,7 @@ export class AuthenticationService {
     return !!this.getCookie(this.key);
   }
 
-  sendmail(email): any {
+  sendForgotPwdMail(email): any {
     let body = `{"email":"${email}"}`;
     return this.http
       .post(this.config.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this.options)
@@ -129,14 +129,5 @@ export class AuthenticationService {
         console.log('Error: ' + err);
       });
   }
-  
 
-  public confirmSmsOTP(inputToken) {
-    const body = {};
-    return this.http
-      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
-      .map((response: Response) => response.json(), (err) => {
-        console.log('Error: ' + err);
-      });
-  }
 }

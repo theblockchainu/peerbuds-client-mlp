@@ -141,6 +141,11 @@
             margin-top: 14px;
             background-color: #ff6d71;
             border-radius: 3px;
+            color: #ffffff;
+        }
+        .btn:active .btn:focus, .btn:hover, .btn-primary:active:after {
+            color: #ffffff!important;
+            border-color: #ff6d71!important;
         }
         .small-font{
         color: #666 !important;
@@ -728,7 +733,7 @@
                             </div>
                            
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Continue</button>
+                                <button type="submit" class="btn" type="submit" onclick="signup()">Continue</button>
                             </div>
                                <div class="text-center small-font">Have an account already? <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()"style="font-size:14px;text-decoration: none;">Log in</a></div>
                         </div>
