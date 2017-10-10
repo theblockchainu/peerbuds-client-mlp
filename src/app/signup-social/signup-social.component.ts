@@ -35,6 +35,7 @@ export class SignupSocialComponent implements OnInit {
   constructor(public profileService: ProfileService, private _fb: FormBuilder, public router: Router) { }
 
   ngOnInit() {
+    this.getPeerData();
     this.getPeerWithProfile();
     this.loadMonthAndYear();
 
@@ -48,6 +49,15 @@ export class SignupSocialComponent implements OnInit {
       birthDay: [null, [Validators.required]],
       birthYear: [null, [Validators.required]]
       // promoOptIn: 'false',
+    });
+  }
+
+  getPeerData() {
+    const query = {};
+    this.profileService.getPeerData(query).subscribe(peer => {
+      if(peer.email) {
+        this.signupSocialForm.controls.email.patchValue(peer.email);
+      }
     });
   }
 

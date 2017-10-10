@@ -69,7 +69,6 @@ export class OnboardingComponent implements OnInit {
     
     this._profileService.getSocialIdentities(this.queryForSocialIdentities)
     .subscribe((response: Response) => {
-      debugger;
       this.socialIdentitiesConnected = response;
 
       // this.socialIdentitiesConnected.forEach(socialIdentity => {
