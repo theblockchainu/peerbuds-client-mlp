@@ -10,6 +10,8 @@ import {
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ForgotpwdComponentDialog } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AppConfig } from '../../../app.config';
+import { MdDialog, MdDialogConfig } from '@angular/material';
+import { DialogsService } from '../dialog.service';
 
 @Component({
   selector: 'app-login-dialog',  // <login></login>
@@ -38,7 +40,8 @@ export class LoginComponentDialog implements OnInit {
     public dialogRef: MdDialogRef<LoginComponentDialog>,
     private _fb: FormBuilder,
     public config: AppConfig,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+    @Inject(MD_DIALOG_DATA) public data: any,
+    private dialogsService: DialogsService) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
     }
 
@@ -70,7 +73,7 @@ export class LoginComponentDialog implements OnInit {
                   // this.loading = false;
               });
   }
-
+/*
   public getpwd() {
       // this.loading = true;
       this.email = this.forgotpwdForm.controls['email'].value;
@@ -84,6 +87,10 @@ export class LoginComponentDialog implements OnInit {
                   this.alertService.error(error._body);
                   // this.loading = false;
               });
+  }
+*/
+   public openForgot() {
+    this.dialogsService.openForgot().subscribe();
   }
 
   private redirect() {

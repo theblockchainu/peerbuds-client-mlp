@@ -14,39 +14,23 @@
             <div class="profilePhotoHeading">
               Profile Photo
             </div>
-            <!-- <div class="uploadContainer">
-              <div style="margin-bottom: 15px">
-                <md-icon color="#cccccc">cloud_upload</md-icon>
-              </div>
-              <div>
-                <button md-raised-button color="primary">
-                  Upload from computer
-                </button>
-              </div>
-              <br>
-              <div>
-                <button md-button>
-                  Upload from webcam
-                </button>
-              </div>
-            </div> -->
-            <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImages($event)"
-              maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
-              <ng-template pTemplate="toolbar">
-                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
-              </ng-template>
-              <ng-template #file pTemplate="file">
-              </ng-template>
-              <ng-template pTemplate="content">
-                <div *ngIf="picture_url">
-                  <div style="cursor: pointer;">
-                    <md-icon (click)="deleteFromContainer(picture_url, 'image')" style="color: black;">close</md-icon>
-                  </div>
-                  <img class="uploaded_picture" src="{{config.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
 
-                </div>
+            <div class="loading-container" [hidden]="!uploadingImage">
+              <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)"
+              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+              <ng-template pTemplate="toolbar">
+                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
               </ng-template>
             </p-fileUpload>
+            <!-- <div *ngFor="let pp of profile_picture_array"  class="profilePic"> -->
+              <div *ngIf="picture_url" class="profilePic delete">
+                <img class="uploaded_picture" src="{{config.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
+                <md-icon (click)="deleteFromContainer(picture_url, 'image')" class="delete-button">close</md-icon>
+                <!-- <button md-button class="setPP" (click)="setProfilePic(pp, 'image')">Set as profile pic</button> -->
+              </div>
+            <!-- </div> -->
             <div class="lighterText">
               Clear frontal face are an important way for teachers and learners to know about each other.<br> Its not much
               fun to teach a landscape. Please load a photo that clearly shows your face.
@@ -57,40 +41,23 @@
             <div class="profilePhotoHeading">
               Profile Video
             </div>
-            <!-- <div class="uploadContainer">
-              <div style="margin-bottom: 15px">
-                <md-icon color="#cccccc">cloud_upload</md-icon>
-              </div>
-              <div>
-                <button md-raised-button color="primary">
-                  Upload from computer
-                </button>
-              </div>
-              <br>
-              <div>
-                <button md-button>
-                  Upload from webcam
-                </button>
-              </div>
-            </div> -->
-            <p-fileUpload #fubauto name="video" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadVideo($event)"
-              maxFileSize="10000000" auto="true" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+            <div class="loading-container" [hidden]="!uploadingVideo">
+              <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)"
+              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
               <ng-template pTemplate="toolbar">
                 <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 videos</div>
               </ng-template>
-              <ng-template #file pTemplate="file">
-              </ng-template>
-              <ng-template pTemplate="content">
-                <div *ngIf="profile_video">
-                  <div style="cursor: pointer;">
-                    <md-icon (click)="deleteFromContainer(profile_video,'video')" style="color: black;">close</md-icon>
-                  </div>
-                  <video width="150" style="border: 0.5px solid #ccc" preload="metadata">
-                    <source src="{{config.apiUrl + profile_video}}"> Your browser does not support the video tag.
-                  </video>
-                </div>
-              </ng-template>
+              
             </p-fileUpload>
+            
+            <div *ngIf="profile_video" class="profileVideo delete">
+              <video width="150" class="uploaded_picture" preload="metadata">
+                <source src="{{config.apiUrl + profile_video}}"> Your browser does not support the video tag.
+              </video>
+              <md-icon (click)="deleteFromContainer(profile_video, 'video')" class="delete-button">close</md-icon>
+            </div>
             <div class="darkText">
               Tell the community a bit about yourself
             </div>

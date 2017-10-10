@@ -35,10 +35,11 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     AppFooterComponent,
     IndexComponent,
     IndexPhilComponent,
-    AccessDeniedComponent,
+    AccessDeniedComponent, 
     LoginComponent,
     SignupComponent,
     AppDesignComponent,
+    GlobalErrorHandler,
     AppNotificationDialogComponent
   ],
   imports: [

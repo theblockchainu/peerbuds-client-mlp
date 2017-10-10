@@ -5,7 +5,7 @@ md-input-container md-icon {
     }
 
 .maincontent{
-	min-height: 30vh;
+	min-height: 40vh;
 }
 
 .loginbtn{
@@ -16,12 +16,13 @@ md-input-container md-icon {
 	color: #fff;
 }
 
-dialog1{
-    padding: 34px;
+.dialog1{
+    height: 150px !important; 
     border-radius: 2px;
     box-sizing: border-box;
     overflow: auto;
     max-width: 80vw;
     outline: 0;
-    width: 400px !important;
+    width: 320px !important;
+    margin:21px;
     }

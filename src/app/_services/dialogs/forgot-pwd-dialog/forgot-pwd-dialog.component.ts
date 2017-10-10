@@ -70,5 +70,5 @@ export class ForgotpwdComponentDialog implements OnInit {
     this.dialogRef.close();
   }
 
-    }
+}
 
