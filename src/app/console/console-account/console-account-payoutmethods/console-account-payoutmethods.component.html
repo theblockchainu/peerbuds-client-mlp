@@ -18,14 +18,13 @@
             <span>Status</span>
           </div>
         </div>
-        <hr>
-        <div class="row table-data">
+        <div class="row table-data" style="padding-top: 20px">
           <div class="col-md-12">
             <div class="row loading" *ngIf="loading">
               <ngx-loading [show]="true"></ngx-loading>
             </div>
             <ng-container *ngIf="!addingAccount && payoutAccounts">
-              <div class="row" *ngFor="let account of payoutAccounts">
+              <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 15px">
                 <div class="col-md-3" [ngSwitch]="account.object">
                   <span *ngSwitchCase="'card'">Card</span>
                   <span *ngSwitchCase="'bank_account'">Bank Account</span>
@@ -38,7 +37,9 @@
                   <span *ngIf="!account.status">Ready</span>
                 </div>
                 <div class="col-md-3">
-                  <a (click)="editAccount(account.account)">edit</a>
+                  <a (click)="editAccount(account.account)">
+                    Manage Account
+                  </a>
                 </div>
               </div>
             </ng-container>
