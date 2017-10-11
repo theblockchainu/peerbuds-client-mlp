@@ -6,35 +6,35 @@
       </div>
     </div>
     <div class="row table">
-      <div class="col-md-12">
+      <div class="col-md-10">
         <div class="row table-header">
-          <div class="col-md-3">
-            <span>Method</span>
+          <div class="col-md-3 ">
+            <h3>Method</h3>
           </div>
           <div class="col-md-3">
-            <span>Details</span>
+            <h3>Details</h3>
           </div>
           <div class="col-md-3">
-            <span>Status</span>
+            <h3>Status</h3>
           </div>
         </div>
-        <div class="row table-data" style="padding-top: 20px">
+        <div class="row table-data" style="padding-top: 10px; padding-bottom: 10px;">
           <div class="col-md-12">
-            <div class="row loading" *ngIf="loading">
+            <div class="row loading" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="loading">
               <ngx-loading [show]="true"></ngx-loading>
             </div>
             <ng-container *ngIf="!addingAccount && payoutAccounts">
-              <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 15px">
+              <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
                 <div class="col-md-3" [ngSwitch]="account.object">
-                  <span *ngSwitchCase="'card'">Card</span>
-                  <span *ngSwitchCase="'bank_account'">Bank Account</span>
+                  <b *ngSwitchCase="'card'">Card</b>
+                  <b *ngSwitchCase="'bank_account'">Bank Account</b>
                 </div>
                 <div class="col-md-3">
-                  <span>**** **** ****{{account.last4}}</span>
+                  <span>**** **** **** {{account.last4}}</span>
                 </div>
                 <div class="col-md-3">
-                  <span *ngIf="account.status">{{account.status | titlecase}}</span>
-                  <span *ngIf="!account.status">Ready</span>
+                  <b *ngIf="account.status">{{account.status | titlecase}}</b>
+                  <b *ngIf="!account.status">Ready</b>
                 </div>
                 <div class="col-md-3">
                   <a (click)="editAccount(account.account)">
@@ -47,10 +47,9 @@
         </div>
       </div>
     </div>
-    <hr>
-    <div class="row">
+    <div class="row" style="padding-top: 20px;">
       <div class="col-md-3">
-        <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8080/console/account/payoutmethods&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q"
+        <a href="{{'https://connect.stripe.com/express/oauth/authorize?redirect_uri='+config.clientUrl+'/console/account/payoutmethods&client_id='+config.stripeClientId}}"
           md-button>Add Payout Method</a>
       </div>
     </div>

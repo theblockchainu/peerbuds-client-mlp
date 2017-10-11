@@ -3,6 +3,8 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ConsoleAccountComponent } from '../console-account.component';
 import { PaymentService } from '../../../_services/payment/payment.service';
+import { AppConfig } from '../../../app.config';
+
 @Component({
   selector: 'app-console-account-payoutmethods',
   templateUrl: './console-account-payoutmethods.component.html',
@@ -16,7 +18,8 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleAccountComponent: ConsoleAccountComponent,
     private _paymentService: PaymentService,
-    private location: Location
+    private location: Location,
+    public config: AppConfig
   ) {
     this.loading = true;
     this.activatedRoute.pathFromRoot[4].queryParams.subscribe(params => {
