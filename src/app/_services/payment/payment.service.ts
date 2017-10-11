@@ -79,4 +79,36 @@ export class PaymentService {
 
   }
 
+  public createConnectedAccount(authcode: string, error?: any, errDescription?: any): Observable<any> {
+    if (error) {
+      return this.http.get(this.config.apiUrl + '/api/payoutaccs/create-connected-account?error=' + error + '&errorDesc=' + errDescription, this.options).map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+    } else {
+      console.log(authcode);
+
+      return this.http.get(this.config.apiUrl + '/api/payoutaccs/create-connected-account?authCode=' + authcode, this.options).map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+    }
+  }
+  /**
+   * retrieveConnectedAccount
+   */
+  public retrieveConnectedAccount(): Observable<any> {
+    return this.http.get(this.config.apiUrl + '/api/payoutaccs/retrieve-connected-accounts', this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+  }
+  /**
+   * createLoginLink
+   */
+  public createLoginLink(accountId: string): Observable<any> {
+    return this.http.get(this.config.apiUrl + '/api/payoutaccs/create-login-link?accountId=' + accountId, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+  }
+
 }
