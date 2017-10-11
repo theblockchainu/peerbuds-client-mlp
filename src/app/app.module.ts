@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
 
 import { IndexComponent } from './default/index/index.component';
+import { IndexComponent1 } from './default/index1/index1.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 
 import 'hammerjs';
@@ -25,6 +26,8 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+
 
 @NgModule({
   declarations: [
@@ -34,12 +37,16 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
     AppHeaderComponent,
     AppFooterComponent,
     IndexComponent,
+    IndexComponent1,
     IndexPhilComponent,
-    AccessDeniedComponent,
+    AccessDeniedComponent, 
     LoginComponent,
     SignupComponent,
     AppDesignComponent,
-    AppNotificationDialogComponent
+    GlobalErrorHandler,
+    AppNotificationDialogComponent,
+    ResetPasswordComponent
+  
   ],
   imports: [
     BrowserModule,

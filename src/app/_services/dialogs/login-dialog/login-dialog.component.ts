@@ -10,6 +10,8 @@ import {
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ForgotpwdComponentDialog } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AppConfig } from '../../../app.config';
+import { MdDialog, MdDialogConfig } from '@angular/material';
+import { DialogsService } from '../dialog.service';
 
 @Component({
   selector: 'app-login-dialog',  // <login></login>
@@ -24,11 +26,14 @@ export class LoginComponentDialog implements OnInit {
   // public loading = false;
   public returnUrl: string;
   isLoggedIn: Observable<boolean>;
-  public email: string;
+  private email: string;
   public passWord: string;
   public loginForm: FormGroup;
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
+
+ 
+  public showError = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,20 +43,23 @@ export class LoginComponentDialog implements OnInit {
     public dialogRef: MdDialogRef<LoginComponentDialog>,
     private _fb: FormBuilder,
     public config: AppConfig,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+    @Inject(MD_DIALOG_DATA) public data: any,
+    private dialogsService: DialogsService) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
     }
 
   public ngOnInit() {
+    //reset login status
+   this.authenticationService.logout();
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home/homefeed';
 
     this.loginForm = this._fb.group({
-      email : ['', Validators.required], /* putting reg ex as well */
+      email : ['', Validators.email], /* putting reg ex as well */
       password : ['', Validators.required]
     });
       this.forgotpwdForm = this._fb.group({
-      email : ['', Validators.required] /* putting reg ex as well */
+      email : ['', Validators.email] /* putting reg ex as well */
     });
   }
 
@@ -68,22 +76,17 @@ export class LoginComponentDialog implements OnInit {
               (error) => {
                   this.alertService.error(error._body);
                   // this.loading = false;
+                  //console.log(error._body);
+                  this.showError = true;
+                  setTimeout(function() {
+                  this.showError = false;
+                  console.log(this.showError);
+                }.bind(this), 300000);
               });
   }
 
-  public getpwd() {
-      // this.loading = true;
-      this.email = this.forgotpwdForm.controls['email'].value;
-      this.authenticationService.getpwd(this.email)
-          .subscribe(
-              (data) => {
-                  this.dialogRef.close();
-                  this.router.navigate([this.returnUrl]);
-              },
-              (error) => {
-                  this.alertService.error(error._body);
-                  // this.loading = false;
-              });
+  public openForgotPwd() {
+    this.dialogsService.openForgotPwd().subscribe();
   }
 
   private redirect() {
@@ -93,4 +96,4 @@ export class LoginComponentDialog implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  }
+}

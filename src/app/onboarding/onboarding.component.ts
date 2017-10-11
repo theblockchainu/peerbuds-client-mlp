@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import {
   URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs
 } from '@angular/http';
@@ -18,10 +19,10 @@ import _ from 'lodash';
   styleUrls: ['./onboarding.component.scss']
 })
 export class OnboardingComponent implements OnInit {
-
+  public step = 1;
   public userId: string;
   public placeholderStringTopic = 'Search for a topic ';
-  public step: number;
+ 
   public suggestedTopics = [];
   public interests = [];
   public active = true;
@@ -44,8 +45,11 @@ export class OnboardingComponent implements OnInit {
   public showRequestNewTopic = false;
   public topicForRequest = '';
   public queriesSearchedArray = [];
+  private queryForSocialIdentities = {'include': ['identities', 'credentials']};
 
   constructor(
+    public router: Router,
+    private activatedRoute: ActivatedRoute,
     private http: Http, private config: AppConfig,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
@@ -53,27 +57,50 @@ export class OnboardingComponent implements OnInit {
     private _profileService: ProfileService,
     private _topicService: TopicService
   ) {
-    this.step = 1;
+    
+    this.activatedRoute.params.subscribe(params => {
+        this.step = params['step'];
+      });
     this.interest1 = new FormGroup({
     });
     this.countryPickerService.getCountries()
       .subscribe((countries) => this.countries = countries);
     this.userId = _profileService.getUserId();
     
-    this._profileService.getSocialIdentities()
+    this._profileService.getSocialIdentities(this.queryForSocialIdentities)
     .subscribe((response: Response) => {
       this.socialIdentitiesConnected = response;
 
-      this.socialIdentitiesConnected.forEach(socialIdentity => {
-        if (socialIdentity.provider === 'google') {
-          this.connectedIdentities.google = true;
+      // this.socialIdentitiesConnected.forEach(socialIdentity => {
+        if(this.socialIdentitiesConnected.identities.length > 0) {
+          this.boolShowConnectedSocials = true;
+          this.socialIdentitiesConnected.identities.forEach(element => {
+            if(element.provider === 'google') {
+                this.connectedIdentities.google = true;
+            }
+            else if (element.provider === 'facebook') {
+              this.connectedIdentities.fb = true;
+            }
+          });
         }
-        if (socialIdentity.provider === 'facebook') {
-          this.connectedIdentities.fb = true;
+        if(this.socialIdentitiesConnected.credentials.length > 0) {
+          this.boolShowConnectedSocials = true;
+          this.socialIdentitiesConnected.credentials.forEach(element => {
+            if(element.provider === 'google') {
+                this.connectedIdentities.google = true;
+            }
+            else if (element.provider === 'facebook') {
+              this.connectedIdentities.fb = true;
+            }
+          });
         }
-      });
-      // console.log(JSON.stringify(this.socialIdentitiesConnected));
-
+        // if (socialIdentity.provider === 'google') {
+        //   this.connectedIdentities.google = true;
+        // }
+        // if (socialIdentity.provider === 'facebook') {
+        //   this.connectedIdentities.fb = true;
+        // }
+      // });
     },
     (err) => {
       console.log('Error: ' + err);
@@ -143,8 +170,9 @@ export class OnboardingComponent implements OnInit {
         });
   }
 
-  goToNext(n) {
-    this.step = n;
+  continue(p) {
+    this.step = p;
+    this.router.navigate(['onboarding', +this.step]);
   }
 
   public showConnectedSocials() {

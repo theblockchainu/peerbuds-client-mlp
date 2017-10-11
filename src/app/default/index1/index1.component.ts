@@ -10,11 +10,11 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+  selector: 'app-index1',
+  templateUrl: './index1.component.html',
+  styleUrls: ['./index1.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent1 implements OnInit {
 
   public isLoggedIn;
   public loggedIn = false;
@@ -23,13 +23,20 @@ export class IndexComponent implements OnInit {
               public dialog: MdDialog) {
     this.isLoggedIn = _authService.isLoggedIn();
     _authService.isLoggedIn().subscribe((res) => {
-      this.loggedIn = res;
+    setTimeout(()=>this.loggedIn=res,0);
     });
-    if(this.loggedIn) {
-      this._router.navigate(['home', 'homefeed']);
-    }
    }
-  
-  ngOnInit() {
+
+  ngOnInit(){
   }
+
+  ngAfterViewInit() {
+  setTimeout(()=> {
+  let dialogRef1: MdDialogRef<LoginComponentDialog>;
+
+        dialogRef1= this.dialog.open(LoginComponentDialog);
+
+        return dialogRef1.afterClosed();
+  });
+}
 }
