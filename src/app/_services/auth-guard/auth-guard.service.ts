@@ -37,5 +37,4 @@ export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad 
     return false;
   }
 
-
 }

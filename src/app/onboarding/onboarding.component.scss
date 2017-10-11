@@ -1,6 +1,6 @@
 .onboarding-content{
-  margin-bottom:0!important;
-  padding-bottom:136px;
+  margin-bottom:27% !important;
+  //padding-bottom:136px;
 }
 .onboarding{
   .title{
@@ -133,6 +133,8 @@ label.check {
     color:#fff;
     padding:100px 100px;
     border-radius:5px;
+    margin: 16%;
+    padding: 133px 10px 55px 26px;
     .title{
         color:#000;
     }
@@ -157,16 +159,23 @@ label.check {
   padding: 50px 0 50px 0;
 }
 .title-explore{
- padding: 100px 0 20px 0;
+ padding: 130px 0 0 0;
+ margin: 100px 0 24px 0;
+ font-weight: 400;
 }
 
 .headline {
   color: #484848;
+  padding: 42px 0 0 0;
+  font-weight: 500;
+  
 }
 
 .description1 {
   font-size: 16px;
   color: #767676;
+  margin: -30%;
+  
 }
 
 .customBtn {
@@ -176,18 +185,12 @@ label.check {
 
 .syncSocial {
   color: #33BD9E;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: lighter;
 }
 
 .vAlignTextTop{
   vertical-align:text-top;
-}
-
-.bottom-section{
-  border-top:1px solid #ccc;
-  padding-top:15px;
-  margin-top:20px;
 }
 
 .outline-btn {
@@ -214,4 +217,30 @@ label.check {
 
 .suggestions > ul:first-child {
   margin-top: 0px;
+}
+
+.dcSocial {
+  color: grey;
+  cursor: pointer;
+}
+
+.defaultFB {
+  color: #335397;
+}
+
+.defaultGoogle {
+  color: #dd4a38;
+}
+
+.socialIcons {
+  padding-right: 10px;
+}
+
+.fixedFooter {
+  position: fixed;;
+  bottom:0;
+  border-top: 1px solid #cccccc;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  background: white;
 }

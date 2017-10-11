@@ -8,20 +8,24 @@ import { Observable } from 'rxjs/Observable';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 @Component({
   selector: 'app-upload-docs',
   templateUrl: './upload-docs.component.html',
   styleUrls: ['./upload-docs.component.scss']
 })
 export class UploadDocsComponent implements OnInit {
-
   public step = 1;
-  private idProofImagePending: Boolean;
+  private uploadingImage = false;
   public peer: FormGroup;
   public otp: FormGroup;
   private email: string;
   private success;
   public otpReceived: string;
+  private verificationIdUrl: string;
+  private fileType;
+  private fileName;
 
   constructor(
     public router: Router,
@@ -37,9 +41,10 @@ export class UploadDocsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.idProofImagePending = true;
     this.peer = this._fb.group({
-      email: '',
+      email: ['',
+      [Validators.required,
+      Validators.pattern(EMAIL_REGEX)]],
       verificationIdUrl: ['', Validators.required]
     });
 
@@ -47,15 +52,28 @@ export class UploadDocsComponent implements OnInit {
       inputOTP: [null]
     });
     this._profileService.getPeerNode()
-      .subscribe((res) => this.email = res.email);
+      .subscribe((res) => {
+        this.peer.controls.email.setValue(res.email);
+      });
   }
 
   continue(p) {
+    if (p === 2) {
+      this._profileService
+      .updatePeer({ 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value, 'email': this.peer.controls['email'].value })
+      .subscribe((response) => {
+        console.log("File Saved Successfully");
+      }, (err) => {
+        console.log('Error updating Peer: ');
+        console.log(err);
+      });
+    }
     if (p === 3) {
+      this.peer.controls['email'].setValue(this.email);
       this.resendOTP();
     }
     this.step = p;
-    this.router.navigate(['identity-verification', +this.step]);
+    this.router.navigate(['app-upload-docs', +this.step]);
   }
 
   public resendOTP() {
@@ -68,24 +86,38 @@ export class UploadDocsComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         this.success = res;
-        this.router.navigate(['onboarding']);
+        this.router.navigate(['onboarding/1']);
       });
   }
 
   redirectToOnboarding() {
-    this.router.navigate(['onboarding']);
+    this.router.navigate(['onboarding/1']);
   }
 
   uploadImage(event) {
-    this.peer.controls['email'].setValue(this.email);
+    this.uploadingImage = true;
     console.log(event.files);
     for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
+      this.fileName = file.name;
+      this.mediaUploader.upload(file).map((responseObj) => {
+        this.verificationIdUrl = responseObj.url;
+        this.fileType = responseObj.type;
         this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
-        this.idProofImagePending = false;
+        this.uploadingImage = false;
       }).subscribe();
     }
-    this.idProofImagePending = false;
   }
 
+  deleteFromContainer(url: string, type: string) {
+    if (type === 'image' || type === 'file') {
+      this._profileService.updatePeer({
+        'verificationIdUrl': ''
+      }).subscribe(response => {
+        this.verificationIdUrl = response.picture_url;
+      });
+    } else {
+      console.log('error');
+    }
+  }
 }
+

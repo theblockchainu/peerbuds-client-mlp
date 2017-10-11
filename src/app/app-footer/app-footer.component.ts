@@ -24,7 +24,6 @@ export class AppFooterComponent implements OnInit {
           this.loggedIn = res;
       });
   }
-
   ngOnInit() {
   }
 

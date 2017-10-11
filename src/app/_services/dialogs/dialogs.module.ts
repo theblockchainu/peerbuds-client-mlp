@@ -20,7 +20,7 @@ import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.compon
   exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent],
   declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent],
   providers: [
-    DialogsService,
+    DialogsService
   ],
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent

@@ -176,8 +176,6 @@ export class ConsoleProfileEditComponent implements OnInit {
     }
   }
 
-
-
   private initailizeWorkForm(): FormGroup {
     return this._fb.group({
       position: ['', Validators.requiredTrue],

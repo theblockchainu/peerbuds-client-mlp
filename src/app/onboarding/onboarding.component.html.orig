@@ -71,7 +71,6 @@
         </div>
 
       </div>
-<<<<<<< HEAD
       <div class="onboarding step-3" [hidden]="step!=3">
         <div class="text-center">
          <div class="row">
@@ -87,13 +86,6 @@
           </div>
         </div>
            
-=======
-      <div class="onboarding step-3  margin-top-100 col-sm-4 col-sm-offset-4" [hidden]="step!=3">
-        <div class="center" style="padding-top:60px">
-            <h2 class="headline">You're now ready to teach and learn anything your heart desire</h2>
-            <p class="description1">Your account is still under review and will soon be approved. Meanwhile you can discover learning content on the platform.</p>
-            <button class="margin-top-40" [routerLink]="['/home/homefeed']" md-raised-button color="accent">Start Exploring</button>
->>>>>>> develop-material
         </div>
       </div>
   </div>

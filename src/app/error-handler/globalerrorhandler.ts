@@ -1,5 +1,12 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-error',
+  templateUrl: './error-handler.component.html',
+  styleUrls: ['./error-handler.component.scss']
+})
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
