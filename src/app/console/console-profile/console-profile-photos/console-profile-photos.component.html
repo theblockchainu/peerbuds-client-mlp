@@ -19,7 +19,7 @@
               <ngx-loading [show]="true"></ngx-loading>
             </div>
             <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)"
-              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+              maxFileSize="10000000" accept="image/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
               <ng-template pTemplate="toolbar">
                 <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
               </ng-template>
@@ -45,7 +45,7 @@
               <ngx-loading [show]="true"></ngx-loading>
             </div>
             <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)"
-              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+              maxFileSize="10000000" accept="video/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
               <ng-template pTemplate="toolbar">
                 <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 videos</div>
               </ng-template>

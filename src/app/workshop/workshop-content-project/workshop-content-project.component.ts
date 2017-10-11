@@ -5,6 +5,7 @@ import {AppConfig} from '../../app.config';
 import {MediaUploaderService} from '../../_services/mediaUploader/media-uploader.service';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 import _ from 'lodash';
+import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 
 @Component({
     selector: 'app-workshop-content-project',
@@ -24,14 +25,22 @@ export class WorkshopContentProjectComponent implements OnInit {
     };
     public isEdit = false;
     public urlForVideo;
+    public mediaObject;
+    private uploadingVideo;
+    private uploadingAttachments;
+    public attachments: any;
+    public attachmentUrls = [];
+    private options;
 
     constructor(
         private _fb: FormBuilder,
         private http: Http, private config: AppConfig,
         private mediaUploader: MediaUploaderService,
         @Inject(MD_DIALOG_DATA) public inputData: any,
-        public dialogRef: MdDialogRef<WorkshopContentProjectComponent>
+        public dialogRef: MdDialogRef<WorkshopContentProjectComponent>,
+        private requestHeaders: RequestHeaderService
     ) {
+        this.options = requestHeaders.getOptions();
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
@@ -46,25 +55,64 @@ export class WorkshopContentProjectComponent implements OnInit {
         this.resultData['data'] = this.lastIndex;
     }
 
-    imageUploadNew(event) {
+    uploadNew(event) {
+        console.log(event.files);
+        this.uploadingAttachments = true;
         for (const file of event.files) {
-            this.mediaUploader.upload(file).map((responseObj) => {
-                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                // contentForm.controls['imageUrl'].patchValue(responseObj.url);
-                // this.urlForVideo = responseObj.url;
-            }).subscribe();
+          this.mediaUploader.upload(file).subscribe((response) => {
+            const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+            const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+            const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+            supplementUrls.reset();
+            
+            this.addAttachmentUrl(response.url);
+            this.filesUploaded++;
+            this.uploadingAttachments = false;
+          });
         }
     }
 
+    addAttachmentUrl(value: String) {
+        console.log('Adding image url: ' + value);
+        // this.attachments.push(new FormControl(value));
+        this.attachmentUrls.push(value);
+    }
+
     deleteFromContainer(fileUrl, fileType) {
+        // const fileurl = fileUrl;
+        // fileUrl = _.replace(fileUrl, 'download', 'files');
+        // this.http.delete(this.config.apiUrl + fileUrl)
+        //   .map((response) => {
+        //     console.log(response);
+        //     if (fileType === 'video') {
+        //       this.urlForVideo = '';
+        //       const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        //       const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+        //       contentForm.controls['imageUrl'].patchValue(this.urlForVideo);
+        //     } 
+        //   }).subscribe();
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(this.config.apiUrl + fileUrl)
           .map((response) => {
             console.log(response);
-            if (fileType === 'video') {
+            if (fileType === 'file') {
+                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+                let supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+                let suppUrl = supplementUrls.value;
+                suppUrl = _.remove(suppUrl, function (n) {
+                    return n !== fileurl;
+                });
+                this.attachmentUrls = suppUrl;
+                contentForm.controls['supplementUrls'].patchValue(suppUrl);
+                if(contentForm.controls['id'].value) {
+                    this.deleteFromContent(contentForm);
+                }
+            } 
+            else {
               this.urlForVideo = '';
+              this.mediaObject = {};
               const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
               const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
               contentForm.controls['imageUrl'].patchValue(this.urlForVideo);
@@ -73,19 +121,24 @@ export class WorkshopContentProjectComponent implements OnInit {
     
     }
 
-    uploadNew(event) {
-        console.log(event.files);
-        this.filesToUpload = event.files.length;
-        this.filesUploaded = 0;
+    deleteFromContent(contentForm) {
+        const body = {'imageUrl': ''};
+        this.http.patch(this.config.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
+        .map((response) => {})
+        .subscribe();
+    }
+    
+    imageUploadNew(event) {
+        this.uploadingVideo = true;
         for (const file of event.files) {
-            this.mediaUploader.upload(file).map((responseObj) => {
-                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
-                supplementUrls.reset();
-                // supplementUrls.push(this._fb.control(responseObj.url));
-                this.filesUploaded++;
-            }).subscribe();
+          this.mediaUploader.upload(file).subscribe((response) => {
+            this.urlForVideo = response.url; 
+            const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+            const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+            contentForm.controls['imageUrl'].patchValue(response.url);
+            this.mediaObject = response;
+            this.uploadingVideo = false;
+            });
         }
     }
 
