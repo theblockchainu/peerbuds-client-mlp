@@ -1,3 +1,57 @@
-<p>
-  console-account-payoutmethods works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Payout Methods</h3>
+      </div>
+    </div>
+    <div class="row table">
+      <div class="col-md-12">
+        <div class="row table-header">
+          <div class="col-md-3">
+            <span>Method</span>
+          </div>
+          <div class="col-md-3">
+            <span>Details</span>
+          </div>
+          <div class="col-md-3">
+            <span>Status</span>
+          </div>
+        </div>
+        <hr>
+        <div class="row table-data">
+          <div class="col-md-12">
+            <div class="row loading" *ngIf="loading">
+              <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <ng-container *ngIf="!addingAccount && payoutAccounts">
+              <div class="row" *ngFor="let account of payoutAccounts">
+                <div class="col-md-3" [ngSwitch]="account.object">
+                  <span *ngSwitchCase="'card'">Card</span>
+                  <span *ngSwitchCase="'bank_account'">Bank Account</span>
+                </div>
+                <div class="col-md-3">
+                  <span>**** **** ****{{account.last4}}</span>
+                </div>
+                <div class="col-md-3">
+                  <span *ngIf="account.status">{{account.status | titlecase}}</span>
+                  <span *ngIf="!account.status">Ready</span>
+                </div>
+                <div class="col-md-3">
+                  <a (click)="editAccount(account.account)">edit</a>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-3">
+        <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8080/console/account/payoutmethods&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q"
+          md-button>Add Payout Method</a>
+      </div>
+    </div>
+  </div>
+</div>

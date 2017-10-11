@@ -85,7 +85,7 @@ export class ProfileService {
   /**
    * getPeerData
    */
-  public getPeerData(filter?: any) {
+  public getPeerData(filter?: any): Observable<any> {
     if (filter) {
       if (this.userId) {
         return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + JSON.stringify(filter), this.options)
