@@ -1,3 +1,66 @@
-<p>
-  console-account-transactionhistory works!
-</p>
+ <!--<div class="col-md-4 loading-container">
+    <ngx-loading [show]="true"></ngx-loading>
+  </div>-->
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div>
+        <div style="margin-top:20px;" class="col-md-12">
+          <div class="row" style="margin-right: 15px;">
+            <md-tab-group>
+              <md-tab label="Completed Transactions">
+                <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+                  Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be paid out on completion of your workshop, experience or session.
+                </div>
+                  <h2> Booked : $10,000.00 </h2>
+                  <a href="#" class="pull-right"> Export to CSV</a><br>
+                <hr>
+                <div class="row" style="line-height: 120%">
+                  <div class="col-sm-3">
+                    <md-input-container class="pb-block" style="margin-bottom: 20px;margin-top: 7.5px;">
+                    <input mdInput type="text" placeholder="Payout Method" required>
+                    <md-error>This field is required</md-error>
+                    </md-input-container>
+                  </div>
+                  <div class="col-sm-3">
+                    <md-input-container class="pb-block" style="margin-bottom: 20px;margin-top: 7.5px;">
+                    <input mdInput type="text" placeholder="Content" required>
+                    <md-error>This field is required</md-error>
+                    </md-input-container>
+                  </div>
+                  <div class="col-sm-2">
+                    <md-select placeholder="Year" style="margin-bottom: 20px">
+                      <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
+                    </md-select>
+                  </div>
+                  <div class="col-sm-2">
+                    <md-select placeholder="From Month" style="margin-bottom: 20px">
+                      <md-option *ngFor="let month of months" [value]="month">{{month}}</md-option>
+                    </md-select>
+                  </div>
+                  <div class="col-sm-2">
+                    <md-select placeholder="To Month" style="margin-bottom: 20px">
+                      <md-option *ngFor="let month of months" [value]="month">{{month}}</md-option>
+                    </md-select>
+                  </div>
+                </div>
+                <hr style="border-top: 3px solid #eeeeee;">
+              </md-tab>
+              <md-tab label="Future Transactions">
+                <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+                  Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be paid out on completion of your workshop, experience or session.
+                </div>
+              </md-tab>
+            </md-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

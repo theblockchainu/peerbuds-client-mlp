@@ -4,6 +4,8 @@ import { Http, Response, } from '@angular/http';
 import { AppConfig } from '../../app.config';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
+import _ from 'lodash';
+import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 
 @Component({
     selector: 'app-workshop-content-online',
@@ -24,7 +26,11 @@ export class WorkshopContentOnlineComponent implements OnInit {
         status: 'discard',
         data: 0
     };
-    public isEdit = false;
+    public isEdit = false;  
+    private uploadingImage = false;
+    private uploadingAttachments = false;
+    private contentId; 
+    private options;
 
     constructor(
         private _fb: FormBuilder,
@@ -32,8 +38,10 @@ export class WorkshopContentOnlineComponent implements OnInit {
         public config: AppConfig,
         private mediaUploader: MediaUploaderService,
         @Inject(MD_DIALOG_DATA) public inputData: any,
-        public dialogRef: MdDialogRef<WorkshopContentOnlineComponent>
+        public dialogRef: MdDialogRef<WorkshopContentOnlineComponent>,
+        private requestHeaders: RequestHeaderService
     ) {
+        this.options = requestHeaders.getOptions();
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
@@ -152,9 +160,13 @@ export class WorkshopContentOnlineComponent implements OnInit {
     }
 
     uploadImage(event) {
-        console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-        const xhrResp = JSON.parse(event.xhr.response);
-        this.addImageUrl(xhrResp.url);
+        this.uploadingImage = true;
+        for (const file of event.files) {
+          this.mediaUploader.upload(file).subscribe((response) => {
+            this.addImageUrl(response.url);
+            this.uploadingImage = false;
+          });
+        }
     }
 
     public addImageUrl(value: String) {
@@ -163,9 +175,13 @@ export class WorkshopContentOnlineComponent implements OnInit {
     }
 
     uploadAttachments(event) {
-        console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-        const xhrResp = JSON.parse(event.xhr.response);
-        this.addAttachmentUrl(xhrResp.url);
+        this.uploadingAttachments = true;
+        for (const file of event.files) {
+          this.mediaUploader.upload(file).subscribe((response) => {
+            this.addAttachmentUrl(response.url);
+            this.uploadingAttachments = false;
+          });
+        }
     }
 
     public addAttachmentUrl(value: String) {
@@ -176,6 +192,47 @@ export class WorkshopContentOnlineComponent implements OnInit {
 
     imgErrorHandler(event) {
         event.target.src = '/assets/images/placeholder-image.jpg';
+    }
+
+    deleteFromContainer(fileUrl, fileType) {
+        const fileurl = fileUrl;
+        fileUrl = _.replace(fileUrl, 'download', 'files');
+        this.http.delete(this.config.apiUrl + fileUrl)
+          .map((response) => {
+            console.log(response);
+            if (fileType === 'file') {
+                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+                let supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+                let suppUrl = supplementUrls.value;
+                suppUrl = _.remove(suppUrl, function (n) {
+                    return n !== fileurl;
+                });
+                this.attachmentUrls = suppUrl;
+                contentForm.controls['supplementUrls'].patchValue(suppUrl);
+                if(contentForm.controls['id'].value) {
+                    this.deleteFromContent(contentForm);
+                }
+            } else if (fileType === 'image') {
+                this.addImageUrl('');
+                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+                contentForm.controls['imageUrl'].patchValue('');
+                if(contentForm.controls['id'].value) {
+                    this.deleteFromContent(contentForm);
+                }
+            }
+          }).subscribe((response) =>{
+            
+          });
+    
+    }
+
+    deleteFromContent(contentForm) {
+        const body = {'imageUrl': ''};
+        this.http.patch(this.config.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
+        .map((response: Response) => {})
+        .subscribe();
     }
 
 }

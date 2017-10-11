@@ -1,3 +1,56 @@
-<p>
-  console-account-paymentmethods works!
-</p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4" style="margin-top: 20px;">
+                <md-card class="credit-card">
+                    <md-card-content>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <a class="text-center" (click)="addCard()">
+                                    <div class="col-md-12">
+                                        <md-icon style="font-size:70px">add</md-icon>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span>Add Payment Method</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div class="col-md-4 loading-container" [hidden]="!loadingCards">
+                <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <div class="col-md-4" *ngFor="let card of listAllCards" style="margin-top: 20px;">
+                <md-card class="credit-card">
+                    <md-card-content>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span>XXXX XXXX XXXX {{card.last4}}</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span>{{card.exp_month}}/{{card.exp_year}}</span>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 30px">
+                                    <div class="col-md-10">
+                                        <a class="lightText" (click)="deleteCard(card.id)">
+                                            Remove
+                                            <md-icon style="font-size: 14px">help</md-icon>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <img class="card-brand" src="/assets/icon/payment-icons/svg/single/{{card.brand.split(' ')[0] | lowercase}}.svg" alt="{{card.brand}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuardService } from '../_services/auth-guard/auth-guard.service';
 
 import { OnboardingComponent } from './onboarding.component';
 
 const routes: Routes = [
-  // Learner Onboarding
-  { path: '', component: OnboardingComponent },
+{
+  path: '', 
+  children: [
+    {
+      path: ':step',
+      component: OnboardingComponent,
+      canActivateChild: [AuthGuardService]
+    }
+
+  ]
+}
 ];
 
 @NgModule({

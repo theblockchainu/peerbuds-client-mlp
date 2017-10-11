@@ -22,7 +22,22 @@
                     <div class="form-group margin-top-40">
                         <label>Upload a photo/video that best describes this content</label>
                         <div class="upload-image-section imageHolder">
-                            <p-fileUpload #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse"></p-fileUpload>
+                            <div class="loading-container" [hidden]="!uploadingVideo">
+                                <ngx-loading [show]="true"></ngx-loading>
+                            </div>
+                            <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)" maxFileSize="10000000" chooseLabel="Browse" accept="image/*,video/*" ></p-fileUpload>
+                            <md-grid-list cols="2" rowHeight="100px" gutterSize="10px" *ngIf="mediaObject && mediaObject.hasOwnProperty('type') && mediaObject.hasOwnProperty('url')">
+                                <md-grid-tile>
+                                <!-- <div style="position: absolute; cursor: pointer;">
+                                    <md-icon (click)="deleteFromContainer(urlForVideo, 'video')" style="color: black;">close</md-icon>
+                                </div> -->
+                                    <img *ngIf="mediaObject.type.includes('image')" src="{{config.apiUrl + mediaObject.url}}" width="150" (error)="imgErrorHandler($event)">
+                                    <video *ngIf="mediaObject.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+                                        <source src="{{config.apiUrl + mediaObject.url}}"> Your browser does not support the video tag.
+                                    </video>
+                                    <md-icon (click)="deleteFromContainer(mediaObject.url, '')" class="delete-button">close</md-icon>
+                                </md-grid-tile>
+                            </md-grid-list>
                         </div>
                     </div>
 
@@ -38,28 +53,31 @@
 
                     <div class="form-group">
                         <label class="display-block">Add supporting material</label>
-                        <div *ngIf="filesToUpload">
+                        <!-- <div *ngIf="filesToUpload">
                             <progressbar [max]="filesToUpload" [value]="filesUploaded">
                                 <span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
                             </progressbar>
+                        </div> -->
+                        <div class="loading-container" [hidden]="!uploadingAttachments">
+                            <ngx-loading [show]="true"></ngx-loading>
                         </div>
-                        <p-fileUpload name="attachments" customUpload="true" (uploadHandler)="uploadNew($event)" multiple="multiple" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
+                        <p-fileUpload *ngIf="!uploadingAttachments" name="attachments" accept="application/pdf,application/msword,
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" customUpload="true" (uploadHandler)="uploadNew($event)" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
                             <ng-template pTemplate="toolbar">
                                     <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image/video</div>
                             </ng-template>
-                            <ng-template pTemplate="content">
-                                <md-grid-list cols="2" rowHeight="100px" gutterSize="10px" *ngIf="urlForVideo">
-                                    <!-- <md-grid-tile *ngFor="let file of urlForVideo"> -->
-                                    <div style="position: absolute; cursor: pointer;">
-                                        <md-icon (click)="deleteFromContainer(urlForVideo, 'video')" style="color: black;">close</md-icon>
-                                    </div>
-                                    <video controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
-                                        <source src="{{config.apiUrl + urlForVideo}}"> Your browser does not support the video tag.
-                                    </video>
-                                    <!-- </md-grid-tile> -->
-                                </md-grid-list>
-                            </ng-template>
+                            
                         </p-fileUpload>
+                        <!-- <ng-template pTemplate="content"> -->
+                        <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls.length">
+                            <md-grid-tile *ngFor="let file of attachmentUrls">
+                                <div style="float: left; margin-right: 15px; cursor: pointer;">
+                                    <md-icon (click)="deleteFromContainer(file, 'file')" class="">close</md-icon>
+                                </div>
+                                <a href="{{config.apiUrl + file}}">{{file}}</a>
+                            </md-grid-tile>
+                        </md-grid-list>
+                        <!-- </ng-template> -->
                     </div>
                 </div>
             </div>
