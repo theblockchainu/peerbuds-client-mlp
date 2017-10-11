@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleProfileComponent } from '../console-profile.component';
 import { ProfileService } from '../../../_services/profile/profile.service';
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
 
 @Component({
   selector: 'app-console-profile-verification',
@@ -19,6 +21,8 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleProfileComponent: ConsoleProfileComponent,
     public router: Router,
+    private dialog: MdDialog,
+    private dialogsService: DialogsService,
     public _profileService: ProfileService,
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
@@ -30,6 +34,14 @@ export class ConsoleProfileVerificationComponent implements OnInit {
   ngOnInit() {
     this.loaded = false;
     this.getProfile();
+  }
+
+   public openIdVerify() {
+    this.dialogsService.openIdVerify().subscribe();
+  }
+
+  public openEmailVerify() {
+   this.dialogsService.openEmailVerify().subscribe();
   }
 
   private getProfile() {

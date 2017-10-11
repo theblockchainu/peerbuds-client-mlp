@@ -24,6 +24,7 @@ export class ResetPasswordComponent implements OnInit {
 
   isLoggedIn: Observable<boolean>;
   public passWord: string;
+  public confirmpassWord: string;
   public email: string;
   public resetpwdForm: FormGroup;
 
@@ -45,13 +46,15 @@ export class ResetPasswordComponent implements OnInit {
     this.returnUrl = '/';
 
     this.resetpwdForm = this._fb.group({
-       password : ['', Validators.required] 
+       password : ['', Validators.required],
+       confirmPassword : ['', Validators.required]
     });
   }
   
    public resetpwd(value: string) {
       // this.loading = true;
       this.passWord = this.resetpwdForm.controls['password'].value;
+      this.confirmpassWord = this.resetpwdForm.controls['confirmpassword'].value;
       this.authenticationService.resetpwd(this.email, this.passWord)
           .subscribe(
               (data) => {
@@ -60,10 +63,10 @@ export class ResetPasswordComponent implements OnInit {
               (error) => {
                   this.alertService.error(error._body);
                   // this.loading = false;
+
+               
               });
-  }
-
-
+  } 
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
   }
