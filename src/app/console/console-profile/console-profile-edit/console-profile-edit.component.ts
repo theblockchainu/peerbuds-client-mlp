@@ -59,7 +59,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         preferred_language: '',
         other_languages: this._fb.array(['']),
         currency: '',
-        gender: '',
+        gender: 'Male',
         timezone: '',
         dobMonth: '',
         dobYear: '',
@@ -76,8 +76,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         work: this._fb.array([
           this.initailizeWorkForm()
         ]),
-        email: '',
-        isAdmin: ''
+        email: ''
       }
     );
     const query = {
@@ -105,7 +104,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         this.profile.education.push(educationEntry);
       }
       this.loaded = true;
-      this.months = moment.months();
+      // this.months = moment.months();
       this.days = this.getDaysArray();
       this.years = this.getYearsArray();
     });
@@ -123,7 +122,9 @@ export class ConsoleProfileEditComponent implements OnInit {
   private setFormValues(profiles: Array<any>) {
     if (profiles.length > 0) {
       this.profileForm.patchValue(profiles[0]);
-      this.profileForm.controls['isAdmin'].patchValue(profiles[0].peer[0].isAdmin);
+      this.profileForm.controls['dobDay'].patchValue(profiles[0].birthDay);
+      this.profileForm.controls['dobMonth'].patchValue(profiles[0].birthMonth);
+      this.profileForm.controls['dobYear'].patchValue(profiles[0].birthYear);
       this.profileForm.controls['email'].patchValue(profiles[0].peer[0].email);
       if (profiles[0].phones && profiles[0].phones.length > 0) {
         this.profileForm.setControl('phones', this._fb.array(
@@ -229,15 +230,13 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.work;
     const email = profileData.email;
     delete profileData.email;
-    const isAdmin = profileData.isAdmin;
-    delete profileData.is_Admin;
     this._profileService.updateProfile(profileData)
       .flatMap((response) => {
         return this._profileService.updateWork(this.profile.id, work);
       }).flatMap((response) => {
         return this._profileService.updateEducation(this.profile.id, education);
       }).flatMap((response) => {
-        return this._profileService.updatePeer({ 'email': email, 'isAdmin': isAdmin });
+        return this._profileService.updatePeer({ 'email': email});
       }).subscribe((response) => {
         this.snackBar.open('Profile Updated', 'Close');
       }, (err) => {

@@ -53,7 +53,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
           'profile_video': response.url
         }).subscribe(response => {
             this.profile_video = response.profile_video;
-            this.uploadingImage = false;
+            this.uploadingVideo = false;
           }, err => {
             console.log(err);
         });
@@ -72,7 +72,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
           'picture_url': response.url
         }).subscribe(response => {
             this.picture_url = response.picture_url;
-            this.uploadingVideo = false;
+            this.uploadingImage = false;
           }, err => {
             console.log(err);
         });

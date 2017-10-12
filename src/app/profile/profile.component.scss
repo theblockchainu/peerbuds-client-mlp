@@ -143,18 +143,18 @@ a h4{
 }
 
 .profile-page{
-    width: 1370px;
+    width: 100%;
     padding-top: 120px;
 }
 
 .profile-pic{
     object-fit: cover;
-    height: 285px;
-    width: 285px;
+    height: 240px;
+    width: 240px;
 }
 
 .center-feed p{
-    font-size: 16px;
+    // font-size: 16px;
 }
 
 .center-feed{
@@ -174,11 +174,31 @@ a h4{
     object-fit: cover;
   }
 
+  .left-panel {
+      width: 20%;
+  }
   .left-panel .mat-button{
     border: 1.5px solid #1C1D1D;
     color: #292C2B;
   }
 
   .feed-horizontal a{
-      color: #1C1D1D
+    //   color: #1C1D1D
+  }
+
+  .defaultFB {
+    color: #335397;
+  }
+  
+  .defaultGoogle {
+    color: #dd4a38;
+  }
+  
+  .socialIcons {
+    padding-right: 10px;
+  }
+
+  .border-top {
+    border-top: 0.5px solid #eeeeee;
+    padding: 30px 0px 20px 0px;
   }

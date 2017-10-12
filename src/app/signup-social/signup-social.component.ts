@@ -97,7 +97,6 @@ export class SignupSocialComponent implements OnInit {
       birthDay: this.signupSocialForm.value.birthDay,
       birthYear: this.signupSocialForm.value.birthYear
     };
-
     this.profileService.updatePeer(email).subscribe();
     this.profileService.updatePeerProfile((this.peerProfile.id), profile).subscribe((response: Response) => response.json());
 
