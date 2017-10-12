@@ -7,3 +7,21 @@ md-hint{
 md-input-container .mat-form-field-infix-override {
     padding-top: 0.9em !important;
 }
+
+.addPhoneButton .mat-button-focus-overlay {
+    background: none;
+    margin-bottom: 10px; 
+    cursor: pointer
+}
+
+.hint {
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+.mdiIcon {
+    font-size: 20px;
+}
+.darkColor {
+    color: #484848;
+}
