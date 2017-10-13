@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { MdSnackBar } from '@angular/material';
 import { AlertService } from '../../alert/alert.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+
 
 @Component({
   selector: 'app-forgot-pwd-dialog',  // <login></login>
@@ -22,10 +23,12 @@ export class ForgotpwdComponentDialog implements OnInit {
   // public loading = false;
   public returnUrl: string;
   isLoggedIn: Observable<boolean>;
-  public email: string;
+  private email: string;
   public passWord: string;
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
+
+  public showMessage = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,18 +46,22 @@ export class ForgotpwdComponentDialog implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     this.forgotpwdForm = this._fb.group({
-      email : ['', Validators.required] /* putting reg ex as well */
+      email : ['', Validators.email] /* putting reg ex as well */
     });
   }
 
-  public getpwd() {
+  public sendForgotPwdMail() {
       // this.loading = true;
       this.email = this.forgotpwdForm.controls['email'].value;
-      this.authenticationService.getpwd(this.email)
+      this.authenticationService.sendForgotPwdMail(this.email)
           .subscribe(
               (data) => {
-                  this.dialogRef.close();
                   this.router.navigate([this.returnUrl]);
+                  this.showMessage = true;
+                  setTimeout(function() {
+                  this.showMessage = false;
+                  console.log(this.showMessage);
+                }.bind(this), 300000);
               },
               (error) => {
                   this.alertService.error(error._body);
@@ -70,5 +77,5 @@ export class ForgotpwdComponentDialog implements OnInit {
     this.dialogRef.close();
   }
 
-    }
+}
 

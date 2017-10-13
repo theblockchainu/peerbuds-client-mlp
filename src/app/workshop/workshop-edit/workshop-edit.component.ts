@@ -48,6 +48,8 @@ export class WorkshopEditComponent implements OnInit {
   public paymentInfo: FormGroup;
 
   public supplementUrls = new FormArray([]);
+  private uploadingImage = false;
+  private uploadingVideo = false;
 
   private workshopId: string;
   // Set our default values
@@ -573,16 +575,36 @@ export class WorkshopEditComponent implements OnInit {
     control.patchValue(this.urlForVideo);
   }
 
+  // uploadVideo(event) {
+  //   console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
+  //   const xhrResp = JSON.parse(event.xhr.response);
+  //   this.addVideoUrl(xhrResp.url);
+  // }
+
+  // uploadImages(event) {
+  //   console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
+  //   const xhrResp = JSON.parse(event.xhr.response);
+  //   this.addImageUrl(xhrResp.url);
+  // }
+
   uploadVideo(event) {
-    console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-    const xhrResp = JSON.parse(event.xhr.response);
-    this.addVideoUrl(xhrResp.url);
+    this.uploadingVideo = true;
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).subscribe((response) => {
+        this.addVideoUrl(response.url);
+        this.uploadingVideo = false;
+      });
+    }
   }
 
-  uploadImages(event) {
-    console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-    const xhrResp = JSON.parse(event.xhr.response);
-    this.addImageUrl(xhrResp.url);
+  uploadImage(event) {
+    this.uploadingImage = true;
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).subscribe((response) => {
+        this.addImageUrl(response.url);
+        this.uploadingImage = false;
+      });
+    }
   }
 
   public changeInterests(topic: any) {
@@ -908,7 +930,18 @@ export class WorkshopEditComponent implements OnInit {
           });
           this.workshop.controls.imageUrls.patchValue(this.urlForImages);
         }
-      }).subscribe();
+      }).subscribe((response) =>{
+        const data = this.workshop;
+        const lang = <FormArray>this.workshop.controls.language;
+        lang.removeAt(0);
+        lang.push(this._fb.control(data.value.selectedLanguage));
+        const body = data.value;
+        delete body.selectedLanguage;
+        this._collectionService.patchCollection(this.workshopId, body).map(
+          (response) => {
+            console.log("Files deleted and workshop updated");
+          }).subscribe();
+      });
 
   }
 

@@ -28,7 +28,7 @@ export class DialogsService {
         return dialogRef1.afterClosed();
     }
 
-    public forgotPwd() {
+    public openForgotPwd(){
         let dialogRef3: MdDialogRef<ForgotpwdComponentDialog>;
 
         dialogRef3 = this.dialog.open(ForgotpwdComponentDialog);
@@ -43,7 +43,6 @@ export class DialogsService {
             width: '610px',
             height: '380px'
         });
-
         return dialogRef4.afterClosed();
     }
 

@@ -1,73 +1,72 @@
-<div class="login-section" id="content">
-        <div class="container">
-            <div class="col-md-6 col-md-offset-3 position-relative">
-                <div class="signup-box drop-shadow">
-                    <form [formGroup]="signupSocialForm" (ngSubmit)="continueWithSocialSignup()" novalidate>
-                        <div class="signupEmail">
-                            <div class="margin-bottom-20 text-center">
-                                <strong>Complete your information</strong>
-                                <p class="fs-13 margin-top-10">Please review and provide any missing information
-                                to finish signing up.</p>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group input-group-first-name">
-                                    <input type="text" class="form-control" formControlName="first_name"  value="" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group input-group-last-name">
-                                    <input type="text" class="form-control" formControlName="last_name" value="" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group input-group-email">
-                                    <input type="text" class="form-control" formControlName="email" value="" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                </div>
-                            </div>
-                            <div class="margin-bottom-20">
-                                <label><strong>Birthday</strong> <i class="fa fa-question-circle"></i></label><br>
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <select class="form-control" formControlName="birthMonth" [(ngModel)]="selectedMonth" >
-                                            <option value="" selected>Month</option>
-                                            <option value="01">January</option>
-                                            <option value="02">February</option>
-                                            <option value="03">March</option>
-                                            <option value="04">April</option>
-                                            <option value="05">May</option>
-                                            <option value="06">June</option>
-                                            <option value="07">July</option>
-                                            <option value="08">August</option>
-                                            <option value="09">September</option>
-                                            <option value="10">October</option>
-                                            <option value="11">November</option>
-                                            <option value="12">December</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" formControlName="birthDay" [(ngModel)]="selectedDay">
-                                            <option value="" selected>Day</option>
-                                            <option value="{{ birthday }}" *ngFor="let birthday of birthDay">{{ birthday }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" formControlName="birthYear" [(ngModel)]="selectedYear">
-                                            <option value="" selected>Year</option>
-                                            <option value="{{ birthyear }}" *ngFor="let birthyear of birthYear">{{ birthyear }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="checkbox">
-                                <label class="checkbox"><input class="promoOptIn" type="checkbox" formControlName="promoOptIn" [checked]="promoOptIn" (change)="promoOptIn = !promoOptIn" /> I'd like to receive promotional communications, including discuonts, surveys, inspiration, and love from Peerbuds via email, SMS, and phone.</label>
-                            </div>
-                            <button type="submit" class="btn btn-success" [disabled]="!signupSocialForm.valid">Continue</button>
-                        </div>
-                    </form>
+<div class="main-content">
+    <div class="col-md-12 margin-top-80">
+        <div class="signup-box">
+            <form [formGroup]="signupSocialForm" (ngSubmit)="continueWithSocialSignup(signupSocialForm)" novalidate>
+                <div class="">
+                    <div class="text-center">
+                        <h2 class="headline">Complete your information</h2>
+                        <p class="description1">Please review and provide any missing information
+                        to finish signing up.</p>
+                    </div>
+                    <div class="col-md-12 padding-left-0 padding-right-0">
+                        <md-form-field style="width:48%">
+                            <input mdInput placeholder="First Name" formControlName="first_name">
+                        </md-form-field>
+                        <md-form-field style="width:48%;margin-left:3%">
+                            <input mdInput placeholder="Last Name"  formControlName="last_name">
+                        </md-form-field>
+                    </div>
+                    <div class="col-md-12 padding-left-0 padding-right-0">
+                        <md-form-field style="width:100%">
+                            <input mdInput placeholder="Email" formControlName="email">
+                            <md-error *ngIf="signupSocialForm.hasError('pattern')">
+                                Please enter a valid email address
+                            </md-error>
+                            <md-error *ngIf="signupSocialForm.hasError('required')">
+                                Email is <strong>required</strong>
+                            </md-error>
+                        </md-form-field>
+                    </div>
+                    <div class="col-md-12 padding-left-0 padding-right-0">
+                        <!-- <md-form-field> -->
+                            <md-select  class="col-md-4 padding-left-0" placeholder="Month" formControlName="birthMonth" [(ngModel)]="selectedMonth">
+                                <md-option value="01">January</md-option>
+                                <md-option value="02">February</md-option>
+                                <md-option value="03">March</md-option>
+                                <md-option value="04">April</md-option>
+                                <md-option value="05">May</md-option>
+                                <md-option value="06">June</md-option>
+                                <md-option value="07">July</md-option>
+                                <md-option value="08">August</md-option>
+                                <md-option value="09">September</md-option>
+                                <md-option value="10">October</md-option>
+                                <md-option value="11">November</md-option>
+                                <md-option value="12">December</md-option>
+                            </md-select>
+                        <!-- </md-form-field> -->
+
+                        <!-- <md-form-field> -->
+                            <md-select class="col-md-4" placeholder="Day" formControlName="birthDay" [(ngModel)]="selectedDay">
+                                <md-option *ngFor="let birthday of birthDay" [value]="birthday">
+                                        {{ birthday }}
+                                </md-option>
+                            </md-select >
+                        <!-- </md-form-field> -->
+                        <!-- <md-form-field> -->
+                            <md-select class="col-md-4" placeholder="Year" formControlName="birthYear" [(ngModel)]="selectedYear">
+                                <md-option [value]="birthyear" *ngFor="let birthyear of birthYear">{{ birthyear }}</md-option>
+                            </md-select>
+                        <!-- </md-form-field> -->
+                    </div>
+                    <!-- <div class="checkbox">
+                        <label class="checkbox"><input class="promoOptIn" type="checkbox" formControlName="promoOptIn" [checked]="promoOptIn" (change)="promoOptIn = !promoOptIn" /> I'd like to receive promotional communications, including discuonts, surveys, inspiration, and love from Peerbuds via email, SMS, and phone.</label>
+                    </div> -->
+                    <div>
+                        <button md-raised-button type="submit" class="margin-top-40 signupBtn" [disabled]="!signupSocialForm.valid" color="accent">Continue</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+    
+</div>

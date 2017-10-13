@@ -90,6 +90,28 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+#style-1::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+#style-3::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+#style-3::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+#style-3::-webkit-scrollbar-thumb
+{
+    background-color: #000000;
+}
+
+
+/* Scroll Bar custom Ends */
 
 md-icon {
     position: relative !important;
@@ -969,7 +991,7 @@ h3.calendarTitle  {
     padding-left: 5px !important;
     padding-right: 5px !important;
     margin-left: 5px;
-    min-width: auto !important;
+    min-width: min-content !important;
     margin-right: 12px  !important;
     font-size: 1rem  !important;
     font-weight: 400  !important;
@@ -1089,4 +1111,8 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 .dialog-close-button {
     top: -3px;
     left: -10px;
+}
+
+.hasFixedFooter {
+    padding-bottom: 75px;
 }

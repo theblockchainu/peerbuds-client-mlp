@@ -1,106 +1,112 @@
 <div class="verification-section margin-top-40" id="content">
-  <div class="container">
-    <div class="col-md-8 col-md-offset-2 position-relative">
-      <div class="verification-box drop-shadow">
-        <div class="step-1" [hidden]="step!=1">
-          <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
-            <i class="fa fa-id-card-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
-          </button>
-          <form [formGroup]="peer">
-            <h2 class="headline">Confirm Your Identity</h2>
-            <p class="description1 margin-bottom-40">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will help us ensure that you don't have multiple profiles in the platform.</p>
-            <p class="description2">This ID must:</p>
-            <ul class="description2">
-              <li>Be a government-issued (ex. Passport, Drivers License)</li>
-              <li>Clearly show your name, picture and birthday</li>
-              <li>Be in color</li>
-            </ul>
-            <div class="margin-bottom-30">
-                <p-fileUpload name="image" #idproof mode="basic" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-                  chooseLabel="Upload ID"></p-fileUpload>
-            </div>
-            <p class="description1 margin-bottom-40">To learn more about why we require copy of your ID and what types of ID we accept, <a href="#">review our ID policy</a></p>
-            <div class="bottom-section clearfix">
-              <div class="pull-right">
-                <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
-                <button md-raised-button color="accent" (click)="continue(2)">Continue</button>
-              </div>
-            </div>
-          </form>
-        </div> <!-- step 1 ends -->
-        <!-- <div class="step-2" [hidden]="step!=2">
-          <form [formGroup]="peer">
-            <div class="section-header">Confirm your identity</div>
-            <p class="fs-16 fw-bold">To upload a photo or scan of an ID:</p>
-            <ol>
-              <li>Coverup anything we don't need to see on your ID, like your address or Social Security number</li>
-              <li>Scan or take a close-up photo of your ID so that the information on it can be easily read</li>
-              <li>Click "Choose file" below to upload your ID</li>
-            </ol>
-            <span class="label label-warning" [hidden]="!idProofImagePending">Pending</span>
-            <span class="label label-success" [hidden]="idProofImagePending">Success</span>
-            <div>
-              <p-fileUpload name="image" #idproof mode="basic" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-                chooseLabel="Choose File"></p-fileUpload>
-            </div>
-            <div class="bottom-section clearfix">
-              <div class="pull-right">
-                <button md-raised-button class="btn btn-default" (click)="redirectToOnboarding()">Skip for Later</button>
-                <button md-raised-button class="btn btn-primary" (click)="continue(3)" [disabled]="idProofImagePending">Continue</button>
-              </div>
-            </div>
-          </form>
-        </div>  -->
-        <!-- step 2 ends -->
-        <div class="step-2" [hidden]="step!=2">
-          <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
-            <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
-          </button>
-          <form [formGroup]="peer">
-            <h2 class="headline">How can we reach you securely?</h2>
-            <p class="description1 margin-bottom-40">Please let us know how we can reach you by email. To help keep your Peerbuds account secure, make sure only you can log into this email address.</p>
-            <md-input-container style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
-              <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" /> -->
-              <input type="text" mdInput #email formControlName="email" placeholder="Email Address"/>
-            </md-input-container>
-            <div class="bottom-section clearfix">
-              <div class="pull-right">
-                <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
-                <button md-raised-button color="accent" (click)="continue(3)" [disabled]="email.value.length == 0">Continue</button>
-              </div>
-            </div>
-          </form>
-        </div> <!-- step 2 ends -->
-        <div class="step-3" [hidden]="step!=3">
-            <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
-              <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
-            </button>
-          <form [formGroup]="otp">
-              <h2 class="headline">Enter the OTP sent to your email</h2>
-            <p class="description1 margin-bottom-40">We have sent to 4 digit code to {{email}}. Please enter this code or click the link in your email to verify your email address.
-               Users on Peerbuds need to verify their email IDs to receive notifications and updates from the platform.</p>
-            <!-- <div class="margin-bottom-10">
-              <label class="display-block margin-bottom-0"><strong>OTP</strong></label>
-              <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" />
-            </div> -->
-            <md-input-container style="width:20% !important" class="pb-block margin-bottom-10 ">
-                <input type="text" mdInput #inputOTP formControlName="inputOTP"/>
-            </md-input-container>
-            <div>
-              <p class="description1"> <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before<br/>
-              requesting another code or <a style="cursor: pointer;" (click)="continue(2)">Change Email</a></p>
+  <div class="main-content hasFixedFooter" >
+    <div class="position-relative step-1" [hidden]="step!=1">
+      <form [formGroup]="peer">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="verification-box drop-shadow">
+              <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+                <i class="fa fa-id-card-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+              </button>
               
-            </div>
-            <div class="bottom-section clearfix margin-top-100">
-              <div class="pull-right">
-                <a md-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding']">Skip</a>
-                <button md-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length == 0">Verify Email</button>
+              <h2 class="headline">Confirm Your Identity</h2>
+              <p class="description1">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will help us ensure that you don't have multiple profiles in the platform.</p>
+              <p class="description2">This ID must:</p>
+              <p class="description2">
+                <li>Be a government-issued (ex. Passport, Drivers License)</li>
+                <li>Clearly show your name, picture and birthday</li>
+                <li>Be in color</li>
+              </p>
+              <div class="margin-bottom-60">
+                  <div class="loading-container" [hidden]="!uploadingImage">
+                    <ngx-loading [show]="true"></ngx-loading>
+                  </div>
+                  <p-fileUpload name="image" *ngIf="!uploadingImage" #idproof customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+                    chooseLabel="Upload ID" accept="application/pdf,application/msword,
+                    application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*">
+                    <ng-template pTemplate="toolbar">
+                      <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 file</div>
+                    </ng-template>
+                  </p-fileUpload>
+                  <div *ngIf="verificationIdUrl" class="profilePic icon-remove delete">
+                    <img *ngIf="fileType.includes('image')" class="uploaded_picture" src="{{config.apiUrl + verificationIdUrl}}" width="150" style="border: 0.5px solid #ccc">
+                    <md-icon *ngIf="fileType.includes('image')" (click)="deleteFromContainer(verificationIdUrl, 'image')" class="delete-image">close</md-icon>
+                    <div *ngIf="fileType.includes('application')" class="uploaded_file">{{ fileName }}</div>
+                    <md-icon *ngIf="fileType.includes('application')" (click)="deleteFromContainer(verificationIdUrl, 'file')" class="delete-file">close</md-icon>
+                  </div>
               </div>
+              <p class="description1 margin-bottom-20">To learn more about why we require copy of your ID and what types of ID we accept, <a href="#">review our ID policy</a></p>
+          </div>
+        </div>
+        <div class="fixedFooter col-sm-12">
+          <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+            <div class="pull-right">
+              <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
+              <button md-raised-button color="accent" (click)="continue(2)">Continue</button>
             </div>
-          </form>
-        </div> <!-- step 4 ends -->
-      </div>
-    </div>
+          </div>
+        </div>
+      </form>
+    </div> <!-- step 1 ends -->
+    <div class="position-relative step-2" [hidden]="step!=2">
+      <form [formGroup]="peer">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="verification-box drop-shadow">
+              <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+                <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+              </button>
+                <h2 class="headline">How can we reach you securely?</h2>
+                <p class="description1 margin-bottom-40">Please let us know how we can reach you by email. To help keep your Peerbuds account secure, make sure only you can log into this email address.</p>
+                <md-input-container style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
+                  <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" /> -->
+                  <input type="email" mdInput #email formControlName="email" placeholder="Email Address"/>
+                </md-input-container>
+          </div>
+        </div>
+        <div class="fixedFooter col-sm-12">
+          <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+            <div class="pull-right">
+              <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
+              <button md-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls.email.invalid && peer.controls.email.dirty || email.value.length == 0">Continue</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div> <!-- step 2 ends -->
+   
+    <div class=" position-relative step-3" [hidden]="step!=3">
+      <form [formGroup]="otp">
+        <div class="col-md-8 col-md-offset-2 position-relative">
+          <div class="verification-box drop-shadow">
+              <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+                <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+              </button>
+            
+                <h2 class="headline">Enter the OTP sent to your email</h2>
+              <p class="description1 margin-bottom-40">We have sent to 6 digit code to {{email.value}}. Please enter this code or click the link in your email to verify your email address.
+                Users on Peerbuds need to verify their email IDs to receive notifications and updates from the platform.</p>
+              <!-- <div class="margin-bottom-10">
+                <label class="display-block margin-bottom-0"><strong>OTP</strong></label>
+                <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" />
+              </div> -->
+              <md-input-container style="width:20% !important" class="pb-block margin-bottom-10">
+                  <input type="number" mdInput #inputOTP formControlName="inputOTP"/>
+              </md-input-container>
+              <div>
+                <p class="description1"> <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before<br/>
+                requesting another code or <a style="cursor: pointer;" (click)="continue(2)">Change Email</a></p>
+              </div>
+          </div>
+        </div>
+        <div class="fixedFooter col-sm-12">
+          <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+            <div class="pull-right">
+              <a md-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding/1']">Skip</a>
+              <button md-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length !=6">Verify Email</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div> <!-- step 3 ends -->
   </div>
 </div>
 

@@ -5,8 +5,8 @@
                 <div class="col-md-12">
                     <img class="img-rounded profile-pic" src="{{config.apiUrl+profileObj.picture_url}}" alt="profile pic">
                 </div>
-                <div class="col-md-12" style="padding-top: 25px;">
-                    <h2>{{profileObj.first_name}} {{profileObj.last_name}}</h2>
+                <div class="col-md-12" style="margin-top: 25px;">
+                    <h2 style="margin-bottom: 0px">{{profileObj.first_name}} {{profileObj.last_name}}</h2>
                 </div>
                 <div class="col-md-12">
                     <h4>{{profileObj.headline}}</h4>
@@ -15,15 +15,13 @@
                     <button md-button>Message</button>
                 </div> -->
             </div>
-            <hr>
-            <div class="row" style="padding-top: 10px;
-            padding-bottom: 10px;">
+            <div class="row border-top">
                 <div class="col-md-1">
                     <md-icon>mic_none</md-icon>
                 </div>
                 <div class="col-md-10">
                     <p>
-                        {{profileObj.other_languages}}
+                        {{this.other_languages || 'No language provided'}}
                     </p>
                 </div>
                 <div class="col-md-1">
@@ -33,25 +31,26 @@
                 </div>
                 <div class="col-md-10">
                     <p>
-                        {{profileObj.location_string}}
+                        {{profileObj.location_string || 'No location provided'}}
                     </p>
                 </div>
             </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
+            <div class="row border-top">
+                <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <h3>Social Profiles</h3>
                 </div>
-                <div class="col-md-12">
-                    <i *ngFor="let identity of socialIdentities" class="fa fa-{{identity.provider}}" aria-hidden="true"></i>
+                <div class="col-md-offset-1 col-md-10 padding-left-0">
+                    <i *ngIf="connectedIdentities.fb" class="fa fa-facebook defaultFB socialIcons"></i>
+                    <i *ngIf="!connectedIdentities.fb" class="fa fa-facebook dcSocial socialIcons"></i>
+                    <i *ngIf="connectedIdentities.google" class="fa fa-google defaultGoogle socialIcons"></i>
+                    <i *ngIf="!connectedIdentities.google" class="fa fa-google dcSocial socialIcons"></i>
                 </div>
             </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
+            <div class="row border-top">
+                <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <h3>Interest</h3>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <md-chip-list>
                         <span *ngFor="let interest of interestsArray;let i=index">
                                         <md-chip *ngIf="i<maxVisibleInterest">{{interest}}</md-chip>
@@ -67,21 +66,21 @@
                     </span>
                 </div>
             </div>
-            <hr>
-            <div class="row" *ngIf="urluserId!==cookieUserId">
+            <div class="row border-top" *ngIf="urluserId!==cookieUserId">
                 <div class="col-md-12">
                     <h6 (click)="reportProfile()">Report profile</h6>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 center-feed">
+        <div class="col-md-5 center-feed">
 
             <div class="row">
                 <div class="col-md-12">
                     <h3>About Me</h3>
                 </div>
                 <div class="col-md-12">
-                    <p>{{profileObj.description | shorten: 100: 'Read More...'}}</p>
+                    <p *ngIf="profileObj.description">{{profileObj.description | shorten: 100: 'Read More...'}}</p>
+                    <p *ngIf="!profileObj.description">No description provided. <a [routerLink]="['/','console','profile','edit']">Complete your profile</a></p>
                 </div>
             </div>
             <hr>
@@ -104,10 +103,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row" *ngIf="topicsTeaching.length == 0">
+                        <div class="col-md-12">
+                            <p style="text-align: left">This user is not teaching yet. <a [routerLink]="['/','console','teaching', 'workshops']">Start Teaching</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <hr>
+            <hr style="border-top:1px solid #eeeeee;">
             <div class="row ">
                 <div class="col-md-12 ">
                     <div class="row ">
@@ -176,7 +180,7 @@
                 </div>
             </div>
 
-            <hr>
+            <hr style="border-top:1px solid #eeeeee;">
             <div class="row">
                 <div class=col-md-12>
                     <div class="row">
@@ -192,9 +196,9 @@
                             <h4>Review From Learners</h4>
                         </div>
                         <div class="col-md-12 text-center">
-                            <hr>
-                            <p>No Review yet</p>
-                            <hr>
+                            <!-- <hr> -->
+                            <p style="text-align: left">This user has not received a review yet</p>
+                            <hr style="border-top:1px solid #eeeeee;">
                         </div>
                     </div>
                     <div class="row" style="padding-top: 20px;">
@@ -202,9 +206,9 @@
                             <h4>Review From Teachers</h4>
                         </div>
                         <div class="col-md-12 text-center">
-                            <hr>
-                            <p>No Reviews yet</p>
-                            <hr>
+                            <!-- <hr> -->
+                            <p style="text-align: left">This user has not received a review yet</p>
+                            <hr style="border-top:1px solid #eeeeee;">
                         </div>
                     </div>
                 </div>
@@ -302,10 +306,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-offset-1 col-md-10">
             <div class="row">
                 <div class="col-md-9">
-                    <h4>Leanring Journey</h4>
+                    <h4>Learning Journey</h4>
                 </div>
                 <div class="col-md-2">
                     <!-- <md-select>
@@ -348,12 +352,15 @@
                         </div>
                     </a>
                 </div>
+                <div *ngIf="!participatingWorkshops">
+                    <a class="col-md-3 default"[routerLink]="['/','home', 'workshops']">Start Learning</a>
+                </div>
             </div>
         </div>
     </div>
     <br>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-offset-1 col-md-10">
             <div class="row">
                 <div class="col-md-9">
                     <h4>Similar Teachers</h4>

@@ -426,9 +426,9 @@ export class EditCalendarDialogComponent implements OnInit {
     }
 
     public overlap() {
-        const result = this.computedEventCalendar.reduce((result1, current, idx, arr) => {
+        const result = this.computedEventCalendar.reduce((result, current, idx, arr) => {
             // get the previous range
-            if (idx === 0) { return result1; }
+            if (idx === 0) { return result; }
             const previous = arr[idx - 1];
             // check for any overlap
             const previousEnd = moment(previous.endDateTime).toDate().getTime();
@@ -437,9 +437,9 @@ export class EditCalendarDialogComponent implements OnInit {
             // store the result
             if (overlap) {
                 // yes, there is overlap
-                result1.overlap = true;
+                result.overlap = true;
                 // store the specific ranges that overlap
-                result1.ranges.push({
+                result.ranges.push({
                 previous: previous,
                 current: current
                 });
@@ -464,12 +464,14 @@ export class EditCalendarDialogComponent implements OnInit {
             }
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(this.recurringCalendar);
-            for (let i = 0; i < this.recurringCalendar.length; i++) {
-                if (moment(this.recurringCalendar[i].startDate) <= moment(result.startDate) && moment(this.recurringCalendar[i].endDate) >= moment(result.endDate)) {
-                    this.recurringCalendar = _.remove(this.recurringCalendar, (item) => {
-                        return item.startDate !== this.recurringCalendar[i].startDate && item.endDate !== this.recurringCalendar[i].endDate;
-                    });
+            if (result !== undefined) {
+                console.log(this.recurringCalendar);
+                for (let i = 0; i < this.recurringCalendar.length; i++) {
+                    if (moment(this.recurringCalendar[i].startDate) <= moment(result.startDate) && moment(this.recurringCalendar[i].endDate) >= moment(result.endDate)) {
+                        this.recurringCalendar = _.remove(this.recurringCalendar, (item) => {
+                            return item.startDate !== this.recurringCalendar[i].startDate && item.endDate !== this.recurringCalendar[i].endDate;
+                        });
+                    }
                 }
             }
         });

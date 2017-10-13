@@ -80,6 +80,7 @@
     "ngx-loading": "^1.0.7",
     "ngx-pipes": "^1.6.5",
     "primeng": "^4.2.2",
+    "node-sass": "^4.5.3",
     "rxjs": "^5.4.3",
     "socket.io-client": "^2.0.3",
     "sockjs-client": "^1.1.4",

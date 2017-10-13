@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, NgModule} from '@angular/core';
 import {
   Router,
   // import as RouterEvent to avoid confusion with the DOM Event
@@ -12,15 +12,18 @@ import {
 import { SpinnerService } from './_services/spinner/spinner.service';
 import {SocketService} from './_services/socket/socket.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: [ SpinnerService ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   public activePath = 'home';
+  showHeader = true;
+  showFooter = true;
 
   // Sets initial value to true to show loading spinner on first load
   loading;
@@ -33,6 +36,31 @@ export class AppComponent {
     router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);
     });
+  }
+
+  ngOnInit() {
+      this.router.events.subscribe(event => this.modifyHeader(event));
+      this.router.events.subscribe(event => this.modifyFooter(event));
+    }
+
+  modifyFooter(location) {
+
+   if (location.url === '/app-upload-docs' || location.url === '/onboarding' || location.url === '/workshop/*/edit') {
+       this.showFooter = false;
+      }
+      else {
+        this.showFooter = true;
+      }
+  }
+
+   modifyHeader(location) {
+   // alert(location.url)
+     if (location.url === '/workshop' ||  location.url === '/' || location.url === '/workshop/*/edit') {
+       this.showHeader = false;
+      }
+      else {
+        this.showHeader = true;
+      }
   }
 
   // Shows and hides the loading spinner during RouterEvent changes
@@ -56,5 +84,6 @@ export class AppComponent {
       this.loading = this._spinnerService.getSpinnerState();
     }
   }
+
 
 }

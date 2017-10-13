@@ -41,16 +41,21 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
     this.profileService.getPeer(this.userId).subscribe(peer => {
       if (peer) {
         this.createSourceData.email = peer.email;
-        this.custId = peer.stripeCustId;
-        // get all cards
-        this.paymentService.listAllCards(this.custId).subscribe(cards => {
-          if (cards) {
-            this.listAllCards = cards.json().data;
-            console.log(this.listAllCards);
+        if (peer.stripeCustId) {
+          this.custId = peer.stripeCustId;
+          // get all cards
+          this.paymentService.listAllCards(this.custId).subscribe(cards => {
+            if (cards) {
+              this.listAllCards = cards.json().data;
+              console.log(this.listAllCards);
+              this.loadingCards = false;
+            }
+          });
+        } else {
+          this.loadingCards = false;
+          console.log('Stripe account not created');
+        }
 
-            this.loadingCards = false;
-          }
-        });
       }
     });
   }

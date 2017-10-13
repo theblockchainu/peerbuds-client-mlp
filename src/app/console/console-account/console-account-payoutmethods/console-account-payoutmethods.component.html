@@ -1,3 +1,57 @@
-<p>
-  console-account-payoutmethods works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Payout Methods</h3>
+      </div>
+    </div>
+    <div class="row table">
+      <div class="col-md-10">
+        <div class="row table-header">
+          <div class="col-md-3 ">
+            <h3>Method</h3>
+          </div>
+          <div class="col-md-3">
+            <h3>Details</h3>
+          </div>
+          <div class="col-md-3">
+            <h3>Status</h3>
+          </div>
+        </div>
+        <div class="row table-data" style="padding-top: 10px; padding-bottom: 10px;">
+          <div class="col-md-12">
+            <div class="row loading" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="loading">
+              <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <ng-container *ngIf="!addingAccount && payoutAccounts">
+              <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
+                <div class="col-md-3" [ngSwitch]="account.object">
+                  <b *ngSwitchCase="'card'">Card</b>
+                  <b *ngSwitchCase="'bank_account'">Bank Account</b>
+                </div>
+                <div class="col-md-3">
+                  <span>**** **** **** {{account.last4}}</span>
+                </div>
+                <div class="col-md-3">
+                  <b *ngIf="account.status">{{account.status | titlecase}}</b>
+                  <b *ngIf="!account.status">Ready</b>
+                </div>
+                <div class="col-md-3">
+                  <a (click)="editAccount(account.account)">
+                    Manage Account
+                  </a>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="padding-top: 20px;">
+      <div class="col-md-3">
+        <a href="{{'https://connect.stripe.com/express/oauth/authorize?redirect_uri='+config.clientUrl+'/console/account/payoutmethods&client_id='+config.stripeClientId}}"
+          md-button>Add Payout Method</a>
+      </div>
+    </div>
+  </div>
+</div>

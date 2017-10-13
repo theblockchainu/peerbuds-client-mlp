@@ -17,6 +17,7 @@ import { CountryPickerService } from '../_services/countrypicker/countrypicker.s
 export class ReviewPayComponent implements OnInit {
   public userId: string;
   public collectionId;
+  public collectionCalendarId;
   public collection = {};
   public collectionTitle = '';
   public cardNumber: string;
@@ -61,6 +62,7 @@ export class ReviewPayComponent implements OnInit {
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.collectionId = params['collectionId'];
+      this.collectionCalendarId = params['calendarId'];
     });
     this.userId = cookieUtilsService.getValue('userId');
   }
@@ -110,7 +112,6 @@ export class ReviewPayComponent implements OnInit {
       }
 
     });
-    // console.log(this.custId);
 
     this.loadYear();
     this.loadCountry();
@@ -124,7 +125,6 @@ export class ReviewPayComponent implements OnInit {
   }
 
   getToken() {
-    // this.message = 'Loading...';
     this.savingData = true;
 
     // if (this.listAllCards && this.listAllCards.length > 0) {

@@ -876,7 +876,8 @@ export class WorkshopPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (this.userId) {
-          this.joinWorkshop(result);
+            this.router.navigate(['review-pay', 'collection', this.workshopId, result]);
+          //this.joinWorkshop(result);
         } else {
           this.router.navigate(['login']);
         }

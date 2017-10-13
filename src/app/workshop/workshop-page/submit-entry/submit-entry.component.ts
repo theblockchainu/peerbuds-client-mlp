@@ -99,10 +99,13 @@ export class SubmitEntryComponent implements OnInit {
 
     for (const file of event.files) {
       this.mediaUploader.upload(file).map((responseObj: Response) => {
-        // this.addUrl(responseObj.url);
-        this.submitEntryForm.controls['picture_url'].setValue(responseObj.url);
-        // console.log(responseObj);
       }).subscribe();
+
+      this.mediaUploader.upload(file).subscribe((response) => {
+        // this.addUrl(responseObj.url);
+        this.submitEntryForm.controls['picture_url'].setValue(response.url);
+        // console.log(responseObj);
+      });
     }
   }
 
