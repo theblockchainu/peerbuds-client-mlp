@@ -5,78 +5,103 @@
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12" *ngIf="loaded">
+<div class="row" *ngIf="loaded" >
+  <div class="col-md-7" style="position: fixed">
+    <button md-raised-button color="accent" (click)="saveProfile()" class="pull-right">
+      Update Profile
+    </button>
+  </div>
+</div>
+<div class="row" *ngIf="loaded">
+  <div class="col-md-8">
     <div class="row">
       <div>
         <div style="margin-top:20px;" class="col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-              <button md-raised-button color="accent" (click)="saveProfile()" class="pull-right" style="margin-bottom: 20px;">
-                Update Profile
-              </button>
-            </div>
-          </div>
           <div class="row" style="margin-right: 110px; line-height: 120%">
             <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
+              <md-input-container class="pb-block margin-bottom-30">
                 <input mdInput formControlName="first_name" type="text" placeholder="First Name" required>
                 <md-error>This field is required</md-error>
                 <md-hint align="start">Your public profile only shows your first name.</md-hint>
               </md-input-container>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
+              <md-input-container class="pb-block margin-bottom-30">
                 <input mdInput formControlName="last_name" type="text" placeholder="Last Name" required>
                 <md-error>This field is required</md-error>
                 <md-hint align="start"> When you request a booking, your host will see your first and last name.</md-hint>
               </md-input-container>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <input mdInput formControlName="headline" type="text" placeholder="Profile Credential" required>
+              <md-input-container class="pb-block margin-bottom-20">
+                <textarea mdInput rows="1" formControlName="headline" type="text" placeholder="Profile Credential" required></textarea>
                 <md-error>This field is required</md-error>
                 <md-hint align="start">Ex. mechanical engineer, electric car enthusiast</md-hint>
                 <md-hint align="end">{{profileForm.value.headline.length}} / 200</md-hint>
               </md-input-container>
               <br>
-              <md-select placeholder="Gender" style="margin-bottom: 20px" formControlName="gender">
+              <md-select placeholder="Gender" class="margin-bottom-20" formControlName="gender">
                 <md-option [value]="'Male'">Male</md-option>
                 <md-option [value]="'Female'">Female</md-option>
               </md-select>
               <br><br>
-              <md-select placeholder="Birth Month" style="margin-bottom: 20px" formControlName="dobMonth">
-                <md-option *ngFor="let month of months" [value]="month">{{month}}</md-option>
+              <md-select placeholder="Birth Month" style="margin-bottom: 20px;margin-right:10px;" formControlName="dobMonth">
+                <!-- <md-option *ngFor="let month of months;let i = index" [value]="i+1">{{month}}</md-option> -->
+                <md-option value="01">January</md-option>
+                <md-option value="02">February</md-option>
+                <md-option value="03">March</md-option>
+                <md-option value="04">April</md-option>
+                <md-option value="05">May</md-option>
+                <md-option value="06">June</md-option>
+                <md-option value="07">July</md-option>
+                <md-option value="08">August</md-option>
+                <md-option value="09">September</md-option>
+                <md-option value="10">October</md-option>
+                <md-option value="11">November</md-option>
+                <md-option value="12">December</md-option>
               </md-select>
-              <md-select placeholder="Day" style="margin-bottom: 20px" formControlName="dobDay">
+              <md-select placeholder="Day" style="margin-bottom: 20px;margin-right:10px;" formControlName="dobDay">
                 <md-option *ngFor="let day of days" [value]="day">{{day}}</md-option>
               </md-select>
-              <md-select placeholder="Year" style="margin-bottom: 20px" formControlName="dobYear">
+              <md-select placeholder="Year" style="margin-bottom: 20px;margin-right:10px;" formControlName="dobYear">
                 <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
               </md-select>
               <br><br>
               <md-input-container class="pb-block" style="margin-bottom: 20px">
                 <input mdInput formControlName="email" type="email" placeholder="Email Address" required>
                 <md-error>This field is required</md-error>
-                <md-hint align="start">We wonʼt share your private email address with other peerbuds users. Learn more.</md-hint>
+                <md-hint align="start">We wonʼt share your private email address with other peerbuds users.</md-hint>
+                <!--Learn more.-->
               </md-input-container>
               <div formArrayName="phones">
                 <p>Phone Numbers</p>
                 <md-form-field *ngFor="let phoneNumber of profileForm.controls['phones'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
-                  <md-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
+                  <!-- <md-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
-                  </md-icon>
-                  <input mdInput formControlName="{{i}}" type="tel" placeholder="Phone Number" required>
+                  </md-icon> -->
+                  <input mdInput formControlName="{{i}}" type="tel" placeholder="Primary Phone" required>
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deletePhoneNumber(i)" style="cursor: pointer;"></i>
                   <md-error>This field is required</md-error>
                 </md-form-field>
-                <md-hint align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all
-                  get in touch.</md-hint>
               </div>
-              <div style="margin-bottom: 10px; cursor: pointer" (click)="addPhoneControl()">
-                <a>+ Add a phone number</a>
-              </div>
+              <button md-button color="primary" class="addPhoneButton padding-left-0 padding-right-0" [disabled]="profileForm.controls['phones'].controls.length==2" (click)="addPhoneControl()">
+              + Add Secondary Phone
+              </button>
+              <br/>
+              <md-hint class="hint" align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all
+                get in touch.</md-hint>
               <br>
-              <md-select placeholder="Preferred Language" style="margin-bottom: 20px" formControlName="preferred_language">
+              <md-select placeholder="Preferred Language" class="margin-top-30" formControlName="preferred_language">
                 <md-option *ngIf="!languages">languages not available</md-option>
                 <md-option *ngFor="let language of languages" [value]="language.code">{{language.name}}</md-option>
-                <md-hint align="start">We'll send you messages in this language.</md-hint>
               </md-select>
+              <br/>
+              <md-hint class="hint" align="start">We'll send you messages in this language.</md-hint>
+              <!-- <md-input-container floatPlaceholder="never" class="mat-block">
+                <input type="text" placeholder="Preferred Language" mdInput formControlName="preferred_language" [mdAutocomplete]="auto">
+              </md-input-container>
+              <md-autocomplete #auto="mdAutocomplete">
+                <md-option *ngFor="let language of languages" [value]="language.code">
+                    {{ language.name }}
+                </md-option>
+              </md-autocomplete> -->
+                <md-hint align="start">We'll send you messages in this language.</md-hint>
               <br><br><br>
               <md-select placeholder="Preferred Currency" style="margin-bottom: 20px" formControlName="currency">
                 <md-option *ngIf="!currencies">currencies not available</md-option>
@@ -89,7 +114,7 @@
                 <md-error>This field is required</md-error>
               </md-input-container>
               <md-input-container class="pb-block" style="margin-bottom: 20px">
-                <textarea mdInput #description formControlName="description" rows="4" placeholder="Describe yourself" required></textarea>
+                <textarea mdInput #description formControlName="description" rows="2" placeholder="Describe yourself" required></textarea>
                 <md-error>This field is required</md-error>
                 <md-hint align="start">Peerbuds is built on relationships. Help other people get to know you. Tell them about the things you like:
                   What are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows,
@@ -126,15 +151,16 @@
                     <md-datepicker-toggle mdSuffix [for]="endPicker"></md-datepicker-toggle>
                     <md-datepicker #endPicker></md-datepicker>
                   </md-form-field>
-                  <md-icon (click)="deletework(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
+                  <!-- <md-icon (click)="deletework(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
                     close
-                  </md-icon>
+                  </md-icon> -->
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deletework(i)" style="cursor: pointer;"></i>
                 </div>
               </div>
               <div style="margin-bottom: 10px; cursor: pointer" (click)="addwork()">
                 <a>+ Add another work detail</a>
               </div>
-              <div style="font-weight: 600; margin-bottom: 25px;">
+              <div style="font-weight: 600; margin-bottom: 25px;" class="margin-top-40">
                 Education
               </div>
               <div formArrayName="education">
@@ -153,9 +179,10 @@
                   <md-select placeholder="End Year" style="margin-bottom: 20px;width: 200px" formControlName="endYear">
                     <md-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</md-option>
                   </md-select>
-                  <md-icon (click)="deleteeducation(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
+                  <!-- <md-icon (click)="deleteeducation(i)" style="cursor: pointer;font-size: 100%;" class="lighterText">
                     close
-                  </md-icon>
+                  </md-icon> -->
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteeducation(i)" style="cursor: pointer;"></i>                
                 </div>
               </div>
 
@@ -163,49 +190,52 @@
                 <a>+ Add another education detail</a>
               </div>
 
-              <md-select placeholder="Timezone" style="margin-bottom: 20px" formControlName="timezone">
+              <md-select placeholder="Timezone" formControlName="timezone">
                 <md-option *ngFor="let timezone of timezones" [value]="timezone.value">{{timezone.text}}</md-option>
               </md-select>
-              <md-hint align="start">Your home time zone.</md-hint>
-              <div formArrayName="other_languages">
+              <br/>
+              <md-hint class="hint" align="start">Your home time zone.</md-hint>
+              <div formArrayName="other_languages" class="margin-top-30">
                 <p>Other languages</p>
                 <div *ngFor="let languageObj of profileForm.controls['other_languages'].controls; let i=index" class="pb-block" style="margin-bottom: 20px">
-                  <md-icon (click)="deleteLanguage(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
+                  <!-- <md-icon (click)="deleteLanguage(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
-                  </md-icon>
-                  <md-select mdInput placeholder="Languages" class="pb-block" style="margin-bottom: 20px" formControlName="{{i}}">
+                  </md-icon> -->
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteLanguage(i)" style="cursor: pointer;"></i>
+                  
+                  <md-select mdInput placeholder="Languages" style="width:85%;padding-top:0px;" formControlName="{{i}}">
                     <md-option *ngFor="let language of languages" [value]="language.name">{{language.name}}</md-option>
                   </md-select>
-                </div>
-                <md-hint align="start">Add any languages that others can use to speak with you on peerbuds.</md-hint>
-              </div>
+                </div></div>
               <div style="margin-bottom: 10px; cursor: pointer" (click)="addlanguage()">
                 <a>+ Add a Language</a>
               </div>
-              <md-input-container style="margin-bottom: 20px" class="pb-block">
+              <md-hint class="hint" align="start">Add any languages that others can use to speak with you on peerbuds.</md-hint>
+            
+              <md-input-container style="margin-bottom: 20px" class="pb-block margin-top-20" style="padding-top:0px;">
                 <input mdInput formControlName="vat_number" type="text" placeholder="VAT Number">
                 <md-error>This field is required</md-error>
                 <md-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be assessed on our Service
                   Fees. If you live in a country where we need to charge VAT, you will not be charged VAT if you enter a
                   valid VAT ID Number. Visit VAT FAQs »</md-hint>
               </md-input-container>
-              <div formArrayName="emergency_contact">
+              <div formArrayName="emergency_contact" class="pb-block margin-top-50" style="padding-top:0px;">
                 <md-input-container *ngFor="let emergency_contact_number of profileForm.controls['emergency_contact'].controls; let i = index;"
-                  style="margin-bottom: 20px" class="pb-block">
-                  <md-icon (click)="deleteEmergencyContact(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
+                  class="pb-block">
+                  <!-- <md-icon (click)="deleteEmergencyContact(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
                     close
-                  </md-icon>
+                  </md-icon> -->
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteEmergencyContact(i)" style="cursor: pointer;"></i>
+                  
                   <input mdInput formControlName="{{i}}" type="tel" placeholder="Emergency Contact">
                   <!-- <md-error>This field is required</md-error> -->
                 </md-input-container>
-                <md-hint align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</md-hint>
                 <div style="margin-bottom: 10px; cursor: pointer" (click)="addEmergencyContact()">
                   <a>+ Add Emergency Contact Number</a>
                 </div>
+                <md-hint class="hint" align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</md-hint>
+                
               </div>
-              <md-checkbox class="example-margin" formControlName="isAdmin">
-                Is Admin
-              </md-checkbox>
             </form>
           </div>
         </div>
