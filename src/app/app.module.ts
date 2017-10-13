@@ -39,14 +39,14 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     IndexComponent,
     IndexComponent1,
     IndexPhilComponent,
-    AccessDeniedComponent, 
+    AccessDeniedComponent,
     LoginComponent,
     SignupComponent,
     AppDesignComponent,
     GlobalErrorHandler,
     AppNotificationDialogComponent,
     ResetPasswordComponent
-  
+
   ],
   imports: [
     BrowserModule,
@@ -68,11 +68,11 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
   ],
   bootstrap: [AppComponent],
   providers: [
-      {
-        provide: ErrorHandler,
-        useClass: GlobalErrorHandler
-      }
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    }
   ],
   entryComponents: [AppNotificationDialogComponent]
 })
-export class AppModule {}
+export class AppModule { }

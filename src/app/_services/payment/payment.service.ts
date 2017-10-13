@@ -111,4 +111,21 @@ export class PaymentService {
       });
   }
 
+  /**
+   * getTransactions
+   */
+  public getTransactions(filter?: any): Observable<any> {
+    if (filter) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/transactions?filter=' + JSON.stringify(filter), this.options)
+        .map((response: Response) => response.json(), (err) => {
+          console.log('Error: ' + err);
+        });
+    } else {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/transactions', this.options)
+        .map((response: Response) => response.json(), (err) => {
+          console.log('Error: ' + err);
+        });
+    }
+  }
+
 }
