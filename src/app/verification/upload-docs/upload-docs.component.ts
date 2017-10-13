@@ -17,12 +17,15 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 export class UploadDocsComponent implements OnInit {
   public step = 1;
-  private idProofImagePending: Boolean;
+  private uploadingImage = false;
   public peer: FormGroup;
   public otp: FormGroup;
   private email: string;
   private success;
   public otpReceived: string;
+  private verificationIdUrl: string;
+  private fileType;
+  private fileName;
 
   constructor(
     public router: Router,
@@ -38,7 +41,6 @@ export class UploadDocsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.idProofImagePending = true;
     this.peer = this._fb.group({
       email: ['',
       [Validators.required,
@@ -56,7 +58,18 @@ export class UploadDocsComponent implements OnInit {
   }
 
   continue(p) {
+    if (p === 2) {
+      this._profileService
+      .updatePeer({ 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value, 'email': this.peer.controls['email'].value })
+      .subscribe((response) => {
+        console.log("File Saved Successfully");
+      }, (err) => {
+        console.log('Error updating Peer: ');
+        console.log(err);
+      });
+    }
     if (p === 3) {
+      this.peer.controls['email'].setValue(this.email);
       this.resendOTP();
     }
     this.step = p;
@@ -80,17 +93,30 @@ export class UploadDocsComponent implements OnInit {
   redirectToOnboarding() {
     this.router.navigate(['onboarding/1']);
   }
-  
+
   uploadImage(event) {
-    this.peer.controls['email'].setValue(this.email);
+    this.uploadingImage = true;
     console.log(event.files);
     for (const file of event.files) {
+      this.fileName = file.name;
       this.mediaUploader.upload(file).map((responseObj) => {
-        // this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
-        this.idProofImagePending = false;
+        this.verificationIdUrl = responseObj.url;
+        this.fileType = responseObj.type;
+        this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
+        this.uploadingImage = false;
       }).subscribe();
     }
-    this.idProofImagePending = false;
+  }
+
+  deleteFromContainer(url: string, type: string) {
+    if (type === 'image' || type === 'file') {
+      this._profileService.updatePeer({
+        'verificationIdUrl': ''
+      }).subscribe(response => {
+        this.verificationIdUrl = response.picture_url;
+      });
+    } else {
+      console.log('error');
+    }
   }
 }
-

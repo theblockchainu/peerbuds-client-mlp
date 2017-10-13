@@ -14,7 +14,10 @@ declare var moment: any;
 })
 export class ConsoleProfilePhotosComponent implements OnInit {
   public picture_url: string;
+  public profile_picture_array = [];
   public profile_video: string;
+  private uploadingImage = false;
+  private uploadingVideo = false;
 
   public loaded: boolean;
   constructor(
@@ -42,38 +45,52 @@ export class ConsoleProfilePhotosComponent implements OnInit {
   }
 
   uploadVideo(event) {
-    const xhrResp = JSON.parse(event.xhr.response);
-    console.log(xhrResp);
-    this._profileService.updateProfile({
-      'profile_video': xhrResp.url
-    }).subscribe(response => {
-      this.profile_video = response.profile_video;
-    }, err => {
-      console.log(err);
-    });
+    this.uploadingVideo = true;
+    for (const file of event.files) {
+      this.mediaUploader.upload(file).subscribe((response) => {
+        this.profile_video = response.url;
+        this._profileService.updateProfile({
+          'profile_video': response.url
+        }).subscribe(response => {
+            this.profile_video = response.profile_video;
+            this.uploadingVideo = false;
+          }, err => {
+            console.log(err);
+        });
+        }, err => {
+          console.log(err);
+        });
+    }
   }
 
-  // uploadImages(event) {
-  //   const xhrResp = JSON.parse(event.xhr.response);
-  //   console.log(xhrResp);
-  //   this._profileService.updateProfile({
-  //     'picture_url': xhrResp.url
-  //   }).subscribe(response => {
-  //     this.picture_url = response.picture_url;
-  //   }, err => {
-  //     console.log(err);
-  //   });
-  // }
-
   uploadImage(event) {
-    // console.log(event.files);
+    this.uploadingImage = true;
     for (const file of event.files) {
-      this.mediaUploader.upload(file).map(
-        (response) => {
-          //response.json();  
-        }).subscribe((response) => {
-      });
+      this.mediaUploader.upload(file).subscribe((response) => {
+        this.picture_url = response.url;
+        this._profileService.updateProfile({
+          'picture_url': response.url
+        }).subscribe(response => {
+            this.picture_url = response.picture_url;
+            this.uploadingImage = false;
+          }, err => {
+            console.log(err);
+        });
+          // this.profile_picture_array.push(response.url);
+        }, err => {
+          console.log(err);
+        });
     }
+  }
+
+  setProfilePic(image, type) {
+    this._profileService.updateProfile({
+      'picture_url': image
+    }).subscribe(response => {
+        this.picture_url = response.url;
+      }, err => {
+        console.log(err);
+    });
   }
 
 

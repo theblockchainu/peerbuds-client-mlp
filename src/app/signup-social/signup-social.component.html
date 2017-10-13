@@ -54,7 +54,7 @@
                         <!-- </md-form-field> -->
                         <!-- <md-form-field> -->
                             <md-select class="col-md-4" placeholder="Year" formControlName="birthYear" [(ngModel)]="selectedYear">
-                                <md-option value="birthyear" *ngFor="let birthyear of birthYear">{{ birthyear }}</md-option>
+                                <md-option [value]="birthyear" *ngFor="let birthyear of birthYear">{{ birthyear }}</md-option>
                             </md-select>
                         <!-- </md-form-field> -->
                     </div>

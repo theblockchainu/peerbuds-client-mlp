@@ -27,11 +27,17 @@ export class ProfileComponent implements OnInit {
   public collectionTypes = ['workshops'];
   public participatingWorkshops: Array<any>;
   public recommendedpeers: Array<any>;
-  public socialIdentities: Array<any>;
+  public socialIdentities: any = [];
   public maxVisibleInterest = 3;
   public topicsTeaching: Array<any>;
   public isTeacher: boolean;
   public offsetString = 'col-md-offset-1';
+  private queryForSocialIdentities = {'include': ['identities', 'credentials']};
+  private connectedIdentities = {
+    'facebook': false,
+    'google': false
+  };
+  private other_languages;
 
   constructor(
     public config: AppConfig,
@@ -67,9 +73,29 @@ export class ProfileComponent implements OnInit {
     this.getTeachingTopics();
   }
   private getIdentities() {
-    this._profileService.getSocialIdentities(this.urluserId).subscribe(
+    this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.urluserId).subscribe(
       (result) => {
         this.socialIdentities = result;
+        if(this.socialIdentities.identities.length > 0) {
+          this.socialIdentities.identities.forEach(element => {
+            if(element.provider === 'google') {
+                this.connectedIdentities.google = true;
+            }
+            else if (element.provider === 'facebook') {
+              this.connectedIdentities.facebook = true;
+            }
+          });
+        }
+        if(this.socialIdentities.credentials.length > 0) {
+          this.socialIdentities.credentials.forEach(element => {
+            if(element.provider === 'google') {
+                this.connectedIdentities.google = true;
+            }
+            else if (element.provider === 'facebook') {
+              this.connectedIdentities.facebook = true;
+            }
+          });
+        }
       }
     );
   }
@@ -137,11 +163,13 @@ export class ProfileComponent implements OnInit {
     this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response) => {
       this.profileObj = response[0];
       console.log(this.profileObj);
+      this.other_languages = this.profileObj.other_languages ?
+        this.profileObj.other_languages.join(', ') : 'No language provided';
       this.setInterests();
       if (this.profileObj.peer['0'].ownedCollections && this.profileObj.peer['0'].ownedCollections.length > 0) {
         this.calculateCollectionDurations();
         this.isTeacher = true;
-        this.offsetString = '';
+       // this.offsetString = '';
       }
       if (this.profileObj.peer[0].collections) {
         this.getRecommendedWorkshops(this.profileObj.peer[0].collections);

@@ -64,9 +64,9 @@ export class ResetPasswordComponent implements OnInit {
                   this.alertService.error(error._body);
                   // this.loading = false;
 
-               
               });
-  } 
+  }
+
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
   }
