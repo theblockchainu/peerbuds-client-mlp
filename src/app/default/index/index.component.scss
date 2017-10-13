@@ -26,14 +26,14 @@
 }
 
 .view2Image {
-    width: 45%;
+    width: 44%;
     margin-left: 8%;
 }
 
 .view3Image {
     width: 50%;
     top: -22px;
-    right: 15px;
+    right: -32px;
 }
 
 .view4Image {
@@ -223,3 +223,21 @@
 // }
 
 // }
+
+//carousal
+#container {
+    width: 100%;
+    margin: 5em auto;
+    padding: 0;
+    background:#fff;
+}
+
+.items {
+    max-width:300px;
+    height:300px;
+    background:#ECECEC;
+}
+
+#left, #right { 
+    margin: 30px;
+}

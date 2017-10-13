@@ -6,9 +6,10 @@ import { Http } from '@angular/http';
 import { MediaUploaderService } from '../../mediaUploader/media-uploader.service';
 import { AppConfig } from '../../../app.config';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { ProfileService } from '../../profile/profile.service';
 
 
-//const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
   selector: 'app-verify-id-dialog',
@@ -31,20 +32,29 @@ export class VerifyIdDialogComponent implements OnInit {
     private http: Http,
     private mediaUploader: MediaUploaderService,
     private config: AppConfig,
+    public _profileService: ProfileService,
     public dialogRef: MdDialogRef<VerifyIdDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit() {
+  this.idProofImagePending = true;
+    this.peer = this._fb.group({
+      email: ['',
+      [Validators.required,
+      Validators.pattern(EMAIL_REGEX)]],
+      verificationIdUrl: ['', Validators.required]
+    });
          
   }
   continue() {
     //this.router.navigate(['app-upload-docs', +this.step]);
     console.log("dialog opened");
      this.dialogRef.close();
+     this.router.navigate(['console/profile/verification']);
   }
 
-  uploadImage(event) {
+   uploadImage(event) {
     this.peer.controls['email'].setValue(this.email);
     console.log(event.files);
     for (const file of event.files) {
@@ -54,10 +64,6 @@ export class VerifyIdDialogComponent implements OnInit {
       }).subscribe();
     }
     this.idProofImagePending = false;
-  }
-
-  onNoClick(): void {
-  this.dialogRef.close();
   }
 }
 

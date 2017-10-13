@@ -76,6 +76,7 @@
     "http-server": "^0.10.0",
     "moment": "^2.18.1",
     "ng-router-loader": "^2.1.0",
+    "ng2-carouselamos": "^3.2.0",
     "ng4-geoautocomplete": "^0.0.9",
     "ngx-bootstrap": "^1.9.3",
     "ngx-cookie-service": "^1.0.9",
@@ -89,7 +90,7 @@
     "zone.js": "^0.8.18"
   },
   "devDependencies": {
-    "@angular/cli": "^1.4.4",
+    "@angular/cli": "^1.4.7",
     "@angular/compiler-cli": "^4.4.4",
     "@angular/language-service": "^4.4.4",
     "@angularclass/hmr": "^2.1.3",

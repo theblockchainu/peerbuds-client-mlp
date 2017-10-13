@@ -80,7 +80,7 @@ export class UploadDocsComponent implements OnInit {
   redirectToOnboarding() {
     this.router.navigate(['onboarding/1']);
   }
-
+  
   uploadImage(event) {
     this.peer.controls['email'].setValue(this.email);
     console.log(event.files);
