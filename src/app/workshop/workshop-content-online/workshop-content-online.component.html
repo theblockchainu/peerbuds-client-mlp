@@ -1,84 +1,91 @@
+<div class="row">
+    <div class="col-md-12">
+        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+        <div style="display: inline-block">
+            <h3 md-dialog-title>{{getAddOrEditText()}} online session for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+    </div>
+</div>
+<div *ngIf="lastIndex>-1">
+    <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
+        <md-dialog-content>
+            <div class="row">
+                <div class="col-sm-12 margin-bottom-30">
+                    <md-input-container class="pb-block margin-top-20 margin-bot-20">
+                        <input mdInput #title formControlName="title" placeholder="Title" class="title" [required]="true">
+                    </md-input-container>
 
-    <h3 md-dialog-title>{{getAddOrEditText()}} online session for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
-    <button md-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [md-dialog-close]="getCloseDialogData()" *ngIf="isEdit">
-        <md-icon style="color: #777777; font-size: 20px;">close</md-icon>
-    </button>
-    <div *ngIf="lastIndex>-1">
-        <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
-            <md-dialog-content>
-                <div class="row">
-                    <div class="col-sm-12 margin-bottom-30">
-                        <md-input-container class="pb-block margin-top-20 margin-bot-20">
-                            <input mdInput #title formControlName="title" placeholder="Title" class="title" [required]="true">
+                    <div formGroupName="schedule">
+                        <md-input-container class="timeInput margin-top-20 margin-bot-20" style="width:20%">
+                            <input mdInput type="time" #startTime formControlName="startTime" placeholder="Start Time">
                         </md-input-container>
+                        <md-input-container class="timeInput margin-top-20 margin-bot-20" style="margin-left: 20px; width:20%">
+                            <input mdInput type="time" #endTime formControlName="endTime" placeholder="End Time">
+                        </md-input-container>
+                    </div>
 
-                        <div formGroupName="schedule">
-                            <md-input-container class="timeInput margin-top-20 margin-bot-20" style="width:20%">
-                                <input mdInput type="time" #startTime formControlName="startTime" placeholder="Start Time">
-                            </md-input-container>
-                            <md-input-container class="timeInput margin-top-20 margin-bot-20" style="margin-left: 20px; width:20%">
-                                <input mdInput type="time" #endTime formControlName="endTime" placeholder="End Time">
-                            </md-input-container>
-                        </div>
-
-                        <div class="form-group margin-top-20">
-                            <label class="title">Upload a photo:</label>
-                            <div class="upload-image-section imageHolder">
-                                <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImage($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse">
-                                    <ng-template pTemplate="toolbar">
-                                        <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
-                                    </ng-template>
-                                    <ng-template #file pTemplate="file">
-                                    </ng-template>
-                                    <ng-template pTemplate="content">
-                                        <md-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
-                                            <md-grid-tile>
-                                                <div style="position: absolute; cursor: pointer;">
-                                                    <md-icon style="color: black;">close</md-icon>
-                                                </div>
-                                                <img src="{{config.apiUrl + image.value}}" width="150" (error)="imgErrorHandler($event)">
-                                            </md-grid-tile>
-                                        </md-grid-list>
-                                    </ng-template>
-                                </p-fileUpload>
-                            </div>
-                        </div>
-                        <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                            <textarea mdInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true" class="title"></textarea>
-                            <md-hint align="end">{{description.value.length}} / 500</md-hint>
-                        </md-input-container>
-                        <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                            <textarea mdInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?" class="title" [required]="true"></textarea>
-                            <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
-                        </md-input-container>
-                        <div class="form-group">
-                            <label class="display-block title">Add supporting material</label>
-                            <p-fileUpload #fubauto name="file" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadAttachments($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse">
+                    <div class="form-group margin-top-20">
+                        <label class="title">Upload a photo:</label>
+                        <div class="upload-image-section imageHolder">
+                            <p-fileUpload #fubauto name="image" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadImage($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse">
                                 <ng-template pTemplate="toolbar">
-                                    <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
+                                    <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
                                 </ng-template>
                                 <ng-template #file pTemplate="file">
                                 </ng-template>
                                 <ng-template pTemplate="content">
-                                    <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachments.length">
-                                        <md-grid-tile *ngFor="let file of attachments">
-                                            <div style="float: left; margin-right: 15px; cursor: pointer;">
+                                    <md-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
+                                        <md-grid-tile>
+                                            <div style="position: absolute; cursor: pointer;">
                                                 <md-icon style="color: black;">close</md-icon>
                                             </div>
-                                            <a href="{{config.apiUrl + file}}">{{file}}</a>
+                                            <img src="{{config.apiUrl + image.value}}" width="150" (error)="imgErrorHandler($event)">
                                         </md-grid-tile>
                                     </md-grid-list>
                                 </ng-template>
                             </p-fileUpload>
                         </div>
                     </div>
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                        <textarea mdInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true" class="title"></textarea>
+                        <md-hint align="end">{{description.value.length}} / 500</md-hint>
+                    </md-input-container>
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                        <textarea mdInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?" class="title" [required]="true"></textarea>
+                        <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
+                    </md-input-container>
+                    <div class="form-group">
+                        <label class="display-block title">Add supporting material</label>
+                        <p-fileUpload #fubauto name="file" url="{{config.apiUrl}}/api/media/upload?container=peerbuds-dev1290" (onUpload)="uploadAttachments($event)" maxFileSize="10000000" auto="true" chooseLabel="Browse">
+                            <ng-template pTemplate="toolbar">
+                                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
+                            </ng-template>
+                            <ng-template #file pTemplate="file">
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachments.length">
+                                    <md-grid-tile *ngFor="let file of attachments">
+                                        <div style="float: left; margin-right: 15px; cursor: pointer;">
+                                            <md-icon style="color: black;">close</md-icon>
+                                        </div>
+                                        <a href="{{config.apiUrl + file}}">{{file}}</a>
+                                    </md-grid-tile>
+                                </md-grid-list>
+                            </ng-template>
+                        </p-fileUpload>
+                    </div>
                 </div>
-            </md-dialog-content>
-            <md-dialog-actions>
-                <button md-raised-button [md-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length==0 && description.value.length == 0 && prerequisites.value.length == 0">Save</button> &emsp;
-                <button md-raised-button [md-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
-                <button md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
-                <button md-button [md-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
-            </md-dialog-actions>
-        </form>
-    </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <button md-raised-button [md-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length==0 && description.value.length == 0 && prerequisites.value.length == 0">Save</button> &emsp;
+            <button md-raised-button [md-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
+            <button md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
+            <button md-button [md-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
+        </md-dialog-actions>
+    </form>
+</div>

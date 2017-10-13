@@ -364,10 +364,29 @@ h3 {
     border-left: 0px;
 }
 
-.timelineRowItem:hover {
-    border-left: 3px solid #767676;
-    padding-left: 22px;
+.timeRowItemProgress {
+    margin-left: -41px;
+    border-left: 3px solid #33bd9e;
+    padding-left: 23px !important;
+    margin-top: -5px;
 }
+
+.timeRowItemProgress:hover {
+    margin-left: -41px;
+    border-left: 3px solid #33bd9e;
+    padding-left: 23px !important;
+    margin-top: -5px;
+}
+
+.viewTime {
+    position: absolute;
+    top: 22%;
+    left: -20.5%;
+    border: 1px solid #cccccc;
+    padding: 7px;
+}
+
+
 
 .message-item-wrapper:last-child::after {
     background: #aaaaaa;

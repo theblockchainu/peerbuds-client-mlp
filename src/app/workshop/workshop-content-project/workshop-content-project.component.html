@@ -1,8 +1,16 @@
 <div class="mat-dialog-focus-trap"></div>
-<h3 md-dialog-title>{{getAddOrEditText()}} project activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
-<button md-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [md-dialog-close]="getCloseDialogData()" *ngIf="isEdit">
-    <md-icon style="color: #777777; font-size: 20px;">close</md-icon>
-</button>
+<div class="row">
+    <div class="col-md-12">
+        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+        <div style="display: inline-block">
+            <h3 md-dialog-title>{{getAddOrEditText()}} project activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+    </div>
+</div>
 <div *ngIf="lastIndex>-1">
     <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
         <md-dialog-content>

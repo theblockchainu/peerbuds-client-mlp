@@ -51,7 +51,7 @@
                       <div class="col-sm-12">
                         <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
                           [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
-                          [maxSelection]=maxTopics></multiselect-autocomplete>
+                          [maxSelection]=maxTopics [minSelection]="1"></multiselect-autocomplete>
                       </div>
                     </div>
                     <div class="row">
@@ -60,13 +60,13 @@
                   </div>
                 </div>
                 
-                <div class="flex flexContainer margin-top-30">
+                <!--<div class="flex flexContainer margin-top-30">
                   <button md-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
                       <md-icon class="iconVC" color="accent">
                         add
                       </md-icon><span class="addIconText">Add New Topic</span></button>
                   <span class="flex"></span>
-                  <!-- <div class="col-sm-12 margin-top-30">
+                  &lt;!&ndash; <div class="col-sm-12 margin-top-30">
                     <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
                   </div>
                   <div class="col-sm-3">
@@ -79,8 +79,8 @@
                         </a>
                       </div>
                     </div>
-                  </div> -->
-                  <!-- <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
+                  </div> &ndash;&gt;
+                  &lt;!&ndash; <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
                     <div class="lookingFor interest">
                       <label class="check">
                         <md-icon *ngIf="topic.checked" color="accent">
@@ -92,8 +92,8 @@
                       </div>
                       <span class="lookingForTitle captitalise">{{ topic.name }}</span>
                     </div>
-                  </div> -->
-                </div>
+                  </div> &ndash;&gt;
+                </div>-->
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(1)>Back</a> -->
                   <a md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">Continue</a>
@@ -111,21 +111,16 @@
               <br/>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row margin-top-60">
-                  <md-select placeholder="Select Language" style="margin-bottom: 20px" class="col-md-4" name="other_languages" formControlName="selectedLanguage" (change)="languageChange($event)">
-                    <md-option [value]="">--Select--</md-option>
-                    <md-option *ngFor="let l of languagesArray" [value]="l.name">{{l.name}}</md-option>
-                  </md-select>
-                </div>
-                <div class="row flex flexContainer margin-top-30">
-                  <button md-button class="" type="button" color="grey" (click)="addNewLanguage()">
-                      <md-icon class="iconVC" color="accent">
-                        add
-                      </md-icon><span class="addIconText">Add New Language</span></button>
-                  <span class="flex"></span>
+                  <md-form-field class="col-md-4">
+                    <input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" mdInput formControlName="selectedLanguage" [mdAutocomplete]="auto">
+                    <md-autocomplete #auto="mdAutocomplete">
+                      <md-option *ngFor="let l of filteredLanguageOptions | async" [value]="l" (click)="languageChange(l)">{{l}}</md-option>
+                    </md-autocomplete>
+                  </md-form-field>
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(2)>Back</a> -->
-                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages==undefined">Continue</button>
+                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">Continue</button>
                 </div>
               </form>
             </div>
@@ -140,9 +135,9 @@
 
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
-                  <div class="col-sm-10">
+                  <div class="col-sm-12">
                     <md-input-container class="pb-block" style="margin-bottom: 20px">
-                      <textarea mdInput #aboutHost maxlength="500" rows="4" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
+                      <textarea mdInput #aboutHost maxlength="500" rows="2" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
                       <md-hint align="end">{{aboutHost.value.length}} / 500</md-hint>
                     </md-input-container>
                   </div>
@@ -224,7 +219,7 @@
                     <h2 class="title">What’s the workshop about?</h2>
                     <p class="subtitle">Give a detailed description to learners of what they will do in this workshop</p>
                     <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                      <textarea mdInput #description maxlength="800" rows="5" formControlName="description" placeholder="What we'll do in this workshop?"></textarea>
+                      <textarea mdInput #description maxlength="800" rows="2" formControlName="description" placeholder="What we'll do in this workshop?"></textarea>
                       <md-hint align="end">{{description.value.length}} / 800</md-hint>
                     </md-input-container>
                   </div>
@@ -254,7 +249,7 @@
                 <p class="subtitle">Describe the knowledge prerequisites, if there is any, that learners should know of.</p>
                 <div class="col-sm-12 margin-bottom-30 padding-left-0">
                   <md-input-container class="pb-block">
-                    <textarea mdInput #notes maxlength="500" rows="5" formControlName="notes"></textarea>
+                    <textarea mdInput #notes maxlength="500" rows="2" formControlName="notes"></textarea>
                     <md-hint align="end">{{notes.value.length}} / 500</md-hint>
                   </md-input-container>
                 </div>
@@ -367,12 +362,12 @@
                 </p>
                 <h3 class="title">Price</h3>
                 <div class="row margin-left-0">
-                  <div class="col-sm-3 padding-left-0">
+                  <div class="col-md-3 padding-left-0">
                     <md-input-container [floatPlaceholder]="false" class="margin-top-20">
                       <input type="number" mdInput #price formControlName="price" placeholder="" min="1">
                     </md-input-container>
                   </div>
-                  <div class="col-sm-2 priceAlignParent">
+                  <div class="col-md-2 col-md-offset-1 priceAlignParent">
                     <md-select [floatPlaceholder]="false" formControlName="currency" class="priceAlign padding-top-0 margin-top-20">
                       <md-option *ngFor="let c of currencies" [value]="c">{{c}}</md-option>
                     </md-select>
@@ -420,7 +415,7 @@
               </p>
               <form [formGroup]="timeline" (ngSubmit)="submitTimeline(timeline)" novalidate>
                 <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
-                  <div class="row" style="margin: 30px 0px 15px 0;">
+                  <div class="row" style="margin: 30px 0px 15px -15px;">
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
                         <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
@@ -440,8 +435,7 @@
                 <div formGroupName="calendar" *ngIf="(timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate) && !datesEditable">
                   <div class="row" style="margin: 30px 0px 15px 0;">
                     <div class="col-md-12 selected-dates">
-                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd
-                      MMM'}} &emsp;
+                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd MMM'}} &emsp;
                       <md-icon color="accent">
                         date_range
                       </md-icon>

@@ -7,7 +7,7 @@ import {
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
   MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
   MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule
+  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, MdAutocompleteModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -43,6 +43,7 @@ import { NotificationService } from '../_services/notification/notification.serv
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { ExtractTimePipe } from './extract-time/extract-time.pipe';
 import {SocketService} from '../_services/socket/socket.service';
+import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import {SocketService} from '../_services/socket/socket.service';
       primaryColour: '#33bd9e',
       secondaryColour: '#ff5b5f',
       tertiaryColour: '#ff6d71'
-    })
+    }),
+    Ng2DeviceDetectorModule.forRoot()
   ],
   declarations: [ExtractTimePipe],
   providers: [
@@ -110,7 +112,7 @@ import {SocketService} from '../_services/socket/socket.service';
     MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
     MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-    MdNativeDateModule, MdSliderModule,
+    MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
     SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
     LoadingModule
   ]

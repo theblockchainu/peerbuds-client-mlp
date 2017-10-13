@@ -79,6 +79,7 @@ export class WorkshopPageComponent implements OnInit {
   public userRating: number;
   public newUserRating = 0;
   public liveCohort;
+  public isViewTimeHidden = true;
 
   public isReadonly = true;
   public noOfReviews = 3;
@@ -334,9 +335,10 @@ export class WorkshopPageComponent implements OnInit {
       'include': [
         'topics',
         'calendars',
+        'views',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules', { 'submissions': [{'upvotes': 'peer'}, { 'peer': 'profiles' } ] }] }
+        { 'contents': ['schedules', {'views': 'peer'}, { 'submissions': [{'upvotes': 'peer'}, { 'peer': 'profiles' } ] }] }
       ],
       'relInclude': 'calendarId'
     };
@@ -363,7 +365,6 @@ export class WorkshopPageComponent implements OnInit {
                 }
               });
             }
-
           });
 
           for (const key in this.itenariesObj) {
@@ -385,6 +386,7 @@ export class WorkshopPageComponent implements OnInit {
                     content.schedules[0].endTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].endTime.split('T')[1];
                 }
               });
+              this.setContentViews(this.itenariesObj[key]);
               const itenary = {
                 startDay: key,
                 startDate: startDate,
@@ -767,7 +769,7 @@ export class WorkshopPageComponent implements OnInit {
               collectionId: this.workshopId
             },
             width: '40vw',
-            height: '100wh'
+            height: '100vh'
           });
           break;
         }
@@ -780,7 +782,7 @@ export class WorkshopPageComponent implements OnInit {
               collectionId: this.workshopId
             },
             width: '40vw',
-            height: '100wh'
+            height: '100vh'
           });
           break;
         }
@@ -794,7 +796,7 @@ export class WorkshopPageComponent implements OnInit {
               collectionId: this.workshopId
             },
             width: '40vw',
-            height: '100wh'
+            height: '100vh'
           });
           break;
         }
@@ -1141,6 +1143,52 @@ export class WorkshopPageComponent implements OnInit {
     const eventDate = moment(date);
     const currentDate = moment();
     return (this.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0);
+  }
+
+  public setContentViews(contents) {
+      contents.forEach(content => {
+          if (content.type !== 'project' && content.views !== undefined) {
+              const thisUserView = [];
+              let totalUserViewTime = 0;
+              content.views.forEach(view => {
+                  if (view.peer[0].id === this.userId && view.endTime !== undefined) {
+                      thisUserView.push(view);
+                      const startTime = moment(view.startTime);
+                      const endTime = moment(view.endTime);
+                      console.log(endTime.toString());
+                      const thisViewTime = endTime.diff(startTime);
+                      console.log(thisViewTime);
+                      totalUserViewTime += thisViewTime;
+                  }
+              });
+              content.views = thisUserView;
+              content.totalUserViewTime = Math.floor(totalUserViewTime / 60000) + ' minutes';
+              content.isViewTimeHidden = true;
+          }
+          else if (content.type === 'project' && content.submissions !== undefined) {
+              const thisUserView = [];
+              let totalUserViewTime;
+              content.submissions.forEach(submission => {
+                 if (submission.peer[0].id === this.userId) {
+                     thisUserView.push(submission);
+                     const startTime = moment(submission.createdAt);
+                     const endTime = moment();
+                     totalUserViewTime = startTime.from(endTime);
+                     content.views = thisUserView;
+                     content.totalUserViewTime = totalUserViewTime;
+                     content.isViewTimeHidden = true;
+                 }
+              });
+          }
+      });
+  }
+
+  public showViewTime(content) {
+      content.isViewTimeHidden = false;
+  }
+
+  public hideViewTime(content) {
+      content.isViewTimeHidden = true;
   }
 
 }

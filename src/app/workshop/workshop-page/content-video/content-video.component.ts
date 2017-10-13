@@ -1,17 +1,21 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import {Component, OnInit, Inject, OnDestroy} from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CommentService} from '../../../_services/comment/comment.service';
 import {CollectionService} from '../../../_services/collection/collection.service';
 import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
+import {SocketService} from '../../../_services/socket/socket.service';
+import {Router} from '@angular/router';
+import {Ng2DeviceService} from 'ng2-device-detector';
+import {VgAPI} from 'videogular2/core';
 
 @Component({
   selector: 'app-content-video',
   templateUrl: './content-video.component.html',
   styleUrls: ['./content-video.component.scss']
 })
-export class ContentVideoComponent implements OnInit {
+export class ContentVideoComponent implements OnInit, OnDestroy {
 
   public userType = 'public';
   public workshopId = '';
@@ -20,6 +24,8 @@ export class ContentVideoComponent implements OnInit {
   public replyingToCommentId: string;
   public comments: Array<any>;
   public userId;
+  public startedView;
+  api: VgAPI;
 
   constructor(
     public config: AppConfig,
@@ -28,7 +34,10 @@ export class ContentVideoComponent implements OnInit {
     public dialogRef: MdDialogRef<ContentVideoComponent>,
     private _fb: FormBuilder,
     private _commentService: CommentService,
-    private cookieUtilsService: CookieUtilsService
+    private cookieUtilsService: CookieUtilsService,
+    private _socketService: SocketService,
+    private router: Router,
+    private deviceService: Ng2DeviceService
   ) {
       this.userType = data.userType;
       this.workshopId = data.collectionId;
@@ -38,6 +47,10 @@ export class ContentVideoComponent implements OnInit {
   ngOnInit() {
       this.initializeForms();
       this.getDiscussions();
+  }
+
+  ngOnDestroy() {
+
   }
 
     private initializeForms() {
@@ -169,6 +182,42 @@ export class ContentVideoComponent implements OnInit {
 
     public isMyComment(comment) {
         return comment.peer[0].id === this.userId;
+    }
+
+    public onPlayerReady(api: VgAPI) {
+        this.api = api;
+
+        this.api.getDefaultMedia().subscriptions.playing.subscribe(() => {
+            const view = {
+                type: 'user',
+                url: this.router.url,
+                ip_address: '',
+                browser: this.deviceService.getDeviceInfo().browser,
+                viewedModelName: 'content',
+                startTime: new Date(),
+                content: this.data.content,
+                viewer: {
+                    id: this.userId
+                }
+            };
+            this._socketService.sendStartView(view);
+            this._socketService.listenForViewStarted().subscribe(startedView => {
+                this.startedView = startedView;
+                console.log(startedView);
+            });
+        });
+
+        this.api.getDefaultMedia().subscriptions.pause.subscribe(() => {
+            this.startedView.viewer = {
+                id: this.userId
+            };
+            this.startedView.endTime = new Date();
+            this._socketService.sendEndView(this.startedView);
+            this._socketService.listenForViewEnded().subscribe(endedView => {
+                delete this.startedView;
+                console.log(endedView);
+            });
+        });
     }
 
 }
