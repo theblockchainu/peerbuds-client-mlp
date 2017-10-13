@@ -15,7 +15,6 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-items: Array<any> = []
 
 
   public isLoggedIn;
@@ -30,13 +29,7 @@ items: Array<any> = []
     if(this.loggedIn) {
       this._router.navigate(['home', 'homefeed']);
     }
-      this.items = [
-      { name: 'assets/images/images_landing/Shape_testimoni.png' },
-      { name: '/assets/images/images_landing/testimonial1.png' },
-      { name: '/assets/images/images_landing/testimonial2.png' },
-      { name: '/assets/images/images_landing/testimonial3.png' },
-      { name: '/assets/images/images_landing/arrow-left.png' }
-    ]
+
    }
   
   ngOnInit() {
