@@ -10,6 +10,7 @@ import {
 } from '@angular/router';
 
 import { SpinnerService } from './_services/spinner/spinner.service';
+import {SocketService} from './_services/socket/socket.service';
 
 
 @Component({
@@ -18,47 +19,47 @@ import { SpinnerService } from './_services/spinner/spinner.service';
   styleUrls: ['./app.component.scss'],
   providers: [ SpinnerService ]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'app';
   public activePath = 'home';
-  showHeader: boolean = true;
-  showFooter: boolean = true;
+  showHeader = true;
+  showFooter = true;
 
   // Sets initial value to true to show loading spinner on first load
   loading;
 
   constructor(private router: Router,
-    private _spinnerService: SpinnerService) {
-        this.loading = this._spinnerService.getSpinnerState();
-        router.events.subscribe((event: RouterEvent) => {
-        this.navigationInterceptor(event);
+              private _spinnerService: SpinnerService,
+              private _socketService: SocketService
+  ) {
+    this.loading = this._spinnerService.getSpinnerState();
+    router.events.subscribe((event: RouterEvent) => {
+      this.navigationInterceptor(event);
     });
   }
 
-  ngOnInit(){
+  ngOnInit() {
       this.router.events.subscribe(event => this.modifyHeader(event));
       this.router.events.subscribe(event => this.modifyFooter(event));
     }
 
   modifyFooter(location) {
 
-   if(location.url == "/app-upload-docs" || location.url == "/onboarding")
-      {
-       this.showFooter= false;
+   if (location.url === '/app-upload-docs' || location.url === '/onboarding' || location.url === '/workshop/*/edit') {
+       this.showFooter = false;
       }
       else {
-        this.showFooter= true;
+        this.showFooter = true;
       }
   }
 
    modifyHeader(location) {
    // alert(location.url)
-     if (location.url == "/workshop" ||  location.url == "/")
-      {
-       this.showHeader= false;
+     if (location.url === '/workshop' ||  location.url === '/' || location.url === '/workshop/*/edit') {
+       this.showHeader = false;
       }
       else {
-        this.showHeader= true;
+        this.showHeader = true;
       }
   }
 

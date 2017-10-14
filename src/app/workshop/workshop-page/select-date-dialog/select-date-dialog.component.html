@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-12">
-    <button md-button class="mat-icon-button" type="button" (click)="dialogRef.close()" style="top: -3px; left: -10px;"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
     <div style="display: inline-block">
       <h2 md-dialog-title *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</h2>
       <h2 md-dialog-title *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
@@ -13,8 +13,14 @@
   </div>
 </div>
 <div md-dialog-content>
-  <p-accordion (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">
-    <p-accordionTab *ngFor="let itenaryObj of itineraries; let i=index" tabindex="-1">
+  <div class="row" *ngIf="filteredItineraries.length === 0">
+    <div class="col-md-12 margin-top-60 margin-left-40">
+      <md-icon style="top: 5px;">info</md-icon>
+      There are no upcoming cohorts for this Workshop.
+    </div>
+  </div>
+  <p-accordion *ngIf="filteredItineraries.length > 0" (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">
+    <p-accordionTab *ngFor="let itenaryObj of filteredItineraries; let i=index" tabindex="-1">
       <p-header>
         <div>
           <div class="row">
@@ -40,7 +46,7 @@
               <br>
               <div class="col-md-12">
                 <button *ngIf="mode === 'chooseDate'" md-button md-dialog-close="{{itenaryObj.calendar.id}}" class="mat-border-button">Select this cohort</button>
-                <button *ngIf="mode === 'editDelete'" md-button color="warn" md-dialog-close="{{itenaryObj.calendar.id}}" [disabled]="itenaryObj.participantCount > 0" class="mat-border-button" style="border-color: #f5393e !important;">Delete this cohort</button>
+                <button *ngIf="mode === 'editDelete'" md-button color="warn" md-dialog-close="{{itenaryObj.calendar.id}}" [disabled]="itenaryObj.participantCount > 0" class="mat-border-button">Delete this cohort</button>
               </div>
             </div>
           </div>

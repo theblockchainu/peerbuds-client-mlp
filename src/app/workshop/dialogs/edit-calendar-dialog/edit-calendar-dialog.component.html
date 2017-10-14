@@ -1,19 +1,25 @@
 <div class="mat-dialog-focus-trap"></div>
 <form [formGroup]="recurring"> 
-    <button md-button class="mat-icon-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
     <div style="display: inline-block">
-        <h3 md-dialog-title>Repeat your {{ duration }} day workshop</h3>
+        <h3 md-dialog-title>Add more cohorts your {{ duration }} day workshop</h3>
     </div>
     <br>
     <div style="margin: -12px 0 20px 45px;">
-        <span>{{calendars.length}} Existing Cohorts</span> &emsp;
-        <a href="javascript:void(0);" (click)="viewCohorts()">View all</a>
+        <span>You have <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
+        <a href="javascript:void(0);" (click)="viewCohorts()">View and manage</a>
     </div>
     <hr style="margin-top: 0px;">
     <md-dialog-content>
-        <div class="row">
+        <div class="row margin-bottom-20">
             <div class="col-md-6">
-                <label>After your first cohort ends, the next cohort starts...</label><br><br>
+                <p class="mat-caption" *ngIf="calendars.length === 1">
+                    <md-icon>info</md-icon>
+                    Your first cohort was automatically created when this Workshop was approved. You can add more Cohorts to your workshop at any time.
+                </p>
+                <br><br>
+                <label *ngIf="calendars.length > 0">After your last existing cohort ends, the next cohort starts...</label>
+                <br><br>
                 <md-radio-group class="repeat-workshop-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
                     <md-radio-button class="repeat-workshop-button margin-bottom-10" value="immediate"> 
                         <span>Immediately</span>
@@ -127,6 +133,5 @@
             </div>
         </div>
     </md-dialog-content>
-    
 </form>
 <div class="mat-dialog-focus-trap"></div>
