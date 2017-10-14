@@ -8,14 +8,12 @@ import { AppHeaderComponent } from '../../app-header/app-header.component';
 import { LoginComponentDialog } from '../../_services/dialogs/login-dialog/login-dialog.component';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 
-
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-
 
   public isLoggedIn;
   public loggedIn = false;
@@ -31,7 +29,6 @@ export class IndexComponent implements OnInit {
     }
 
    }
-  
   ngOnInit() {
   }
 }

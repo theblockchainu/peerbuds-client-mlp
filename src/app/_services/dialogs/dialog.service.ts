@@ -4,6 +4,7 @@ import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.component';
 import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-dialog.component';
+import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
@@ -63,6 +64,15 @@ export class DialogsService {
             height: '600px'
         });
         return dialogRef6.afterClosed();
+    }
+    public openIdPolicy() {
+        let dialogRef7: MdDialogRef<IdPolicyDialogComponent>;
+
+        dialogRef7 = this.dialog.open(IdPolicyDialogComponent, {
+            width: '500px',
+            height: '600px'
+        });
+        return dialogRef7.afterClosed();
     }
 
 }

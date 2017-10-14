@@ -64,7 +64,7 @@
     .description2, .description2 ul{
         font-size: 16px;
         color: #484848;
-        font-weight: 400;
+        font-weight: 300;
     }
     .step-2{
     padding: 21px;
@@ -150,4 +150,8 @@
 
 .delete .delete-image {
     top:5px;
+}
+
+.note{
+margin-top: -60px !important;
 }
