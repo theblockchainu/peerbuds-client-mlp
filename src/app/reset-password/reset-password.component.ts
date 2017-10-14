@@ -43,7 +43,7 @@ export class ResetPasswordComponent implements OnInit {
 
   public ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.returnUrl = '/';
+    this.returnUrl = '/login';
 
     this.resetpwdForm = this._fb.group({
        password : ['', Validators.required],
