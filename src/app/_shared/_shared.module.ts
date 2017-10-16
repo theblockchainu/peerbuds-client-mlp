@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CdkTableModule } from '@angular/cdk/table';
 
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
   MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
   MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule
+  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, MdAutocompleteModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -41,8 +40,10 @@ import { DialogsService } from '../workshop/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CommentService } from '../_services/comment/comment.service';
 import { NotificationService } from '../_services/notification/notification.service';
-import { ExtractTimePipe } from '../_shared/extract-time/extract-time.pipe';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
+import { ExtractTimePipe } from './extract-time/extract-time.pipe';
+import {SocketService} from '../_services/socket/socket.service';
+import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
       primaryColour: '#33bd9e',
       secondaryColour: '#ff5b5f',
       tertiaryColour: '#ff6d71'
-    })
+    }),
+    Ng2DeviceDetectorModule.forRoot()
   ],
   declarations: [ExtractTimePipe],
   providers: [
@@ -78,7 +80,8 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
     DialogsService,
     CommentService,
     TopicService,
-    NotificationService
+    NotificationService,
+    SocketService
   ],
   exports: [
     CommonModule,
@@ -109,7 +112,7 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
     MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
     MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-    MdNativeDateModule, MdSliderModule,
+    MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
     SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
     LoadingModule
   ]

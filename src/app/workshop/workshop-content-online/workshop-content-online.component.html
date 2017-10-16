@@ -1,25 +1,32 @@
+<div class="row">
+    <div class="col-md-12">
+        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+        <div style="display: inline-block">
+            <h3 md-dialog-title>{{getAddOrEditText()}} online session for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+    </div>
+</div>
+<div *ngIf="lastIndex>-1">
+    <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
+        <md-dialog-content>
+            <div class="row">
+                <div class="col-sm-12 margin-bottom-30">
+                    <md-input-container class="pb-block margin-top-20 margin-bot-20">
+                        <input mdInput #title formControlName="title" placeholder="Title" class="title" [required]="true">
+                    </md-input-container>
 
-    <h3 md-dialog-title>{{getAddOrEditText()}} online session for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
-    <button md-button class="pull-right" style="cursor: pointer; position: relative; top: -50px; right: -20px;" [md-dialog-close]="getCloseDialogData()" *ngIf="isEdit">
-        <md-icon style="color: #777777; font-size: 20px;">close</md-icon>
-    </button>
-    <div *ngIf="lastIndex>-1">
-        <form [formGroup]="itenaryForm.controls.contents.controls[lastIndex]">
-            <md-dialog-content>
-                <div class="row">
-                    <div class="col-sm-12 margin-bottom-30">
-                        <md-input-container class="pb-block margin-top-20 margin-bot-20">
-                            <input mdInput #title formControlName="title" placeholder="Title" class="title" [required]="true">
+                    <div formGroupName="schedule">
+                        <md-input-container class="timeInput margin-top-20 margin-bot-20" style="width:20%">
+                            <input mdInput type="time" #startTime formControlName="startTime" placeholder="Start Time">
                         </md-input-container>
-
-                        <div formGroupName="schedule">
-                            <md-input-container class="timeInput margin-top-20 margin-bot-20" style="width:20%">
-                                <input mdInput type="time" #startTime formControlName="startTime" placeholder="Start Time">
-                            </md-input-container>
-                            <md-input-container class="timeInput margin-top-20 margin-bot-20" style="margin-left: 20px; width:20%">
-                                <input mdInput type="time" #endTime formControlName="endTime" placeholder="End Time">
-                            </md-input-container>
-                        </div>
+                        <md-input-container class="timeInput margin-top-20 margin-bot-20" style="margin-left: 20px; width:20%">
+                            <input mdInput type="time" #endTime formControlName="endTime" placeholder="End Time">
+                        </md-input-container>
+                    </div>
 
                         <div class="form-group margin-top-20">
                             <label class="title">Upload a photo:</label>
@@ -66,7 +73,7 @@
                                 </ng-template>
                                 <!-- <ng-template #file pTemplate="file">
                                 </ng-template> -->
-                                
+
                             </p-fileUpload>
                             <!-- <ng-template pTemplate="content">  -->
                             <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls.length">

@@ -29,7 +29,7 @@ export class AppHeaderComponent implements OnInit {
   public profile: any = {};
   public userType = '';
   public myControl = new FormControl('');
-    @ViewChild('notificationsButton') notificationsButton;
+  @ViewChild('notificationsButton') notificationsButton;
   public userId: string;
   public userIdObservable;
   private key = 'userId';

@@ -181,4 +181,25 @@ export class SubmissionViewComponent implements OnInit {
     this.dialogRef.close();
   }
 
+    public hasUpvoted(upvotes) {
+        let result = false;
+        if (upvotes !== undefined) {
+            upvotes.forEach(upvote => {
+                if (upvote.peer !== undefined) {
+                    if (upvote.peer[0].id === this.userId) {
+                        result = true;
+                    }
+                }
+                else {
+                    result = true;
+                }
+            });
+        }
+        return result;
+    }
+
+    public isMyComment(comment) {
+        return comment.peer[0].id === this.userId;
+    }
+
 }

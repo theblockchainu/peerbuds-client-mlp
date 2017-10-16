@@ -14,6 +14,7 @@ export class SelectDateDialogComponent implements OnInit {
   public participants;
   public mode;
   public userType;
+  public filteredItineraries = [];
 
   constructor(public dialogRef: MdDialogRef<SelectDateDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any) {
@@ -21,7 +22,7 @@ export class SelectDateDialogComponent implements OnInit {
     this.mode = data.mode;
     this.participants = data.participants;
     this.userType = data.userType;
-
+    const today = moment();
     this.itineraries.forEach(itinerary => {
       let thisParticipantCount = 0;
       this.participants.forEach(participant => {
@@ -30,6 +31,10 @@ export class SelectDateDialogComponent implements OnInit {
         }
       });
       itinerary['participantCount'] = thisParticipantCount;
+      console.log(moment(itinerary.calendar.startDate).diff(today, 'days'));
+      if (moment(itinerary.calendar.startDate).diff(today, 'days') > 0 || this.userType === 'teacher') {
+        this.filteredItineraries.push(itinerary);
+      }
     });
   }
 
