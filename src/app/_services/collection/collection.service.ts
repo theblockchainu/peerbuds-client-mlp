@@ -56,7 +56,7 @@ export class CollectionService {
     }
   }
 
-  public getOwnedCollections(options: any, cb) {
+  public getOwnedCollections(options: string, cb) {
     if (this.userId) {
       this.http
         .get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections?' + 'filter=' + options)
@@ -241,11 +241,11 @@ export class CollectionService {
     });
     let fillerWord = '';
     if (contents[0].type === 'online') {
-      fillerWord = 'session';
+      fillerWord = 'Session';
     } else if (contents[0].type === 'video') {
-      fillerWord = 'recording';
+      fillerWord = 'Recording';
     } else if (contents[0].type === 'project') {
-      fillerWord = 'submission';
+      fillerWord = 'Submission';
     }
     const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
     const timeToStart = contentStartDate.diff(moment(), 'days');

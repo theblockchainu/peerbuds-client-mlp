@@ -1,5 +1,19 @@
 .upcoming-card{
     text-align: center; 
     padding: 20px;
-    height: 465px;
+    height: 400px;
 }
+
+.collectionTitle{
+    cursor:pointer;
+}
+.draft-card{
+    text-align: center;
+    padding: 20px;
+    height: 310px;    
+}
+
+
+.mat-icon-button .mat-icon, .mat-icon-button i {
+    color: #777777;
+  }

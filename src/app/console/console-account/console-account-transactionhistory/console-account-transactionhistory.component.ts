@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ConsoleAccountComponent } from '../console-account.component';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentService } from '../../../_services/payment/payment.service';
+import { CollectionService } from '../../../_services/collection/collection.service';
+
 import * as moment from 'moment';
 import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
@@ -15,14 +17,19 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
   public years: Array<number>;
   public months: Array<any>;
   public filterForm: FormGroup;
+  public filterFutureForm: FormGroup;
+  public payment_methods = ['Payment'];
   public retrievedTransactions: Array<any>;
   public totalTransactions: number;
+  public futureTransactions: Array<any>;
+  public retrievedFutureTransactions: Array<any>;
+  public totalFutureTransactions: number;
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleAccountComponent: ConsoleAccountComponent,
     private _paymentService: PaymentService,
-    private _fb: FormBuilder
-  ) {
+    private _fb: FormBuilder,
+    private _collectionService: CollectionService) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleAccountComponent.setActiveTab(urlSegment[0].path);
@@ -43,8 +50,21 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
       toMonth: ''
     });
 
+    this.filterFutureForm = this._fb.group({
+      payout_method: '',
+      content: '',
+      year: '',
+      fromMonth: '',
+      toMonth: ''
+    });
+
     this.filterForm.valueChanges.subscribe(result => {
-      this.filterResults(result);
+      this.transactions = this.filterResults(result, this.retrievedTransactions);
+    });
+
+    this.filterFutureForm.valueChanges.subscribe(result => {
+      console.log(result);
+      this.futureTransactions = this.filterResults(result, this.retrievedFutureTransactions);
     });
 
     this.years = [];
@@ -56,34 +76,42 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
 
   }
 
-  private filterResults(filter: any) {
+  private filterResults(filter: any, filterFrom: any): Array<any> {
+    let filterTo = filterFrom;
     if (filter.payout_method.length > 0) {
 
     }
     if (filter.content.length > 0) {
-
+      filterTo = filterTo.filter((transaction) => {
+        if (transaction.collections && transaction.collections.length > 0) {
+          return transaction.collections[0].title.toLowerCase().indexOf(filter.content.toLowerCase()) === 0;
+        }
+      });
     }
     if (filter.year > 0) {
-      this.transactions = this.retrievedTransactions.filter((transaction) => {
+      filterTo = filterTo.filter((transaction) => {
         return (filter.year === moment(transaction.created).year());
       });
     }
     if (filter.fromMonth > 0) {
-      this.transactions = this.retrievedTransactions.filter((transaction) => {
+      filterTo = filterTo.filter((transaction) => {
         return (filter.fromMonth <= moment(transaction.created).month());
       });
     }
     if (filter.toMonth > 0) {
-      this.transactions = this.retrievedTransactions.filter((transaction) => {
+      filterTo = filterTo.filter((transaction) => {
+        console.log(moment(transaction.created).month());
+
         return (filter.toMonth >= moment(transaction.created).month());
       });
     }
+    return filterTo;
   }
 
   private retrieveTransactions() {
-    const query = { 'include': { 'collections': ['calendars'] } };
-    this.retrievedTransactions = this.transactions;
-    this._paymentService.getTransactions(query).subscribe(result => {
+    const query1 = { 'include': { 'collections': ['calendars'] } };
+    this._paymentService.getTransactions(query1).subscribe(result => {
+      this.retrievedTransactions = result;
       this.transactions = result;
       this.totalTransactions = 0;
       result.forEach(element => {
@@ -92,7 +120,20 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
     }, err => {
       console.log(err);
     });
+
+    const query2 = { 'include': [{ 'payments': [{ 'peers': 'profiles' }, 'collections'] }] };
+    this.futureTransactions = [];
+    this._collectionService.getOwnedCollections(JSON.stringify(query2), (err, response) => {
+      response.forEach(collection => {
+        if (collection.payments && collection.payments.length > 0) {
+          this.futureTransactions = this.futureTransactions.concat(collection.payments);
+        }
+      });
+      this.retrievedFutureTransactions = this.futureTransactions;
+      this.totalFutureTransactions = 0;
+      this.retrievedFutureTransactions.forEach(element => {
+        this.totalFutureTransactions += element.amount;
+      });
+    });
   }
-
-
 }

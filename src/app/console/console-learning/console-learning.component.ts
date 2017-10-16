@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
-import {ConsoleComponent} from '../console.component';
-import {CookieService} from 'ngx-cookie-service';
+import { ConsoleComponent } from '../console.component';
+import { CookieService } from 'ngx-cookie-service';
 
 declare var moment: any;
 
@@ -209,7 +209,7 @@ export class ConsoleLearningComponent implements OnInit {
             pendingContents++;
           }
         });
-        return ( 1 - (pendingContents / totalContents) ) * 100;
+        return (1 - (pendingContents / totalContents)) * 100;
       case 'submitted':
         return 100;
       case 'complete':
@@ -248,7 +248,7 @@ export class ConsoleLearningComponent implements OnInit {
 
 
   imgErrorHandler(event) {
-      event.target.src = '/assets/images/user-placeholder.jpg';
+    event.target.src = '/assets/images/user-placeholder.jpg';
   }
 
 }

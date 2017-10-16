@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
     <div *ngIf="!loaded" class="center">
-      <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+      <ngx-loading [show]="true"></ngx-loading>
     </div>
   </div>
 </div>
@@ -47,8 +47,8 @@
                             <h4>{{topic['name']}}</h4>
                           </div>
                           <button class="topic-delete-button pull-right" (click)="unfollowTopic(topic)" md-icon-button color="warn">
-                              <md-icon class="md-24" style="font-size: 100%;" >close</md-icon>
-                              </button>
+                            <md-icon class="md-24" style="font-size: 100%;">close</md-icon>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -96,8 +96,8 @@
                           <div class="col-md-12">
                             <md-input-container class="pb-block" style="margin-bottom: 20px">
                               <button class="md-24 pull-right" (click)="stopTeachingTopic(topic)" md-icon-button color="warn">
-                                    <md-icon class="md-24" style="font-size: 100%;" >close</md-icon>
-                                    </button>
+                                <md-icon class="md-24" style="font-size: 100%;">close</md-icon>
+                              </button>
                               <input mdInput #headline name="experience" maxlength="100" [(ngModel)]="topic['experience']" placeholder="Write headline">
                               <md-hint *ngIf="topic['experience']" align="end">{{topic['experience'].length}} / 100</md-hint>
                             </md-input-container>

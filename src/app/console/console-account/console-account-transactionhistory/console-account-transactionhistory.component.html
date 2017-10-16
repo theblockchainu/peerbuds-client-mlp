@@ -20,15 +20,15 @@
                 <form [formGroup]="filterForm">
                   <div class="row" style="line-height: 120%">
                     <div class="col-sm-3">
-                      <md-input-container class="pb-block" style="margin-bottom: 20px;margin-top: 7.5px;">
-                        <input mdInput type="text" formControlName="payout_method" placeholder="Payout Method" required>
-                        <md-error>This field is required</md-error>
-                      </md-input-container>
+                      <md-select placeholder="Payout Method" formControlName="payout_method" style="margin-bottom: 20px">
+                        <md-option *ngFor="let pm of payment_methods" [value]="pm">
+                          {{ pm }}
+                        </md-option>
+                      </md-select>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                       <md-input-container class="pb-block" style="margin-bottom: 20px;margin-top: 7.5px;">
-                        <input mdInput type="text" formControlName="content" placeholder="Content" required>
-                        <md-error>This field is required</md-error>
+                        <input mdInput type="text" formControlName="content" placeholder="Content">
                       </md-input-container>
                     </div>
                     <div class="col-sm-2">
@@ -86,6 +86,75 @@
                 <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
                   Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
                   paid out on completion of your workshop, experience or session.
+                </div>
+                <h2> Booked : ${{totalFutureTransactions}} </h2>
+                <!-- <a href="#" class="pull-right"> Export to CSV</a> -->
+                <br>
+                <hr>
+                <form [formGroup]="filterFutureForm">
+                  <div class="row" style="line-height: 120%">
+                    <div class="col-sm-3">
+                      <md-select placeholder="Payout Method" formControlName="payout_method" style="margin-bottom: 20px">
+                        <md-option *ngFor="let pm of payment_methods" [value]="pm">
+                          {{ pm }}
+                        </md-option>
+                      </md-select>
+                    </div>
+                    <div class="col-sm-3">
+                      <md-input-container class="pb-block" style="margin-bottom: 20px;margin-top: 7.5px;">
+                        <input mdInput type="text" formControlName="content" placeholder="Content">
+                      </md-input-container>
+                    </div>
+                    <div class="col-sm-2">
+                      <md-select placeholder="Year" formControlName="year" style="margin-bottom: 20px">
+                        <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
+                      </md-select>
+                    </div>
+                    <div class="col-sm-2">
+                      <md-select placeholder="From Month" formControlName="fromMonth" style="margin-bottom: 20px">
+                        <md-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</md-option>
+                      </md-select>
+                    </div>
+                    <div class="col-sm-2">
+                      <md-select placeholder="To Month" formControlName="toMonth" style="margin-bottom: 20px">
+                        <md-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</md-option>
+                      </md-select>
+                    </div>
+                  </div>
+                </form>
+                <hr style="border-top: 3px solid #eeeeee;">
+                <div class="row table-header">
+                  <div class="col-md-2">
+                    <h3>Date</h3>
+                  </div>
+                  <div class="col-md-2">
+                    <h3>Type</h3>
+                  </div>
+                  <div class="col-md-4">
+                    <h3>Details</h3>
+                  </div>
+                  <div class="col-md-2">
+                    <h3>Amount</h3>
+                  </div>
+                  <div class="col-md-2">
+                    <h3>Paid Out</h3>
+                  </div>
+                </div>
+                <div class="row table-data">
+                  <div class="col-md-12">
+                    <div class="row" *ngFor="let transaction of futureTransactions" style="padding-top: 10px; padding-bottom: 10px;">
+                      <div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
+                      <div class="col-md-2">Payment</div>
+                      <div class="col-md-4">
+                        <span *ngIf="transaction.peers && transaction.peers.length>0 && transaction.peers[0].profiles && transaction.peers[0].profiles.length>0">{{transaction.peers[0].profiles[0].first_name}} {{transaction.peers[0].profiles[0].last_name}} -
+                          {{transaction.collections[0].title}} {{transaction.collections[0].type}}
+                        </span>
+                        <span *ngIf="!transaction.peers || transaction.peers.length<=0">{{transaction.description}}</span>
+                      </div>
+                      <div class="col-md-2">{{transaction.amount}}</div>
+                      <div class="col-md-2"></div>
+                    </div>
+                  </div>
                 </div>
               </md-tab>
             </md-tab-group>
