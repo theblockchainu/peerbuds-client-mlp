@@ -84,7 +84,11 @@ export class ConsoleLearningComponent implements OnInit {
       const joinedCalendar = collection.calendars.find((calendar) => {
         return calendar.id === collection.calendarId;
       });
-      return moment(joinedCalendar.startDate).format('Do MMM') + ' - ' + moment(joinedCalendar.endDate).format('Do MMM');
+      if (joinedCalendar) {
+        return moment(joinedCalendar.startDate).format('Do MMM') + ' - ' + moment(joinedCalendar.endDate).format('Do MMM');
+      } else {
+        return null;
+      }
     }
   }
 
