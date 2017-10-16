@@ -7,16 +7,8 @@ import { AuthService } from '../_services/auth/auth.service';
 
 const routes: Routes = [
   {
-    path: 'collection/:collectionId',
+    path: 'collection/:collectionId/:calendarId',
     component: ReviewPayComponent
-    // children: [
-    //   {
-    //     path: '',
-    //     component: ReviewPayComponent,
-    //     pathMatch: 'full',
-    //     canActivateChild: [AuthGuardService]
-    //   }
-    // ]
   },
 ];
 

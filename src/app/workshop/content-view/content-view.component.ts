@@ -305,23 +305,25 @@ export class ContentViewComponent implements OnInit {
       }
 
       dialogRef.afterClosed().subscribe(result => {
-          console.log(result);
-          result = JSON.parse(result);
-          if (result.status === 'save') {
-              this.saveContent(result.data);
-          }
-          else if (result.status === 'edit') {
-              this.editContent(result.data);
-          }
-          else if (result.status === 'delete') {
-              this.removeContent(result.data);
-          }
-          else if (result.status === 'close') {
-              // do nothing
-          }
-          else {
-              this.removeContentForm(result.data);
-          }
+        if (result !== undefined) {
+            console.log(result);
+            result = JSON.parse(result);
+            if (result.status === 'save') {
+                this.saveContent(result.data);
+            }
+            else if (result.status === 'edit') {
+                this.editContent(result.data);
+            }
+            else if (result.status === 'delete') {
+                this.removeContent(result.data);
+            }
+            else if (result.status === 'close') {
+                // do nothing
+            }
+            else {
+                this.removeContentForm(result.data);
+            }
+        }
       });
     }
 

@@ -24,6 +24,7 @@ import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-c
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 
 import { DialogsService } from '../dialogs/dialog.service';
+import {Observable} from 'rxjs/Observable';
 
 
 @Component({
@@ -46,10 +47,9 @@ export class WorkshopEditComponent implements OnInit {
   public phoneDetails: FormGroup;
   public paymentInfo: FormGroup;
 
+  public supplementUrls = new FormArray([]);
   private uploadingImage = false;
   private uploadingVideo = false;
-
-  public supplementUrls = new FormArray([])
 
   private workshopId: string;
   // Set our default values
@@ -103,6 +103,8 @@ export class WorkshopEditComponent implements OnInit {
   public isPhoneVerified = false;
   public isSubmitted = false;
   public connectPaymentUrl = '';
+
+  filteredLanguageOptions: Observable<string[]>;
 
   public query = {
     'include': [
@@ -161,7 +163,7 @@ export class WorkshopEditComponent implements OnInit {
       language: this._fb.array([]),
       selectedLanguage: '',
       headline: '',
-      description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(100)])],
+      description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(800)])],
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
@@ -227,7 +229,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private initializeTimeLine(res) {
-    if (res.calendars[0].startDate) {
+    if (res.calendars[0] !== undefined && res.calendars[0].startDate) {
       const calendar = res.calendars[0];
       calendar['startDate'] = this.extractDate(calendar.startDate);
       calendar['endDate'] = this.extractDate(calendar.endDate);
@@ -282,45 +284,6 @@ export class WorkshopEditComponent implements OnInit {
       }
     }
   }
-
-  // public setChildControlFactory(control: FormArray, factory: () => AbstractControl) {
-  //   (control as any).__createChildControl = factory;
-  // }
-  
-  // public createChildControl(control: FormArray) {
-  //   return (control as any).__createChildControl();
-  // }
-  
-  // /**
-  //  * Recursively set the values of a form control, creating new children FormArrays as necessary
-  //  */
-  // public setValues(control: AbstractControl, value: any) {
-  //   if (control instanceof FormGroup) {
-  //     if (value != null) {
-  //       Object.keys(value).forEach(name => {
-  //         if (control.contains(name)) {
-  //           this.setValues(control.get(name), value[name]);
-  //         }
-  //       });
-  //     }
-  //   } else if (control instanceof FormArray) {
-  //     const length = value ? value.length : 0;
-  //     // Remove excess controls from the array
-  //     while (control.length > length) {
-  //       control.removeAt(control.length - 1);
-  //     }
-  //     // Add missing controls
-  //     while (control.length < length) {
-  //       control.push(this.createChildControl(control));
-  //     }
-  //     // Update all the values in the array
-  //     for (let i = 0; i < length; ++i) {
-  //       this.setValues(control.at(i), value[i]);
-  //     }
-  //   } else {
-  //     control.setValue(value);
-  //   }
-  // }
 
   public InitItenary() {
     return this._fb.group({
@@ -406,7 +369,13 @@ export class WorkshopEditComponent implements OnInit {
       .subscribe((countries) => this.countries = countries);
 
     this.languagePickerService.getLanguages()
-      .subscribe((languages) => this.languagesArray = languages);
+      .subscribe((languages) => {
+          this.languagesArray = _.map(languages, 'name');
+          this.filteredLanguageOptions = this.workshop.controls.selectedLanguage.valueChanges
+              .startWith(null)
+              .map(val => val ? this.filter(val) : this.languagesArray.slice());
+          console.log(this.filteredLanguageOptions);
+      });
 
     if (this.interests.length === 0) {
       this.http.get(this.config.searchUrl + '/api/search/topics')
@@ -420,6 +389,12 @@ export class WorkshopEditComponent implements OnInit {
     this.profileImagePending = true;
     this.workshopVideoPending = true;
     this.workshopImage1Pending = true;
+  }
+
+  filter(val: string): string[] {
+      console.log('filtering');
+      return this.languagesArray.filter(option =>
+          option.toLowerCase().indexOf(val.toLowerCase()) === 0);
   }
 
   private initializeWorkshop() {
@@ -451,10 +426,13 @@ export class WorkshopEditComponent implements OnInit {
 
   public languageChange(event) {
     if (event) {
-      this.selectedLanguages = event.value;
-      this.workshop.controls.selectedLanguage.setValue(event.value);
+      console.log(event);
+      this.selectedLanguages = event;
+      //this.workshop.controls.selectedLanguage.setValue(event.value);
     }
   }
+
+
 
   public selected(event) {
     if (event.length > 3) {
@@ -469,14 +447,14 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public removed(event) {
-    let body = {};
+    const body = {};
     let options;
     this.removedInterests = event;
     if (this.removedInterests.length !== 0) {
       this.removedInterests.forEach((topic) => {
         this.http.delete(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel/' + topic.id, options)
-          .map((response) => { 
-            console.log(response); 
+          .map((response) => {
+            console.log(response);
           }).subscribe();
       });
 
@@ -641,7 +619,7 @@ export class WorkshopEditComponent implements OnInit {
   public submitWorkshop(data) {
     if (this.workshop.controls.status.value === 'active') {
       let dialogRef: any;
-      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%' });
+      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%', height: '50vh' });
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'accept') {
           this.executeSubmitWorkshop(data);
@@ -739,7 +717,7 @@ export class WorkshopEditComponent implements OnInit {
         this._collectionService.getCollectionDetail(this.workshopId, this.query)
         .subscribe((res) => {
           console.log(res);
-          this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(res, this.sidebarMenuItems); 
+          this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(res, this.sidebarMenuItems);
         });
         this.workshopStepUpdate();
         this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
@@ -767,7 +745,7 @@ export class WorkshopEditComponent implements OnInit {
         console.log('Workshop submitted for review');
         this.isSubmitted = true;
         let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw' });
+        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw', height: '60vh' });
         // call to get status of workshop
         if (this.workshop.controls.status.value === 'active') {
           this.sidebarMenuItems[3].visible = false;
@@ -820,7 +798,7 @@ export class WorkshopEditComponent implements OnInit {
     this.dialogsService
     .addNewTopic()
     .subscribe((res) => {
-      if(res) {
+      if (res) {
         topic = res;
         topic.checked = true;
         tempArray.push(topic);
@@ -834,7 +812,7 @@ export class WorkshopEditComponent implements OnInit {
     this.dialogsService
     .addNewLanguage()
     .subscribe((res) => {
-      if(res) {
+      if (res) {
         this.languagesArray.push(res);
         this.workshop.controls.selectedLanguage.patchValue(res.name);
       }

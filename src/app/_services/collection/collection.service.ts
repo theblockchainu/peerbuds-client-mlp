@@ -437,6 +437,31 @@ export class CollectionService {
 
   }
 
+  public saveBookmark(collectionId, cb) {
+      const body = {};
+      this.http
+          .post(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks', body, this.options)
+          .map((response) => {
+              cb(null, response.json());
+          }, (err) => {
+              cb(err);
+          }).subscribe();
+  }
+
+  /**
+   * getBookmarks
+   */
+  public getBookmarks(collectionId: string, query: any, cb) {
+      const filter = JSON.stringify(query);
+      this.http
+          .get(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks' + '?filter=' + filter, this.options)
+          .map((response) => {
+              cb(null, response.json());
+          }, (err) => {
+              cb(err);
+          }).subscribe();
+  }
+
   /**
    * getRecommendations
    */
@@ -674,6 +699,14 @@ collectionID:string,userId:string,calendarId:string   */
 
   public imgErrorHandler(event) {
     event.target.src = '/assets/images/placeholder-image.jpg';
+  }
+
+  /**
+   * deleteComment
+   */
+  public deleteReview(reviewId: string) {
+      return this.http
+          .delete(this.config.apiUrl + '/api/reviews/' + reviewId, this.options);
   }
 
 }

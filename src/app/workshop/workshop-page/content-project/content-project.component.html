@@ -1,3 +1,4 @@
+<div class="mat-dialog-focus-trap"></div>
 <div md-dialog-content *ngIf="data">
   <div class="content-image" *ngIf="data.content.imageUrl">
     <img class="img-responsive media-middle" width="100%" style="max-height: 400px;" src="{{config.apiUrl+data.content.imageUrl}}" alt="image">
@@ -17,11 +18,11 @@
     </div>
   </div>
   <div class="margin-top-20 margin-bottom-10">
-    <button (click)="openSubmitEntryDialog(data)" *ngIf="data.userType==='participant' && !data.peerHasSubmission" md-button class="mat-border-button">Submit Entry</button>
-    <button *ngIf="data.userType==='participant' && data.peerHasSubmission" md-button class="mat-border-button">Submitted</button>
-    <button *ngIf="data.userType==='teacher'" md-button class="mat-border-button">View Entries</button>
+    <button (click)="openSubmitEntryDialog(data)" *ngIf="data.userType==='participant' && !data.peerHasSubmission" md-button class="mat-border-button" tabindex="-1">Submit Entry</button>
+    <button *ngIf="data.userType==='participant' && data.peerHasSubmission" md-button class="mat-border-button" tabindex="-1">Submitted</button>
+    <button *ngIf="data.userType==='teacher'" md-button class="mat-border-button" tabindex="-1">View Entries</button>
   </div>
-  <div class="submission-box" *ngIf="data.content.submissions">
+  <div class="submission-box margin-bottom-40" *ngIf="data.content.submissions">
     <div class="fw-bold margin-bottom-10" *ngIf="(data.userType === 'public' && hasPublicSubmission)">Submissions ({{ publicSubmissionCount }})</div>
     <div class="fw-bold margin-bottom-10" *ngIf="(data.userType !== 'public')">Submissions ({{ data.content.submissions.length }})</div>
     <div class="row">
@@ -56,3 +57,4 @@
     </div>
   </div>
 </div>
+<div class="mat-dialog-focus-trap"></div>
