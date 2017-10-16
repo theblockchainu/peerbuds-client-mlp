@@ -1035,6 +1035,7 @@ export class WorkshopPageComponent implements OnInit {
       this._collectionService.getParticipants(this.workshopId, query).subscribe(
           (response: any) => {
               this.allParticipants = response.json();
+              console.log(this.allParticipants);
               for (const responseObj of response.json()) {
                   if (this.calendarId && this.calendarId === responseObj.calendarId) {
                     this.participants.push(responseObj);

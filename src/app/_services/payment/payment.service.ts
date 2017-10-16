@@ -70,7 +70,7 @@ export class PaymentService {
   }
 
   public getCollectionDetails(id: string) {
-    const filter = `{"include": "owners"}`;
+    const filter = `{"include": [{"owners":"profiles"},"calendars",{"contents":"schedules"}]}`;
     return this.http
       .get(this.config.apiUrl + '/api/collections/' + id + '?filter=' + filter)
       .map((response: Response) => response.json(), (err) => {

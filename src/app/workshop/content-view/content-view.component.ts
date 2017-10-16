@@ -126,26 +126,6 @@ export class ContentViewComponent implements OnInit {
     this.lastIndex--;
   }
 
-  imageUploadNew(event) {
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-        contentForm.controls['imageUrl'].patchValue(responseObj.url);
-      }).subscribe();
-    }// data => console.log('response', data)
-  }
-
-  imageUploadUpdate(event) {
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
-        contentForm.controls['imageUrl'].patchValue(responseObj.url);
-      }).subscribe();
-    }
-  }
-
 
   saveTempForEditDate(content, index) {
 
@@ -176,9 +156,6 @@ export class ContentViewComponent implements OnInit {
   }
 
   editContent(index) {
-      /*const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-      const contentForm = <FormGroup>contentsFArray.controls[index];
-      contentForm.patchValue(this.tempForm.value);*/
       this.triggerSave.emit({
           action: 'update',
           value: index
@@ -187,37 +164,6 @@ export class ContentViewComponent implements OnInit {
       this.resetProgressBar();
   }
 
-  uploadNew(event) {
-    console.log(event.files);
-    this.filesToUpload = event.files.length;
-    this.filesUploaded = 0;
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-        const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
-        supplementUrls.reset();
-        supplementUrls.push(this._fb.control(responseObj.url));
-        this.filesUploaded++;
-      }).subscribe();
-    }
-  }
-
-  uploadEdit(event) {
-    this.filesToUpload = event.files.length;
-    this.filesUploaded = 0;
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
-        const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
-        supplementUrls.reset();
-        supplementUrls.push(this._fb.control(responseObj.url));
-      })
-        .subscribe();
-    }
-
-  }
 
   resetNewUrls(event) {
     console.log(event);

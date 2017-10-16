@@ -24,7 +24,6 @@ import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-c
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 
 import { DialogsService } from '../dialogs/dialog.service';
-import {Observable} from 'rxjs/Observable';
 
 
 @Component({
@@ -104,8 +103,6 @@ export class WorkshopEditComponent implements OnInit {
   public isSubmitted = false;
   public connectPaymentUrl = '';
 
-  filteredLanguageOptions: Observable<string[]>;
-
   public query = {
     'include': [
       'topics',
@@ -163,7 +160,7 @@ export class WorkshopEditComponent implements OnInit {
       language: this._fb.array([]),
       selectedLanguage: '',
       headline: '',
-      description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(800)])],
+      description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(100)])],
       difficultyLevel: '',
       prerequisites: '',
       maxSpots: '',
@@ -229,7 +226,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private initializeTimeLine(res) {
-    if (res.calendars[0] !== undefined && res.calendars[0].startDate) {
+    if (res.calendars[0].startDate) {
       const calendar = res.calendars[0];
       calendar['startDate'] = this.extractDate(calendar.startDate);
       calendar['endDate'] = this.extractDate(calendar.endDate);
@@ -274,8 +271,10 @@ export class WorkshopEditComponent implements OnInit {
           } else if (key === 'startDay' || key === 'endDay') {
             form.controls[key].patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
           } else if (key === 'supplementUrls') {
-            // form.controls[key] = value[key];
-            // this.setChildControlFactory(value[key], () => new FormControl());
+            const control = <FormArray>form.controls[key];
+            value[key].forEach(supplementUrl => {
+                  control.push(new FormControl(supplementUrl));
+              });
           } else {
             form.controls[key].patchValue(value[key]);
           }
@@ -369,13 +368,7 @@ export class WorkshopEditComponent implements OnInit {
       .subscribe((countries) => this.countries = countries);
 
     this.languagePickerService.getLanguages()
-      .subscribe((languages) => {
-          this.languagesArray = _.map(languages, 'name');
-          this.filteredLanguageOptions = this.workshop.controls.selectedLanguage.valueChanges
-              .startWith(null)
-              .map(val => val ? this.filter(val) : this.languagesArray.slice());
-          console.log(this.filteredLanguageOptions);
-      });
+      .subscribe((languages) => this.languagesArray = languages);
 
     if (this.interests.length === 0) {
       this.http.get(this.config.searchUrl + '/api/search/topics')
@@ -389,12 +382,6 @@ export class WorkshopEditComponent implements OnInit {
     this.profileImagePending = true;
     this.workshopVideoPending = true;
     this.workshopImage1Pending = true;
-  }
-
-  filter(val: string): string[] {
-      console.log('filtering');
-      return this.languagesArray.filter(option =>
-          option.toLowerCase().indexOf(val.toLowerCase()) === 0);
   }
 
   private initializeWorkshop() {
@@ -426,13 +413,10 @@ export class WorkshopEditComponent implements OnInit {
 
   public languageChange(event) {
     if (event) {
-      console.log(event);
-      this.selectedLanguages = event;
-      //this.workshop.controls.selectedLanguage.setValue(event.value);
+      this.selectedLanguages = event.value;
+      this.workshop.controls.selectedLanguage.setValue(event.value);
     }
   }
-
-
 
   public selected(event) {
     if (event.length > 3) {
@@ -575,18 +559,6 @@ export class WorkshopEditComponent implements OnInit {
     control.patchValue(this.urlForVideo);
   }
 
-  // uploadVideo(event) {
-  //   console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-  //   const xhrResp = JSON.parse(event.xhr.response);
-  //   this.addVideoUrl(xhrResp.url);
-  // }
-
-  // uploadImages(event) {
-  //   console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-  //   const xhrResp = JSON.parse(event.xhr.response);
-  //   this.addImageUrl(xhrResp.url);
-  // }
-
   uploadVideo(event) {
     this.uploadingVideo = true;
     for (const file of event.files) {
@@ -619,7 +591,7 @@ export class WorkshopEditComponent implements OnInit {
   public submitWorkshop(data) {
     if (this.workshop.controls.status.value === 'active') {
       let dialogRef: any;
-      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%', height: '50vh' });
+      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%' });
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'accept') {
           this.executeSubmitWorkshop(data);
@@ -745,7 +717,7 @@ export class WorkshopEditComponent implements OnInit {
         console.log('Workshop submitted for review');
         this.isSubmitted = true;
         let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw', height: '60vh' });
+        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw' });
         // call to get status of workshop
         if (this.workshop.controls.status.value === 'active') {
           this.sidebarMenuItems[3].visible = false;
@@ -817,42 +789,6 @@ export class WorkshopEditComponent implements OnInit {
         this.workshop.controls.selectedLanguage.patchValue(res.name);
       }
       });
-
-  }
-
-  uploadCanvasVideo(event) {
-    // Validate whether MP4
-    if (['video/'].indexOf(event.target.files[0].type) === -1) {
-      alert('Error : Only Video allowed');
-      return;
-    }
-
-    this._CTX = this._CANVAS.getContext('2d');
-    // Hide upload button
-    //  document.querySelector("#upload-button").style.display = 'none';
-
-    // Object Url as the video source
-    document.querySelector('#main-video source').setAttribute('src', URL.createObjectURL(event.target.files[0]));
-    // Load the video and show it
-    this._VIDEO.load();
-    // this._VIDEO.style.display = 'inline';
-    const self = this;
-
-    // this._VIDEO.onloadedmetadata = function(e){
-    this._VIDEO.addEventListener('loadedmetadata', function (e) {
-      setTimeout(() => self.getMetadata(), 1000);
-      // self._CTX = self._CANVAS.getContext("2d");
-      // self._CANVAS.width = 150;//this.videoWidth;
-      // self._CANVAS.height = 100;//this.videoHeight;
-      // self._CTX.drawImage(this, 0, 0, self._CANVAS.width, self._CANVAS.height);
-    }, false);
-  }
-
-  getMetadata() {
-    console.log(new Date());
-    this._CANVAS.width = 150; // this.videoWidth;
-    this._CANVAS.height = 100; // this.videoHeight;
-    this._CTX.drawImage(this._VIDEO, 0, 0, this._CANVAS.width, this._CANVAS.height);
 
   }
 
@@ -930,18 +866,7 @@ export class WorkshopEditComponent implements OnInit {
           });
           this.workshop.controls.imageUrls.patchValue(this.urlForImages);
         }
-      }).subscribe((response) =>{
-        const data = this.workshop;
-        const lang = <FormArray>this.workshop.controls.language;
-        lang.removeAt(0);
-        lang.push(this._fb.control(data.value.selectedLanguage));
-        const body = data.value;
-        delete body.selectedLanguage;
-        this._collectionService.patchCollection(this.workshopId, body).map(
-          (response) => {
-            console.log("Files deleted and workshop updated");
-          }).subscribe();
-      });
+      }).subscribe();
 
   }
 

@@ -30,7 +30,7 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="assets/js/moment.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js'></script>
-  <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body class="mat-typography">
@@ -55,7 +55,7 @@
         document.body.scrollLeft = _scroll.left;
       }
     }
-    Stripe.setPublishableKey('pk_test_i9RmJ8HN4UygSzCchZMEGgwn');
+    var stripe = Stripe('pk_test_i9RmJ8HN4UygSzCchZMEGgwn');
   </script>
   <script>
       window.fbAsyncInit = function() {

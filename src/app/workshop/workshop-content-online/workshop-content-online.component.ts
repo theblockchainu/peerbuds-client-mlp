@@ -26,10 +26,10 @@ export class WorkshopContentOnlineComponent implements OnInit {
         status: 'discard',
         data: 0
     };
-    public isEdit = false;  
+    public isEdit = false;
     private uploadingImage = false;
     private uploadingAttachments = false;
-    private contentId; 
+    private contentId;
     private options;
 
     constructor(
@@ -203,14 +203,14 @@ export class WorkshopContentOnlineComponent implements OnInit {
             if (fileType === 'file') {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                let supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+                const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
                 let suppUrl = supplementUrls.value;
                 suppUrl = _.remove(suppUrl, function (n) {
                     return n !== fileurl;
                 });
                 this.attachmentUrls = suppUrl;
                 contentForm.controls['supplementUrls'].patchValue(suppUrl);
-                if(contentForm.controls['id'].value) {
+                if (contentForm.controls['id'].value) {
                     this.deleteFromContent(contentForm);
                 }
             } else if (fileType === 'image') {
@@ -218,14 +218,14 @@ export class WorkshopContentOnlineComponent implements OnInit {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 contentForm.controls['imageUrl'].patchValue('');
-                if(contentForm.controls['id'].value) {
+                if (contentForm.controls['id'].value) {
                     this.deleteFromContent(contentForm);
                 }
             }
-          }).subscribe((response) =>{
-            
+          }).subscribe((response) => {
+
           });
-    
+
     }
 
     deleteFromContent(contentForm) {

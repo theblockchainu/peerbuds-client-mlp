@@ -48,7 +48,7 @@
                   <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()"><md-icon style="top: 5px;">date_range</md-icon> Select cohort to view participants </a>
                 </div>
                 <div *ngIf="userType==='public'" style="margin-top: -12px;">
-                  <span>{{itenaryArray.length}} days / {{totalDuration}} Hours &nbsp;&nbsp;&nbsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{workshop.contents.length | i18nPlural : activityMapping}}</span>
+                  <span>{{itenaryArray.length}} days / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{workshop.contents.length | i18nPlural : activityMapping}}</span>
                 </div>
               </div>
             </div>
@@ -642,7 +642,7 @@
                     <div class="row">
                       <div class="col-md-12 margin-top-10">
                         <md-icon style="top: 7px;">schedule</md-icon>&emsp;
-                        <span>{{totalDuration}} hours in total</span>
+                        <span>{{totalDuration | i18nPlural : hourMapping}} in total</span>
                       </div>
                       <div class="col-md-12 margin-top-10">
                         <md-icon style="top: 7px;">mic</md-icon>&emsp;
