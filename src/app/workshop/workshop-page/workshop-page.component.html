@@ -25,12 +25,17 @@
     </div>
     <div class="row pending-actions center" *ngIf="(calendarId === undefined && hasLiveCohort() && userType === 'teacher')">
       <div class="col-md-10 col-md-offset-1">
-        <span>The cohort of <b>{{liveCohort.startDate | date: 'MMM, dd'}} to {{liveCohort.endDate | date: 'MMM, dd'}}</b> is currently underway. <a href="javascript:void(0);" (click)="viewDetails(liveCohort.id)">View details</a></span>
+        <span>The cohort of
+          <b>{{liveCohort.startDate | date: 'MMM, dd'}} to {{liveCohort.endDate | date: 'MMM, dd'}}</b> is currently underway.
+          <a href="javascript:void(0);" (click)="viewDetails(liveCohort.id)">View details</a>
+        </span>
       </div>
     </div>
     <div class="row pending-actions center" *ngIf="(calendarId === undefined && !hasUpcomingCohort() && userType === 'teacher')">
       <div class="col-md-10 col-md-offset-1">
-        <span>There are no upcoming cohorts scheduled for this workshop! <a href="javascript:void(0);" (click)="editCalendar()">Schedule one now?</a></span>
+        <span>There are no upcoming cohorts scheduled for this workshop!
+          <a href="javascript:void(0);" (click)="editCalendar()">Schedule one now?</a>
+        </span>
       </div>
     </div>
     <div class="row margin-top-40">
@@ -41,14 +46,22 @@
               <div class="col-md-12">
                 <p class="mat-display-1" style="margin-bottom: 20px !important;">{{workshop.title | titlecase}}</p>
                 <div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
-                  <span *ngIf="currentCalendar"><b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;<md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon></span>
-                  <span> {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;<md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{workshop.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
-                  <span *ngIf="userType==='teacher'"> <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{workshop.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
-                  <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()"><md-icon style="top: 5px;">date_range</md-icon> Change cohort </a>
-                  <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()"><md-icon style="top: 5px;">date_range</md-icon> Select cohort to view participants </a>
+                  <span *ngIf="currentCalendar">
+                    <b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
+                    <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>
+                  </span>
+                  <span> {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
+                    <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{workshop.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
+                  <span *ngIf="userType==='teacher'">
+                    <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{workshop.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
+                  <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
+                    <md-icon style="top: 5px;">date_range</md-icon> Change cohort </a>
+                  <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
+                    <md-icon style="top: 5px;">date_range</md-icon> Select cohort to view participants </a>
                 </div>
                 <div *ngIf="userType==='public'" style="margin-top: -12px;">
-                  <span>{{itenaryArray.length}} days / {{totalDuration}} Hours &nbsp;&nbsp;&nbsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{workshop.contents.length | i18nPlural : activityMapping}}</span>
+                  <span>{{itenaryArray.length}} days / {{totalDuration}} Hours &nbsp;&nbsp;&nbsp;
+                    <md-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{workshop.contents.length | i18nPlural : activityMapping}}</span>
                 </div>
               </div>
             </div>
@@ -74,8 +87,9 @@
               <div class="col-md-12">
                 <h3 *ngIf="userType==='teacher' || userType==='participant'">{{workshop.headline | titlecase}}&emsp;
                   <a (click)="workshopVideoDialog()" *ngIf="workshop.videoUrl">
-                      Watch Intro Video <i class="fa fa-play-circle" aria-hidden="true"></i>
-                    </a>
+                    Watch Intro Video
+                    <i class="fa fa-play-circle" aria-hidden="true"></i>
+                  </a>
                 </h3>
                 <div class="margin-top-10"> {{workshop.description}} </div>
               </div>
@@ -99,7 +113,8 @@
                       <div class="col-md-12">
                         <div style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
                           <img *ngIf="!workshop.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" style="margin-left: 0px;">
-                          <img *ngIf="workshop.owners[0].profiles[0].picture_url" src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px;">
+                          <img *ngIf="workshop.owners[0].profiles[0].picture_url" src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}"
+                            class="circle-thumb" style="margin-left: 0px;">
                         </div>
                         <div style="display: inline-block; margin-left: 10px;">
                           <div class="row">
@@ -135,8 +150,12 @@
                   </div>
                 </div>
                 <div class="row margin-top-10">
-                  <div class="col-md-4"><h3>Cancellation policy</h3> </div>
-                  <div class="col-md-8 margin-top-10"><p>{{workshop.cancellationPolicy}}</p></div>
+                  <div class="col-md-4">
+                    <h3>Cancellation policy</h3>
+                  </div>
+                  <div class="col-md-8 margin-top-10">
+                    <p>{{workshop.cancellationPolicy}}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -149,55 +168,57 @@
                     <div class="message-item-wrapper" *ngFor="let itenary of itenaryArray">
                       <div [ngClass]="{'message-item': true, 'message-item-ticked': hasDatePassed(itenary.startDate)}">
                         <div class="message-inner">
-                            <div class="qa-message-content">
-                              <div>
-                                <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
-                                <div *ngIf="userType==='public'|| calendarId === undefined">Day {{itenary.startDay}}</div>
+                          <div class="qa-message-content">
+                            <div>
+                              <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
+                              <div *ngIf="userType==='public'|| calendarId === undefined">Day {{itenary.startDay}}</div>
+                            </div>
+                            <div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'padding-top-40': true, 'padding-bottom-20': true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0}"
+                              *ngFor="let content of itenary.contents">
+                              <div class="viewTime" *ngIf="content.totalUserViewTime !== undefined" [hidden]="content.isViewTimeHidden">
+                                {{content.totalUserViewTime}}
                               </div>
-                              <div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'padding-top-40': true, 'padding-bottom-20': true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0}" *ngFor="let content of itenary.contents">
-                                <div class="viewTime" *ngIf="content.totalUserViewTime !== undefined" [hidden]="content.isViewTimeHidden">
-                                  {{content.totalUserViewTime}}
-                                </div>
-                                <div class="col-md-5">
-                                  <img style="width: 100%; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}" (error)="_collectionService.imgErrorHandler($event)">
-                                  <video width="100%" height="120px" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
-                                    <source src="{{config.apiUrl+content.imageUrl}}">
-                                  </video>
-                                </div>
-                                <div class="col-md-7">
-                                  <div class="row">
-                                    <div class="col-md-12">
-                                      <h3> {{content.title | titlecase}}</h3>
-                                      <div>
+                              <div class="col-md-5">
+                                <img style="width: 100%; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}"
+                                  (error)="_collectionService.imgErrorHandler($event)">
+                                <video width="100%" height="120px" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
+                                  <source src="{{config.apiUrl+content.imageUrl}}">
+                                </video>
+                              </div>
+                              <div class="col-md-7">
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <h3> {{content.title | titlecase}}</h3>
+                                    <div>
                                       <span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && content.type === 'online'">
-                                        {{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}}
-                                        &nbsp;&nbsp;&nbsp;<md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>
+                                        {{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}} &nbsp;&nbsp;&nbsp;
+                                        <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>
                                       </span>
-                                        {{_collectionService.getContentTypeFullName(content.type) | titlecase}}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row margin-top-10">
-                                    <div class="col-md-12">
-                                      <span> {{content.description | shorten: 115 : '... read more'}} </span>
-                                    </div>
-                                  </div>
-                                  <div class="row margin-top-10" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
-                                    <div class="col-md-12">
-                                      <a md-button *ngIf="isLive(content)" class="mat-border-button" href="/static/live/public/index.html" target="_blank">Join</a>
-                                      <button md-button class="mat-border-button" *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
-                                    </div>
-                                  </div>
-                                  <div class="row margin-top-10">
-                                    <div class="col-md-12">
-                                      <a href="javascript:void(0);" (click)="openDialog(content)">See details</a>
+                                      {{_collectionService.getContentTypeFullName(content.type) | titlecase}}
                                     </div>
                                   </div>
                                 </div>
-                                <br>
+                                <div class="row margin-top-10">
+                                  <div class="col-md-12">
+                                    <span> {{content.description | shorten: 115 : '... read more'}} </span>
+                                  </div>
+                                </div>
+                                <div class="row margin-top-10" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
+                                  <div class="col-md-12">
+                                    <a md-button *ngIf="isLive(content)" class="mat-border-button" (click)="joinLiveSession()">Join</a>
+                                    <button md-button class="mat-border-button" *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
+                                  </div>
+                                </div>
+                                <div class="row margin-top-10">
+                                  <div class="col-md-12">
+                                    <a href="javascript:void(0);" (click)="openDialog(content)">See details</a>
+                                  </div>
+                                </div>
                               </div>
+                              <br>
                             </div>
                           </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -243,7 +264,9 @@
                           <span>Delete</span>
                         </button>
                       </md-menu>
-                      <div class="margin-bottom-10"><b>Announcement on {{comment.createdAt | extractTime: 'Do MMM, YYYY'}}</b></div>
+                      <div class="margin-bottom-10">
+                        <b>Announcement on {{comment.createdAt | extractTime: 'Do MMM, YYYY'}}</b>
+                      </div>
                       <div>{{comment.description}}</div>
                     </div>
                   </div>
@@ -276,7 +299,8 @@
                       <div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
                         <div style="float: left; margin-left: 15px;">
                           <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-                          <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp">
+                          <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5"
+                            alt="dp">
                         </div>
                         <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                           <div>
@@ -290,7 +314,8 @@
                         </div>
                       </div>
                       <div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
-                        <a href="javascript:void(0);" (click)="createReplyForm(comment)"><md-icon style="top: 5px;">reply</md-icon> Reply</a>
+                        <a href="javascript:void(0);" (click)="createReplyForm(comment)">
+                          <md-icon style="top: 5px;">reply</md-icon> Reply</a>
                       </div>
                       <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
                         <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
@@ -316,8 +341,9 @@
                               <span>Delete</span>
                             </button>
                           </md-menu>
-                          <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;" [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
-                            <md-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)" >arrow_drop_up</md-icon>
+                          <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
+                            [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+                            <md-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</md-icon>
                             <md-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</md-icon>
                             <div>
                               <span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
@@ -329,7 +355,8 @@
                             <div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
                               <div style="float: left; margin-left: 15px;">
                                 <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-                                <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp">
+                                <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5"
+                                  alt="dp">
                               </div>
                               <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                                 <div>
@@ -364,8 +391,10 @@
                   <div class="col-md-12">
                     <h3 style="display: inline-block;">Reviews ({{reviews.length}})</h3> &emsp;
                     <span style="display: inline-block;">
-                      <p-rating style="display: inline-flex;" *ngIf="userType==='teacher' || userType==='public' || hasReviewed(reviews)" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
-                      <p-rating style="display: inline-flex;" *ngIf="userType==='participant' && !hasReviewed(reviews)" [(ngModel)]="newUserRating" (onRate)="handleRate($event)" [cancel]="false"></p-rating>
+                      <p-rating style="display: inline-flex;" *ngIf="userType==='teacher' || userType==='public' || hasReviewed(reviews)" [ngModel]="userRating"
+                        readonly="true" stars="5" [cancel]="false"></p-rating>
+                      <p-rating style="display: inline-flex;" *ngIf="userType==='participant' && !hasReviewed(reviews)" [(ngModel)]="newUserRating"
+                        (onRate)="handleRate($event)" [cancel]="false"></p-rating>
                     </span>
                   </div>
                 </div>
@@ -408,8 +437,11 @@
                                     </button>
                                   </md-menu>
                                   <div style="float: left;">
-                                    <img *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
-                                    <img *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
+                                    <img *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5"
+                                      (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
+                                    <img *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}"
+                                      class="circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)"
+                                      style="margin-left: 10px;">
                                   </div>
                                   <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                                     <div>
@@ -493,8 +525,10 @@
                 <div *ngFor="let participant of participants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter">
-                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
-                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5"
+                        style="margin-left: 0px;">
+                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}"
+                        class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
                     </div>
                     <div class="col-md-9 vcenter">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
@@ -520,8 +554,10 @@
                 <div *ngFor="let participant of allParticipants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter">
-                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
-                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5"
+                        style="margin-left: 0px;">
+                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}"
+                        class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
                     </div>
                     <div class="col-md-9 vcenter">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
@@ -541,7 +577,8 @@
                     <div class="col-md-12">
                       <div class="emptySectionText">
                         Select one workshop cohort to view participants signed up for that batch.
-                        <br><br>
+                        <br>
+                        <br>
                         <button md-button class="mat-border-button" (click)="selectJoiningDates()">Select cohort</button>
                       </div>
                     </div>
@@ -553,7 +590,9 @@
             <div *ngIf="userType==='teacher' && workshop.isApproved">
               <div>
                 <h3 style="display: inline-block;">Workshop Batches</h3>
-                <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;"><md-icon style="font-size: 1rem; top: 15px;">edit</md-icon></span>
+                <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;">
+                  <md-icon style="font-size: 1rem; top: 15px;">edit</md-icon>
+                </span>
                 <br>
                 <span class="text-muted h6">{{workshop.calendars.length}} Cohorts</span>
               </div>
@@ -581,7 +620,8 @@
               <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
                 <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
                   <span class="cal-day-badge"></span>
-                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})</span>
+                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
+                    MMM' }})</span>
                 </div>
                 <div class="margin-top-10 margin-bottom-10">
                   <span>{{clickedDate | date:'EEEE, MMM d'}}</span>
@@ -595,9 +635,12 @@
                   </div>
                 </div>
                 <div *ngFor="let key of objectKeys(eventsForTheDay);">
-                  <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]" (click)="openEventDialog(clickedCohortId, event.id)" style="cursor: pointer;">
+                  <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]" (click)="openEventDialog(clickedCohortId, event.id)"
+                    style="cursor: pointer;">
                     <span>{{ event.start | date:'hh:mm' }}</span>
-                    <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
+                    <span>
+                      <b>{{ event.start | date:'a' | lowercase}}</b>
+                    </span>
                     &emsp;
                     <span>{{ parseTitle(event.title)[0] | titlecase }}</span>
                   </div>
@@ -665,7 +708,8 @@
                   <div class="col-md-8">
                     <div class="row">
                       <div class="col-md-12">
-                        <h2 style="display: inline-block;"><i class="fa fa-usd" aria-hidden="true"></i> {{workshop.price}}</h2> &nbsp; per person
+                        <h2 style="display: inline-block;">
+                          <i class="fa fa-usd" aria-hidden="true"></i> {{workshop.price}}</h2> &nbsp; per person
                       </div>
                     </div>
                     <div class="row">
@@ -712,7 +756,8 @@
               <div class="col-md-2 pull-right" style="text-align: right">
                 <a [routerLink]="'/home/workshops'">
                   <span class="mat-body-1">
-                    See all <md-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</md-icon>
+                    See all
+                    <md-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</md-icon>
                   </span>
                 </a>
               </div>
@@ -724,8 +769,10 @@
               <div class="recommendation-card" *ngFor="let workshop of recommendations.collections; let i =index">
                 <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
                   <div class="">
-                    <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
-                    <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
+                    <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
+                      alt="workshpImg">
+                    <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+                      alt="workshpImg">
                   </div>
                   <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
                   <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
@@ -738,8 +785,8 @@
                       <label>{{workshop.ratingCount}} Reviews</label>
                     </span>
                     <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
-                <label>0 Reviews</label>
-              </span>
+                      <label>0 Reviews</label>
+                    </span>
                   </div>
                 </a>
               </div>

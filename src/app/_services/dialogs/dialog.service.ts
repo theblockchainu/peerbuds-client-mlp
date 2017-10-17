@@ -2,7 +2,7 @@ import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
-
+import { LiveVideoDialogComponent } from './live-video-dialog/live-video-dialog.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
@@ -28,7 +28,7 @@ export class DialogsService {
         return dialogRef1.afterClosed();
     }
 
-    public openForgotPwd(){
+    public openForgotPwd() {
         let dialogRef3: MdDialogRef<ForgotpwdComponentDialog>;
 
         dialogRef3 = this.dialog.open(ForgotpwdComponentDialog);
@@ -45,5 +45,19 @@ export class DialogsService {
         });
         return dialogRef4.afterClosed();
     }
+
+    /**
+     * startLiveSession
+     */
+    public startLiveSession() {
+        let dialogRef5: MdDialogRef<LiveVideoDialogComponent>;
+
+        dialogRef5 = this.dialog.open(LiveVideoDialogComponent, {
+            width: '100vw',
+            height: '100vh'
+        });
+        return dialogRef5.afterClosed();
+    }
+
 
 }

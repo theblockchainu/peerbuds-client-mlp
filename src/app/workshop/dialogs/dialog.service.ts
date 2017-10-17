@@ -3,11 +3,11 @@ import { EditCalendarDialogComponent } from './edit-calendar-dialog/edit-calenda
 import { AddTopicDialogComponent } from './add-topic-dialog/add-topic-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { AddLanguageDialogComponent } from './add-language-dialog/add-language-dialog.component';
-
+import { LiveVideoDialogComponent } from '../../_services/dialogs/live-video-dialog/live-video-dialog.component';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
 import {
-  CalendarEvent
+    CalendarEvent
 } from 'angular-calendar';
 
 @Injectable()
@@ -59,5 +59,18 @@ export class DialogsService {
 
         return dialogRef.afterClosed();
 
+    }
+
+    /**
+     * startLiveSession
+     */
+    public startLiveSession() {
+        let dialogRef5: MdDialogRef<LiveVideoDialogComponent>;
+
+        dialogRef5 = this.dialog.open(LiveVideoDialogComponent, {
+            width: '100vw',
+            height: '100vh'
+        });
+        return dialogRef5.afterClosed();
     }
 }
