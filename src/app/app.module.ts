@@ -28,6 +28,7 @@ import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 //import { Ng2CarouselamosModule } from 'ng2-carouselamos';
+import { ContactComponent } from './default/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -45,8 +46,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     AppDesignComponent,
     GlobalErrorHandler,
     AppNotificationDialogComponent,
-    ResetPasswordComponent
-
+    ResetPasswordComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

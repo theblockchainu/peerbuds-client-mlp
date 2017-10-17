@@ -14,20 +14,19 @@ import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-d
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
 
 @NgModule({
-  
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule
   ],
-  exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent,VerifyIdDialogComponent,VerifyEmailDialogComponent,IdPolicyDialogComponent],
-  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent,VerifyIdDialogComponent,VerifyEmailDialogComponent,IdPolicyDialogComponent],
+  exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent],
+  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent],
   providers: [
     DialogsService
   ],
   entryComponents: [
-    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent,VerifyIdDialogComponent,VerifyEmailDialogComponent,IdPolicyDialogComponent
+    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent
   ],
 })
 export class DialogsModule { }

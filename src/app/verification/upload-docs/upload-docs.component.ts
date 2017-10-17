@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { ProfileService } from '../../_services/profile/profile.service';
-import { MatSnackBar } from '@angular/material';
+//import { MatSnackBar } from '@angular/material';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 
@@ -38,7 +38,7 @@ export class UploadDocsComponent implements OnInit {
     public _profileService: ProfileService,
     private http: Http,
     private config: AppConfig,
-    public snackBar: MatSnackBar,
+   // public snackBar: MatSnackBar,
     private dialog: MdDialog,
     private dialogsService: DialogsService) {
       this.activatedRoute.params.subscribe(params => {
@@ -89,9 +89,9 @@ export class UploadDocsComponent implements OnInit {
 
 
   public resendOTP(message: string, action) {
-    message = "Code resent!";
-    action = "OK"
-    let snackBarRef = this.snackBar.open(message,action);
+    //message = "Code resent!";
+    //action = "OK"
+    //let snackBarRef = this.snackBar.open(message,action);
     this._profileService.sendVerifyEmail(this.peer.controls.email.value)
       .subscribe();
   }

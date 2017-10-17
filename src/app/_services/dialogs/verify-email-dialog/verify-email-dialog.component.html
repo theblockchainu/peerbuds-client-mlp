@@ -1,8 +1,8 @@
 <div class="mat-dialog-focus-trap"></div>
   <div class="verification-section margin-top-20" id="content">
     <div class="maincontent">
-      <div class="position-relative step-1" [hidden]="step!=1">
-        <form>
+      <div class="position-relative step-1">
+        <form [formGroup]="peer">
           <md-dialog-content>
             <div class="col-md-8 col-md-offset-2">
               <div class="verification-box drop-shadow">
