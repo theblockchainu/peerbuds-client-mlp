@@ -228,15 +228,9 @@ export class ConsoleProfileEditComponent implements OnInit {
   private setFormValues(profiles: Array<any>) {
     if (profiles.length > 0) {
       this.profileForm.patchValue(profiles[0]);
-<<<<<<< HEAD
       this.profileForm.controls['dobDay'].patchValue(profiles[0].dobDay);
       this.profileForm.controls['dobMonth'].patchValue(profiles[0].dobMonth);
       this.profileForm.controls['dobYear'].patchValue(profiles[0].dobYear);
-=======
-      this.profileForm.controls['dobDay'].patchValue(profiles[0].birthDay);
-      this.profileForm.controls['dobMonth'].patchValue(profiles[0].birthMonth);
-      this.profileForm.controls['dobYear'].patchValue(profiles[0].birthYear);
->>>>>>> origin/develop-material
       this.profileForm.controls['email'].patchValue(profiles[0].peer[0].email);
       if(profiles[0].location_string) {
         this.userSettings['inputString'] = profiles[0].location_string;
@@ -367,11 +361,8 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.work;
     const email = profileData.email;
     delete profileData.email;
-<<<<<<< HEAD
     delete profileData.emergency_contact;
     delete profileData.phone_numbers;
-=======
->>>>>>> origin/develop-material
     this._profileService.updateProfile(profileData)
       .flatMap((response) => {
         return this._profileService.updateWork(this.profile.id, work);
