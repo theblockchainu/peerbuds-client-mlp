@@ -56,7 +56,7 @@ export class CollectionService {
     }
   }
 
-  public getOwnedCollections(options: any, cb) {
+  public getOwnedCollections(options: string, cb) {
     if (this.userId) {
       this.http
         .get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections?' + 'filter=' + options)
@@ -241,11 +241,11 @@ export class CollectionService {
     });
     let fillerWord = '';
     if (contents[0].type === 'online') {
-      fillerWord = 'session';
+      fillerWord = 'Session';
     } else if (contents[0].type === 'video') {
-      fillerWord = 'recording';
+      fillerWord = 'Recording';
     } else if (contents[0].type === 'project') {
-      fillerWord = 'submission';
+      fillerWord = 'Submission';
     }
     const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
     const timeToStart = contentStartDate.diff(moment(), 'days');
@@ -435,6 +435,31 @@ export class CollectionService {
         console.log('Error: ' + err);
       });
 
+  }
+
+  public saveBookmark(collectionId, cb) {
+      const body = {};
+      this.http
+          .post(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks', body, this.options)
+          .map((response) => {
+              cb(null, response.json());
+          }, (err) => {
+              cb(err);
+          }).subscribe();
+  }
+
+  /**
+   * getBookmarks
+   */
+  public getBookmarks(collectionId: string, query: any, cb) {
+      const filter = JSON.stringify(query);
+      this.http
+          .get(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks' + '?filter=' + filter, this.options)
+          .map((response) => {
+              cb(null, response.json());
+          }, (err) => {
+              cb(err);
+          }).subscribe();
   }
 
   /**
@@ -674,6 +699,14 @@ collectionID:string,userId:string,calendarId:string   */
 
   public imgErrorHandler(event) {
     event.target.src = '/assets/images/placeholder-image.jpg';
+  }
+
+  /**
+   * deleteComment
+   */
+  public deleteReview(reviewId: string) {
+      return this.http
+          .delete(this.config.apiUrl + '/api/reviews/' + reviewId, this.options);
   }
 
 }

@@ -25,7 +25,6 @@ declare var moment: any;
   styleUrls: ['./console-profile-edit.component.scss', '../../console.component.scss']
 })
 export class ConsoleProfileEditComponent implements OnInit {
-  public loaded: boolean;
   public loadingProfile = false;
   public profile: any;
   public peer: any;
@@ -96,7 +95,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         preferred_language: '',
         other_languages: this._fb.array(['']),
         currency: '',
-        gender: '',
+        gender: 'Male',
         timezone: '',
         dobMonth: '',
         dobYear: '',
@@ -129,8 +128,6 @@ export class ConsoleProfileEditComponent implements OnInit {
       this.setFormValues(profiles);
     });
 
-    this.loaded = false;
-
     this._profileService.getProfile().subscribe((profiles) => {
       this.profile = profiles[0];
       if (this.profile.work !== undefined && this.profile.work.length === 0) {
@@ -141,8 +138,6 @@ export class ConsoleProfileEditComponent implements OnInit {
         const educationEntry = {};
         this.profile.education.push(educationEntry);
       }
-      this.loaded = true;
-
       this.loadingProfile = false;
       // this.months = moment.months();
       this.days = this.getDaysArray();
@@ -233,9 +228,15 @@ export class ConsoleProfileEditComponent implements OnInit {
   private setFormValues(profiles: Array<any>) {
     if (profiles.length > 0) {
       this.profileForm.patchValue(profiles[0]);
+<<<<<<< HEAD
       this.profileForm.controls['dobDay'].patchValue(profiles[0].dobDay);
       this.profileForm.controls['dobMonth'].patchValue(profiles[0].dobMonth);
       this.profileForm.controls['dobYear'].patchValue(profiles[0].dobYear);
+=======
+      this.profileForm.controls['dobDay'].patchValue(profiles[0].birthDay);
+      this.profileForm.controls['dobMonth'].patchValue(profiles[0].birthMonth);
+      this.profileForm.controls['dobYear'].patchValue(profiles[0].birthYear);
+>>>>>>> origin/develop-material
       this.profileForm.controls['email'].patchValue(profiles[0].peer[0].email);
       if(profiles[0].location_string) {
         this.userSettings['inputString'] = profiles[0].location_string;
@@ -366,8 +367,11 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.work;
     const email = profileData.email;
     delete profileData.email;
+<<<<<<< HEAD
     delete profileData.emergency_contact;
     delete profileData.phone_numbers;
+=======
+>>>>>>> origin/develop-material
     this._profileService.updateProfile(profileData)
       .flatMap((response) => {
         return this._profileService.updateWork(this.profile.id, work);

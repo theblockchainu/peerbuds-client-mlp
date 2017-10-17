@@ -98,7 +98,7 @@ export class WorkshopsComponent implements OnInit {
     }
     query = {
       'include': [
-        { 'collections': ['reviews'] }
+        { 'collections': [{'owners': 'reviewsAboutYou'}] }
       ],
       'where': { or: this.selectedTopics }
     };
@@ -109,19 +109,22 @@ export class WorkshopsComponent implements OnInit {
         const workshops = [];
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
-            if (collection.reviews) {
-              collection.rating = this._collectionService.calculateRating(collection.reviews);
-            }
-            if (collection.price) {
-              if (this.selectedRange) {
-                if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
-                  workshops.push(collection);
+            if (collection.status === 'active') {
+                if (collection.owners[0].reviewsAboutYou) {
+                    collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+                    collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
                 }
-              } else {
-                workshops.push(collection);
-              }
-            } else {
-              console.log('price unavailable');
+                if (collection.price) {
+                    if (this.selectedRange) {
+                        if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
+                            workshops.push(collection);
+                        }
+                    } else {
+                        workshops.push(collection);
+                    }
+                } else {
+                    console.log('price unavailable');
+                }
             }
           });
         }

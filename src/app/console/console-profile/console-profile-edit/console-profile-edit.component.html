@@ -4,7 +4,7 @@
 <!-- <div *ngIf="!loadingProfile" class="row">
   <div class="col-md-12">
     <div *ngIf="!loaded" class="center">
-      <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+      <ngx-loading [show]="true"></ngx-loading>
     </div>
   </div>
 </div> -->
@@ -243,6 +243,8 @@
                   <i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="deleteEmergencyContact(i)" style="cursor: pointer;"></i>
                   
                 </div>
+                <md-hint class="hint" align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</md-hint>
+                
               </div>
 
               <div style="margin-top:-5px;margin-bottom:5px; cursor: pointer"  (click)="addEmergencyContact()">

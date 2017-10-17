@@ -12,6 +12,11 @@ const routes: Routes = [
     path: 'calendar/:calendarId',
     component: WorkshopPageComponent,
     canActivateChild: [AuthGuardService]
+  },
+  {
+      path: 'calendar/:calendarId/:dialogName',
+      component: WorkshopPageComponent,
+      canActivateChild: [AuthGuardService]
   }
 ];
 

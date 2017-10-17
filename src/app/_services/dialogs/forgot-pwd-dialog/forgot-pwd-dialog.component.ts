@@ -49,7 +49,7 @@ export class ForgotpwdComponentDialog implements OnInit {
       email : ['', Validators.email] /* putting reg ex as well */
     });
   }
-  
+
   public sendForgotPwdMail() {
       // this.loading = true;
       this.email = this.forgotpwdForm.controls['email'].value;

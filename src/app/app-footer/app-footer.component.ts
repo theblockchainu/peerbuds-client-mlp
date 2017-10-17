@@ -16,7 +16,7 @@ export class AppFooterComponent implements OnInit {
   loggedIn: boolean;
 
   constructor(
-    public authService: AuthenticationService,  
+    public authService: AuthenticationService,
     public activatedRoute: ActivatedRoute
   ) {
       this.isLoggedIn = authService.isLoggedIn();
