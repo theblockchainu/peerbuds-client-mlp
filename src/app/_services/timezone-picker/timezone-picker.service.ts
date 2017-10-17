@@ -7,8 +7,8 @@ export class TimezonePickerService {
   constructor(private http: Http, private config: AppConfig) {
   }
 
-  public getTimezones() {
-    return this.http.get(this.config.apiUrl + '/api/timezones')
+  public getTimezones(filter: string) {
+    return this.http.get(this.config.apiUrl + '/api/timezones?filter=' + filter)
       .map((response: Response) => {
         return response.json();
       });

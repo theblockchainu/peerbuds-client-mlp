@@ -8,7 +8,6 @@ import { AppHeaderComponent } from '../../app-header/app-header.component';
 import { LoginComponentDialog } from '../../_services/dialogs/login-dialog/login-dialog.component';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 
-
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -21,13 +20,13 @@ export class IndexComponent implements OnInit {
   constructor(private _authService: AuthenticationService,
               private _router: Router,
               public dialog: MdDialog) {
-    this.isLoggedIn = _authService.isLoggedIn();
-    _authService.isLoggedIn().subscribe((res) => {
-      this.loggedIn = res;
-    });
-    if(this.loggedIn) {
-      this._router.navigate(['home', 'homefeed']);
-    }
+              this.isLoggedIn = _authService.isLoggedIn();
+              _authService.isLoggedIn().subscribe((res) => {
+                this.loggedIn = res;
+                if(this.loggedIn) {
+                  setTimeout(() => this._router.navigate(['home', 'homefeed']));
+                }
+              });
    }
   
   ngOnInit() {

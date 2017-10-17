@@ -224,29 +224,29 @@ export class AppHeaderComponent implements OnInit {
       });
   }
 
-    openNotificationsDialog(): void {
-        const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
-            width: '350px',
-            data: {
-            },
-            disableClose: false,
-            position: {
-                top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
-                left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 170 + 'px'
-            }
-        });
+  openNotificationsDialog(): void {
+      const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
+          width: '350px',
+          data: {
+          },
+          disableClose: false,
+          position: {
+              top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
+              left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 170 + 'px'
+          }
+      });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (this.makeOldNotification.length > 0) {
-                this.makeOldNotification.forEach(notifItem => {
-                    this._notificationService.updateNotification(notifItem, (err, patchResult) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
-                });
-                this.hasNewNotification = false;
-            }
-        });
-    }
+      dialogRef.afterClosed().subscribe(result => {
+          if (this.makeOldNotification.length > 0) {
+              this.makeOldNotification.forEach(notifItem => {
+                  this._notificationService.updateNotification(notifItem, (err, patchResult) => {
+                      if (err) {
+                          console.log(err);
+                      }
+                  });
+              });
+              this.hasNewNotification = false;
+          }
+      });
+  }
 }
