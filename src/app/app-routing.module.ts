@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'philosophy',
-    component: IndexPhilComponent,
+    component: IndexPhilComponent
   }, 
   {
     path: 'design',

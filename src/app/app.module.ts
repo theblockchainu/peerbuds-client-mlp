@@ -27,7 +27,7 @@ import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-
+//import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 
 @NgModule({
   declarations: [
@@ -64,7 +64,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MdProgressSpinnerModule,
     MdProgressBarModule,
     DialogsModule,
-    AppRoutingModule,
+    AppRoutingModule
   ],
   bootstrap: [AppComponent],
   providers: [

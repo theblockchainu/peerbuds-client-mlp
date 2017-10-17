@@ -17,7 +17,7 @@
             <p class="mat-caption">You will need to provide identification before you book, so get a head start by doing it now</p>
           </div>
           <div class="col-md-4">
-            <button class="provideId" md-button>Provide ID</button>
+            <button class="provideId" md-button (click)="openIdVerify()">Provide ID</button>
           </div>
         </div>
         <hr>
@@ -60,8 +60,8 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 margin-top-20">
-                <button md-button color="primary">Verify</button>
+              <div class="col-md-4">
+                <button md-button color="primary" (click)="openEmailVerify()">Verify</button>
               </div>
             </div>
           </div>
