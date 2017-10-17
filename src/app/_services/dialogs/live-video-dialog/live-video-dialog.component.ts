@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { TwilioServicesService } from '../../twlio_services/twilio-services.service';
 import * as Video from 'twilio-video';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 
 @Component({
@@ -15,19 +16,24 @@ export class LiveVideoDialogComponent implements OnInit {
   public roomName;
   private data: any;
 
-  constructor(private _twilioServicesService: TwilioServicesService) { }
+  constructor(private _twilioServicesService: TwilioServicesService,
+    public dialogRef: MdDialogRef<LiveVideoDialogComponent>,
+    @Inject(MD_DIALOG_DATA) public dialogData: any
+  ) { }
 
   ngOnInit() {
 
-    // When we are about to transition away from this page, disconnect
-    // from the room, if joined.
-    window.addEventListener('beforeunload', this.leaveRoomIfJoined);
+    this.dialogRef.afterClosed().subscribe(result => {
+      // When we are about to transition away from this page, disconnect
+      // from the room, if joined.
+      this.leaveRoomIfJoined();
+    });
 
     this._twilioServicesService.getToken().subscribe(
       result => {
         this.data = result;
-        document.getElementById('room-controls').style.display = 'block';
-        // Bind button to leave Room.
+        console.log('---------------------------------------------------------');
+        console.log(this.data);
       }
     );
 
@@ -63,13 +69,14 @@ export class LiveVideoDialogComponent implements OnInit {
 
 
   public joinRoom() {
-    this.roomName = document.getElementById('room-name')['value'];
+    this.roomName = this.dialogData.roomName;
+
     if (!this.roomName) {
       alert('Please enter a room name.');
       return;
     }
 
-    console.log('Joining room ' + this.roomName + '...');
+    this.log('Joining room ' + this.roomName + '...');
     const connectOptions = {
       name: this.roomName,
       logLevel: 'debug'
@@ -81,13 +88,73 @@ export class LiveVideoDialogComponent implements OnInit {
 
     // Join the Room with the token from the server and the
     // LocalParticipant's Tracks.
-    Video.connect(this.data.token, connectOptions).then(this.roomJoined, function (error) {
-      console.log('Could not connect to Twilio: ' + error.message);
-    });
+    Video.connect(this.data.token, connectOptions).then(
+      // Successfully connected!
+      (room) => {
+        this.activeRoom = room;
+        window['room'] = this.activeRoom;
+        this.log('Joined as ' + this.identity + '');
+        document.getElementById('button-join').style.display = 'none';
+        document.getElementById('button-leave').style.display = 'inline';
+
+        // Attach LocalParticipant's Tracks, if not already attached.
+        const previewContainer = document.getElementById('local-media');
+        if (!previewContainer.querySelector('video')) {
+          this.attachParticipantTracks(room.localParticipant, previewContainer);
+        }
+
+        // Attach the Tracks of the Room's Participants.
+        room.participants.forEach(function (participant) {
+          this.log('Already in Room: ' + participant.identity + '');
+          const prevContainer = document.getElementById('remote-media');
+          this.attachParticipantTracks(participant, prevContainer);
+        });
+
+        // When a Participant joins the Room, this.log the event.
+        room.on('participantConnected', function (participant) {
+          this.log('Joining: ' + participant.identity);
+        });
+
+        // When a Participant adds a Track, attach it to the DOM.
+        room.on('trackAdded', function (track, participant) {
+          this.log(participant.identity + ' added track: ' + track.kind);
+          const prevContainer = document.getElementById('remote-media');
+          this.attachTracks([track], prevContainer);
+        });
+
+        // When a Participant removes a Track, detach it from the DOM.
+        room.on('trackRemoved', function (track, participant) {
+          this.log(participant.identity + ' removed track: ' + track.kind);
+          this.detachTracks([track]);
+        });
+
+        // When a Participant leaves the Room, detach its Tracks.
+        room.on('participantDisconnected', function (participant) {
+          this.log('Participant ' + participant.identity + ' left the room');
+          this.detachParticipantTracks(participant);
+        });
+
+        // Once the LocalParticipant leaves the room, detach the Tracks
+        // of all Participants, including that of the LocalParticipant.
+        room.on('disconnected', function () {
+          this.log('Left');
+          if (this.previewTracks) {
+            this.previewTracks.forEach(function (track) {
+              track.stop();
+            });
+          }
+          this.detachParticipantTracks(room.localParticipant);
+          room.participants.forEach(this.detachParticipantTracks);
+          this.activeRoom = null;
+          document.getElementById('button-join').style.display = 'inline';
+          document.getElementById('button-leave').style.display = 'none';
+        });
+      }
+    );
   }
 
   public leaveRoom() {
-    console.log('Leaving room...');
+    this.log('Leaving room...');
     this.activeRoom.disconnect();
   }
 
@@ -104,71 +171,11 @@ export class LiveVideoDialogComponent implements OnInit {
       }
     }, function (error) {
       console.error('Unable to access local media', error);
-      console.log('Unable to access Camera and Microphone');
+      this.log('Unable to access Camera and Microphone');
     });
   }
 
-  // Successfully connected!
-  public roomJoined(room) {
-    window['room'] = this.activeRoom = room;
 
-    console.log('Joined as ' + this.identity + '');
-    document.getElementById('button-join').style.display = 'none';
-    document.getElementById('button-leave').style.display = 'inline';
-
-    // Attach LocalParticipant's Tracks, if not already attached.
-    const previewContainer = document.getElementById('local-media');
-    if (!previewContainer.querySelector('video')) {
-      this.attachParticipantTracks(room.localParticipant, previewContainer);
-    }
-
-    // Attach the Tracks of the Room's Participants.
-    room.participants.forEach(function (participant) {
-      console.log('Already in Room: ' + participant.identity + '');
-      const prevContainer = document.getElementById('remote-media');
-      this.attachParticipantTracks(participant, prevContainer);
-    });
-
-    // When a Participant joins the Room, console.log the event.
-    room.on('participantConnected', function (participant) {
-      console.log('Joining: ' + participant.identity);
-    });
-
-    // When a Participant adds a Track, attach it to the DOM.
-    room.on('trackAdded', function (track, participant) {
-      console.log(participant.identity + ' added track: ' + track.kind);
-      const prevContainer = document.getElementById('remote-media');
-      this.attachTracks([track], prevContainer);
-    });
-
-    // When a Participant removes a Track, detach it from the DOM.
-    room.on('trackRemoved', function (track, participant) {
-      console.log(participant.identity + ' removed track: ' + track.kind);
-      this.detachTracks([track]);
-    });
-
-    // When a Participant leaves the Room, detach its Tracks.
-    room.on('participantDisconnected', function (participant) {
-      console.log('Participant ' + participant.identity + ' left the room');
-      this.detachParticipantTracks(participant);
-    });
-
-    // Once the LocalParticipant leaves the room, detach the Tracks
-    // of all Participants, including that of the LocalParticipant.
-    room.on('disconnected', function () {
-      console.log('Left');
-      if (this.previewTracks) {
-        this.previewTracks.forEach(function (track) {
-          track.stop();
-        });
-      }
-      this.detachParticipantTracks(room.localParticipant);
-      room.participants.forEach(this.detachParticipantTracks);
-      this.activeRoom = null;
-      document.getElementById('button-join').style.display = 'inline';
-      document.getElementById('button-leave').style.display = 'none';
-    });
-  }
   // Activity log.
   public log(message) {
     const logDiv = document.getElementById('log');

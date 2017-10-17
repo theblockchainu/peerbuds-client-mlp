@@ -64,12 +64,13 @@ export class DialogsService {
     /**
      * startLiveSession
      */
-    public startLiveSession() {
+    public startLiveSession(data: any) {
         let dialogRef5: MdDialogRef<LiveVideoDialogComponent>;
 
         dialogRef5 = this.dialog.open(LiveVideoDialogComponent, {
             width: '100vw',
-            height: '100vh'
+            height: '100vh',
+            data: data
         });
         return dialogRef5.afterClosed();
     }

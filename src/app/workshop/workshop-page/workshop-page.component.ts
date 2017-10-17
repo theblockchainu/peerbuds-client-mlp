@@ -1198,7 +1198,10 @@ export class WorkshopPageComponent implements OnInit {
    * joinLiveSession
    */
   public joinLiveSession() {
-    this.dialogsService.startLiveSession().subscribe(result => {
+    const data = {
+      roomName: this.workshopId
+    };
+    this.dialogsService.startLiveSession(data).subscribe(result => {
 
     });
   }
