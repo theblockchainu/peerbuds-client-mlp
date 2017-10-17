@@ -23,8 +23,8 @@ export class SignupSocialComponent implements OnInit {
   public maxYear = this.presentYear;
   public periodStarts = (this.presentYear - 100);
   public period = 100;
-  public birthYear: any = [];
-  public birthDay: any = [];
+  public dobYear: any = [];
+  public dobDay: any = [];
   public promoOptIn = false;
   public signupSocialForm: FormGroup;
   public selectedDay;
@@ -45,9 +45,9 @@ export class SignupSocialComponent implements OnInit {
       email: ['',
         [Validators.required,
         Validators.pattern(EMAIL_REGEX)]],
-      birthMonth: [null, [Validators.required]],
-      birthDay: [null, [Validators.required]],
-      birthYear: [null, [Validators.required]]
+      dobMonth: [null, [Validators.required]],
+      dobDay: [null, [Validators.required]],
+      dobYear: [null, [Validators.required]]
       // promoOptIn: 'false',
     });
   }
@@ -78,12 +78,12 @@ export class SignupSocialComponent implements OnInit {
   loadMonthAndYear() {
     for (let index = this.maxYear; index >= this.periodStarts; index--) {
       // var element = array[index];
-      this.birthYear.push(index);
+      this.dobYear.push(index);
     }
 
     for (let index = 1; index <= 31; index++) {
       // var element = array[index];
-      this.birthDay.push(index);
+      this.dobDay.push(index);
     }
   }
 
@@ -93,9 +93,9 @@ export class SignupSocialComponent implements OnInit {
     const profile = {
       first_name: this.signupSocialForm.value.first_name,
       last_name: this.signupSocialForm.value.last_name,
-      birthMonth: this.signupSocialForm.value.birthMonth,
-      birthDay: this.signupSocialForm.value.birthDay,
-      birthYear: this.signupSocialForm.value.birthYear
+      dobMonth: this.signupSocialForm.value.dobMonth,
+      dobDay: this.signupSocialForm.value.dobDay,
+      dobYear: this.signupSocialForm.value.dobYear
     };
     this.profileService.updatePeer(email).subscribe();
     this.profileService.updatePeerProfile((this.peerProfile.id), profile).subscribe((response: Response) => response.json());

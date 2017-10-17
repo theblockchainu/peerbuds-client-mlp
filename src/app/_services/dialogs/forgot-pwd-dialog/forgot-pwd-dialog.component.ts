@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 import { AlertService } from '../../alert/alert.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { Observable } from 'rxjs';

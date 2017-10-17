@@ -23,6 +23,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
 
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
+import { GenericMultiselectAutocompleteModule } from './generic-multiselect-autocomplete/generic-multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
 import { FinishingTouchesModule } from '../finishing-touches/finishing-touches.module';
@@ -95,6 +96,7 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
     CalendarModule,
     CheckboxModule,
     MultiselectAutocompleteModule,
+    GenericMultiselectAutocompleteModule,
     SocialSyncModule,
     PopoverModule,
     LightboxModule,

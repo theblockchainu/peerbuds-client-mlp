@@ -74,7 +74,7 @@ export class ProfileService {
   }
 
   public getExternalProfileData(id: string, filter: any) {
-    if (this.userId) {
+    if (id) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + id + '/profiles?filter=' + JSON.stringify(filter), this.options)
         .map(
         (response: Response) => response.json()
@@ -104,7 +104,7 @@ export class ProfileService {
   }
   public getCompactProfile(userId) {
     const profile = {};
-    if (this.userId) {
+    if (userId) {
       const filter = '{"include": {"peer": "ownedCollections"}}';
       return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + filter, this.options)
         .map(

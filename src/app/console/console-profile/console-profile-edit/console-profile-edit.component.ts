@@ -8,6 +8,14 @@ import { CurrencypickerService } from '../../../_services/currencypicker/currenc
 import { TimezonePickerService } from '../../../_services/timezone-picker/timezone-picker.service';
 import { MdSnackBar } from '@angular/material';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
+import { Observable, BehaviorSubject} from 'rxjs';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';import {
+  Http, Headers, Response, BaseRequestOptions
+  , RequestOptions, RequestOptionsArgs
+} from '@angular/http';
+import { AppConfig } from '../../../app.config';
+import _ from 'lodash';
 
 declare var moment: any;
 
@@ -18,6 +26,7 @@ declare var moment: any;
 })
 export class ConsoleProfileEditComponent implements OnInit {
   public loaded: boolean;
+  public loadingProfile = false;
   public profile: any;
   public peer: any;
   public work: any;
@@ -25,10 +34,28 @@ export class ConsoleProfileEditComponent implements OnInit {
   public months: any[];
   public days: any[];
   public years: any[];
-  public languages: any[];
+  public languages:any[];
+  public language: Observable<any[]>;
+  private languagesAsync: BehaviorSubject<any[]>;
   public currencies: any[];
+  private currenciesAsync: BehaviorSubject<any[]>;
   public timezones: any[];
+  private timezoneAsync: BehaviorSubject<any[]>;
   public profileForm: FormGroup;
+  public filteredOptions: Observable<any[]>;
+  public filteredCurrencies: Observable<any[]>;
+  public filteredTimezones: Observable<any[]>;
+  public disableEndDate = false;
+  public disableEndYearBool = false;
+
+  //Geo Location
+  public userSettings: any = {
+    geoLocation: [37.76999, -122.44696],
+    geoRadius: 5,
+    inputPlaceholderText: 'Where do you live',
+    showSearchButton: false,
+  };
+  public componentData6: any = '';
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -40,17 +67,27 @@ export class ConsoleProfileEditComponent implements OnInit {
     public _currencyService: CurrencypickerService,
     public snackBar: MdSnackBar,
     public _fb: FormBuilder,
-    public _timezoneService: TimezonePickerService) {
-    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
-      if (urlSegment[0] === undefined) {
-        consoleProfileComponent.setActiveTab('edit');
-      } else {
-        consoleProfileComponent.setActiveTab(urlSegment[0].path);
-      }
-    });
+    public _timezoneService: TimezonePickerService,
+    private http: Http,
+    private config: AppConfig) {
+      activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
+        if (urlSegment[0] === undefined) {
+          consoleProfileComponent.setActiveTab('edit');
+        } else {
+          consoleProfileComponent.setActiveTab(urlSegment[0].path);
+        }
+      });
+      this.languagesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+      this.language = this.languagesAsync.asObservable();
+      this.currenciesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+      this.timezoneAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
   }
 
   ngOnInit() {
+    this.loadingProfile = true;
+    this.getLanguages();
+    this.getCurrencies();
+    this.getTimezones();
     this.profileForm = this._fb.group(
       {
         first_name: ['', Validators.requiredTrue],
@@ -59,22 +96,24 @@ export class ConsoleProfileEditComponent implements OnInit {
         preferred_language: '',
         other_languages: this._fb.array(['']),
         currency: '',
-        gender: 'Male',
+        gender: '',
         timezone: '',
         dobMonth: '',
         dobYear: '',
         dobDay: '',
         location_string: '',
+        location_lat: '',
+        location_lng: '',
         portfolio_url: '',
         description: '',
-        phones: this._fb.array(['']),
+        phone_numbers: this._fb.array([this.initializePhone('','',true)]),
         vat_number: '',
-        emergency_contact: this._fb.array(['']),
+        emergency_contact: this._fb.array([this.initializeEmergencyContact()]),
         education: this._fb.array([
           this.initializeEducationForm()
         ]),
         work: this._fb.array([
-          this.initailizeWorkForm()
+          this.initializeWorkForm()
         ]),
         email: ''
       }
@@ -90,7 +129,6 @@ export class ConsoleProfileEditComponent implements OnInit {
       this.setFormValues(profiles);
     });
 
-
     this.loaded = false;
 
     this._profileService.getProfile().subscribe((profiles) => {
@@ -104,46 +142,121 @@ export class ConsoleProfileEditComponent implements OnInit {
         this.profile.education.push(educationEntry);
       }
       this.loaded = true;
+
+      this.loadingProfile = false;
       // this.months = moment.months();
       this.days = this.getDaysArray();
       this.years = this.getYearsArray();
     });
-    this._languageService.getLanguages().subscribe(languages => {
-      this.languages = languages;
-    });
+  }
+
+  toggleEndDate() {
+    this.disableEndDate = !this.disableEndDate;
+  }
+
+  disableEndYear() {
+    this.disableEndYearBool = !this.disableEndYearBool;
+  }
+
+  autoCompleteCallback(data: any): any {
+    // this.componentData6 = JSON.stringify(data);
+    this.profileForm.controls['location_string'].patchValue(data.name);
+    this.profileForm.controls['location_lat'].patchValue(data.geometry.location.lat);
+    this.profileForm.controls['location_lng'].patchValue(data.geometry.location.lng);
+  }
+
+  getLanguages() {
+    // this.http.get(this.config.apiUrl + '/api/languages')
+    // .map(response => response.json()).subscribe(data => {
+    this._languageService.getLanguages().subscribe(data => {
+      this.languages = data;
+      this.languagesAsync.next(this.languages);
+      this.profileForm.controls['preferred_language'].valueChanges
+      .startWith(null)
+      .subscribe(val => {
+        if(val) {
+          this.filteredOptions = _.filter(this.languages, (item) => {
+            return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+          });
+        }
+        else {
+          this.languages.slice();
+        }
+        // console.log(this.filteredOptions);
+      }
+      );
+    }, error => console.log('Could not load languages.'));
+  }
+
+  getCurrencies() {
     this._currencyService.getCurrencies().subscribe(currencies => {
       this.currencies = currencies;
-    });
-    this._timezoneService.getTimezones().subscribe(timezones => {
+      this.currenciesAsync.next(this.currencies);
+      this.profileForm.controls['currency'].valueChanges
+      .startWith(null)
+      .subscribe(val => {
+        if(val) {
+          this.filteredCurrencies = _.filter(this.currencies, (item) => {
+            return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+          });
+        }
+        else {
+          this.currencies.slice();
+        }
+      }
+      );
+    }, error => console.log('Could not load currencies'));
+
+  }
+
+  getTimezones() {
+    const filter = `{  "order": "offset ASC" }`;
+    this._timezoneService.getTimezones(filter).subscribe(timezones => {
       this.timezones = timezones;
-    });
+      this.timezoneAsync.next(this.timezones);
+      this.profileForm.controls['timezone'].valueChanges
+      .startWith(null)
+      .subscribe(val => {
+        if(val) {
+          this.filteredTimezones = _.filter(this.timezones, (item) => {
+            return item.text.toLowerCase().indexOf(val.toLowerCase()) > -1;
+          });
+        }
+        else {
+          this.timezones.slice();
+        }
+      }
+      );
+    }, error => console.log('Could not load timezones'));
   }
 
   private setFormValues(profiles: Array<any>) {
     if (profiles.length > 0) {
       this.profileForm.patchValue(profiles[0]);
-      this.profileForm.controls['dobDay'].patchValue(profiles[0].birthDay);
-      this.profileForm.controls['dobMonth'].patchValue(profiles[0].birthMonth);
-      this.profileForm.controls['dobYear'].patchValue(profiles[0].birthYear);
+      this.profileForm.controls['dobDay'].patchValue(profiles[0].dobDay);
+      this.profileForm.controls['dobMonth'].patchValue(profiles[0].dobMonth);
+      this.profileForm.controls['dobYear'].patchValue(profiles[0].dobYear);
       this.profileForm.controls['email'].patchValue(profiles[0].peer[0].email);
-      if (profiles[0].phones && profiles[0].phones.length > 0) {
-        this.profileForm.setControl('phones', this._fb.array(
-          profiles[0].phones
-        ));
+      if(profiles[0].location_string) {
+        this.userSettings['inputString'] = profiles[0].location_string;
+      }
+      if(profiles[0].location_lat && profiles[0].location_lng) {
+        this.userSettings.geoLocation = [profiles[0].location_lat, profiles[0].location_lng];
       }
       if (profiles[0].other_languages && profiles[0].other_languages.length > 0) {
         this.profileForm.setControl('other_languages', this._fb.array(
           profiles[0].other_languages
         ));
       }
+      this.userSettings = Object.assign({}, this.userSettings);
       if (profiles[0].emergency_contact && profiles[0].emergency_contact.length > 0) {
         this.profileForm.setControl('emergency_contact', this._fb.array(
           profiles[0].emergency_contact
         ));
       }
-      if (profiles[0].phone && profiles[0].phones.length > 0) {
-        this.profileForm.setControl('phones', this._fb.array(
-          profiles[0].phones
+      if (profiles[0].phone_numbers && profiles[0].phone_numbers.length > 0) {
+        this.profileForm.setControl('phone_numbers', this._fb.array(
+          profiles[0].phone_numbers
         ));
       }
       if (profiles[0].work && profiles[0].work.length > 0) {
@@ -155,7 +268,8 @@ export class ConsoleProfileEditComponent implements OnInit {
               position: [workObj.position, Validators.requiredTrue],
               company: [workObj.company, Validators.requiredTrue],
               startDate: [moment(workObj.startDate).local().toDate(), Validators.requiredTrue],
-              endDate: [moment(workObj.endDate).local().toDate(), Validators.requiredTrue]
+              endDate: [moment(workObj.endDate).local().toDate(), Validators.requiredTrue],
+              presentlyWorking: [workObj.presentlyWorking]
             })
           );
         });
@@ -170,6 +284,7 @@ export class ConsoleProfileEditComponent implements OnInit {
               school: educationObj.school,
               startYear: parseInt(educationObj.startYear, 10),
               endYear: parseInt(educationObj.endYear, 10),
+              presentlyPursuing: [educationObj.presentlyPursuing] 
             })
           );
         });
@@ -177,12 +292,13 @@ export class ConsoleProfileEditComponent implements OnInit {
     }
   }
 
-  private initailizeWorkForm(): FormGroup {
+  private initializeWorkForm(): FormGroup {
     return this._fb.group({
       position: ['', Validators.requiredTrue],
       company: ['', Validators.requiredTrue],
       startDate: [null, Validators.requiredTrue],
-      endDate: [null, Validators.requiredTrue]
+      endDate: [null, Validators.requiredTrue],
+      presentlyWorking: false
     });
   }
 
@@ -192,8 +308,26 @@ export class ConsoleProfileEditComponent implements OnInit {
       school: '',
       startYear: '',
       endYear: '',
+      presentlyPursuing: false
     });
   }
+
+  private initializePhone(code, number, isPrimary): FormGroup {
+    return this._fb.group({
+      country_code: [code, Validators.required],
+      subscriber_number: [number, Validators.required],
+      isPrimary: isPrimary
+    })
+  }
+
+  private initializeEmergencyContact(): FormGroup {
+    return this._fb.group({
+      country_code: ['', Validators.required],
+      subscriber_number: ['', Validators.required]
+    })
+  }
+
+  
 
   /**
    * Get array of days
@@ -224,12 +358,16 @@ export class ConsoleProfileEditComponent implements OnInit {
    */
   public saveProfile() {
     const profileData = this.profileForm.value;
+    // delete profileData.education.presentlyPursuing;
     const education = profileData.education;
     delete profileData.education;
+    // delete profileData.work.presentlyWorking;
     const work = profileData.work;
     delete profileData.work;
     const email = profileData.email;
     delete profileData.email;
+    delete profileData.emergency_contact;
+    delete profileData.phone_numbers;
     this._profileService.updateProfile(profileData)
       .flatMap((response) => {
         return this._profileService.updateWork(this.profile.id, work);
@@ -251,32 +389,50 @@ export class ConsoleProfileEditComponent implements OnInit {
   /**
    * deletework
 index:number   */
-  public deletework(index: number) {
+  public deleteWork(index: number) {
     const work = <FormArray>this.profileForm.controls['work'];
-    work.removeAt(index);
+    if(index > 0) {
+      work.removeAt(index);
+      return;
+    }
+    let workEntry = <FormGroup>work.controls[index];
+    workEntry.controls.position.patchValue('');
+    workEntry.controls.company.patchValue('');
+    workEntry.controls.startDate.patchValue(null);
+    workEntry.controls.endDate.patchValue(null);
+    workEntry.controls.presentlyWorking.patchValue(false);
   }
 
   /**
    * addwork
    */
-  public addwork() {
+  public addWork() {
     const work = <FormArray>this.profileForm.controls['work'];
     work.push(
-      this.initailizeWorkForm()
+      this.initializeWorkForm()
     );
   }
 
   /**
    * deleteeducation(index)  */
-  public deleteeducation(index: number) {
+  public deleteEducation(index: number) {
     const education = <FormArray>this.profileForm.controls['education'];
-    education.removeAt(index);
+    if(index > 0) {
+      education.removeAt(index);
+      return;
+    }
+    let educationEntry = <FormGroup>education.controls[index];
+    educationEntry.controls.degree.patchValue('');
+    educationEntry.controls.school.patchValue('');
+    educationEntry.controls.startYear.patchValue('');
+    educationEntry.controls.endYear.patchValue('');
+    educationEntry.controls.presentlyPursuing.patchValue(false);
   }
 
   /**
    * name
    */
-  public addeducation() {
+  public addEducation() {
     const education = <FormArray>this.profileForm.controls['education'];
     education.push(
       this.initializeEducationForm()
@@ -287,16 +443,22 @@ index:number   */
    * addPhoneControl
    */
   public addPhoneControl() {
-    const phones = <FormArray>this.profileForm.controls['phones'];
-    phones.push(this._fb.control(['']));
+    const phones = <FormArray>this.profileForm.controls['phone_numbers'];
+    phones.push(this.initializePhone('','',false));
   }
 
   /**
-   * deletePhoneNumber
+   * clearEntry
 index:number   */
-  public deletePhoneNumber(index: number) {
-    const phones = <FormArray>this.profileForm.controls['phones'];
-    phones.removeAt(index);
+  public clearEntry(index: number, isPrimary: boolean) {
+    let phones = <FormArray>this.profileForm.controls['phone_numbers'];
+    if(!isPrimary) {
+      phones.removeAt(index);
+      return;
+    }
+    let phoneNumber = <FormGroup>phones.controls[index];
+    phoneNumber.controls.country_code.patchValue('');
+    phoneNumber.controls.subscriber_number.patchValue('');
   }
 
   /**
@@ -320,7 +482,14 @@ index:number   */
    */
   public deleteEmergencyContact(index: number) {
     const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
-    emergency_contact.removeAt(index);
+    if(index > 0) {
+      
+      emergency_contact.removeAt(index);
+      return;
+    }
+    let phoneNumber = <FormGroup>emergency_contact.controls[index];
+    phoneNumber.controls.country_code.patchValue('');
+    phoneNumber.controls.subscriber_number.patchValue('');
   }
 
   /**
@@ -328,7 +497,36 @@ index:number   */
    */
   public addEmergencyContact() {
     const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
-    emergency_contact.push(this._fb.control(['']));
+    emergency_contact.push(this.initializeEmergencyContact());
+  }
+
+  // Other Language
+  public selected(event) {
+    const temp_array = [];
+    event.forEach(element => {
+      if(element && element.name) {
+        temp_array.push(element.name);
+      }
+      else if(element) {
+        temp_array.push(element);
+      }
+    });
+    const other_languages = <FormArray>this.profileForm.controls['other_languages'];
+    temp_array.forEach(language => {
+      if(other_languages.value.indexOf(language) === -1)
+        other_languages.push(new FormControl(language));
+      });
+  }
+
+  public removed(event) {
+    const other_languages = <FormArray>this.profileForm.controls['other_languages'];
+    let temp_array = [];
+    temp_array = _.filter(other_languages.value, (item) => {
+      return item != event[0].name;
+    });
+    this.profileForm.setControl('other_languages', this._fb.array(
+      temp_array
+    ));
   }
 
 }
