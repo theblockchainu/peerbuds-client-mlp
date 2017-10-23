@@ -295,11 +295,11 @@ export class ProfileService {
     if (!(emergency_contact.length > 0 && this.userId)) {
       console.log('User not logged in');
     } else {
-      return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contact', this.options)
+      return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.options)
         .flatMap(
         (response) => {
           return this.http
-            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contact', this.sanitize(emergency_contact), this.options);
+            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.sanitize(emergency_contact), this.options);
         }
         ).map((response) => response.json());
     }

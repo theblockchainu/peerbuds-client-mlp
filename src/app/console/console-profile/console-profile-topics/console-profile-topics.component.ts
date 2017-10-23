@@ -137,21 +137,20 @@ topic:any   */
     }
   }
 
-  public updateChanges() {
-    this.topicsTeaching.forEach(topic => {
-      if (topic['experience']) {
-        this._profileService.updateTeachingTopic(topic.id, { 'experience': topic['experience'] })
-          .subscribe(response => {
-            console.log(response);
-            this.snackBar.open('Topics Updated', 'Close');
-          }, err => {
-            console.log(err);
-            this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe(() => {
-              this.updateChanges();
-            });
+  public updateChanges(type, topic) {
+    if (topic['experience']) {
+      this._profileService.updateTeachingTopic(topic.id, { 'experience': topic['experience'] })
+        .subscribe(response => {
+          console.log(response);
+          this.snackBar.open('Topic Updated', 'Close');
+        }, err => {
+          console.log(err);
+          this.snackBar.open('Topic Update Failed', 'Retry').onAction().subscribe(() => {
+            this.updateChanges(type, topic);
           });
-      }
-    });
+        });
+    }
+    
   }
 
   public openFollowTopicDialog(type) {
