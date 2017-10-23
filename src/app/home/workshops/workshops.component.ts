@@ -57,7 +57,7 @@ export class WorkshopsComponent implements OnInit {
   }
 
   setPriceRange(): void {
-    if (this.workshops) {
+    if (this.workshops.length > 0) {
       this.availableRange = [
         _.minBy(this.workshops, function (o) {
           return o.price;

@@ -29,8 +29,8 @@ import {
   CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from '../../workshop-page/custom-date-formatter.provider';
-import {SelectDateDialogComponent} from '../../workshop-page/select-date-dialog/select-date-dialog.component';
-import {Router} from '@angular/router';
+import { SelectDateDialogComponent } from '../../workshop-page/select-date-dialog/select-date-dialog.component';
+import { Router } from '@angular/router';
 
 const colors: any = {
     red: {

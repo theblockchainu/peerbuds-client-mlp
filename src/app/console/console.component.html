@@ -7,19 +7,19 @@
       <!-- <a md-tab-link [routerLink]="'/console/inbox'" [active]="getActiveTab() === 'inbox'">
         Inbox
       </a> -->
-      <a md-tab-link [routerLink]="'/console/teaching'" [active]="getActiveTab() === 'teaching'">
+      <a md-tab-link [routerLink]="'/console/teaching'" [active]="getActiveTab() === 'teaching'" style="min-width: min-content !important;">
         Teaching
       </a>
-      <a md-tab-link [routerLink]="'/console/learning'" [active]="getActiveTab() === 'learning'">
+      <a md-tab-link [routerLink]="'/console/learning'" [active]="getActiveTab() === 'learning'" style="min-width: min-content !important;">
         Learning
       </a>
-      <a md-tab-link [routerLink]="'/console/profile'" [active]="getActiveTab() === 'profile'">
+      <a md-tab-link [routerLink]="'/console/profile'" [active]="getActiveTab() === 'profile'" style="min-width: min-content !important;">
         Profile
       </a>
-      <a md-tab-link [routerLink]="'/console/account'" [active]="getActiveTab() === 'account'">
+      <a md-tab-link [routerLink]="'/console/account'" [active]="getActiveTab() === 'account'" style="min-width: min-content !important;">
         Account
       </a>
-      <a *ngIf="isAdmin" md-tab-link [routerLink]="'/console/admin'" [active]="getActiveTab() === 'admin'">
+      <a *ngIf="isAdmin" md-tab-link [routerLink]="'/console/admin'" [active]="getActiveTab() === 'admin'" style="min-width: min-content !important;">
         Admin
       </a>
     </nav>
