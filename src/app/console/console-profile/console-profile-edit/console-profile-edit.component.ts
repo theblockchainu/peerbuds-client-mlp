@@ -361,9 +361,17 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.work;
     const email = profileData.email;
     delete profileData.email;
-    delete profileData.emergency_contact;
+    const phone_numbers = profileData.phone_numbers;
     delete profileData.phone_numbers;
+    const emergency_contact = profileData.emergency_contact;
+    delete profileData.emergency_contact;
     this._profileService.updateProfile(profileData)
+      .flatMap((response) => {
+        return this._profileService.updatePhoneNumbers(this.profile.id, phone_numbers);
+      })
+      .flatMap((response) => {
+        return this._profileService.updateEmergencyContact(this.profile.id, emergency_contact);
+      })
       .flatMap((response) => {
         return this._profileService.updateWork(this.profile.id, work);
       }).flatMap((response) => {

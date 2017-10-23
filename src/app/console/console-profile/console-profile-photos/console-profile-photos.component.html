@@ -7,9 +7,9 @@
       <div>
         <div style="margin-top:20px;" class="col-md-12">
           <div class="row" style="margin-right: 20px;">
-            <div class="profilePhotoHeading">
+            <p class="profilePhotoHeading">
               Profile Photo
-            </div>
+            </p>
 
             <div class="loading-container" [hidden]="!uploadingImage">
               <ngx-loading [show]="true"></ngx-loading>
@@ -27,16 +27,16 @@
                 <!-- <button md-button class="setPP" (click)="setProfilePic(pp, 'image')">Set as profile pic</button> -->
               </div>
             <!-- </div> -->
-            <div class="lighterText">
+            <div class="lighterText mat-caption">
               Clear frontal face is an important way for teachers and learners to know about each other.<br> Its not much
               fun to teach a landscape. Please load a photo that clearly shows your face.
             </div>
 
             <hr>
 
-            <div class="profilePhotoHeading">
+            <p class="profilePhotoHeading">
               Profile Video
-            </div>
+            </p>
             <div class="loading-container" [hidden]="!uploadingVideo">
               <ngx-loading [show]="true"></ngx-loading>
             </div>
@@ -54,10 +54,10 @@
               </video>
               <md-icon (click)="deleteFromContainer(profile_video, 'video')" class="delete-button">close</md-icon>
             </div>
-            <div class="darkText">
+            <div class="darkText mat-body-1">
               Tell the community a bit about yourself
             </div>
-            <div class="lighterText">
+            <div class="lighterText mat-caption">
               Start with your name and answer some of the following questions, or make up some of your own.
 
               <ul>
