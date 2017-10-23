@@ -28,8 +28,7 @@
           </md-dialog-content>
           </form>
           </div>
-            <!-- OTP-->
-                      
+            <!-- OTP-->         
             <div class="position-relative step-3" [hidden]="step!=3">
               <form [formGroup]="otp">
                 <md-dialog-content>
@@ -38,7 +37,6 @@
                       <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
                         <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
                       </button>
-                    
                         <h2 class="headline">Enter the OTP sent to your email</h2>
                       <p class="description1 margin-bottom-40">We have sent to 6 digit code to {{email.value}}. Please enter this code or click the link in your email to verify your email address.
                         Users on Peerbuds need to verify their email IDs to receive notifications and updates from the platform.</p>
@@ -57,10 +55,10 @@
               </div>
               <div class="pull-right">
                   <button md-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length!=6">Verify Email</button>
-                </div>
-            </md-dialog-content>
+              </div>
+              </md-dialog-content>
               </form> 
-            </div>
+          </div>
       </div>
     </div>
   

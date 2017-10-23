@@ -6,6 +6,7 @@ import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.com
 import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-dialog.component';
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
 import { VideoDialogComponent } from './video-dialog/video-dialog.component';
+import { VerifyPhoneDialogComponent } from './verify-phone-dialog/verify-phone-dialog.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
@@ -65,6 +66,7 @@ export class DialogsService {
         });
         return dialogRef6.afterClosed();
     }
+    
     public openIdPolicy() {
         let dialogRef7: MdDialogRef<IdPolicyDialogComponent>;
 
@@ -74,7 +76,7 @@ export class DialogsService {
         });
         return dialogRef7.afterClosed();
     }
-    
+
     public openVideo() {
         let dialogRef8: MdDialogRef<VideoDialogComponent>;
 
@@ -83,6 +85,15 @@ export class DialogsService {
             height: '600px'
         });
         return dialogRef8.afterClosed();
+    }
+    public openPhoneVerify() {
+        let dialogRef9: MdDialogRef<VerifyPhoneDialogComponent>;
+
+        dialogRef9 = this.dialog.open(VerifyPhoneDialogComponent, {
+            width: '500px',
+            height: '600px'
+        });
+        return dialogRef9.afterClosed();
     }
 
 }

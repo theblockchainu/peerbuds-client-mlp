@@ -61,7 +61,9 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <button md-button color="primary" (click)="openEmailVerify()">Verify</button>
+                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Email address'" (click)="openEmailVerify()">Verify</button>
+                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Government Id'"  (click)="openIdVerify()">Verify</button>
+                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Phone Number'"  (click)="openPhoneVerify()">Verify</button>
               </div>
             </div>
           </div>

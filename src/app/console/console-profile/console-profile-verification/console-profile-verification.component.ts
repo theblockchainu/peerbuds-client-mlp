@@ -44,6 +44,10 @@ export class ConsoleProfileVerificationComponent implements OnInit {
    this.dialogsService.openEmailVerify().subscribe();
   }
 
+  public openPhoneVerify() {
+    this.dialogsService.openPhoneVerify().subscribe();
+   }
+
   private getProfile() {
     this._profileService.getPeerData().subscribe((peer) => {
       console.log(peer);
@@ -85,7 +89,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           });
         }
       }
-      if (peer.accountVerified && peer.verificationIdUrl) {
+      if (peer.verificationIdUrl) {
         this.alreadyVerified.push({
           text: 'Government Id',
           value: peer.verificationIdUrl

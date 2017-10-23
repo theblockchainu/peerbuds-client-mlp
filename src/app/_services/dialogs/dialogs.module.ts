@@ -13,6 +13,7 @@ import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.com
 import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-dialog.component';
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
 import { VideoDialogComponent } from './video-dialog/video-dialog.component';
+import { VerifyPhoneDialogComponent } from './verify-phone-dialog/verify-phone-dialog.component';
 
 @NgModule({
   imports: [
@@ -21,13 +22,13 @@ import { VideoDialogComponent } from './video-dialog/video-dialog.component';
     ReactiveFormsModule,
     SharedModule
   ],
-  exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent,VideoDialogComponent],
-  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent],
+  exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent],
+  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent],
   providers: [
     DialogsService
   ],
   entryComponents: [
-    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent,VideoDialogComponent
+    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
   ],
 })
 export class DialogsModule { }
