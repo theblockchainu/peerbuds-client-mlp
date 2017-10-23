@@ -1170,3 +1170,8 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 .hasFixedFooter {
     padding-bottom: 75px;
 }
+
+
+.topics .mat-tab-label {
+    min-width: min-content !important;
+}

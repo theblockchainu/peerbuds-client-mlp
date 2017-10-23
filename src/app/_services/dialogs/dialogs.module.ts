@@ -9,6 +9,8 @@ import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
+import { MultiselectTopicDialogComponent } from './multiselect-topic-dialog/multiselect-topic-dialog.component';
+
 @NgModule({
   
   imports: [
@@ -18,12 +20,12 @@ import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.compon
     SharedModule
   ],
   exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent],
-  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent],
+  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, MultiselectTopicDialogComponent],
   providers: [
     DialogsService
   ],
   entryComponents: [
-    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent
+    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, MultiselectTopicDialogComponent
   ],
 })
 export class DialogsModule { }

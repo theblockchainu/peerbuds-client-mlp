@@ -44,6 +44,11 @@ export class TopicService {
       .map(res => res.json());
   }
 
+  public relTopic(userId, topicId): Observable<any> {
+    return this.http.put(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning/rel/' + topicId, {}, this.options)
+      .map(res => res.json());
+  }
+
   public getDefaultTopics() {
     return this.http.get(this.config.searchUrl + '/api/search/topics', this.options)
                     .map(res => res.json() || []);

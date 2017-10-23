@@ -291,6 +291,34 @@ export class ProfileService {
     }
   }
 
+  public updateEmergencyContact(profileId, emergency_contact) {
+    if (!(emergency_contact.length > 0 && this.userId)) {
+      console.log('User not logged in');
+    } else {
+      return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.options)
+        .flatMap(
+        (response) => {
+          return this.http
+            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.sanitize(emergency_contact), this.options);
+        }
+        ).map((response) => response.json());
+    }
+  }
+
+  public updatePhoneNumbers(profileId, phone_numbers) {
+    if (!(phone_numbers.length > 0 && this.userId)) {
+      console.log('User not logged in');
+    } else {
+      return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this.options)
+        .flatMap(
+        (response) => {
+          return this.http
+            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this.sanitize(phone_numbers), this.options);
+        }
+        ).map((response) => response.json());
+    }
+  }
+
   public updateProfileWorks(profileId, work: any, cb: any) {
     if (!(work.length > 0 && this.userId)) {
       console.log('User not logged in');
@@ -397,8 +425,14 @@ export class ProfileService {
   /**
    * unfollowTopic
    */
-  public unfollowTopic(topicId: string) {
-    return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId);
+  public unfollowTopic(type, topicId: string) {
+    if(type === 'learning') {
+      return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId);
+    }
+    else 
+    {
+      return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId);
+    }
   }
 
   public stopTeachingTopic(topicId: string) {
@@ -407,13 +441,24 @@ export class ProfileService {
   /**
    * followTopic
    */
-  public followTopic(topicId: string, body?: any) {
-    if (body) {
-      return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, body, this.options)
-        .map(response => response.json());
-    } else {
-      return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, {}, this.options)
-        .map(response => response.json());
+  public followTopic(type, topicId: string, body?: any) {
+    if(type === 'learning') {
+      if (body) {
+        return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, body, this.options)
+          .map(response => response.json());
+      } else {
+        return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, {}, this.options)
+          .map(response => response.json());
+      }
+    }
+    else {
+      if (body) {
+        return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId, body, this.options)
+          .map(response => response.json());
+      } else {
+        return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId, {}, this.options)
+          .map(response => response.json());
+      }
     }
   }
 

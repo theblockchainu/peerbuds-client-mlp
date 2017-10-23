@@ -56,16 +56,16 @@
                 </div>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <md-chip-list>
-                        <span *ngFor="let interest of interestsArray;let i=index">
+                        <span *ngFor="let interest of interestsArray;let i=index" style="margin: 0px 10px 10px 0px">
                                         <md-chip *ngIf="i<maxVisibleInterest">{{interest}}</md-chip>
                                 </span>
                     </md-chip-list>
                     <span *ngIf="interestsArray.length>3">
                             <span *ngIf="interestsArray.length>maxVisibleInterest">
-                                    <a (click)="toggleMaxInterest()"> +more </a>
+                                    <a (click)="toggleMaxInterest()"><strong> + more </strong></a>
                                 </span>
                     <span *ngIf="interestsArray.length<maxVisibleInterest">
-                                        <a (click)="toggleMaxInterest()"> +less </a>
+                                        <a (click)="toggleMaxInterest()"><strong> + less </strong></a>
                                     </span>
                     </span>
                 </div>
@@ -97,7 +97,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4>{{topic.name}}</h4>
+                                    <div class="mat-body-2">{{topic.name}}</div>
                                 </div>
                             </div>
                             <div class="row">
@@ -107,7 +107,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" *ngIf="topicsTeaching.length == 0">
+                    <div class="row" *ngIf="topicsTeaching.length === 0">
                         <div class="col-md-12">
                             <p style="text-align: left">This user is not teaching yet. <a [routerLink]="['/','console','teaching', 'workshops']" *ngIf="cookieUserId === urluserId">Start Teaching</a></p>
                         </div>
@@ -123,14 +123,19 @@
                             <h3>Resume</h3>
                         </div>
                     </div>
-                    <div class="row" style="padding-top: 25px;" *ngIf="profileObj.work && profileObj.work.length>0">
+                    <div class="row" style="padding-top: 25px;">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
                                     <md-icon style="font-size: 35px;">work</md-icon>
                                 </div>
-                                <div class="col-md-11">
-                                    <span style="font-size: 15px;font-weight: bolder;">Work Experience</span>
+                                <div class="col-md-11 resumeText">
+                                    <span>Work Experience</span>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="profileObj.work && profileObj.work.length === 0">
+                                <div class="col-md-11 col-md-offset-1">
+                                    <p style="text-align: left">No details provided. <a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a></p>
                                 </div>
                             </div>
                             <div class="row" style="padding-top: 10px;" *ngFor="let workObj of profileObj.work">
@@ -152,14 +157,19 @@
                         </div>
                     </div>
 
-                    <div class="row" style="padding-top: 25px;" *ngIf="profileObj.education && profileObj.education.length>0">
+                    <div class="row" style="padding-top: 25px;">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
-                                    <md-icon style="font-size: 35px;">school</md-icon>
+                                    <md-icon class="resumeIcons">school</md-icon>
                                 </div>
-                                <div class="col-md-11">
-                                    <span style="font-size: 15px;font-weight: bolder;">Education</span>
+                                <div class="col-md-11 resumeText">
+                                    <span class="">Education</span>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="profileObj.education && profileObj.education.length === 0">
+                                <div class="col-md-11 col-md-offset-1">
+                                    <p style="text-align: left">No details provided. <a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a></p>
                                 </div>
                             </div>
                             <div class="row" style="padding-top: 10px;" *ngFor="let educationObj of profileObj.education">
@@ -238,69 +248,62 @@
                                         </div>
                                     </div>
                                 </md-tab> -->
-                        <md-tab label="Workshops">
+                        <md-tab label="Teaching Journey" style="min-width: min-content !important;">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <md-accordion>
-                                        <md-expansion-panel *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index" hideToggle="true">
-                                            <md-expansion-panel-header>
-                                                <md-panel-title>
+                                <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                    Currently Running
+                                </div>
+                                <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index">
+                                    <div *ngFor="let calendar of collectionObj.calendars">
+                                        <div *ngIf="calendar.startDate <= today.toISOString() && calendar.endDate >= today.toISOString()">
+                                            <div class="col-md-3 padding-left-0">
+                                                <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="col-md-12">
                                                     {{collectionObj.title}}
-                                                </md-panel-title>
-                                            </md-expansion-panel-header>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
-                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12" *ngIf="collectionObj.contents">
-                                                    <span>{{collectionObj.itenaryArray.length}} days / {{collectionObj.totalDuration}} Hours &emsp;<md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon>{{collectionObj.contents.length}} parts</span>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-12"  style="min-height:55px">
                                                     <p>{{collectionObj.description|shorten: 130: '....readmore'}}</p>
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-12">
-                                                    <button md-raised-button class="center-block" [routerLink]="['/workshop',collectionObj.id]" color="accent">See Dates</button>
+                                                    <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
                                                 </div>
                                             </div>
-                                            <!--TIMELINE-->
-                                            <div class="row Itenary">
-                                                <div class="featurette" id="about">
-                                                    <div class="col-md-12">
-                                                        <div class="qa-message-list" id="wallmessages">
-                                                            <div class="message-item" *ngFor="let itenary of collectionObj.itenaryArray">
-                                                                <div class="message-inner">
-                                                                    <div class="qa-message-content">
-                                                                        <div>
-                                                                            <div>Day {{itenary.startDay}}</div>
-                                                                        </div>
-                                                                        <div class="row margin-top-30" style="cursor: pointer;" *ngFor="let content of itenary.contents">
-                                                                            <div class="col-md-12">
-                                                                                <span>{{content.title}}</span>
-                                                                                <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive center-block itenary-media"
-                                                                                    src="{{config.apiUrl+content.imageUrl}}"
-                                                                                    (error)="_collectionService.imgErrorHandler($event)">
-                                                                                <video width="100%" height="120px" *ngIf="content.type==='video'" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
-                                                                                    <source src="{{config.apiUrl+content.imageUrl}}">
-                                                                                </video>
-                                                                            </div>
-                                                                            <br>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-md-offset-3 margin-top-10">
+                                    <a style="font-size:0.8rem;color:#767676;font-weight:300">Show more</a>
+                                </div>
+
+                                <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                    Past
+                                </div>
+                                <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index">
+                                    <div *ngFor="let calendar of collectionObj.calendars">
+                                        <div *ngIf="calendar.endDate <= today.toISOString()">
+                                            <div class="col-md-3 padding-left-0">
+                                                <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="col-md-12">
+                                                    {{collectionObj.title}}
+                                                </div>
+                                                <div class="col-md-12"  style="min-height:55px">
+                                                    <p>{{collectionObj.description|shorten: 130: '....readmore'}}</p>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
                                                 </div>
                                             </div>
-                                        </md-expansion-panel>
-                                    </md-accordion>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-md-offset-3 margin-top-10">
+                                    <a style="font-size:0.8rem;color:#767676;font-weight:300">Show more</a>
                                 </div>
                             </div>
                         </md-tab>
@@ -310,7 +313,7 @@
         </div>
     </div>
     <div class="row margin-top-20" *ngIf="!loading">
-        <div class="col-md-offset-1 col-md-10">
+        <div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
             <div class="row">
                 <div class="col-md-9">
                     <h2>Learning Journey</h2>

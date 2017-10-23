@@ -107,7 +107,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         description: '',
         phone_numbers: this._fb.array([this.initializePhone('','',true)]),
         vat_number: '',
-        emergency_contact: this._fb.array([this.initializeEmergencyContact()]),
+        emergency_contacts: this._fb.array([this.initializeEmergencyContact()]),
         education: this._fb.array([
           this.initializeEducationForm()
         ]),
@@ -121,10 +121,13 @@ export class ConsoleProfileEditComponent implements OnInit {
       'include': [
         'education',
         'work',
-        'peer'
+        'peer',
+        'phone_numbers',
+        'emergency_contacts'
       ]
     };
     this._profileService.getProfileData(query).subscribe((profiles) => {
+      console.log(profiles);
       this.setFormValues(profiles);
     });
 
@@ -244,15 +247,35 @@ export class ConsoleProfileEditComponent implements OnInit {
         ));
       }
       this.userSettings = Object.assign({}, this.userSettings);
-      if (profiles[0].emergency_contact && profiles[0].emergency_contact.length > 0) {
-        this.profileForm.setControl('emergency_contact', this._fb.array(
-          profiles[0].emergency_contact
-        ));
+
+      if (profiles[0].emergency_contacts && profiles[0].emergency_contacts.length > 0) {
+        this.profileForm.setControl('emergency_contacts', this._fb.array([]));
+        const ec_Array = <FormArray>this.profileForm.controls['emergency_contacts'];
+        profiles[0].emergency_contacts.forEach(ecObj => {
+          ec_Array.push(
+            this._fb.group({
+              country_code: [ecObj.country_code, Validators.requiredTrue],
+              subscriber_number: [ecObj.subscriber_number, Validators.requiredTrue]
+            })
+          );
+        });
       }
       if (profiles[0].phone_numbers && profiles[0].phone_numbers.length > 0) {
-        this.profileForm.setControl('phone_numbers', this._fb.array(
-          profiles[0].phone_numbers
-        ));
+        this.profileForm.setControl('phone_numbers', this._fb.array([]));
+        const ph_Array = <FormArray>this.profileForm.controls['phone_numbers'];
+        profiles[0].phone_numbers.forEach(phObj => {
+          let isPrimary = true;
+          if(phObj.isPrimary === false) {
+            isPrimary = false;
+          }
+          ph_Array.push(
+            this._fb.group({
+              country_code: [phObj.country_code, Validators.requiredTrue],
+              subscriber_number: [phObj.subscriber_number, Validators.requiredTrue],
+              isPrimary: [isPrimary]
+            })
+          );
+        });
       }
       if (profiles[0].work && profiles[0].work.length > 0) {
         this.profileForm.setControl('work', this._fb.array([]));
@@ -263,7 +286,7 @@ export class ConsoleProfileEditComponent implements OnInit {
               position: [workObj.position, Validators.requiredTrue],
               company: [workObj.company, Validators.requiredTrue],
               startDate: [moment(workObj.startDate).local().toDate(), Validators.requiredTrue],
-              endDate: [moment(workObj.endDate).local().toDate(), Validators.requiredTrue],
+              endDate: [workObj.endDate ? moment(workObj.endDate).local().toDate() : null, Validators.requiredTrue],
               presentlyWorking: [workObj.presentlyWorking]
             })
           );
@@ -361,9 +384,17 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.work;
     const email = profileData.email;
     delete profileData.email;
-    delete profileData.emergency_contact;
+    const phone_numbers = profileData.phone_numbers;
     delete profileData.phone_numbers;
+    const emergency_contacts = profileData.emergency_contacts;
+    delete profileData.emergency_contact;
     this._profileService.updateProfile(profileData)
+      .flatMap((response) => {
+        return this._profileService.updatePhoneNumbers(this.profile.id, phone_numbers);
+      })
+      .flatMap((response) => {
+        return this._profileService.updateEmergencyContact(this.profile.id, emergency_contacts);
+      })
       .flatMap((response) => {
         return this._profileService.updateWork(this.profile.id, work);
       }).flatMap((response) => {

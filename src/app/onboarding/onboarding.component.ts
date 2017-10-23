@@ -184,8 +184,10 @@ export class OnboardingComponent implements OnInit {
     this.interests.forEach((topic) => {
       topicArray.push(topic.id);
     });
-    if (topicArray.length !== 0) {
-    }
+    topicArray.forEach(topicId => {
+      this._topicService.relTopic(this.userId, topicId)
+      .subscribe((response) => { console.log(response); });
+    });
   }
   public changeInterests(topic: any) {
     const index = this.interests.indexOf(topic);
@@ -212,16 +214,12 @@ export class OnboardingComponent implements OnInit {
               let temp = [];
               console.log(this.interests);
               this.interests.forEach(selectedTopic => {
-                console.log(selectedTopic);
-                console.log(suggestions);
                 temp = _.remove(suggestions, function(entry) {
-                  console.log(entry);
                   return selectedTopic.id == entry.id;
                 });
               });
               console.log(temp);
               suggestions.slice(0, 10 - this.interests.length).forEach(element => {
-                console.log(element);
                 let itemPresent = _.find(this.suggestedTopics, function(entry) { return element.id == entry.id; });
                 if (!itemPresent) {
                   this.suggestedTopics.push(element);

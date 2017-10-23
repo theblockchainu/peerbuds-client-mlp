@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit {
     'google': false
   };
   private other_languages;
+  public today = new Date();
 
   constructor(
     public config: AppConfig,
