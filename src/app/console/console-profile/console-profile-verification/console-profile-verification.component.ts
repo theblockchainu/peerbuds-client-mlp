@@ -53,7 +53,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
       console.log(peer);
       this.alreadyVerified = [];
       this.notVerified = [];
-      if (peer.phoneVerified && peer.phone) {
+      if (peer.phoneVerified) {
         this.alreadyVerified.push({
           text: 'Phone Number',
           value: peer.phone

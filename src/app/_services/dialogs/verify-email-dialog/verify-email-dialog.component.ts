@@ -88,18 +88,5 @@ export class VerifyEmailDialogComponent implements OnInit {
         this.dialogRef.close();
       });
   }
-/*
-  uploadImage(event) {
-    this.peer.controls['email'].setValue(this.email);
-    console.log(event.files);
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj) => {
-        // this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
-        this.idProofImagePending = false;
-      }).subscribe();
-    }
-    this.idProofImagePending = false;
-  }
-  */
 }
 

@@ -181,7 +181,7 @@ export class ProfileService {
     const body = {
     };
     return this.http
-      .post(this.config.apiUrl + '/api/peers/sendVerifySms/' + '&phone=' + phonenumber, body, this.options)
+      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -202,7 +202,7 @@ export class ProfileService {
   public confirmSmsOTP(inputToken: string) {
     const body = {};
     return this.http
-      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP/' + '&token=' + inputToken, body, this.options)
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });

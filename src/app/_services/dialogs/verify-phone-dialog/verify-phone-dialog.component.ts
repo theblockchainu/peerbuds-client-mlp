@@ -16,11 +16,11 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
   styleUrls: ['./verify-phone-dialog.component.scss']
 })
 export class VerifyPhoneDialogComponent implements OnInit {
-// public step = 1;
+  public step = 2;
  // private idProofImagePending: Boolean;
   public peer: FormGroup;
   public otp: FormGroup;
-  //private email: string;
+  private phone: number;
   private success;
   public otpReceived: string;
 
@@ -39,21 +39,27 @@ export class VerifyPhoneDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.peer = this._fb.group({
+      phone: ['', Validators.required]
+    });
+
     this.otp = this._fb.group({
       inputOTP: [null]
     });
     this._profileService.getPeerNode()
       .subscribe((res) => {
-        this.peer.controls.email.setValue(res.email);
+        this.peer.controls.phone.setValue(res.phone);
       });
   }
 
-  continue() {
-   // this.step = p;
+  continue(p) {
+    this.step = p;
    // this.router.navigate(['app-upload-docs', +this.step]);
    console.log('phone dialog opened');
-    //this.peer.controls['email'].setValue(this.email);
-    //this.sendOTP();
+   if (p === 3) {
+    //this.peer.controls['phone'].setValue(this.phone);
+    this.sendOTP();
+  }
   }
 
   public sendOTP() {
@@ -79,18 +85,5 @@ export class VerifyPhoneDialogComponent implements OnInit {
         this.dialogRef.close();
       });
   }
-/*
-  uploadImage(event) {
-    this.peer.controls['email'].setValue(this.email);
-    console.log(event.files);
-    for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj) => {
-        // this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
-        this.idProofImagePending = false;
-      }).subscribe();
-    }
-    this.idProofImagePending = false;
-  }
-  */
 }
 
