@@ -100,8 +100,9 @@ export class UploadDocsComponent implements OnInit {
     this._profileService.confirmEmail(this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
         console.log(res);
+        console.log('verified email');
         this.success = res;
-        this.router.navigate(['/onboarding/1']); 
+        this.router.navigate(['/onboarding/1']);
       });
   }
 

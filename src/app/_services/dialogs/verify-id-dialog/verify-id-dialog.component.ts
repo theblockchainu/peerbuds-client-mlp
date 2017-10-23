@@ -23,7 +23,6 @@ export class VerifyIdDialogComponent implements OnInit {
   private success;
   public otpReceived: string;
 
-
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,

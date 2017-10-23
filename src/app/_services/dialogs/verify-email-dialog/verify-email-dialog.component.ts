@@ -16,7 +16,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
   styleUrls: ['./verify-email-dialog.component.scss']
 })
 export class VerifyEmailDialogComponent implements OnInit {
-  //public step = 1;
+ public step = 2;
  // private idProofImagePending: Boolean;
   public peer: FormGroup;
   public otp: FormGroup;
@@ -35,12 +35,10 @@ export class VerifyEmailDialogComponent implements OnInit {
     public dialogRef: MdDialogRef<VerifyEmailDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any) {
       this.activatedRoute.params.subscribe(params => {
-     
       });
   }
 
   ngOnInit() {
-    // this.idProofImagePending = true;
     this.peer = this._fb.group({
       email: ['',
       [Validators.required,
@@ -58,12 +56,24 @@ export class VerifyEmailDialogComponent implements OnInit {
   }
 
   continue(p) {
-    //this.step = p;
+    this.step = p;
    // this.router.navigate(['app-upload-docs', +this.step]);
-   console.log("email dialog opened");
+   console.log('email dialog opened');
+   if (p === 3) {
+    //this.peer.controls['email'].setValue(this.email);
+    this.sendOTP();
+  }
   }
 
-  public resendOTP() {
+  public sendOTP() {
+    this._profileService.sendVerifyEmail(this.peer.controls.email.value)
+      .subscribe();
+  }
+
+  public resendOTP(message: string, action) {
+    //message = "Code resent!";
+    //action = "OK"
+    //let snackBarRef = this.snackBar.open(message,action);
     this._profileService.sendVerifyEmail(this.peer.controls.email.value)
       .subscribe();
   }
@@ -72,8 +82,10 @@ export class VerifyEmailDialogComponent implements OnInit {
     this._profileService.confirmEmail(this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
         console.log(res);
+        console.log('verified email');
         this.success = res;
-        this.router.navigate(['console/profile/verification']);
+        //this.router.navigate(['/onboarding/1']);
+        this.dialogRef.close();
       });
   }
 /*
