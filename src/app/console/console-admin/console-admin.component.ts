@@ -31,7 +31,7 @@ export class ConsoleAdminComponent implements OnInit {
   private fetchCollections() {
     this.loaded = false;
     const query = {
-      'where': { 'type': 'workshop', 'isApproved': false },
+      'where': { 'type': 'workshop', 'isApproved': false, 'status': 'submitted' },
       'include': [
         'calendars'
       ]

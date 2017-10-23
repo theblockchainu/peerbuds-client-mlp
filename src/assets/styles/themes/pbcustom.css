@@ -563,7 +563,7 @@ h3.calendarTitle  {
     border-radius: 15px;
     text-align: center;
     padding-top: 3px;
-    margin-top: 1px;
+    margin-top: 12px;
     margin-right: 0px !important;
 }
 
@@ -738,8 +738,8 @@ h3.calendarTitle  {
 
 
 .message-item:before {
-    bottom: -45px !important;
-    height: 105.2% !important;
+    bottom: 0px !important;
+    height: 100% !important;
     left: -30px !important;
 }
 
@@ -1106,6 +1106,60 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     margin: 40px 0px 100px 0px;
 }
 
+.hasFixedFooter {
+    padding-bottom: 75px;
+}
+
+/* Geolocation */
+.geoLocation {
+    display: block !important;
+    margin-bottom: 90px !important;
+    margin-top: 20px;
+}
+
+.geoLocation .custom-autocomplete__input input {
+    padding: 0px !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(0,0,0,0.42)!important;
+    height: 30px !important;
+    font-size: 1rem !important;
+    font-weight: normal !important;
+}
+
+/* .geoLocation .custom-autocomplete__input .search-icon {
+    display: none !important;
+} */
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .currentlocation a {
+    font-size: 0.9rem !important;
+}
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .heading {
+    font-size: 0.8rem !important;
+}
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .main-text {
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+}
+
+.presentlyWorking .mat-checkbox-inner-container{
+    height: 15px !important;
+    width: 15px !important;
+    margin-right: 5px !important;
+}
+
+.presentlyWorking .mat-checkbox-label {
+    font-size: 12px !important;
+}
+
+.other_languages span.ui-autocomplete-multiple {
+    width: 100% !important;
+}
+
+.other_languages .ui-autocomplete-input-token input {
+    max-width: 250px;
+}
 /* Dialogs*/
 
 .dialog-close-button {

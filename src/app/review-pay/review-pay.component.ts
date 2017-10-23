@@ -88,6 +88,7 @@ export class ReviewPayComponent implements OnInit {
     this.paymentService.getCollectionDetails(this.collectionId).subscribe(collectionData => {
       if (collectionData) {
         this.createChargeData.amount = (collectionData.price) * 100;
+        this.createChargeData.currency = collectionData.currency;
         this.createChargeData.description = collectionData.description;
         this.collection = collectionData;
         this.setCurrentCalendar();
@@ -152,6 +153,7 @@ export class ReviewPayComponent implements OnInit {
           const form = document.querySelector('form');
           const extraDetails = {
               name: form.querySelector('input[name=cardholder-name]')['value'],
+              phone: form.querySelector('input[name=cardholder-phone]')['value'],
           };
           this.stripe.createToken(this.card, extraDetails).then((result: any) => {
             if (result.token) {
@@ -236,7 +238,7 @@ export class ReviewPayComponent implements OnInit {
           if (err) {
               console.log(err);
           } else {
-              this.router.navigate(['workshop', this.collectionId, 'calendar', this.collectionCalendarId]);
+              this.router.navigate(['workshop', this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
           }
       });
   }

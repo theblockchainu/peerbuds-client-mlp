@@ -22,6 +22,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
 
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
+import { GenericMultiselectAutocompleteModule } from './generic-multiselect-autocomplete/generic-multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
 import { FinishingTouchesModule } from '../finishing-touches/finishing-touches.module';
@@ -98,6 +99,7 @@ import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
     CalendarModule,
     CheckboxModule,
     MultiselectAutocompleteModule,
+    GenericMultiselectAutocompleteModule,
     SocialSyncModule,
     PopoverModule,
     LightboxModule,

@@ -211,7 +211,7 @@ export class ContentViewComponent implements OnInit {
   }
 
   getDeadline(content) {
-    return moment.utc(content.controls.schedule.controls.endDay.value).local().format('YYYY-MM-DD 23:59');
+    return moment.utc(content.controls.schedule.controls.endDay.value).local().format('DD MMM');
   }
 
   public showItineraryDate(date) {

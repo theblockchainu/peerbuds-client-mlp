@@ -6,7 +6,7 @@ import { ConsoleComponent } from './console.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule
   , MdProgressBarModule, MdListModule, MdTabsModule, MdChipsModule, MdInputModule
-  , MdSelectModule, MdSnackBarModule } from '@angular/material';
+  , MdSelectModule, MdSnackBarModule, MdAutocompleteModule } from '@angular/material';
 import { RatingModule } from 'primeng/primeng';
 import 'hammerjs';
 import { ConsoleDashboardComponent } from './console-dashboard/console-dashboard.component';
@@ -39,6 +39,7 @@ import { ConsoleAccountSettingsComponent } from './console-account/console-accou
 import { TimezonePickerService } from '../_services/timezone-picker/timezone-picker.service';
 import { CohortDetailDialogComponent } from './console-teaching/console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
 import { ConsoleAdminComponent } from './console-admin/console-admin.component';
+import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 
 @NgModule({
   imports: [
@@ -58,7 +59,9 @@ import { ConsoleAdminComponent } from './console-admin/console-admin.component';
     MdChipsModule,
     MdInputModule,
     MdSelectModule,
-    MdSnackBarModule
+    MdSnackBarModule,
+    MdAutocompleteModule,
+    Ng4GeoautocompleteModule.forRoot()
   ],
   declarations: [
     ConsoleComponent,

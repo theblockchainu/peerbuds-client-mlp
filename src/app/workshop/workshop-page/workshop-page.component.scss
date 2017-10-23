@@ -91,14 +91,14 @@ md-icon {
     }
 }
 .message-item {
-    margin-bottom: 25px;
+    padding-bottom: 25px;
     margin-left: 40px;
     position: relative;
 }
 
 .message-item .message-inner {
     border-radius: 3px;
-    padding: 10px;
+    padding: 0px 10px;
     position: relative;
 }
 
@@ -122,7 +122,7 @@ md-icon {
     width: 10px;
     left: -34px;
     position: absolute;
-    top: 19px;
+    top: 0px;
     font-size: 12px;
     text-align: center;
     color: #fff;
@@ -136,7 +136,7 @@ md-icon {
     height: 18px;
     left: -38px;
     position: absolute;
-    top: 14px;
+    top: 0px;
     width: 18px;
     font-size: 8px;
     text-align: center;
@@ -397,7 +397,7 @@ h3 {
     width: 8px;
     left: 22px;
     position: absolute;
-    bottom: -21px;
+    bottom: 0px;
     font-size: 12px;
     text-align: center;
     color: #fff;

@@ -480,9 +480,9 @@
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
             $.validator.addMethod("check_date_of_birth", function (value, element) {
-                var day = $("#birthDay").val();
-                var month = $("#birthMonth").val();
-                var year = $("#birthYear").val();
+                var day = $("#dobDay").val();
+                var month = $("#dobMonth").val();
+                var year = $("#dobYear").val();
                 var age = 0;
                 var mydate = new Date();
                 var mydate2 = mydate;
@@ -500,9 +500,9 @@
                         email: true
                     },
                     password: "required",
-                    birthMonth: "required",
-                    birthDay: "required",
-                    birthYear: {
+                    dobMonth: "required",
+                    dobDay: "required",
+                    dobYear: {
                         required: true,
                         check_date_of_birth: true
                     }
@@ -515,9 +515,9 @@
                         email: "Email already exists"
                     },
                     password: "",
-                    birthMonth: "",
-                    birthDay: "",
-                    birthYear: {
+                    dobMonth: "",
+                    dobDay: "",
+                    dobYear: {
                         required: ""
                     },
                 },
@@ -542,15 +542,15 @@
             var maxYear = presentYear;
             var period = 100;
             for (var i = maxYear; i >= maxYear - 100; i--) {
-                $("#birthYear").append(new Option(i, i));
+                $("#dobYear").append(new Option(i, i));
             }
             //Load MONTH
             for (var i = 1; i <= 31; i++) {
                 var newI;
                 if (i < 10) {
                     newI = '0' + i;
-                }
-                $("#birthDay").append(new Option(i, newI));
+                } else newI = i;
+                $("#dobDay").append(new Option(i, newI));
             }
         });
         
@@ -703,7 +703,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-4" style="color:#999 !important;">
-                                        <select class="form-control birthDetails" name="birthMonth" id="birthMonth">
+                                        <select class="form-control birthDetails" name="dobMonth" id="dobMonth">
                                             <option value="" selected style="color:#999 !important;">Month</option>
                                             <option value="01">January</option>
                                             <option value="02">February</option>
@@ -720,12 +720,12 @@
                                         </select>
                                     </div>
                                     <div class="col-sm-4" style="color:#999 !important;">
-                                        <select class="form-control birthDetails" name="birthDay" id="birthDay">
+                                        <select class="form-control birthDetails" name="dobDay" id="dobDay">
                                             <option value="" selected>Day</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-4" style="color:#999 !important;">
-                                        <select class="form-control birthDetails" name="birthYear" id="birthYear">
+                                        <select class="form-control birthDetails" name="dobYear" id="dobYear">
                                             <option value="" selected>Year</option>
                                         </select>
                                     </div>
