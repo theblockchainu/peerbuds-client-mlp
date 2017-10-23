@@ -8,7 +8,6 @@ import { AppConfig } from '../../../app.config';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ProfileService } from '../../profile/profile.service';
 
-
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
@@ -45,13 +44,19 @@ export class VerifyIdDialogComponent implements OnInit {
       Validators.pattern(EMAIL_REGEX)]],
       verificationIdUrl: ['', Validators.required]
     });
-         
   }
   continue() {
     //this.router.navigate(['app-upload-docs', +this.step]);
-    console.log("dialog opened");
+    console.log('dialog opened');
+    this._profileService
+    .updatePeer({ 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value})
+    .subscribe((response) => {
+      console.log('File Saved Successfully');
+    }, (err) => {
+      console.log('Error updating Peer: ');
+      console.log(err);
+    });
      this.dialogRef.close();
-     this.router.navigate(['console/profile/verification']);
   }
 
    uploadImage(event) {
@@ -65,5 +70,6 @@ export class VerifyIdDialogComponent implements OnInit {
     }
     this.idProofImagePending = false;
   }
+
 }
 

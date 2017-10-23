@@ -10,6 +10,8 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
 })
 
 export class ContactComponent implements OnInit {
+  lat: number = 37.508772;
+  lng: number = -121.960507;
   ngOnInit() {
   }
 }

@@ -5,6 +5,7 @@ import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.compon
 import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.component';
 import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-dialog.component';
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
+import { VideoDialogComponent } from './video-dialog/video-dialog.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
@@ -29,7 +30,6 @@ export class DialogsService {
 
         return dialogRef1.afterClosed();
     }
-
 
     public openForgotPwd(){
         let dialogRef3: MdDialogRef<ForgotpwdComponentDialog>;
@@ -73,6 +73,16 @@ export class DialogsService {
             height: '600px'
         });
         return dialogRef7.afterClosed();
+    }
+    
+    public openVideo() {
+        let dialogRef8: MdDialogRef<VideoDialogComponent>;
+
+        dialogRef8 = this.dialog.open(VideoDialogComponent, {
+            width: '500px',
+            height: '600px'
+        });
+        return dialogRef8.afterClosed();
     }
 
 }

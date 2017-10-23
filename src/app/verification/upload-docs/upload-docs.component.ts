@@ -101,12 +101,12 @@ export class UploadDocsComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         this.success = res;
-        this.router.navigate(['onboarding/1']); 
+        this.router.navigate(['/onboarding/1']); 
       });
   }
 
   redirectToOnboarding() {
-    this.router.navigate(['onboarding/1']);
+    this.router.navigate(['/onboarding/1']);
   }
 
   uploadImage(event) {

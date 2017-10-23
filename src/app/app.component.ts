@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
 
   modifyFooter(location) {
 
-   if (location.url === '/app-upload-docs' || location.url === '/onboarding' || location.url === '/workshop/*/edit') {
+   if (location.url === '/app-upload-docs' || location.url === '/onboarding' || location.url === '/workshop/*/edit' || location.url === '/contact') {
        this.showFooter = false;
       }
       else {
@@ -84,6 +84,4 @@ export class AppComponent implements OnInit {
       this.loading = this._spinnerService.getSpinnerState();
     }
   }
-
-
 }

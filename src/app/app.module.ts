@@ -29,6 +29,8 @@ import { AppNotificationDialogComponent } from './app-header/dialogs/app-notific
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 //import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 import { ContactComponent } from './default/contact/contact.component';
+import { AgmCoreModule } from '@agm/core';
+//import {CSSCarouselComponent} from './default/carousal/carousal.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,10 @@ import { ContactComponent } from './default/contact/contact.component';
     MdProgressSpinnerModule,
     MdProgressBarModule,
     DialogsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
+    })
   ],
   bootstrap: [AppComponent],
   providers: [
