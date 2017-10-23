@@ -13,7 +13,7 @@ import _ from 'lodash';
 })
 export class ConsoleProfileTopicsComponent implements OnInit {
 
-  public loaded: boolean;
+  public loading: boolean;
   public topicsLearning: Array<any>;
   public topicsTeaching: Array<any>;
   public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
@@ -38,7 +38,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loaded = false;
+    this.loading = true;
     this.getTopics();
   }
 
@@ -64,7 +64,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
   private getTopics() {
     this.getLearningTopics();
     this.getTeachingTopics();
-    this.loaded = true;
+    this.loading = false;
   }
 
   /**

@@ -18,8 +18,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
   public profile_video: string;
   private uploadingImage = false;
   private uploadingVideo = false;
-
-  public loaded: boolean;
+  public loadingMediaPage = false;
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleProfileComponent: ConsoleProfileComponent,
@@ -35,11 +34,11 @@ export class ConsoleProfilePhotosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loaded = false;
+    this.loadingMediaPage = true;
     this._profileService.getProfile().subscribe((profiles) => {
       this.picture_url = profiles[0].picture_url;
       this.profile_video = profiles[0].profile_video;
-      this.loaded = true;
+      this.loadingMediaPage = false;
     });
 
   }

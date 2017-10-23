@@ -52,7 +52,7 @@ export class LoginComponentDialog implements OnInit {
     //reset login status
    this.authenticationService.logout();
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home/homefeed';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     this.loginForm = this._fb.group({
       email : ['', Validators.email], /* putting reg ex as well */
@@ -64,7 +64,6 @@ export class LoginComponentDialog implements OnInit {
   }
 
   public login() {
-      // this.loading = true;
       this.email = this.loginForm.controls['email'].value;
       this.passWord = this.loginForm.controls['password'].value;
       this.authenticationService.login(this.email, this.passWord)
@@ -74,14 +73,11 @@ export class LoginComponentDialog implements OnInit {
                   this.router.navigate([this.returnUrl]);
               },
               (error) => {
+                if(error.status == 401 && error._body == '"authentication error"') {
                   this.alertService.error(error._body);
-                  // this.loading = false;
-                  //console.log(error._body);
                   this.showError = true;
-                  setTimeout(function() {
-                  this.showError = false;
-                  console.log(this.showError);
-                }.bind(this), 300000);
+                }
+                else console.log(error);
               });
   }
 

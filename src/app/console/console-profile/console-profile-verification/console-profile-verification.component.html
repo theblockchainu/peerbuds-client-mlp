@@ -1,12 +1,8 @@
-<div class="row">
-  <div class="col-md-12">
-    <div *ngIf="!loaded" class="center">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
-  </div>
+<div class="loading-container" style="width:60%" [hidden]="!loading">
+  <ngx-loading [show]="true"></ngx-loading>
 </div>
-<div class="row">
-  <div class="col-md-12" *ngIf="loaded">
+<div class="row" *ngIf="!loading">
+  <div class="col-md-12">
     <div class="row">
       <div style="margin-top:20px;" class="col-md-12">
         <div class="row">
@@ -17,7 +13,7 @@
             <p class="mat-caption">You will need to provide identification before you book, so get a head start by doing it now</p>
           </div>
           <div class="col-md-4">
-            <button class="provideId" md-button>Provide ID</button>
+            <button class="provideId" md-button class="mat-border-button" color="accent" style="border-color:#ff5b5f !important">Provide ID</button>
           </div>
         </div>
         <hr>
@@ -28,14 +24,14 @@
           <div class="col-md-12">
             <div class="row" *ngFor="let verifiedObj of alreadyVerified">
               <div class="col-md-12">
-                  <h5 style="margin-bottom:0px;font-weight:bold;">{{verifiedObj.text}}</h5>
+                <h5 style="margin-bottom:0px;font-weight:bold;">{{verifiedObj.text}}</h5>
               </div>
               <div class="col-md-1">
                 <button md-mini-fab>
-                    <md-icon>
-                      check
-                    </md-icon>
-                  </button>
+                  <md-icon>
+                    check
+                  </md-icon>
+                </button>
               </div>
               <div class="col-md-10">
                 <p class="mat-caption" style="color:#767676">{{verifiedObj.value}}</p>
@@ -56,7 +52,7 @@
                     <h5 style="margin-bottom:0px;font-weight:bold;">{{unverifiedObj.text}}</h5>
                   </div>
                   <div class="col-md-10">
-                    <p  class="mat-caption" style="color:#767676">{{unverifiedObj.value}}</p>
+                    <p class="mat-caption" style="color:#767676">{{unverifiedObj.value}}</p>
                   </div>
                 </div>
               </div>
@@ -71,17 +67,17 @@
           <div class="col-md-8">
             <div class="row">
               <div class="col-md-12">
-                  <h5 style="font-weight:bold">Facebook</h5>
+                <h5 style="font-weight:bold">Facebook</h5>
               </div>
               <div class="col-md-10">
-                <p  class="mat-caption" style="color:#767676">
+                <p class="mat-caption" style="color:#767676">
                   Sign in with your facebook and discover your trusted connections to teachers and learners all over the world.
                 </p>
               </div>
             </div>
           </div>
-          <div class="col-md-4 margin-top-20">
-            <button md-button color="primary">Connect</button>
+          <div class="col-md-4 margin-top-20" [hidden]="connectedIdentities.fb">
+            <a md-button color="accent" href="{{config.apiUrl + '/link/Facebook?returnTo=console/profile/verification'}}">Connect</a>
           </div>
         </div>
         <div class="row">
@@ -91,14 +87,14 @@
                 <h5 style="font-weight:bold">Google</h5>
               </div>
               <div class="col-md-10">
-                <p  class="mat-caption" style="color:#767676">
+                <p class="mat-caption" style="color:#767676">
                   Sign in with your Google and discover your trusted connections to teachers and learners all over the world.
                 </p>
               </div>
             </div>
           </div>
-          <div class="col-md-4 margin-top-40">
-            <button md-button color="primary">Connect</button>
+          <div class="col-md-4 margin-top-40" [hidden]="connectedIdentities.google">
+            <a md-button color="accent" href="{{config.apiUrl + '/link/Google?returnTo=console/profile/verification'}}">Connect</a>
           </div>
         </div>
         <div class="row">
@@ -115,7 +111,7 @@
             </div>
           </div>
           <div class="col-md-4 margin-top-40">
-            <button md-button color="primary">Connect</button>
+            <a md-button color="accent">Connect</a>
           </div>
         </div>
       </div>

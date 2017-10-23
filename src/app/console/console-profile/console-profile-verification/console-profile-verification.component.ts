@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleProfileComponent } from '../console-profile.component';
 import { ProfileService } from '../../../_services/profile/profile.service';
+import { AppConfig } from '../../../app.config';
 
 @Component({
   selector: 'app-console-profile-verification',
@@ -10,16 +11,24 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 })
 export class ConsoleProfileVerificationComponent implements OnInit {
 
-  public loaded: boolean;
+  public loading: boolean = false;
   public profile: any;
   public alreadyVerified: Array<any>;
   public notVerified: Array<any>;
+  private queryForSocialIdentities = {'include': ['identities', 'credentials']};
+  public socialIdentitiesConnected: any = [];
+  public boolShowConnectedSocials = false;
+  private connectedIdentities = {
+    'fb': false,
+    'google': false
+  };
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleProfileComponent: ConsoleProfileComponent,
     public router: Router,
     public _profileService: ProfileService,
+    public config: AppConfig
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
@@ -28,12 +37,12 @@ export class ConsoleProfileVerificationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loaded = false;
+    this.loading = true;
     this.getProfile();
   }
 
   private getProfile() {
-    this._profileService.getPeerData().subscribe((peer) => {
+    this._profileService.getPeerData(this.queryForSocialIdentities).subscribe((peer) => {
       console.log(peer);
       this.alreadyVerified = [];
       this.notVerified = [];
@@ -91,7 +100,31 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           });
         }
       }
-      this.loaded = true;
+
+      this.socialIdentitiesConnected = peer;
+      
+      // this.socialIdentitiesConnected.forEach(socialIdentity => {
+      if(this.socialIdentitiesConnected.identities.length > 0) {
+        this.socialIdentitiesConnected.identities.forEach(element => {
+          if(element.provider === 'google') {
+              this.connectedIdentities.google = true;
+          }
+          else if (element.provider === 'facebook') {
+            this.connectedIdentities.fb = true;
+          }
+        });
+      }
+      if(this.socialIdentitiesConnected.credentials.length > 0) {
+        this.socialIdentitiesConnected.credentials.forEach(element => {
+          if(element.provider === 'google') {
+              this.connectedIdentities.google = true;
+          }
+          else if (element.provider === 'facebook') {
+            this.connectedIdentities.fb = true;
+          }
+        });
+      }
+      this.loading = false;
     });
   }
 

@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-12 padding-left-0 padding-right-0">
                         <!-- <md-form-field> -->
-                            <md-select  class="col-md-4 padding-left-0" placeholder="Month" formControlName="birthMonth" [(ngModel)]="selectedMonth">
+                            <md-select  class="col-md-4 padding-left-0" placeholder="Month" formControlName="dobMonth" [(ngModel)]="selectedMonth">
                                 <md-option value="01">January</md-option>
                                 <md-option value="02">February</md-option>
                                 <md-option value="03">March</md-option>
@@ -46,15 +46,15 @@
                         <!-- </md-form-field> -->
 
                         <!-- <md-form-field> -->
-                            <md-select class="col-md-4" placeholder="Day" formControlName="birthDay" [(ngModel)]="selectedDay">
-                                <md-option *ngFor="let birthday of birthDay" [value]="birthday">
+                            <md-select class="col-md-4" placeholder="Day" formControlName="dobDay" [(ngModel)]="selectedDay">
+                                <md-option *ngFor="let birthday of dobDay" [value]="birthday">
                                         {{ birthday }}
                                 </md-option>
                             </md-select >
                         <!-- </md-form-field> -->
                         <!-- <md-form-field> -->
-                            <md-select class="col-md-4" placeholder="Year" formControlName="birthYear" [(ngModel)]="selectedYear">
-                                <md-option [value]="birthyear" *ngFor="let birthyear of birthYear">{{ birthyear }}</md-option>
+                            <md-select class="col-md-4" placeholder="Year" formControlName="dobYear" [(ngModel)]="selectedYear">
+                                <md-option [value]="birthyear" *ngFor="let birthyear of dobYear">{{ birthyear }}</md-option>
                             </md-select>
                         <!-- </md-form-field> -->
                     </div>

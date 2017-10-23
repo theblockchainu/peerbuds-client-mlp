@@ -19,7 +19,7 @@ import _ from 'lodash';
 })
 export class ProfileComponent implements OnInit {
   public cookieUserId: string;
-  public loading: boolean;
+  public loading: boolean = false;
   public urluserId: string;
   public profileObj: any;
   public interestsArray: Array<string>;
@@ -68,9 +68,10 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
     this.isTeacher = false;
     this.getProfileData();
-    this.getRecommendedPeers();
     this.getIdentities();
     this.getTeachingTopics();
+    this.getRecommendedPeers();
+    this.loading = false;
   }
   private getIdentities() {
     this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.urluserId).subscribe(
@@ -106,7 +107,10 @@ export class ProfileComponent implements OnInit {
         'reviewsAboutYou',
         'profiles'
       ],
-      'limit': 4
+      'where': {
+        'id': {'neq': this.urluserId}
+      },
+      'limit': 6
     };
     this._profileService.getAllPeers(query).subscribe((result) => {
       this.recommendedpeers = [];
@@ -163,8 +167,12 @@ export class ProfileComponent implements OnInit {
     this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response) => {
       this.profileObj = response[0];
       console.log(this.profileObj);
-      this.other_languages = this.profileObj.other_languages ?
-        this.profileObj.other_languages.join(', ') : 'No language provided';
+      if(this.profileObj.other_languages) {
+        this.profileObj.other_languages = this.profileObj.other_languages.filter(Boolean);
+        this.other_languages = this.profileObj.other_languages.join(', ');
+      }
+      else this.other_languages = 'No language provided';
+      
       this.setInterests();
       if (this.profileObj.peer['0'].ownedCollections && this.profileObj.peer['0'].ownedCollections.length > 0) {
         this.calculateCollectionDurations();

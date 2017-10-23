@@ -1,12 +1,8 @@
-<div class="row">
-  <div class="col-md-12">
-    <div *ngIf="!loaded" class="center">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
-  </div>
+<div class="loading-container" style="width:60%" [hidden]="!loadingMediaPage">
+  <ngx-loading [show]="true"></ngx-loading>
 </div>
-<div class="row">
-  <div class="col-md-12" *ngIf="loaded">
+<div class="row" *ngIf="!loadingMediaPage">
+  <div class="col-md-12">
     <div class="row">
       <div>
         <div style="margin-top:20px;" class="col-md-12">

@@ -12,7 +12,7 @@ import {ConsoleTeachingComponent} from '../../console-teaching/console-teaching.
 })
 export class ConsoleProfileReviewsComponent implements OnInit {
 
-  public loaded: boolean;
+  public loading: boolean;
   public profile: any;
 
   constructor(
@@ -29,11 +29,11 @@ export class ConsoleProfileReviewsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loaded = false;
+    this.loading = true;
     this._profileService.getProfile().subscribe((profiles) => {
       this.profile = profiles[0];
       console.log(this.profile);
-      this.loaded = true;
+      this.loading = false;
     });
   }
 
