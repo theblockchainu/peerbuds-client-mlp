@@ -13,7 +13,7 @@ import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.
 import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { DialogsService } from './_services/dialogs/dialog.service';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { ContactComponent } from './default/contact/contact.component';
+import { ContactComponent } from './contact-us/contact-us.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
@@ -41,7 +41,7 @@ const routes: Routes = [
     component: IndexPhilComponent
   },
   {
-    path: 'contact',
+    path: 'contact-us',
     component: ContactComponent
   },
   {

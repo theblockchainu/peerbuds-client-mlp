@@ -7,6 +7,7 @@ import { MediaUploaderService } from '../../mediaUploader/media-uploader.service
 import { AppConfig } from '../../../app.config';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ProfileService } from '../../profile/profile.service';
+//import { DialogsService } from '../dialog.service';
 
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -34,6 +35,7 @@ export class VerifyIdDialogComponent implements OnInit {
     private mediaUploader: MediaUploaderService,
     private config: AppConfig,
     public _profileService: ProfileService,
+    //private dialogsService: DialogsService,
     public dialogRef: MdDialogRef<VerifyIdDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any) {
   }
@@ -87,8 +89,9 @@ export class VerifyIdDialogComponent implements OnInit {
       console.log('error');
     }
   }
+  /*
   public openIdPolicy() {
     this.dialogsService.openIdPolicy().subscribe();
-  }
+  }*/
 }
 
