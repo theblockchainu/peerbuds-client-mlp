@@ -1,8 +1,8 @@
-<app-header></app-header>
+<app-header *ngIf="showHeader"></app-header>
 <main>
   <div class="centerFlex">
     <md-progress-bar *ngIf="loading | async" mode="indeterminate" color="primary" style="top: 64px;position: fixed;"></md-progress-bar>
   </div>
   <router-outlet></router-outlet>
 </main>
-<app-footer></app-footer>
+<app-footer *ngIf="showFooter"></app-footer>

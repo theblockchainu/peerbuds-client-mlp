@@ -13,7 +13,7 @@
             <p class="mat-caption">You will need to provide identification before you book, so get a head start by doing it now</p>
           </div>
           <div class="col-md-4">
-            <button class="provideId" md-button (click)="openIdVerify()">Provide ID</button>
+            <button class="provideId" md-button class="mat-border-button" color="accent" style="border-color:#ff5b5f !important" (click)="openIdVerify()">Provide ID</button>
           </div>
         </div>
         <hr>
@@ -78,8 +78,9 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 margin-top-20" [hidden]="connectedIdentities.fb" >
-            <a md-button color="accent" href="{{config.apiUrl + '/link/Facebook?returnTo=console/profile/verification'}}">Connect</a>
+          <div class="col-md-4 margin-top-20">
+            <a *ngIf="!connectedIdentities.fb" md-button href="{{config.apiUrl + '/link/Facebook?returnTo=console/profile/verification'}}">Connect</a>
+            <p *ngIf="connectedIdentities.fb" href="#" color="grey" >Connected</p>
           </div>
         </div>
         <div class="row">
@@ -95,11 +96,12 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 margin-top-40" [hidden]="connectedIdentities.google" >
-            <a md-button color="accent" href="{{config.apiUrl + '/link/Google?returnTo=console/profile/verification'}}">Connect</a>
+          <div class="col-md-4 margin-top-40"  >
+            <a *ngIf="!connectedIdentities.google" md-button href="{{config.apiUrl + '/link/Google?returnTo=console/profile/verification'}}">Connect</a>
+            <p *ngIf="connectedIdentities.google" href="#" color="grey" >Connected</p>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-8 margin-top-20">
             <div class="row">
               <div class="col-md-12">
@@ -115,7 +117,7 @@
           <div class="col-md-4 margin-top-40">
             <a md-button color="accent">Connect</a>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

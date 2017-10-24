@@ -44,23 +44,12 @@ export class AppComponent implements OnInit {
     }
 
   modifyFooter(location) {
-
-   if (location.url === '/app-upload-docs' || location.url === '/onboarding' || location.url === '/workshop/*/edit' || location.url === '/contact') {
-       this.showFooter = false;
-      }
-      else {
-        this.showFooter = true;
-      }
+   this.showFooter = !(location.url === '/app-upload-docs' || location.url === '/onboarding' || /^\/workshop\/.*\/edit\/./.test(location.url));
   }
 
    modifyHeader(location) {
-   // alert(location.url)
-     if (location.url === '/workshop' ||  location.url === '/' || location.url === '/workshop/*/edit') {
-       this.showHeader = false;
-      }
-      else {
-        this.showHeader = true;
-      }
+     this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url));
+       console.log('Show header is: ' + this.showHeader + '. Location is: ' + location.url);
   }
 
   // Shows and hides the loading spinner during RouterEvent changes

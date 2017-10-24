@@ -1,10 +1,10 @@
-<div class="main-content" style="background: #fff;">
-  <md-sidenav-container style="max-height: 90vh; min-height: 90vh; overflow-y: scroll">
+<div class="main-content" style="background: #fff; padding: 0px; min-height: 100vh;">
+  <md-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll">
     <md-sidenav mode="side" opened="true">
       <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
     </md-sidenav>
     <!-- Page Content -->
-    <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 90vh; min-height: 90vh; overflow-y: scroll">
+    <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 100vh; min-height: 100vh; overflow-y: scroll">
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value !== 'active'"><button md-button (click)="saveandexit()">Save &amp; Exit</button></div>
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value === 'active'"><button md-button (click)="exit()">Exit</button></div>
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12"><button md-button (click)="openWorkshop()">Preview</button></div>

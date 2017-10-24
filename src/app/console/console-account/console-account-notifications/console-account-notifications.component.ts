@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ConsoleAccountComponent} from '../console-account.component';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AppConfig} from '../../../app.config';
+import {NotificationService} from '../../../_services/notification/notification.service';
+declare var moment: any;
 
 @Component({
   selector: 'app-console-account-notifications',
@@ -9,9 +12,16 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class ConsoleAccountNotificationsComponent implements OnInit {
 
+  public picture_url = false;
+  public notifications = [];
+  public loaded = false;
+
   constructor(
     public activatedRoute: ActivatedRoute,
-    public consoleAccountComponent: ConsoleAccountComponent
+    public consoleAccountComponent: ConsoleAccountComponent,
+    private config: AppConfig,
+    public _notificationService: NotificationService,
+    public router: Router
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
@@ -22,7 +32,45 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+
+        this.loaded = false;
+        this._notificationService.getNotifications('{"include": [{"actor":"profiles"}, "collection"] }', (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                result.forEach(resultItem => {
+                    if (resultItem.actor[0] !== undefined) {
+                        this.notifications.push(resultItem);
+                    }
+                });
+                this.loaded = true;
+            }
+        });
+    }
+
+    public getNotificationText(notification) {
+        const replacements = {'%username%': '<b>' + notification.actor[0].profiles[0].first_name + ' ' + notification.actor[0].profiles[0].last_name + '</b>', '%collectionTitle%': notification.collection[0].title, '%collectionName%': '<b>' + notification.collection[0].title + '</b>', '%collectionType%': notification.collection[0].type},
+            str = notification.description;
+
+        return str.replace(/%\w+%/g, function(all) {
+            return replacements[all] || all;
+        });
+    }
+
+    public getNotificationTime(notification) {
+        const createdAt = moment(notification.createdAt);
+        return createdAt.fromNow();
+    }
+
+    public hideNotification(notification) {
+        notification.hidden = true;
+        this._notificationService.updateNotification(notification, (err, patchResult) => {
+            if (err) {
+                console.log(err);
+                notification.hidden = false;
+            }
+        });
+    }
 
 }

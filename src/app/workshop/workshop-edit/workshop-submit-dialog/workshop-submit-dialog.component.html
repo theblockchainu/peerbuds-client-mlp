@@ -9,5 +9,5 @@
   </div>
 </md-dialog-content>
 <md-dialog-actions class="col-md-offset-5 col-md-4">
-  <button md-raised-button [md-dialog-close]="'close'" color="accent">Dismiss</button>
+  <button md-raised-button (click)="closeDialog()" color="accent">Dismiss</button>
 </md-dialog-actions>
