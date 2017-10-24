@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AppConfig} from '../../../app.config';
 import {NotificationService} from '../../../_services/notification/notification.service';
+import {Router} from '@angular/router';
+import {MdDialogRef} from '@angular/material';
 declare var moment: any;
 @Component({
   selector: 'app-app-notification-dialog',
@@ -15,7 +17,10 @@ export class AppNotificationDialogComponent implements OnInit {
 
   constructor(
       public config: AppConfig,
-      public _notificationService: NotificationService) {
+      public _notificationService: NotificationService,
+      public router: Router,
+      public dialogRef: MdDialogRef<AppNotificationDialogComponent>
+  ) {
   }
 
   ngOnInit() {
@@ -36,7 +41,7 @@ export class AppNotificationDialogComponent implements OnInit {
   }
 
   public getNotificationText(notification) {
-      const replacements = {'%username%': '<b>' + notification.actor[0].profiles[0].first_name + ' ' + notification.actor[0].profiles[0].last_name + '</b>', '%collectionTitle%': notification.collection[0].title},
+      const replacements = {'%username%': '<b>' + notification.actor[0].profiles[0].first_name + ' ' + notification.actor[0].profiles[0].last_name + '</b>', '%collectionTitle%': notification.collection[0].title, '%collectionName%': '<b>' + notification.collection[0].title + '</b>', '%collectionType%': notification.collection[0].type},
           str = notification.description;
 
       return str.replace(/%\w+%/g, function(all) {
@@ -57,6 +62,11 @@ export class AppNotificationDialogComponent implements OnInit {
             notification.hidden = false;
         }
     });
+  }
+
+  public openViewAll() {
+      this.router.navigate(['console', 'account', 'notifications']);
+      this.dialogRef.close();
   }
 
 }

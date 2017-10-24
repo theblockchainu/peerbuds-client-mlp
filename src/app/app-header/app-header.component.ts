@@ -7,10 +7,8 @@ import { FormControl } from '@angular/forms';
 import { AppConfig } from '../app.config';
 import { Http } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
-
-import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
-
+import {ActivatedRoute, Router} from '@angular/router';
+import { MdDialog } from '@angular/material';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import {AppNotificationDialogComponent} from './dialogs/app-notification-dialog/app-notification-dialog.component';
 import {NotificationService} from '../_services/notification/notification.service';
@@ -46,6 +44,7 @@ export class AppHeaderComponent implements OnInit {
               private _profileService: ProfileService,
               private router: Router,
               private dialog: MdDialog,
+              private activatedRoute: ActivatedRoute,
               private _notificationService: NotificationService,
               private dialogsService: DialogsService) {
                 this.isLoggedIn = authService.isLoggedIn();

@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import {MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar} from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
@@ -10,17 +9,13 @@ import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
 import * as moment from 'moment';
 import _ from 'lodash';
-
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { WorkshopVideoComponent } from './workshop-video/workshop-video.component';
 import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
-import { MessageParticipantComponent } from './message-participant/message-participant.component';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
-declare var FB: any;
-
 import {
   startOfDay,
   endOfDay,
@@ -39,9 +34,10 @@ import {
   CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
-
 import { DialogsService } from '../dialogs/dialog.service';
 import {TopicService} from '../../_services/topic/topic.service';
+
+declare var FB: any;
 
 const colors: any = {
   red: {
@@ -133,6 +129,8 @@ export class WorkshopPageComponent implements OnInit {
       {[k: string]: string} = {'=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours'};
   public cohortMapping:
       {[k: string]: string} = {'=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts'};
+  public dayMapping:
+    {[k: string]: string} = {'=0': 'Less than a day', '=1': 'One day', 'other': '# days'};
   public discussionMapping:
       {[k: string]: string} = {'=0': 'No Comments', '=1': 'One comment', 'other': '# comments'};
 
@@ -159,7 +157,8 @@ export class WorkshopPageComponent implements OnInit {
     public config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private snackBar: MdSnackBar
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.workshopId !== params['workshopId'] || this.calendarId !== params['calendarId'])) {
@@ -412,7 +411,7 @@ export class WorkshopPageComponent implements OnInit {
           this.getParticipants();
           this.getDiscussions();
           this.getBookmarks();
-          if (this.toOpenDialogName !== undefined) {
+          if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
                 if (content.id === this.toOpenDialogName) {
@@ -420,6 +419,9 @@ export class WorkshopPageComponent implements OnInit {
                 }
               });
             });
+          }
+          else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+              this.snackBar.open('Your payment was successful. Happy learning!', 'Close');
           }
         });
     } else {
@@ -1035,6 +1037,7 @@ export class WorkshopPageComponent implements OnInit {
       this._collectionService.getParticipants(this.workshopId, query).subscribe(
           (response: any) => {
               this.allParticipants = response.json();
+              console.log(this.allParticipants);
               for (const responseObj of response.json()) {
                   if (this.calendarId && this.calendarId === responseObj.calendarId) {
                     this.participants.push(responseObj);
@@ -1185,11 +1188,15 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   public showViewTime(content) {
-      content.isViewTimeHidden = false;
+      if (this.userType === 'participant') {
+          content.isViewTimeHidden = false;
+      }
   }
 
   public hideViewTime(content) {
-      content.isViewTimeHidden = true;
+      if (this.userType === 'participant') {
+          content.isViewTimeHidden = true;
+      }
   }
 
 }
