@@ -563,7 +563,7 @@ h3.calendarTitle  {
     border-radius: 15px;
     text-align: center;
     padding-top: 3px;
-    margin-top: 1px;
+    margin-top: 12px;
     margin-right: 0px !important;
 }
 
@@ -738,8 +738,8 @@ h3.calendarTitle  {
 
 
 .message-item:before {
-    bottom: -45px !important;
-    height: 105.2% !important;
+    bottom: 0px !important;
+    height: 100% !important;
     left: -30px !important;
 }
 

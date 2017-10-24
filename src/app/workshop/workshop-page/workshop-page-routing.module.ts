@@ -14,9 +14,9 @@ const routes: Routes = [
     canActivateChild: [AuthGuardService]
   },
   {
-      path: 'calendar/:calendarId/:dialogName',
-      component: WorkshopPageComponent,
-      canActivateChild: [AuthGuardService]
+    path: 'calendar/:calendarId/:dialogName',
+    component: WorkshopPageComponent,
+    canActivateChild: [AuthGuardService]
   }
 ];
 

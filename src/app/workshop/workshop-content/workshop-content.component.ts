@@ -108,7 +108,7 @@ export class WorkshopContentComponent implements OnInit {
       delete contentObj.schedule;
       delete contentObj.pending;
       if (contentObj.type === 'project' || contentObj.type === 'video') {
-        if(contentObj.type === 'video') {
+        if (contentObj.type === 'video') {
           schedule.endDay = 0;
         }
         else {
@@ -148,9 +148,9 @@ export class WorkshopContentComponent implements OnInit {
                 const Form = <FormGroup>Itenary.controls[i];
                 const ContentsArray = <FormArray>Form.controls.contents;
                 const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-                const ContentSchedule = <FormGroup>ContentGroup.controls.schedule;
+                /*const ContentSchedule = <FormGroup>ContentGroup.controls.schedule;
                 ContentSchedule.controls.startTime.patchValue('');
-                ContentSchedule.controls.endTime.patchValue('');
+                ContentSchedule.controls.endTime.patchValue('');*/
                 ContentGroup.controls.pending.setValue(false);
               }
               console.log(response);
@@ -208,8 +208,8 @@ export class WorkshopContentComponent implements OnInit {
           this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
             .map((resp: Response) => {
               if (resp.status === 200) {
-                ContentSchedule.controls.startTime.patchValue('');
-                ContentSchedule.controls.endTime.patchValue('');
+                /*ContentSchedule.controls.startTime.patchValue('');
+                ContentSchedule.controls.endTime.patchValue('');*/
                 contentGroup.controls.pending.setValue(false);
               }
               console.log(resp);

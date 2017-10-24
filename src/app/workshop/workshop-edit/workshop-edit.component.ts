@@ -274,8 +274,10 @@ export class WorkshopEditComponent implements OnInit {
           } else if (key === 'startDay' || key === 'endDay') {
             form.controls[key].patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
           } else if (key === 'supplementUrls') {
-            // form.controls[key] = value[key];
-            // this.setChildControlFactory(value[key], () => new FormControl());
+            const control = <FormArray>form.controls[key];
+            value[key].forEach(supplementUrl => {
+                  control.push(new FormControl(supplementUrl));
+              });
           } else {
             form.controls[key].patchValue(value[key]);
           }
@@ -575,18 +577,6 @@ export class WorkshopEditComponent implements OnInit {
     control.patchValue(this.urlForVideo);
   }
 
-  // uploadVideo(event) {
-  //   console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-  //   const xhrResp = JSON.parse(event.xhr.response);
-  //   this.addVideoUrl(xhrResp.url);
-  // }
-
-  // uploadImages(event) {
-  //   console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-  //   const xhrResp = JSON.parse(event.xhr.response);
-  //   this.addImageUrl(xhrResp.url);
-  // }
-
   uploadVideo(event) {
     this.uploadingVideo = true;
     for (const file of event.files) {
@@ -820,42 +810,6 @@ export class WorkshopEditComponent implements OnInit {
 
   }
 
-  uploadCanvasVideo(event) {
-    // Validate whether MP4
-    if (['video/'].indexOf(event.target.files[0].type) === -1) {
-      alert('Error : Only Video allowed');
-      return;
-    }
-
-    this._CTX = this._CANVAS.getContext('2d');
-    // Hide upload button
-    //  document.querySelector("#upload-button").style.display = 'none';
-
-    // Object Url as the video source
-    document.querySelector('#main-video source').setAttribute('src', URL.createObjectURL(event.target.files[0]));
-    // Load the video and show it
-    this._VIDEO.load();
-    // this._VIDEO.style.display = 'inline';
-    const self = this;
-
-    // this._VIDEO.onloadedmetadata = function(e){
-    this._VIDEO.addEventListener('loadedmetadata', function (e) {
-      setTimeout(() => self.getMetadata(), 1000);
-      // self._CTX = self._CANVAS.getContext("2d");
-      // self._CANVAS.width = 150;//this.videoWidth;
-      // self._CANVAS.height = 100;//this.videoHeight;
-      // self._CTX.drawImage(this, 0, 0, self._CANVAS.width, self._CANVAS.height);
-    }, false);
-  }
-
-  getMetadata() {
-    console.log(new Date());
-    this._CANVAS.width = 150; // this.videoWidth;
-    this._CANVAS.height = 100; // this.videoHeight;
-    this._CTX.drawImage(this._VIDEO, 0, 0, this._CANVAS.width, this._CANVAS.height);
-
-  }
-
   uploadImage1(event) {
     if (event.target.files == null || event.target.files === undefined) {
       document.write('This Browser has no support for HTML5 FileReader yet!');
@@ -930,18 +884,7 @@ export class WorkshopEditComponent implements OnInit {
           });
           this.workshop.controls.imageUrls.patchValue(this.urlForImages);
         }
-      }).subscribe((response) =>{
-        const data = this.workshop;
-        const lang = <FormArray>this.workshop.controls.language;
-        lang.removeAt(0);
-        lang.push(this._fb.control(data.value.selectedLanguage));
-        const body = data.value;
-        delete body.selectedLanguage;
-        this._collectionService.patchCollection(this.workshopId, body).map(
-          (response) => {
-            console.log("Files deleted and workshop updated");
-          }).subscribe();
-      });
+      }).subscribe();
 
   }
 

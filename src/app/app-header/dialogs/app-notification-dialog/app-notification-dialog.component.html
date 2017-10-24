@@ -1,9 +1,18 @@
 <div class="row">
+  <div class="col-md-12">
+    <div *ngIf="!loaded" class="center">
+      <div class="loading-container">
+        <ngx-loading [show]="true"></ngx-loading>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="loaded">
   <div class="col-md-8">
     <div class="mat-body-2">Notifications</div>
   </div>
   <div class="col-md-4" style="text-align: right">
-    <p>View all</p>
+    <p style="cursor: pointer;" (click)="openViewAll()">View all</p>
   </div>
 </div>
 <div class="row margin-top-20">
