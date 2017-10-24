@@ -87,5 +87,8 @@ export class VerifyIdDialogComponent implements OnInit {
       console.log('error');
     }
   }
+  public openIdPolicy() {
+    this.dialogsService.openIdPolicy().subscribe();
+  }
 }
 

@@ -49,6 +49,7 @@
         padding: 22px;
     }
 
+
     .description1 {
         font-size: 16px;
         color: #767676;
@@ -94,7 +95,7 @@
 .loading-container {
     position: relative;
     width:50px;
-    margin: 30px 0px 0px 0px;
+    margin: 30px 0px 50px 0px;
 }
 
 .uploaded_file {
@@ -153,5 +154,6 @@
 }
 
 .note{
-margin-top: -60px !important;
+position: relative;
+margin-top: -58px;
 }

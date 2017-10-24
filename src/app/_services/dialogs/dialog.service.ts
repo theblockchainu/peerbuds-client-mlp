@@ -56,7 +56,7 @@ export class DialogsService {
 
         dialogRef5 = this.dialog.open(VerifyIdDialogComponent, {
             width: '800px',
-            height: '700px'
+            height: '600px'
         });
         return dialogRef5.afterClosed();
     }

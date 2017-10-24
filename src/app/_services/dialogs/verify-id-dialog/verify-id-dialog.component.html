@@ -3,12 +3,11 @@
     <div class="position-relative step-1">
       <form [formGroup]="peer">
         <md-dialog-content>
-          <div class="col-md-8 col-md-offset-2">
+          <div class="col-md-10 col-md-offset-1 position-relative">
             <div class="verification-box drop-shadow">
                 <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
                   <i class="fa fa-id-card-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
                 </button>
-                
                 <h2 class="headline">Confirm Your Identity</h2>
                 <p class="description1">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will help us ensure that you don't have multiple profiles in the platform.</p>
                 <p class="description2">This ID must:</p>
@@ -35,16 +34,15 @@
                     <md-icon *ngIf="fileType.includes('application')" (click)="deleteFromContainer(verificationIdUrl, 'file')" class="delete-file">close</md-icon>
                   </div>
               </div>
-                <!--<p class="note">To learn more about why we require copy of your ID and what types of ID we accept, <a (click)="openIdPolicy()" style="cursor: pointer;">review our ID policy</a></p>-->
+                <p class="note">To learn more about why we require copy of your ID and what types of ID we accept, <a (click)="openIdPolicy()" style="cursor: pointer;">review our ID policy</a></p>
             </div>
           </div>
-          <div class="col-sm-12">
-            <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+
+            <div class="col-md-10 col-md-offset-1 position-relative">
               <div class="pull-right">
                 <!--<button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>-->
                 <button md-raised-button color="accent" (click)="continue()" [disabled]="!this.peer.controls['verificationIdUrl'].value">Continue</button>
               </div>
-            </div>
           </div>
         </md-dialog-content>
       </form>

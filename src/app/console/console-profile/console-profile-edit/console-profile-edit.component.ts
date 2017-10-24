@@ -509,7 +509,7 @@ index:number   */
   public deleteEmergencyContact(index: number) {
     const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
     if(index > 0) {
-      
+
       emergency_contact.removeAt(index);
       return;
     }

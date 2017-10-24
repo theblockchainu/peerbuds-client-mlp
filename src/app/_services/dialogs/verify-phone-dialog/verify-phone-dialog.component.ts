@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@ang
 import { Http } from '@angular/http';
 import { MediaUploaderService } from '../../mediaUploader/media-uploader.service';
 import { AppConfig } from '../../../app.config';
+import { MdSnackBar } from '@angular/material';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ProfileService } from '../../profile/profile.service';
 
@@ -32,6 +33,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
     public _profileService: ProfileService,
     private http: Http,
     private config: AppConfig,
+    public snackBar: MdSnackBar,
     public dialogRef: MdDialogRef<VerifyPhoneDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any) {
       this.activatedRoute.params.subscribe(params => {
@@ -68,12 +70,10 @@ export class VerifyPhoneDialogComponent implements OnInit {
   }
 
   public resendOTP(message: string, action) {
-    //message = "Code resent!";
-    //action = "OK"
-    //let snackBarRef = this.snackBar.open(message,action);
-    this._profileService.sendVerifySms(this.peer.controls.phone.value)
-      .subscribe();
-  }
+    this._profileService.sendVerifyEmail(this.peer.controls.phone.value)
+      .subscribe((response) => {
+        this.snackBar.open('Code Resent', 'OK'); });
+    }
 
   verifyPhone() {
     this._profileService.confirmSmsOTP(this.otp.controls['inputOTP'].value)

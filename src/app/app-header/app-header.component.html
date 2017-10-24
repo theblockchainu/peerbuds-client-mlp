@@ -51,7 +51,7 @@
     <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
       About
     </button>-->
-    <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+    <button md-button class="headerButtons" [routerLink]="['/white-paper']" *ngIf="!(isLoggedIn | async)">
       White Paper
     </button>
 
