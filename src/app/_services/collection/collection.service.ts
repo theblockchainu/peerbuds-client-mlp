@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
+import {AuthenticationService} from '../authentication/authentication.service';
 declare var moment: any;
 
 @Injectable()
@@ -21,19 +22,18 @@ export class CollectionService {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
+    private authService: AuthenticationService,
     private requestHeaderService: RequestHeaderService) {
-    this.userId = this.getCookieValue(this.key);
     this.options = requestHeaderService.getOptions();
     this.now = new Date();
-  }
-
-  private getCookieValue(key: string) {
-    const cookie = this._cookieService.get(key);
-    if (cookie) {
-      const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-      this.userId = cookieValue[1];
-    }
-    return this.userId;
+    this.authService.getLoggedInUser.subscribe((userId) => {
+        if (userId !== 0) {
+            this.userId = userId;
+        }
+        else {
+            this.userId = 0;
+        }
+    });
   }
 
   public getCollection(type: string, cb) {

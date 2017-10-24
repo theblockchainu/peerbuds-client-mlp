@@ -1,6 +1,5 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-import { URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
@@ -18,7 +17,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import _ from 'lodash';
-import { MdDialog } from '@angular/material';
+import {MdDialog, MdSnackBar} from '@angular/material';
 import { WorkshopSubmitDialogComponent } from './workshop-submit-dialog/workshop-submit-dialog.component';
 import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-clone-dialog.component';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
@@ -132,7 +131,8 @@ export class WorkshopEditComponent implements OnInit {
     public requestHeaderService: RequestHeaderService,
     private dialog: MdDialog,
     private _leftSideBarService: LeftSidebarService,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private snackBar: MdSnackBar
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
@@ -934,7 +934,10 @@ export class WorkshopEditComponent implements OnInit {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
       .subscribe((res) => {
         console.log('Token Verified');
-      });
+      },
+          (error) => {
+              this.snackBar.open(error.message);
+          });
   }
 
   takeToPayment() {

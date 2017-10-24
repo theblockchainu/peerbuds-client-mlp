@@ -37,14 +37,12 @@ export class AppHeaderComponent implements OnInit {
   public makeOldNotification = [];
 
   constructor(public authService: AuthenticationService,
-              public requestHeaderService: RequestHeaderService,
               public config: AppConfig,
               private http: Http,
               private _cookieService: CookieService,
               private _profileService: ProfileService,
               private router: Router,
               private dialog: MdDialog,
-              private activatedRoute: ActivatedRoute,
               private _notificationService: NotificationService,
               private dialogsService: DialogsService) {
                 this.isLoggedIn = authService.isLoggedIn();
@@ -53,9 +51,10 @@ export class AppHeaderComponent implements OnInit {
                 });
 
                 authService.getLoggedInUser.subscribe((userId) => {
-                  if(userId !== 0) {
+                  if (userId !== 0) {
                     this.userId = userId;
                     this.getProfile();
+                    this.getNotifications();
                   }
                   else {
                     this.loggedIn = false;
@@ -130,11 +129,14 @@ export class AppHeaderComponent implements OnInit {
       case 'topic':
         return option.data.name;
       case 'peer':
-        if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
-          return option.data.id;
-        } else {
-          return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
-        }
+          if (option.data.profiles[0] === undefined) {
+              return option.data.id;
+          }
+          else if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
+            return option.data.id;
+          } else {
+            return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
+          }
       default:
         return;
     }
@@ -213,7 +215,7 @@ export class AppHeaderComponent implements OnInit {
                   if (resultItem.new) {
                       this.hasNewNotification = true;
                       resultItem.new = false;
-                      delete resultItem.seen;
+                      resultItem.seen = true;
                       delete resultItem.createdAt;
                       delete resultItem.updatedAt;
                       this.makeOldNotification.push(resultItem);
@@ -226,6 +228,7 @@ export class AppHeaderComponent implements OnInit {
   openNotificationsDialog(): void {
       const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
           width: '350px',
+          height: '70vh',
           data: {
           },
           disableClose: false,

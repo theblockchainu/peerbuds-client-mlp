@@ -85,6 +85,7 @@ export class AuthenticationService {
           console.log('Logged out from server');
           this.removeCookie(this.key);
           this.removeCookie('userId');
+          this.removeCookie('accountApproved');
           this.isLoginSubject.next(false);
           this.getLoggedInUser.emit(0);
           this.router.navigate(['/']);

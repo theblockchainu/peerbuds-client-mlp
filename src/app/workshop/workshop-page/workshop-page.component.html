@@ -33,6 +33,16 @@
         <span>There are no upcoming cohorts scheduled for this workshop! <a href="javascript:void(0);" (click)="editCalendar()">Schedule one now?</a></span>
       </div>
     </div>
+    <div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && accountApproved !== 'true')">
+      <div class="col-md-10 col-md-offset-1">
+        <span>Your account is still under review. You can sign-up for this workshop after you are approved. <a href="javascript:void(0);" (click)="openVerificationPage()">Check verification status</a></span>
+      </div>
+    </div>
+    <div class="row pending-actions center" *ngIf="(userId === undefined)">
+      <div class="col-md-10 col-md-offset-1">
+        <span>You need to login or sign-up to start taking this workshop. <a href="javascript:void(0);" (click)="openLoginPage()">Login now</a></span>
+      </div>
+    </div>
     <div class="row margin-top-40">
       <div class="col-md-10 col-md-offset-1">
         <div class="row workshop-header">
@@ -97,17 +107,17 @@
                     <b>Taught by</b>
                     <div class="row margin-top-20">
                       <div class="col-md-12">
-                        <div style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
-                          <img *ngIf="!workshop.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" style="margin-left: 0px;">
-                          <img *ngIf="workshop.owners[0].profiles[0].picture_url" src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px;">
+                        <div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+                          <img (click)="openProfilePage(workshop.owners[0].id)" *ngIf="!workshop.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb" style="margin-left: 0px;">
+                          <img (click)="openProfilePage(workshop.owners[0].id)" *ngIf="workshop.owners[0].profiles[0].picture_url" src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px;">
                         </div>
                         <div style="display: inline-block; margin-left: 10px;">
                           <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 clickable" (click)="openProfilePage(workshop.owners[0].id)">
                               {{workshop.owners[0].profiles[0].first_name}} {{workshop.owners[0].profiles[0].last_name}}
                             </div>
-                            <div class="col-md-12 mat-h5" *ngIf="workshop.owners[0].profiles[0].work">
-                              {{workshop.owners[0].profiles[0].work[0].position}}
+                            <div class="col-md-12 mat-h5" *ngIf="workshop.owners[0].headline">
+                              {{workshop.owners[0].profiles[0].headline}}
                             </div>
                           </div>
                         </div>
@@ -182,7 +192,7 @@
                                   </div>
                                   <div class="row margin-top-10">
                                     <div class="col-md-12">
-                                      <span> {{content.description | shorten: 115 : '... read more'}} </span>
+                                      <span> {{content.description | shorten: 115 : '...'}} </span>
                                     </div>
                                   </div>
                                   <div class="row margin-top-10" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
@@ -218,10 +228,14 @@
                     <input mdInput type="text" formControlName="description" placeholder="Post your thoughts on this workshop">
                   </md-input-container>
                   <md-checkbox [formControlName]="'isAnnouncement'" *ngIf="userType==='teacher'">Make Announcement</md-checkbox>
-                  <button md-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right">Post</button>
+                  <button md-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right">
+                    <span *ngIf="!busyDiscussion">Post</span>
+                    <span *ngIf="busyDiscussion"> </span>
+                    <ngx-loading [show]="busyDiscussion"></ngx-loading>
+                  </button>
                 </form>
               </div>
-              <div class="loading-container" [hidden]="!loadingComments">
+              <div class="loading-container" [hidden]="!loadingComments && !initialLoad">
                 <ngx-loading [show]="true"></ngx-loading>
               </div>
               <div class="col-md-12">
@@ -277,14 +291,14 @@
                       </md-menu>
                       <div class="mat-body-1">{{comment.description}}</div>
                       <div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
-                        <div style="float: left; margin-left: 15px;">
-                          <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-                          <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp">
+                        <div class="clickable" style="float: left; margin-left: 15px;">
+                          <img (click)="openProfilePage(comment.peer[0].id)" *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+                          <img (click)="openProfilePage(comment.peer[0].id)" *ngIf="comment.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ comment.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp">
                         </div>
                         <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                           <div>
                             <div>
-                              <span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                              <span class="clickable" style="font-weight: 500" (click)="openProfilePage(comment.peer[0].id)">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
                             </div>
                           </div>
                           <div class="">
@@ -301,7 +315,10 @@
                           <md-input-container style="margin-left: 15px; width: 88%;">
                             <input mdInput type="text" formControlName="description" placeholder="Reply to above comment...">
                           </md-input-container>
-                          <button [disabled]="!replyForm.valid" md-raised-button class="pull-right" color="primary">Post</button>
+                          <button [disabled]="!replyForm.valid" md-raised-button class="pull-right" color="primary">
+                            <span *ngIf="!busyReply">Post</span>
+                            <ngx-loading [show]="busyReply"></ngx-loading>
+                          </button>
                         </form>
                       </div>
                       <div class="col-md-11 col-md-offset-1 margin-top-10">
@@ -319,7 +336,7 @@
                               <span>Delete</span>
                             </button>
                           </md-menu>
-                          <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;" [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+                          <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px; float: left;" [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
                             <md-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)" >arrow_drop_up</md-icon>
                             <md-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</md-icon>
                             <div>
@@ -327,17 +344,17 @@
                               <span *ngIf="reply.upvotes === undefined">0</span>
                             </div>
                           </div>
-                          <div style="display: inline-block">
+                          <div style="width: 90%;">
                             <div class="mat-body-1">{{reply.description}}</div>
                             <div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
-                              <div style="float: left; margin-left: 15px;">
-                                <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-                                <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp">
+                              <div class="clickable" style="float: left; margin-left: 15px;">
+                                <img (click)="openProfilePage(reply.peer[0].id)" *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+                                <img (click)="openProfilePage(reply.peer[0].id)" *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp">
                               </div>
                               <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                                 <div>
                                   <div>
-                                    <span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                                    <span class="clickable" style="font-weight: 500" (click)="openProfilePage(reply.peer[0].id)">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
                                   </div>
                                 </div>
                                 <div class="">
@@ -358,7 +375,7 @@
             </div>
             <hr style="margin-top: -20px;" *ngIf="(userType==='teacher' || userType==='participant') && comments !== undefined && comments.length === 0">
             <!--REVIEWS-->
-            <div class="loading-container" [hidden]="!loadingReviews">
+            <div class="loading-container" [hidden]="!loadingReviews && !initialLoad">
               <ngx-loading [show]="true"></ngx-loading>
             </div>
             <div class="row Reviews" *ngIf="reviews !== undefined">
@@ -378,7 +395,10 @@
                       <md-input-container class="full-width">
                         <input mdInput formControlName="description" placeholder="Describe your experience with this workshop">
                       </md-input-container>
-                      <button [disabled]="!isRatingReceived || !reviewForm.valid" md-raised-button color="primary" class="pull-right">Submit</button>
+                      <button [disabled]="!isRatingReceived || !reviewForm.valid" md-raised-button color="primary" class="pull-right">
+                        <span *ngIf="!busyReview">Submit</span>
+                        <ngx-loading [show]="busyReview"></ngx-loading>
+                      </button>
                     </form>
                   </div>
                 </div>
@@ -410,14 +430,14 @@
                                       <span>Delete</span>
                                     </button>
                                   </md-menu>
-                                  <div style="float: left;">
-                                    <img *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
-                                    <img *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
+                                  <div class="clickable" style="float: left;">
+                                    <img (click)="openProfilePage(review.peer[0].id)" *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
+                                    <img (click)="openProfilePage(review.peer[0].id)" *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)" style="margin-left: 10px;">
                                   </div>
                                   <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                                     <div>
                                       <div>
-                                        <span style="font-weight: 500">{{review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                                        <span class="clickable" style="font-weight: 500" (click)="openProfilePage(review.peer[0].id)">{{review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
                                       </div>
                                     </div>
                                     <div class="">
@@ -489,17 +509,17 @@
                 <div>
                   <div class="row" *ngIf="participants.length === 0">
                     <div class="col-md-12">
-                      <div class="emptySectionText">Invite peers to this cohort?</div>
+                      <div class="emptySectionText" (click)="openInviteFriendsDialog()">Invite peers to this cohort?</div>
                     </div>
                   </div>
                 </div>
                 <div *ngFor="let participant of participants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
-                    <div class="col-md-2 vcenter">
-                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
-                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+                    <div class="col-md-2 vcenter clickable">
+                      <img (click)="openProfilePage(participant.id)" *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
+                      <img (click)="openProfilePage(participant.id)" *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
                     </div>
-                    <div class="col-md-9 vcenter">
+                    <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
                       <span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
                     </div>
@@ -522,11 +542,11 @@
                 </div>
                 <div *ngFor="let participant of allParticipants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
-                    <div class="col-md-2 vcenter">
-                      <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
-                      <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+                    <div class="col-md-2 vcenter clickable">
+                      <img (click)="openProfilePage(participant.id)" *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
+                      <img (click)="openProfilePage(participant.id)" *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}" class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
                     </div>
-                    <div class="col-md-9 vcenter">
+                    <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
                       <span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
                     </div>
@@ -545,7 +565,7 @@
                       <div class="emptySectionText">
                         Select one workshop cohort to view participants signed up for that batch.
                         <br><br>
-                        <button md-button class="mat-border-button" (click)="selectJoiningDates()">Select cohort</button>
+                        <button md-button class="mat-border-button" (click)="changeDates()">Select cohort</button>
                       </div>
                     </div>
                   </div>
@@ -681,7 +701,7 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <button md-raised-button (click)="selectJoiningDates()" color="primary">See Dates</button>
+                    <button md-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
                   </div>
                 </div>
               </div>
@@ -689,7 +709,7 @@
             <hr class="margin-top-30 margin-bottom-10">
             <div class="row" style="color: #777777">
               <div class="col-md-4" style="cursor: pointer;">
-                <a>Invite friends</a>
+                <a (click)="openInviteFriendsDialog()">Invite friends</a>
               </div>
               <div class="col-md-4" (click)="saveBookmark()" style="cursor: pointer;">
                 <md-icon [ngClass]="{'hasBookmarked': hasBookmarked}" style="font-size: 1rem; top: 2px;">bookmark</md-icon>
