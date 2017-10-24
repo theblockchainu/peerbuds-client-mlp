@@ -1,10 +1,9 @@
 
-<footer *ngIf="!(isLoggedIn | async)">
- 
+<footer *ngIf="!(isLoggedIn | async) || showFooter" style="border-top: 1px solid #cccccc;">
   <div class="layout-row footer" layout="row" color="white">
     <div layout="row" class="col-sm-8">
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="."> About Us </a>
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/philosophy"> About Us </a>
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/contact-us">
             Contact Us
           </a>
           <span class="center">
@@ -12,25 +11,23 @@
                   <img src="/assets/images/pb_logo.png" alt="logo">
             </a>
           </span>
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/white-paper">
            White Paper
           </a>
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/privacy-policy">
            Privacy Policy
           </a>
-    
     </div>
   </div>
 </footer>
 
-<footer *ngIf="(isLoggedIn | async)" style="border-top: 1px solid #cccccc;">
+<footer *ngIf="(isLoggedIn | async)">
   <div class="text-center" style="padding: 9px 0;">
-    <a href="#">About Us</a>
+    <a [routerLink]="['/philosophy']">About Us</a>
     <a href="#">Help</a>
-    <a href="#">Privacy & Terms</a>
+    <a href="/privacy-policy">Privacy & Terms</a>
     <a href="#">Community</a>
     <a href="#">Invite Friends</a>
   </div>
-
 </footer>
 

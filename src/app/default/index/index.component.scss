@@ -26,15 +26,15 @@
 }
 
 .view2Image {
-    width: 45%;
+    width: 44%;
     margin-left: 8%;
 }
 
 .view3Image {
     width: 50%;
     top: -22px;
-    right: 15px;
-}
+    right: -32px;
+    }
 
 .view4Image {
     width: 50%;
@@ -223,3 +223,12 @@
 // }
 
 // }
+
+
+//carousal
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+    width: 20%;
+    margin: auto;
+}
