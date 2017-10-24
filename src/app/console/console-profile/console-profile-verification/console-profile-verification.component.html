@@ -13,7 +13,7 @@
             <p class="mat-caption">You will need to provide identification before you book, so get a head start by doing it now</p>
           </div>
           <div class="col-md-4">
-            <button class="provideId" md-button class="mat-border-button" color="accent" style="border-color:#ff5b5f !important">Provide ID</button>
+            <button class="provideId" md-button (click)="openIdVerify()">Provide ID</button>
           </div>
         </div>
         <hr>
@@ -56,8 +56,10 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 margin-top-20">
-                <button md-button color="primary">Verify</button>
+              <div class="col-md-4">
+                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Email address'" (click)="openEmailVerify()">Verify</button>
+                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Government Id'"  (click)="openIdVerify()">Verify</button>
+                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Phone Number'"  (click)="openPhoneVerify()">Verify</button>
               </div>
             </div>
           </div>

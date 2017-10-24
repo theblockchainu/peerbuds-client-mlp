@@ -1,10 +1,9 @@
 
-<footer *ngIf="!(isLoggedIn | async)">
- 
+<footer *ngIf="!(isLoggedIn | async) || showFooter">
   <div class="layout-row footer" layout="row" color="white">
     <div layout="row" class="col-sm-8">
           <a class="footer-btn footerButtons col-sm-2" md-button routerLink="."> About Us </a>
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/contact">
             Contact Us
           </a>
           <span class="center">
@@ -18,7 +17,6 @@
           <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
            Privacy Policy
           </a>
-    
     </div>
   </div>
 </footer>
@@ -31,6 +29,5 @@
     <a href="#">Community</a>
     <a href="#">Invite Friends</a>
   </div>
-
 </footer>
 

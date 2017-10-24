@@ -13,7 +13,7 @@ import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.
 import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { DialogsService } from './_services/dialogs/dialog.service';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-
+import { ContactComponent } from './default/contact/contact.component';
 
 const routes: Routes = [
   {
@@ -23,8 +23,12 @@ const routes: Routes = [
   },
   {
     path: 'philosophy',
-    component: IndexPhilComponent,
-  }, 
+    component: IndexPhilComponent
+  },
+  {
+    path: 'contact',
+    component: ContactComponent
+  },
   {
     path: 'design',
     component: AppDesignComponent

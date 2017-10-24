@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleProfileComponent } from '../console-profile.component';
 import { ProfileService } from '../../../_services/profile/profile.service';
 import { AppConfig } from '../../../app.config';
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
 
 @Component({
   selector: 'app-console-profile-verification',
@@ -27,6 +29,8 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleProfileComponent: ConsoleProfileComponent,
     public router: Router,
+    private dialog: MdDialog,
+    private dialogsService: DialogsService,
     public _profileService: ProfileService,
     public config: AppConfig
   ) {
@@ -41,12 +45,24 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     this.getProfile();
   }
 
+   public openIdVerify() {
+    this.dialogsService.openIdVerify().subscribe();
+  }
+
+  public openEmailVerify() {
+   this.dialogsService.openEmailVerify().subscribe();
+  }
+
+  public openPhoneVerify() {
+    this.dialogsService.openPhoneVerify().subscribe();
+   }
+
   private getProfile() {
     this._profileService.getPeerData(this.queryForSocialIdentities).subscribe((peer) => {
       console.log(peer);
       this.alreadyVerified = [];
       this.notVerified = [];
-      if (peer.phoneVerified && peer.phone) {
+      if (peer.phoneVerified) {
         this.alreadyVerified.push({
           text: 'Phone Number',
           value: peer.phone
@@ -82,7 +98,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           });
         }
       }
-      if (peer.accountVerified && peer.verificationIdUrl) {
+      if (peer.verificationIdUrl) {
         this.alreadyVerified.push({
           text: 'Government Id',
           value: peer.verificationIdUrl

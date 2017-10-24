@@ -27,8 +27,10 @@ import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
-
+//import { Ng2CarouselamosModule } from 'ng2-carouselamos';
+import { ContactComponent } from './default/contact/contact.component';
+import { AgmCoreModule } from '@agm/core';
+//import {CSSCarouselComponent} from './default/carousal/carousal.component';
 
 @NgModule({
   declarations: [
@@ -46,8 +48,8 @@ import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
     AppDesignComponent,
     GlobalErrorHandler,
     AppNotificationDialogComponent,
-    ResetPasswordComponent
-
+    ResetPasswordComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,9 @@ import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
     MdProgressBarModule,
     DialogsModule,
     AppRoutingModule,
-    Ng4GeoautocompleteModule.forRoot()
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
+    })
   ],
   bootstrap: [AppComponent],
   providers: [

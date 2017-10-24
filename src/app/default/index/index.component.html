@@ -3,9 +3,10 @@
         <p class="mat-display-3 margin-bottom-20" style="color:black">Learning is Earning</p>
         <p class="mat-subheading-2" style="color:rgba(0,0,0,0.54)">White Paper Coming Soon</p>
     </div>
+
     <div class="margin-top-100 outerContainer"> 
         <img src="/assets/images/images_landing/Waves_above_the_fold.png"/>
-        <img src="/assets/images/images_landing/Video.png" class="col-md-offset-2 centerVideo"/>
+       <a (click)="openVideo()"></a> <img src="/assets/images/images_landing/Video.png" class="col-md-offset-2 centerVideo"/>
         <img src="/assets/images/images_landing/Play_button.png" class="centerPlayButton"/>
 
         <div class="margin-top-270">
@@ -29,7 +30,16 @@
                 <p class="content mat-subheading-2">Meet like-minded people and connect with people with similar goals, join commuinities, participate and discuss. Teams are formed to discuss, participate and discuss</p>
             </div>
         </div>
-
+        <!--
+        <div class="carousel">
+            <ul class="slides">
+        
+            <li *ngFor="#image of images">
+              <h2>{{image.title}}</h2>
+              <img src="{{image.url}}" alt="">
+            </li>
+          </ul>
+        </div>-->
         <img src="/assets/images/images_landing/Shape_testimoni.png" class="pull-right view5Image"/>
         <img src="/assets/images/images_landing/testimonial1.png" class="testimonial testimonial1"/>
         <img src="/assets/images/images_landing/testimonial2.png" class="testimonial testimonial2"/>
