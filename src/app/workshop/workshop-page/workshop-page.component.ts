@@ -36,6 +36,7 @@ import {
 import { CustomDateFormatter } from './custom-date-formatter.provider';
 import { DialogsService } from '../dialogs/dialog.service';
 import {TopicService} from '../../_services/topic/topic.service';
+import {InviteFriendsDialogComponent} from "./invite-friends-dialog/invite-friends-dialog.component";
 
 declare var FB: any;
 
@@ -76,6 +77,10 @@ export class WorkshopPageComponent implements OnInit {
   public newUserRating = 0;
   public liveCohort;
   public isViewTimeHidden = true;
+  public busyDiscussion = false;
+  public busyReview = false;
+  public busyReply = false;
+  public initialLoad = true;
 
   public isReadonly = true;
   public noOfReviews = 3;
@@ -147,6 +152,7 @@ export class WorkshopPageComponent implements OnInit {
   public loadingParticipants = true;
   public loadingWorkshop = true;
   public loadingReviews = true;
+  public accountApproved = 'false';
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -169,12 +175,14 @@ export class WorkshopPageComponent implements OnInit {
       this.toOpenDialogName = params['dialogName'];
     });
     this.userId = cookieUtilsService.getValue('userId');
+    this.accountApproved = this.cookieUtilsService.getValue('accountApproved');
   }
 
   ngOnInit() {
     this.initialised = true;
     this.initializeWorkshop();
     this.initializeForms();
+    this.initialLoad = false;
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -542,7 +550,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   gotoEdit() {
-    this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', this.workshop.stage ? this.workshop.stage : '1']);
   }
 
   public setCurrentCalendar() {
@@ -619,11 +627,13 @@ export class WorkshopPageComponent implements OnInit {
    * postComment
    */
   public postComment() {
+      this.busyDiscussion = true;
     this._collectionService.postComments(this.workshopId, this.chatForm.value, (err, response) => {
       if (err) {
         console.log(err);
       } else {
         this.chatForm.reset();
+        this.busyDiscussion = false;
         this.getDiscussions();
       }
     });
@@ -921,11 +931,14 @@ export class WorkshopPageComponent implements OnInit {
    * postReply
    */
   public postReply(comment: any) {
+      this.busyReply = true;
     this._commentService.replyToComment(comment.id, this.replyForm.value).subscribe(
       response => {
+          this.busyReply = false;
         this.getDiscussions();
         delete this.replyForm;
       }, err => {
+          this.busyReply = false;
         console.log(err);
       }
     );
@@ -982,12 +995,15 @@ export class WorkshopPageComponent implements OnInit {
    * postReview
    */
   public postReview() {
+      this.busyReview = true;
     this._collectionService.postReview(this.workshop.owners[0].id, this.reviewForm.value).subscribe(
       result => {
         if (result) {
+            this.busyReview = false;
           this.getReviews();
         }
       }, err => {
+            this.busyReview = false;
         console.log(err);
       }
     );
@@ -1198,5 +1214,27 @@ export class WorkshopPageComponent implements OnInit {
           content.isViewTimeHidden = true;
       }
   }
+
+  public openVerificationPage() {
+      this.router.navigate(['console', 'profile', 'verification']);
+  }
+
+  public openLoginPage() {
+    this.router.navigate(['login']);
+  }
+
+    public openProfilePage(peerId) {
+        this.router.navigate(['profile', peerId]);
+    }
+
+    public openInviteFriendsDialog() {
+        const dialogRef = this.dialog.open(InviteFriendsDialogComponent, {
+            data: {
+                url: 'workshop/' + this.workshop.id
+            },
+            width: '40vw',
+            height: '50vh'
+        });
+    }
 
 }

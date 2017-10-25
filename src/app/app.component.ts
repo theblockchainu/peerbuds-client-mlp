@@ -73,6 +73,4 @@ export class AppComponent implements OnInit {
       this.loading = this._spinnerService.getSpinnerState();
     }
   }
-
-
 }

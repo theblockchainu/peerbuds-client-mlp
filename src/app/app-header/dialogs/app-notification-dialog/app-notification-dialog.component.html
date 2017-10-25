@@ -3,6 +3,9 @@
     <div *ngIf="!loaded" class="center">
       <div class="loading-container">
         <ngx-loading [show]="true"></ngx-loading>
+        <br>
+        <br>
+        <br>
       </div>
     </div>
   </div>
@@ -20,7 +23,7 @@
     <md-list>
       <md-list-item *ngFor="let notification of notifications">
         <div *ngIf="!notification.hidden">
-          <div [ngClass]="{'row': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.read}">
+          <div [ngClass]="{'row': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.seen}" (click)="onNotificationClick(notification)">
             <div class="col-md-2">
               <img *ngIf="!notification.actor[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
               <img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{config.apiUrl + notification.actor[0].profiles[0].picture_url}}" alt="A" class="circle-thumb notificationsImage">

@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
+import {AuthenticationService} from '../authentication/authentication.service';
 // import { Response } from '@angular/http';
 
 @Injectable()
@@ -25,19 +26,18 @@ export class ProjectSubmissionService {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
+    private authService: AuthenticationService,
     public _requestHeaderService: RequestHeaderService
   ) {
-    this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
-  }
-
-  private getCookieValue(key: string) {
-    const cookie = this._cookieService.get(key);
-    if (cookie) {
-      const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-      this.userId = cookieValue[1];
-    }
-    return this.userId;
+    this.authService.getLoggedInUser.subscribe((userId) => {
+        if (userId !== 0) {
+            this.userId = userId;
+        }
+        else {
+            this.userId = 0;
+        }
+    });
   }
 
   public submitProject(contentId: any, body: any) {
@@ -68,10 +68,6 @@ export class ProjectSubmissionService {
     if (this.userId) {
       return this.http.put(this.config.apiUrl + '/api/submissions/' + submissionId + '/peer/rel/' + this.userId, null, this.options);
     }
-  }
-
-  getUserId() {
-    return this.getCookieValue(this.key);
   }
 
     /**

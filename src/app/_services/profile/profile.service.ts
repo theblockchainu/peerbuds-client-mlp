@@ -12,7 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-// import { Response } from '@angular/http';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable()
 export class ProfileService {
@@ -25,10 +25,18 @@ export class ProfileService {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
+    public authService: AuthenticationService,
     public _requestHeaderService: RequestHeaderService
   ) {
-    this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
+    this.authService.getLoggedInUser.subscribe((userId) => {
+        if (userId !== 0) {
+            this.userId = userId;
+        }
+        else {
+            this.userId = 0;
+        }
+    });
   }
 
   private getCookieValue(key: string) {
@@ -177,12 +185,32 @@ export class ProfileService {
       });
 
   }
+  public sendVerifySms(phonenumber) {
+    const body = {
+    };
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
 
   public confirmEmail(inputToken: string) {
     const body = {};
     const redirect = 'onboarding';
     return this.http
       .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
+
+  public confirmSmsOTP(inputToken: string) {
+    const body = {};
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -199,7 +227,7 @@ export class ProfileService {
     else {
       userId = this.userId;
     }
-    if(query) {
+    if (query) {
       const filter = JSON.stringify(query);
       url = this.config.apiUrl + '/api/peers/' + userId + '?filter=' + filter;
     }
@@ -426,11 +454,10 @@ export class ProfileService {
    * unfollowTopic
    */
   public unfollowTopic(type, topicId: string) {
-    if(type === 'learning') {
+    if (type === 'learning') {
       return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId);
     }
-    else 
-    {
+    else {
       return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId);
     }
   }
@@ -442,7 +469,7 @@ export class ProfileService {
    * followTopic
    */
   public followTopic(type, topicId: string, body?: any) {
-    if(type === 'learning') {
+    if (type === 'learning') {
       if (body) {
         return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, body, this.options)
           .map(response => response.json());
