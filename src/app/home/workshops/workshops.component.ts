@@ -18,7 +18,7 @@ import 'rxjs/add/operator/do';
 })
 export class WorkshopsComponent implements OnInit {
   public availableTopics: Array<any>;
-  public userId: string;
+  public userId;
   public workshops: Array<any>;
   @ViewChild('topicButton') topicButton;
   @ViewChild('priceButton') priceButton;

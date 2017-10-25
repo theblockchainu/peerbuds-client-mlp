@@ -7,6 +7,7 @@ import { MediaUploaderService } from '../../../_services/mediaUploader/media-upl
 import { FileUploadModule } from 'primeng/primeng';
 import { SubmissionViewComponent } from '../submission-view/submission-view.component';
 import { ProjectSubmissionService } from '../../../_services/project-submission/project-submission.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -16,6 +17,7 @@ import 'rxjs/add/operator/map';
 })
 export class SubmitEntryComponent implements OnInit {
 
+  private userId;
   public submitEntryForm: any = FormGroup;
   public imageUrl: string;
   public submissionTopics = [];
@@ -37,8 +39,11 @@ export class SubmitEntryComponent implements OnInit {
     public dialog: MdDialog,
     private _fb: FormBuilder, public http: Http,
     private mediaUploader: MediaUploaderService,
-    public projectSubmissionService: ProjectSubmissionService
-  ) { }
+    public projectSubmissionService: ProjectSubmissionService,
+    private _cookieUtilsService: CookieUtilsService
+  ) {
+    this.userId = _cookieUtilsService.getValue('userId');
+  }
 
   ngOnInit() {
     this.submitEntryForm = this._fb.group({
@@ -62,7 +67,7 @@ export class SubmitEntryComponent implements OnInit {
         this.submissionView = response.json();
         this.savingDraft = false;
 
-        this.projectSubmissionService.addPeerSubmissionRelation(this.submissionView.id).subscribe((res: Response) => {
+        this.projectSubmissionService.addPeerSubmissionRelation(this.userId, this.submissionView.id).subscribe((res: Response) => {
           if (res) {
             this.data.peerHasSubmission = true;
           }

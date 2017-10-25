@@ -20,7 +20,7 @@ export class ReviewPayComponent implements OnInit {
   public elements: any;
   public card: any;
   @ViewChild('cardForm', { read: ElementRef }) cardForm: ElementRef;
-  public userId: string;
+  public userId;
   public collectionId;
   public collectionCalendarId;
   public collection: any = {};
@@ -42,7 +42,7 @@ export class ReviewPayComponent implements OnInit {
       {[k: string]: string} = {'=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours'};
 
   constructor(public config: AppConfig,
-    private cookieUtilsService: CookieUtilsService,
+    private _cookieUtilsService: CookieUtilsService,
     private activatedRoute: ActivatedRoute,
     private _collectionService: CollectionService,
     public profileService: ProfileService,
@@ -53,7 +53,7 @@ export class ReviewPayComponent implements OnInit {
       this.collectionId = params['collectionId'];
       this.collectionCalendarId = params['calendarId'];
     });
-    this.userId = cookieUtilsService.getValue('userId');
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -120,7 +120,7 @@ export class ReviewPayComponent implements OnInit {
         console.log(this.custId);
 
         // get all cards
-        this.paymentService.listAllCards(this.custId).subscribe(cards => {
+        this.paymentService.listAllCards(this.userId, this.custId).subscribe(cards => {
           if (cards) {
             this.listAllCards = cards.json().data;
             console.log('listAllCards: ' + JSON.stringify(this.listAllCards));
@@ -141,7 +141,7 @@ export class ReviewPayComponent implements OnInit {
       e.preventDefault();
       if (this.isCardExist === true) {
           // console.log('card exist');
-          this.paymentService.createCharge(this.collectionId, this.createChargeData).subscribe((resp: Response) => {
+          this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: Response) => {
               if (resp) {
                   this.message = 'Payment successful. Redirecting...';
                   this.savingData = false;
@@ -158,11 +158,11 @@ export class ReviewPayComponent implements OnInit {
           this.stripe.createToken(this.card, extraDetails).then((result: any) => {
             if (result.token) {
                 this.createSourceData.token = result.token.id;
-                this.paymentService.createSource(this.custId, this.createSourceData).subscribe((res: Response) => {
+                this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: Response) => {
                     if (res) {
                         //console.log(JSON.stringify(res.json()));
                         this.createChargeData.source = res.json().id;
-                        this.paymentService.createCharge(this.collectionId, this.createChargeData).subscribe();
+                        this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe();
                         this.message = 'Payment successful. Redirecting...';
                         this.savingData = false;
                         this.joinCollection();

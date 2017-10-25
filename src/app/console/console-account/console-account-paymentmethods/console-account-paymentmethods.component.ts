@@ -12,9 +12,10 @@ import { PaymentService } from '../../../_services/payment/payment.service';
   styleUrls: ['./console-account-paymentmethods.component.scss']
 })
 export class ConsoleAccountPaymentmethodsComponent implements OnInit {
+
+  private userId;
   public createSourceData = { token: '', email: '' };
   public custId: string;
-  public userId: string;
   public listAllCards: Array<any>;
   public loadingCards: boolean;
   constructor(
@@ -23,13 +24,15 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
     public dialogService: DialogsService,
     public profileService: ProfileService,
     private cookieUtilsService: CookieUtilsService,
-    public paymentService: PaymentService
+    public paymentService: PaymentService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleAccountComponent.setActiveTab(urlSegment[0].path);
     });
-    this.userId = cookieUtilsService.getValue('userId');
+    
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -44,7 +47,7 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
         if (peer.stripeCustId) {
           this.custId = peer.stripeCustId;
           // get all cards
-          this.paymentService.listAllCards(this.custId).subscribe(cards => {
+          this.paymentService.listAllCards(this.userId, this.custId).subscribe(cards => {
             if (cards) {
               this.listAllCards = cards.json().data;
               console.log(this.listAllCards);
@@ -64,7 +67,7 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
     this.dialogService.addCard().subscribe(result => {
       if (result) {
         this.createSourceData.token = result.token.id;
-        this.paymentService.createSource(this.custId, this.createSourceData).subscribe((res: any) => {
+        this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
           if (res) {
             console.log(res.json());
             this.fetchCards();
@@ -77,7 +80,7 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
   }
 
   public deleteCard(cardId: string) {
-    this.paymentService.deleteCard(this.custId, cardId).subscribe((res: any) => {
+    this.paymentService.deleteCard(this.userId, this.custId, cardId).subscribe((res: any) => {
       if (res) {
         console.log(res.json());
         this.fetchCards();

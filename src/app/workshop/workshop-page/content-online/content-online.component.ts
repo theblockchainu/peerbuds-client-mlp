@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
 import { AppConfig } from '../../../app.config';
-import {CollectionService} from '../../../_services/collection/collection.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CommentService} from '../../../_services/comment/comment.service';
-import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
+import { CollectionService } from '../../../_services/collection/collection.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommentService } from '../../../_services/comment/comment.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-content-online',
@@ -28,11 +28,11 @@ export class ContentOnlineComponent implements OnInit {
     public dialogRef: MdDialogRef<ContentOnlineComponent>,
     private _fb: FormBuilder,
     private _commentService: CommentService,
-    private cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService
   ) {
       this.userType = data.userType;
       this.workshopId = data.collectionId;
-      this.userId = cookieUtilsService.getValue('userId');
+      this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {

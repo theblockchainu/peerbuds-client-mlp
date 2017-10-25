@@ -12,13 +12,15 @@ import { CollectionService } from '../_services/collection/collection.service';
 export class HomeComponent implements OnInit {
 
   public activeTab: string;
-  public userId: string;
+  public userId;
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
     private cookieUtilsService: CookieUtilsService,
     private _collectionService: CollectionService,
-    private appConfig: AppConfig) {
-    this.userId = cookieUtilsService.getValue('userId');
+    private appConfig: AppConfig,
+    private _cookieUtilsService: CookieUtilsService) {
+      
+      this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {

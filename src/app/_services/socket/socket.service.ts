@@ -1,29 +1,21 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import {Observable} from 'rxjs/Observable';
-import {CookieService} from 'ngx-cookie-service';
-import {AuthenticationService} from '../authentication/authentication.service';
+import { Observable } from 'rxjs/Observable';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable()
 export class SocketService {
 
     private url = 'http://localhost:3000';
     private socket;
-    public key = 'userId';
     private userId;
 
     constructor(
-        private _cookieService: CookieService,
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private _cookieUtilsService: CookieUtilsService
     ) {
-        this.authService.getLoggedInUser.subscribe((userId) => {
-            if (userId !== 0) {
-                this.userId = userId;
-            }
-            else {
-                this.userId = 0;
-            }
-        });
+        this.userId = _cookieUtilsService.getValue('userId');
         this.socket = io(this.url);
         if (this.userId !== undefined) {
             const user = {

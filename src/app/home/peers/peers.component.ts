@@ -14,7 +14,7 @@ import { SelectPriceComponent } from '../dialogs/select-price/select-price.compo
 export class PeersComponent implements OnInit {
   public peers: Array<any>;
   public availableTopics: Array<any>;
-  public userId: string;
+  public userId;
   public loading = false;
 
   @ViewChild('topicButton') topicButton;
@@ -26,6 +26,7 @@ export class PeersComponent implements OnInit {
     public config: AppConfig,
     public dialog: MdDialog
   ) {
+    
     this.userId = _cookieUtilsService.getValue('userId');
   }
 
@@ -55,44 +56,4 @@ export class PeersComponent implements OnInit {
       console.log(err);
     });
   }
-  // openTopicsDialog(): void {
-  //   const dialogRef = this.dialog.open(SelectTopicsComponent, {
-  //     width: '250px',
-  //     data: this.availableTopics,
-  //     disableClose: true,
-  //     position: {
-  //       top: this.topicButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
-  //       left: this.topicButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.availableTopics = result;
-  //       this.fetchPeers();
-  //     }
-  //   });
-  // }
-
-  // openPriceDialog(): void {
-  //   const dialogRef = this.dialog.open(SelectPriceComponent, {
-  //     width: '250px',
-  //     data: {
-  //       availableRange: this.availableRange,
-  //       selectedRange: this.selectedRange
-  //     },
-  //     disableClose: true,
-  //     position: {
-  //       top: this.priceButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
-  //       left: this.priceButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.selectedRange = result.selectedRange;
-  //       this.fetchWorkshops();
-  //     }
-  //   });
-  // }
 }

@@ -6,6 +6,7 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 import { LanguagePickerService } from '../../../_services/languagepicker/languagepicker.service';
 import { CurrencypickerService } from '../../../_services/currencypicker/currencypicker.service';
 import { TimezonePickerService } from '../../../_services/timezone-picker/timezone-picker.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { MdSnackBar } from '@angular/material';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { Observable, BehaviorSubject} from 'rxjs';
@@ -26,6 +27,7 @@ declare var moment: any;
 })
 export class ConsoleProfileEditComponent implements OnInit {
   public loadingProfile = false;
+  private userId;
   public profile: any;
   public peer: any;
   public work: any;
@@ -68,7 +70,8 @@ export class ConsoleProfileEditComponent implements OnInit {
     public _fb: FormBuilder,
     public _timezoneService: TimezonePickerService,
     private http: Http,
-    private config: AppConfig) {
+    private config: AppConfig,
+    private _cookieUtilsService: CookieUtilsService) {
       activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
         if (urlSegment[0] === undefined) {
           consoleProfileComponent.setActiveTab('edit');
@@ -80,6 +83,8 @@ export class ConsoleProfileEditComponent implements OnInit {
       this.language = this.languagesAsync.asObservable();
       this.currenciesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
       this.timezoneAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+
+      this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -126,12 +131,12 @@ export class ConsoleProfileEditComponent implements OnInit {
         'emergency_contacts'
       ]
     };
-    this._profileService.getProfileData(query).subscribe((profiles) => {
+    this._profileService.getProfileData(this.userId, query).subscribe((profiles) => {
       console.log(profiles);
       this.setFormValues(profiles);
     });
 
-    this._profileService.getProfile().subscribe((profiles) => {
+    this._profileService.getProfile(this.userId).subscribe((profiles) => {
       this.profile = profiles[0];
       if (this.profile.work !== undefined && this.profile.work.length === 0) {
         const workEntry = {};
@@ -388,19 +393,19 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.phone_numbers;
     const emergency_contacts = profileData.emergency_contacts;
     delete profileData.emergency_contact;
-    this._profileService.updateProfile(profileData)
+    this._profileService.updateProfile(this.userId, profileData)
       .flatMap((response) => {
-        return this._profileService.updatePhoneNumbers(this.profile.id, phone_numbers);
+        return this._profileService.updatePhoneNumbers(this.userId, this.profile.id, phone_numbers);
       })
       .flatMap((response) => {
-        return this._profileService.updateEmergencyContact(this.profile.id, emergency_contacts);
+        return this._profileService.updateEmergencyContact(this.userId, this.profile.id, emergency_contacts);
       })
       .flatMap((response) => {
-        return this._profileService.updateWork(this.profile.id, work);
+        return this._profileService.updateWork(this.userId, this.profile.id, work);
       }).flatMap((response) => {
-        return this._profileService.updateEducation(this.profile.id, education);
+        return this._profileService.updateEducation(this.userId, this.profile.id, education);
       }).flatMap((response) => {
-        return this._profileService.updatePeer({ 'email': email});
+        return this._profileService.updatePeer(this.userId, { 'email': email});
       }).subscribe((response) => {
         this.snackBar.open('Profile Updated', 'Close');
       }, (err) => {
