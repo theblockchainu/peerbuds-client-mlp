@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginComponentDialog } from '../../_services/dialogs/login-dialog/login-dialog.component';
-//import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { NgModule } from '@angular/core';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
@@ -8,6 +7,7 @@ import { Router } from '@angular/router';
 import { AppHeaderComponent } from '../../app-header/app-header.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 @Component({
   selector: 'app-index',
@@ -21,18 +21,19 @@ export class IndexComponent implements OnInit {
   constructor( //private dialogsService: DialogsService,
               private _authService: AuthenticationService,
               private _router: Router,
-              public dialog: MdDialog) {
+              public dialog: MdDialog,
+              private dialogsService: DialogsService) {
               this.isLoggedIn = _authService.isLoggedIn();
               _authService.isLoggedIn().subscribe((res) => {
                 this.loggedIn = res;
-                if(this.loggedIn) {
+                if (this.loggedIn) {
                   setTimeout(() => this._router.navigate(['home', 'homefeed']));
                 }
               });
    }
    ngOnInit() {
-   }/*
+   }
    public openVideo() {
     this.dialogsService.openVideo().subscribe();
-  }*/
+  }
 }

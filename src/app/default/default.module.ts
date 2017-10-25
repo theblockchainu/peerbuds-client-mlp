@@ -9,6 +9,7 @@ import {
     MdButtonModule, MdCardModule, MdIconModule, MdInputModule, MdProgressBarModule, MdSelectModule,
     MdToolbarModule
 } from '@angular/material';
+import {CSSCarouselComponent} from './carousal/carousal.component'; 
 
 @NgModule({
   imports: [
@@ -25,6 +26,6 @@ import {
     MdInputModule,
     MdSelectModule
   ],
-  declarations: [IndexComponent]
+  declarations: [IndexComponent, CSSCarouselComponent]
 })
 export class DefaultModule { }

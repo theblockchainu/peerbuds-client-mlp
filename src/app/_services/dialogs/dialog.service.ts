@@ -69,7 +69,6 @@ export class DialogsService {
         });
         return dialogRef6.afterClosed();
     }
-    
     public openIdPolicy() {
         let dialogRef7: MdDialogRef<IdPolicyDialogComponent>;
 
@@ -84,8 +83,8 @@ export class DialogsService {
         let dialogRef8: MdDialogRef<VideoDialogComponent>;
 
         dialogRef8 = this.dialog.open(VideoDialogComponent, {
-            width: '500px',
-            height: '600px'
+            width: '700px',
+            height: '420px'
         });
         return dialogRef8.afterClosed();
     }

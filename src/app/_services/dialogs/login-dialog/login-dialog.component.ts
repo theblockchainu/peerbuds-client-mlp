@@ -12,7 +12,7 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ForgotpwdComponentDialog } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AppConfig } from '../../../app.config';
 import { MdDialog, MdDialogConfig } from '@angular/material';
-import { DialogsService } from '../dialog.service';
+//import { DialogsService } from '../dialog.service';
 
 @Component({
   selector: 'app-login-dialog',  // <login></login>
@@ -23,6 +23,7 @@ import { DialogsService } from '../dialog.service';
   templateUrl: './login-dialog.component.html'
 })
 
+// tslint:disable-next-line:component-class-suffix
 export class LoginComponentDialog implements OnInit {
   // Set our default values
   // public loading = false;
@@ -30,6 +31,7 @@ export class LoginComponentDialog implements OnInit {
   isLoggedIn: Observable<boolean>;
   private email: string;
   public passWord: string;
+  public rememberMe: boolean;
   public loginForm: FormGroup;
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
@@ -46,7 +48,8 @@ export class LoginComponentDialog implements OnInit {
     private _fb: FormBuilder,
     public config: AppConfig,
     @Inject(MD_DIALOG_DATA) public data: any,
-    private dialogsService: DialogsService) {
+    //private dialogsService: DialogsService
+  ) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
     }
 
@@ -58,7 +61,8 @@ export class LoginComponentDialog implements OnInit {
 
     this.loginForm = this._fb.group({
       email : ['', Validators.email], /* putting reg ex as well */
-      password : ['', Validators.required]
+      password : ['', Validators.required],
+      rememberMe: ['']
     });
       this.forgotpwdForm = this._fb.group({
       email : ['', Validators.email] /* putting reg ex as well */
@@ -68,6 +72,7 @@ export class LoginComponentDialog implements OnInit {
   public login() {
       this.email = this.loginForm.controls['email'].value;
       this.passWord = this.loginForm.controls['password'].value;
+      this.rememberMe = this.loginForm.controls['rememberMe'].value;
       this.authenticationService.login(this.email, this.passWord)
           .subscribe(
               (data) => {
@@ -82,11 +87,11 @@ export class LoginComponentDialog implements OnInit {
                 else console.log(error);
               });
   }
-
+/*
   public openForgotPwd() {
     this.dialogsService.openForgotPwd().subscribe();
   }
-
+  */
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
   }

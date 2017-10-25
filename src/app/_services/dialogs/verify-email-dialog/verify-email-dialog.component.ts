@@ -60,12 +60,13 @@ export class VerifyEmailDialogComponent implements OnInit {
    // this.router.navigate(['app-upload-docs', +this.step]);
    console.log('email dialog opened');
    if (p === 3) {
-    //this.peer.controls['email'].setValue(this.email);
+    this.peer.controls['email'].setValue(this.email);
     this.sendOTP();
   }
   }
 
   public sendOTP() {
+    debugger;
     this._profileService.sendVerifyEmail(this.peer.controls.email.value)
       .subscribe();
   }
