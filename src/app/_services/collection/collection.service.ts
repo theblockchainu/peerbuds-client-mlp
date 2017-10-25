@@ -27,6 +27,7 @@ export class CollectionService {
     this.options = requestHeaderService.getOptions();
     this.now = new Date();
     this.authService.getLoggedInUser.subscribe((userId) => {
+        console.log('collectionService: new userId: ' + userId);
         if (userId !== 0) {
             this.userId = userId;
         }

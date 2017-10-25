@@ -11,6 +11,8 @@ import {
 
 import { SpinnerService } from './_services/spinner/spinner.service';
 import {SocketService} from './_services/socket/socket.service';
+import {CookieService} from 'ngx-cookie-service';
+import {AuthenticationService} from './_services/authentication/authentication.service';
 
 
 @Component({
@@ -30,7 +32,9 @@ export class AppComponent implements OnInit {
 
   constructor(private router: Router,
               private _spinnerService: SpinnerService,
-              private _socketService: SocketService
+              private _socketService: SocketService,
+              private _cookieService: CookieService,
+              private _authService: AuthenticationService
   ) {
     this.loading = this._spinnerService.getSpinnerState();
     router.events.subscribe((event: RouterEvent) => {
@@ -41,6 +45,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
       this.router.events.subscribe(event => this.modifyHeader(event));
       this.router.events.subscribe(event => this.modifyFooter(event));
+
     }
 
   modifyFooter(location) {
@@ -49,7 +54,6 @@ export class AppComponent implements OnInit {
 
    modifyHeader(location) {
      this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url));
-       console.log('Show header is: ' + this.showHeader + '. Location is: ' + location.url);
   }
 
   // Shows and hides the loading spinner during RouterEvent changes

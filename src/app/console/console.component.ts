@@ -30,13 +30,15 @@ export class ConsoleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._profileService.getPeerData().subscribe(
-      result => {
-        this.isAdmin = result.isAdmin;
-      }, err => {
-        console.log(err);
-      }
-    );
+    if (this._profileService.getPeerData() !== undefined) {
+        this._profileService.getPeerData().subscribe(
+            result => {
+                this.isAdmin = result.isAdmin;
+            }, err => {
+                console.log(err);
+            }
+        );
+    }
   }
 
   /**

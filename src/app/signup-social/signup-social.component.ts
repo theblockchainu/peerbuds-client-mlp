@@ -8,6 +8,8 @@ import { AppConfig } from '../app.config';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ProfileService } from '../_services/profile/profile.service';
 import 'rxjs/add/operator/map';
+import {AuthenticationService} from '../_services/authentication/authentication.service';
+import {CookieService} from 'ngx-cookie-service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -32,7 +34,7 @@ export class SignupSocialComponent implements OnInit {
   public selectedYear;
   public dob: string;
 
-  constructor(public profileService: ProfileService, private _fb: FormBuilder, public router: Router) { }
+  constructor(public profileService: ProfileService, private _fb: FormBuilder, public router: Router, public _authService: AuthenticationService, private _cookieService: CookieService) { }
 
   ngOnInit() {
     this.getPeerData();
@@ -55,7 +57,7 @@ export class SignupSocialComponent implements OnInit {
   getPeerData() {
     const query = {};
     this.profileService.getPeerData(query).subscribe(peer => {
-      if(peer.email) {
+      if (peer.email) {
         this.signupSocialForm.controls.email.patchValue(peer.email);
       }
     });
@@ -68,7 +70,7 @@ export class SignupSocialComponent implements OnInit {
 
       this.signupSocialForm.controls.first_name.patchValue(peerProfile[0].first_name);
       this.signupSocialForm.controls.last_name.patchValue(peerProfile[0].last_name);
-      if(peerProfile[0].email) {
+      if (peerProfile[0].email) {
         this.signupSocialForm.controls.email.patchValue(peerProfile[0].email);
       }
     });

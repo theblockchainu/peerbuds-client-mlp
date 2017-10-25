@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { AppHeaderComponent } from '../../app-header/app-header.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-index',
@@ -18,20 +19,24 @@ export class IndexComponent implements OnInit {
 
   public isLoggedIn;
   public loggedIn = false;
+
   constructor( //private dialogsService: DialogsService,
               private _authService: AuthenticationService,
               private _router: Router,
+              private _cookieService: CookieService,
               public dialog: MdDialog) {
               this.isLoggedIn = _authService.isLoggedIn();
               _authService.isLoggedIn().subscribe((res) => {
                 this.loggedIn = res;
-                if(this.loggedIn) {
-                  setTimeout(() => this._router.navigate(['home', 'homefeed']));
+                if (this.loggedIn) {
+                    setTimeout(() => this._router.navigate(['home', 'homefeed']));
                 }
               });
    }
    ngOnInit() {
-   }/*
+   }
+
+   /*
    public openVideo() {
     this.dialogsService.openVideo().subscribe();
   }*/
