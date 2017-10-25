@@ -3,12 +3,14 @@ import {ConsoleAccountComponent} from '../console-account.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppConfig} from '../../../app.config';
 import {NotificationService} from '../../../_services/notification/notification.service';
+import {UcWordsPipe} from 'ngx-pipes/esm';
 declare var moment: any;
 
 @Component({
   selector: 'app-console-account-notifications',
   templateUrl: './console-account-notifications.component.html',
-  styleUrls: ['./console-account-notifications.component.scss']
+  styleUrls: ['./console-account-notifications.component.scss'],
+    providers: [UcWordsPipe]
 })
 export class ConsoleAccountNotificationsComponent implements OnInit {
 
@@ -21,6 +23,7 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
     public consoleAccountComponent: ConsoleAccountComponent,
     private config: AppConfig,
     public _notificationService: NotificationService,
+    private ucwords: UcWordsPipe,
     public router: Router
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
@@ -35,7 +38,7 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
     ngOnInit() {
 
         this.loaded = false;
-        this._notificationService.getNotifications('{"include": [{"actor":"profiles"}, "collection"] }', (err, result) => {
+        this._notificationService.getNotifications('{"include": [{"actor":"profiles"}, "collection"], "order": "createdAt DESC" }', (err, result) => {
             if (err) {
                 console.log(err);
             } else {
@@ -50,7 +53,7 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
     }
 
     public getNotificationText(notification) {
-        const replacements = {'%username%': '<b>' + notification.actor[0].profiles[0].first_name + ' ' + notification.actor[0].profiles[0].last_name + '</b>', '%collectionTitle%': notification.collection[0].title, '%collectionName%': '<b>' + notification.collection[0].title + '</b>', '%collectionType%': notification.collection[0].type},
+        const replacements = {'%username%': '<b>' + this.ucwords.transform(notification.actor[0].profiles[0].first_name) + ' ' + this.ucwords.transform(notification.actor[0].profiles[0].last_name) + '</b>', '%collectionTitle%': this.ucwords.transform(notification.collection[0].title), '%collectionName%': '<b>' + this.ucwords.transform(notification.collection[0].title) + '</b>', '%collectionType%': this.ucwords.transform(notification.collection[0].type)},
             str = notification.description;
 
         return str.replace(/%\w+%/g, function(all) {
@@ -71,6 +74,10 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
                 notification.hidden = false;
             }
         });
+    }
+
+    public onNotificationClick(notification) {
+        this.router.navigate(notification.actionUrl);
     }
 
 }

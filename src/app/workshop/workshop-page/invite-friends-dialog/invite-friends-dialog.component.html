@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-12">
+    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+    <div style="display: inline-block">
+      <h2 md-dialog-title>Invite friends to this workshop</h2>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+  </div>
+</div>
+<div md-dialog-content>
+  <div class="row">
+    <div class="col-md-12 margin-top-60">
+      Share this link with your friends to invite them to join this workshop
+    </div>
+    <div class="col-md-12 ">
+      <md-input-container [floatPlaceholder]="'never'" class="pb-block" style="margin: 20px 0px; font-size: 20px;">
+        <input #urlInput mdInput [readOnly]="true" value="http://localhost:8080/{{url}}" />
+      </md-input-container>
+    </div>
+    <div class="col-md-12 margin-top-20">
+      <button md-raised-button color="primary" [ngxClipboard]="urlInput" (cbOnSuccess)="onCopySuccess()">Copy</button> &emsp;
+      <button md-button color="primary" (click)="onEmailClicked()">Email</button>
+    </div>
+  </div>
+</div>

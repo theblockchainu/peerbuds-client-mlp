@@ -16,6 +16,7 @@ export class GlobalErrorHandler implements ErrorHandler {
         const message = error.message ? error.message : error.toString();
         // log on the server
         router.navigate(['error']);
-        throw error;
+        //throw error;
+        console.log(error);
     }
 }

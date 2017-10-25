@@ -36,6 +36,14 @@ img {
     color: #33bd9e;
 }
 
+.clickable {
+    cursor:  pointer !important;
+}
+
+:focus {
+    outline: none !important;
+}
+
 /* Scroll Bar custom Starts*/
 /* .scrollbar {
     background-color: #F5F5F5;
