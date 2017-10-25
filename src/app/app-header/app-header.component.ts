@@ -43,6 +43,7 @@ export class AppHeaderComponent implements OnInit {
               private _profileService: ProfileService,
               private router: Router,
               private dialog: MdDialog,
+              private activatedRoute: ActivatedRoute,
               private _notificationService: NotificationService,
               private dialogsService: DialogsService) {
                 this.isLoggedIn = authService.isLoggedIn();

@@ -22,8 +22,15 @@ import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+//import { Ng2CarouselamosModule } from 'ng2-carouselamos';
+import { ContactComponent } from './contact-us/contact-us.component';
+import { AgmCoreModule } from '@agm/core';
+//import {CSSCarouselComponent} from './default/carousal/carousal.component';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { WhitePaperComponent } from './white-paper/white-paper.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 
 @NgModule({
@@ -42,8 +49,11 @@ import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
     AppDesignComponent,
     GlobalErrorHandler,
     AppNotificationDialogComponent,
-    ResetPasswordComponent
-
+    ResetPasswordComponent,
+    ContactComponent,
+    AboutUsComponent,
+    WhitePaperComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +72,8 @@ import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
     MdProgressBarModule,
     DialogsModule,
     AppRoutingModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM' }),
     Ng4GeoautocompleteModule.forRoot(),
     LoadingModule.forRoot({
         animationType: ANIMATION_TYPES.threeBounce,

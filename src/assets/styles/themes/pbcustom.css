@@ -36,6 +36,14 @@ img {
     color: #33bd9e;
 }
 
+.clickable {
+    cursor:  pointer !important;
+}
+
+:focus {
+    outline: none !important;
+}
+
 /* Scroll Bar custom Starts*/
 /* .scrollbar {
     background-color: #F5F5F5;
@@ -108,10 +116,6 @@ button:focus {
 #style-3::-webkit-scrollbar-thumb
 {
     background-color: #000000;
-}
-
-.clickable {
-    cursor:  pointer !important;
 }
 
 
@@ -567,7 +571,7 @@ h3.calendarTitle  {
     border-radius: 15px;
     text-align: center;
     padding-top: 3px;
-    margin-top: 1px;
+    margin-top: 12px;
     margin-right: 0px !important;
 }
 

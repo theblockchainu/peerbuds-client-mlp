@@ -35,7 +35,7 @@
         .rightSpan {
             float: right;
             padding: 5px 10px 0px 10px;
-            width: 48%;
+            width: 30%;
         }
         .mat-button, .mat-fab, .mat-icon-button, .mat-mini-fab, .mat-raised-button {
             box-sizing: border-box;
@@ -605,12 +605,12 @@
                 <button class="headerButtons mat-button" onclick="goToPhilosophy()" *ngIf="!(isLoggedIn | async)">
                     Philosophy
                 </button>
-                <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+               <!-- <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
                     Journey
                 </button>
                 <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
                 About
-                </button>
+                </button>-->
                 <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
                 White Paper
                 </button>
@@ -648,7 +648,7 @@
                         <div class="margin-bottom-20 btnSignupEmail">
                             <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()"> Continue with email</a>
                         </div>
-                        <div class="small-font btn-hide text-center">Have an account already? <a class="btn-link link margin-top-10" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a></div>
+                        <div class="small-font btn-hide text-center">Have an account already? <a class="btn-link link margin-top-10" style="cursor: pointer;" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a></div>
 
                 
                 <div class="signupEmail hide signup-box2">
@@ -745,11 +745,11 @@
     </div>
     <div class="fr"></div>
 
-    <footer *ngIf="!(isLoggedIn | async)" style="margin-bottom: 40px;">
-        <div class="layout-row footer col-md-offset-2 col-md-8" layout="row" color="white">
-          <div layout="row" class="col-sm-12">
-                <a class="footer-btn footerButtons col-sm-2" md-button routerLink="."> About Us </a>
-                <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+    <footer *ngIf="!(isLoggedIn | async)">
+        <div class="layout-row footer col-md-offset-2 col-md-8 margin-bottom-20" layout="row" color="white">
+          <div layout="row" class="col-sm-12" style="cursor: pointer;">
+                <a class="footer-btn footerButtons col-sm-2" md-button href="/philosophy"> About Us </a>
+                <a class="footer-btn footerButtons col-sm-2" md-button href="/contact">
                   Contact Us
                 </a>
                 <span class="center">
@@ -757,10 +757,10 @@
                         <img src="/assets/images/images_landing/Pb_logo.png" alt="logo">
                   </a>
                 </span>
-                <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+                <a class="footer-btn footerButtons col-sm-2" md-button href="/white-paper">
                  White Paper
                 </a>
-                <a class="footer-btn footerButtons col-sm-2" md-button routerLink=".">
+                <a class="footer-btn footerButtons col-sm-2" md-button href="/privacy-policy">
                  Privacy Policy
                 </a>
           

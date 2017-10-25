@@ -50,7 +50,7 @@
     <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
       About
     </button>-->
-    <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+    <button md-button class="headerButtons" [routerLink]="['/white-paper']" *ngIf="!(isLoggedIn | async)">
       White Paper
     </button>
 
@@ -58,12 +58,12 @@
       Sign Up
     </a>
 
-    <!-- trying dialog-->
-    <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
-      Log In
-    </button>
+      <!-- trying dialog-->
+      <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
+        Log In
+      </button>
 
-  </span>
+    </span>
 </md-toolbar>
 
 <md-menu #headerTeachMenu>

@@ -21,6 +21,7 @@ export class AuthenticationService {
 
   public key = 'access_token';
   private options;
+  private userId;
   isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: Http, private config: AppConfig,
@@ -31,6 +32,15 @@ export class AuthenticationService {
   ) {
       this.options = this._requestHeaderService.getOptions();
   }
+
+    private getCookieValue(key: string) {
+        const cookie = this._cookieService.get(key);
+        if (cookie) {
+            const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
+            this.userId = cookieValue[1];
+        }
+        return this.userId;
+    }
 
   /**
   *

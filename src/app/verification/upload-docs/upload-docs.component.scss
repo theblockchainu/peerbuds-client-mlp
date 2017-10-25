@@ -8,7 +8,7 @@
     font-size:14px;
 
     &.drop-shadow{
-	    // box-shadow:0 0 10px #e5e5e5;
+        // box-shadow:0 0 10px #e5e5e5;
     }
     .section-header{
         font-weight: bold;
@@ -49,6 +49,7 @@
         padding: 22px;
     }
 
+
     .description1 {
         font-size: 16px;
         color: #767676;
@@ -64,7 +65,7 @@
     .description2, .description2 ul{
         font-size: 16px;
         color: #484848;
-        font-weight: 400;
+        font-weight: 300;
     }
     .step-2{
     padding: 21px;
@@ -94,7 +95,7 @@
 .loading-container {
     position: relative;
     width:50px;
-    margin: 30px 0px 0px 0px;
+    margin: 30px 0px 50px 0px;
 }
 
 .uploaded_file {
@@ -150,4 +151,9 @@
 
 .delete .delete-image {
     top:5px;
+}
+
+.note{
+position: relative;
+margin-top: -58px;
 }

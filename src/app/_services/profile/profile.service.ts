@@ -185,12 +185,32 @@ export class ProfileService {
       });
 
   }
+  public sendVerifySms(phonenumber) {
+    const body = {
+    };
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
 
   public confirmEmail(inputToken: string) {
     const body = {};
     const redirect = 'onboarding';
     return this.http
       .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
+
+  public confirmSmsOTP(inputToken: string) {
+    const body = {};
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });

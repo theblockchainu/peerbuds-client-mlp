@@ -8,12 +8,15 @@ import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { LoginComponent } from './login/login.component';
-import { AppDesignComponent } from "./app-design/app-design.component";
+import { AppDesignComponent } from './app-design/app-design.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { DialogsService } from './_services/dialogs/dialog.service';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-
+import { ContactComponent } from './contact-us/contact-us.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { WhitePaperComponent } from './white-paper/white-paper.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   {
@@ -22,9 +25,25 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'about-us',
+    component: AboutUsComponent
+  },
+  {
+    path: 'white-paper',
+    component: WhitePaperComponent
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyPolicyComponent
+  },
+  {
     path: 'philosophy',
-    component: IndexPhilComponent,
-  }, 
+    component: IndexPhilComponent
+  },
+  {
+    path: 'contact-us',
+    component: ContactComponent
+  },
   {
     path: 'design',
     component: AppDesignComponent
