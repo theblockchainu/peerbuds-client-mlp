@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {AppConfig} from '../../../app.config';
-import {NotificationService} from '../../../_services/notification/notification.service';
-import {Router} from '@angular/router';
-import {MdDialogRef} from '@angular/material';
-import {UcWordsPipe} from 'ngx-pipes/esm';
+import { AppConfig } from '../../../app.config';
+import { NotificationService } from '../../../_services/notification/notification.service';
+import { Router } from '@angular/router';
+import { MdDialogRef } from '@angular/material';
+import { UcWordsPipe } from 'ngx-pipes/esm';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 declare var moment: any;
 @Component({
   selector: 'app-app-notification-dialog',
@@ -16,20 +17,22 @@ export class AppNotificationDialogComponent implements OnInit {
   public picture_url = false;
   public notifications = [];
   public loaded = false;
+  private userId;
 
   constructor(
       public config: AppConfig,
       public _notificationService: NotificationService,
       public router: Router,
       private ucwords: UcWordsPipe,
-      public dialogRef: MdDialogRef<AppNotificationDialogComponent>
+      public dialogRef: MdDialogRef<AppNotificationDialogComponent>,
+      public _cookieUtilsService: CookieUtilsService
   ) {
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
-
     this.loaded = false;
-    this._notificationService.getNotifications('{"include": [{"actor":"profiles"}, "collection"], "order": "createdAt DESC" }', (err, result) => {
+    this._notificationService.getNotifications(this.userId, '{"include": [{"actor":"profiles"}, "collection"], "order": "createdAt DESC" }', (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -59,7 +62,7 @@ export class AppNotificationDialogComponent implements OnInit {
 
   public hideNotification(notification) {
     notification.hidden = true;
-    this._notificationService.updateNotification(notification, (err, patchResult) => {
+    this._notificationService.updateNotification(this.userId, notification, (err, patchResult) => {
         if (err) {
             console.log(err);
             notification.hidden = false;

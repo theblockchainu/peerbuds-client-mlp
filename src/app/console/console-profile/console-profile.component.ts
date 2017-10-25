@@ -3,6 +3,7 @@ import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ProfileService } from '../../_services/profile/profile.service';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { ConsoleComponent } from '../console.component';
 
 declare var moment: any;
@@ -15,6 +16,7 @@ declare var moment: any;
 })
 export class ConsoleProfileComponent implements OnInit {
 
+  private userId;
   public workshops: any;
   public loaded: boolean;
   public activeTab: string;
@@ -25,13 +27,14 @@ export class ConsoleProfileComponent implements OnInit {
     public router: Router,
     public _collectionService: CollectionService,
     public consoleComponent: ConsoleComponent,
-    public _profileService: ProfileService) {
+    public _profileService: ProfileService,
+    private _cookieUtilsService: CookieUtilsService) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
+    this.userId = _cookieUtilsService.getValue('userId');
 
-    this.profileId = _profileService.getPeerProfile();
     this.activeTab = 'edit';
   }
 
@@ -43,7 +46,7 @@ export class ConsoleProfileComponent implements OnInit {
    * createWorkshop
    */
   public viewProfile() {
-    this.router.navigate(['profile', this.profileId]);
+    this.router.navigate(['profile', this.userId]);
   }
 
   /**

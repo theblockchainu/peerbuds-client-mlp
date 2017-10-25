@@ -5,9 +5,9 @@ import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@ang
 import { Http } from '@angular/http';
 import { MediaUploaderService } from '../../mediaUploader/media-uploader.service';
 import { AppConfig } from '../../../app.config';
-import { MdSnackBar } from '@angular/material';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdSnackBar, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ProfileService } from '../../profile/profile.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -24,6 +24,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
   private phone: number;
   private success;
   public otpReceived: string;
+  public userId;
 
   constructor(
     public router: Router,
@@ -35,9 +36,11 @@ export class VerifyPhoneDialogComponent implements OnInit {
     private config: AppConfig,
     public snackBar: MdSnackBar,
     public dialogRef: MdDialogRef<VerifyPhoneDialogComponent>,
+    public _cookieUtilsService: CookieUtilsService,
     @Inject(MD_DIALOG_DATA) public data: any) {
       this.activatedRoute.params.subscribe(params => {
       });
+      this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -48,7 +51,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
     this.otp = this._fb.group({
       inputOTP: [null]
     });
-    this._profileService.getPeerNode()
+    this._profileService.getPeerNode(this.userId)
       .subscribe((res) => {
         this.peer.controls.phone.setValue(res.phone);
       });
@@ -70,7 +73,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
   }
 
   public resendOTP(message: string, action) {
-    this._profileService.sendVerifyEmail(this.peer.controls.phone.value)
+    this._profileService.sendVerifyEmail(this.userId, this.peer.controls.phone.value)
       .subscribe((response) => {
         this.snackBar.open('Code Resent', 'OK'); });
     }

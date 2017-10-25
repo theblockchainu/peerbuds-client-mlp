@@ -33,15 +33,6 @@ export class AuthenticationService {
       this.options = this._requestHeaderService.getOptions();
   }
 
-    private getCookieValue(key: string) {
-        const cookie = this._cookieService.get(key);
-        if (cookie) {
-            const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-            this.userId = cookieValue[1];
-        }
-        return this.userId;
-    }
-
   /**
   *
   * @returns {Observable<T>}
