@@ -2,7 +2,7 @@ import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
-import { LiveVideoDialogComponent } from './live-video-dialog/live-video-dialog.component';
+import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
@@ -50,9 +50,9 @@ export class DialogsService {
      * startLiveSession
      */
     public startLiveSession() {
-        let dialogRef5: MdDialogRef<LiveVideoDialogComponent>;
+        let dialogRef5: MdDialogRef<LiveSessionDialogComponent>;
 
-        dialogRef5 = this.dialog.open(LiveVideoDialogComponent, {
+        dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
             width: '100vw',
             height: '100vh'
         });

@@ -1,0 +1,25 @@
+<div mat-dialog-title>
+  <div class="row">
+    <button class="pull-right" md-icon-button [md-dialog-close]>
+      <md-icon>clear</md-icon>
+    </button>
+  </div>
+</div>
+<div class="row video-panel">
+  <div class="col-md-7">
+    <div class="mainStream mat-elevation-z6" #mainStream>
+      <div *ngIf="mainLoading">
+        <ngx-loading [show]="true"></ngx-loading>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="row">
+      <div class="localStream mat-elevation-z6" #localStream>
+      </div>
+    </div>
+    <div class="row">
+
+    </div>
+  </div>
+</div>

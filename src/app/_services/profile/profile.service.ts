@@ -92,10 +92,21 @@ export class ProfileService {
           .map(
           (response: Response) => response.json()
           );
+      } else {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + this.getCookieValue(this.key) + '?filter=' + JSON.stringify(filter), this.options)
+          .map(
+          (response: Response) => response.json()
+          );
       }
     } else {
       if (this.userId) {
         return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId, this.options)
+          .map(
+          (response: Response) => response.json()
+          );
+      }
+      else {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + this.getCookieValue(this.key), this.options)
           .map(
           (response: Response) => response.json()
           );
@@ -199,7 +210,7 @@ export class ProfileService {
     else {
       userId = this.userId;
     }
-    if(query) {
+    if (query) {
       const filter = JSON.stringify(query);
       url = this.config.apiUrl + '/api/peers/' + userId + '?filter=' + filter;
     }

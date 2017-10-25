@@ -9,8 +9,8 @@ import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
-import { LiveVideoDialogComponent } from './live-video-dialog/live-video-dialog.component';
 import { TwilioServicesService } from '../twlio_services/twilio-services.service';
+import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
 
 @NgModule({
   imports: [
@@ -19,14 +19,14 @@ import { TwilioServicesService } from '../twlio_services/twilio-services.service
     ReactiveFormsModule,
     SharedModule
   ],
-  exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, LiveVideoDialogComponent],
-  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, LiveVideoDialogComponent],
+  exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, LiveSessionDialogComponent],
+  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent, LiveSessionDialogComponent],
   providers: [
     DialogsService,
     TwilioServicesService
   ],
   entryComponents: [
-    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, LiveVideoDialogComponent
+    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, LiveSessionDialogComponent
   ],
 })
 export class DialogsModule { }

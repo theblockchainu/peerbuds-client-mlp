@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LiveVideoDialogComponent } from './live-video-dialog.component';
+import { LiveSessionDialogComponent } from './live-session-dialog.component';
 
-describe('LiveVideoDialogComponent', () => {
-  let component: LiveVideoDialogComponent;
-  let fixture: ComponentFixture<LiveVideoDialogComponent>;
+describe('LiveSessionDialogComponent', () => {
+  let component: LiveSessionDialogComponent;
+  let fixture: ComponentFixture<LiveSessionDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LiveVideoDialogComponent ]
+      declarations: [ LiveSessionDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LiveVideoDialogComponent);
+    fixture = TestBed.createComponent(LiveSessionDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
