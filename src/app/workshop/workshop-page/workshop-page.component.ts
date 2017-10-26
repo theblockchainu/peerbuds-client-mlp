@@ -1238,5 +1238,17 @@ export class WorkshopPageComponent implements OnInit {
       height: '50vh'
     });
   }
+  /**
+  * joinLiveSession
+  */
+  public joinLiveSession(contentId: string) {
+    const data = {
+      roomName: contentId + this.calendarId,
+      teacherId: this.workshop.owners[0].id
+    };
+    this.dialogsService.startLiveSession(data).subscribe(result => {
+    });
+  }
+
 
 }
