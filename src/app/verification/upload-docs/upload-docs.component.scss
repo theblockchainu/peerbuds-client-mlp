@@ -146,12 +146,18 @@
 }
 
 .delete .delete-file {
-    top:10px;
+    top:2px;
+    left: 0px;
 }
 
 .delete .delete-image {
     right: -7px;
     top: -7px;
+}
+
+.uploaded_file {
+    display: inline-block;
+    margin-left: 30px;
 }
 
 .note{

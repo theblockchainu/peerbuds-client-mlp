@@ -41,16 +41,18 @@
                                     </ng-template>
                                 </p-fileUpload>
                                 <!-- <ng-template pTemplate="content"> -->
-                                <md-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
+                                <!-- <md-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
                                     <md-grid-tile>
-                                        <!-- <div style="position: absolute; cursor: pointer;">
-                                            <md-icon style="color: black;">close</md-icon>
-                                        </div> -->
                                         <img src="{{config.apiUrl + image.value}}" width="150" (error)="imgErrorHandler($event)">
                                         <md-icon (click)="deleteFromContainer(image.value, 'image')" class="delete-button">close</md-icon>
                                     </md-grid-tile>
-                                </md-grid-list>
+                                </md-grid-list> -->
                                 <!-- </ng-template> -->
+
+                                <div *ngIf="image.value" class="col-md-6 padding-left-0 pic delete imageContainer">
+                                    <img src="{{config.apiUrl + image.value}}" width="150" style="border: 0.5px solid #ccc">
+                                    <md-icon (click)="deleteFromContainer(image.value, 'image')" class="delete-button">close</md-icon>
+                                </div>
                             </div>
                         </div>
                         <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
@@ -76,15 +78,23 @@
 
                             </p-fileUpload>
                             <!-- <ng-template pTemplate="content">  -->
-                            <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls.length">
+                            <!-- <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls.length">
                                 <md-grid-tile *ngFor="let file of attachmentUrls">
                                     <div style="float: left; margin-right: 15px; cursor: pointer;">
                                         <md-icon (click)="deleteFromContainer(file, 'file')" class="">close</md-icon>
                                     </div>
                                     <a href="{{config.apiUrl + file}}">{{file}}</a>
                                 </md-grid-tile>
-                            </md-grid-list>
+                            </md-grid-list> -->
                             <!-- </ng-template> -->
+                            <div *ngIf="attachmentUrls.length" class="pic delete">
+                                <div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
+                                    <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+                                    <md-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'image')" class="delete-image">close</md-icon>
+                                    <div *ngIf="file.type.includes('application')" class="uploaded_file"><a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a></div>
+                                    <md-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</md-icon>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
