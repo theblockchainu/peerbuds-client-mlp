@@ -9,6 +9,8 @@ import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
+import { TwilioServicesService } from '../twlio_services/twilio-services.service';
+import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
 import { MultiselectTopicDialogComponent } from './multiselect-topic-dialog/multiselect-topic-dialog.component';
 import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.component';
 import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-dialog.component';
@@ -24,17 +26,18 @@ import { VerifyPhoneDialogComponent } from './verify-phone-dialog/verify-phone-d
     SharedModule
   ],
   exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent
-            , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
-            , VerifyPhoneDialogComponent],
+    , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
+    , VerifyPhoneDialogComponent, LiveSessionDialogComponent],
   declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent
-                , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
-                , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent],
+    , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
+    , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent],
   providers: [
-    DialogsService
+    DialogsService,
+    TwilioServicesService
   ],
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, MultiselectTopicDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
-  ],
+    , LiveSessionDialogComponent],
 })
 export class DialogsModule { }
