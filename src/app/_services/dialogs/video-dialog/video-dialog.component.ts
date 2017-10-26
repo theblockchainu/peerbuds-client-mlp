@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
-
 @Component({
   selector: 'app-video-dialog',
   templateUrl: './video-dialog.component.html',

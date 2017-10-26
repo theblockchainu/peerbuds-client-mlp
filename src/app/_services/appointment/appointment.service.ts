@@ -12,5 +12,8 @@ export class AppointmentService {
       .toPromise()
       .then(res => <any[]>res.json().data)
       .then(data => { return data; });
+      // .subscribe((res) => {
+      //   return res.json().data;
+      // })
   }
 }

@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import {Observable} from 'rxjs/Observable';
-import {CookieService} from 'ngx-cookie-service';
+import { Observable } from 'rxjs/Observable';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable()
 export class SocketService {
 
     private url = 'http://localhost:3000';
     private socket;
-    public key = 'userId';
     private userId;
 
     constructor(
-        private _cookieService: CookieService,
+        private authService: AuthenticationService,
+        private _cookieUtilsService: CookieUtilsService
     ) {
-        this.userId = this.getCookieValue(this.key);
+        this.userId = _cookieUtilsService.getValue('userId');
         this.socket = io(this.url);
         if (this.userId !== undefined) {
             const user = {
@@ -22,15 +23,6 @@ export class SocketService {
             };
             this.socket.emit('addUser', user);
         }
-    }
-
-    private getCookieValue(key: string) {
-        const cookie = this._cookieService.get(key);
-        if (cookie) {
-            const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-            this.userId = cookieValue[1];
-        }
-        return this.userId;
     }
 
     public sendMessage(message) {

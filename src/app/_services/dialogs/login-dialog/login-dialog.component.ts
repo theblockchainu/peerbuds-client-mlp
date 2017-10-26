@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA, MdDialog, MdDialogConfig} from '@angular/material';
 import { ForgotpwdComponentDialog } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AppConfig } from '../../../app.config';
 import { MdDialog, MdDialogConfig } from '@angular/material';

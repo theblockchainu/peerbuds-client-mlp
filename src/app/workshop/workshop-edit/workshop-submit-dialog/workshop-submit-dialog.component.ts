@@ -19,7 +19,7 @@ export class WorkshopSubmitDialogComponent implements OnInit {
 
   public closeDialog() {
     this.dialogRef.close('close');
-    this.router.navigate(['console', 'teaching', 'workshop']);
+    this.router.navigate(['console', 'teaching', 'workshops']);
   }
 
 }

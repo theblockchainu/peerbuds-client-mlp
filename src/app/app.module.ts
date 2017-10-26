@@ -25,8 +25,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 //import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 import { ContactComponent } from './contact-us/contact-us.component';
 import { AgmCoreModule } from '@agm/core';
+//import {CSSCarouselComponent} from './default/carousal/carousal.component';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
-import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
+import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';

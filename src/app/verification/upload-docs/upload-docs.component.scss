@@ -133,7 +133,7 @@
 }
 
 .delete .delete-file, .delete .delete-image {
-    position:absolute;
+    position: absolute!important;
     right:5px;
     height: 20px;
     width: 20px;
@@ -150,7 +150,8 @@
 }
 
 .delete .delete-image {
-    top:5px;
+    right: -7px;
+    top: -7px;
 }
 
 .note{

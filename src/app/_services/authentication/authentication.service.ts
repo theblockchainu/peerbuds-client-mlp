@@ -20,6 +20,7 @@ export class AuthenticationService {
 
   public key = 'access_token';
   private options;
+  private userId;
   isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: Http, private config: AppConfig,
@@ -84,6 +85,7 @@ export class AuthenticationService {
           console.log('Logged out from server');
           this.removeCookie(this.key);
           this.removeCookie('userId');
+          this.removeCookie('accountApproved');
           this.isLoginSubject.next(false);
           this.getLoggedInUser.emit(0);
           this.router.navigate(['/']);

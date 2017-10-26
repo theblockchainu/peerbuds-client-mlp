@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { ConsoleComponent } from '../console.component';
 
 declare var moment: any;
@@ -16,11 +17,13 @@ export class ConsoleTeachingComponent implements OnInit {
   public loaded: boolean;
   public activeTab: string;
   public now: Date;
+  private userId;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
     public _collectionService: CollectionService,
+    private _cookieUtilsService: CookieUtilsService,
     public consoleComponent: ConsoleComponent) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
@@ -28,6 +31,7 @@ export class ConsoleTeachingComponent implements OnInit {
     });
     this.activeTab = 'all';
     this.now = new Date();
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -38,7 +42,7 @@ export class ConsoleTeachingComponent implements OnInit {
    * createWorkshop
    */
   public createWorkshop() {
-    this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
+    this._collectionService.postCollection(this.userId, 'workshop').subscribe((workshopObject) => {
       this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
     });
   }
@@ -47,7 +51,7 @@ export class ConsoleTeachingComponent implements OnInit {
    * createExperience
    */
   public createExperience() {
-    this._collectionService.postCollection('experience').subscribe((experienceObject) => {
+    this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject) => {
       this.router.navigate(['editExperience', experienceObject.id, 1]);
     });
   }
@@ -56,7 +60,7 @@ export class ConsoleTeachingComponent implements OnInit {
    * createExperience
    */
   public enableSessions() {
-    this._collectionService.postCollection('session').subscribe((sessionObject) => {
+    this._collectionService.postCollection(this.userId, 'session').subscribe((sessionObject) => {
       this.router.navigate(['enableSessions', sessionObject.id, 1]);
     });
   }

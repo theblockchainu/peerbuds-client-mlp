@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ConsoleTeachingComponent} from '../console-teaching.component';
-import {CollectionService} from '../../../_services/collection/collection.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConsoleTeachingComponent } from '../console-teaching.component';
+import { CollectionService } from '../../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-console-teaching-all',
@@ -13,6 +14,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
   public collections: any;
   public loaded: boolean;
   public now: Date;
+  private userId;
   private outputResult: any;
   public activeTab: string;
 
@@ -20,7 +22,8 @@ export class ConsoleTeachingAllComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleTeachingComponent: ConsoleTeachingComponent,
     public router: Router,
-    public _collectionService: CollectionService
+    public _collectionService: CollectionService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
@@ -29,11 +32,12 @@ export class ConsoleTeachingAllComponent implements OnInit {
         consoleTeachingComponent.setActiveTab(urlSegment[0].path);
       }
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
     this.loaded = false;
-    this._collectionService.getOwnedCollections('{"include": ["calendars", "owners", {"participants": "profiles"}, "topics", {"contents":"schedules"}] }', (err, result) => {
+    this._collectionService.getOwnedCollections(this.userId, '{"include": ["calendars", "owners", {"participants": "profiles"}, "topics", {"contents":"schedules"}] }', (err, result) => {
       if (err) {
         console.log(err);
       } else {

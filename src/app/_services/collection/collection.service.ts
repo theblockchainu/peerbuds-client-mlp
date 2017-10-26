@@ -14,7 +14,6 @@ declare var moment: any;
 @Injectable()
 export class CollectionService {
   public key = 'userId';
-  private userId;
   public options;
   public now: Date;
   constructor(private http: Http, private config: AppConfig,
@@ -22,25 +21,15 @@ export class CollectionService {
     private route: ActivatedRoute,
     public router: Router,
     private requestHeaderService: RequestHeaderService) {
-    this.userId = this.getCookieValue(this.key);
     this.options = requestHeaderService.getOptions();
     this.now = new Date();
   }
 
-  private getCookieValue(key: string) {
-    const cookie = this._cookieService.get(key);
-    if (cookie) {
-      const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-      this.userId = cookieValue[1];
-    }
-    return this.userId;
-  }
-
-  public getCollection(type: string, cb) {
+  public getCollection(userId, type: string, cb) {
     const collections = [];
-    if (this.userId) {
+    if (userId) {
       this.http
-        .get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections')
+        .get(this.config.apiUrl + '/api/peers/' + userId + '/ownedCollections')
         .map((response: Response) => {
           const responseObj = response.json();
           console.log(response.json());
@@ -56,10 +45,10 @@ export class CollectionService {
     }
   }
 
-  public getOwnedCollections(options: string, cb) {
-    if (this.userId) {
+  public getOwnedCollections(userId, options: string, cb) {
+    if (userId) {
       this.http
-        .get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections?' + 'filter=' + options)
+        .get(this.config.apiUrl + '/api/peers/' + userId + '/ownedCollections?' + 'filter=' + options)
         .map((response) => {
           console.log(response.json());
           cb(null, response.json());
@@ -69,10 +58,10 @@ export class CollectionService {
     }
   }
 
-  public getParticipatingCollections(options: any, cb) {
-    if (this.userId) {
+  public getParticipatingCollections(userId, options: any, cb) {
+    if (userId) {
       this.http
-        .get(this.config.apiUrl + '/api/peers/' + this.userId + '/collections?' + 'filter=' + options)
+        .get(this.config.apiUrl + '/api/peers/' + userId + '/collections?' + 'filter=' + options)
         .map((response) => {
           console.log(response.json());
           cb(null, response.json());
@@ -110,12 +99,12 @@ export class CollectionService {
   /**
    * postCollection
    */
-  public postCollection(type: string) {
+  public postCollection(userId, type: string) {
     const body = {
       'type': type
     };
     return this.http.post(this.config.apiUrl + '/api/peers/'
-      + this.userId + '/ownedCollections', body, this.options).map(
+      + userId + '/ownedCollections', body, this.options).map(
       (response) => response.json(), (err) => {
         console.log('Error: ' + err);
       }

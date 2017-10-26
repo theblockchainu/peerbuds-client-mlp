@@ -7,7 +7,7 @@ import { MediaUploaderService } from '../../mediaUploader/media-uploader.service
 import { AppConfig } from '../../../app.config';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ProfileService } from '../../profile/profile.service';
-//import { DialogsService } from '../dialog.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -26,6 +26,7 @@ export class VerifyIdDialogComponent implements OnInit {
   private verificationIdUrl: string;
   private fileType;
   private fileName;
+  public userId;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -37,7 +38,9 @@ export class VerifyIdDialogComponent implements OnInit {
     public _profileService: ProfileService,
     //private dialogsService: DialogsService,
     public dialogRef: MdDialogRef<VerifyIdDialogComponent>,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+    @Inject(MD_DIALOG_DATA) public data: any,
+    public _cookieUtilsService: CookieUtilsService) {
+      this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -50,9 +53,10 @@ export class VerifyIdDialogComponent implements OnInit {
     });
   }
   continue() {
+    //this.router.navigate(['app-upload-docs', +this.step]);
     console.log('dialog opened');
     this._profileService
-    .updatePeer({'verificationIdUrl': this.peer.controls['verificationIdUrl'].value})
+    .updatePeer(this.userId, { 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value})
     .subscribe((response) => {
       console.log('File Saved Successfully');
     }, (err) => {
@@ -79,7 +83,7 @@ export class VerifyIdDialogComponent implements OnInit {
 
   deleteFromContainer(url: string, type: string) {
     if (type === 'image' || type === 'file') {
-      this._profileService.updatePeer({
+      this._profileService.updatePeer(this.userId, {
         'verificationIdUrl': ''
       }).subscribe(response => {
         this.verificationIdUrl = response.picture_url;
@@ -88,9 +92,5 @@ export class VerifyIdDialogComponent implements OnInit {
       console.log('error');
     }
   }
-  /*
-  public openIdPolicy() {
-    this.dialogsService.openIdPolicy().subscribe();
-  }*/
 }
 

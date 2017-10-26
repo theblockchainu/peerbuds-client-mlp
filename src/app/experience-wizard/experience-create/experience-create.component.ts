@@ -42,7 +42,7 @@ export class ExperienceCreateComponent implements OnInit {
   public languagesArray: any[];
   public placeholderStringTopic = 'Search for a topic or enter a new one';
   // public profile: Profile;
-  public userId: string;
+  public userId;
   public profile: FormGroup;
   public interest1: FormGroup;
   public experience: FormGroup;
@@ -89,7 +89,7 @@ export class ExperienceCreateComponent implements OnInit {
     public router: Router,
     private mediaUploader: MediaUploaderService
   ) {
-    this.getCookieValue('userId');
+    // this.getCookieValue('userId');
     this.countryPickerService.getCountries()
       .subscribe((countries) => this.countries = countries);
     this.languagePickerService.getLanguages()
@@ -97,6 +97,15 @@ export class ExperienceCreateComponent implements OnInit {
     this.getTopics();
     this.activatedRoute.params.subscribe(params => {
       this.experienceId = params["id"];
+    });
+
+    this.authenticationService.getLoggedInUser.subscribe((userId) => {
+      if (userId !== 0) {
+          userId = userId;
+      }
+      else {
+          this.userId = 0;
+      }
     });
 
   }
@@ -348,7 +357,7 @@ export class ExperienceCreateComponent implements OnInit {
     var body = {
       "type": "experience"
     };
-    this._collectionService.postCollection('experience').subscribe((experienceObject) => {
+    this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject) => {
       this.router.navigate(['create-experience', experienceObject.id, 0]);
     });
 

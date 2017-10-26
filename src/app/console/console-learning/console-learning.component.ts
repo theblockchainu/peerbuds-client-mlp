@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { ConsoleComponent } from '../console.component';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -18,7 +19,6 @@ export class ConsoleLearningComponent implements OnInit {
   public loaded: boolean;
   public activeTab: string;
   public now: Date;
-  public key = 'userId';
   private userId;
 
   constructor(
@@ -26,23 +26,15 @@ export class ConsoleLearningComponent implements OnInit {
     public router: Router,
     public _collectionService: CollectionService,
     public consoleComponent: ConsoleComponent,
-    public _cookieService: CookieService) {
+    public _cookieService: CookieService,
+    private _cookieUtilsService: CookieUtilsService) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
     });
     this.activeTab = 'all';
     this.now = new Date();
-    this.userId = this.getCookieValue(this.key);
-  }
-
-  private getCookieValue(key: string) {
-    const cookie = this._cookieService.get(key);
-    if (cookie) {
-      const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-      this.userId = cookieValue[1];
-    }
-    return this.userId;
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {

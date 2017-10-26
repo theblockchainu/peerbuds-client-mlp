@@ -9,7 +9,6 @@ import {RequestHeaderService} from '../requestHeader/request-header.service';
 export class NotificationService {
 
   public key = 'userId';
-  private userId;
   public options;
   public now: Date;
 
@@ -19,24 +18,14 @@ export class NotificationService {
               private route: ActivatedRoute,
               public router: Router,
               private requestHeaderService: RequestHeaderService) {
-      this.userId = this.getCookieValue(this.key);
       this.options = requestHeaderService.getOptions();
       this.now = new Date();
   }
 
-  private getCookieValue(key: string) {
-      const cookie = this._cookieService.get(key);
-      if (cookie) {
-          const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-          this.userId = cookieValue[1];
-      }
-      return this.userId;
-  }
-
-  public getNotifications(options: any, cb) {
-      if (this.userId) {
+  public getNotifications(userId, options: any, cb) {
+      if (userId) {
           this.http
-              .get(this.config.apiUrl + '/api/peers/' + this.userId + '/notifications?' + 'filter=' + options)
+              .get(this.config.apiUrl + '/api/peers/' + userId + '/notifications?' + 'filter=' + options)
               .map((response) => {
                   console.log(response.json());
                   cb(null, response.json());
@@ -46,8 +35,8 @@ export class NotificationService {
       }
   }
 
-  public updateNotification(body: any, cb) {
-      if (this.userId) {
+  public updateNotification(userId, body: any, cb) {
+      if (userId) {
           this.http
               .patch(this.config.apiUrl + '/api/notifications/' + body.id, body, this.options)
               .map((response) => {

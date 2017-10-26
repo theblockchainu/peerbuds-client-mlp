@@ -10,8 +10,8 @@ import { CookieService } from 'ngx-cookie-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { MdDialog } from '@angular/material';
 import { DialogsService } from '../_services/dialogs/dialog.service';
-import {AppNotificationDialogComponent} from './dialogs/app-notification-dialog/app-notification-dialog.component';
-import {NotificationService} from '../_services/notification/notification.service';
+import { AppNotificationDialogComponent} from './dialogs/app-notification-dialog/app-notification-dialog.component';
+import { NotificationService} from '../_services/notification/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -28,7 +28,7 @@ export class AppHeaderComponent implements OnInit {
   public userType = '';
   public myControl = new FormControl('');
   @ViewChild('notificationsButton') notificationsButton;
-  public userId: string;
+  public userId;
   public userIdObservable;
   private key = 'userId';
   public options: any[];
@@ -37,7 +37,6 @@ export class AppHeaderComponent implements OnInit {
   public makeOldNotification = [];
 
   constructor(public authService: AuthenticationService,
-              public requestHeaderService: RequestHeaderService,
               public config: AppConfig,
               private http: Http,
               private _cookieService: CookieService,
@@ -53,15 +52,15 @@ export class AppHeaderComponent implements OnInit {
                 });
 
                 authService.getLoggedInUser.subscribe((userId) => {
-                  if(userId !== 0) {
+                  if (userId !== 0) {
                     this.userId = userId;
                     this.getProfile();
+                    this.getNotifications();
                   }
                   else {
                     this.loggedIn = false;
                   }
                 });
-
                 this.userId = this.userIdObservable || this.getCookieValue(this.key);
 
           }
@@ -130,11 +129,14 @@ export class AppHeaderComponent implements OnInit {
       case 'topic':
         return option.data.name;
       case 'peer':
-        if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
-          return option.data.id;
-        } else {
-          return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
-        }
+          if (option.data.profiles[0] === undefined) {
+              return option.data.id;
+          }
+          else if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
+            return option.data.id;
+          } else {
+            return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
+          }
       default:
         return;
     }
@@ -205,7 +207,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   public getNotifications() {
-      this._notificationService.getNotifications('{}', (err, result) => {
+      this._notificationService.getNotifications(this.userId, '{}', (err, result) => {
           if (err) {
               console.log(err);
           } else {
@@ -213,7 +215,7 @@ export class AppHeaderComponent implements OnInit {
                   if (resultItem.new) {
                       this.hasNewNotification = true;
                       resultItem.new = false;
-                      delete resultItem.seen;
+                      resultItem.seen = true;
                       delete resultItem.createdAt;
                       delete resultItem.updatedAt;
                       this.makeOldNotification.push(resultItem);
@@ -226,6 +228,7 @@ export class AppHeaderComponent implements OnInit {
   openNotificationsDialog(): void {
       const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
           width: '350px',
+          height: '70vh',
           data: {
           },
           disableClose: false,
@@ -238,7 +241,7 @@ export class AppHeaderComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
           if (this.makeOldNotification.length > 0) {
               this.makeOldNotification.forEach(notifItem => {
-                  this._notificationService.updateNotification(notifItem, (err, patchResult) => {
+                  this._notificationService.updateNotification(this.userId, notifItem, (err, patchResult) => {
                       if (err) {
                           console.log(err);
                       }

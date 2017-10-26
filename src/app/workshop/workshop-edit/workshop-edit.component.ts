@@ -1,6 +1,5 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-import { URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
@@ -18,13 +17,13 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import _ from 'lodash';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { WorkshopSubmitDialogComponent } from './workshop-submit-dialog/workshop-submit-dialog.component';
 import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-clone-dialog.component';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 
 import { DialogsService } from '../dialogs/dialog.service';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -56,7 +55,7 @@ export class WorkshopEditComponent implements OnInit {
   public localState = { value: '' };
   public countries: any[];
   public languagesArray: any[];
-  public userId: string;
+  public userId;
   public selectedValues: boolean[] = [false, false];
   public selectedOption = -1;
 
@@ -122,17 +121,17 @@ export class WorkshopEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
     public config: AppConfig,
-    public authenticationService: AuthenticationService,
     private languagePickerService: LanguagePickerService,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
     public _collectionService: CollectionService,
     private mediaUploader: MediaUploaderService,
-    private cookieUtilsService: CookieUtilsService,
     public requestHeaderService: RequestHeaderService,
     private dialog: MdDialog,
     private _leftSideBarService: LeftSidebarService,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private snackBar: MdSnackBar,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
@@ -140,7 +139,9 @@ export class WorkshopEditComponent implements OnInit {
       // this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.apiUrl + '/workshop/' + this.workshopId + '/edit/' + this.step + '&state=1';
       this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write';
     });
-    this.userId = cookieUtilsService.getValue('userId');
+    
+    
+    this.userId = _cookieUtilsService.getValue('userId');
     this.options = requestHeaderService.getOptions();
 
   }
@@ -934,7 +935,10 @@ export class WorkshopEditComponent implements OnInit {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
       .subscribe((res) => {
         console.log('Token Verified');
-      });
+      },
+          (error) => {
+              this.snackBar.open(error.message);
+          });
   }
 
   takeToPayment() {

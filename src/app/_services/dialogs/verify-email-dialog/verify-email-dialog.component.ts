@@ -7,6 +7,7 @@ import { MediaUploaderService } from '../../mediaUploader/media-uploader.service
 import { AppConfig } from '../../../app.config';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ProfileService } from '../../profile/profile.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -23,6 +24,7 @@ export class VerifyEmailDialogComponent implements OnInit {
   private email: string;
   private success;
   public otpReceived: string;
+  public userId;
 
   constructor(
     public router: Router,
@@ -33,9 +35,11 @@ export class VerifyEmailDialogComponent implements OnInit {
     private http: Http,
     private config: AppConfig,
     public dialogRef: MdDialogRef<VerifyEmailDialogComponent>,
+    private _cookieUtilsService: CookieUtilsService,
     @Inject(MD_DIALOG_DATA) public data: any) {
       this.activatedRoute.params.subscribe(params => {
       });
+      this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -49,7 +53,7 @@ export class VerifyEmailDialogComponent implements OnInit {
     this.otp = this._fb.group({
       inputOTP: [null]
     });
-    this._profileService.getPeerNode()
+    this._profileService.getPeerNode(this.userId)
       .subscribe((res) => {
         this.peer.controls.email.setValue(res.email);
       });
@@ -65,22 +69,21 @@ export class VerifyEmailDialogComponent implements OnInit {
   }
 
   public sendOTP() {
-    this._profileService.sendVerifyEmail(this.peer.controls.email.value)
+    this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
       .subscribe();
   }
 
   public resendOTP(message: string, action) {
-    this._profileService.sendVerifyEmail(this.peer.controls.email.value)
+    this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
       .subscribe();
   }
 
   verifyEmail() {
-    this._profileService.confirmEmail(this.otp.controls['inputOTP'].value)
+    this._profileService.confirmEmail(this.userId, this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
         console.log(res);
         console.log('verified email');
         this.success = res;
-        console.log(res);
         this.dialogRef.close();
       });
   }
