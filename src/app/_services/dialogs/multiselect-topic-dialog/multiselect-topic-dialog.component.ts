@@ -26,7 +26,6 @@
 //   }
 
 //   sendDataToCaller() {
-//     debugger;
 //     this.data.selected = this._multi.selected;
 //     this.dialogRef.close(this.data);
 //   }
