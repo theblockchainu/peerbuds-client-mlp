@@ -16,6 +16,8 @@ import 'rxjs/add/operator/map';import {
   , RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { AppConfig } from '../../../app.config';
+
+import { UcFirstPipe } from 'ngx-pipes/esm';
 import _ from 'lodash';
 
 declare var moment: any;
@@ -23,7 +25,8 @@ declare var moment: any;
 @Component({
   selector: 'app-console-profile-edit',
   templateUrl: './console-profile-edit.component.html',
-  styleUrls: ['./console-profile-edit.component.scss', '../../console.component.scss']
+  styleUrls: ['./console-profile-edit.component.scss', '../../console.component.scss'],
+  providers: [UcFirstPipe]
 })
 export class ConsoleProfileEditComponent implements OnInit {
   public loadingProfile = false;
@@ -71,7 +74,8 @@ export class ConsoleProfileEditComponent implements OnInit {
     public _timezoneService: TimezonePickerService,
     private http: Http,
     private config: AppConfig,
-    private _cookieUtilsService: CookieUtilsService) {
+    private _cookieUtilsService: CookieUtilsService,
+    private ucFirstPipe: UcFirstPipe) {
       activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
         if (urlSegment[0] === undefined) {
           consoleProfileComponent.setActiveTab('edit');
@@ -100,7 +104,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         preferred_language: '',
         other_languages: this._fb.array(['']),
         currency: '',
-        gender: 'Male',
+        gender: '',
         timezone: '',
         dobMonth: '',
         dobYear: '',
@@ -380,7 +384,7 @@ export class ConsoleProfileEditComponent implements OnInit {
    * saveProfile
    */
   public saveProfile() {
-    const profileData = this.profileForm.value;
+    let profileData = this.profileForm.value;
     // delete profileData.education.presentlyPursuing;
     const education = profileData.education;
     delete profileData.education;
@@ -393,6 +397,7 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.phone_numbers;
     const emergency_contacts = profileData.emergency_contacts;
     delete profileData.emergency_contact;
+    // profileData = this.sanitize(profileData);
     this._profileService.updateProfile(this.userId, profileData)
       .flatMap((response) => {
         return this._profileService.updatePhoneNumbers(this.userId, this.profile.id, phone_numbers);
@@ -416,6 +421,15 @@ export class ConsoleProfileEditComponent implements OnInit {
         });
       });
   }
+
+  // public sanitize(profileData) {
+  //   const fields = ['first_name', 'last_name', 'headline'];
+  //   let tempData = profileData;
+  //   fields.forEach(element => {
+  //     tempData.element = this.ucFirstPipe.transform(profileData[element]);
+  //   });
+  //   return tempData;
+  // }
 
   /**
    * deletework

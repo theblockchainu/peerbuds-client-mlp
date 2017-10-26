@@ -29,7 +29,6 @@ export class ProfileService {
   }
 
   public getPeer(id) {
-    debugger;
     const peer = {};
     if (id) {
       const options = `{"where": "","order": "","limit": "",
@@ -43,7 +42,6 @@ export class ProfileService {
   }
 
   public getProfile(userId) {
-    debugger;
     const profile = {};
     if (userId) {
       const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
@@ -55,7 +53,6 @@ export class ProfileService {
   }
 
   public getProfileData(userId, filter: any) {
-    debugger;
     if (userId) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
         .map(
@@ -77,7 +74,6 @@ export class ProfileService {
    * getPeerData
    */
   public getPeerData(userId, filter?: any): Observable<any> {
-    debugger;
     if (filter) {
       if (userId) {
         return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '?filter=' + JSON.stringify(filter), this.options)
@@ -95,7 +91,6 @@ export class ProfileService {
     }
   }
   public getCompactProfile(userId) {
-    debugger;
     const profile = {};
     if (userId) {
       const filter = '{"include": {"peer": "ownedCollections"}}';
@@ -379,7 +374,6 @@ export class ProfileService {
    * getAllPeers
    */
   public getAllPeers(query: any) {
-    debugger;
     return this.http.get(this.config.apiUrl + '/api/peers?filter=' + JSON.stringify(query));
   }
 
