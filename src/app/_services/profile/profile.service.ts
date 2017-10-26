@@ -29,6 +29,7 @@ export class ProfileService {
   }
 
   public getPeer(id) {
+    debugger;
     const peer = {};
     if (id) {
       const options = `{"where": "","order": "","limit": "",
@@ -91,6 +92,7 @@ export class ProfileService {
     }
   }
   public getCompactProfile(userId) {
+    debugger;
     const profile = {};
     if (userId) {
       const filter = '{"include": {"peer": "ownedCollections"}}';
@@ -374,6 +376,7 @@ export class ProfileService {
    * getAllPeers
    */
   public getAllPeers(query: any) {
+    debugger;
     return this.http.get(this.config.apiUrl + '/api/peers?filter=' + JSON.stringify(query));
   }
 
