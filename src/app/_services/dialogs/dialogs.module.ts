@@ -31,10 +31,10 @@ import {VgBufferingModule} from 'videogular2/buffering';
     VgOverlayPlayModule,
     VgBufferingModule
   ],
-  exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent
+  exports: [SignupComponentDialog, LoginComponentDialog,ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent
             , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
             , VerifyPhoneDialogComponent],
-  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent
+  declarations: [SignupComponentDialog, LoginComponentDialog,ForgotpwdComponentDialog, DeleteDialogComponent
                 , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
                 , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent],
   providers: [

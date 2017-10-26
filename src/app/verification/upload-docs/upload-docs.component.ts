@@ -64,7 +64,6 @@ export class UploadDocsComponent implements OnInit {
   }
 
   continue(p) {
-    debugger;
     if (p === 2) {
       this._profileService
       .updatePeer({ 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value, 'email': this.peer.controls['email'].value })
@@ -84,7 +83,6 @@ export class UploadDocsComponent implements OnInit {
   }
 
   public sendOTP() {
-    debugger;
     this._profileService.sendVerifyEmail(this.peer.controls.email.value)
       .subscribe();
       console.log('mail sent');

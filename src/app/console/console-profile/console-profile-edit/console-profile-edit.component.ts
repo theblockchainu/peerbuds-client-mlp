@@ -10,7 +10,7 @@ import { MdSnackBar } from '@angular/material';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { Observable, BehaviorSubject} from 'rxjs';
 import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';import {
+import 'rxjs/add/operator/map'; import {
   Http, Headers, Response, BaseRequestOptions
   , RequestOptions, RequestOptionsArgs
 } from '@angular/http';
@@ -33,7 +33,7 @@ export class ConsoleProfileEditComponent implements OnInit {
   public months: any[];
   public days: any[];
   public years: any[];
-  public languages:any[];
+  public languages: any[];
   public language: Observable<any[]>;
   private languagesAsync: BehaviorSubject<any[]>;
   public currencies: any[];
@@ -105,7 +105,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         location_lng: '',
         portfolio_url: '',
         description: '',
-        phone_numbers: this._fb.array([this.initializePhone('','',true)]),
+        phone_numbers: this._fb.array([this.initializePhone('', '', true)]),
         vat_number: '',
         emergency_contacts: this._fb.array([this.initializeEmergencyContact()]),
         education: this._fb.array([
@@ -235,10 +235,10 @@ export class ConsoleProfileEditComponent implements OnInit {
       this.profileForm.controls['dobMonth'].patchValue(profiles[0].dobMonth);
       this.profileForm.controls['dobYear'].patchValue(profiles[0].dobYear);
       this.profileForm.controls['email'].patchValue(profiles[0].peer[0].email);
-      if(profiles[0].location_string) {
+      if (profiles[0].location_string) {
         this.userSettings['inputString'] = profiles[0].location_string;
       }
-      if(profiles[0].location_lat && profiles[0].location_lng) {
+      if (profiles[0].location_lat && profiles[0].location_lng) {
         this.userSettings.geoLocation = [profiles[0].location_lat, profiles[0].location_lng];
       }
       if (profiles[0].other_languages && profiles[0].other_languages.length > 0) {

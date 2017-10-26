@@ -150,7 +150,6 @@ topic:any   */
           });
         });
     }
-    
   }
 
   public openFollowTopicDialog(type) {
@@ -173,7 +172,6 @@ topic:any   */
             topicArray.push(topic.id);
             this.topicsTeaching.push(topic);
           });
-          
         }
         topicArray.forEach(topicId => {
           this._profileService.followTopic(type, topicId, {})

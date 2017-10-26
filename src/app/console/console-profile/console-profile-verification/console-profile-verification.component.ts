@@ -62,7 +62,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
       console.log(peer);
       this.alreadyVerified = [];
       this.notVerified = [];
-      if (peer.phoneVerified) {
+      if (peer.phoneVerified && peer.phone) {
         this.alreadyVerified.push({
           text: 'Phone Number',
           value: peer.phone
@@ -118,11 +118,10 @@ export class ConsoleProfileVerificationComponent implements OnInit {
       }
 
       this.socialIdentitiesConnected = peer;
-      
       // this.socialIdentitiesConnected.forEach(socialIdentity => {
-      if(this.socialIdentitiesConnected.identities.length > 0) {
+      if (this.socialIdentitiesConnected.identities.length > 0) {
         this.socialIdentitiesConnected.identities.forEach(element => {
-          if(element.provider === 'google') {
+          if (element.provider === 'google') {
               this.connectedIdentities.google = true;
           }
           else if (element.provider === 'facebook') {
@@ -130,9 +129,9 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           }
         });
       }
-      if(this.socialIdentitiesConnected.credentials.length > 0) {
+      if (this.socialIdentitiesConnected.credentials.length > 0) {
         this.socialIdentitiesConnected.credentials.forEach(element => {
-          if(element.provider === 'google') {
+          if (element.provider === 'google') {
               this.connectedIdentities.google = true;
           }
           else if (element.provider === 'facebook') {

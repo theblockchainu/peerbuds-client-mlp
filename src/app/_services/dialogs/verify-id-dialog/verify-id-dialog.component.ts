@@ -50,10 +50,9 @@ export class VerifyIdDialogComponent implements OnInit {
     });
   }
   continue() {
-    //this.router.navigate(['app-upload-docs', +this.step]);
     console.log('dialog opened');
     this._profileService
-    .updatePeer({ 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value})
+    .updatePeer({'verificationIdUrl': this.peer.controls['verificationIdUrl'].value})
     .subscribe((response) => {
       console.log('File Saved Successfully');
     }, (err) => {

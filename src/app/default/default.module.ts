@@ -9,12 +9,15 @@ import {
     MdButtonModule, MdCardModule, MdIconModule, MdInputModule, MdProgressBarModule, MdSelectModule,
     MdToolbarModule
 } from '@angular/material';
-import {CSSCarouselComponent} from './carousal/carousal.component'; 
+import {CSSCarouselComponent} from './carousal/carousal.component';
+
+
+
 
 @NgModule({
   imports: [
     CommonModule,
-    DefaultRoutingModule, 
+    DefaultRoutingModule,
     IndexComponent,
     IndexComponent1,
     IndexPhilComponent,

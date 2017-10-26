@@ -9,8 +9,6 @@ import { MdSnackBar } from '@angular/material';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ProfileService } from '../../profile/profile.service';
 
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
 @Component({
   selector: 'app-verify-phone-dialog',
   templateUrl: './verify-phone-dialog.component.html',
@@ -18,7 +16,6 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 export class VerifyPhoneDialogComponent implements OnInit {
   public step = 2;
- // private idProofImagePending: Boolean;
   public peer: FormGroup;
   public otp: FormGroup;
   private phone: number;
@@ -56,12 +53,14 @@ export class VerifyPhoneDialogComponent implements OnInit {
 
   continue(p) {
     this.step = p;
-   // this.router.navigate(['app-upload-docs', +this.step]);
    console.log('phone dialog opened');
-   if (p === 3) {
-    //this.peer.controls['phone'].setValue(this.phone);
-    this.sendOTP();
-  }
+   this._profileService
+   .updatePeer({'phone': this.peer.controls['phone'].value})
+    .subscribe();
+    if (p === 3) {
+      //this.peer.controls['phone'].setValue(this.phone);
+      this.sendOTP();
+     }
   }
 
   public sendOTP() {
@@ -76,12 +75,13 @@ export class VerifyPhoneDialogComponent implements OnInit {
     }
 
   verifyPhone() {
+    //this.peer.controls['phone'].setValue(this.phone);
     this._profileService.confirmSmsOTP(this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
-        console.log(res);
+        console.log(res.phone);
         console.log('verified phone');
         this.success = res;
-        //this.router.navigate(['/onboarding/1']);
+        //this.peer.controls.phone.setValue(res.phone);
         this.dialogRef.close();
       });
   }

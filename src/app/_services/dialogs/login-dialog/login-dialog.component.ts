@@ -12,7 +12,6 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ForgotpwdComponentDialog } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AppConfig } from '../../../app.config';
 import { MdDialog, MdDialogConfig } from '@angular/material';
-//import { DialogsService } from '../dialog.service';
 
 @Component({
   selector: 'app-login-dialog',  // <login></login>
@@ -42,6 +41,7 @@ export class LoginComponentDialog implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public router: Router,
+    private dialog: MdDialog,
     public authenticationService: AuthenticationService,
     private alertService: AlertService,
     public dialogRef: MdDialogRef<LoginComponentDialog>,
@@ -87,11 +87,10 @@ export class LoginComponentDialog implements OnInit {
                 else console.log(error);
               });
   }
-/*
   public openForgotPwd() {
-    this.dialogsService.openForgotPwd().subscribe();
-  }
-  */
+    const dialogRef = this.dialog.open(ForgotpwdComponentDialog);
+    return dialogRef.afterClosed();
+}
   private redirect() {
     this.router.navigate([ this.returnUrl ]); // use the stored url here
   }

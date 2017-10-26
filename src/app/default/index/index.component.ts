@@ -8,6 +8,8 @@ import { AppHeaderComponent } from '../../app-header/app-header.component';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
+import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
+//import { DefaultComponent } from '../default.component';
 
 @Component({
   selector: 'app-index',
@@ -15,16 +17,18 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-
+  private email: string;
+  notifyForm: FormGroup;
   public isLoggedIn;
   public loggedIn = false;
-  constructor( //private dialogsService: DialogsService,
-              private _authService: AuthenticationService,
+  constructor(
+            private authenticationService: AuthenticationService,
+             public _fb: FormBuilder,
               private _router: Router,
               public dialog: MdDialog,
               private dialogsService: DialogsService) {
-              this.isLoggedIn = _authService.isLoggedIn();
-              _authService.isLoggedIn().subscribe((res) => {
+              this.isLoggedIn = authenticationService.isLoggedIn();
+              authenticationService.isLoggedIn().subscribe((res) => {
                 this.loggedIn = res;
                 if (this.loggedIn) {
                   setTimeout(() => this._router.navigate(['home', 'homefeed']));
@@ -32,8 +36,17 @@ export class IndexComponent implements OnInit {
               });
    }
    ngOnInit() {
+    this.notifyForm = this._fb.group(
+      {email: ['', Validators.requiredTrue]}
+    );
    }
    public openVideo() {
     this.dialogsService.openVideo().subscribe();
   }
+  public sendEmailSubscriptions() {
+    // this.loading = true;
+    this.email = this.notifyForm.controls['email'].value;
+    this.authenticationService.sendEmailSubscriptions(this.email)
+        .subscribe();
+}
 }

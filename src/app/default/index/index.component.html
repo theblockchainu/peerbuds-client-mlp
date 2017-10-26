@@ -54,15 +54,14 @@
         <img src="/assets/images/images_landing/shape_footer.png" class="footer"/>
         <div>
             <p class="notif center"> Be notified when peerbuds go live </p>
+        <form [formGroup]="notifyForm">
             <div class="center">
-                <!-- <div class="mb-block mail-bg"> -->
-                <input type="text" placeholder="Your email here" class="mail-bg emailInput">
-                <!-- </div> -->
-            
+                <input mdInput type="text" placeholder="Your email here" formControlName="email" class="mail-bg emailInput">
                 <div id="emailBase">
-                    <button md-button class="md-raised email-btn">Notify me!</button>
+                    <button md-button class="md-raised email-btn" (click)="sendEmailSubscriptions()">Notify me!</button>
                 </div>
             </div>
+        </form>
         </div>
         <img src="/assets/images/images_landing/oval-footer.png" class="oval"/>
     </div>
