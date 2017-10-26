@@ -71,7 +71,6 @@ export class ProfileComponent implements OnInit {
     this.getProfileData();
     this.getIdentities();
     this.getTeachingTopics();
-    debugger;
     this.getRecommendedPeers();
     this.loading = false;
   }
@@ -166,7 +165,6 @@ export class ProfileComponent implements OnInit {
         }
       ]
     };
-    debugger;
     this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response) => {
       this.profileObj = response[0];
       console.log(this.profileObj);

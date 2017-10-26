@@ -336,7 +336,7 @@
                               <span>Delete</span>
                             </button>
                           </md-menu>
-                          <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px; float: left;" [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+                          <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;margin-left: -60px;float:left;" [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
                             <md-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)" >arrow_drop_up</md-icon>
                             <md-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</md-icon>
                             <div>

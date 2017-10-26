@@ -62,7 +62,7 @@ export class LeftSidebarService {
                 }
             });
         }
-        if (collection.topics !== undefined && collection.topics.length <= 3) {
+        if (collection.topics !== undefined && collection.topics.length > 0) {
             sidebarMenuItems[0].submenu[0].complete = true;
             completedSections++;
         }
