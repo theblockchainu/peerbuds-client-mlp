@@ -7,6 +7,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { ProfileService } from '../../_services/profile/profile.service';
+import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar } from '@angular/material';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -26,6 +29,7 @@ export class UploadDocsComponent implements OnInit {
   private verificationIdUrl: string;
   private fileType;
   private fileName;
+  public userId;
 
   constructor(
     public router: Router,
@@ -34,10 +38,15 @@ export class UploadDocsComponent implements OnInit {
     private _fb: FormBuilder,
     public _profileService: ProfileService,
     private http: Http,
-    private config: AppConfig) {
+    private config: AppConfig,
+    public snackBar: MdSnackBar,
+    private dialog: MdDialog,
+    private dialogsService: DialogsService,
+    private _cookieUtilsService: CookieUtilsService) {
       this.activatedRoute.params.subscribe(params => {
         this.step = params['step'];
       });
+      this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -51,7 +60,7 @@ export class UploadDocsComponent implements OnInit {
     this.otp = this._fb.group({
       inputOTP: [null]
     });
-    this._profileService.getPeerNode()
+    this._profileService.getPeerNode(this.userId)
       .subscribe((res) => {
         this.peer.controls.email.setValue(res.email);
       });
@@ -60,41 +69,51 @@ export class UploadDocsComponent implements OnInit {
   continue(p) {
     if (p === 2) {
       this._profileService
-      .updatePeer({ 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value, 'email': this.peer.controls['email'].value })
+      .updatePeer(this.userId, { 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value, 'email': this.peer.controls['email'].value })
       .subscribe((response) => {
-        console.log("File Saved Successfully");
+        console.log('File Saved Successfully');
       }, (err) => {
         console.log('Error updating Peer: ');
         console.log(err);
       });
     }
     if (p === 3) {
-      this.peer.controls['email'].setValue(this.email);
-      this.resendOTP();
+      //this.peer.controls['email'].setValue(this.email);
+      this.sendOTP();
     }
     this.step = p;
     this.router.navigate(['app-upload-docs', +this.step]);
   }
 
-  public resendOTP() {
-    this._profileService.sendVerifyEmail(this.peer.controls.email.value)
+  public sendOTP() {
+    this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
       .subscribe();
+      console.log('mail sent');
   }
 
+
+  public resendOTP(message: string, action) {
+    this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
+      .subscribe((response) => {
+        this.snackBar.open('Code Resent', 'OK'); });
+    }
+
   verifyEmail() {
-    this._profileService.confirmEmail(this.otp.controls['inputOTP'].value)
+    this._profileService.confirmEmail(this.userId, this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
         console.log(res);
+        console.log('verified email');
         this.success = res;
-        this.router.navigate(['onboarding/1']);
+        this.router.navigate(['/onboarding/1']);
       });
   }
 
   redirectToOnboarding() {
-    this.router.navigate(['onboarding/1']);
+    this.router.navigate(['/onboarding/1']);
   }
 
   uploadImage(event) {
+    //this.peer.controls['email'].setValue(this.email);
     this.uploadingImage = true;
     console.log(event.files);
     for (const file of event.files) {
@@ -110,7 +129,7 @@ export class UploadDocsComponent implements OnInit {
 
   deleteFromContainer(url: string, type: string) {
     if (type === 'image' || type === 'file') {
-      this._profileService.updatePeer({
+      this._profileService.updatePeer(this.userId, {
         'verificationIdUrl': ''
       }).subscribe(response => {
         this.verificationIdUrl = response.picture_url;
@@ -119,5 +138,7 @@ export class UploadDocsComponent implements OnInit {
       console.log('error');
     }
   }
+  public openIdPolicy() {
+    this.dialogsService.openIdPolicy().subscribe();
+  }
 }
-

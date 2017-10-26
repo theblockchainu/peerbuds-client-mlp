@@ -1,6 +1,5 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-import { URLSearchParams, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
@@ -18,13 +17,13 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import _ from 'lodash';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { WorkshopSubmitDialogComponent } from './workshop-submit-dialog/workshop-submit-dialog.component';
 import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-clone-dialog.component';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 
 import { DialogsService } from '../dialogs/dialog.service';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -56,7 +55,7 @@ export class WorkshopEditComponent implements OnInit {
   public localState = { value: '' };
   public countries: any[];
   public languagesArray: any[];
-  public userId: string;
+  public userId;
   public selectedValues: boolean[] = [false, false];
   public selectedOption = -1;
 
@@ -122,17 +121,17 @@ export class WorkshopEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
     public config: AppConfig,
-    public authenticationService: AuthenticationService,
     private languagePickerService: LanguagePickerService,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
     public _collectionService: CollectionService,
     private mediaUploader: MediaUploaderService,
-    private cookieUtilsService: CookieUtilsService,
     public requestHeaderService: RequestHeaderService,
     private dialog: MdDialog,
     private _leftSideBarService: LeftSidebarService,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private snackBar: MdSnackBar,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
@@ -140,7 +139,9 @@ export class WorkshopEditComponent implements OnInit {
       // this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.apiUrl + '/workshop/' + this.workshopId + '/edit/' + this.step + '&state=1';
       this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write';
     });
-    this.userId = cookieUtilsService.getValue('userId');
+    
+    
+    this.userId = _cookieUtilsService.getValue('userId');
     this.options = requestHeaderService.getOptions();
 
   }
@@ -274,8 +275,10 @@ export class WorkshopEditComponent implements OnInit {
           } else if (key === 'startDay' || key === 'endDay') {
             form.controls[key].patchValue(this.calculatedDate(this.timeline.value.calendar.startDate, value[key]));
           } else if (key === 'supplementUrls') {
-            // form.controls[key] = value[key];
-            // this.setChildControlFactory(value[key], () => new FormControl());
+            const control = <FormArray>form.controls[key];
+            value[key].forEach(supplementUrl => {
+                  control.push(new FormControl(supplementUrl));
+              });
           } else {
             form.controls[key].patchValue(value[key]);
           }
@@ -575,18 +578,6 @@ export class WorkshopEditComponent implements OnInit {
     control.patchValue(this.urlForVideo);
   }
 
-  // uploadVideo(event) {
-  //   console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-  //   const xhrResp = JSON.parse(event.xhr.response);
-  //   this.addVideoUrl(xhrResp.url);
-  // }
-
-  // uploadImages(event) {
-  //   console.log('upload xhr is: ' + JSON.stringify(event.xhr.response));
-  //   const xhrResp = JSON.parse(event.xhr.response);
-  //   this.addImageUrl(xhrResp.url);
-  // }
-
   uploadVideo(event) {
     this.uploadingVideo = true;
     for (const file of event.files) {
@@ -820,42 +811,6 @@ export class WorkshopEditComponent implements OnInit {
 
   }
 
-  uploadCanvasVideo(event) {
-    // Validate whether MP4
-    if (['video/'].indexOf(event.target.files[0].type) === -1) {
-      alert('Error : Only Video allowed');
-      return;
-    }
-
-    this._CTX = this._CANVAS.getContext('2d');
-    // Hide upload button
-    //  document.querySelector("#upload-button").style.display = 'none';
-
-    // Object Url as the video source
-    document.querySelector('#main-video source').setAttribute('src', URL.createObjectURL(event.target.files[0]));
-    // Load the video and show it
-    this._VIDEO.load();
-    // this._VIDEO.style.display = 'inline';
-    const self = this;
-
-    // this._VIDEO.onloadedmetadata = function(e){
-    this._VIDEO.addEventListener('loadedmetadata', function (e) {
-      setTimeout(() => self.getMetadata(), 1000);
-      // self._CTX = self._CANVAS.getContext("2d");
-      // self._CANVAS.width = 150;//this.videoWidth;
-      // self._CANVAS.height = 100;//this.videoHeight;
-      // self._CTX.drawImage(this, 0, 0, self._CANVAS.width, self._CANVAS.height);
-    }, false);
-  }
-
-  getMetadata() {
-    console.log(new Date());
-    this._CANVAS.width = 150; // this.videoWidth;
-    this._CANVAS.height = 100; // this.videoHeight;
-    this._CTX.drawImage(this._VIDEO, 0, 0, this._CANVAS.width, this._CANVAS.height);
-
-  }
-
   uploadImage1(event) {
     if (event.target.files == null || event.target.files === undefined) {
       document.write('This Browser has no support for HTML5 FileReader yet!');
@@ -930,18 +885,7 @@ export class WorkshopEditComponent implements OnInit {
           });
           this.workshop.controls.imageUrls.patchValue(this.urlForImages);
         }
-      }).subscribe((response) =>{
-        const data = this.workshop;
-        const lang = <FormArray>this.workshop.controls.language;
-        lang.removeAt(0);
-        lang.push(this._fb.control(data.value.selectedLanguage));
-        const body = data.value;
-        delete body.selectedLanguage;
-        this._collectionService.patchCollection(this.workshopId, body).map(
-          (response) => {
-            console.log("Files deleted and workshop updated");
-          }).subscribe();
-      });
+      }).subscribe();
 
   }
 
@@ -991,7 +935,10 @@ export class WorkshopEditComponent implements OnInit {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
       .subscribe((res) => {
         console.log('Token Verified');
-      });
+      },
+          (error) => {
+              this.snackBar.open(error.message);
+          });
   }
 
   takeToPayment() {

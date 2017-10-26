@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ConsoleProfileComponent} from '../console-profile.component';
-import {ProfileService} from '../../../_services/profile/profile.service';
-import {CollectionService} from '../../../_services/collection/collection.service';
-import {ConsoleTeachingComponent} from '../../console-teaching/console-teaching.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConsoleProfileComponent } from '../console-profile.component';
+import { ProfileService } from '../../../_services/profile/profile.service';
+import { CollectionService } from '../../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { ConsoleTeachingComponent } from '../../console-teaching/console-teaching.component';
 
 @Component({
   selector: 'app-console-profile-reviews',
@@ -12,6 +13,7 @@ import {ConsoleTeachingComponent} from '../../console-teaching/console-teaching.
 })
 export class ConsoleProfileReviewsComponent implements OnInit {
 
+  private userId;
   public loading: boolean;
   public profile: any;
 
@@ -20,17 +22,19 @@ export class ConsoleProfileReviewsComponent implements OnInit {
     public consoleProfileComponent: ConsoleProfileComponent,
     public router: Router,
     public _profileService: ProfileService,
-    public _collectionService: CollectionService
+    public _collectionService: CollectionService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleProfileComponent.setActiveTab(urlSegment[0].path);
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
     this.loading = true;
-    this._profileService.getProfile().subscribe((profiles) => {
+    this._profileService.getProfile(this.userId).subscribe((profiles) => {
       this.profile = profiles[0];
       console.log(this.profile);
       this.loading = false;

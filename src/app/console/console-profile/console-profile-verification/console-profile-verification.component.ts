@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleProfileComponent } from '../console-profile.component';
 import { ProfileService } from '../../../_services/profile/profile.service';
 import { AppConfig } from '../../../app.config';
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-console-profile-verification',
@@ -11,6 +14,7 @@ import { AppConfig } from '../../../app.config';
 })
 export class ConsoleProfileVerificationComponent implements OnInit {
 
+  private userId;
   public loading = false;
   public profile: any;
   public alreadyVerified: Array<any>;
@@ -27,13 +31,17 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleProfileComponent: ConsoleProfileComponent,
     public router: Router,
+    private dialog: MdDialog,
+    private dialogsService: DialogsService,
     public _profileService: ProfileService,
-    public config: AppConfig
+    public config: AppConfig,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleProfileComponent.setActiveTab(urlSegment[0].path);
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -41,12 +49,24 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     this.getProfile();
   }
 
+   public openIdVerify() {
+    this.dialogsService.openIdVerify().subscribe();
+  }
+
+  public openEmailVerify() {
+   this.dialogsService.openEmailVerify().subscribe();
+  }
+
+  public openPhoneVerify() {
+    this.dialogsService.openPhoneVerify().subscribe();
+   }
+
   private getProfile() {
-    this._profileService.getPeerData(this.queryForSocialIdentities).subscribe((peer) => {
+    this._profileService.getPeerData(this.userId, this.queryForSocialIdentities).subscribe((peer) => {
       console.log(peer);
       this.alreadyVerified = [];
       this.notVerified = [];
-      if (peer.phoneVerified && peer.phone) {
+      if (peer.phoneVerified) {
         this.alreadyVerified.push({
           text: 'Phone Number',
           value: peer.phone

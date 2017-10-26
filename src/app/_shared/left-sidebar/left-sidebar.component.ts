@@ -93,12 +93,16 @@ export class LeftSidebarComponent implements OnInit {
     this.menuState = this.menuState === 'out' ? 'in' : 'out';
   }
 
-  public goto(step) {
-    if (_.includes(step, '_')) {
-      step = _.take(step.split('_'))[0];
+  public goto(item) {
+    let step = item.step;
+    const isLocked = item.locked;
+    if (!isLocked) {
+        if (_.includes(step, '_')) {
+            step = _.take(step.split('_'))[0];
+        }
+        this.step = +step;
+        this.router.navigate([this.path, this.id, 'edit', step]);
     }
-    this.step = +step;
-    this.router.navigate([this.path, this.id, 'edit', step]);
   }
 
 }

@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
@@ -10,17 +9,13 @@ import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
 import * as moment from 'moment';
 import _ from 'lodash';
-
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { WorkshopVideoComponent } from './workshop-video/workshop-video.component';
 import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
-import { MessageParticipantComponent } from './message-participant/message-participant.component';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
-declare var FB: any;
-
 import {
   startOfDay,
   endOfDay,
@@ -39,9 +34,11 @@ import {
   CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
-
 import { DialogsService } from '../dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
+import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
+
+declare var FB: any;
 
 const colors: any = {
   red: {
@@ -72,7 +69,7 @@ const colors: any = {
 export class WorkshopPageComponent implements OnInit {
 
   public workshopId: string;
-  public userId: string;
+  public userId;
   public userType: string;
   public totalDuration: string;
   public calendarId: string;
@@ -80,6 +77,10 @@ export class WorkshopPageComponent implements OnInit {
   public newUserRating = 0;
   public liveCohort;
   public isViewTimeHidden = true;
+  public busyDiscussion = false;
+  public busyReview = false;
+  public busyReply = false;
+  public initialLoad = true;
 
   public isReadonly = true;
   public noOfReviews = 3;
@@ -133,6 +134,8 @@ export class WorkshopPageComponent implements OnInit {
   { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
   public cohortMapping:
   { [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
+  public dayMapping:
+  { [k: string]: string } = { '=0': 'Less than a day', '=1': 'One day', 'other': '# days' };
   public discussionMapping:
   { [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
 
@@ -149,17 +152,19 @@ export class WorkshopPageComponent implements OnInit {
   public loadingParticipants = true;
   public loadingWorkshop = true;
   public loadingReviews = true;
+  public accountApproved = 'false';
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
-    private cookieUtilsService: CookieUtilsService,
+    private _cookieUtilsService: CookieUtilsService,
     public _collectionService: CollectionService,
     public _topicService: TopicService,
     private _commentService: CommentService,
     public config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private snackBar: MdSnackBar
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.workshopId !== params['workshopId'] || this.calendarId !== params['calendarId'])) {
@@ -169,13 +174,15 @@ export class WorkshopPageComponent implements OnInit {
       this.calendarId = params['calendarId'];
       this.toOpenDialogName = params['dialogName'];
     });
-    this.userId = cookieUtilsService.getValue('userId');
+    this.userId = _cookieUtilsService.getValue('userId');
+    this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
   }
 
   ngOnInit() {
     this.initialised = true;
     this.initializeWorkshop();
     this.initializeForms();
+    this.initialLoad = false;
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -412,7 +419,7 @@ export class WorkshopPageComponent implements OnInit {
           this.getParticipants();
           this.getDiscussions();
           this.getBookmarks();
-          if (this.toOpenDialogName !== undefined) {
+          if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
                 if (content.id === this.toOpenDialogName) {
@@ -420,6 +427,9 @@ export class WorkshopPageComponent implements OnInit {
                 }
               });
             });
+          }
+          else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+            this.snackBar.open('Your payment was successful. Happy learning!', 'Close');
           }
         });
     } else {
@@ -542,7 +552,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   gotoEdit() {
-    this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', this.workshop.stage ? this.workshop.stage : '1']);
   }
 
   public setCurrentCalendar() {
@@ -619,11 +629,13 @@ export class WorkshopPageComponent implements OnInit {
    * postComment
    */
   public postComment() {
+    this.busyDiscussion = true;
     this._collectionService.postComments(this.workshopId, this.chatForm.value, (err, response) => {
       if (err) {
         console.log(err);
       } else {
         this.chatForm.reset();
+        this.busyDiscussion = false;
         this.getDiscussions();
       }
     });
@@ -921,11 +933,14 @@ export class WorkshopPageComponent implements OnInit {
    * postReply
    */
   public postReply(comment: any) {
+    this.busyReply = true;
     this._commentService.replyToComment(comment.id, this.replyForm.value).subscribe(
       response => {
+        this.busyReply = false;
         this.getDiscussions();
         delete this.replyForm;
       }, err => {
+        this.busyReply = false;
         console.log(err);
       }
     );
@@ -982,12 +997,15 @@ export class WorkshopPageComponent implements OnInit {
    * postReview
    */
   public postReview() {
+    this.busyReview = true;
     this._collectionService.postReview(this.workshop.owners[0].id, this.reviewForm.value).subscribe(
       result => {
         if (result) {
+          this.busyReview = false;
           this.getReviews();
         }
       }, err => {
+        this.busyReview = false;
         console.log(err);
       }
     );
@@ -1037,6 +1055,7 @@ export class WorkshopPageComponent implements OnInit {
     this._collectionService.getParticipants(this.workshopId, query).subscribe(
       (response: any) => {
         this.allParticipants = response.json();
+        console.log(this.allParticipants);
         for (const responseObj of response.json()) {
           if (this.calendarId && this.calendarId === responseObj.calendarId) {
             this.participants.push(responseObj);
@@ -1187,22 +1206,36 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   public showViewTime(content) {
-    content.isViewTimeHidden = false;
+    if (this.userType === 'participant') {
+      content.isViewTimeHidden = false;
+    }
   }
 
   public hideViewTime(content) {
-    content.isViewTimeHidden = true;
+    if (this.userType === 'participant') {
+      content.isViewTimeHidden = true;
+    }
   }
 
-  /**
-   * joinLiveSession
-   */
-  public joinLiveSession(contentId: string) {
-    const data = {
-      roomName: contentId + this.calendarId,
-      teacherId: this.workshop.owners[0].id
-    };
-    this.dialogsService.startLiveSession(data).subscribe(result => {
+  public openVerificationPage() {
+    this.router.navigate(['console', 'profile', 'verification']);
+  }
+
+  public openLoginPage() {
+    this.router.navigate(['login']);
+  }
+
+  public openProfilePage(peerId) {
+    this.router.navigate(['profile', peerId]);
+  }
+
+  public openInviteFriendsDialog() {
+    const dialogRef = this.dialog.open(InviteFriendsDialogComponent, {
+      data: {
+        url: 'workshop/' + this.workshop.id
+      },
+      width: '40vw',
+      height: '50vh'
     });
   }
 

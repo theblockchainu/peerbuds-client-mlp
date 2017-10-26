@@ -6,6 +6,7 @@ import {
 
 import { ContentService } from '../../../_services/content/content.service';
 import { CollectionService } from '../../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import * as moment from 'moment';
 import _ from 'lodash';
 
@@ -29,8 +30,8 @@ import {
   CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from '../../workshop-page/custom-date-formatter.provider';
-import {SelectDateDialogComponent} from '../../workshop-page/select-date-dialog/select-date-dialog.component';
-import {Router} from '@angular/router';
+import { SelectDateDialogComponent } from '../../workshop-page/select-date-dialog/select-date-dialog.component';
+import { Router } from '@angular/router';
 
 const colors: any = {
     red: {
@@ -65,7 +66,7 @@ export class EditCalendarDialogComponent implements OnInit {
     public calendars;
     public participants;
     public inpEvents: CalendarEvent[];
-    public userId: string;
+    public userId;
     public startDate;
     public endDate;
     public duration;
@@ -215,7 +216,11 @@ export class EditCalendarDialogComponent implements OnInit {
         private _contentService: ContentService,
         private dialog: MdDialog,
         private router: Router,
-        private _collectionService: CollectionService) {
+        private _collectionService: CollectionService,
+        private _cookieUtilsService: CookieUtilsService) {
+            
+            this.userId = _cookieUtilsService.getValue('userId');
+            
     }
     public ngOnInit() {
         this.duration = moment.duration(moment(this.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment(this.startDate, 'YYYY-MM-DD HH:mm:ss'))).asDays() + 1;

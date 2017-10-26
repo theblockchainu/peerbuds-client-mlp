@@ -44,13 +44,13 @@
     <button md-button class="headerButtons" [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
       Philosophy
     </button>
-    <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+    <!--<button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
       Journey
     </button>
     <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
       About
-    </button>
-    <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+    </button>-->
+    <button md-button class="headerButtons" [routerLink]="['/white-paper']" *ngIf="!(isLoggedIn | async)">
       White Paper
     </button>
 
@@ -58,18 +58,18 @@
       Sign Up
     </a>
 
-    <!-- trying dialog-->
-    <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
-      Log In
-    </button>
+      <!-- trying dialog-->
+      <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
+        Log In
+      </button>
 
-  </span>
+    </span>
 </md-toolbar>
 
 <md-menu #headerTeachMenu>
-  <button md-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
+  <!--<button md-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
     Dashboard
-  </button>
+  </button>-->
   <button md-menu-item [routerLink]="['/console/teaching/workshops']" *ngIf="isTeacher">
     Teaching Journey
   </button>
@@ -85,27 +85,27 @@
   <!--<button md-menu-item [routerLink]="['/console/teaching/experiences']">
       Create an Experience
     </button>-->
-  <button md-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
+  <!--<button md-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
     Calendar
-  </button>
+  </button>-->
 </md-menu>
 
 <md-menu #headerLearnMenu>
-  <button md-menu-item [routerLink]="['/console/dashboard']">
+  <!--<button md-menu-item [routerLink]="['/console/dashboard']">
     Dashboard
-  </button>
+  </button>-->
   <button md-menu-item [routerLink]="['/console/learning/workshops']">
     Learning Journey
   </button>
   <button md-menu-item [routerLink]="['/console/account/transactions']">
     Transaction History
   </button>
-  <button md-menu-item [routerLink]="['/console/learning/workshops']">
+  <!--<button md-menu-item [routerLink]="['/console/learning/workshops']">
     Workshops
-  </button>
-  <button md-menu-item [routerLink]="['/console/calendar']">
+  </button>-->
+  <!--<button md-menu-item [routerLink]="['/console/calendar']">
     Calendar
-  </button>
+  </button>-->
 </md-menu>
 
 <md-menu #headerUserMenu>
@@ -115,9 +115,9 @@
   <button md-menu-item [routerLink]="['/console/profile/edit']">
     Edit Profile
   </button>
-  <button md-menu-item [routerLink]="['/console/account/settings']">
+  <!--<button md-menu-item [routerLink]="['/console/account/settings']">
     Account Settings
-  </button>
+  </button>-->
   <button md-menu-item [routerLink]="['/console/learning/bookmarks']">
     Bookmarks
   </button>

@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 declare var moment: any;
 import { MdDialog } from '@angular/material';
 import { CohortDetailDialogComponent } from './cohort-detail-dialog/cohort-detail-dialog.component';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-console-teaching-workshop',
@@ -19,6 +20,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   public collections: any;
   public loaded: boolean;
   public now: Date;
+  private userId;
   public drafts: Array<any>;
   public ongoingArray: Array<any>;
   public upcomingArray: Array<any>;
@@ -26,10 +28,12 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   public pastWorkshopsObject: any;
   public liveWorkshopsObject: any;
   public upcomingWorkshopsObject: any;
+  
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleTeachingComponent: ConsoleTeachingComponent,
     public _collectionService: CollectionService,
+    private _cookieUtilsService: CookieUtilsService,
     public router: Router,
     public config: AppConfig,
     public dialog: MdDialog
@@ -41,11 +45,12 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
         consoleTeachingComponent.setActiveTab(urlSegment[0].path);
       }
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
     this.loaded = false;
-    this._collectionService.getOwnedCollections('{ "where": {"type":"workshop"}, "include": ["calendars", "owners", {"participants": "profiles"}, "topics", {"contents":"schedules"}] }', (err, result) => {
+    this._collectionService.getOwnedCollections(this.userId, '{ "where": {"type":"workshop"}, "include": ["calendars", "owners", {"participants": "profiles"}, "topics", {"contents":"schedules"}] }', (err, result) => {
       if (err) {
         console.log(err);
       } else {
@@ -125,7 +130,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   }
 
   public createWorkshop() {
-    this._collectionService.postCollection('workshop').subscribe((workshopObject) => {
+    this._collectionService.postCollection(this.userId, 'workshop').subscribe((workshopObject) => {
       this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
     });
   }

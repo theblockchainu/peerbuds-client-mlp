@@ -3,14 +3,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService } from '../../alert/alert.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
+
 import { Observable } from 'rxjs';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA, MdDialog, MdDialogConfig} from '@angular/material';
 import { ForgotpwdComponentDialog } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AppConfig } from '../../../app.config';
-import { MdDialog, MdDialogConfig } from '@angular/material';
 import { DialogsService } from '../dialog.service';
 
 @Component({
@@ -21,6 +21,7 @@ import { DialogsService } from '../dialog.service';
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './login-dialog.component.html'
 })
+
 export class LoginComponentDialog implements OnInit {
   // Set our default values
   // public loading = false;
@@ -73,7 +74,7 @@ export class LoginComponentDialog implements OnInit {
                   this.router.navigate([this.returnUrl]);
               },
               (error) => {
-                if(error.status == 401 && error._body == '"authentication error"') {
+                if(error.status == 401 || error._body == '"authentication error"') {
                   this.alertService.error(error._body);
                   this.showError = true;
                 }

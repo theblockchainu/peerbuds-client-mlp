@@ -1,6 +1,5 @@
-
-  <div id="content" class="onboarding-content">
-      <div class="onboarding step-1" [hidden]="step!=1">
+<div id="content" class="onboarding-content">
+      <!--<div class="onboarding step-1" [hidden]="step!=1">
         <div class="row">
           <div class="col-sm-4 col-sm-offset-4">
             <div class="welcome-box text-center">
@@ -12,9 +11,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 <!-- step 2-->
-      <div class="step-2 onboarding margin-top-60" [hidden]="step!=2">
+      <div class="step-1 onboarding margin-top-60" [hidden]="step!=1">
           <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
             <div class="row">
               <div class="col-sm-8 col-sm-offset-2">
@@ -40,9 +39,9 @@
                           </div>
                         <div *ngIf="boolShowConnectedSocials" style="margin-top:5px">
                           <i *ngIf="connectedIdentities.fb" class="fa fa-facebook defaultFB socialIcons"></i>
-                          <a *ngIf="!connectedIdentities.fb" href="{{config.apiUrl + '/link/Facebook?returnTo=onboarding/2'}}"><i class="fa fa-facebook dcSocial socialIcons"></i></a>
+                          <a *ngIf="!connectedIdentities.fb" href="{{config.apiUrl + '/link/Facebook?returnTo=onboarding/1'}}"><i class="fa fa-facebook dcSocial socialIcons"></i></a>
                           <i *ngIf="connectedIdentities.google" class="fa fa-google defaultGoogle socialIcons"></i>
-                          <a *ngIf="!connectedIdentities.google" href="{{config.apiUrl + '/link/Google?returnTo=onboarding/2'}}"><i class="fa fa-google dcSocial socialIcons"></i></a>
+                          <a *ngIf="!connectedIdentities.google" href="{{config.apiUrl + '/link/Google?returnTo=onboarding/1'}}"><i class="fa fa-google dcSocial socialIcons"></i></a>
                         </div>
                       </div>
                     </div>
@@ -89,21 +88,21 @@
               <div class="col-md-9" style="margin-left:12%">
                 <div class="pull-right">
                   <button md-button style="margin-right:15px; color:#767676">Back</button>
-                  <button md-raised-button (click)="continue(3)" color="accent" [disabled]="interests.length < 3">Done</button>
+                  <button md-raised-button (click)="continue(2)" color="accent" [disabled]="interests.length < 3">Done</button>
                 </div>
               </div>
             </div>
           </form>
       </div>
 
-      <div class="onboarding step-3" [hidden]="step!=3">
+      <div class="onboarding step-2" [hidden]="step!=2">
         <div class="text-center">
           <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
-              <div class="text-center">
+              <div class="text-center"> 
                 <h1 class="mat-title title-explore text-center">You're now ready to teach<br> and learn anything to your heart's desires</h1>
                 <div class="checkbox">
-                  <label class="check btn btn-default btn-start-explore" [routerLink]="['/home/homefeed']" style="position:relative;left:0px;">Start Exploring</label>
+                    <a md-raised-button class="customBtn" type="button" color="accent" href="/home/homefeed">Start Exploring</a>
                 </div>
               </div>
             </div>

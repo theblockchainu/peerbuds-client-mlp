@@ -3,7 +3,6 @@ import {
   Http, Headers, Response, BaseRequestOptions, RequestOptions
   , RequestOptionsArgs
 } from '@angular/http';
-// import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -17,11 +16,12 @@ import { RequestHeaderService } from '../requestHeader/request-header.service';
 @Injectable()
 export class AuthenticationService {
 
-  @Output() 
+  @Output()
   getLoggedInUser: EventEmitter<any> = new EventEmitter();
 
   public key = 'access_token';
   private options;
+  private userId;
   isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: Http, private config: AppConfig,
@@ -31,17 +31,6 @@ export class AuthenticationService {
         public _requestHeaderService: RequestHeaderService
   ) {
       this.options = this._requestHeaderService.getOptions();
-      // this.router.routeReuseStrategy.shouldReuseRoute = function(){
-      //    return false;
-      // }
-      // this.router.events.subscribe((evt) => {
-      //   if (evt instanceof NavigationEnd) {
-      //       // trick the Router into believing it's last link wasn't previously loaded
-      //       this.router.navigated = false;
-      //       // if you need to scroll back to top, here is the right place
-      //       window.scrollTo(0, 0);
-      //   }
-      // });
   }
 
   /**
@@ -70,13 +59,13 @@ export class AuthenticationService {
   login(email: string, password: string): any {
     // localStorage.setItem('token', 'JWT');
     // this.isLoginSubject.next(true);
-    let body = `{"email":"${email}","password":"${password}"}`;
+    const body = `{"email":"${email}","password":"${password}"}`;
     return this.http
       .post(this.config.apiUrl + '/auth/local', body, this.options)
       .map((response: Response) => {
       //if res code is xxx and response "error"
         // login successful if there's a jwt token in the response
-        let user = response.json();
+        const user = response.json();
         if (user && user.access_token) {
           this.isLoginSubject.next(true);
           this.getLoggedInUser.emit(user.userId);
@@ -97,6 +86,7 @@ export class AuthenticationService {
           console.log('Logged out from server');
           this.removeCookie(this.key);
           this.removeCookie('userId');
+          this.removeCookie('accountApproved');
           this.isLoginSubject.next(false);
           this.getLoggedInUser.emit(0);
           this.router.navigate(['/']);
@@ -113,16 +103,16 @@ export class AuthenticationService {
   }
 
   sendForgotPwdMail(email): any {
-    let body = `{"email":"${email}"}`;
+    const body = `{"email":"${email}"}`;
     return this.http
       .post(this.config.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
   }
- 
+
   resetpwd(email: string, password: string): any {
-    let body = `{"email":"${email}","password":"${password}"}`;
+    const body = `{"email":"${email}","password":"${password}"}`;
     return this.http
       .post(this.config.apiUrl + '/api/peers/reset', body, this.options)
       .map((response: Response) => response.json(), (err) => {

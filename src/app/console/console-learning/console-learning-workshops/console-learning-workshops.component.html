@@ -1,18 +1,18 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 margin-top-20">
     <div *ngIf="!loaded" class="center">
       <ngx-loading [show]="true"></ngx-loading>
     </div>
   </div>
 </div>
 <div class="row">
-  <div class="col-md-12" *ngIf="loaded">
+  <div class="col-md-12 margin-top-10" *ngIf="loaded">
     <div #noContentView *ngIf="collections.data.length == 0" class="center" style="margin-top: 10%">
       <div class="lightText">
         You are not learning any workshop
         <br>
         <br> Start by signing up for a
-        <a color="default" [routerLink]="'/feed/workshops'">Workshop </a>
+        <a color="default" [routerLink]="'/home/workshops'">Workshop </a>
       </div>
     </div>
     <div *ngIf="collections.activeCount > 0">

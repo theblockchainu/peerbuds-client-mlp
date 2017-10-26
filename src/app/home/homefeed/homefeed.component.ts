@@ -13,7 +13,7 @@ import _ from 'lodash';
 })
 export class HomefeedComponent implements OnInit {
   public workshops: Array<any>;
-  public userId: string;
+  public userId;
   public peers: Array<any>;
   public loadingWorkshops = false;
   public loadingPeers = false;

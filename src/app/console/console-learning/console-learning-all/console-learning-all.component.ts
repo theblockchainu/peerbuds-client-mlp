@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ConsoleLearningComponent} from '../console-learning.component';
-import {CollectionService} from '../../../_services/collection/collection.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConsoleLearningComponent } from '../console-learning.component';
+import { CollectionService } from '../../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-console-learning-all',
@@ -15,12 +16,14 @@ export class ConsoleLearningAllComponent implements OnInit {
   public now: Date;
   private outputResult: any;
   public activeTab: string;
+  private userId;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleLearningComponent: ConsoleLearningComponent,
     public _collectionService: CollectionService,
-    public router: Router
+    public router: Router,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
@@ -29,11 +32,12 @@ export class ConsoleLearningAllComponent implements OnInit {
         consoleLearningComponent.setActiveTab(urlSegment[0].path);
       }
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
     this.loaded = false;
-    this._collectionService.getParticipatingCollections('{ "relInclude": "calendarId", "where": {"type":"workshop"}, "include": ["calendars", {"owners":"profiles"}, {"participants": "profiles"}, "topics", {"contents":"schedules"}, {"reviews":"peer"}] }', (err, result) => {
+    this._collectionService.getParticipatingCollections(this.userId, '{ "relInclude": "calendarId", "where": {"type":"workshop"}, "include": ["calendars", {"owners":"profiles"}, {"participants": "profiles"}, "topics", {"contents":"schedules"}, {"reviews":"peer"}] }', (err, result) => {
       if (err) {
         console.log(err);
       } else {

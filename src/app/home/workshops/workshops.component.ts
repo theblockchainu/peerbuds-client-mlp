@@ -18,7 +18,7 @@ import 'rxjs/add/operator/do';
 })
 export class WorkshopsComponent implements OnInit {
   public availableTopics: Array<any>;
-  public userId: string;
+  public userId;
   public workshops: Array<any>;
   @ViewChild('topicButton') topicButton;
   @ViewChild('priceButton') priceButton;
@@ -57,7 +57,7 @@ export class WorkshopsComponent implements OnInit {
   }
 
   setPriceRange(): void {
-    if (this.workshops) {
+    if (this.workshops.length > 0) {
       this.availableRange = [
         _.minBy(this.workshops, function (o) {
           return o.price;
