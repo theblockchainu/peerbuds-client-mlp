@@ -205,7 +205,7 @@
                                 </div>
                                 <div class="row margin-top-10" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
                                   <div class="col-md-12">
-                                    <a md-button *ngIf="isLive(content)" class="mat-border-button" (click)="joinLiveSession()">Join</a>
+                                    <a md-button *ngIf="isLive(content)" class="mat-border-button" (click)="joinLiveSession(content.id)">Join</a>
                                     <button md-button class="mat-border-button" *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
                                   </div>
                                 </div>
