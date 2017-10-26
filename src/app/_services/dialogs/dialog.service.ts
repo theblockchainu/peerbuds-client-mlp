@@ -56,8 +56,8 @@ export class DialogsService {
         let dialogRef5: MdDialogRef<VerifyIdDialogComponent>;
 
         dialogRef5 = this.dialog.open(VerifyIdDialogComponent, {
-            width: '800px',
-            height: '600px'
+            width: '60vw',
+            height: '95vh'
         });
         return dialogRef5.afterClosed();
     }

@@ -18,7 +18,6 @@ export class MediaUploaderService {
       file.objectURL = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
     }
     file.src = file.objectURL.changingThisBreaksApplicationSecurity;
-    console.log(file);
     const formData = new FormData();
     if (file.type.includes('image/'))
     {
