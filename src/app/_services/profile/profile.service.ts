@@ -43,7 +43,6 @@ export class ProfileService {
   }
 
   public getProfile(userId) {
-    debugger;
     const profile = {};
     if (userId) {
       const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
@@ -55,7 +54,6 @@ export class ProfileService {
   }
 
   public getProfileData(userId, filter: any) {
-    debugger;
     if (userId) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
         .map(
@@ -77,7 +75,6 @@ export class ProfileService {
    * getPeerData
    */
   public getPeerData(userId, filter?: any): Observable<any> {
-    debugger;
     if (filter) {
       if (userId) {
         return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '?filter=' + JSON.stringify(filter), this.options)
