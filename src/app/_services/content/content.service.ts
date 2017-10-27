@@ -45,4 +45,20 @@ export class ContentService {
                       console.log('Error: ' + err);
                      });
   }
+
+  public getMediaObject(urlString: string) {
+    const query = {
+                    'where':
+                            {
+                              url : urlString
+                            }
+                  };
+    return this.http.get(this.config.apiUrl + '/api/media?filter=' + JSON.stringify(query), this.options)
+                    .map((response: Response) => 
+                      response.json(),
+                      (err) => {
+                        console.log('Error:' + err);
+                      }
+                    );
+  }
 }

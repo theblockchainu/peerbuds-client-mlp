@@ -96,13 +96,13 @@ label.check, label.radiobox{
 label.check i, label.radiobox i {
     height: 12px;
     width: 12px;
-    background-color: #ff5b5f;
+    background-color: #ff6d71;
     display: inline-block;
     position: absolute;
     left: 2px;
     top: 30px;
     border-radius:5px;
-    border:1px solid #ff5b5f;
+    border:1px solid #ff6d71;
     font-style:normal;
 }
 label.radiobox i{border-radius:50%;}
@@ -161,7 +161,7 @@ label.check {
 .title-explore{
  padding: 130px 0 0 0;
  margin: 100px 0 24px 0;
- font-weight: 400;
+ font-weight: 300;
 }
 
 .headline {

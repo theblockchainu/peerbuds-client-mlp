@@ -13,7 +13,7 @@ import { AppConfig } from '../app.config';
 export class ConsoleComponent implements OnInit {
 
   public activeTab: string;
-  public userId: string;
+  public userId;
   public isAdmin: boolean;
 
   constructor(public router: Router,
@@ -21,16 +21,17 @@ export class ConsoleComponent implements OnInit {
     private cookieUtilsService: CookieUtilsService,
     private _collectionService: CollectionService,
     private _profileService: ProfileService,
-    private appConfig: AppConfig) {
+    private appConfig: AppConfig,
+    private _cookieUtilsService: CookieUtilsService) {
     this.activatedRoute.firstChild.url.subscribe((urlSegment) => {
       console.log('activated route is: ' + JSON.stringify(urlSegment));
       this.activeTab = urlSegment[0].path;
     });
-    this.userId = cookieUtilsService.getValue('userId');
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
-    this._profileService.getPeerData().subscribe(
+    this._profileService.getPeerData(this.userId).subscribe(
       result => {
         this.isAdmin = result.isAdmin;
       }, err => {

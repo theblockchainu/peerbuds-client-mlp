@@ -25,7 +25,6 @@ import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multis
 import { GenericMultiselectAutocompleteModule } from './generic-multiselect-autocomplete/generic-multiselect-autocomplete.module';
 import { SocialSyncModule } from './socialsync/socialsync.module';
 import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
-import { FinishingTouchesModule } from '../finishing-touches/finishing-touches.module';
 
 import { CollectionService } from '../_services/collection/collection.service';
 import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
@@ -107,7 +106,6 @@ import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
     CarouselModule,
     DatepickerModule,
     TimepickerModule,
-    FinishingTouchesModule,
     NgPipesModule,
     AccordionModule,
     MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,

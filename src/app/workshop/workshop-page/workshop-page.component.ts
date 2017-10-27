@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
@@ -10,17 +9,13 @@ import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
 import * as moment from 'moment';
 import _ from 'lodash';
-
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { WorkshopVideoComponent } from './workshop-video/workshop-video.component';
 import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
-import { MessageParticipantComponent } from './message-participant/message-participant.component';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
-declare var FB: any;
-
 import {
   startOfDay,
   endOfDay,
@@ -39,9 +34,11 @@ import {
   CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
-
 import { DialogsService } from '../dialogs/dialog.service';
-import {TopicService} from '../../_services/topic/topic.service';
+import { TopicService } from '../../_services/topic/topic.service';
+import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
+
+declare var FB: any;
 
 const colors: any = {
   red: {
@@ -72,7 +69,7 @@ const colors: any = {
 export class WorkshopPageComponent implements OnInit {
 
   public workshopId: string;
-  public userId: string;
+  public userId;
   public userType: string;
   public totalDuration: string;
   public calendarId: string;
@@ -80,6 +77,10 @@ export class WorkshopPageComponent implements OnInit {
   public newUserRating = 0;
   public liveCohort;
   public isViewTimeHidden = true;
+  public busyDiscussion = false;
+  public busyReview = false;
+  public busyReply = false;
+  public initialLoad = true;
 
   public isReadonly = true;
   public noOfReviews = 3;
@@ -128,13 +129,15 @@ export class WorkshopPageComponent implements OnInit {
   public view = 'month';
 
   public activityMapping:
-      {[k: string]: string} = {'=0': 'No activity', '=1': 'One activity', 'other': '# activities'};
+  { [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
   public hourMapping:
-      {[k: string]: string} = {'=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours'};
+  { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
   public cohortMapping:
-      {[k: string]: string} = {'=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts'};
+  { [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
+  public dayMapping:
+  { [k: string]: string } = { '=0': 'Less than a day', '=1': 'One day', 'other': '# days' };
   public discussionMapping:
-      {[k: string]: string} = {'=0': 'No Comments', '=1': 'One comment', 'other': '# comments'};
+  { [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
 
   public viewDate: Date = new Date();
 
@@ -149,17 +152,19 @@ export class WorkshopPageComponent implements OnInit {
   public loadingParticipants = true;
   public loadingWorkshop = true;
   public loadingReviews = true;
+  public accountApproved = 'false';
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
-    private cookieUtilsService: CookieUtilsService,
+    private _cookieUtilsService: CookieUtilsService,
     public _collectionService: CollectionService,
     public _topicService: TopicService,
     private _commentService: CommentService,
     public config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private snackBar: MdSnackBar
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.workshopId !== params['workshopId'] || this.calendarId !== params['calendarId'])) {
@@ -169,65 +174,67 @@ export class WorkshopPageComponent implements OnInit {
       this.calendarId = params['calendarId'];
       this.toOpenDialogName = params['dialogName'];
     });
-    this.userId = cookieUtilsService.getValue('userId');
+    this.userId = _cookieUtilsService.getValue('userId');
+    this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
   }
 
   ngOnInit() {
     this.initialised = true;
     this.initializeWorkshop();
     this.initializeForms();
+    this.initialLoad = false;
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-      this.eventsForTheDay = {};
-      if (events.length === 0) {
-          this.dateClicked = false;
-          return;
+    this.eventsForTheDay = {};
+    if (events.length === 0) {
+      this.dateClicked = false;
+      return;
+    }
+    else {
+      this.dateClicked = true; // !this.dateClicked;
+    }
+    this.clickedDate = date;
+    this.clickedCohort = this.parseTitle(events[0].title)[0];
+    this.clickedCohortId = this.parseTitle(events[0].title)[1];
+    this.clickedCohortStartDate = events[0].start;
+    this.clickedCohortEndDate = events[0].end;
+    for (const event of events) {
+      const titleCalIdArray = this.parseTitle(event.title);
+      const calId = titleCalIdArray[1];
+      const title = titleCalIdArray[0];
+      const type = titleCalIdArray[2];
+      const eventId = titleCalIdArray[3];
+      if (type !== 'cohort') {
+        if (!this.eventsForTheDay.hasOwnProperty(calId)) {
+          this.eventsForTheDay[calId] = [{
+            id: eventId,
+            title: title,
+            color: event.color,
+            start: event.start,
+            end: event.end
+          }];
+        }
+        else {
+          this.eventsForTheDay[calId].push({
+            id: eventId,
+            title: title,
+            color: event.color,
+            start: event.start,
+            end: event.end
+          });
+        }
       }
-      else {
-          this.dateClicked = true; // !this.dateClicked;
+    }
+    if (isSameMonth(date, this.viewDate)) {
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+        this.viewDate = date;
       }
-      this.clickedDate = date;
-      this.clickedCohort = this.parseTitle(events[0].title)[0];
-      this.clickedCohortId = this.parseTitle(events[0].title)[1];
-      this.clickedCohortStartDate = events[0].start;
-      this.clickedCohortEndDate = events[0].end;
-      for (const event of events) {
-          const titleCalIdArray = this.parseTitle(event.title);
-          const calId = titleCalIdArray[1];
-          const title = titleCalIdArray[0];
-          const type = titleCalIdArray[2];
-          const eventId = titleCalIdArray[3];
-          if (type !== 'cohort') {
-              if (!this.eventsForTheDay.hasOwnProperty(calId)) {
-                  this.eventsForTheDay[calId] = [{
-                      id: eventId,
-                      title: title,
-                      color: event.color,
-                      start: event.start,
-                      end: event.end
-                  }];
-              }
-              else {
-                  this.eventsForTheDay[calId].push({
-                      id: eventId,
-                      title: title,
-                      color: event.color,
-                      start: event.start,
-                      end: event.end
-                  });
-              }
-          }
-      }
-      if (isSameMonth(date, this.viewDate)) {
-          if (
-              (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0) {
-              this.activeDayIsOpen = false;
-          } else {
-              this.activeDayIsOpen = true;
-              this.viewDate = date;
-          }
-      }
+    }
   }
 
   public parseTitle(title) {
@@ -299,14 +306,14 @@ export class WorkshopPageComponent implements OnInit {
           calendar: calendar,
           itenary: calendarItenary
         });
-        index++;
-        this.events.push({
-            title: 'Cohort ' + index + ':' + calendar.id + ':cohort:',
-            color: colors.red,
-            start: moment.utc(calendar.startDate, 'YYYY-MM-DD HH:mm:ss').local().toDate(),
-            end: moment.utc(calendar.endDate, 'YYYY-MM-DD HH:mm:ss').local().toDate(),
-            cssClass: 'workshopCohortCalendar'
-        });
+      index++;
+      this.events.push({
+        title: 'Cohort ' + index + ':' + calendar.id + ':cohort:',
+        color: colors.red,
+        start: moment.utc(calendar.startDate, 'YYYY-MM-DD HH:mm:ss').local().toDate(),
+        end: moment.utc(calendar.endDate, 'YYYY-MM-DD HH:mm:ss').local().toDate(),
+        cssClass: 'workshopCohortCalendar'
+      });
     });
 
     console.log(this.allItenaries);
@@ -338,7 +345,7 @@ export class WorkshopPageComponent implements OnInit {
         'views',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules', {'views': 'peer'}, { 'submissions': [{'upvotes': 'peer'}, { 'peer': 'profiles' } ] }] }
+        { 'contents': ['schedules', { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
       ],
       'relInclude': 'calendarId'
     };
@@ -374,16 +381,16 @@ export class WorkshopPageComponent implements OnInit {
                 startDate = this.calculateDate(this.currentCalendar.startDate, key);
                 endDate = this.calculateDate(this.currentCalendar.startDate, key);
               } else {
-                  startDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
-                  endDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+                startDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+                endDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
               }
               this.itenariesObj[key].sort(function (a, b) {
                 return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
               });
               this.itenariesObj[key].forEach(content => {
                 if (content.schedules[0].startTime !== undefined) {
-                    content.schedules[0].startTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].startTime.split('T')[1];
-                    content.schedules[0].endTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].endTime.split('T')[1];
+                  content.schedules[0].startTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].startTime.split('T')[1];
+                  content.schedules[0].endTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].endTime.split('T')[1];
                 }
               });
               this.setContentViews(this.itenariesObj[key]);
@@ -412,7 +419,7 @@ export class WorkshopPageComponent implements OnInit {
           this.getParticipants();
           this.getDiscussions();
           this.getBookmarks();
-          if (this.toOpenDialogName !== undefined) {
+          if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
                 if (content.id === this.toOpenDialogName) {
@@ -420,6 +427,9 @@ export class WorkshopPageComponent implements OnInit {
                 }
               });
             });
+          }
+          else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+            this.snackBar.open('Your payment was successful. Happy learning!', 'Close');
           }
         });
     } else {
@@ -430,20 +440,22 @@ export class WorkshopPageComponent implements OnInit {
     this.loadingReviews = true;
     let query = {};
     if (this.calendarId) {
-        query = {'include': [
-            {
-                'peer': ['profiles']
-            }],
-            'where': {'and': [{'collectionId': this.workshopId}, {'collectionCalendarId': this.calendarId}]}
-        };
+      query = {
+        'include': [
+          {
+            'peer': ['profiles']
+          }],
+        'where': { 'and': [{ 'collectionId': this.workshopId }, { 'collectionCalendarId': this.calendarId }] }
+      };
     }
     else {
-        query = {'include': [
-            {
-                'peer': ['profiles']
-            }],
-            'where': {'collectionId': this.workshopId}
-        };
+      query = {
+        'include': [
+          {
+            'peer': ['profiles']
+          }],
+        'where': { 'collectionId': this.workshopId }
+      };
     }
     this._collectionService.getReviews(this.workshop.owners[0].id, query, (err, response) => {
       if (err) {
@@ -458,28 +470,28 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private getBookmarks() {
-      const query = {
-          'include': [
-              {
-                  'peer': [
-                      { 'profiles': ['work'] }
-                  ]
-              }
-          ],
-          'order': 'createdAt DESC'
-      };
-      this._collectionService.getBookmarks(this.workshopId, query, (err, response) => {
-          if (err) {
-              console.log(err);
-          } else {
-              this.bookmarks = response;
-              this.bookmarks.forEach(bookmark => {
-                if (bookmark.peer[0].id === this.userId) {
-                  this.hasBookmarked = true;
-                }
-              });
+    const query = {
+      'include': [
+        {
+          'peer': [
+            { 'profiles': ['work'] }
+          ]
+        }
+      ],
+      'order': 'createdAt DESC'
+    };
+    this._collectionService.getBookmarks(this.workshopId, query, (err, response) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.bookmarks = response;
+        this.bookmarks.forEach(bookmark => {
+          if (bookmark.peer[0].id === this.userId) {
+            this.hasBookmarked = true;
           }
-      });
+        });
+      }
+    });
   }
 
   private getDiscussions() {
@@ -506,7 +518,7 @@ export class WorkshopPageComponent implements OnInit {
           ]
         },
         {
-            'upvotes': 'peer'
+          'upvotes': 'peer'
         }
       ],
       'order': 'createdAt DESC'
@@ -531,16 +543,16 @@ export class WorkshopPageComponent implements OnInit {
       isAnnouncement: [false]
     });
     this.reviewForm = this._fb.group({
-        description: ['', Validators.required],
-        like: '',
-        score: '',
-        collectionId: this.workshopId,
-        collectionCalendarId: this.calendarId,
+      description: ['', Validators.required],
+      like: '',
+      score: '',
+      collectionId: this.workshopId,
+      collectionCalendarId: this.calendarId,
     });
   }
 
   gotoEdit() {
-    this.router.navigate(['workshop', this.workshopId, 'edit', 1]);
+    this.router.navigate(['workshop', this.workshopId, 'edit', this.workshop.stage ? this.workshop.stage : '1']);
   }
 
   public setCurrentCalendar() {
@@ -565,7 +577,7 @@ export class WorkshopPageComponent implements OnInit {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
       width: '50vw',
       height: '90vh',
-      data: {itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType}
+      data: { itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -617,11 +629,13 @@ export class WorkshopPageComponent implements OnInit {
    * postComment
    */
   public postComment() {
+    this.busyDiscussion = true;
     this._collectionService.postComments(this.workshopId, this.chatForm.value, (err, response) => {
       if (err) {
         console.log(err);
       } else {
         this.chatForm.reset();
+        this.busyDiscussion = false;
         this.getDiscussions();
       }
     });
@@ -633,11 +647,11 @@ export class WorkshopPageComponent implements OnInit {
   public saveBookmark() {
     if (!this.hasBookmarked) {
       this._collectionService.saveBookmark(this.workshopId, (err, response) => {
-          if (err) {
-              console.log(err);
-          } else {
-              this.getBookmarks();
-          }
+        if (err) {
+          console.log(err);
+        } else {
+          this.getBookmarks();
+        }
       });
     }
   }
@@ -739,19 +753,19 @@ export class WorkshopPageComponent implements OnInit {
         workshopId: this.workshopId
       },
       width: '50vw',
-        height: '90vh'
+      height: '90vh'
     });
   }
 
   viewAllParticipants() {
-      const dialogRef = this.dialog.open(ViewParticipantsComponent, {
-          data: {
-              participants: this.allParticipants,
-              workshopId: this.workshopId
-          },
-          width: '50vw',
-          height: '90vh'
-      });
+    const dialogRef = this.dialog.open(ViewParticipantsComponent, {
+      data: {
+        participants: this.allParticipants,
+        workshopId: this.workshopId
+      },
+      width: '50vw',
+      height: '90vh'
+    });
   }
 
   /**
@@ -838,29 +852,29 @@ export class WorkshopPageComponent implements OnInit {
   public getRecommendations() {
     this.loadingSimilarWorkshops = true;
     const query = {
-        'include': [
-            { 'collections': [{'owners': 'reviewsAboutYou'}] }
-        ]
+      'include': [
+        { 'collections': [{ 'owners': 'reviewsAboutYou' }] }
+      ]
     };
     this._topicService.getTopics(query).subscribe(
-        (response) => {
-            for (const responseObj of response) {
-                responseObj.collections.forEach(collection => {
-                    if (collection.status === 'active') {
-                        if (collection.owners[0].reviewsAboutYou) {
-                            collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-                            collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-                        }
-                        this.recommendations.collections.push(collection);
-                    }
-                });
+      (response) => {
+        for (const responseObj of response) {
+          responseObj.collections.forEach(collection => {
+            if (collection.status === 'active') {
+              if (collection.owners[0].reviewsAboutYou) {
+                collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+                collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+              }
+              this.recommendations.collections.push(collection);
             }
-            this.recommendations.collections = _.uniqBy(this.recommendations.collections, 'id');
-            this.recommendations.collections = _.chunk(this.recommendations.collections, 5)[0];
-            this.loadingSimilarWorkshops = false;
-        }, (err) => {
-            console.log(err);
+          });
         }
+        this.recommendations.collections = _.uniqBy(this.recommendations.collections, 'id');
+        this.recommendations.collections = _.chunk(this.recommendations.collections, 5)[0];
+        this.loadingSimilarWorkshops = false;
+      }, (err) => {
+        console.log(err);
+      }
     );
   }
 
@@ -871,12 +885,12 @@ export class WorkshopPageComponent implements OnInit {
     const dialogRef = this.dialog.open(SelectDateDialogComponent, {
       width: '50vw',
       height: '90vh',
-      data: {itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType}
+      data: { itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (this.userId) {
-            this.router.navigate(['review-pay', 'collection', this.workshopId, result]);
+          this.router.navigate(['review-pay', 'collection', this.workshopId, result]);
           //this.joinWorkshop(result);
         } else {
           this.router.navigate(['login']);
@@ -905,7 +919,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   public openEventDialog(calendarId, eventId) {
-      this.router.navigate(['workshop', this.workshopId, 'calendar', calendarId, eventId]);
+    this.router.navigate(['workshop', this.workshopId, 'calendar', calendarId, eventId]);
   }
 
   public createReplyForm(comment: any) {
@@ -919,11 +933,14 @@ export class WorkshopPageComponent implements OnInit {
    * postReply
    */
   public postReply(comment: any) {
+    this.busyReply = true;
     this._commentService.replyToComment(comment.id, this.replyForm.value).subscribe(
       response => {
+        this.busyReply = false;
         this.getDiscussions();
         delete this.replyForm;
       }, err => {
+        this.busyReply = false;
         console.log(err);
       }
     );
@@ -955,18 +972,18 @@ export class WorkshopPageComponent implements OnInit {
     );
   }
 
-    /**
-     * deleteReview
-     */
-    public deleteReview(review: any) {
-        this._collectionService.deleteReview(review.id).subscribe(
-            response => {
-                this.getReviews();
-            }, err => {
-                console.log(err);
-            }
-        );
-    }
+  /**
+   * deleteReview
+   */
+  public deleteReview(review: any) {
+    this._collectionService.deleteReview(review.id).subscribe(
+      response => {
+        this.getReviews();
+      }, err => {
+        console.log(err);
+      }
+    );
+  }
 
   /**
    * handleRate
@@ -980,10 +997,29 @@ export class WorkshopPageComponent implements OnInit {
    * postReview
    */
   public postReview() {
+    this.busyReview = true;
     this._collectionService.postReview(this.workshop.owners[0].id, this.reviewForm.value).subscribe(
       result => {
         if (result) {
+          this.busyReview = false;
           this.getReviews();
+        }
+      }, err => {
+        this.busyReview = false;
+        console.log(err);
+      }
+    );
+  }
+
+  addCommentUpvote(comment: any) {
+    this._commentService.addCommentUpvote(comment.id, {}).subscribe(
+      response => {
+        if (comment.upvotes !== undefined) {
+          comment.upvotes.push(response.json());
+        }
+        else {
+          comment.upvotes = [];
+          comment.upvotes.push(response.json());
         }
       }, err => {
         console.log(err);
@@ -991,82 +1027,67 @@ export class WorkshopPageComponent implements OnInit {
     );
   }
 
-  addCommentUpvote(comment: any) {
-      this._commentService.addCommentUpvote(comment.id, {}).subscribe(
-          response => {
-              if (comment.upvotes !== undefined) {
-                  comment.upvotes.push(response.json());
-              }
-              else {
-                  comment.upvotes = [];
-                  comment.upvotes.push(response.json());
-              }
-          }, err => {
-              console.log(err);
-          }
-      );
-  }
-
   addReplyUpvote(reply: any) {
-      this._commentService.addReplyUpvote(reply.id, {}).subscribe(
-          response => {
-              console.log(response);
-              if (reply.upvotes !== undefined) {
-                reply.upvotes.push(response.json());
-              }
-              else {
-                reply.upvotes = [];
-                reply.upvotes.push(response.json());
-              }
-          }, err => {
-              console.log(err);
-          }
-      );
+    this._commentService.addReplyUpvote(reply.id, {}).subscribe(
+      response => {
+        console.log(response);
+        if (reply.upvotes !== undefined) {
+          reply.upvotes.push(response.json());
+        }
+        else {
+          reply.upvotes = [];
+          reply.upvotes.push(response.json());
+        }
+      }, err => {
+        console.log(err);
+      }
+    );
   }
 
   public getParticipants() {
     this.loadingParticipants = true;
-      const query = {
-          'relInclude': 'calendarId',
-          'include': ['profiles']
-      };
-      let isCurrentUserParticipant = false;
-      let currentUserParticipatingCalendar = '';
-      this._collectionService.getParticipants(this.workshopId, query).subscribe(
-          (response: any) => {
-              this.allParticipants = response.json();
-              for (const responseObj of response.json()) {
-                  if (this.calendarId && this.calendarId === responseObj.calendarId) {
-                    this.participants.push(responseObj);
-                  }
-                  if (this.calendarId === undefined && responseObj.id === this.userId) {
-                    // current user is a participant of this workshop
-                      isCurrentUserParticipant = true;
-                      currentUserParticipatingCalendar = responseObj.calendarId;
-                  }
-              }
-              if (isCurrentUserParticipant) {
-                this.router.navigate(['workshop', this.workshopId, 'calendar', currentUserParticipatingCalendar]);
-              }
-              this.loadingParticipants = false;
-          }, (err) => {
-              console.log(err);
+    const query = {
+      'relInclude': 'calendarId',
+      'include': ['profiles']
+    };
+    let isCurrentUserParticipant = false;
+    let currentUserParticipatingCalendar = '';
+    this._collectionService.getParticipants(this.workshopId, query).subscribe(
+      (response: any) => {
+        this.allParticipants = response.json();
+        console.log(this.allParticipants);
+        for (const responseObj of response.json()) {
+          if (this.calendarId && this.calendarId === responseObj.calendarId) {
+            this.participants.push(responseObj);
           }
-      );
+          if (this.calendarId === undefined && responseObj.id === this.userId) {
+            // current user is a participant of this workshop
+            isCurrentUserParticipant = true;
+            currentUserParticipatingCalendar = responseObj.calendarId;
+          }
+        }
+        if (isCurrentUserParticipant) {
+          this.router.navigate(['workshop', this.workshopId, 'calendar', currentUserParticipatingCalendar]);
+        }
+        this.loadingParticipants = false;
+      }, (err) => {
+        console.log(err);
+      }
+    );
   }
 
   public hasUpvoted(upvotes) {
     let result = false;
     if (upvotes !== undefined) {
       upvotes.forEach(upvote => {
-          if (upvote.peer !== undefined) {
-              if (upvote.peer[0].id === this.userId) {
-                  result = true;
-              }
+        if (upvote.peer !== undefined) {
+          if (upvote.peer[0].id === this.userId) {
+            result = true;
           }
-          else {
-              result = true;
-          }
+        }
+        else {
+          result = true;
+        }
       });
     }
     return result;
@@ -1115,24 +1136,24 @@ export class WorkshopPageComponent implements OnInit {
   public hasUpcomingCohort() {
     let result = false;
     this.workshop.calendars.forEach(calendar => {
-        const cohortStartDate = moment(calendar.startDate);
-        const cohortEndDate = moment(calendar.endDate);
-        const currentMoment = moment();
-        if (cohortStartDate.diff(currentMoment, 'seconds') > 0) {
-            result = true;
-        } else {
-            result = false;
-        }
+      const cohortStartDate = moment(calendar.startDate);
+      const cohortEndDate = moment(calendar.endDate);
+      const currentMoment = moment();
+      if (cohortStartDate.diff(currentMoment, 'seconds') > 0) {
+        result = true;
+      } else {
+        result = false;
+      }
     });
     return result;
   }
 
   public shareOnFb() {
     FB.ui({
-        method: 'share'
-    }, function(response){
-        // Debug response (optional)
-        console.log(response);
+      method: 'share'
+    }, function (response) {
+      // Debug response (optional)
+      console.log(response);
     });
   }
 
@@ -1147,49 +1168,87 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   public setContentViews(contents) {
-      contents.forEach(content => {
-          if (content.type !== 'project' && content.views !== undefined) {
-              const thisUserView = [];
-              let totalUserViewTime = 0;
-              content.views.forEach(view => {
-                  if (view.peer[0].id === this.userId && view.endTime !== undefined) {
-                      thisUserView.push(view);
-                      const startTime = moment(view.startTime);
-                      const endTime = moment(view.endTime);
-                      console.log(endTime.toString());
-                      const thisViewTime = endTime.diff(startTime);
-                      console.log(thisViewTime);
-                      totalUserViewTime += thisViewTime;
-                  }
-              });
-              content.views = thisUserView;
-              content.totalUserViewTime = Math.floor(totalUserViewTime / 60000) + ' minutes';
-              content.isViewTimeHidden = true;
+    contents.forEach(content => {
+      if (content.type !== 'project' && content.views !== undefined) {
+        const thisUserView = [];
+        let totalUserViewTime = 0;
+        content.views.forEach(view => {
+          if (view.peer[0].id === this.userId && view.endTime !== undefined) {
+            thisUserView.push(view);
+            const startTime = moment(view.startTime);
+            const endTime = moment(view.endTime);
+            console.log(endTime.toString());
+            const thisViewTime = endTime.diff(startTime);
+            console.log(thisViewTime);
+            totalUserViewTime += thisViewTime;
           }
-          else if (content.type === 'project' && content.submissions !== undefined) {
-              const thisUserView = [];
-              let totalUserViewTime;
-              content.submissions.forEach(submission => {
-                 if (submission.peer[0].id === this.userId) {
-                     thisUserView.push(submission);
-                     const startTime = moment(submission.createdAt);
-                     const endTime = moment();
-                     totalUserViewTime = startTime.from(endTime);
-                     content.views = thisUserView;
-                     content.totalUserViewTime = totalUserViewTime;
-                     content.isViewTimeHidden = true;
-                 }
-              });
+        });
+        content.views = thisUserView;
+        content.totalUserViewTime = Math.floor(totalUserViewTime / 60000) + ' minutes';
+        content.isViewTimeHidden = true;
+      }
+      else if (content.type === 'project' && content.submissions !== undefined) {
+        const thisUserView = [];
+        let totalUserViewTime;
+        content.submissions.forEach(submission => {
+          if (submission.peer[0].id === this.userId) {
+            thisUserView.push(submission);
+            const startTime = moment(submission.createdAt);
+            const endTime = moment();
+            totalUserViewTime = startTime.from(endTime);
+            content.views = thisUserView;
+            content.totalUserViewTime = totalUserViewTime;
+            content.isViewTimeHidden = true;
           }
-      });
+        });
+      }
+    });
   }
 
   public showViewTime(content) {
+    if (this.userType === 'participant') {
       content.isViewTimeHidden = false;
+    }
   }
 
   public hideViewTime(content) {
+    if (this.userType === 'participant') {
       content.isViewTimeHidden = true;
+    }
   }
+
+  public openVerificationPage() {
+    this.router.navigate(['console', 'profile', 'verification']);
+  }
+
+  public openLoginPage() {
+    this.router.navigate(['login']);
+  }
+
+  public openProfilePage(peerId) {
+    this.router.navigate(['profile', peerId]);
+  }
+
+  public openInviteFriendsDialog() {
+    const dialogRef = this.dialog.open(InviteFriendsDialogComponent, {
+      data: {
+        url: 'workshop/' + this.workshop.id
+      },
+      width: '40vw',
+      height: '50vh'
+    });
+  }
+  /**
+  * joinLiveSession
+  */
+  public joinLiveSession(contentId: string) {
+    const data = {
+      roomName: contentId + this.calendarId,
+      teacherId: this.workshop.owners[0].id
+    };
+    this.dialogsService.startLiveSession(data).subscribe(result => {
+    });
+  }
+
 
 }

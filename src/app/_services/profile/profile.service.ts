@@ -12,12 +12,10 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-// import { Response } from '@angular/http';
-
+import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 @Injectable()
 export class ProfileService {
   public key = 'userId';
-  private userId;
   private options;
 
   constructor(private http: Http,
@@ -25,24 +23,15 @@ export class ProfileService {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
-    public _requestHeaderService: RequestHeaderService
+    public _requestHeaderService: RequestHeaderService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
-    this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
-  }
-
-  private getCookieValue(key: string) {
-    const cookie = this._cookieService.get(key);
-    if (cookie) {
-      const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-      this.userId = cookieValue[1];
-    }
-    return this.userId;
   }
 
   public getPeer(id) {
     const peer = {};
-    if (this.userId) {
+    if (id) {
       const options = `{"where": "","order": "","limit": "",
       "include": [{"profiles":["work","education"]}, "topicsLearning","topicsTeaching",
       {"collections":{"reviews": {"peer": "profiles"}}},
@@ -53,20 +42,20 @@ export class ProfileService {
     }
   }
 
-  public getProfile() {
+  public getProfile(userId) {
     const profile = {};
-    if (this.userId) {
+    if (userId) {
       const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + filter, this.options)
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + filter, this.options)
         .map(
         (response: Response) => response.json()
         );
     }
   }
 
-  public getProfileData(filter: any) {
-    if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
+  public getProfileData(userId, filter: any) {
+    if (userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
         .map(
         (response: Response) => response.json()
         );
@@ -85,17 +74,28 @@ export class ProfileService {
   /**
    * getPeerData
    */
-  public getPeerData(filter?: any): Observable<any> {
+  public getPeerData(userId, filter?: any): Observable<any> {
     if (filter) {
-      if (this.userId) {
-        return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '?filter=' + JSON.stringify(filter), this.options)
+      if (userId) {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '?filter=' + JSON.stringify(filter), this.options)
+          .map(
+          (response: Response) => response.json()
+          );
+      } else {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue(this.key) + '?filter=' + JSON.stringify(filter), this.options)
           .map(
           (response: Response) => response.json()
           );
       }
     } else {
-      if (this.userId) {
-        return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId, this.options)
+      if (userId) {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + userId, this.options)
+          .map(
+          (response: Response) => response.json()
+          );
+      }
+      else {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue(this.key), this.options)
           .map(
           (response: Response) => response.json()
           );
@@ -113,76 +113,92 @@ export class ProfileService {
     }
   }
 
-  public getPeerProfile() {
-    return this.userId;
-  }
-
-  public updatePeer(body: any) {
-    if (this.userId) {
-      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId, body, this.options).map(
+  public updatePeer(userId, body: any) {
+    if (userId) {
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + userId, body, this.options).map(
         response => response.json()
       );
     }
   }
-  public updateProfile(body: any) {
-    if (this.userId) {
-      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body, this.options)
+  public updateProfile(userId, body: any) {
+    if (userId) {
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + userId + '/profile', body, this.options)
         .map((response: Response) => response.json());
     }
   }
 
-  public updatePeerProfile(id, body: any) {
-    if (this.userId) {
-      return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', body, this.options);
+  public updatePeerProfile(userId, body: any) {
+    if (userId) {
+      return this.http.patch(this.config.apiUrl + '/api/peers/' + userId + '/profile', body, this.options);
       // patch first_name, last_name, dob, promoOptIn into peers/id/profiles
     }
   }
 
-  public socialProfiles() {
+  public socialProfiles(userId) {
     const socialProfile = [];
-    if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/identities', this.options)
+    if (userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/identities', this.options)
         .map((response: Response) => response.json()
         );
     }
   }
 
-  public interestTopics(topicsFor) {
+  public interestTopics(userId, topicsFor) {
     const interestTopics = [];
-    if (this.userId) {
+    if (userId) {
 
       const topicsUrl = topicsFor === 'teacher' ? '/topicsTeaching' : '/topicsLearning';
 
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + topicsUrl, this.options)
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + topicsUrl, this.options)
         .map((response: Response) => response.json()
         );
     }
   }
   /* Signup Verification Methods Starts*/
-  public getPeerNode() {
+  public getPeerNode(userId) {
     return this.http
-      .get(this.config.apiUrl + '/api/peers/' + this.userId)
+      .get(this.config.apiUrl + '/api/peers/' + userId)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
   }
 
-  public sendVerifyEmail(emailAddress) {
+  public sendVerifyEmail(userId, emailAddress) {
     const body = {
     };
     return this.http
-      .post(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + this.userId + '&email=' + emailAddress, body, this.options)
+      .post(this.config.apiUrl + '/api/peers/sendVerifyEmail?uid=' + userId + '&email=' + emailAddress, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
+  public sendVerifySms(phonenumber) {
+    const body = {
+    };
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
 
   }
 
-  public confirmEmail(inputToken: string) {
+  public confirmEmail(userId, inputToken: string) {
     const body = {};
     const redirect = 'onboarding';
     return this.http
-      .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + this.userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
+      .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+
+  }
+
+  public confirmSmsOTP(inputToken: string) {
+    const body = {};
+    return this.http
+      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
@@ -190,21 +206,14 @@ export class ProfileService {
   }
   /* Signup Verification Methods Ends*/
 
-  public getSocialIdentities(query: any, peerId?: string) {
-    let userId;
+  public getSocialIdentities(query: any, peerId) {
     let url;
-    if (peerId) {
-      userId = peerId;
-    }
-    else {
-      userId = this.userId;
-    }
-    if(query) {
+    if (query) {
       const filter = JSON.stringify(query);
-      url = this.config.apiUrl + '/api/peers/' + userId + '?filter=' + filter;
+      url = this.config.apiUrl + '/api/peers/' + peerId + '?filter=' + filter;
     }
     else {
-      url = this.config.apiUrl + '/api/peers/' + userId;
+      url = this.config.apiUrl + '/api/peers/' + peerId;
     }
 
     return this.http
@@ -216,17 +225,17 @@ export class ProfileService {
   }
 
   /* get collections */
-  public getCollections() {
-    if (this.userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/ownedCollections', this.options)
+  public getCollections(userId) {
+    if (userId) {
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/ownedCollections', this.options)
         .map((response: Response) => response.json(), (err) => {
           console.log('Error: ' + err);
         });
     }
   }
 
-  public getReviews(collectionId) {
-    if (this.userId) {
+  public getReviews(userId, collectionId) {
+    if (userId) {
       // console.log(collections);
       // const reviews: any = [];
       //  collections.forEach(collection => {
@@ -235,32 +244,17 @@ export class ProfileService {
     }
   }
   public getOwnedCollectionCount(id) {
-    if (this.userId) {
+    if (id) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + id + '/ownedCollections/count', this.options)
         .map((response: Response) => response.json());
     }
   }
   public getReviewer(reviewId) {
-    if (this.userId) {
+    if (reviewId) {
       return this.http.get(this.config.apiUrl + '/api/reviews/' + reviewId + '/peer', this.options)
         .map((response: Response) => response.json());
     }
   }
-
-  // public updateProfile(profile: any, cb: any) {
-  //   const sanitizedProfile = profile;
-  //   if (!(profile !== undefined && this.userId)) {
-  //     console.log('User not logged in');
-  //   } else {
-  //     this.http
-  //       .patch(this.config.apiUrl + '/api/peers/' + this.userId + '/profile', this.sanitize(sanitizedProfile), this.options)
-  //       .map((response) => {
-  //         cb(null, response.json());
-  //       }, (err) => {
-  //         cb(err);
-  //       }).subscribe();
-  //   }
-  // }
 
   /**
    * Delete all work nodes of a profile
@@ -277,8 +271,8 @@ export class ProfileService {
       }).subscribe();
   }
 
-  public updateWork(profileId, work: any) {
-    if (!(work.length > 0 && this.userId)) {
+  public updateWork(userId, profileId, work: any) {
+    if (!(work.length > 0 && userId)) {
       console.log('User not logged in');
     } else {
       return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.options)
@@ -291,8 +285,36 @@ export class ProfileService {
     }
   }
 
-  public updateProfileWorks(profileId, work: any, cb: any) {
-    if (!(work.length > 0 && this.userId)) {
+  public updateEmergencyContact(userId, profileId, emergency_contact) {
+    if (!(emergency_contact.length > 0 && userId)) {
+      console.log('User not logged in');
+    } else {
+      return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.options)
+        .flatMap(
+        (response) => {
+          return this.http
+            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.sanitize(emergency_contact), this.options);
+        }
+        ).map((response) => response.json());
+    }
+  }
+
+  public updatePhoneNumbers(userId, profileId, phone_numbers) {
+    if (!(phone_numbers.length > 0 && userId)) {
+      console.log('User not logged in');
+    } else {
+      return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this.options)
+        .flatMap(
+        (response) => {
+          return this.http
+            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this.sanitize(phone_numbers), this.options);
+        }
+        ).map((response) => response.json());
+    }
+  }
+
+  public updateProfileWorks(userId, profileId, work: any, cb: any) {
+    if (!(work.length > 0 && userId)) {
       console.log('User not logged in');
       cb(new Error('User not logged in or work body blank'));
     } else {
@@ -321,8 +343,8 @@ export class ProfileService {
       }).subscribe();
   }
 
-  public updateProfileEducations(profileId, education: any, cb: any) {
-    if (!(education.length > 0 && this.userId)) {
+  public updateProfileEducations(userId, profileId, education: any, cb: any) {
+    if (!(education.length > 0 && userId)) {
       console.log('User not logged in');
       cb(new Error('User not logged in or education body blank'));
     } else {
@@ -336,8 +358,8 @@ export class ProfileService {
     }
   }
 
-  public updateEducation(profileId, education: any) {
-    if (!this.userId) {
+  public updateEducation(userId, profileId, education: any) {
+    if (!userId) {
       console.log('User not logged in');
     } else {
       return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/education', this.options)
@@ -360,10 +382,6 @@ export class ProfileService {
     return object;
   }
 
-  getUserId() {
-    return this.getCookieValue(this.key);
-  }
-
   /**
    * getAllPeers
    */
@@ -374,19 +392,19 @@ export class ProfileService {
   /**
    * getTopics
    */
-  public getLearningTopics(query?: any) {
+  public getLearningTopics(userId, query?: any) {
     if (query) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning?filter=' + JSON.stringify(query))
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning?filter=' + JSON.stringify(query))
         .map(response => response.json());
     } else {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning')
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning')
         .map(response => response.json());
     }
 
   }
 
-  public getTeachingTopics(query: any) {
-    return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching?filter=' + JSON.stringify(query))
+  public getTeachingTopics(userId, query: any) {
+    return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching?filter=' + JSON.stringify(query))
       .map(response => response.json());
   }
 
@@ -397,47 +415,63 @@ export class ProfileService {
   /**
    * unfollowTopic
    */
-  public unfollowTopic(topicId: string) {
-    return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId);
+  public unfollowTopic(userId, type, topicId: string) {
+    if (type === 'learning') {
+      return this.http.delete(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning/rel/' + topicId);
+    }
+    else {
+      return this.http.delete(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId);
+    }
   }
 
-  public stopTeachingTopic(topicId: string) {
-    return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId);
+  public stopTeachingTopic(userId, topicId: string) {
+    return this.http.delete(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId);
   }
   /**
    * followTopic
    */
-  public followTopic(topicId: string, body?: any) {
-    if (body) {
-      return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, body, this.options)
-        .map(response => response.json());
-    } else {
-      return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel/' + topicId, {}, this.options)
-        .map(response => response.json());
+  public followTopic(userId, type, topicId: string, body?: any) {
+    if (type === 'learning') {
+      if (body) {
+        return this.http.put(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning/rel/' + topicId, body, this.options)
+          .map(response => response.json());
+      } else {
+        return this.http.put(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning/rel/' + topicId, {}, this.options)
+          .map(response => response.json());
+      }
+    }
+    else {
+      if (body) {
+        return this.http.put(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, body, this.options)
+          .map(response => response.json());
+      } else {
+        return this.http.put(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, {}, this.options)
+          .map(response => response.json());
+      }
     }
   }
 
-  public updateTeachingTopic(topicId: string, body?: any) {
+  public updateTeachingTopic(userId, topicId: string, body?: any) {
     if (body) {
       console.log(topicId + ' ' + body.experience);
-      return this.http.delete(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId, this.options)
+      return this.http.delete(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, this.options)
         .flatMap((response) => {
-          return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId, body, this.options);
+          return this.http.put(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, body, this.options);
         }).map(response => response.json());
     } else {
-      return this.http.put(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel/' + topicId, {}, this.options)
+      return this.http.put(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, {}, this.options)
         .map(response => response.json());
     }
   }
 
 
-  public followMultipleTopicsLearning(body: any) {
-    return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsLearning/rel', body, this.options)
+  public followMultipleTopicsLearning(userId, body: any) {
+    return this.http.patch(this.config.apiUrl + '/api/peers/' + userId + '/topicsLearning/rel', body, this.options)
       .map(response => response.json());
   }
 
-  public followMultipleTopicsTeaching(body: any) {
-    return this.http.patch(this.config.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body, this.options)
+  public followMultipleTopicsTeaching(userId, body: any) {
+    return this.http.patch(this.config.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel', body, this.options)
       .map(response => response.json());
   }
 

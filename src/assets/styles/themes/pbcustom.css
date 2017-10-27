@@ -36,6 +36,14 @@ img {
     color: #33bd9e;
 }
 
+.clickable {
+    cursor:  pointer !important;
+}
+
+:focus {
+    outline: none !important;
+}
+
 /* Scroll Bar custom Starts*/
 /* .scrollbar {
     background-color: #F5F5F5;
@@ -113,9 +121,9 @@ button:focus {
 
 /* Scroll Bar custom Ends */
 
-md-icon {
+/* md-icon {
     position: relative !important;
-}
+} */
 
 /* Material Classes Starts*/
 
@@ -563,7 +571,7 @@ h3.calendarTitle  {
     border-radius: 15px;
     text-align: center;
     padding-top: 3px;
-    margin-top: 1px;
+    margin-top: 12px;
     margin-right: 0px !important;
 }
 
@@ -738,8 +746,8 @@ h3.calendarTitle  {
 
 
 .message-item:before {
-    bottom: -45px !important;
-    height: 105.2% !important;
+    bottom: 0px !important;
+    height: 100% !important;
     left: -30px !important;
 }
 
@@ -1169,4 +1177,45 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .hasFixedFooter {
     padding-bottom: 75px;
+}
+
+.my-full-screen-dialog .mat-dialog-container {
+    max-width: none;
+    width: 100vw;
+    height: 100vh;
+  }
+
+.mainStream{
+    text-align: center;
+}
+
+.mainStream video{
+    height: 100%;    
+}
+
+.localStream{
+    position: absolute;
+    bottom: 3%;
+    height: 16%;
+    right: 10%;
+}
+
+.localStream video{
+    border-style: solid;
+    border-color: white;
+}
+
+.otherStream{
+    position: absolute;
+    bottom: 3%;
+    height: 16%;
+    right: 24%;
+}
+
+.otherStream video{
+    padding-right: 5px;
+}
+
+.topics .mat-tab-label {
+    min-width: min-content !important;
 }

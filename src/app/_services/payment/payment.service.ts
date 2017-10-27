@@ -16,7 +16,6 @@ import { RequestHeaderService } from '../requestHeader/request-header.service';
 @Injectable()
 export class PaymentService {
   public key = 'userId';
-  private userId;
   private options;
 
   constructor(private http: Http,
@@ -26,51 +25,41 @@ export class PaymentService {
     public router: Router,
     public _requestHeaderService: RequestHeaderService
   ) {
-    this.userId = this.getCookieValue(this.key);
     this.options = this._requestHeaderService.getOptions();
   }
 
-  private getCookieValue(key: string) {
-    const cookie = this._cookieService.get(key);
-    if (cookie) {
-      const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
-      this.userId = cookieValue[1];
-    }
-    return this.userId;
-  }
-
-  makePayment(customerId: any, body: any) {
-    if (this.userId) {
+  makePayment(userId, customerId: any, body: any) {
+    if (userId) {
       return this.http.post(this.config.apiUrl + '/api/create-source/' + customerId, body, this.options);
     }
   }
 
-  createSource(customerId: any, body: any) {
-    if (this.userId) {
+  createSource(userId, customerId: any, body: any) {
+    if (userId) {
       return this.http.post(this.config.apiUrl + '/api/transactions/create-source/' + customerId, body, this.options);
     }
   }
 
-  createCharge(collectionId: any, body: any) {
-    if (this.userId) {
+  createCharge(userId, collectionId: any, body: any) {
+    if (userId) {
       return this.http.post(this.config.apiUrl + '/api/transactions/create-charge/collection/' + collectionId, body, this.options);
     }
   }
 
-  listAllCards(customerId: any) {
-    if (this.userId) {
+  listAllCards(userId, customerId: any) {
+    if (userId) {
       return this.http.get(this.config.apiUrl + '/api/transactions/list-all-cards/' + customerId, this.options);
     }
   }
 
-  deleteCard(customerId: string, cardId: string) {
-    if (this.userId) {
+  deleteCard(userId, customerId: string, cardId: string) {
+    if (userId) {
       return this.http.delete(this.config.apiUrl + '/api/transactions/delete-card/' + customerId + '/' + cardId, this.options);
     }
   }
 
   public getCollectionDetails(id: string) {
-    const filter = `{"include": "owners"}`;
+    const filter = `{"include": [{"owners":"profiles"},"calendars",{"contents":"schedules"}]}`;
     return this.http
       .get(this.config.apiUrl + '/api/collections/' + id + '?filter=' + filter)
       .map((response: Response) => response.json(), (err) => {
@@ -114,14 +103,14 @@ export class PaymentService {
   /**
    * getTransactions
    */
-  public getTransactions(filter?: any): Observable<any> {
+  public getTransactions(userId, filter?: any): Observable<any> {
     if (filter) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/transactions?filter=' + JSON.stringify(filter), this.options)
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/transactions?filter=' + JSON.stringify(filter), this.options)
         .map((response: Response) => response.json(), (err) => {
           console.log('Error: ' + err);
         });
     } else {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + this.userId + '/transactions', this.options)
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/transactions', this.options)
         .map((response: Response) => response.json(), (err) => {
           console.log('Error: ' + err);
         });

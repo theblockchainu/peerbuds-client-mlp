@@ -156,13 +156,13 @@
                     <!-- <md-error>This field is required</md-error> -->
                   </md-input-container>
                   <md-form-field style="margin-right:10px;" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
-                    <input mdInput formControlName="startDate" [mdDatepicker]="startPicker" placeholder="Choose a date">
+                    <input mdInput formControlName="startDate" [mdDatepicker]="startPicker" placeholder="Start Date">
                     <md-datepicker-toggle mdSuffix [for]="startPicker"></md-datepicker-toggle>
                     <md-datepicker #startPicker></md-datepicker>
                   </md-form-field>
                   <!-- <md-error>This field is required</md-error> -->
                   <md-form-field style="margin-right:10px;"  [ngClass]="{ 'customWidth30': i == 0, 'customWidth33': i > 0}"> <!--'disabled': disableEndDate,-->
-                    <input mdInput formControlName="endDate" [mdDatepicker]="endPicker" placeholder="Choose a date" ><!--[ngClass]="{'disabled': disableEndDate}"-->
+                    <input mdInput formControlName="endDate" [mdDatepicker]="endPicker" placeholder="End Date" ><!--[ngClass]="{'disabled': disableEndDate}"-->
                     <md-datepicker-toggle mdSuffix [for]="endPicker"></md-datepicker-toggle><!--[ngClass]="{'disabled': disableEndDate}"-->
                     <md-datepicker #endPicker></md-datepicker>
                   </md-form-field>
@@ -192,7 +192,7 @@
                   <md-select placeholder="End Year" style="margin-bottom: 20px;margin-right:10px;" formControlName="endYear" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}"> <!--'disabled': disableEndYearBool,-->
                     <md-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</md-option>
                   </md-select>
-                  <md-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyPursuing" (click)="disableEndYear()">Presently working</md-checkbox>
+                  <md-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyPursuing" (click)="disableEndYear()">Presently pursuing</md-checkbox>
                   
                   <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteEducation(i)" style="cursor: pointer;"></i>                
                 </div>
@@ -228,9 +228,9 @@
               </md-input-container>
               
 
-              <div formArrayName="emergency_contact" class="margin-top-40">
+              <div formArrayName="emergency_contacts" class="margin-top-40">
                 <p style="color:#767676;font-weight:400">Emergency Contact</p>
-                <div *ngFor="let emergency_contact_number of profileForm.controls['emergency_contact'].controls; let i = index;" class="row">
+                <div *ngFor="let emergency_contact_number of profileForm.controls['emergency_contacts'].controls; let i = index;" class="row">
                  
                   <div [formGroupName]="i" class="col-md-11">
                     <md-form-field class="customWidthCode">

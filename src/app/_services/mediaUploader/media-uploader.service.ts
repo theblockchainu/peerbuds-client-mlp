@@ -8,23 +8,22 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class MediaUploaderService {
   private options;
 
-  constructor(private http: HttpClient, 
-              private config: AppConfig, 
+  constructor(private http: HttpClient,
+              private config: AppConfig,
               private sanitizer: DomSanitizer) {}
 
   public upload(file) {
-    let type = file;;
+    let type = file;
     if (!file.objectURL) {
       file.objectURL = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
     }
     file.src = file.objectURL.changingThisBreaksApplicationSecurity;
-    console.log(file);
     const formData = new FormData();
-    if(file.type.includes('image/'))
+    if (file.type.includes('image/'))
     {
       type = 'image';
     }
-    else if(file.type.includes('video/')) {
+    else if (file.type.includes('video/')) {
       type = 'video';
     }
     else {
@@ -32,7 +31,7 @@ export class MediaUploaderService {
     }
     formData.append(type, file, file.name);
     return this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290',
-                          formData, 
+                          formData,
                           { withCredentials: true })
                     .map((response: Response) => response);
   }

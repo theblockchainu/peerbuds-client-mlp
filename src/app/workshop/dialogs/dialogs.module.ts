@@ -8,7 +8,7 @@ import { EditCalendarDialogComponent } from './edit-calendar-dialog/edit-calenda
 import { AddTopicDialogComponent } from './add-topic-dialog/add-topic-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { AddLanguageDialogComponent } from './add-language-dialog/add-language-dialog.component';
-import {ViewConflictDialogComponent} from './view-conflict-dialog/view-conflict-dialog.component';
+import { ViewConflictDialogComponent } from './view-conflict-dialog/view-conflict-dialog.component';
 
 @NgModule({
   imports: [

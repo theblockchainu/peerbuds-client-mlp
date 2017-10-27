@@ -1,13 +1,19 @@
-<div class="main-content" style="background: #fff;">
-  <md-sidenav-container style="max-height: 90vh; min-height: 90vh; overflow-y: scroll">
+<div class="main-content" style="background: #fff; padding: 0px; min-height: 100vh;">
+  <md-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll">
     <md-sidenav mode="side" opened="true">
       <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
     </md-sidenav>
     <!-- Page Content -->
-    <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 90vh; min-height: 90vh; overflow-y: scroll">
-      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value !== 'active'"><button md-button (click)="saveandexit()">Save &amp; Exit</button></div>
-      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value === 'active'"><button md-button (click)="exit()">Exit</button></div>
-      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12"><button md-button (click)="openWorkshop()">Preview</button></div>
+    <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 100vh; min-height: 100vh; overflow-y: scroll">
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value !== 'active'">
+        <button md-button (click)="saveandexit()">Save &amp; Exit</button>
+      </div>
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value === 'active'">
+        <button md-button (click)="exit()">Exit</button>
+      </div>
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12">
+        <button md-button (click)="openWorkshop()">Preview</button>
+      </div>
       <div class="pull-left">
         <md-chip-list>
           <md-chip>
@@ -15,7 +21,9 @@
           </md-chip>
         </md-chip-list>
       </div>
-      <br/><br/><br/>
+      <br/>
+      <br/>
+      <br/>
       <!--Disclaimer-->
       <div class="onboarding step-1" [hidden]="step!=1">
         <div class="row">
@@ -59,7 +67,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!--<div class="flex flexContainer margin-top-30">
                   <button md-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
                       <md-icon class="iconVC" color="accent">
@@ -112,7 +120,8 @@
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row margin-top-60">
                   <md-form-field class="col-md-4">
-                    <input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" mdInput formControlName="selectedLanguage" [mdAutocomplete]="auto">
+                    <input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" mdInput formControlName="selectedLanguage"
+                      [mdAutocomplete]="auto">
                     <md-autocomplete #auto="mdAutocomplete">
                       <md-option *ngFor="let l of filteredLanguageOptions | async" [value]="l" (click)="languageChange(l)">{{l}}</md-option>
                     </md-autocomplete>
@@ -189,8 +198,8 @@
                     <div class="form-group">
                       <h2 class="title">Headline</h2>
                       <p class="subtitle">
-                        Explain your workshop in short and descriptive sentences.<br/> It should give an insight to learners
-                        on what they'll do.
+                        Explain your workshop in short and descriptive sentences.
+                        <br/> It should give an insight to learners on what they'll do.
                       </p>
                       <br/>
                       <md-input-container class="pb-block" style="margin-bottom: 20px">
@@ -267,8 +276,8 @@
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">How many seats are available? </h2>
               <p class="subtitle">
-                Remember to keep your workshop as personal as possible.<br> The more learners the less attention you can
-                give to everybody.
+                Remember to keep your workshop as personal as possible.
+                <br> The more learners the less attention you can give to everybody.
               </p>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="col-sm-4 padding-left-0">
@@ -305,22 +314,32 @@
                         </ng-template>
                       </p-fileUpload>
                       <!-- <ng-template pTemplate="content"> -->
-                      <md-grid-list cols="2" rowHeight="280px" gutterSize="10px" *ngIf="urlForVideo.length" class="video">
+                      <!-- <md-grid-list cols="2" rowHeight="2:1" gutterSize="20px" *ngIf="urlForVideo.length" class="video" style="max-height:100px!important">
                         <md-grid-tile *ngFor="let file of urlForVideo">
-                          <!-- <div style="position: absolute; cursor: pointer;">
-                            <md-icon (click)="deleteFromContainer(file, 'video')" style="color: black;">close</md-icon>
-                          </div> -->
-                          <video controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+                          <video controls width="150" style="border: 0.5px solid #ccc;" preload="metadata">
                             <source src="{{config.apiUrl + file}}"> Your browser does not support the video tag.
                           </video>
                           <md-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</md-icon>
                         </md-grid-tile>
-                      </md-grid-list>
+                      </md-grid-list> -->
                       <!-- </ng-template> -->
+                      <div *ngIf="urlForVideo.length" class="profileVideo delete">
+                        <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0">
+                          <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
+                            <source src="{{config.apiUrl + file}}"> Your browser does not support the video tag.
+                          </video>
+                          <md-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</md-icon>
+                        </div>
+                      </div>
                       <div class="loading-container" [hidden]="!uploadingVideo">
                         <ngx-loading [show]="true"></ngx-loading>
                       </div>
-                      <div class="stepHeader" style="margin-top: 40px;">Upload Images</div>
+
+                    </div>
+                  </div>
+                  <div class="row margin-left-0">
+                    <div class="col-md-8">
+                      <div class="stepHeader margin-top-20">Upload Images</div>
                       <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
                         maxFileSize="10000000" chooseLabel="Browse" multiple="multiple" (onRemove)="deleteFromContainerArr($event, 'image')">
                         <ng-template pTemplate="toolbar">
@@ -328,16 +347,19 @@
                         </ng-template>
                       </p-fileUpload>
                       <!-- <ng-template pTemplate="content"> -->
-                      <md-grid-list cols="4" gutterSize="10px" *ngIf="urlForImages.length">
+                      <!-- <md-grid-list cols="4" gutterSize="10px" *ngIf="urlForImages.length">
                         <md-grid-tile *ngFor="let file of urlForImages">
-                          <!-- <div style="position: absolute; cursor: pointer;">
-                            <md-icon (click)="deleteFromContainer(file, 'image')" style="color: black;">close</md-icon>
-                          </div> -->
                           <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
                           <md-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</md-icon>
                         </md-grid-tile>
-                      </md-grid-list>
+                      </md-grid-list> -->
                       <!-- </ng-template> -->
+                      <div *ngIf="urlForImages.length" class="pic delete">
+                        <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
+                            <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+                            <md-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</md-icon>
+                        </div>
+                      </div>
                       <div class="loading-container" [hidden]="!uploadingImage">
                         <ngx-loading [show]="true"></ngx-loading>
                       </div>
@@ -371,7 +393,7 @@
                       <input type="number" mdInput #price formControlName="price" placeholder="" min="1">
                     </md-input-container>
                   </div>
-                  <div class="col-md-2 col-md-offset-1 priceAlignParent">
+                  <div class="col-md-2 col-md-offset-2 priceAlignParent">
                     <md-select [floatPlaceholder]="false" formControlName="currency" class="priceAlign padding-top-0 margin-top-20">
                       <md-option *ngFor="let c of currencies" [value]="c">{{c}}</md-option>
                     </md-select>
@@ -399,8 +421,8 @@
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Add content to your Workshop</h2>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <p class="subtitle">Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
-                  see this before they sign up for your workshop.</p>
+                <p class="subtitle">Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners
+                  will see this before they sign up for your workshop.</p>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(11)>Back</a> -->
                   <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
@@ -439,7 +461,8 @@
                 <div formGroupName="calendar" *ngIf="(timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate) && !datesEditable">
                   <div class="row" style="margin: 30px 0px 15px 0;">
                     <div class="col-md-12 selected-dates">
-                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd MMM'}} &emsp;
+                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd
+                      MMM'}} &emsp;
                       <md-icon color="accent">
                         date_range
                       </md-icon>
@@ -474,11 +497,13 @@
                 <div style="margin-top:20px;">
                   <md-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</md-checkbox>
                 </div>
-                <button md-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] || !selectedValues[1]"> Submit for Review</button>
+                <button md-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] || !selectedValues[1]">
+                Submit for Review</button>
               </div>
               <div *ngIf="isSubmitted" style="margin-top: 70px;">
-                Your workshop has been submitted for review and is awaiting approval from Peerbuds team.<br><br> We maintain
-                highest possible standards for all content shared on Peerbuds platform.
+                Your workshop has been submitted for review and is awaiting approval from Peerbuds team.
+                <br>
+                <br> We maintain highest possible standards for all content shared on Peerbuds platform.
               </div>
             </div>
           </div>
@@ -507,7 +532,7 @@
                     </div>
                     <div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
                       <p>Type the 4 digit verification code</p>
-                      <md-input-container class="pb-block" style="margin: 20px 0px;">
+                      <md-input-container class="pb-block inputOTP" style="margin: 20px 0px;">
                         <input type="text" mdInput #inputOTP formControlName="inputOTP" placeholder="OTP">
                       </md-input-container>
                       <button md-raised-button color="accent" (click)="submitOTP()">Confirm OTP</button>
@@ -528,7 +553,9 @@
               <form [formGroup]="paymentInfo">
                 <div style="margin-top:50px;">
                   <!--<button md-raised-button>PayTM</button> &emsp;-->
-                  <button md-raised-button><a [href]="connectPaymentUrl" target="_blank">Stripe</a></button> &emsp;
+                  <button md-raised-button>
+                    <a [href]="connectPaymentUrl" target="_blank">Stripe</a>
+                  </button> &emsp;
                   <!--<button md-raised-button>Paypal</button> &emsp;-->
                 </div>
               </form>
@@ -536,7 +563,6 @@
           </div>
         </div>
       </div>
-      <div class="clearfix"></div>
     </div>
   </md-sidenav-container>
-</div>
+  </div>

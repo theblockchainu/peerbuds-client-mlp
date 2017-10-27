@@ -5,6 +5,9 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 import { AccordionItem } from '@angular/material';
 import { MdSnackBar } from '@angular/material';
 
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+
 import _ from 'lodash';
 @Component({
   selector: 'app-console-profile-topics',
@@ -13,12 +16,15 @@ import _ from 'lodash';
 })
 export class ConsoleProfileTopicsComponent implements OnInit {
 
+  private userId;
   public loading: boolean;
   public topicsLearning: Array<any>;
   public topicsTeaching: Array<any>;
   public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
   public placeholderStringTopic = 'Search for a topic ';
   private newTopics: Array<any>;
+  private selectedTopicsLearning = [];
+  private selectedTopicsTeaching = [];
 
   @ViewChild('expansionpanelLearning') expansionpanelLearning: AccordionItem;
   @ViewChild('expansionpanelTeaching') expansionpanelTeaching: AccordionItem;
@@ -29,12 +35,15 @@ export class ConsoleProfileTopicsComponent implements OnInit {
     public consoleProfileComponent: ConsoleProfileComponent,
     public router: Router,
     public _profileService: ProfileService,
-    public snackBar: MdSnackBar
+    public snackBar: MdSnackBar,
+    public _dialogService: DialogsService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleProfileComponent.setActiveTab(urlSegment[0].path);
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -55,7 +64,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
     const queryTeaching = {
       'relInclude': 'experience'
     };
-    this._profileService.getTeachingTopics(queryTeaching).subscribe((response) => {
+    this._profileService.getTeachingTopics(this.userId, queryTeaching).subscribe((response) => {
       console.log(response);
       this.topicsTeaching = response;
     });
@@ -70,9 +79,9 @@ export class ConsoleProfileTopicsComponent implements OnInit {
   /**
    * unfollowTopic
 topic:any   */
-  public unfollowTopic(topic: any) {
+  public unfollowTopic(type, topic: any) {
     console.log(topic);
-    this._profileService.unfollowTopic(topic.id).subscribe((response) => {
+    this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response) => {
       this.getTopics();
     }, (err) => {
       console.log(err);
@@ -83,7 +92,7 @@ topic:any   */
    * stopTeachingTopic
    */
   public stopTeachingTopic(topic: any) {
-    this._profileService.stopTeachingTopic(topic.id).subscribe((response) => {
+    this._profileService.stopTeachingTopic(this.userId, topic.id).subscribe((response) => {
       this.getTopics();
     }, (err) => {
       console.log(err);
@@ -110,19 +119,17 @@ topic:any   */
         topicIds.push(topic.id);
       });
       if (type === 'learning') {
-        this._profileService.followMultipleTopicsLearning({
+        this._profileService.followMultipleTopicsLearning(this.userId, {
           'targetIds': topicIds
         }).subscribe((response => {
-          // this.getLearningTopics();
           this.topicsLearning = this.topicsLearning.concat(this.newTopics);
           this.newTopics = [];
           this.expansionpanelLearning.close();
         }));
       } else if (type === 'teaching') {
-        this._profileService.followMultipleTopicsTeaching({
+        this._profileService.followMultipleTopicsTeaching(this.userId, {
           'targetIds': topicIds
         }).subscribe((response => {
-          // this.getTeachingTopics();
           this.topicsTeaching = this.topicsTeaching.concat(this.newTopics);
           this.newTopics = [];
           this.expansionpanelTeaching.close();
@@ -134,19 +141,48 @@ topic:any   */
     }
   }
 
-  public updateChanges() {
-    this.topicsTeaching.forEach(topic => {
-      if (topic['experience']) {
-        this._profileService.updateTeachingTopic(topic.id, { 'experience': topic['experience'] })
-          .subscribe(response => {
-            console.log(response);
-            this.snackBar.open('Topics Updated', 'Close');
-          }, err => {
-            console.log(err);
-            this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe(() => {
-              this.updateChanges();
-            });
+  public updateChanges(type, topic) {
+    if (topic['experience']) {
+      this._profileService.updateTeachingTopic(this.userId, topic.id, { 'experience': topic['experience'] })
+        .subscribe(response => {
+          console.log(response);
+          this.snackBar.open('Topic Updated', 'Close');
+        }, err => {
+          console.log(err);
+          this.snackBar.open('Topic Update Failed', 'Retry').onAction().subscribe(() => {
+            this.updateChanges(type, topic);
           });
+        });
+    }
+    
+  }
+
+  public openFollowTopicDialog(type) {
+    this._dialogService
+    .openFollowTopicDialog(type, this.searchTopicURL)
+    .subscribe(res => {
+      const topicArray = [];
+      if(res.selected) {
+        if(type === 'learning') {
+          this.selectedTopicsLearning = res.selected;
+
+          this.selectedTopicsLearning.forEach((topic) => {
+            topicArray.push(topic.id);
+            this.topicsLearning.push(topic);
+          });
+        }
+        else {
+          this.selectedTopicsTeaching = res.selected;
+          this.selectedTopicsTeaching.forEach((topic) => {
+            topicArray.push(topic.id);
+            this.topicsTeaching.push(topic);
+          });
+          
+        }
+        topicArray.forEach(topicId => {
+          this._profileService.followTopic(this.userId, type, topicId, {})
+          .subscribe((response) => { console.log(response); });
+        });
       }
     });
   }

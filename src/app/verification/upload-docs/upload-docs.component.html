@@ -9,10 +9,10 @@
               </button>
               
               <h2 class="headline">Confirm Your Identity</h2>
-              <p class="description1">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will help us ensure that you don't have multiple profiles in the platform.</p>
+              <p class="description1">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will help us ensure that you don't have multiple profiles on the platform.</p>
               <p class="description2">This ID must:</p>
               <p class="description2">
-                <li>Be a government-issued (ex. Passport, Drivers License)</li>
+                <li>Be government-issued (ex. Passport, Drivers License)</li>
                 <li>Clearly show your name, picture and birthday</li>
                 <li>Be in color</li>
               </p>
@@ -30,18 +30,18 @@
                   <div *ngIf="verificationIdUrl" class="profilePic icon-remove delete">
                     <img *ngIf="fileType.includes('image')" class="uploaded_picture" src="{{config.apiUrl + verificationIdUrl}}" width="150" style="border: 0.5px solid #ccc">
                     <md-icon *ngIf="fileType.includes('image')" (click)="deleteFromContainer(verificationIdUrl, 'image')" class="delete-image">close</md-icon>
-                    <div *ngIf="fileType.includes('application')" class="uploaded_file">{{ fileName }}</div>
                     <md-icon *ngIf="fileType.includes('application')" (click)="deleteFromContainer(verificationIdUrl, 'file')" class="delete-file">close</md-icon>
+                    <div *ngIf="fileType.includes('application')" class="uploaded_file">{{ fileName }}</div>
                   </div>
               </div>
-              <p class="description1 margin-bottom-20">To learn more about why we require copy of your ID and what types of ID we accept, <a href="#">review our ID policy</a></p>
+              <p class="note">To learn more about why we require copy of your ID and what types of ID we accept, <a (click)="openIdPolicy()" style="cursor: pointer;">review our ID policy</a></p>
           </div>
         </div>
         <div class="fixedFooter col-sm-12">
           <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
             <div class="pull-right">
               <button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
-              <button md-raised-button color="accent" (click)="continue(2)">Continue</button>
+              <button md-raised-button color="accent" (click)="continue(2)" [disabled]="!this.peer.controls['verificationIdUrl'].value">Continue</button>
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@
                 <h2 class="headline">How can we reach you securely?</h2>
                 <p class="description1 margin-bottom-40">Please let us know how we can reach you by email. To help keep your Peerbuds account secure, make sure only you can log into this email address.</p>
                 <md-input-container style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
-                  <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" /> -->
+                  <!--<input type="text" formControlName="email" class="form-control display-inline-block email-address-input" placeholder="Email Address" />-->
                   <input type="email" mdInput #email formControlName="email" placeholder="Email Address"/>
                 </md-input-container>
           </div>
@@ -73,15 +73,14 @@
       </form>
     </div> <!-- step 2 ends -->
    
-    <div class=" position-relative step-3" [hidden]="step!=3">
+    <div class="position-relative step-3" [hidden]="step!=3">
       <form [formGroup]="otp">
         <div class="col-md-8 col-md-offset-2 position-relative">
           <div class="verification-box drop-shadow">
               <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
                 <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
-              </button>
-            
-                <h2 class="headline">Enter the OTP sent to your email</h2>
+              </button>   
+              <h2 class="headline">Enter the OTP sent to your email</h2>
               <p class="description1 margin-bottom-40">We have sent to 6 digit code to {{email.value}}. Please enter this code or click the link in your email to verify your email address.
                 Users on Peerbuds need to verify their email IDs to receive notifications and updates from the platform.</p>
               <!-- <div class="margin-bottom-10">
@@ -109,4 +108,3 @@
     </div> <!-- step 3 ends -->
   </div>
 </div>
-

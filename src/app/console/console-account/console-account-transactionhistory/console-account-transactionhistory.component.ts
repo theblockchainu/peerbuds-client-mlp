@@ -3,6 +3,7 @@ import { ConsoleAccountComponent } from '../console-account.component';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentService } from '../../../_services/payment/payment.service';
 import { CollectionService } from '../../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 import * as moment from 'moment';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -12,6 +13,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./console-account-transactionhistory.component.scss']
 })
 export class ConsoleAccountTransactionhistoryComponent implements OnInit {
+
+  private userId;
   public transactions: Array<any>;
   public totalSpend: number;
   public years: Array<number>;
@@ -24,16 +27,19 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
   public futureTransactions: Array<any>;
   public retrievedFutureTransactions: Array<any>;
   public totalFutureTransactions: number;
+
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleAccountComponent: ConsoleAccountComponent,
     private _paymentService: PaymentService,
     private _fb: FormBuilder,
-    private _collectionService: CollectionService) {
+    private _collectionService: CollectionService,
+    private _cookieUtilsService: CookieUtilsService) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleAccountComponent.setActiveTab(urlSegment[0].path);
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -123,7 +129,7 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
 
     const query2 = { 'include': [{ 'payments': [{ 'peers': 'profiles' }, 'collections'] }] };
     this.futureTransactions = [];
-    this._collectionService.getOwnedCollections(JSON.stringify(query2), (err, response) => {
+    this._collectionService.getOwnedCollections(this.userId, JSON.stringify(query2), (err, response) => {
       response.forEach(collection => {
         if (collection.payments && collection.payments.length > 0) {
           this.futureTransactions = this.futureTransactions.concat(collection.payments);

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { AppConfig } from '../app.config';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
@@ -7,7 +6,9 @@ import { ProfileService } from '../_services/profile/profile.service';
 import * as moment from 'moment';
 import { PaymentService } from '../_services/payment/payment.service';
 import { Response } from '@angular/http';
-import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
+import {CollectionService} from '../_services/collection/collection.service';
+
+declare var Stripe: any;
 
 @Component({
   selector: 'app-review-pay',
@@ -15,81 +16,100 @@ import { CountryPickerService } from '../_services/countrypicker/countrypicker.s
   styleUrls: ['./review-pay.component.scss']
 })
 export class ReviewPayComponent implements OnInit {
-  public userId: string;
+  public stripe: any;
+  public elements: any;
+  public card: any;
+  @ViewChild('cardForm', { read: ElementRef }) cardForm: ElementRef;
+  public userId;
   public collectionId;
   public collectionCalendarId;
-  public collection = {};
+  public collection: any = {};
+  public totalDuration = '0';
+  public currentCalendar: any = {};
   public collectionTitle = '';
-  public cardNumber: string;
-  public expiryMonth: string;
-  public expiryYear: any = [];
-  public cvc: string;
-  public firstName;
-  public lastName;
-  public address_street;
-  public address_apt;
-  public address_city;
-  public address_state;
-  public address_postal_code;
   public message: string;
-  public confirmAmount = '';
-  public makePaymentForm: FormGroup;
   public savingData = false;
   public loader = 'assets/images/ajax-loader.gif';
-  public peerEmail;
-  public tokenId;
   public custId;
   public createSourceData = { token: '', email: '' };
   public createChargeData = { amount: 0, currency: 'usd', source: '', description: '', customer: '' };
   public isCardExist = false;
   public listAllCards = [];
-  public presentYear: any = new Date().getFullYear();
-  public maxYear = (this.presentYear + 10);
-  public periodStarts = this.presentYear;
-  public countries = [];
   public cardDetails = {};
   public defaultImageUrl = 'assets/images/no-image.jpg';
   public guestCount = 1;
+  public hourMapping:
+      {[k: string]: string} = {'=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours'};
 
   constructor(public config: AppConfig,
-    private cookieUtilsService: CookieUtilsService,
+    private _cookieUtilsService: CookieUtilsService,
     private activatedRoute: ActivatedRoute,
-    private _fb: FormBuilder, public router: Router,
+    private _collectionService: CollectionService,
     public profileService: ProfileService,
     public paymentService: PaymentService,
-    // public collectionService: CollectionService,
-    public countryPickerService: CountryPickerService
+    private router: Router
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.collectionId = params['collectionId'];
       this.collectionCalendarId = params['calendarId'];
     });
-    this.userId = cookieUtilsService.getValue('userId');
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
-    this.makePaymentForm = this._fb.group({
-      country: '',
-      cardNumber: [null, [Validators.required, Validators.maxLength(16), Validators.pattern('^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$')]],
-      expiryMonth: [null, [Validators.required]],
-      expiryYear: [null, [Validators.required]],
-      cvc: [null, [Validators.required]],
-      firstName: [null, [Validators.required]],
-      lastName: [null, [Validators.required]],
-      address_street: [null, [Validators.required]],
-      address_apt: [null, [Validators.required]],
-      address_city: [null, [Validators.required]],
-      address_state: [null, [Validators.required]],
-      address_postal_code: [null, [Validators.required, Validators.pattern('[0-9]{5}')]]
+    this.stripe = Stripe('pk_test_i9RmJ8HN4UygSzCchZMEGgwn');
+    const elements = this.stripe.elements();
+    this.card = elements.create('card', {
+        iconStyle: 'solid',
+        style: {
+            base: {
+                iconColor: '#8898AA',
+                color: 'rgb(48, 48, 48)',
+                lineHeight: '36px',
+                fontWeight: 300,
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSize: '19px',
+
+                '::placeholder': {
+                    color: '#8898AA',
+                },
+            },
+            invalid: {
+                iconColor: '#e85746',
+                color: '#e85746',
+            }
+        },
+        classes: {
+            focus: 'is-focused',
+            empty: 'is-empty',
+        },
     });
 
     this.paymentService.getCollectionDetails(this.collectionId).subscribe(collectionData => {
       if (collectionData) {
-        this.createChargeData.amount = (collectionData.price) * 10;
-        // this.createChargeData.amount = collectionData.price ;
+        this.createChargeData.amount = (collectionData.price) * 100;
+        this.createChargeData.currency = collectionData.currency;
         this.createChargeData.description = collectionData.description;
         this.collection = collectionData;
-        // console.log(JSON.stringify(this.collection));
+        this.setCurrentCalendar();
+        this.calculateTotalHours();
+        const inputs = document.querySelectorAll('input.field');
+        Array.prototype.forEach.call(inputs, function (input) {
+            input.addEventListener('focus', function () {
+                input.classList.add('is-focused');
+            });
+            input.addEventListener('blur', function () {
+                input.classList.remove('is-focused');
+            });
+            input.addEventListener('keyup', function () {
+                if (input.value.length === 0) {
+                    input.classList.add('is-empty');
+                } else {
+                    input.classList.remove('is-empty');
+                }
+            });
+        });
+        this.card.mount('#card-element');
       }
     });
     this.profileService.getPeer(this.userId).subscribe(peer => {
@@ -97,9 +117,10 @@ export class ReviewPayComponent implements OnInit {
         this.createSourceData.email = peer.email;
         this.createChargeData.customer = peer.stripeCustId;
         this.custId = peer.stripeCustId;
+        console.log(this.custId);
 
         // get all cards
-        this.paymentService.listAllCards(this.custId).subscribe(cards => {
+        this.paymentService.listAllCards(this.userId, this.custId).subscribe(cards => {
           if (cards) {
             this.listAllCards = cards.json().data;
             console.log('listAllCards: ' + JSON.stringify(this.listAllCards));
@@ -112,80 +133,61 @@ export class ReviewPayComponent implements OnInit {
       }
 
     });
-
-    this.loadYear();
-    this.loadCountry();
   }
 
-  // Load year
-  loadYear() {
-    for (let index = this.periodStarts; index <= this.maxYear; index++) {
-      this.expiryYear.push(index);
-    }
-  }
-
-  getToken() {
-    this.savingData = true;
-
-    // if (this.listAllCards && this.listAllCards.length > 0) {
-    //   const cardLastFour = (this.makePaymentForm.controls['cardNumber'].value).substr(-4);
-    //   this.listAllCards.forEach(card => {
-    //     if (card.last4 === cardLastFour) {
-    //       this.isCardExist = true;
-    //       this.createChargeData.source = card.id;
-    //     }
-    //   });
-    // }
-
-    if (this.isCardExist === true) {
-      // console.log('card exist');
-      this.paymentService.createCharge(this.collectionId, this.createChargeData).subscribe((resp: Response) => {
-        if (resp) {
-          // console.log(JSON.stringify(resp.json()));
-          this.savingData = false;
-          this.message = 'Payment successfully made!';
-        }
-      });
-    }
-    else {
-      (<any>window).Stripe.card.createToken({
-        number: this.makePaymentForm.controls['cardNumber'].value,
-        exp_month: this.makePaymentForm.controls['expiryMonth'].value,
-        exp_year: this.makePaymentForm.controls['expiryYear'].value,
-        cvc: this.makePaymentForm.controls['cvc'].value,
-        name: this.makePaymentForm.controls['firstName'].value + ' ' + this.makePaymentForm.controls['lastName'].value,
-        address_line1: this.makePaymentForm.controls['address_street'].value,
-        address_line2: this.makePaymentForm.controls['address_apt'].value,
-        address_city: this.makePaymentForm.controls['address_city'].value,
-        address_state: this.makePaymentForm.controls['address_state'].value,
-        address_zip: this.makePaymentForm.controls['address_postal_code'].value
-      }, (status: number, response: any) => {
-        if (status === 200) {
-          this.message = 'Payment successfully made!';
-          this.createSourceData.token = response.id;
-          this.savingData = false;
-
-          this.paymentService.createSource(this.custId, this.createSourceData).subscribe((res: Response) => {
-            if (res) {
-              //console.log(JSON.stringify(res.json()));
-              this.createChargeData.source = res.json().id;
-              this.paymentService.createCharge(this.collectionId, this.createChargeData).subscribe();
-            }
+  public processPayment(e: Event) {
+      console.log('processing payment');
+      this.savingData = true;
+      e.preventDefault();
+      if (this.isCardExist === true) {
+          // console.log('card exist');
+          this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: Response) => {
+              if (resp) {
+                  this.message = 'Payment successful. Redirecting...';
+                  this.savingData = false;
+                  this.joinCollection();
+              }
           });
-        } else {
-          this.message = response.error.message;
-          this.savingData = false;
-        }
-      });
-    }
-  }
-
-  loadCountry() {
-    this.countryPickerService.getCountries().subscribe(country => {
-      if (country && country.length > 0) {
-        this.countries = country;
       }
-    });
+      else {
+          const form = document.querySelector('form');
+          const extraDetails = {
+              name: form.querySelector('input[name=cardholder-name]')['value'],
+              phone: form.querySelector('input[name=cardholder-phone]')['value'],
+          };
+          this.stripe.createToken(this.card, extraDetails).then((result: any) => {
+            if (result.token) {
+                this.createSourceData.token = result.token.id;
+                this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: Response) => {
+                    if (res) {
+                        //console.log(JSON.stringify(res.json()));
+                        this.createChargeData.source = res.json().id;
+                        this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe();
+                        this.message = 'Payment successful. Redirecting...';
+                        this.savingData = false;
+                        this.joinCollection();
+                    }
+                    else {
+                        this.message = 'Error occurred. Please try again.';
+                        this.savingData = false;
+                    }
+                }, (error => {
+                    console.log(error);
+                    this.message =  'Error: ' + error.statusText;
+                    this.savingData = false;
+                }));
+            }
+            else {
+                console.log(result.error);
+                this.message = result.error;
+                this.savingData = false;
+            }
+          }).catch((error) => {
+              console.log(error);
+              this.message = error;
+              this.savingData = false;
+          });
+      }
   }
 
   getcardDetails(event) {
@@ -197,7 +199,48 @@ export class ReviewPayComponent implements OnInit {
       }
     });
   }
-  getCardType(event) {
-    // console.log(event.value);
+
+  public setCurrentCalendar() {
+      if (this.collectionCalendarId) {
+          const calendarIndex = this.collection.calendars.findIndex(calendar => {
+              return calendar.id === this.collectionCalendarId;
+          });
+          if (calendarIndex > -1) {
+              this.currentCalendar = this.collection.calendars[calendarIndex];
+          } else {
+              console.log('Calendar instance not found');
+          }
+      } else {
+          console.log('Calendar id not found');
+      }
   }
+
+  /**
+   * calculateTotalHours
+   */
+  public calculateTotalHours() {
+      let totalLength = 0;
+      this.collection.contents.forEach(content => {
+          if (content.type === 'online') {
+              const startMoment = moment(content.schedules[0].startTime);
+              const endMoment = moment(content.schedules[0].endTime);
+              const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+              totalLength += parseInt(contentLength, 10);
+          } else if (content.type === 'video') {
+
+          }
+      });
+      this.totalDuration = totalLength.toString();
+  }
+
+  private joinCollection() {
+      this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, (err: any, response: any) => {
+          if (err) {
+              console.log(err);
+          } else {
+              this.router.navigate(['workshop', this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+          }
+      });
+  }
+
 }

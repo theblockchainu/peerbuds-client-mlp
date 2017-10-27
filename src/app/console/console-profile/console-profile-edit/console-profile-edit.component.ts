@@ -6,6 +6,7 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 import { LanguagePickerService } from '../../../_services/languagepicker/languagepicker.service';
 import { CurrencypickerService } from '../../../_services/currencypicker/currencypicker.service';
 import { TimezonePickerService } from '../../../_services/timezone-picker/timezone-picker.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { MdSnackBar } from '@angular/material';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { Observable, BehaviorSubject} from 'rxjs';
@@ -15,6 +16,8 @@ import 'rxjs/add/operator/map';import {
   , RequestOptions, RequestOptionsArgs
 } from '@angular/http';
 import { AppConfig } from '../../../app.config';
+
+import { UcFirstPipe } from 'ngx-pipes/esm';
 import _ from 'lodash';
 
 declare var moment: any;
@@ -22,10 +25,12 @@ declare var moment: any;
 @Component({
   selector: 'app-console-profile-edit',
   templateUrl: './console-profile-edit.component.html',
-  styleUrls: ['./console-profile-edit.component.scss', '../../console.component.scss']
+  styleUrls: ['./console-profile-edit.component.scss', '../../console.component.scss'],
+  providers: [UcFirstPipe]
 })
 export class ConsoleProfileEditComponent implements OnInit {
   public loadingProfile = false;
+  private userId;
   public profile: any;
   public peer: any;
   public work: any;
@@ -68,7 +73,9 @@ export class ConsoleProfileEditComponent implements OnInit {
     public _fb: FormBuilder,
     public _timezoneService: TimezonePickerService,
     private http: Http,
-    private config: AppConfig) {
+    private config: AppConfig,
+    private _cookieUtilsService: CookieUtilsService,
+    private ucFirstPipe: UcFirstPipe) {
       activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
         if (urlSegment[0] === undefined) {
           consoleProfileComponent.setActiveTab('edit');
@@ -80,6 +87,8 @@ export class ConsoleProfileEditComponent implements OnInit {
       this.language = this.languagesAsync.asObservable();
       this.currenciesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
       this.timezoneAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+
+      this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -95,7 +104,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         preferred_language: '',
         other_languages: this._fb.array(['']),
         currency: '',
-        gender: 'Male',
+        gender: '',
         timezone: '',
         dobMonth: '',
         dobYear: '',
@@ -107,7 +116,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         description: '',
         phone_numbers: this._fb.array([this.initializePhone('','',true)]),
         vat_number: '',
-        emergency_contact: this._fb.array([this.initializeEmergencyContact()]),
+        emergency_contacts: this._fb.array([this.initializeEmergencyContact()]),
         education: this._fb.array([
           this.initializeEducationForm()
         ]),
@@ -121,14 +130,17 @@ export class ConsoleProfileEditComponent implements OnInit {
       'include': [
         'education',
         'work',
-        'peer'
+        'peer',
+        'phone_numbers',
+        'emergency_contacts'
       ]
     };
-    this._profileService.getProfileData(query).subscribe((profiles) => {
+    this._profileService.getProfileData(this.userId, query).subscribe((profiles) => {
+      console.log(profiles);
       this.setFormValues(profiles);
     });
 
-    this._profileService.getProfile().subscribe((profiles) => {
+    this._profileService.getProfile(this.userId).subscribe((profiles) => {
       this.profile = profiles[0];
       if (this.profile.work !== undefined && this.profile.work.length === 0) {
         const workEntry = {};
@@ -244,15 +256,35 @@ export class ConsoleProfileEditComponent implements OnInit {
         ));
       }
       this.userSettings = Object.assign({}, this.userSettings);
-      if (profiles[0].emergency_contact && profiles[0].emergency_contact.length > 0) {
-        this.profileForm.setControl('emergency_contact', this._fb.array(
-          profiles[0].emergency_contact
-        ));
+
+      if (profiles[0].emergency_contacts && profiles[0].emergency_contacts.length > 0) {
+        this.profileForm.setControl('emergency_contacts', this._fb.array([]));
+        const ec_Array = <FormArray>this.profileForm.controls['emergency_contacts'];
+        profiles[0].emergency_contacts.forEach(ecObj => {
+          ec_Array.push(
+            this._fb.group({
+              country_code: [ecObj.country_code, Validators.requiredTrue],
+              subscriber_number: [ecObj.subscriber_number, Validators.requiredTrue]
+            })
+          );
+        });
       }
       if (profiles[0].phone_numbers && profiles[0].phone_numbers.length > 0) {
-        this.profileForm.setControl('phone_numbers', this._fb.array(
-          profiles[0].phone_numbers
-        ));
+        this.profileForm.setControl('phone_numbers', this._fb.array([]));
+        const ph_Array = <FormArray>this.profileForm.controls['phone_numbers'];
+        profiles[0].phone_numbers.forEach(phObj => {
+          let isPrimary = true;
+          if(phObj.isPrimary === false) {
+            isPrimary = false;
+          }
+          ph_Array.push(
+            this._fb.group({
+              country_code: [phObj.country_code, Validators.requiredTrue],
+              subscriber_number: [phObj.subscriber_number, Validators.requiredTrue],
+              isPrimary: [isPrimary]
+            })
+          );
+        });
       }
       if (profiles[0].work && profiles[0].work.length > 0) {
         this.profileForm.setControl('work', this._fb.array([]));
@@ -263,7 +295,7 @@ export class ConsoleProfileEditComponent implements OnInit {
               position: [workObj.position, Validators.requiredTrue],
               company: [workObj.company, Validators.requiredTrue],
               startDate: [moment(workObj.startDate).local().toDate(), Validators.requiredTrue],
-              endDate: [moment(workObj.endDate).local().toDate(), Validators.requiredTrue],
+              endDate: [workObj.endDate ? moment(workObj.endDate).local().toDate() : null, Validators.requiredTrue],
               presentlyWorking: [workObj.presentlyWorking]
             })
           );
@@ -352,7 +384,7 @@ export class ConsoleProfileEditComponent implements OnInit {
    * saveProfile
    */
   public saveProfile() {
-    const profileData = this.profileForm.value;
+    let profileData = this.profileForm.value;
     // delete profileData.education.presentlyPursuing;
     const education = profileData.education;
     delete profileData.education;
@@ -361,15 +393,24 @@ export class ConsoleProfileEditComponent implements OnInit {
     delete profileData.work;
     const email = profileData.email;
     delete profileData.email;
-    delete profileData.emergency_contact;
+    const phone_numbers = profileData.phone_numbers;
     delete profileData.phone_numbers;
-    this._profileService.updateProfile(profileData)
+    const emergency_contacts = profileData.emergency_contacts;
+    delete profileData.emergency_contact;
+    // profileData = this.sanitize(profileData);
+    this._profileService.updateProfile(this.userId, profileData)
       .flatMap((response) => {
-        return this._profileService.updateWork(this.profile.id, work);
+        return this._profileService.updatePhoneNumbers(this.userId, this.profile.id, phone_numbers);
+      })
+      .flatMap((response) => {
+        return this._profileService.updateEmergencyContact(this.userId, this.profile.id, emergency_contacts);
+      })
+      .flatMap((response) => {
+        return this._profileService.updateWork(this.userId, this.profile.id, work);
       }).flatMap((response) => {
-        return this._profileService.updateEducation(this.profile.id, education);
+        return this._profileService.updateEducation(this.userId, this.profile.id, education);
       }).flatMap((response) => {
-        return this._profileService.updatePeer({ 'email': email});
+        return this._profileService.updatePeer(this.userId, { 'email': email});
       }).subscribe((response) => {
         this.snackBar.open('Profile Updated', 'Close');
       }, (err) => {
@@ -380,6 +421,15 @@ export class ConsoleProfileEditComponent implements OnInit {
         });
       });
   }
+
+  // public sanitize(profileData) {
+  //   const fields = ['first_name', 'last_name', 'headline'];
+  //   let tempData = profileData;
+  //   fields.forEach(element => {
+  //     tempData.element = this.ucFirstPipe.transform(profileData[element]);
+  //   });
+  //   return tempData;
+  // }
 
   /**
    * deletework
@@ -478,7 +528,7 @@ index:number   */
   public deleteEmergencyContact(index: number) {
     const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
     if(index > 0) {
-      
+
       emergency_contact.removeAt(index);
       return;
     }
