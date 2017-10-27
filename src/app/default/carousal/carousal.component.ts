@@ -1,8 +1,19 @@
 import {Component} from '@angular/core';
 import {Image} from './image.interface';
 
+
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'css-carousal',
+  template: ` <div class="carousel">
+  <ul class="slides">
+  <li *ngFor="let image of images">
+    <h2>{{image.title}}</h2>
+    <img src="{{image.url}}" alt="">
+  </li>
+</ul>
+</div>
+`,
   styles: [`
 .carousel{
     overflow:hidden;
@@ -66,11 +77,13 @@ import {Image} from './image.interface';
 //Carousel Component itself
 export class CSSCarouselComponent {
     //images data to be bound to the template
+	// tslint:disable-next-line:indent
 	public images = IMAGES;
 }
 
 //IMAGES array implementing Image interface
-var IMAGES: Image[] = [
-	{ "title": "We are covered", "url": "/assets/images/images_landing/Illustration_3.png" },
-	{ "title": "Generation Gap", "url": "/assets/images/images_landing/Illustration_3.png" }
+const IMAGES: Image[] = [
+	// tslint:disable-next-line:indent
+	{ 'title': 'We are covered', 'url': '/assets/images/images_landing/Illustration_3.png' },
+	{ 'title': 'Generation Gap', 'url': '/assets/images/images_landing/Illustration_1.png' }
 ];

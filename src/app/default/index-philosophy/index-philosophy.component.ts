@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-index-phil',
@@ -8,18 +10,23 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
   styleUrls: ['./index-philosophy.component.scss']
 })
 export class IndexPhilComponent implements OnInit {
-
+  private email: string;
+  notifyForm: FormGroup;
   public transformationSelected = false
   public pplFocussedSelected = false;
   public courageSelected = false;
   public collabSelected = false;
   public optimismSelected = false;
 
-  constructor() { 
+  constructor(private authenticationService: AuthenticationService,
+    public _fb: FormBuilder) { 
     this.transformationSelected = true;
   }
 
   ngOnInit() {
+    this.notifyForm = this._fb.group(
+      {email: ['', Validators.requiredTrue]}
+    );
   }
 
   public showTransformation(state) {
@@ -61,5 +68,10 @@ export class IndexPhilComponent implements OnInit {
     this.collabSelected = !state;
     this.optimismSelected = state;
   }
-
+  public sendEmailSubscriptions() {
+    // this.loading = true;
+    this.email = this.notifyForm.controls['email'].value;
+    this.authenticationService.sendEmailSubscriptions(this.email)
+        .subscribe();
+}
 }

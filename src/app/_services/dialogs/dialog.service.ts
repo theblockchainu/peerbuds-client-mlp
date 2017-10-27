@@ -1,6 +1,5 @@
 import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
-import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
 import { MultiselectTopicDialogComponent } from './multiselect-topic-dialog/multiselect-topic-dialog.component';
@@ -35,14 +34,6 @@ export class DialogsService {
 
         return dialogRef1.afterClosed();
     }
-
-    public openForgotPwd() {
-        let dialogRef3: MdDialogRef<ForgotpwdComponentDialog>;
-
-        dialogRef3 = this.dialog.open(ForgotpwdComponentDialog);
-
-        return dialogRef3.afterClosed();
-    }
     public addCard() {
         let dialogRef4: MdDialogRef<AddCardDialogComponent>;
 
@@ -70,7 +61,6 @@ export class DialogsService {
         });
         return dialogRef6.afterClosed();
     }
-
     public openIdPolicy() {
         let dialogRef7: MdDialogRef<IdPolicyDialogComponent>;
 
@@ -85,8 +75,8 @@ export class DialogsService {
         let dialogRef8: MdDialogRef<VideoDialogComponent>;
 
         dialogRef8 = this.dialog.open(VideoDialogComponent, {
-            width: '500px',
-            height: '600px'
+            width: '700px',
+            height: '420px'
         });
         return dialogRef8.afterClosed();
     }
