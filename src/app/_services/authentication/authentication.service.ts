@@ -22,6 +22,7 @@ export class AuthenticationService {
 
   public key = 'access_token';
   private options;
+  private userId;
   isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: Http, private config: AppConfig,

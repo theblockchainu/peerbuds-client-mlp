@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {ConsoleAccountComponent} from '../console-account.component';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AppConfig} from '../../../app.config';
-import {NotificationService} from '../../../_services/notification/notification.service';
-import {UcWordsPipe} from 'ngx-pipes/esm';
+import { ConsoleAccountComponent } from '../console-account.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppConfig } from '../../../app.config';
+import { NotificationService } from '../../../_services/notification/notification.service';
+import { UcWordsPipe } from 'ngx-pipes/esm';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+
 declare var moment: any;
 
 @Component({
@@ -17,6 +19,7 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
   public picture_url = false;
   public notifications = [];
   public loaded = false;
+  private userId;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -24,7 +27,8 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
     private config: AppConfig,
     public _notificationService: NotificationService,
     private ucwords: UcWordsPipe,
-    public router: Router
+    public router: Router,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
@@ -33,12 +37,14 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
         consoleAccountComponent.setActiveTab(urlSegment[0].path);
       }
     });
+
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
     ngOnInit() {
 
         this.loaded = false;
-        this._notificationService.getNotifications('{"include": [{"actor":"profiles"}, "collection"], "order": "createdAt DESC" }', (err, result) => {
+        this._notificationService.getNotifications(this.userId, '{"include": [{"actor":"profiles"}, "collection"], "order": "createdAt DESC" }', (err, result) => {
             if (err) {
                 console.log(err);
             } else {
@@ -68,7 +74,7 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
 
     public hideNotification(notification) {
         notification.hidden = true;
-        this._notificationService.updateNotification(notification, (err, patchResult) => {
+        this._notificationService.updateNotification(this.userId, notification, (err, patchResult) => {
             if (err) {
                 console.log(err);
                 notification.hidden = false;

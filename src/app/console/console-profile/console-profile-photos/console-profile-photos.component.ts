@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleProfileComponent } from '../console-profile.component';
 import { ProfileService } from '../../../_services/profile/profile.service';
 import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { AppConfig } from '../../../app.config';
 
 declare var moment: any;
@@ -14,6 +15,7 @@ declare var moment: any;
 })
 export class ConsoleProfilePhotosComponent implements OnInit {
   public picture_url: string;
+  private userId;
   public profile_picture_array = [];
   public profile_video: string;
   private uploadingImage = false;
@@ -26,16 +28,18 @@ export class ConsoleProfilePhotosComponent implements OnInit {
     public _profileService: ProfileService,
     public mediaUploader: MediaUploaderService,
     public config: AppConfig,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleProfileComponent.setActiveTab(urlSegment[0].path);
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
     this.loadingMediaPage = true;
-    this._profileService.getProfile().subscribe((profiles) => {
+    this._profileService.getProfile(this.userId).subscribe((profiles) => {
       this.picture_url = profiles[0].picture_url;
       this.profile_video = profiles[0].profile_video;
       this.loadingMediaPage = false;
@@ -48,7 +52,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
     for (const file of event.files) {
       this.mediaUploader.upload(file).subscribe((response) => {
         this.profile_video = response.url;
-        this._profileService.updateProfile({
+        this._profileService.updateProfile(this.userId, {
           'profile_video': response.url
         }).subscribe(response => {
             this.profile_video = response.profile_video;
@@ -67,7 +71,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
     for (const file of event.files) {
       this.mediaUploader.upload(file).subscribe((response) => {
         this.picture_url = response.url;
-        this._profileService.updateProfile({
+        this._profileService.updateProfile(this.userId, {
           'picture_url': response.url
         }).subscribe(response => {
             this.picture_url = response.picture_url;
@@ -83,7 +87,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
   }
 
   setProfilePic(image, type) {
-    this._profileService.updateProfile({
+    this._profileService.updateProfile(this.userId, {
       'picture_url': image
     }).subscribe(response => {
         this.picture_url = response.url;
@@ -99,13 +103,13 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 
   deleteFromContainer(url: string, type: string) {
     if (type === 'image') {
-      this._profileService.updateProfile({
+      this._profileService.updateProfile(this.userId, {
         'picture_url': ''
       }).subscribe(response => {
         this.picture_url = response.picture_url;
       });
     } else if (type === 'video') {
-      this._profileService.updateProfile({
+      this._profileService.updateProfile(this.userId, {
         'profile_video': ''
       }).subscribe(response => {
         this.profile_video = response.profile_video;

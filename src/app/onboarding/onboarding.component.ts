@@ -10,6 +10,7 @@ import { CountryPickerService } from '../_services/countrypicker/countrypicker.s
 import { ContentService } from '../_services/content/content.service';
 import { ProfileService } from '../_services/profile/profile.service';
 import { TopicService } from '../_services/topic/topic.service';
+import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 
 import _ from 'lodash';
 
@@ -20,7 +21,7 @@ import _ from 'lodash';
 })
 export class OnboardingComponent implements OnInit {
   public step = 1;
-  public userId: string;
+  private userId;
   public placeholderStringTopic = 'Search for a topic ';
  
   public suggestedTopics = [];
@@ -55,7 +56,8 @@ export class OnboardingComponent implements OnInit {
     private countryPickerService: CountryPickerService,
     private _contentService: ContentService,
     private _profileService: ProfileService,
-    private _topicService: TopicService
+    private _topicService: TopicService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     
     this.activatedRoute.params.subscribe(params => {
@@ -65,9 +67,10 @@ export class OnboardingComponent implements OnInit {
     });
     this.countryPickerService.getCountries()
       .subscribe((countries) => this.countries = countries);
-    this.userId = _profileService.getUserId();
     
-    this._profileService.getSocialIdentities(this.queryForSocialIdentities)
+    this.userId = _cookieUtilsService.getValue('userId');
+    
+    this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.userId)
     .subscribe((response: Response) => {
       this.socialIdentitiesConnected = response;
 

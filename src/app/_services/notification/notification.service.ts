@@ -10,7 +10,6 @@ import {AuthenticationService} from '../authentication/authentication.service';
 export class NotificationService {
 
   public key = 'userId';
-  private userId;
   public options;
   public now: Date;
 
@@ -23,20 +22,12 @@ export class NotificationService {
               private requestHeaderService: RequestHeaderService) {
       this.options = requestHeaderService.getOptions();
       this.now = new Date();
-      this.authService.getLoggedInUser.subscribe((userId) => {
-          if (userId !== 0) {
-              this.userId = userId;
-          }
-          else {
-              this.userId = 0;
-          }
-      });
   }
 
-  public getNotifications(options: any, cb) {
-      if (this.userId) {
+  public getNotifications(userId, options: any, cb) {
+      if (userId) {
           this.http
-              .get(this.config.apiUrl + '/api/peers/' + this.userId + '/notifications?' + 'filter=' + options)
+              .get(this.config.apiUrl + '/api/peers/' + userId + '/notifications?' + 'filter=' + options)
               .map((response) => {
                   console.log(response.json());
                   cb(null, response.json());
@@ -46,8 +37,8 @@ export class NotificationService {
       }
   }
 
-  public updateNotification(body: any, cb) {
-      if (this.userId) {
+  public updateNotification(userId, body: any, cb) {
+      if (userId) {
           this.http
               .patch(this.config.apiUrl + '/api/notifications/' + body.id, body, this.options)
               .map((response) => {

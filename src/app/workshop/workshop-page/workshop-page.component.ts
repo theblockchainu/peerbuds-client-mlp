@@ -69,7 +69,7 @@ const colors: any = {
 export class WorkshopPageComponent implements OnInit {
 
   public workshopId: string;
-  public userId: string;
+  public userId;
   public userType: string;
   public totalDuration: string;
   public calendarId: string;
@@ -156,7 +156,7 @@ export class WorkshopPageComponent implements OnInit {
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
-    private cookieUtilsService: CookieUtilsService,
+    private _cookieUtilsService: CookieUtilsService,
     public _collectionService: CollectionService,
     public _topicService: TopicService,
     private _commentService: CommentService,
@@ -174,8 +174,8 @@ export class WorkshopPageComponent implements OnInit {
       this.calendarId = params['calendarId'];
       this.toOpenDialogName = params['dialogName'];
     });
-    this.userId = cookieUtilsService.getValue('userId');
-    this.accountApproved = this.cookieUtilsService.getValue('accountApproved');
+    this.userId = _cookieUtilsService.getValue('userId');
+    this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
   }
 
   ngOnInit() {

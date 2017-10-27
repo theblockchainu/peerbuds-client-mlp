@@ -8,8 +8,6 @@ import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { Observable } from 'rxjs/Observable';
 import {AuthenticationService} from '../authentication/authentication.service';
 
-
-
 @Injectable()
 export class TopicService {
   private userId;
@@ -17,17 +15,8 @@ export class TopicService {
   constructor(
     private http: Http, private config: AppConfig,
     public router: Router,
-    private requestHeaderService: RequestHeaderService,
-    private authService: AuthenticationService
+    private requestHeaderService: RequestHeaderService
   ) {
-    this.authService.getLoggedInUser.subscribe((userId) => {
-        if (userId !== 0) {
-            this.userId = userId;
-        }
-        else {
-            this.userId = 0;
-        }
-    });
     this.options = requestHeaderService.getOptions();
   }
 

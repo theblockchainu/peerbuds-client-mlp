@@ -8,8 +8,7 @@ import { AppConfig } from '../app.config';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ProfileService } from '../_services/profile/profile.service';
 import 'rxjs/add/operator/map';
-import {AuthenticationService} from '../_services/authentication/authentication.service';
-import {CookieService} from 'ngx-cookie-service';
+import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -20,6 +19,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 export class SignupSocialComponent implements OnInit {
 
+  public userId;
   public peerProfile: any = {};
   public presentYear: any = new Date().getFullYear();
   public maxYear = this.presentYear;
@@ -34,7 +34,12 @@ export class SignupSocialComponent implements OnInit {
   public selectedYear;
   public dob: string;
 
-  constructor(public profileService: ProfileService, private _fb: FormBuilder, public router: Router, public _authService: AuthenticationService, private _cookieService: CookieService) { }
+  constructor(public profileService: ProfileService,
+    private _fb: FormBuilder,
+    public router: Router,
+    private _cookieUtilsService: CookieUtilsService) {
+      this.userId = _cookieUtilsService.getValue('userId');
+  }
 
   ngOnInit() {
     this.getPeerData();
@@ -65,7 +70,7 @@ export class SignupSocialComponent implements OnInit {
 
   getPeerWithProfile() {
     const query = {};
-    this.profileService.getProfileData(query).subscribe((peerProfile) => {
+    this.profileService.getProfileData(this.userId, query).subscribe((peerProfile) => {
       this.peerProfile = peerProfile[0];
 
       this.signupSocialForm.controls.first_name.patchValue(peerProfile[0].first_name);
@@ -99,8 +104,8 @@ export class SignupSocialComponent implements OnInit {
       dobDay: this.signupSocialForm.value.dobDay,
       dobYear: this.signupSocialForm.value.dobYear
     };
-    this.profileService.updatePeer(email).subscribe();
-    this.profileService.updatePeerProfile((this.peerProfile.id), profile).subscribe((response: Response) => response.json());
+    this.profileService.updatePeer(this.userId, email).subscribe();
+    this.profileService.updatePeerProfile(this.userId, profile).subscribe((response: Response) => response.json());
 
     this.router.navigate(['app-upload-docs', '1']);
 

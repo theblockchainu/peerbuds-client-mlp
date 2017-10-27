@@ -5,6 +5,7 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 import { AppConfig } from '../../../app.config';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-console-profile-verification',
@@ -13,6 +14,7 @@ import { DialogsService } from '../../../_services/dialogs/dialog.service';
 })
 export class ConsoleProfileVerificationComponent implements OnInit {
 
+  private userId;
   public loading: boolean = false;
   public profile: any;
   public alreadyVerified: Array<any>;
@@ -32,12 +34,14 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     private dialog: MdDialog,
     private dialogsService: DialogsService,
     public _profileService: ProfileService,
-    public config: AppConfig
+    public config: AppConfig,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleProfileComponent.setActiveTab(urlSegment[0].path);
     });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -58,7 +62,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
    }
 
   private getProfile() {
-    this._profileService.getPeerData(this.queryForSocialIdentities).subscribe((peer) => {
+    this._profileService.getPeerData(this.userId, this.queryForSocialIdentities).subscribe((peer) => {
       console.log(peer);
       this.alreadyVerified = [];
       this.notVerified = [];

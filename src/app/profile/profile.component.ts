@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { AppConfig } from '../app.config';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ProfileService } from '../_services/profile/profile.service';
 import { CollectionService } from '../_services/collection/collection.service';
 import { TopicService } from '../_services/topic/topic.service';
+import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ReportProfileComponent } from './report-profile/report-profile.component';
 import { MdDialog, MdSnackBar } from '@angular/material';
 
@@ -18,7 +18,7 @@ import _ from 'lodash';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  public cookieUserId: string;
+  public cookieUserId;
   public loading: boolean = false;
   public urluserId: string;
   public profileObj: any;
@@ -43,7 +43,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     public config: AppConfig,
     public _profileService: ProfileService,
-    private cookieUtilsService: CookieUtilsService,
+    private _cookieUtilsService: CookieUtilsService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public _collectionService: CollectionService,
@@ -65,12 +65,13 @@ export class ProfileComponent implements OnInit {
   }
 
   private fetchData() {
-    this.cookieUserId = this.cookieUtilsService.getValue('userId');
+    this.cookieUserId = this._cookieUtilsService.getValue('userId');
     this.loading = true;
     this.isTeacher = false;
     this.getProfileData();
     this.getIdentities();
     this.getTeachingTopics();
+    debugger;
     this.getRecommendedPeers();
     this.loading = false;
   }
@@ -165,6 +166,7 @@ export class ProfileComponent implements OnInit {
         }
       ]
     };
+    debugger;
     this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response) => {
       this.profileObj = response[0];
       console.log(this.profileObj);

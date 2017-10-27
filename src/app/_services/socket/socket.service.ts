@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import {Observable} from 'rxjs/Observable';
-import {CookieUtilsService} from '../cookieUtils/cookie-utils.service';
+import { Observable } from 'rxjs/Observable';
+import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 
 @Injectable()
 export class SocketService {
 
     private url = 'http://localhost:3000';
     private socket;
-    public key = 'userId';
     private userId;
 
     constructor(
-        private _cookieService: CookieUtilsService
+        private _cookieUtilsService: CookieUtilsService
     ) {
-        this.userId = this._cookieService.getValue(this.key);
+        this.userId = _cookieUtilsService.getValue('userId');
         this.socket = io(this.url);
         this.addUser(this.userId);
     }
