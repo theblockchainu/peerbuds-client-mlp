@@ -15,14 +15,14 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 export class ConsoleProfileVerificationComponent implements OnInit {
 
   private userId;
-  public loading: boolean = false;
+  public loading = false;
   public profile: any;
   public alreadyVerified: Array<any>;
   public notVerified: Array<any>;
-  private queryForSocialIdentities = {'include': ['identities', 'credentials']};
+  private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
   public socialIdentitiesConnected: any = [];
   public boolShowConnectedSocials = false;
-  private connectedIdentities = {
+  public connectedIdentities = {
     'fb': false,
     'google': false
   };
@@ -126,7 +126,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
       if (this.socialIdentitiesConnected.identities.length > 0) {
         this.socialIdentitiesConnected.identities.forEach(element => {
           if (element.provider === 'google') {
-              this.connectedIdentities.google = true;
+            this.connectedIdentities.google = true;
           }
           else if (element.provider === 'facebook') {
             this.connectedIdentities.fb = true;
@@ -136,7 +136,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
       if (this.socialIdentitiesConnected.credentials.length > 0) {
         this.socialIdentitiesConnected.credentials.forEach(element => {
           if (element.provider === 'google') {
-              this.connectedIdentities.google = true;
+            this.connectedIdentities.google = true;
           }
           else if (element.provider === 'facebook') {
             this.connectedIdentities.fb = true;

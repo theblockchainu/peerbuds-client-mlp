@@ -1,6 +1,7 @@
 import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
+import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
 import { MultiselectTopicDialogComponent } from './multiselect-topic-dialog/multiselect-topic-dialog.component';
 
 import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.component';
@@ -46,12 +47,12 @@ export class DialogsService {
         let dialogRef5: MdDialogRef<VerifyIdDialogComponent>;
 
         dialogRef5 = this.dialog.open(VerifyIdDialogComponent, {
-            width: '800px',
-            height: '600px'
+            width: '60vw',
+            height: '95vh'
         });
         return dialogRef5.afterClosed();
     }
-     public openEmailVerify() {
+    public openEmailVerify() {
         let dialogRef6: MdDialogRef<VerifyEmailDialogComponent>;
 
         dialogRef6 = this.dialog.open(VerifyEmailDialogComponent, {
@@ -94,18 +95,32 @@ export class DialogsService {
 
         dialogRef5 = this.dialog.open(MultiselectTopicDialogComponent,
             {
-                disableClose: true, 
+                disableClose: true,
                 hasBackdrop: true,
                 width: '50vw',
                 height: '70vh'
             }
         );
         dialogRef5.componentInstance.data = {
-                searchUrl: searchTopicURL,
-                selected: []
+            searchUrl: searchTopicURL,
+            selected: []
         };
 
         return dialogRef5.afterClosed();
     }
+
+    /**
+     * startLiveSession
+     */
+    public startLiveSession() {
+        let dialogRef5: MdDialogRef<LiveSessionDialogComponent>;
+
+        dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
+            width: '100vw',
+            height: '100vh'
+        });
+        return dialogRef5.afterClosed();
+    }
+
 
 }

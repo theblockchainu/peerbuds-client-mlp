@@ -2,7 +2,7 @@
     <md-list-item *ngFor="let title of sidebarMenuItems">
         <h3 md-subheader [ngClass]="{'sidebar-brand' : true, 'disabled' : title.title === 'Review & Submit' && step !== 14}" *ngIf="title.visible" >
             <a (click)=goto(title) [class.active]="title.step == step">{{title.title}}</a>
-            <md-icon *ngIf="title.locked" style="float: right; color: #ffffff; font-size: 18px; font-weight:bold; top: 5px;">lock_outline</md-icon>
+            <md-icon *ngIf="title.locked" style="float: right; color: #ffffff; font-size: 18px; font-weight:bold; line-height:35px;">lock_outline</md-icon>
         </h3>
         <h4 md-line class="childItem" *ngFor="let submenu of title.submenu">
             <a *ngIf="submenu.visible" [style.pointer-events]= "title.title == 'Review & Submit' && step !== 14 ? 'none' : 'visible'" (click)=goto(submenu) [class.active]="submenu.step == step">{{submenu.title}}</a>

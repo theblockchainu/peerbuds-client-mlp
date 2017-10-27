@@ -1179,6 +1179,42 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     padding-bottom: 75px;
 }
 
+.my-full-screen-dialog .mat-dialog-container {
+    max-width: none;
+    width: 100vw;
+    height: 100vh;
+  }
+
+.mainStream{
+    text-align: center;
+}
+
+.mainStream video{
+    height: 100%;    
+}
+
+.localStream{
+    position: absolute;
+    bottom: 3%;
+    height: 16%;
+    right: 10%;
+}
+
+.localStream video{
+    border-style: solid;
+    border-color: white;
+}
+
+.otherStream{
+    position: absolute;
+    bottom: 3%;
+    height: 16%;
+    right: 24%;
+}
+
+.otherStream video{
+    padding-right: 5px;
+}
 
 .topics .mat-tab-label {
     min-width: min-content !important;

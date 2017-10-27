@@ -12,7 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-
+import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 @Injectable()
 export class ProfileService {
   public key = 'userId';
@@ -23,7 +23,8 @@ export class ProfileService {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
-    public _requestHeaderService: RequestHeaderService
+    public _requestHeaderService: RequestHeaderService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     this.options = this._requestHeaderService.getOptions();
   }
@@ -80,6 +81,11 @@ export class ProfileService {
           .map(
           (response: Response) => response.json()
           );
+      } else {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue(this.key) + '?filter=' + JSON.stringify(filter), this.options)
+          .map(
+          (response: Response) => response.json()
+          );
       }
     } else {
       if (userId) {
@@ -88,10 +94,15 @@ export class ProfileService {
           (response: Response) => response.json()
           );
       }
+      else {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue(this.key), this.options)
+          .map(
+          (response: Response) => response.json()
+          );
+      }
     }
   }
   public getCompactProfile(userId) {
-    debugger;
     const profile = {};
     if (userId) {
       const filter = '{"include": {"peer": "ownedCollections"}}';
@@ -375,7 +386,6 @@ export class ProfileService {
    * getAllPeers
    */
   public getAllPeers(query: any) {
-    debugger;
     return this.http.get(this.config.apiUrl + '/api/peers?filter=' + JSON.stringify(query));
   }
 
