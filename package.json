@@ -77,7 +77,7 @@
     "ngx-bootstrap": "^1.9.3",
     "ngx-clipboard": "^8.1.1",
     "ngx-cookie-service": "^1.0.9",
-    "ngx-loading": "^1.0.7",
+    "ngx-loading": "^1.0.8",
     "ngx-pipes": "^1.6.5",
     "node-sass": "^4.5.3",
     "primeng": "^4.2.2",
