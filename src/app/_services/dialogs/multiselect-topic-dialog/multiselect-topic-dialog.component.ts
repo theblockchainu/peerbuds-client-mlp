@@ -1,38 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-// import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
-// import { MultiselectAutocomplete } from '../../../_shared/multiselect-autocomplete/multiselect-autocomplete.component';
-
-// @Component({
-//   selector: 'app-multiselect-topic-dialog',
-//   templateUrl: '../../../_shared/multiselect-autocomplete/multiselect-autocomplete.component.html',
-//   styleUrls: ['../../../_shared/multiselect-autocomplete/multiselect-autocomplete.component.scss']
-// })
-// export class MultiselectTopicDialogComponent implements OnInit {
-
-//   public data;
-
-//   constructor(
-//     public dialogRef: MdDialogRef<MultiselectTopicDialogComponent>,
-//     public _multi: MultiselectAutocomplete
-//     ) { }
-
-//   ngOnInit() {
-//     if(this.data) {
-//       this._multi.searchURL = this.data.searchUrl;
-//       this.dialogRef.backdropClick().subscribe(() => {
-//         this.sendDataToCaller();
-//       });
-//     }
-//   }
-
-//   sendDataToCaller() {
-//     debugger;
-//     this.data.selected = this._multi.selected;
-//     this.dialogRef.close(this.data);
-//   }
-
-// }
-
 import { Component, OnInit, Input, forwardRef, ElementRef, Inject, EventEmitter
   , HostBinding, HostListener, Output} from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';

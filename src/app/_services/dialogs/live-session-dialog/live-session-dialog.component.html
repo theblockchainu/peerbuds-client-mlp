@@ -1,0 +1,16 @@
+<div class="videoDialog">
+  <button class="pull-right" md-icon-button [md-dialog-close]>
+    <md-icon>clear</md-icon>
+  </button>
+  <div class="mainStream" #mainStream>
+    <div *ngIf="mainLoading">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+    <div class="bottomBar">
+      <div class="otherStream" #otherStream>
+      </div>
+      <div class="localStream" #localStream>
+      </div>
+    </div>
+  </div>
+</div>

@@ -156,13 +156,13 @@
                     <!-- <md-error>This field is required</md-error> -->
                   </md-input-container>
                   <md-form-field style="margin-right:10px;" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
-                    <input mdInput formControlName="startDate" [mdDatepicker]="startPicker" placeholder="Choose a date">
+                    <input mdInput formControlName="startDate" [mdDatepicker]="startPicker" placeholder="Start Date">
                     <md-datepicker-toggle mdSuffix [for]="startPicker"></md-datepicker-toggle>
                     <md-datepicker #startPicker></md-datepicker>
                   </md-form-field>
                   <!-- <md-error>This field is required</md-error> -->
                   <md-form-field style="margin-right:10px;"  [ngClass]="{ 'customWidth30': i == 0, 'customWidth33': i > 0}"> <!--'disabled': disableEndDate,-->
-                    <input mdInput formControlName="endDate" [mdDatepicker]="endPicker" placeholder="Choose a date" ><!--[ngClass]="{'disabled': disableEndDate}"-->
+                    <input mdInput formControlName="endDate" [mdDatepicker]="endPicker" placeholder="End Date" ><!--[ngClass]="{'disabled': disableEndDate}"-->
                     <md-datepicker-toggle mdSuffix [for]="endPicker"></md-datepicker-toggle><!--[ngClass]="{'disabled': disableEndDate}"-->
                     <md-datepicker #endPicker></md-datepicker>
                   </md-form-field>

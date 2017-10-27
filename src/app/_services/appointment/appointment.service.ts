@@ -9,11 +9,11 @@ export class AppointmentService {
 
   getEvents() {
     return this.http.get('assets/showcase/data/scheduleevents.json')
-      // .toPromise()
-      // .then(res => <any[]>res.json().data)
-      // .then(data => { return data; });
-      .subscribe((res) => {
-        return res.json().data;
-      })
+      .toPromise()
+      .then(res => <any[]>res.json().data)
+      .then(data => { return data; });
+      // .subscribe((res) => {
+      //   return res.json().data;
+      // })
   }
 }

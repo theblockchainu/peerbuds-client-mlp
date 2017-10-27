@@ -30,8 +30,8 @@
                   <div *ngIf="verificationIdUrl" class="profilePic icon-remove delete">
                     <img *ngIf="fileType.includes('image')" class="uploaded_picture" src="{{config.apiUrl + verificationIdUrl}}" width="150" style="border: 0.5px solid #ccc">
                     <md-icon *ngIf="fileType.includes('image')" (click)="deleteFromContainer(verificationIdUrl, 'image')" class="delete-image">close</md-icon>
-                    <div *ngIf="fileType.includes('application')" class="uploaded_file">{{ fileName }}</div>
                     <md-icon *ngIf="fileType.includes('application')" (click)="deleteFromContainer(verificationIdUrl, 'file')" class="delete-file">close</md-icon>
+                    <div *ngIf="fileType.includes('application')" class="uploaded_file">{{ fileName }}</div>
                   </div>
               </div>
               <p class="note">To learn more about why we require copy of your ID and what types of ID we accept, <a (click)="openIdPolicy()" style="cursor: pointer;">review our ID policy</a></p>

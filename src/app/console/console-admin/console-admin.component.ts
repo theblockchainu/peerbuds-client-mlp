@@ -50,6 +50,8 @@ export class ConsoleAdminComponent implements OnInit {
 
     this._collectionService.approveCollection(collection).subscribe(
       result => {
+        console.log(result);
+
         this.snackBar.open(result.result, 'Close').onAction().subscribe(() => {
           this.fetchCollections();
         });
