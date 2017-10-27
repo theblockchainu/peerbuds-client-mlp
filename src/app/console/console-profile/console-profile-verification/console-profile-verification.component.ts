@@ -122,7 +122,6 @@ export class ConsoleProfileVerificationComponent implements OnInit {
       }
 
       this.socialIdentitiesConnected = peer;
-
       // this.socialIdentitiesConnected.forEach(socialIdentity => {
       if (this.socialIdentitiesConnected.identities.length > 0) {
         this.socialIdentitiesConnected.identities.forEach(element => {

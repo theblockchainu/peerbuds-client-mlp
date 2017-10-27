@@ -1,3 +1,4 @@
+<header showHeader>
 <md-toolbar class="layout-row mat-elevation-header" layout="row" color="white">
   <span>
     <a href="javascript:void(0);" class="brand" aria-label="Peerbuds Homepage" (click)="goToHome()">
@@ -57,15 +58,14 @@
     <a md-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
       Sign Up
     </a>
-
-      <!-- trying dialog-->
+    
       <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
         Log In
       </button>
-
+      
     </span>
 </md-toolbar>
-
+</header>
 <md-menu #headerTeachMenu>
   <!--<button md-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
     Dashboard

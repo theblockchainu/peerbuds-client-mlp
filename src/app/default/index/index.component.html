@@ -6,9 +6,10 @@
 
     <div class="margin-top-100 outerContainer"> 
         <img src="/assets/images/images_landing/Waves_above_the_fold.png"/>
-       <a (click)="openVideo()"></a> <img src="/assets/images/images_landing/Video.png" class="col-md-offset-2 centerVideo"/>
-        <img src="/assets/images/images_landing/Play_button.png" class="centerPlayButton"/>
-
+       <a (click)="openVideo()"> 
+        <img src="/assets/images/images_landing/Video.png" class="col-md-offset-2 centerVideo" style="cursor:pointer;"/>
+        <img src="/assets/images/images_landing/Play_button.png" style="cursor: pointer" class="centerPlayButton"/>
+       </a>
         <div class="margin-top-270">
             <img src="/assets/images/images_landing/Illustration_1.png" class="view2Image"/>
             <div class="col-md-4 margin-right-100 margin-top-60 pull-right">
@@ -30,16 +31,7 @@
                 <p class="content mat-subheading-2">Meet like-minded people and connect with people with similar goals, join commuinities, participate and discuss. Teams are formed to discuss, participate and discuss</p>
             </div>
         </div>
-        <!--
-        <div class="carousel">
-            <ul class="slides">
-        
-            <li *ngFor="#image of images">
-              <h2>{{image.title}}</h2>
-              <img src="{{image.url}}" alt="">
-            </li>
-          </ul>
-        </div>-->
+      
         <img src="/assets/images/images_landing/Shape_testimoni.png" class="pull-right view5Image"/>
         <img src="/assets/images/images_landing/testimonial1.png" class="testimonial testimonial1"/>
         <img src="/assets/images/images_landing/testimonial2.png" class="testimonial testimonial2"/>
@@ -62,15 +54,14 @@
         <img src="/assets/images/images_landing/shape_footer.png" class="footer"/>
         <div>
             <p class="notif center"> Be notified when peerbuds go live </p>
+        <form [formGroup]="notifyForm">
             <div class="center">
-                <!-- <div class="mb-block mail-bg"> -->
-                <input type="text" placeholder="Your email here" class="mail-bg emailInput">
-                <!-- </div> -->
-            
+                <input mdInput type="text" placeholder="Your email here" formControlName="email" class="mail-bg emailInput">
                 <div id="emailBase">
-                    <button md-button class="md-raised email-btn">Notify me!</button>
+                    <button md-button class="md-raised email-btn" (click)="sendEmailSubscriptions()">Notify me!</button>
                 </div>
             </div>
+        </form>
         </div>
         <img src="/assets/images/images_landing/oval-footer.png" class="oval"/>
     </div>

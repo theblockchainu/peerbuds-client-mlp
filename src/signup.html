@@ -588,6 +588,9 @@
         function goToPhilosophy() {
             location.href= 'philosophy';
         }
+        function goToWhitePaper() {
+            location.href= 'white-paper';
+        }
         function goToLogin()
         {
             location.href="/login";
@@ -611,7 +614,7 @@
                 <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
                 About
                 </button>-->
-                <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+                <button class="headerButtons mat-button" onclick="goToWhitePaper()" *ngIf="!(isLoggedIn | async)">
                 White Paper
                 </button>
             

@@ -61,7 +61,6 @@ export class VerifyEmailDialogComponent implements OnInit {
 
   continue(p) {
     this.step = p;
-   // this.router.navigate(['app-upload-docs', +this.step]);
    console.log('email dialog opened');
    if (p === 3) {
     //this.peer.controls['email'].setValue(this.email);
@@ -75,9 +74,6 @@ export class VerifyEmailDialogComponent implements OnInit {
   }
 
   public resendOTP(message: string, action) {
-    //message = "Code resent!";
-    //action = "OK"
-    //let snackBarRef = this.snackBar.open(message,action);
     this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
       .subscribe();
   }
@@ -88,7 +84,6 @@ export class VerifyEmailDialogComponent implements OnInit {
         console.log(res);
         console.log('verified email');
         this.success = res;
-        //this.router.navigate(['/onboarding/1']);
         this.dialogRef.close();
       });
   }
