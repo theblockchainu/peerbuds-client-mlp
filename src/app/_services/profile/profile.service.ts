@@ -29,7 +29,6 @@ export class ProfileService {
   }
 
   public getPeer(id) {
-    debugger;
     const peer = {};
     if (id) {
       const options = `{"where": "","order": "","limit": "",
@@ -173,32 +172,12 @@ export class ProfileService {
       });
 
   }
-  public sendVerifySms(phonenumber) {
-    const body = {
-    };
-    return this.http
-      .post(this.config.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber, body, this.options)
-      .map((response: Response) => response.json(), (err) => {
-        console.log('Error: ' + err);
-      });
-
-  }
 
   public confirmEmail(userId, inputToken: string) {
     const body = {};
     const redirect = 'onboarding';
     return this.http
       .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
-      .map((response: Response) => response.json(), (err) => {
-        console.log('Error: ' + err);
-      });
-
-  }
-
-  public confirmSmsOTP(inputToken: string) {
-    const body = {};
-    return this.http
-      .post(this.config.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });

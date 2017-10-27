@@ -8,6 +8,7 @@ import { AppConfig } from '../../../app.config';
 import { MdSnackBar } from '@angular/material';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ProfileService } from '../../profile/profile.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-verify-phone-dialog',
@@ -58,7 +59,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
     this.step = p;
    console.log('phone dialog opened');
    this._profileService
-   .updatePeer({'phone': this.peer.controls['phone'].value})
+   .updatePeer(this.userId, {'phone': this.peer.controls['phone'].value})
     .subscribe();
     if (p === 3) {
       //this.peer.controls['phone'].setValue(this.phone);

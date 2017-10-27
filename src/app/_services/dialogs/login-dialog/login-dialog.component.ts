@@ -11,7 +11,6 @@ import {
 import { MdDialogRef, MD_DIALOG_DATA, MdDialog, MdDialogConfig} from '@angular/material';
 import { ForgotpwdComponentDialog } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { AppConfig } from '../../../app.config';
-import { MdDialog, MdDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-login-dialog',  // <login></login>
