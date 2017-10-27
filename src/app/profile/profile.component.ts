@@ -19,7 +19,7 @@ import _ from 'lodash';
 })
 export class ProfileComponent implements OnInit {
   public cookieUserId;
-  public loading: boolean = false;
+  public loading = false;
   public urluserId: string;
   public profileObj: any;
   public interestsArray: Array<string>;
@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
   public topicsTeaching: Array<any>;
   public isTeacher: boolean;
   public offsetString = 'col-md-offset-1';
-  private queryForSocialIdentities = {'include': ['identities', 'credentials']};
+  private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
   private connectedIdentities = {
     'facebook': false,
     'google': false
@@ -78,20 +78,20 @@ export class ProfileComponent implements OnInit {
     this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.urluserId).subscribe(
       (result) => {
         this.socialIdentities = result;
-        if(this.socialIdentities.identities.length > 0) {
+        if (this.socialIdentities.identities.length > 0) {
           this.socialIdentities.identities.forEach(element => {
-            if(element.provider === 'google') {
-                this.connectedIdentities.google = true;
+            if (element.provider === 'google') {
+              this.connectedIdentities.google = true;
             }
             else if (element.provider === 'facebook') {
               this.connectedIdentities.facebook = true;
             }
           });
         }
-        if(this.socialIdentities.credentials.length > 0) {
+        if (this.socialIdentities.credentials.length > 0) {
           this.socialIdentities.credentials.forEach(element => {
-            if(element.provider === 'google') {
-                this.connectedIdentities.google = true;
+            if (element.provider === 'google') {
+              this.connectedIdentities.google = true;
             }
             else if (element.provider === 'facebook') {
               this.connectedIdentities.facebook = true;
@@ -109,7 +109,7 @@ export class ProfileComponent implements OnInit {
         'profiles'
       ],
       'where': {
-        'id': {'neq': this.urluserId}
+        'id': { 'neq': this.urluserId }
       },
       'limit': 6
     };
@@ -168,17 +168,17 @@ export class ProfileComponent implements OnInit {
     this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response) => {
       this.profileObj = response[0];
       console.log(this.profileObj);
-      if(this.profileObj.other_languages) {
+      if (this.profileObj.other_languages) {
         this.profileObj.other_languages = this.profileObj.other_languages.filter(Boolean);
         this.other_languages = this.profileObj.other_languages.join(', ');
       }
       else this.other_languages = 'No language provided';
-      
+
       this.setInterests();
       if (this.profileObj.peer['0'].ownedCollections && this.profileObj.peer['0'].ownedCollections.length > 0) {
         this.calculateCollectionDurations();
         this.isTeacher = true;
-       // this.offsetString = '';
+        // this.offsetString = '';
       }
       if (this.profileObj.peer[0].collections) {
         this.getRecommendedWorkshops(this.profileObj.peer[0].collections);

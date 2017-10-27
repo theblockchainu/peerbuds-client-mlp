@@ -69,6 +69,11 @@
                 </div>
                 <div class="row table-data">
                   <div class="col-md-12">
+                    <div class="row text-center" *ngIf="!transactions || transactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
+                      <span class="lightText">
+                        Not made any transactions
+                      </span>
+                    </div>
                     <div class="row" *ngFor="let transaction of transactions" style="padding-top: 10px; padding-bottom: 10px;">
                       <div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
                       <div class="col-md-2">Payment</div>
@@ -142,6 +147,11 @@
                 </div>
                 <div class="row table-data">
                   <div class="col-md-12">
+                    <div class="row text-center" *ngIf="!futureTransactions || futureTransactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
+                      <span class="lightText">
+                        No upcoming transactions
+                      </span>
+                    </div>
                     <div class="row" *ngFor="let transaction of futureTransactions" style="padding-top: 10px; padding-bottom: 10px;">
                       <div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
                       <div class="col-md-2">Payment</div>
