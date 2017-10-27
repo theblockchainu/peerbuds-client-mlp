@@ -23,6 +23,11 @@
             <div class="row loading" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="loading">
               <ngx-loading [show]="true"></ngx-loading>
             </div>
+            <div class="text-center" *ngIf="!payoutAccounts || payoutAccounts.length===0" style="padding-top: 5px; padding-bottom: 5px">
+              <span class="lightText">
+                Add Payout Accounts
+              </span>
+            </div>
             <ng-container *ngIf="!addingAccount && payoutAccounts">
               <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
                 <div class="col-md-3" [ngSwitch]="account.object">

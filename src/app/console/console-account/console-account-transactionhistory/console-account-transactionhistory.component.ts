@@ -116,10 +116,10 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
 
   private retrieveTransactions() {
     const query1 = { 'include': { 'collections': ['calendars'] } };
+    this.totalTransactions = 0;
     this._paymentService.getTransactions(query1).subscribe(result => {
       this.retrievedTransactions = result;
       this.transactions = result;
-      this.totalTransactions = 0;
       result.forEach(element => {
         this.totalTransactions += element.amount;
       });
