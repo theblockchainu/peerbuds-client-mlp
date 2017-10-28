@@ -11,6 +11,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 //import { DefaultComponent } from '../default.component';
 
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
