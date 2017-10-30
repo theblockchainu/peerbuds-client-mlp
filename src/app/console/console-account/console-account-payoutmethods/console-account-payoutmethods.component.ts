@@ -24,10 +24,13 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
     this.loading = true;
     this.activatedRoute.pathFromRoot[4].queryParams.subscribe(params => {
       if (params['code']) {
-        this.addAccount(params['code']);
-        this.location.replaceState(this.location.path().split('?')[0]);
+          this.addAccount(params['code']);
+          this.location.replaceState(this.location.path().split('?')[0]);
       } else {
-        this.retrieveAccounts();
+          this.retrieveAccounts();
+      }
+      if (params['state']) {
+        this.location.path(params['state']);
       }
     });
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
