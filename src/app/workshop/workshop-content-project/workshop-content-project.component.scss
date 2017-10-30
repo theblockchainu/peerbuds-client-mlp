@@ -22,7 +22,7 @@
 
 .pic .delete-button {
     top:-8px;
-    right:6px;
+    right:5px;
 }
 
 .imageContainer {
@@ -32,9 +32,16 @@
     margin-right: 20px;
 }
 
+.imageContainerVideo {
+    width: 165px !important;
+    height: 100px;
+    margin-bottom: 30px;
+    margin-right: 20px;
+}
+
 .delete .delete-file {
     top:-10px;
-    right: -10px;
+    right: 5px;
 }
 
 .delete .delete-image {

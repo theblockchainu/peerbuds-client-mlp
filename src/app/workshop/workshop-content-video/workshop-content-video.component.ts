@@ -87,27 +87,33 @@ export class WorkshopContentVideoComponent implements OnInit {
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 let supplementUrls = <FormArray>contentForm.controls.supplementUrls;
                 let suppUrl = supplementUrls.value;
+                debugger;
                 suppUrl = _.remove(suppUrl, function (n) {
                     return n !== fileurl;
                 });
-                this.attachmentUrls = suppUrl;
-                contentForm.controls['supplementUrls'].patchValue(suppUrl);
-                if(contentForm.controls['id'].value) {
-                    this.deleteFromContent(contentForm);
-                }
+                contentForm.controls['supplementUrls'] = new FormArray([]);
+                this.attachmentUrls = [];
+                suppUrl.forEach(file => {
+                    supplementUrls.push(new FormControl(file));
+                    this.contentService.getMediaObject(file).subscribe((res) => {
+                        this.attachmentUrls.push(res[0]);
+                    })
+                });
             } 
             else if (fileType === 'video') {
               this.urlForVideo = '';
               const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
               const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
               contentForm.controls['imageUrl'].patchValue(this.urlForVideo);
+              if(contentForm.controls['id'].value) {
+                  this.deleteFromContent(contentForm, {'imageUrl': ''});
+              }
             } 
           }).subscribe();
     
     }
 
-    deleteFromContent(contentForm) {
-        const body = {'imageUrl': ''};
+    deleteFromContent(contentForm, body) {
         this.http.patch(this.config.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
         .map((response) => {})
         .subscribe();

@@ -90,7 +90,7 @@
                             <div *ngIf="attachmentUrls.length" class="pic delete">
                                 <div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
                                     <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
-                                    <md-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'image')" class="delete-image">close</md-icon>
+                                    <md-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</md-icon>
                                     <div *ngIf="file.type.includes('application')" class="uploaded_file"><a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a></div>
                                     <md-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</md-icon>
                                 </div>

@@ -66,8 +66,8 @@ export class ConsoleProfileComponent implements OnInit {
     this.activeTab = value;
   }
 
-    imgErrorHandler(event) {
-        event.target.src = '/assets/images/user-placeholder.jpg';
-    }
+  imgErrorHandler(event) {
+      event.target.src = '/assets/images/user-placeholder.jpg';
+  }
 
 }

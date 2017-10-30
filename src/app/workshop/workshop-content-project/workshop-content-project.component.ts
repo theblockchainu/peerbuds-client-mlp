@@ -86,6 +86,7 @@ export class WorkshopContentProjectComponent implements OnInit {
     }
 
     deleteFromContainer(fileUrl, fileType) {
+        debugger;
         // const fileurl = fileUrl;
         // fileUrl = _.replace(fileUrl, 'download', 'files');
         // this.http.delete(this.config.apiUrl + fileUrl)
@@ -111,11 +112,14 @@ export class WorkshopContentProjectComponent implements OnInit {
                 suppUrl = _.remove(suppUrl, function (n) {
                     return n !== fileurl;
                 });
-                this.attachmentUrls = suppUrl;
-                contentForm.controls['supplementUrls'].patchValue(suppUrl);
-                if(contentForm.controls['id'].value) {
-                    this.deleteFromContent(contentForm);
-                }
+                contentForm.controls['supplementUrls'] = new FormArray([]);
+                this.attachmentUrls = [];
+                suppUrl.forEach(file => {
+                    supplementUrls.push(new FormControl(file));
+                    this.contentService.getMediaObject(file).subscribe((res) => {
+                        this.attachmentUrls.push(res[0]);
+                    })
+                });
             } 
             else {
               this.urlForVideo = '';
@@ -123,13 +127,15 @@ export class WorkshopContentProjectComponent implements OnInit {
               const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
               const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
               contentForm.controls['imageUrl'].patchValue(this.urlForVideo);
+              if(contentForm.controls['id'].value) {
+                  this.deleteFromContent(contentForm, {'imageUrl': ''});
+              }
             } 
           }).subscribe();
     
     }
 
-    deleteFromContent(contentForm) {
-        const body = {'imageUrl': ''};
+    deleteFromContent(contentForm, body) {
         this.http.patch(this.config.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
         .map((response) => {})
         .subscribe();
