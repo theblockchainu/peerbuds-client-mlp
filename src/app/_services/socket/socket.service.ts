@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
-import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
-import { AuthenticationService } from '../authentication/authentication.service';
+import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 
 @Injectable()
 export class SocketService {
@@ -12,14 +11,17 @@ export class SocketService {
     private userId;
 
     constructor(
-        private authService: AuthenticationService,
         private _cookieUtilsService: CookieUtilsService
     ) {
         this.userId = _cookieUtilsService.getValue('userId');
         this.socket = io(this.url);
-        if (this.userId !== undefined) {
+        this.addUser(this.userId);
+    }
+
+    public addUser(userId) {
+        if (userId !== undefined) {
             const user = {
-                id: this.userId
+                id: userId
             };
             this.socket.emit('addUser', user);
         }

@@ -43,3 +43,4 @@ Thumbs.db
 yarn-error.log
 
 /src/static/live/public
+package-lock.json

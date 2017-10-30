@@ -18,7 +18,7 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
 
   public picture_url = false;
   public notifications = [];
-  public loaded = false;  
+  public loaded = false;
   private userId;
 
   constructor(
@@ -37,7 +37,7 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
         consoleAccountComponent.setActiveTab(urlSegment[0].path);
       }
     });
-    
+
     this.userId = _cookieUtilsService.getValue('userId');
   }
 
