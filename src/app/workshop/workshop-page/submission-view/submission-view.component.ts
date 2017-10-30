@@ -199,7 +199,12 @@ export class SubmissionViewComponent implements OnInit {
     }
 
     public isMyComment(comment) {
-        return comment.peer[0].id === this.userId;
+      if (comment.peer[0] !== undefined) {
+          return comment.peer[0].id === this.userId;
+      }
+      else {
+          return false;
+      }
     }
 
 }

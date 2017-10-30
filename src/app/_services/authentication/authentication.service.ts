@@ -16,7 +16,6 @@ import {SocketService} from '../socket/socket.service';
 
 @Injectable()
 export class AuthenticationService {
-
   @Output()
   getLoggedInUser: EventEmitter<any> = new EventEmitter();
 
@@ -118,6 +117,15 @@ export class AuthenticationService {
       });
   }
 
+  sendEmailSubscriptions(email): any {
+    const body = `{"email":"${email}"}`;
+    return this.http
+      .post(this.config.apiUrl + '/api/emailSubscriptions?em=' + email, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+  }
+
   resetpwd(email: string, password: string): any {
     const body = `{"email":"${email}","password":"${password}"}`;
     return this.http
@@ -126,5 +134,12 @@ export class AuthenticationService {
         console.log('Error: ' + err);
       });
   }
-
+  createGuestContacts(first_name, last_name, email, subject, message): any {
+    const body = `{"first_name":"${first_name}","last_name":"${last_name}","email":"${email}","subject":"${subject}","message":"${message}"}`;
+      return this.http
+      .post(this.config.apiUrl + '/api/guestContacts?em=' + email, body, this.options)
+      .map((response: Response) => response.json(), (err) => {
+        console.log('Error: ' + err);
+      });
+    }
 }

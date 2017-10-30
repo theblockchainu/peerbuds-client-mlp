@@ -840,9 +840,9 @@ export class WorkshopPageComponent implements OnInit {
     endMoment.minutes(endTime.minutes());
 
     if (startMoment.diff(currentMoment, 'minutes') < 0) {
-      content.timetoSession = endMoment.fromNow();
+      content.timetoSession = 'Completed ' + endMoment.fromNow();
     } else {
-      content.timetoSession = startMoment.fromNow();
+      content.timetoSession = 'We will remind you ' + startMoment.fromNow();
     }
   }
 
@@ -1184,7 +1184,7 @@ export class WorkshopPageComponent implements OnInit {
           }
         });
         content.views = thisUserView;
-        content.totalUserViewTime = Math.floor(totalUserViewTime / 60000) + ' minutes';
+        content.totalUserViewTime = 'Viewed for ' + Math.floor(totalUserViewTime / 60000) + ' minutes';
         content.isViewTimeHidden = true;
       }
       else if (content.type === 'project' && content.submissions !== undefined) {
@@ -1197,7 +1197,7 @@ export class WorkshopPageComponent implements OnInit {
             const endTime = moment();
             totalUserViewTime = startTime.from(endTime);
             content.views = thisUserView;
-            content.totalUserViewTime = totalUserViewTime;
+            content.totalUserViewTime = 'Submitted ' + totalUserViewTime;
             content.isViewTimeHidden = true;
           }
         });
@@ -1241,10 +1241,11 @@ export class WorkshopPageComponent implements OnInit {
   /**
   * joinLiveSession
   */
-  public joinLiveSession(contentId: string) {
+  public joinLiveSession(content: any) {
     const data = {
-      roomName: contentId + this.calendarId,
-      teacherId: this.workshop.owners[0].id
+      roomName: content.id + this.calendarId,
+      teacherId: this.workshop.owners[0].id,
+      content: content
     };
     this.dialogsService.startLiveSession(data).subscribe(result => {
     });

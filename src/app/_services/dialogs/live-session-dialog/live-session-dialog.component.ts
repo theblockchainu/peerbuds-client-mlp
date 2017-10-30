@@ -1,20 +1,26 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import {Component, OnInit, Inject, ViewChild, ElementRef, Renderer2, OnDestroy} from '@angular/core';
 import * as Video from 'twilio-video';
 import * as _ from 'lodash';
 import { TwilioServicesService } from '../../twlio_services/twilio-services.service';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import {CookieUtilsService} from '../../cookieUtils/cookie-utils.service';
+import {SocketService} from '../../socket/socket.service';
+import {Router} from '@angular/router';
+import {Ng2DeviceService} from 'ng2-device-detector';
 
 @Component({
   selector: 'app-live-session-dialog',
   templateUrl: './live-session-dialog.component.html',
   styleUrls: ['./live-session-dialog.component.scss']
 })
-export class LiveSessionDialogComponent implements OnInit {
+export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   private token: string;
   private roomName: string;
   private localTracks;
   public room: any;
   public mainLoading: boolean;
+  public startedView;
+  public userId;
 
   private participantCount: number;
 
@@ -26,8 +32,14 @@ export class LiveSessionDialogComponent implements OnInit {
     private _twilioServicesService: TwilioServicesService,
     public dialogRef: MdDialogRef<LiveSessionDialogComponent>,
     @Inject(MD_DIALOG_DATA) public dialogData: any,
-    private renderer: Renderer2
-  ) { }
+    private renderer: Renderer2,
+    private cookieUtilsService: CookieUtilsService,
+    private _socketService: SocketService,
+    private router: Router,
+    private deviceService: Ng2DeviceService
+  ) {
+      this.userId = cookieUtilsService.getValue('userId');
+  }
 
   ngOnInit() {
     this.participantCount = 0;
@@ -41,8 +53,13 @@ export class LiveSessionDialogComponent implements OnInit {
     );
     this.roomName = this.dialogData.roomName;
     this.dialogRef.afterClosed().subscribe(result => {
-      this.room.disconnect();
+       this.room.disconnect();
     });
+    this.recordSessionStart();
+  }
+
+  ngOnDestroy() {
+    this.recordSessionEnd();
   }
 
   private createRoom() {
@@ -130,6 +147,38 @@ export class LiveSessionDialogComponent implements OnInit {
     }, function (error) {
       console.error('Unable to connect to Room: ' + error.message);
     });
+  }
+
+  private recordSessionStart() {
+      const view = {
+          type: 'user',
+          url: this.router.url,
+          ip_address: '',
+          browser: this.deviceService.getDeviceInfo().browser,
+          viewedModelName: 'content',
+          startTime: new Date(),
+          content: this.dialogData.content,
+          viewer: {
+              id: this.userId
+          }
+      };
+      this._socketService.sendStartView(view);
+      this._socketService.listenForViewStarted().subscribe(startedView => {
+          this.startedView = startedView;
+          console.log(startedView);
+      });
+  }
+
+  private recordSessionEnd() {
+      this.startedView.viewer = {
+          id: this.userId
+      };
+      this.startedView.endTime = new Date();
+      this._socketService.sendEndView(this.startedView);
+      this._socketService.listenForViewEnded().subscribe(endedView => {
+          delete this.startedView;
+          console.log(endedView);
+      });
   }
 
 }

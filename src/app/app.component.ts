@@ -13,6 +13,7 @@ import { SpinnerService } from './_services/spinner/spinner.service';
 import {SocketService} from './_services/socket/socket.service';
 import {CookieService} from 'ngx-cookie-service';
 import {AuthenticationService} from './_services/authentication/authentication.service';
+import {Title} from '@angular/platform-browser';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class AppComponent implements OnInit {
               private _spinnerService: SpinnerService,
               private _socketService: SocketService,
               private _cookieService: CookieService,
-              private _authService: AuthenticationService
+              private _authService: AuthenticationService,
+              private titleService: Title
   ) {
     this.loading = this._spinnerService.getSpinnerState();
     router.events.subscribe((event: RouterEvent) => {
@@ -45,6 +47,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
       this.router.events.subscribe(event => this.modifyHeader(event));
       this.router.events.subscribe(event => this.modifyFooter(event));
+      this.setTitle('Peerbuds');
 
     }
 
@@ -54,6 +57,10 @@ export class AppComponent implements OnInit {
 
    modifyHeader(location) {
      this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url));
+  }
+
+  public setTitle( newTitle: string) {
+      this.titleService.setTitle( newTitle );
   }
 
   // Shows and hides the loading spinner during RouterEvent changes

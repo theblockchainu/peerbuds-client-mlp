@@ -279,10 +279,10 @@
         <div>
           <div style="margin-top:20px;" class="col-md-12">
             <div class="row">
-              <div *ngFor="let collection of pastArray" [ngSwitch]="collection.status">
+              <div *ngFor="let collection of pastArray" >
                 <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
                 <ng-template #noTopicText>No Topics</ng-template>
-                <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete' || 'canceled'">
+                <div class="col-md-4" style="margin-top: 20px;">
                   <md-card style="text-align: center; padding: 20px;">
                     <md-card-content>
                       <div class="clearfix" style="text-align: right">
