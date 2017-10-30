@@ -5,9 +5,18 @@
     </div>
   </div>
 </div>
-<div class="row margin-top-10">
+<div class="row margin-top-10" *ngIf="loaded">
   <div class="col-md-12">
     <md-list>
+      <div *ngIf="notifications.length === 0">
+        <md-list-item>
+          <div class="row full-width notificationsRow">
+            <div class="col-md-12">
+              You have no notifications to show
+            </div>
+          </div>
+        </md-list-item>
+      </div>
       <div *ngFor="let notification of notifications">
         <md-list-item *ngIf="!notification.hidden">
           <div [ngClass]="{'row': true, 'full-width': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.seen}" (click)="onNotificationClick(notification)">

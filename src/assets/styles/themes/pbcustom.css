@@ -172,6 +172,10 @@ md-subheader {
     z-index: 1000 !important;
 }
 
+.mat-tab-group.mat-primary .mat-tab-label:focus, .mat-tab-group.mat-primary .mat-tab-link:focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
+    background-color: #fff !important;
+}
+
 .mat-white {
     background-color: white !important;
     /* border-bottom: 4px solid #dedede; */

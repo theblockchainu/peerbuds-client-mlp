@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
+import {SocketService} from '../socket/socket.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -27,7 +28,8 @@ export class AuthenticationService {
         private _cookieService: CookieService,
         private route: ActivatedRoute,
         public router: Router,
-        public _requestHeaderService: RequestHeaderService
+        public _requestHeaderService: RequestHeaderService,
+        private _socketService: SocketService
   ) {
       this.options = this._requestHeaderService.getOptions();
   }
@@ -68,6 +70,7 @@ export class AuthenticationService {
         if (user && user.access_token) {
           this.isLoginSubject.next(true);
           this.getLoggedInUser.emit(user.userId);
+          this._socketService.addUser(user.userId);
           // responseStatus = true;
         }
       }, (err) => {
@@ -91,6 +94,10 @@ export class AuthenticationService {
           this.router.navigate(['/']);
         }).subscribe();
     }
+  }
+
+  public broadcastNewUserId(userId) {
+      this.getLoggedInUser.emit(userId);
   }
 
   /**

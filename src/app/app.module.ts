@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule, Title} from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
@@ -89,7 +89,8 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
-    }
+    },
+    Title
   ],
   entryComponents: [AppNotificationDialogComponent]
 })

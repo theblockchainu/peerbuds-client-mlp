@@ -1,5 +1,5 @@
 <div class="videoDialog">
-  <button class="pull-right" md-icon-button [md-dialog-close]>
+  <button class="pull-right" md-icon-button (click)="dialogRef.close('close')">
     <md-icon>clear</md-icon>
   </button>
   <div class="mainStream" #mainStream>

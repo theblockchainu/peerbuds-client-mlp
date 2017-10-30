@@ -15,6 +15,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class ConsoleAccountTransactionhistoryComponent implements OnInit {
 
   private userId;
+  public userCurrency;
   public transactions: Array<any>;
   public totalSpend: number;
   public years: Array<number>;
@@ -40,6 +41,7 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
       consoleAccountComponent.setActiveTab(urlSegment[0].path);
     });
     this.userId = _cookieUtilsService.getValue('userId');
+    this.userCurrency = this._cookieUtilsService.getValue('currency').length <= 3 ? this._cookieUtilsService.getValue('currency') : 'usd';
   }
 
   ngOnInit() {
@@ -117,11 +119,12 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
   private retrieveTransactions() {
     const query1 = { 'include': { 'collections': ['calendars'] } };
     this.totalTransactions = 0;
-    this._paymentService.getTransactions(query1).subscribe(result => {
+    this._paymentService.getTransactions(this.userId, query1).subscribe(result => {
       this.retrievedTransactions = result;
       this.transactions = result;
       result.forEach(element => {
-        this.totalTransactions += element.amount;
+        console.log(element);
+        this.totalTransactions -= (element.amount / 100);
       });
     }, err => {
       console.log(err);
@@ -138,7 +141,7 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
       this.retrievedFutureTransactions = this.futureTransactions;
       this.totalFutureTransactions = 0;
       this.retrievedFutureTransactions.forEach(element => {
-        this.totalFutureTransactions += element.amount;
+        this.totalFutureTransactions += (element.amount / 100);
       });
     });
   }

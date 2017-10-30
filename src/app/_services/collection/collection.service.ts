@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
+import {AuthenticationService} from '../authentication/authentication.service';
 declare var moment: any;
 
 @Injectable()
@@ -20,6 +21,7 @@ export class CollectionService {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
+    private authService: AuthenticationService,
     private requestHeaderService: RequestHeaderService) {
     this.options = requestHeaderService.getOptions();
     this.now = new Date();
