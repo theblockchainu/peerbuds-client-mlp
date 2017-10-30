@@ -7,14 +7,13 @@ import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.servic
     <router-outlet></router-outlet>
   `
 })
-export class DefaultComponent implements OnInit{
-  
+export class DefaultComponent implements OnInit {
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private cookieUtilService: CookieUtilsService) {
   }
 
-  public ngOnInit() { 
+  public ngOnInit() {
   }
 
 }

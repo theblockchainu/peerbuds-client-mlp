@@ -13,7 +13,7 @@
                   Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
                   paid out on completion of your workshop, experience or session.
                 </div>
-                <h2> Booked : ${{totalTransactions}} </h2>
+                <h2> Balance : {{totalTransactions | currency: userCurrency: true:'1.0-0'}} </h2>
                 <!-- <a href="#" class="pull-right"> Export to CSV</a> -->
                 <br>
                 <hr>
@@ -69,14 +69,19 @@
                 </div>
                 <div class="row table-data">
                   <div class="col-md-12">
+                    <div class="row text-center" *ngIf="!transactions || transactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
+                      <span class="lightText">
+                        Not made any transactions
+                      </span>
+                    </div>
                     <div class="row" *ngFor="let transaction of transactions" style="padding-top: 10px; padding-bottom: 10px;">
                       <div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
                       <div class="col-md-2">Payment</div>
                       <div class="col-md-4">
-                        <span *ngIf="transaction.collections && transaction.collections.length>0">{{transaction.collections[0].title}} - {{transaction.collections[0].type}}</span>
-                        <span *ngIf="!transaction.collections || transaction.collections.length<=0">{{transaction.description}}</span>
+                        <span *ngIf="transaction.collections && transaction.collections.length>0">{{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}</span>
+                        <span *ngIf="!transaction.collections || transaction.collections.length<=0">{{transaction.description | ucfirst}}</span>
                       </div>
-                      <div class="col-md-2">{{transaction.amount}}</div>
+                      <div class="col-md-2">{{transaction.amount / 100 | currency: transaction.currency: true:'1.0-0'}}</div>
                       <div class="col-md-2"></div>
                     </div>
                   </div>
@@ -87,7 +92,7 @@
                   Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
                   paid out on completion of your workshop, experience or session.
                 </div>
-                <h2> Booked : ${{totalFutureTransactions}} </h2>
+                <h2> Booked : {{totalFutureTransactions | currency: userCurrency: true:'1.0-0'}} </h2>
                 <!-- <a href="#" class="pull-right"> Export to CSV</a> -->
                 <br>
                 <hr>
@@ -134,7 +139,7 @@
                     <h3>Details</h3>
                   </div>
                   <div class="col-md-2">
-                    <h3>Amount</h3>
+                    <h3>Collected</h3>
                   </div>
                   <div class="col-md-2">
                     <h3>Paid Out</h3>
@@ -142,16 +147,23 @@
                 </div>
                 <div class="row table-data">
                   <div class="col-md-12">
+                    <div class="row text-center" *ngIf="!futureTransactions || futureTransactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
+                      <span class="lightText">
+                        No upcoming transactions
+                      </span>
+
+                    </div>
                     <div class="row" *ngFor="let transaction of futureTransactions" style="padding-top: 10px; padding-bottom: 10px;">
                       <div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
                       <div class="col-md-2">Payment</div>
                       <div class="col-md-4">
-                        <span *ngIf="transaction.peers && transaction.peers.length>0 && transaction.peers[0].profiles && transaction.peers[0].profiles.length>0">{{transaction.peers[0].profiles[0].first_name}} {{transaction.peers[0].profiles[0].last_name}} -
-                          {{transaction.collections[0].title}} {{transaction.collections[0].type}}
+                        <span *ngIf="transaction.peers && transaction.peers.length>0 && transaction.peers[0].profiles && transaction.peers[0].profiles.length>0">
+                          {{transaction.peers[0].profiles[0].first_name}} {{transaction.peers[0].profiles[0].last_name}} -
+                          {{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}
                         </span>
-                        <span *ngIf="!transaction.peers || transaction.peers.length<=0">{{transaction.description}}</span>
+                        <span *ngIf="!transaction.peers || transaction.peers.length<=0">{{transaction.description | ucfirst}}</span>
                       </div>
-                      <div class="col-md-2">{{transaction.amount}}</div>
+                      <div class="col-md-2">{{transaction.amount / 100 | currency: transaction.currency: true:'1.0-0'}}</div>
                       <div class="col-md-2"></div>
                     </div>
                   </div>

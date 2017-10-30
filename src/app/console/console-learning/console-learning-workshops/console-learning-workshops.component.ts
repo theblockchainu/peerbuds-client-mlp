@@ -4,6 +4,10 @@ import { ConsoleLearningComponent } from '../console-learning.component';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
+declare var moment: any;
+import * as _ from 'lodash';
+
+
 @Component({
   selector: 'app-console-learning-workshops',
   templateUrl: './console-learning-workshops.component.html',
@@ -17,6 +21,14 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
   private outputResult: any;
   public activeTab: string;
   private userId;
+
+  public ongoingArray: Array<any>;
+  public upcomingArray: Array<any>;
+  public pastArray: Array<any>;
+  public pastWorkshopsObject: any;
+  public liveWorkshopsObject: any;
+  public upcomingWorkshopsObject: any;
+
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -42,32 +54,71 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
       if (err) {
         console.log(err);
       } else {
-        let activeCount = 0, pastCount = 0;
-        this.outputResult = {};
-        this.outputResult['data'] = [];
-        this.outputResult.activeCount = 0;
-        this.outputResult.pastCount = 0;
-        result.forEach((resultItem) => {
-          switch (resultItem.status) {
-            case 'active':
-              activeCount++;
-              break;
-            case 'complete':
-              pastCount++;
-              break;
-            default:
-              break;
-          }
-          this.outputResult.data.push(resultItem);
-        });
-        this.outputResult.activeCount = activeCount;
-        this.outputResult.pastCount = pastCount;
-        this.collections = this.outputResult;
-        console.log(this.collections);
+        this.ongoingArray = [];
+        this.upcomingArray = [];
+        this.pastArray = [];
+        this.pastWorkshopsObject = {};
+        this.liveWorkshopsObject = {};
+        this.upcomingWorkshopsObject = {};
+        this.createOutput(result);
         this.now = new Date();
         this.loaded = true;
       }
     });
+  }
+
+
+  private createOutput(data: any) {
+    const now = moment();
+    data.forEach(workshop => {
+      workshop.calendars.forEach(calendar => {
+        if (calendar.endDate) {
+          if (now.diff(moment.utc(calendar.endDate)) < 0) {
+            if (!now.isBetween(calendar.startDate, calendar.endDate)) {
+              if (workshop.id in this.upcomingWorkshopsObject) {
+                this.upcomingWorkshopsObject[workshop.id]['workshop']['calendars'].push(calendar);
+              } else {
+                this.upcomingWorkshopsObject[workshop.id] = {};
+                this.upcomingWorkshopsObject[workshop.id]['workshop'] = _.clone(workshop);
+                this.upcomingWorkshopsObject[workshop.id]['workshop']['calendars'] = [calendar];
+              }
+            } else {
+              if (workshop.id in this.liveWorkshopsObject) {
+                this.liveWorkshopsObject[workshop.id]['workshop']['calendars'].push(calendar);
+              } else {
+                this.liveWorkshopsObject[workshop.id] = {};
+                this.liveWorkshopsObject[workshop.id]['workshop'] = _.clone(workshop);
+                this.liveWorkshopsObject[workshop.id]['workshop']['calendars'] = [calendar];
+              }
+            }
+
+          } else {
+            if (workshop.id in this.pastWorkshopsObject) {
+              this.pastWorkshopsObject[workshop.id]['workshop']['calendars'].push(calendar);
+            } else {
+              this.pastWorkshopsObject[workshop.id] = {};
+              this.pastWorkshopsObject[workshop.id]['workshop'] = workshop;
+              this.pastWorkshopsObject[workshop.id]['workshop']['calendars'] = [calendar];
+            }
+          }
+        }
+      });
+    });
+    for (const key in this.pastWorkshopsObject) {
+      if (this.pastWorkshopsObject.hasOwnProperty(key)) {
+        this.pastArray.push(this.pastWorkshopsObject[key].workshop);
+      }
+    }
+    for (const key in this.upcomingWorkshopsObject) {
+      if (this.upcomingWorkshopsObject.hasOwnProperty(key)) {
+        this.upcomingArray.push(this.upcomingWorkshopsObject[key].workshop);
+      }
+    }
+    for (const key in this.liveWorkshopsObject) {
+      if (this.liveWorkshopsObject.hasOwnProperty(key)) {
+        this.ongoingArray.push(this.liveWorkshopsObject[key].workshop);
+      }
+    }
   }
 
   public onSelect(workshop) {

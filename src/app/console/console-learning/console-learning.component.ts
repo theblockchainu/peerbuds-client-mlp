@@ -160,52 +160,24 @@ export class ConsoleLearningComponent implements OnInit {
    * @returns {number}
    */
   public getProgressValue(workshop) {
-    let value = 0;
     switch (workshop.status) {
-      case 'draft':
-        if (workshop.title !== undefined && workshop.title.length > 0) {
-          value += 10;
-        }
-        if (workshop.headline !== undefined && workshop.headline.length > 0) {
-          value += 10;
-        }
-        if (workshop.description !== undefined && workshop.description.length > 0) {
-          value += 10;
-        }
-        if (workshop.videoUrls !== undefined && workshop.videoUrls.length > 0) {
-          value += 10;
-        }
-        if (workshop.imageUrls !== undefined && workshop.imageUrls.length > 0) {
-          value += 10;
-        }
-        if (workshop.price !== undefined && workshop.price.length > 0) {
-          value += 10;
-        }
-        if (workshop.aboutHost !== undefined && workshop.aboutHost.length > 0) {
-          value += 10;
-        }
-        if (workshop.cancellationPolicy !== undefined && workshop.cancellationPolicy.length > 0) {
-          value += 10;
-        }
-        if (workshop.contents !== undefined && workshop.contents.length > 0) {
-          value += 10;
-        }
-        if (workshop.topics !== undefined && workshop.topics.length > 0) {
-          value += 10;
-        }
-        return value;
       case 'active':
-        if (this.getLearnerCalendar(workshop).startDate > this.now) {
+        if (this.getLearnerCalendar(workshop)) {
+          if (this.getLearnerCalendar(workshop).startDate > this.now) {
+            return 0;
+          }
+          const totalContents = workshop.contents.length;
+          let pendingContents = 0;
+          workshop.contents.forEach((content) => {
+            if (moment(this.getLearnerCalendar(workshop).startDate).add(content.schedules[0].startDay, 'days') > this.now) {
+              pendingContents++;
+            }
+          });
+          return (1 - (pendingContents / totalContents)) * 100;
+
+        } else {
           return 0;
         }
-        const totalContents = workshop.contents.length;
-        let pendingContents = 0;
-        workshop.contents.forEach((content) => {
-          if (moment(this.getLearnerCalendar(workshop).startDate).add(content.schedules[0].startDay, 'days') > this.now) {
-            pendingContents++;
-          }
-        });
-        return (1 - (pendingContents / totalContents)) * 100;
       case 'submitted':
         return 100;
       case 'complete':

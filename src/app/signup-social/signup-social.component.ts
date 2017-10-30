@@ -34,10 +34,10 @@ export class SignupSocialComponent implements OnInit {
   public selectedYear;
   public dob: string;
 
-  constructor(public profileService: ProfileService, 
-    private _fb: FormBuilder, 
+  constructor(public profileService: ProfileService,
+    private _fb: FormBuilder,
     public router: Router,
-    private _cookieUtilsService: CookieUtilsService) { 
+    private _cookieUtilsService: CookieUtilsService) {
       this.userId = _cookieUtilsService.getValue('userId');
   }
 
@@ -62,7 +62,7 @@ export class SignupSocialComponent implements OnInit {
   getPeerData() {
     const query = {};
     this.profileService.getPeerData(query).subscribe(peer => {
-      if(peer.email) {
+      if (peer.email) {
         this.signupSocialForm.controls.email.patchValue(peer.email);
       }
     });
@@ -75,7 +75,7 @@ export class SignupSocialComponent implements OnInit {
 
       this.signupSocialForm.controls.first_name.patchValue(peerProfile[0].first_name);
       this.signupSocialForm.controls.last_name.patchValue(peerProfile[0].last_name);
-      if(peerProfile[0].email) {
+      if (peerProfile[0].email) {
         this.signupSocialForm.controls.email.patchValue(peerProfile[0].email);
       }
     });

@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 // import { Response } from '@angular/http';
 
@@ -25,6 +26,7 @@ export class ProjectSubmissionService {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
+    private authService: AuthenticationService,
     public _requestHeaderService: RequestHeaderService
   ) {
     this.options = this._requestHeaderService.getOptions();

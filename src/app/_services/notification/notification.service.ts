@@ -4,6 +4,7 @@ import {AppConfig} from '../../app.config';
 import {CookieService} from 'ngx-cookie-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RequestHeaderService} from '../requestHeader/request-header.service';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable()
 export class NotificationService {
@@ -17,6 +18,7 @@ export class NotificationService {
               private _cookieService: CookieService,
               private route: ActivatedRoute,
               public router: Router,
+              private authService: AuthenticationService,
               private requestHeaderService: RequestHeaderService) {
       this.options = requestHeaderService.getOptions();
       this.now = new Date();
@@ -47,5 +49,7 @@ export class NotificationService {
               }).subscribe();
       }
   }
+
+  
 
 }
