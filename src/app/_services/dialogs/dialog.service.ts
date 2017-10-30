@@ -75,8 +75,8 @@ export class DialogsService {
         let dialogRef8: MdDialogRef<VideoDialogComponent>;
 
         dialogRef8 = this.dialog.open(VideoDialogComponent, {
-            width: '700px',
-            height: '420px'
+            width: '720px',
+            height: '400px'
         });
         return dialogRef8.afterClosed();
     }

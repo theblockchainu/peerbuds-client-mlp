@@ -6,7 +6,7 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 import { Router } from '@angular/router';
 import { AppHeaderComponent } from '../../app-header/app-header.component';
 
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MdDialogRef, MdDialog, MdDialogConfig, MdSnackBar } from '@angular/material';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 //import { DefaultComponent } from '../default.component';
@@ -27,6 +27,7 @@ export class IndexComponent implements OnInit {
              public _fb: FormBuilder,
               private _router: Router,
               public dialog: MdDialog,
+              public snackBar: MdSnackBar,
               private dialogsService: DialogsService) {
               this.isLoggedIn = authenticationService.isLoggedIn();
               authenticationService.isLoggedIn().subscribe((res) => {
@@ -44,10 +45,12 @@ export class IndexComponent implements OnInit {
    public openVideo() {
     this.dialogsService.openVideo().subscribe();
   }
-  public sendEmailSubscriptions() {
+  public sendEmailSubscriptions(message: string, action) {
     // this.loading = true;
     this.email = this.notifyForm.controls['email'].value;
     this.authenticationService.sendEmailSubscriptions(this.email)
-        .subscribe();
+        .subscribe((response) => {
+          this.snackBar.open('Your email is subscribed!', 'OK');
+        });
 }
 }

@@ -22,5 +22,7 @@ const IMAGES: Image[] = [
     { 'title': 'Happy to be a teacher in Peerbuds', 'url': '/assets/images/images_landing/testimonial3.png' },
     { 'title': 'Peerbuds is the best!', 'url': '/assets/images/images_landing/testimonial1.png' },
     { 'title': 'This is awesome!', 'url': '/assets/images/images_landing/testimonial3.png' },
-    { 'title': 'Great work!', 'url': '/assets/images/images_landing/testimonial1.png' }
+    { 'title': 'Great work!', 'url': '/assets/images/images_landing/testimonial1.png' },
+    { 'title': 'Peerbuds is the best!', 'url': '/assets/images/images_landing/testimonial1.png' },
+    { 'title': 'This is awesome!', 'url': '/assets/images/images_landing/testimonial3.png' }
 ];

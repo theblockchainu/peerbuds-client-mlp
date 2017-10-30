@@ -1,5 +1,5 @@
-<md-dialog-content>
-        <vg-player>
+<div mat-dialog-content class="video">
+        <vg-player [style.padding.px]="0">
                 <vg-overlay-play></vg-overlay-play>
                 <vg-buffering></vg-buffering>
             
@@ -33,5 +33,5 @@
             
                     <track kind="subtitles" label="English" src="http://static.videogular.com/assets/subs/pale-blue-dot.vtt" srclang="en" default>
                 </video>
-            </vg-player>
-</md-dialog-content>
+        </vg-player>
+</div>
