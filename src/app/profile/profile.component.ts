@@ -158,9 +158,8 @@ export class ProfileComponent implements OnInit {
                 { 'contents': ['schedules'] }
                 , 'calendars']
             },
-            {
-              'collections': ['reviews']
-            }
+            {'reviewsAboutYou':{'peer':'profiles'}},
+            { 'collections':{'reviews': {'peer': 'profiles'}}}
           ]
         }
       ]
@@ -295,4 +294,7 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['profile', id]);
   }
 
+  imgErrorHandler(event) {
+    event.target.src = '/assets/images/user-placeholder.jpg';
+  }
 }

@@ -210,8 +210,36 @@
                             <h4>Review From Learners</h4>
                         </div>
                         <div class="col-md-12 text-center">
+
+                            <div class="review-section" *ngFor="let review of profileObj.peer[0].reviewsAboutYou">
+                                <div *ngIf="review.peer !== undefined">
+                                  <div class="review-top">
+                                    <div class="review-thumb pull-left">
+                                      <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+                                    </div>
+                                    <div class="reviewer">
+                                      <div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name }}</div>
+                                      <div class="reviewer-headline">{{ review.peer[0].profiles[0].headline }}</div>
+                                    </div>
+                                  </div>
+                                  <div class="review-content">
+                                    <div class="review-bottom lightText">
+                                      <!-- <span>{{ getReviewedCollection(profile.peer[0], review.collectionId).type | titlecase}} :
+                                        <a href="javascript:;">{{ getReviewedCollection(profile.peer[0], review.collectionId).title }}</a>
+                                      </span>
+                                      <span class="bullet">
+                                        <p-rating [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
+                                      </span>
+                                      <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
+                                        | date: 'dd MMM' }} - {{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars,
+                                        review.collectionCalendarId).endDate | date: 'dd MMM' }}</span> -->
+                                    </div>
+                                    <div class="review-desc">{{ review.description }}</div>
+                                  </div>
+                                </div>
+                            </div>
                             <!-- <hr> -->
-                            <p style="text-align: left">This user has not received a review yet</p>
+                            <p style="text-align: left" *ngIf="!profileObj.peer[0].reviewsAboutYou">This user has not received a review yet</p>
                             <hr style="border-top:1px solid #eeeeee;">
                         </div>
                     </div>
@@ -312,7 +340,7 @@
             </div>
         </div>
     </div>
-    <div class="row margin-top-20" *ngIf="!loading">
+    <div class="row margin-top-20" style="margin-left:0px;margin-right:0px;" *ngIf="!loading">
         <div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
             <div class="row">
                 <div class="col-md-9">
@@ -329,7 +357,7 @@
                     </a>
                 </div>
             </div>
-            <div class="row feed-horizontal margin-top-20 margin-bottom-50">
+            <div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
                 <div class="recommendation-card" *ngFor="let workshop of participatingWorkshops; let i =index">
                     <a *ngIf="i<4" [routerLink]="'/workshop/'+workshop.id">
                         <div class="">
