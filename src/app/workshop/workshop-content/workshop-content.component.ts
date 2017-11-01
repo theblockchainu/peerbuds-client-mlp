@@ -97,7 +97,6 @@ export class WorkshopContentComponent implements OnInit {
   }
 
   saveTriggered(event, i) {
-    debugger;
     console.log(this.myForm);
     if (event.action === 'add') {
       const itenaryObj = this.myForm.value.itenary[i];
