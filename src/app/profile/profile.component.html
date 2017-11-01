@@ -16,8 +16,8 @@
                     <h4>{{profileObj.headline | titlecase}}</h4>
                 </div>
                 <!-- <div class="col-md-12">
-                    <button md-button>Message</button>
-                </div> -->
+                        <button md-button>Message</button>
+                    </div> -->
             </div>
             <div class="row border-top">
                 <div class="col-md-1">
@@ -57,16 +57,20 @@
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <md-chip-list>
                         <span *ngFor="let interest of interestsArray;let i=index" style="margin: 0px 10px 10px 0px">
-                                        <md-chip *ngIf="i<maxVisibleInterest">{{interest | titlecase}}</md-chip>
-                                </span>
+                            <md-chip *ngIf="i<maxVisibleInterest">{{interest | titlecase}}</md-chip>
+                        </span>
                     </md-chip-list>
                     <span *ngIf="interestsArray.length>3">
-                            <span *ngIf="interestsArray.length>maxVisibleInterest">
-                                    <a (click)="toggleMaxInterest()"><strong> + more </strong></a>
-                                </span>
-                    <span *ngIf="interestsArray.length<maxVisibleInterest">
-                                        <a (click)="toggleMaxInterest()"><strong> - less </strong></a>
-                                    </span>
+                        <span *ngIf="interestsArray.length>maxVisibleInterest">
+                            <a (click)="toggleMaxInterest()">
+                                <strong> + more </strong>
+                            </a>
+                        </span>
+                        <span *ngIf="interestsArray.length<maxVisibleInterest">
+                            <a (click)="toggleMaxInterest()">
+                                <strong> - less </strong>
+                            </a>
+                        </span>
                     </span>
                 </div>
             </div>
@@ -84,7 +88,9 @@
                 </div>
                 <div class="col-md-12">
                     <p *ngIf="profileObj.description">{{profileObj.description | ucfirst | shorten: 100: 'Read More...'}}</p>
-                    <p *ngIf="!profileObj.description">No description provided. <a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a></p>
+                    <p *ngIf="!profileObj.description">No description provided.
+                        <a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
+                    </p>
                 </div>
             </div>
             <hr>
@@ -109,7 +115,9 @@
                     </div>
                     <div class="row" *ngIf="topicsTeaching.length === 0">
                         <div class="col-md-12">
-                            <p style="text-align: left">This user is not teaching yet. <a [routerLink]="['/','console','teaching', 'workshops']" *ngIf="cookieUserId === urluserId">Start Teaching</a></p>
+                            <p style="text-align: left">This user is not teaching yet.
+                                <a [routerLink]="['/','console','teaching', 'workshops']" *ngIf="cookieUserId === urluserId">Start Teaching</a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -135,15 +143,19 @@
                             </div>
                             <div class="row" *ngIf="profileObj.work && profileObj.work.length === 0">
                                 <div class="col-md-11 col-md-offset-1">
-                                    <p style="text-align: left">No details provided. <a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a></p>
+                                    <p style="text-align: left">No details provided.
+                                        <a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
+                                    </p>
                                 </div>
                             </div>
                             <div class="row" style="padding-top: 10px;" *ngFor="let workObj of profileObj.work">
                                 <div class="col-md-11 col-md-offset-1">
                                     <div class="row">
                                         <div class="col-md-12 work-title">
-                                            <span style="font-size: 16px;font-weight: bolder;">{{workObj.position | titlecase}} </span>                                            &emsp;
-                                            <md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon> <span class="lighttext" style="font-size: 15px;"> {{workObj.company | titlecase}}</span>
+                                            <span style="font-size: 16px;font-weight: bolder;">{{workObj.position | titlecase}} </span> &emsp;
+                                            <md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon>
+                                            <span class="lighttext" style="font-size: 15px;">
+                                                {{workObj.company | titlecase}}</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -169,7 +181,9 @@
                             </div>
                             <div class="row" *ngIf="profileObj.education && profileObj.education.length === 0">
                                 <div class="col-md-11 col-md-offset-1">
-                                    <p style="text-align: left">No details provided. <a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a></p>
+                                    <p style="text-align: left">No details provided.
+                                        <a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
+                                    </p>
                                 </div>
                             </div>
                             <div class="row" style="padding-top: 10px;" *ngFor="let educationObj of profileObj.education">
@@ -183,7 +197,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <!-- <h4 *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</h4>
-                                                    <h4 *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</h4> -->
+                                                        <h4 *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</h4> -->
                                             <span>{{educationObj.school | titlecase}}</span>
                                         </div>
                                     </div>
@@ -213,27 +227,29 @@
 
                             <div class="review-section" *ngFor="let review of profileObj.peer[0].reviewsAboutYou">
                                 <div *ngIf="review.peer !== undefined">
-                                  <div class="row review-top" style="margin-left:0px;">
-                                    <div class="col-md-2 padding-left-0 review-thumb pull-left">
-                                      <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb-viewpage" (error)="imgErrorHandler($event)">
+                                    <div class="row review-top" style="margin-left:0px;">
+                                        <div class="col-md-2 padding-left-0 review-thumb pull-left">
+                                            <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb-viewpage" (error)="imgErrorHandler($event)">
+                                        </div>
+                                        <div class="col-md-4 reviewer padding-left-0">
+                                            <div class="reviewer-name margin-bottom-10">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name
+                                                }}
+                                            </div>
+                                            <!-- <div class="reviewer-headline">{{ review.peer[0].profiles[0].headline }}</div> -->
+                                            <p-rating class="rating" [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4 reviewer padding-left-0">
-                                      <div class="reviewer-name margin-bottom-10">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name }}</div>
-                                      <!-- <div class="reviewer-headline">{{ review.peer[0].profiles[0].headline }}</div> -->
-                                      <p-rating class="rating" [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
-                                    </div>
-                                  </div>
-                                  <div class="row review-content mat-body-1 margin-top-20" style="margin-left:0px;">
+                                    <div class="row review-content mat-body-1 margin-top-20" style="margin-left:0px;">
 
-                                    <div class="col-md-12 review-desc padding-left-0" style="text-align:left">{{ review.description }}</div>
-                                    <div class="col-md-12 review-bottom lightText padding-left-0 margin-top-10" style="text-align:left">
-                                      <span>{{ getReviewedCollection(profileObj.peer[0], review.collectionId).type | titlecase}} 
-                                      </span>
-                                      <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
-                                        | date: 'MMMM y' }}</span>
-                                    <a [routerLink] = "redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)" class="pull-right">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title }}</a>
+                                        <div class="col-md-12 review-desc padding-left-0" style="text-align:left">{{ review.description }}</div>
+                                        <div class="col-md-12 review-bottom lightText padding-left-0 margin-top-10" style="text-align:left">
+                                            <span>{{ getReviewedCollection(profileObj.peer[0], review.collectionId).type | titlecase}}
+                                            </span>
+                                            <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
+                                                review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
+                                            <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)" class="pull-right">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title }}</a>
+                                        </div>
                                     </div>
-                                  </div>
                                 </div>
                             </div>
                             <!-- <hr> -->
@@ -261,19 +277,19 @@
                 <div class="col-md-12">
                     <md-tab-group>
                         <!-- <md-tab label="Session">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p>No Sessions</p>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p>No Sessions</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </md-tab>
-                                <md-tab label="Experience">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p>No Experiences</p>
+                                    </md-tab>
+                                    <md-tab label="Experience">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p>No Experiences</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </md-tab> -->
+                                    </md-tab> -->
                         <md-tab label="Teaching Journey" style="min-width: min-content !important;">
                             <div class="row">
                                 <div class="col-md-12 mat-subheading-2 margin-top-20">
@@ -290,7 +306,7 @@
                                                 <div class="col-md-12">
                                                     {{collectionObj.title}}
                                                 </div>
-                                                <div class="col-md-12"  style="min-height:55px">
+                                                <div class="col-md-12" style="min-height:55px">
                                                     <p>{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
                                                 </div>
                                                 <div class="col-md-12">
@@ -318,7 +334,7 @@
                                                 <div class="col-md-12">
                                                     {{collectionObj.title}}
                                                 </div>
-                                                <div class="col-md-12"  style="min-height:55px">
+                                                <div class="col-md-12" style="min-height:55px">
                                                     <p>{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
                                                 </div>
                                                 <div class="col-md-12">
@@ -346,10 +362,10 @@
                 </div>
                 <div class="col-md-2">
                     <!-- <md-select>
-                        <md-option *ngFor="let collection of collectionTypes" [value]="collection">
-                            {{ collection }}
-                        </md-option>
-                    </md-select> -->
+                            <md-option *ngFor="let collection of collectionTypes" [value]="collection">
+                                {{ collection }}
+                            </md-option>
+                        </md-select> -->
                     <a class="pull-right" [routerLink]="'/home/workshops'">
                         <h4>See all</h4>
                     </a>
@@ -369,38 +385,38 @@
                         <div class="mat-body-2" style="margin-top: 5px;">{{workshop.title | titlecase}}</div>
                         <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
                         <div class="col-sm-12 padding-left-0" style="margin-top: 12px;">
-                          <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
-                          </p-rating>
-                          <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
-                            <label>{{workshop.ratingCount}} Reviews</label>
-                          </span>
-                          <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
-                            <label>0 Reviews</label>
-                          </span>
+                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+                            </p-rating>
+                            <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
+                                <label>{{workshop.ratingCount}} Reviews</label>
+                            </span>
+                            <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
+                                <label>0 Reviews</label>
+                            </span>
                         </div>
                         <!-- <div class="margin-top-20">
-                            <h4 class="title">{{workshop.currency}} {{workshop.price}}</h4>
-                        </div>
-                        <div class="">
-                            <h4 class="margin-bottom-2 title">{{workshop.title}}</h4>
-                        </div>
-                        <div class="headline">
-                            <p>{{workshop.headline | shorten: 20 : '...'}}</p>
-                        </div>
-                        <div class="col-sm-12 padding-left-0">
-                            <p-rating class="col-sm-7 padding-left-0" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="col-sm-5 padding-left-0" *ngIf="workshop.reviews">
-                                        <label>{{workshop.reviews.length}} Reviews</label>
-                                      </span>
-                            <span class="col-sm-5 padding-left-0" *ngIf="!workshop.reviews">
-                                        <label>0 Reviews</label>
-                                      </span>
-                        </div> -->
+                                <h4 class="title">{{workshop.currency}} {{workshop.price}}</h4>
+                            </div>
+                            <div class="">
+                                <h4 class="margin-bottom-2 title">{{workshop.title}}</h4>
+                            </div>
+                            <div class="headline">
+                                <p>{{workshop.headline | shorten: 20 : '...'}}</p>
+                            </div>
+                            <div class="col-sm-12 padding-left-0">
+                                <p-rating class="col-sm-7 padding-left-0" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+                                </p-rating>
+                                <span class="col-sm-5 padding-left-0" *ngIf="workshop.reviews">
+                                            <label>{{workshop.reviews.length}} Reviews</label>
+                                          </span>
+                                <span class="col-sm-5 padding-left-0" *ngIf="!workshop.reviews">
+                                            <label>0 Reviews</label>
+                                          </span>
+                            </div> -->
                     </a>
                 </div>
                 <div *ngIf="!participatingWorkshops">
-                    <a class="col-md-3 default"[routerLink]="['/','home', 'workshops']" *ngIf="cookieUserId === urluserId">Start Learning</a>
+                    <a class="col-md-3 default" [routerLink]="['/','home', 'workshops']" *ngIf="cookieUserId === urluserId">Start Learning</a>
                 </div>
             </div>
         </div>
@@ -424,8 +440,7 @@
                         <div class="peer-thumb">
                             <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}"
                                 alt="peerImg">
-                            <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png"
-                                alt="peerImg">
+                            <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png" alt="peerImg">
                         </div>
                         <div style="margin-top: 12px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase }} {{peer.profiles[0].last_name | titlecase }}</div>
                         <div style="margin-top: 12px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
