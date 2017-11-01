@@ -158,7 +158,7 @@ export class ProfileComponent implements OnInit {
                 { 'contents': ['schedules'] }
                 , 'calendars']
             },
-            {'reviewsAboutYou':[{'peer':'profiles'}, {'collections': 'calendars' }]},
+            {'reviewsAboutYou':{'peer':'profiles'}},
             { 'collections':{'reviews': {'peer': 'profiles'}}}
           ]
         }

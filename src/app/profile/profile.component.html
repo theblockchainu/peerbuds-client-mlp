@@ -213,6 +213,7 @@
 
                             <div class="review-section" *ngFor="let review of profileObj.peer[0].reviewsAboutYou">
                                 <div *ngIf="review.peer !== undefined">
+<<<<<<< HEAD
                                   <div class="row review-top" style="margin-left:0px;">
                                     <div class="col-md-2 padding-left-0 review-thumb pull-left">
                                       <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb-viewpage" (error)="imgErrorHandler($event)">
@@ -233,6 +234,30 @@
                                         | date: 'MMMM y' }}</span>
                                     <a [routerLink] = "redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)" class="pull-right">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title }}</a>
                                     </div>
+=======
+                                  <div class="review-top">
+                                    <div class="review-thumb pull-left">
+                                      <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+                                    </div>
+                                    <div class="reviewer">
+                                      <div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name }}</div>
+                                      <div class="reviewer-headline">{{ review.peer[0].profiles[0].headline }}</div>
+                                    </div>
+                                  </div>
+                                  <div class="review-content">
+                                    <div class="review-bottom lightText">
+                                      <!-- <span>{{ getReviewedCollection(profile.peer[0], review.collectionId).type | titlecase}} :
+                                        <a href="javascript:;">{{ getReviewedCollection(profile.peer[0], review.collectionId).title }}</a>
+                                      </span>
+                                      <span class="bullet">
+                                        <p-rating [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
+                                      </span>
+                                      <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
+                                        | date: 'dd MMM' }} - {{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars,
+                                        review.collectionCalendarId).endDate | date: 'dd MMM' }}</span> -->
+                                    </div>
+                                    <div class="review-desc">{{ review.description }}</div>
+>>>>>>> develop-material
                                   </div>
                                 </div>
                             </div>
