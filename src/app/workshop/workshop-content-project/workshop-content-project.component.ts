@@ -86,19 +86,6 @@ export class WorkshopContentProjectComponent implements OnInit {
     }
 
     deleteFromContainer(fileUrl, fileType) {
-        debugger;
-        // const fileurl = fileUrl;
-        // fileUrl = _.replace(fileUrl, 'download', 'files');
-        // this.http.delete(this.config.apiUrl + fileUrl)
-        //   .map((response) => {
-        //     console.log(response);
-        //     if (fileType === 'video') {
-        //       this.urlForVideo = '';
-        //       const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        //       const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-        //       contentForm.controls['imageUrl'].patchValue(this.urlForVideo);
-        //     } 
-        //   }).subscribe();
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(this.config.apiUrl + fileUrl)

@@ -87,7 +87,6 @@ export class WorkshopContentVideoComponent implements OnInit {
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 let supplementUrls = <FormArray>contentForm.controls.supplementUrls;
                 let suppUrl = supplementUrls.value;
-                debugger;
                 suppUrl = _.remove(suppUrl, function (n) {
                     return n !== fileurl;
                 });
