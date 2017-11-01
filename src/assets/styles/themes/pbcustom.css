@@ -718,6 +718,13 @@ h3.calendarTitle  {
     border: 3px solid #ffffff;
 }
 
+.circle-thumb-viewpage { 
+    border-radius: 50%;
+    display: inline-block;
+    border: 3px solid #ffffff;
+    
+}
+
 .image-inline {
     display: inline;
 }
@@ -1223,3 +1230,4 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 .topics .mat-tab-label {
     min-width: min-content !important;
 }
+

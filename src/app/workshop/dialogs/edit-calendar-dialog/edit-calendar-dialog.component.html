@@ -26,14 +26,14 @@
                     </md-radio-button>
                     <md-radio-button class="repeat-workshop-button margin-bottom-10" value="days"> 
                         <span class="valignMiddle">after</span>
-                        &nbsp;&nbsp;<md-select formControlName="days" class="widthDays padding-top-0">
+                        &nbsp;&nbsp;<md-select formControlName="days" class="widthDays padding-top-0"(change)="computeDays($event.value)">
                             <md-option *ngFor="let day of daysOption" [value]="day">{{day}}</md-option>
                         </md-select>
                         <span class="valignMiddle">&nbsp;&nbsp;days</span>
                     </md-radio-button>
                     <md-radio-button class="repeat-workshop-button margin-bottom-10" value="weekdays"> 
                         <span class="valignMiddle">from the next</span>
-                        &nbsp;&nbsp;<md-select formControlName="weekdays" class="padding-top-0">
+                        &nbsp;&nbsp;<md-select formControlName="weekdays" class="padding-top-0" (change)="computeWeekday($event.value)">
                             <md-option *ngFor="let day of weekDayOption" [value]="day.value">{{day.text}}</md-option>
                         </md-select>
                     </md-radio-button>
@@ -127,7 +127,7 @@
                         <label>You will have total of {{ recurringCount }} recurring sessions</label>
                     </div>
                     <div class="margin-top-20">
-                        <label>Your workshop will run for {{ recurringCount }} of the next {{nextDays}} days</label>
+                        <label>Your workshop will run for {{ totalRunningDays }} of the next {{nextDays}} days</label>
                     </div>
                 </div>
             </div>
