@@ -158,7 +158,7 @@ export class ProfileComponent implements OnInit {
                 { 'contents': ['schedules'] }
                 , 'calendars']
             },
-            {'reviewsAboutYou':{'peer':'profiles'}},
+            {'reviewsAboutYou':[{'peer':'profiles'}, {'collections': 'calendars' }]},
             { 'collections':{'reviews': {'peer': 'profiles'}}}
           ]
         }
@@ -296,5 +296,38 @@ export class ProfileComponent implements OnInit {
 
   imgErrorHandler(event) {
     event.target.src = '/assets/images/user-placeholder.jpg';
+  }
+
+  public getReviewedCollection(peer, collectionId) {
+    let foundCollection: any;
+    const collectionsArray = peer.collections;
+    const ownedCollectionsArray = peer.ownedCollections;
+    if (collectionsArray !== undefined) {
+      foundCollection = collectionsArray.find((collection) => {
+        return collection.id === collectionId;
+      });
+    }
+    if (ownedCollectionsArray !== undefined && foundCollection === undefined) {
+      foundCollection = ownedCollectionsArray.find((collection) => {
+        return collection.id === collectionId;
+      });
+    }
+    if (foundCollection === undefined) {
+      foundCollection = {};
+    }
+    return foundCollection;
+
+  }
+
+  public getReviewedCalendar(calendars, calendarId) {
+    return calendars.find((calendar) => {
+      return calendar.id === calendarId;
+    }) !== undefined ? calendars.find((calendar) => {
+      return calendar.id === calendarId;
+    }) : {};
+  }
+
+  public redirectToCollection(peer, reviewCollectionId, collectionCalendarId) {
+    return "/" + this.getReviewedCollection(peer, reviewCollectionId).type + "/" + reviewCollectionId + "/calendar/" + collectionCalendarId + "";
   }
 }

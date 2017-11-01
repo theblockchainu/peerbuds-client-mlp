@@ -92,7 +92,9 @@ export class EditCalendarDialogComponent implements OnInit {
     public startDay;
     public endDay;
     public recurringCount = 0;
+    public totalRunningDays = 0;
     public nextDays;
+    public weekDaysStartGap = 0;
 
     // eventCalendar
     public eventCalendar = [];
@@ -251,24 +253,48 @@ export class EditCalendarDialogComponent implements OnInit {
         });
     }
 
+    public computeWeekday(value) {
+        this.repeatFrequency('weekdays');
+    }
+
+    public computeDays(value) {
+        this.repeatFrequency('days');
+    }
+
     public repeatFrequency(value) {
         this.computedEventCalendar = [];
         switch (value) {
             case 'immediate':
-                                this.startDay = this.endDate;
+                                debugger;
+                                // this.startDay = this.endDate;
+                                this.startDay = moment(this.endDate).add(1, 'days').format('YYYY-MM-DD');
                                 break;
             case 'days':
-                                this.startDay = moment(this.endDate).add(this.recurring.controls['days'].value, 'days').format('YYYY-MM-DD');
+                                debugger;
+                                this.startDay = moment(this.endDate).add(this.recurring.controls['days'].value + 1, 'days').format('YYYY-MM-DD');
                                 break;
             case 'weekdays':
+                                debugger;
                                 const isoWeekDay = this.recurring.controls['weekdays'].value;
-                                if (moment().isoWeekday() <= isoWeekDay) {
+                                const isoWeekDayForLastDate = moment(this.endDate).isoWeekday();
+                                if (isoWeekDayForLastDate < isoWeekDay) {
                                     // then just give me this week's instance of that day
-                                    this.startDay =  moment().isoWeekday(isoWeekDay);
-                                } else {
+                                    this.startDay =  moment(this.endDate).isoWeekday(isoWeekDay);
+                                    // this.startDay =  moment(this.endDate).add(isoWeekDay - isoWeekDayForLastDate, 'days');
+                                } else if (isoWeekDayForLastDate > isoWeekDay) {
                                     // otherwise, give me next week's instance of that day
-                                    this.startDay = moment().add(1, 'weeks').isoWeekday(isoWeekDay);
+                                    // this.startDay = moment(this.endDate).add(7 - isoWeekDayForLastDate + 1, 'days');//.isoWeekday(isoWeekDay)    
+                                    if (isoWeekDayForLastDate + isoWeekDay >= 7) {
+                                        this.startDay = moment(this.endDate).add(1, 'weeks').subtract(isoWeekDayForLastDate - isoWeekDay, 'days');
+                                    }
+                                    else {
+                                        this.startDay = moment(this.endDate).add(7 - isoWeekDayForLastDate + 1, 'days');//.isoWeekday(isoWeekDay)
+                                    }
                                 }
+                                else if (isoWeekDayForLastDate == isoWeekDay) {
+                                    this.startDay = moment(this.endDate).add(1, 'weeks').isoWeekday(isoWeekDay);
+                                }
+                                this.weekDaysStartGap = 7 - isoWeekDayForLastDate;
                                 break;
             default:
                                 this.startDay = this.startDate;
@@ -278,6 +304,7 @@ export class EditCalendarDialogComponent implements OnInit {
     }
 
     public repeatTill(value) {
+        debugger; 
         this.computedEventCalendar = [];
         const days = +this.recurring.controls['days'].value;
         const weekday = this.recurring.controls['weekdays'].value;
@@ -288,17 +315,19 @@ export class EditCalendarDialogComponent implements OnInit {
             case 'daysRepeat':
                                 this.recurringCalendar = [];
                                 const freq = this.recurring.controls['daysRepeat'].value;
-                                this.recurringCalendar.push({ startDate: moment(start).toDate().toISOString(), endDate: end.toDate().toISOString()});
+                                this.recurringCalendar.push({ startDate: moment(start).utcOffset(0).toDate().toISOString(), endDate: end.utcOffset(0).set({hour:18,minute:29,second:59}).toDate().toISOString()});
+                                this.totalRunningDays = this.duration;
                                 for (let i = 1; i < freq; i++) {
                                     this.createCalendars(end, days, weekday);
                                 }
                                 break;
             case 'monthsRepeat':
+                                debugger;
                                 this.recurringCalendar = [];
                                 const months = this.recurring.controls['monthsRepeat'].value;
                                 const futureMonth = moment(start).add(months, 'M');
                                 const futureMonthEnd = moment(futureMonth).endOf('month');
-                                this.recurringCalendar.push({ startDate: moment(start).toDate().toISOString(), endDate: end.toDate().toISOString()});
+                                this.recurringCalendar.push({ startDate: moment(start).utcOffset(0).toDate().toISOString(), endDate: end.utcOffset(0).set({hour:18,minute:29,second:59}).toDate().toISOString()});
                                 this.endDay = end;
                                 while ( moment(this.endDay).isBefore(moment(futureMonth)) ) {
                                     this.createCalendars(this.endDay, days, weekday);
@@ -306,7 +335,7 @@ export class EditCalendarDialogComponent implements OnInit {
                                 break;
             case 'dateRepeat':
                                 this.recurringCalendar = [];
-                                this.recurringCalendar.push({ startDate: moment(start).toDate().toISOString(), endDate: end.toDate().toISOString()});
+                                this.recurringCalendar.push({ startDate: moment(start).utcOffset(0).toDate().toISOString(), endDate: end.utcOffset(0).set({hour:18,minute:29,second:59}).toDate().toISOString()});
                                 this.endDay = end;
                                 while (moment(this.endDay).isBefore(moment(tillDate))) {
                                     this.createCalendars(this.endDay, days, weekday);
@@ -315,7 +344,9 @@ export class EditCalendarDialogComponent implements OnInit {
             default:
                                 this.recurringCalendar = [];
         }
-        this.nextDays = moment(this.endDay).diff(moment(this.startDay), 'days') + 1;
+        debugger;
+        this.nextDays = moment(this.endDay).diff(moment(this.endDate), 'days');
+        //this.nextDays += this.weekDaysStartGap;
         this.computedEventCalendar = _.cloneDeep(this.eventCalendar);
         if (this.recurringCalendar.length > 0) {
             //Modify recurringCalendar and contents to look same like eventCalendar
@@ -389,24 +420,45 @@ export class EditCalendarDialogComponent implements OnInit {
       }
 
     public createCalendars(end, days, weekday) {
+        let start = end;
+        let tempEnd;
         if (this.recurring.value.repeatWorkshopGroupOption === 'immediate') {
-            this.recurringCalendar.push({ startDate: end.toDate().toISOString(), endDate: moment(end).add(this.duration, 'days').toDate().toISOString()});
-            end = moment(end).add(this.duration, 'days').format('YYYY-MM-DD');
+            start = moment(start).utcOffset(0).set({hour:18,minute:30,second:0});
+            tempEnd = moment(start).add(this.duration, 'days').utcOffset(0).set({hour:18,minute:29,second:59});
+            this.recurringCalendar.push({ startDate: start.toDate().toISOString(), endDate: tempEnd.toDate().toISOString()});
+            end = tempEnd.format('YYYY-MM-DD');
         }
         else if (this.recurring.value.repeatWorkshopGroupOption === 'days') {
-            this.recurringCalendar.push({ startDate: moment(end).add(days, 'days').toDate().toISOString(), endDate: moment(end).add(this.duration + days, 'days').toDate().toISOString()});
-            end = moment(end).add(this.duration + days, 'days').format('YYYY-MM-DD');
+            start = moment(start).add(days, 'days').utcOffset(0).set({hour:18,minute:30,second:0});
+            tempEnd = moment(start).add(this.duration, 'days').utcOffset(0).set({hour:18,minute:29,second:59});
+            this.recurringCalendar.push({ startDate: start.toDate().toISOString(), endDate: tempEnd.toDate().toISOString()});
+            end = tempEnd.format('YYYY-MM-DD');
         }
         else if (this.recurring.value.repeatWorkshopGroupOption === 'weekdays') {
-            if (moment(end).isoWeekday() <= weekday) {
-                end = moment(end).isoWeekday(weekday);
-            } else {
+            debugger;
+            const isoWeekDayForLastDate = moment(end).isoWeekday();
+            if (isoWeekDayForLastDate < weekday) {
+                // then just give me this week's instance of that day
+                start =  moment(end).isoWeekday(weekday);
+                // start =  moment(end).add(weekday - isoWeekDayForLastDate, 'days');//
+            } else if (isoWeekDayForLastDate > weekday) {
                 // otherwise, give me next week's instance of that day
-                end = moment(end).add(1, 'weeks').isoWeekday(weekday);
+                if (isoWeekDayForLastDate + weekday >= 7) {
+                    start = moment(end).add(1, 'weeks').subtract(isoWeekDayForLastDate - weekday, 'days');
+                }
+                else {
+                    start = moment(end).add(7 - isoWeekDayForLastDate + 1, 'days');//.isoWeekday(isoWeekDay)
+                }
             }
-            this.recurringCalendar.push({ startDate: end.toDate().toISOString(), endDate: moment(end).add(this.duration, 'days').toDate().toISOString()});
-            end = moment(end).add(this.duration, 'days').format('YYYY-MM-DD');
+            else if (isoWeekDayForLastDate == weekday) {
+                start = moment(end).add(1, 'weeks').isoWeekday(weekday);
+            }
+            start = moment(start).subtract(1, 'days').utcOffset(0).set({hour:18,minute:30,second:0});
+            tempEnd = moment(start).add(this.duration, 'days').utcOffset(0).set({hour:18,minute:29,second:59});
+            this.recurringCalendar.push({ startDate: start.toDate().toISOString(), endDate: tempEnd.toDate().toISOString()});
+            end = tempEnd.format('YYYY-MM-DD');
         }
+        this.totalRunningDays += this.duration;
         this.endDay = end;
     }
 
