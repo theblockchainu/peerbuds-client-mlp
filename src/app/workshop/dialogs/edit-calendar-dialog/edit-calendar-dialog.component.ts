@@ -265,16 +265,13 @@ export class EditCalendarDialogComponent implements OnInit {
         this.computedEventCalendar = [];
         switch (value) {
             case 'immediate':
-                                debugger;
                                 // this.startDay = this.endDate;
                                 this.startDay = moment(this.endDate).add(1, 'days').format('YYYY-MM-DD');
                                 break;
             case 'days':
-                                debugger;
                                 this.startDay = moment(this.endDate).add(this.recurring.controls['days'].value + 1, 'days').format('YYYY-MM-DD');
                                 break;
             case 'weekdays':
-                                debugger;
                                 const isoWeekDay = this.recurring.controls['weekdays'].value;
                                 const isoWeekDayForLastDate = moment(this.endDate).isoWeekday();
                                 if (isoWeekDayForLastDate < isoWeekDay) {
@@ -304,7 +301,6 @@ export class EditCalendarDialogComponent implements OnInit {
     }
 
     public repeatTill(value) {
-        debugger; 
         this.computedEventCalendar = [];
         const days = +this.recurring.controls['days'].value;
         const weekday = this.recurring.controls['weekdays'].value;
@@ -322,7 +318,6 @@ export class EditCalendarDialogComponent implements OnInit {
                                 }
                                 break;
             case 'monthsRepeat':
-                                debugger;
                                 this.recurringCalendar = [];
                                 const months = this.recurring.controls['monthsRepeat'].value;
                                 const futureMonth = moment(start).add(months, 'M');
@@ -344,7 +339,6 @@ export class EditCalendarDialogComponent implements OnInit {
             default:
                                 this.recurringCalendar = [];
         }
-        debugger;
         this.nextDays = moment(this.endDay).diff(moment(this.endDate), 'days');
         //this.nextDays += this.weekDaysStartGap;
         this.computedEventCalendar = _.cloneDeep(this.eventCalendar);
@@ -435,7 +429,6 @@ export class EditCalendarDialogComponent implements OnInit {
             end = tempEnd.format('YYYY-MM-DD');
         }
         else if (this.recurring.value.repeatWorkshopGroupOption === 'weekdays') {
-            debugger;
             const isoWeekDayForLastDate = moment(end).isoWeekday();
             if (isoWeekDayForLastDate < weekday) {
                 // then just give me this week's instance of that day
