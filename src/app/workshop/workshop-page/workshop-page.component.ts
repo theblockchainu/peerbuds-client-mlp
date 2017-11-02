@@ -1246,7 +1246,8 @@ export class WorkshopPageComponent implements OnInit {
     const data = {
       roomName: content.id + this.calendarId,
       teacherId: this.workshop.owners[0].id,
-      content: content
+      content: content,
+      participants: this.workshop.participants
     };
     this.dialogsService.startLiveSession(data).subscribe(result => {
     });

@@ -1201,7 +1201,7 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 .mainStream video{
-    height: 100%;    
+    height: 96vh;    
 }
 
 .localStream{
@@ -1214,6 +1214,8 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 .localStream video{
     border-style: solid;
     border-color: white;
+    height: 100% !important;    
+    
 }
 
 .otherStream{
@@ -1225,9 +1227,35 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .otherStream video{
     padding-right: 5px;
+    height: 100% !important;    
 }
+
+.otherStreamTeacher{
+    position: absolute;
+    bottom: 3%;
+    height: 16%;
+    right: 10%;
+}
+
+.otherStreamTeacher video{
+    padding-right: 5px;
+    height: 100% !important;    
+}
+
 
 .topics .mat-tab-label {
     min-width: min-content !important;
+}
+
+.buttonBar{
+    position: absolute;
+    bottom: 16%;
+    height: 16%;
+    right: 46%;
+    z-index: 1001;
+}
+.buttonBar .session_actions{
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
