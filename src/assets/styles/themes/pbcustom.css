@@ -1247,6 +1247,14 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     min-width: min-content !important;
 }
 
+.editCalendar .ui-accordion .ui-accordion-header a {
+    padding-left: 1.1em !important;
+}
+
+.editCalendar p-accordion{
+    max-width: 50% !important;
+}
+
 .buttonBar{
     position: absolute;
     bottom: 16%;
