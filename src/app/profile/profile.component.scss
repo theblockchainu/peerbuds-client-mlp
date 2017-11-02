@@ -225,3 +225,35 @@ a h4{
   .resumeIcons {
     font-size: 35px;
   }
+
+  .reviewer {
+    text-align: left;
+    margin-top: 10px;
+    font-weight: 400;
+  }
+
+  .rating {
+      font-size: 0.8rem;
+  }
+
+  .rating .fa {
+    color: #33bd9e !important;
+
+  }
+
+  .bullet{
+    display:inline-block;
+    position:relative;
+    padding-left: 30px;
+    &:before{
+      display: inline-block;
+      position: absolute;
+      content:"";
+      width:4px;
+      height:4px;
+      background-color: #ccc;
+      border-radius: 50%;
+      top:10px;
+      left:10px;
+    }
+  }
