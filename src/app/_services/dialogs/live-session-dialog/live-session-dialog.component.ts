@@ -7,7 +7,7 @@ import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
 import { SocketService } from '../../socket/socket.service';
 import { Router } from '@angular/router';
 import { Ng2DeviceService } from 'ng2-device-detector';
-
+import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-live-session-dialog',
   templateUrl: './live-session-dialog.component.html',
@@ -23,7 +23,8 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   public userId;
   public isTeacher = false;
   private participantCount: number;
-
+  public registeredParticipantMapObj: any;
+  public joinedParticipantArray: Array<any>;
   public localAudioTrack: any;
   public localVideoTrack: any;
 
@@ -46,7 +47,10 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.participantCount = 0;
-
+    this.registeredParticipantMapObj = {};
+    this.dialogData.participants.forEach(participant => {
+      this.registeredParticipantMapObj[participant.id] = participant;
+    });
     this.mainLoading = true;
     this._twilioServicesService.getToken().subscribe(
       result => {
@@ -66,6 +70,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   }
 
   private createRoom() {
+    this.joinedParticipantArray = [];
     Video.connect(this.token, {
       name: this.roomName,
       audio: { name: 'microphone' },
@@ -100,6 +105,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
           this.renderer.appendChild(this.mainStream.nativeElement, track.attach());
           this.mainLoading = false;
         } else {
+          console.log(track.attach());
           this.renderer.appendChild(this.localStream.nativeElement, track.attach());
         }
       });
@@ -117,6 +123,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
             }
           });
         } else {
+          this.joinedParticipantArray.push(participant);
           this.participantCount++;
           if (this.participantCount < 5) {
             participant.on('trackAdded', (track, error) => {
