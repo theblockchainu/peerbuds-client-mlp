@@ -293,3 +293,9 @@ div.event span:first-child {
     padding-top: 5px !important;
 }
 
+.editCalendar .calendar {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+

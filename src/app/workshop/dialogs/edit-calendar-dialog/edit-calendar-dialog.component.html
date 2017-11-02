@@ -1,12 +1,15 @@
 <div class="mat-dialog-focus-trap"></div>
-<form [formGroup]="recurring"> 
-    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+<form [formGroup]="recurring">
+    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()">
+        <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+    </button>
     <div style="display: inline-block">
         <h3 md-dialog-title>Add more cohorts your {{ duration }} day workshop</h3>
     </div>
     <br>
     <div style="margin: -12px 0 20px 45px;">
-        <span>You have <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
+        <span>You have
+            <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
         <a href="javascript:void(0);" (click)="viewCohorts()">View and manage</a>
     </div>
     <hr style="margin-top: 0px;">
@@ -15,63 +18,118 @@
             <div class="col-md-6">
                 <p class="mat-caption" *ngIf="calendars.length === 1">
                     <md-icon style="top: 3px; font-size: 16px;">info</md-icon>
-                    Your first cohort was automatically created when this Workshop was approved. You can add more Cohorts to your workshop at any time.
+                    Your first cohort was automatically created when this Workshop was approved. You can add more Cohorts to your workshop at
+                    any time.
                 </p>
-                <br><br>
+                <br>
+                <br>
                 <label *ngIf="calendars.length > 0">After your last existing cohort ends, the next cohort starts...</label>
-                <br><br>
+                <br>
+                <br>
                 <md-radio-group class="repeat-workshop-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
-                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="immediate"> 
+                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="immediate">
                         <span>Immediately</span>
                     </md-radio-button>
-                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="days"> 
+                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="days">
                         <span class="valignMiddle">after</span>
-                        &nbsp;&nbsp;<md-select formControlName="days" class="widthDays padding-top-0"(change)="computeDays($event.value)">
+                        &nbsp;&nbsp;
+                        <md-select formControlName="days" class="widthDays padding-top-0" (change)="computeDays($event.value)">
                             <md-option *ngFor="let day of daysOption" [value]="day">{{day}}</md-option>
                         </md-select>
                         <span class="valignMiddle">&nbsp;&nbsp;days</span>
                     </md-radio-button>
-                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="weekdays"> 
+                    <md-radio-button class="repeat-workshop-button margin-bottom-10" value="weekdays">
                         <span class="valignMiddle">from the next</span>
-                        &nbsp;&nbsp;<md-select formControlName="weekdays" class="padding-top-0" (change)="computeWeekday($event.value)">
+                        &nbsp;&nbsp;
+                        <md-select formControlName="weekdays" class="padding-top-0" (change)="computeWeekday($event.value)">
                             <md-option *ngFor="let day of weekDayOption" [value]="day.value">{{day.text}}</md-option>
                         </md-select>
                     </md-radio-button>
                 </md-radio-group>
                 <div class="margin-Top-50 flex-column">
-                    <label>It will continue repeating up to..</label><br>
+                    <label>It will continue repeating up to..</label>
+                    <br>
                     <md-radio-group class="repeat-workshop-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
-                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="daysRepeat"> 
-                            &nbsp;&nbsp;<md-select formControlName="daysRepeat" class="widthDays padding-top-0">
+                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="daysRepeat">
+                            &nbsp;&nbsp;
+                            <md-select formControlName="daysRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
                                 <md-option *ngFor="let day of daysOption" [value]="day">{{day}}</md-option>
                             </md-select>
                             <span class="valignMiddle">&nbsp;&nbsp;more sessions</span>
                         </md-radio-button>
-                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="monthsRepeat"> 
-                            &nbsp;&nbsp;<md-select formControlName="monthsRepeat" class="widthDays padding-top-0">
+                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="monthsRepeat">
+                            &nbsp;&nbsp;
+                            <md-select formControlName="monthsRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
                                 <md-option *ngFor="let month of monthOption" [value]="month">{{month}}</md-option>
                             </md-select>
                             <span class="valignMiddle">&nbsp;&nbsp;more months</span>
                         </md-radio-button>
-                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="dateRepeat"> 
+                        <md-radio-button class="repeat-workshop-button margin-bottom-10" value="dateRepeat">
                             <span class="valignMiddle">the date</span>
-                            &nbsp;&nbsp;<md-input-container>
-                            <input mdInput [mdDatepicker]="dateRepeat" formControlName="dateRepeat">
-                            <md-datepicker-toggle mdSuffix [for]="dateRepeat"></md-datepicker-toggle>
+                            &nbsp;&nbsp;
+                            <md-input-container>
+                                <input mdInput [mdDatepicker]="dateRepeat" formControlName="dateRepeat" (change)="repeatTillTrigger()">
+                                <md-datepicker-toggle mdSuffix [for]="dateRepeat"></md-datepicker-toggle>
                             </md-input-container>
                             <md-datepicker #dateRepeat></md-datepicker>
                         </md-radio-button>
                     </md-radio-group>
                     <div class="margin-top-20">
-                        <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]= "recurringCount == 0">Save Workshop Batches</button>
+                        <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0">Save Workshop Batches</button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="mat-content border-calendar calendar">
+            <div class="col-md-offset-1 editCalendar col-md-5">
+                <div class="mat-content border-calendar calendar" style="margin-right:10px" *ngIf="recurringCalendar && recurringCalendar.length > 0" > 
+                    <h3>List of New/Proposed Cohorts</h3>
+                    <p-accordion (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">
+                        <p-accordionTab *ngFor="let day of recurringCalendar; let i=index" tabindex="-1">
+                            <p-header>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-8 padding-left-0">
+                                            <div class="col-md-12 padding-left-0">
+                                                <div class="margin-top-20 margin-bottom-20">
+                                                    <span class="mat-body-2">
+                                                        {{day.startDate | date:'EEE, MMM d'}} to {{day.endDate | date:'EEE, MMM d'}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12  padding-left-0">
+                                                <h5 *ngIf="i!==selectedIndex">
+                                                    <b>View Schedule</b>
+                                                </h5>
+                                                <h5 *ngIf="i===selectedIndex">
+                                                    <b>Hide Schedule</b>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p-header>
+                            <div class="accordianContent">
+                                <div class="row">
+                                    <div class="col-md-12 padding-left-0" *ngFor="let content of day.content">
+                                        <div class="col-md-12 padding-left-0">
+                                            <div class="col-md-12 padding-left-0" style="margin: 10px 0px 3px 0px;">
+                                                {{content.startDate | date:'EE, MMM d'}}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 padding-left-0">
+                                            <div class="col-md-12 padding-left-0" style="margin: 3px 0px 10px 0px;">
+                                                <b>{{ content.contents.title | titlecase}}</b> - {{content.contents.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.contents.schedules[0].endTime | extractTime:'h:mm a'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+                <!-- <div class="mat-content border-calendar calendar"> 
                     <div class="flex flexContainer">
                         <div class="col-md-7">
-                        <h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+                            <h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
                         </div>
                     
                         <span class="flex"></span>
@@ -96,26 +154,27 @@
                         (dayClicked)="dayClicked($event.day)">
                         </mwl-calendar-month-view>
                     </div>
+                </div>
+                <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
+                    <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
+                        <span class="cal-day-badge"></span>
+                        <span>{{ clickedDate | date:'EEE, MMM dd' }}</span>
                     </div>
-                    <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
-                        <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
-                            <span class="cal-day-badge"></span>
-                            <span>{{ clickedDate | date:'EEE, MMM dd' }}</span>
+                    <div *ngFor="let key of objectKeys(eventsForTheDay)">
+                        <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]">
+                            <span>{{ event.start | date:'hh:mm' }}</span>
+                            <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
+                            &emsp;
+                            <span>{{ parseTitle(event.title)[0] | titlecase }}</span>
                         </div>
-                        <div *ngFor="let key of objectKeys(eventsForTheDay)">
-                            <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]">
-                                <span>{{ event.start | date:'hh:mm' }}</span>
-                                <span><b>{{ event.start | date:'a' | lowercase}}</b></span>
-                                &emsp;
-                                <span>{{ parseTitle(event.title)[0] | titlecase }}</span>
-                            </div>
-                            <hr>
-                        </div>
+                        <hr>
                     </div>
+                </div>  -->
                 <div class="margin-top-30 flex-column" *ngIf="computedConflict.length > 0">
                     <h3>Avoid Conflicts</h3>
                     <div>
-                        <label>{{computedConflict.length}} of your workshop sessions will have conflicts with<br/> existing calendar events.</label>
+                        <label>{{computedConflict.length}} of your workshop sessions will have conflicts with
+                            <br/> existing calendar events.</label>
                     </div>
                     <div class="margin-top-20 margin-bottom-20">
                         <button md-raised-button (click)="viewConflict()" color="grey">View Conflict</button>
