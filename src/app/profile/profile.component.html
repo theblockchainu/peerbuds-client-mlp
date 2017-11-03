@@ -3,7 +3,7 @@
         <ngx-loading [show]="true"></ngx-loading>
     </div>
     <div class="row" *ngIf="profileObj && !loading">
-        <div class="col-md-3 {{offsetString}} left-panel">
+        <div class="col-md-8 {{offsetString}} left-panel">
             <div class="row text-center">
                 <div class="col-md-12">
                     <img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{config.apiUrl+profileObj.picture_url}}" alt="profile_pic">
@@ -20,6 +20,7 @@
                 </div> -->
             </div>
             <div class="row border-top">
+                <hr><br>
                 <div class="col-md-1">
                     <md-icon>mic_none</md-icon>
                 </div>
@@ -40,6 +41,7 @@
                 </div>
             </div>
             <div class="row border-top">
+                <hr>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <h3>Social Profiles</h3>
                 </div>
@@ -51,10 +53,12 @@
                 </div>
             </div>
             <div class="row border-top">
+                <hr>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <h3>Interest</h3>
                 </div>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
+                    <hr>
                     <md-chip-list>
                         <span *ngFor="let interest of interestsArray;let i=index" style="margin: 0px 10px 10px 0px">
                                         <md-chip *ngIf="i<maxVisibleInterest">{{interest | titlecase}}</md-chip>
@@ -71,12 +75,12 @@
                 </div>
             </div>
             <div class="row border-top" *ngIf="urluserId!==cookieUserId" style="padding-top: 20px;text-align:center;cursor:pointer">
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <h5 (click)="reportProfile()">Report profile</h5>
                 </div>
             </div>
         </div>
-        <div class="col-md-5 center-feed">
+        <div class="col-md-4 center-feed">
 
             <div class="row">
                 <div class="col-md-12">
@@ -116,9 +120,9 @@
             </div>
 
             <hr style="border-top:1px solid #eeeeee;">
-            <div class="row ">
-                <div class="col-md-12 ">
-                    <div class="row ">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
                         <div class="col-md-12">
                             <h3>Resume</h3>
                         </div>
@@ -196,7 +200,7 @@
 
             <hr style="border-top:1px solid #eeeeee;">
             <div class="row">
-                <div class=col-md-12>
+                <div class="col-md-10">
                     <div class="row">
                         <div class="col-md-12 review">
                             <h3 style="display:inline-block">Reviews</h3>
@@ -256,7 +260,7 @@
                                 <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index">
                                     <div *ngFor="let calendar of collectionObj.calendars">
                                         <div *ngIf="calendar.startDate <= today.toISOString() && calendar.endDate >= today.toISOString()">
-                                            <div class="col-md-3 padding-left-0">
+                                            <div class="col-md-5 padding-left-0">
                                                 <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
                                                 <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                             </div>
@@ -312,6 +316,7 @@
             </div>
         </div>
     </div>
+
     <div class="row margin-top-20" *ngIf="!loading">
         <div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
             <div class="row">

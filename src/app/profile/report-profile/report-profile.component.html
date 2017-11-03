@@ -1,9 +1,11 @@
 <h1 md-dialog-title>Report User</h1>
-<div md-dialog-content>
+<div md-dialog-content class="alignContent">
+  <div class="content">
   <p>Please Specify the reason for which you want to report this profile</p>
   <md-form-field>
     <input mdInput type="text" [(ngModel)]="reason">
   </md-form-field>
+  </div>
 </div>
 <div md-dialog-actions>
   <button md-button [md-dialog-close]="reason" tabindex="2">Report</button>

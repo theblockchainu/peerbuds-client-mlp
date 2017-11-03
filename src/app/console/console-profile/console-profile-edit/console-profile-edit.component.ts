@@ -398,6 +398,8 @@ export class ConsoleProfileEditComponent implements OnInit {
     const emergency_contacts = profileData.emergency_contacts;
     delete profileData.emergency_contact;
     // profileData = this.sanitize(profileData);
+    console.log(email);
+    //console.log(phone_numbers);
     this._profileService.updateProfile(this.userId, profileData)
       .flatMap((response) => {
         return this._profileService.updatePhoneNumbers(this.userId, this.profile.id, phone_numbers);
@@ -410,7 +412,9 @@ export class ConsoleProfileEditComponent implements OnInit {
       }).flatMap((response) => {
         return this._profileService.updateEducation(this.userId, this.profile.id, education);
       }).flatMap((response) => {
-        return this._profileService.updatePeer(this.userId, { 'email': email});
+        return this._profileService.updatePeer(this.userId, {'email': email});
+      }).flatMap((response) => {
+        return this._profileService.updatePeer(this.userId, {'phone': profileData.phone_numbers});
       }).subscribe((response) => {
         this.snackBar.open('Profile Updated', 'Close');
       }, (err) => {

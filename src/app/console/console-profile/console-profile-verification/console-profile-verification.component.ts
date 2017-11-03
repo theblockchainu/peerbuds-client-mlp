@@ -7,6 +7,7 @@ import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
+
 @Component({
   selector: 'app-console-profile-verification',
   templateUrl: './console-profile-verification.component.html',
@@ -63,16 +64,19 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 
   private getProfile() {
     this._profileService.getPeerData(this.userId, this.queryForSocialIdentities).subscribe((peer) => {
+      console.log(peer.email);
       console.log(peer);
+     // console.log(phone_numbers);
       this.alreadyVerified = [];
       this.notVerified = [];
-      if (peer.phoneVerified) {
+      if (peer.phoneVerified && peer.phone) {
         this.alreadyVerified.push({
           text: 'Phone Number',
           value: peer.phone
         });
       } else {
-        if (peer.phone) {
+        if (peer.phone)
+        {
           this.notVerified.push({
             text: 'Phone Number',
             value: peer.phone

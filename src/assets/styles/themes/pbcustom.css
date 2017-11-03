@@ -1223,3 +1223,8 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 .topics .mat-tab-label {
     min-width: min-content !important;
 }
+/*
+.cdk-overlay-container .mat-dialog-container {
+    padding: 0px !important;
+}
+*/
