@@ -96,8 +96,8 @@
 
 .recommendation-thumb{
     object-fit: cover;
-    height: 240px;
-    width: 230px;
+    height: 290px;
+    width: 100%;
 }
 
 .peer-recommendation-thumb{
@@ -107,8 +107,12 @@
 }
 
 .recommendation-card{
-    max-width: 330px;
-    height: 370px;
+    min-height: 1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 20%;
+    float: left;
+    margin-bottom: 35px;
 }
 
 .peer-recommendation-card{
@@ -221,6 +225,35 @@ a h4{
   .resumeIcons {
     font-size: 35px;
   }
-  .col-md-12{
-      width: 128%;
+
+  .reviewer {
+    text-align: left;
+    margin-top: 10px;
+    font-weight: 400;
+  }
+
+  .rating {
+      font-size: 0.8rem;
+  }
+
+  .rating .fa {
+    color: #33bd9e !important;
+
+  }
+
+  .bullet{
+    display:inline-block;
+    position:relative;
+    padding-left: 30px;
+    &:before{
+      display: inline-block;
+      position: absolute;
+      content:"";
+      width:4px;
+      height:4px;
+      background-color: #ccc;
+      border-radius: 50%;
+      top:10px;
+      left:10px;
+    }
   }

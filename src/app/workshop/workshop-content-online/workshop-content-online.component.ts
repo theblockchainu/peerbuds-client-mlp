@@ -214,18 +214,24 @@ export class WorkshopContentOnlineComponent implements OnInit {
                 suppUrl = _.remove(suppUrl, function (n) {
                     return n !== fileurl;
                 });
-                this.attachmentUrls = suppUrl;
-                contentForm.controls['supplementUrls'].patchValue(suppUrl);
+                contentForm.controls['supplementUrls'] = new FormArray([]);
+                this.attachmentUrls = [];
+                suppUrl.forEach(file => {
+                    supplementUrls.push(new FormControl(file));
+                    this.contentService.getMediaObject(file).subscribe((res) => {
+                        this.attachmentUrls.push(res[0]);
+                    })
+                });
                 if (contentForm.controls['id'].value) {
-                    this.deleteFromContent(contentForm);
+                    this.deleteFromContent(contentForm, {'supplementUrls': []});
                 }
             } else if (fileType === 'image') {
                 this.addImageUrl('');
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 contentForm.controls['imageUrl'].patchValue('');
-                if (contentForm.controls['id'].value) {
-                    this.deleteFromContent(contentForm);
+                if(contentForm.controls['id'].value) {
+                    this.deleteFromContent(contentForm, {'imageUrl': ''});
                 }
             }
           }).subscribe((response) => {
@@ -234,8 +240,7 @@ export class WorkshopContentOnlineComponent implements OnInit {
 
     }
 
-    deleteFromContent(contentForm) {
-        const body = {'imageUrl': ''};
+    deleteFromContent(contentForm, body) {
         this.http.patch(this.config.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
         .map((response: Response) => {})
         .subscribe();

@@ -1,15 +1,35 @@
 <div class="videoDialog">
-  <button class="pull-right" md-icon-button (click)="dialogRef.close('close')">
-    <md-icon>clear</md-icon>
-  </button>
   <div class="mainStream" #mainStream>
     <div *ngIf="mainLoading">
       <ngx-loading [show]="true"></ngx-loading>
     </div>
-    <div class="bottomBar">
+    <div class="buttonBar" *ngIf="room">
+      <span class="session_actions">
+        <button md-fab (click)="dialogRef.close('close')">
+          <md-icon>call_end</md-icon>
+        </button>
+      </span>
+      <span class="session_actions">
+        <button md-fab (click)="toggleAudio()">
+          <md-icon *ngIf="this.localAudioTrack.isEnabled">mic</md-icon>
+          <md-icon *ngIf="!this.localAudioTrack.isEnabled">mic_off</md-icon>
+        </button>
+      </span>
+      <span class="session_actions">
+        <button md-fab (click)="toggleVideo()">
+          <md-icon *ngIf="this.localVideoTrack.isEnabled">videocam</md-icon>
+          <md-icon *ngIf="!this.localVideoTrack.isEnabled">videocam_off</md-icon>
+        </button>
+      </span>
+    </div>
+    <div class="bottomBar" *ngIf="!isTeacher">
       <div class="otherStream" #otherStream>
       </div>
       <div class="localStream" #localStream>
+      </div>
+    </div>
+    <div class="bottomBar" *ngIf="isTeacher">
+      <div class="otherStreamTeacher" #otherStream>
       </div>
     </div>
   </div>

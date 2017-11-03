@@ -35,6 +35,7 @@ export class ConsoleProfileReviewsComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this._profileService.getProfile(this.userId).subscribe((profiles) => {
+      console.log(profiles);
       this.profile = profiles[0];
       console.log(this.profile);
       this.loading = false;
