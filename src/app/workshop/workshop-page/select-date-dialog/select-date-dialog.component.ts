@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-select-date-dialog',

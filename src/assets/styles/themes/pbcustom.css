@@ -1255,6 +1255,10 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     max-width: 50% !important;
 }
 
+.editCalendar .ui-accordion {
+    border-bottom: none !important;
+}
+
 .buttonBar{
     position: absolute;
     bottom: 16%;

@@ -227,7 +227,8 @@ export class EditCalendarDialogComponent implements OnInit {
             
     }
     public ngOnInit() {
-        this.duration = moment.duration(moment(this.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment(this.startDate, 'YYYY-MM-DD HH:mm:ss'))).asDays() + 1;
+        debugger;
+        this.duration = Math.round(moment.duration(moment(this.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment(this.startDate, 'YYYY-MM-DD HH:mm:ss'))).asDays());
         this.daysOption = this.getDaysArray();
         this.events = this.inpEvents;
         this.monthOption = this.getMonthArray();
@@ -249,6 +250,10 @@ export class EditCalendarDialogComponent implements OnInit {
     }
 
     public saveCalendar(): void {
+        this.recurringCalendar.map(function(item) { 
+            delete item.content; 
+            return item; 
+        });
         this._collectionService.postCalendars(this.collection.id, this.recurringCalendar)
         .subscribe((response) => {
             this.dialogRef.close('calendarsSaved');
@@ -268,6 +273,7 @@ export class EditCalendarDialogComponent implements OnInit {
     }
 
     public repeatFrequency(value) {
+        debugger;
         this.computedEventCalendar = [];
         switch (value) {
             case 'immediate':
@@ -319,8 +325,9 @@ export class EditCalendarDialogComponent implements OnInit {
                                 const freq = this.recurring.controls['daysRepeat'].value;
                                 this.recurringCalendar.push({ startDate: moment(start).utcOffset(0).toDate().toISOString(), endDate: end.utcOffset(0).set({hour:18,minute:29,second:59}).toDate().toISOString()});
                                 this.totalRunningDays = this.duration;
+                                this.endDay = end;
                                 for (let i = 1; i < freq; i++) {
-                                    this.createCalendars(end, days, weekday);
+                                    this.createCalendars(this.endDay, days, weekday);
                                 }
                                 break;
             case 'monthsRepeat':
@@ -362,7 +369,6 @@ export class EditCalendarDialogComponent implements OnInit {
         if(this.recurringCalendar.length > 0) {
             for (const calendar of this.recurringCalendar) {
                 calendar['content'] = calendarItenary;
-                
             }
         }
         console.log(this.recurringCalendar);
