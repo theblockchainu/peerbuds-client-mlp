@@ -84,7 +84,7 @@
     "rxjs": "^5.4.3",
     "socket.io-client": "^2.0.3",
     "sockjs-client": "^1.1.4",
-    "twilio-video": "^1.4.0",
+    "twilio-video": "^1.6.0",
     "videogular": "^2.2.1",
     "videogular2": "^5.6.1",
     "zone.js": "^0.8.18"
