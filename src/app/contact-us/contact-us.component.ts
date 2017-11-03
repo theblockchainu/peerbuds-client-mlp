@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgModule } from '@angular/core';
+
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
@@ -18,21 +19,22 @@ export class ContactComponent implements OnInit {
   private message: string;
   contactUsForm: FormGroup;
 
-  lat: number = 37.508772;
+  lat = 37.508772;
   lng: number = -121.960507;
 
   constructor(public _fb: FormBuilder,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+   ) {
   }
 
   ngOnInit() {
     this.contactUsForm = this._fb.group(
       {
-        first_name: ['', Validators.requiredTrue],
-        last_name: ['', Validators.requiredTrue],
+        first_name: ['', Validators.required],
+        last_name: ['', Validators.required],
         email: ['', Validators.requiredTrue],
-        subject: ['', Validators.requiredTrue],
-        message: ['', Validators.requiredTrue]
+        subject: ['', Validators.required],
+        message: ['', Validators.required]
       }
     );
 }
