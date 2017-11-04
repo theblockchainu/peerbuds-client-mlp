@@ -269,7 +269,8 @@ export class ProfileComponent implements OnInit {
 
   public reportProfile() {
     const dialogRef = this.dialog.open(ReportProfileComponent, {
-      width: '500px'
+      width: '489px',
+      height: '285px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

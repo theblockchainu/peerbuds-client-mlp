@@ -223,12 +223,27 @@
 // }
 
 // }
+.main-carousal{
+    max-height: 100px;
+    margin-left: 0px;
+    max-width: 100px;
+    text-align: center;
+    margin-top: 20%;
+    margin-left: 3px;
+    //padding-left: 40px; 
+    
+}
+.control{
+    top: 2px;
+    background-image: -webkit-linear-gradient(left, rgba(250, 248, 248, 0) 0%, rgba(248, 244, 244, 0) 100%);
+    opacity: -0.5 !important;
+}
+.carousal{
+    width: 13% !important;
+    margin-left: 44% !important;
+}
 
-
-//carousal
-
-.carousel-inner > .item > img,
-.carousel-inner > .item > a > img {
-    width: 20%;
-    margin: auto;
+.carousel-caption{
+padding-top: 10px;
+color: #484848;
 }
