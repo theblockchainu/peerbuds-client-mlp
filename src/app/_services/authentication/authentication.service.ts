@@ -137,7 +137,7 @@ export class AuthenticationService {
   createGuestContacts(first_name, last_name, email, subject, message): any {
     const body = `{"first_name":"${first_name}","last_name":"${last_name}","email":"${email}","subject":"${subject}","message":"${message}"}`;
       return this.http
-      .post(this.config.apiUrl + '/api/guestContacts?em=' + email, body, this.options)
+      .post(this.config.apiUrl + '/api/guestContacts', body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
