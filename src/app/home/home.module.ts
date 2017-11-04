@@ -11,13 +11,15 @@ import { HomefeedComponent } from './homefeed/homefeed.component';
 import { SharedModule } from '../_shared/_shared.module';
 import { SelectTopicsComponent } from './dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from './dialogs/select-price/select-price.component';
+import {StickyModule} from 'ng2-sticky-kit';
 
 @NgModule({
   imports: [
     CommonModule,
     HomeRoutingModule,
     MdTabsModule,
-    SharedModule
+    SharedModule,
+    StickyModule
   ],
   declarations: [HomeComponent, WorkshopsComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent, SelectPriceComponent],
   providers: [],

@@ -128,7 +128,7 @@ button:focus {
 /* Material Classes Starts*/
 
 .mat-caption, .mat-display-1, .mat-display-2, .mat-display-3, .mat-display-4 {
-    color: rgba(0,0,0,0.54);
+    color: rgba(0,0,0,0.75);
 }
 
 md-input-container .mat-has-icon {
@@ -183,6 +183,7 @@ md-subheader {
 
 .mat-tab-link {
     color: rgba(0,0,0,0.87) !important;
+    opacity: 1 !important;
 }
 
 .mat-border-button {
@@ -626,6 +627,7 @@ h3.calendarTitle  {
 
 .ui-widget-header {
     border: 0px !important;
+    background: none !important;
 }
 
 .ui-widget-content {
@@ -718,11 +720,11 @@ h3.calendarTitle  {
     border: 3px solid #ffffff;
 }
 
-.circle-thumb-viewpage { 
+.circle-thumb-viewpage {
     border-radius: 50%;
     display: inline-block;
     border: 3px solid #ffffff;
-    
+
 }
 
 .image-inline {
@@ -1088,7 +1090,8 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 /* App Header */
 
 .mat-elevation-header {
-    box-shadow: 0px 3px 40px -2px rgba(180, 180, 180, 0.2), 0px 3px 40px 0px rgba(180, 180, 180, 0.14), 0px 1px 40px 0px rgba(180, 180, 180, 0.12);
+    border-bottom: 1px solid #ddd;
+    /*box-shadow: 0px 3px 40px -2px rgba(180, 180, 180, 0.2), 0px 3px 40px 0px rgba(180, 180, 180, 0.14), 0px 1px 40px 0px rgba(180, 180, 180, 0.12);*/
 }
 
 /* Search */
@@ -1202,7 +1205,7 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 .mainStream video{
-    height: 96vh;    
+    height: 96vh;
 }
 
 .localStream{
@@ -1215,8 +1218,8 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 .localStream video{
     border-style: solid;
     border-color: white;
-    height: 100% !important;    
-    
+    height: 100% !important;
+
 }
 
 .otherStream{
@@ -1228,7 +1231,7 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .otherStream video{
     padding-right: 5px;
-    height: 100% !important;    
+    height: 100% !important;
 }
 
 .otherStreamTeacher{
@@ -1240,7 +1243,7 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .otherStreamTeacher video{
     padding-right: 5px;
-    height: 100% !important;    
+    height: 100% !important;
 }
 
 
@@ -1268,3 +1271,22 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     padding-right: 5px;
 }
 
+
+/* Upload component */
+
+.ui-widget-header .ui-button, .ui-widget-content .ui-button, .ui-widget.ui-button, .ui-button {
+    border: 0px solid #1dad8d !important;
+    color: #FFFFFF;
+    background: #33bd9e !important;
+    -webkit-transition: background-color .2s;
+    -moz-transition: background-color .2s;
+    transition: background-color .2s;
+}
+
+.ui-button {
+    padding: 5px !important;
+}
+
+.ui-corner-all {
+    border-radius: 2px !important;
+}

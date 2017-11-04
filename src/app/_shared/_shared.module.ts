@@ -44,6 +44,7 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { ExtractTimePipe } from './extract-time/extract-time.pipe';
 import {SocketService} from '../_services/socket/socket.service';
 import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
+import {StickyModule} from 'ng2-sticky-kit';
 
 @NgModule({
   imports: [
@@ -63,7 +64,8 @@ import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
       secondaryColour: '#ff5b5f',
       tertiaryColour: '#ff6d71'
     }),
-    Ng2DeviceDetectorModule.forRoot()
+    Ng2DeviceDetectorModule.forRoot(),
+    StickyModule
   ],
   declarations: [ExtractTimePipe],
   providers: [
