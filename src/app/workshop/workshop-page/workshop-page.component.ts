@@ -859,9 +859,10 @@ export class WorkshopPageComponent implements OnInit {
     };
     this._topicService.getTopics(query).subscribe(
       (response) => {
+        console.log(response);
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
-            if (collection.status === 'active') {
+            if (collection.status === 'active' && collection.id !== this.workshopId) {
               if (collection.owners[0].reviewsAboutYou) {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
@@ -871,6 +872,7 @@ export class WorkshopPageComponent implements OnInit {
           });
         }
         this.recommendations.collections = _.uniqBy(this.recommendations.collections, 'id');
+        this.recommendations.collections = _.orderBy(this.recommendations.collections, ['createdAt'], ['desc']);
         this.recommendations.collections = _.chunk(this.recommendations.collections, 5)[0];
         this.loadingSimilarWorkshops = false;
       }, (err) => {
@@ -1249,7 +1251,8 @@ export class WorkshopPageComponent implements OnInit {
     const data = {
       roomName: content.id + this.calendarId,
       teacherId: this.workshop.owners[0].id,
-      content: content
+      content: content,
+      participants: this.workshop.participants
     };
     this.dialogsService.startLiveSession(data).subscribe(result => {
     });

@@ -160,7 +160,7 @@
                         <div style="display: inline-block; margin-left: 10px;">
                           <div class="row">
                             <div class="col-md-12 clickable" (click)="openProfilePage(workshop.owners[0].id)">
-                              {{workshop.owners[0].profiles[0].first_name}} {{workshop.owners[0].profiles[0].last_name}}
+                              {{workshop.owners[0].profiles[0].first_name | titlecase }} {{workshop.owners[0].profiles[0].last_name | titlecase }}
                             </div>
                             <div class="col-md-12 mat-h5" *ngIf="workshop.owners[0].headline">
                               {{workshop.owners[0].profiles[0].headline}}
@@ -720,6 +720,7 @@
                       <!--<slide>
                         <video autoplay loop muted height="800px" class="center-block" (click)="workshopVideoDialog()">
                           <source src="{{config.apiUrl+workshop.videoUrl}}">
+                          <source src="{{config.apiUrl+workshop.videoUrl}}">
                         </video>
                       </slide>-->
                       <slide *ngIf="workshop.imageUrls === undefined">
@@ -746,7 +747,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <h2 style="display: inline-block; margin-bottom: -1px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</h2> &nbsp; per person
-                        <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;"> reviews</span>
+                        <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span><span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
                       </div>
                     </div>
                   </div>
