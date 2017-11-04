@@ -71,6 +71,8 @@ export class EditCalendarDialogComponent implements OnInit {
     public endDate;
     public duration;
 
+    public selectedIndex;
+
     public daysOption;
     public weekDayOption = [
                             { value: 1, text: 'Monday'},
@@ -261,6 +263,10 @@ export class EditCalendarDialogComponent implements OnInit {
         this.repeatFrequency('days');
     }
 
+    public repeatTillTrigger() {
+        this.repeatTill(this.recurring.value.repeatTillOption);
+    }
+
     public repeatFrequency(value) {
         this.computedEventCalendar = [];
         switch (value) {
@@ -324,6 +330,7 @@ export class EditCalendarDialogComponent implements OnInit {
                                 const futureMonthEnd = moment(futureMonth).endOf('month');
                                 this.recurringCalendar.push({ startDate: moment(start).utcOffset(0).toDate().toISOString(), endDate: end.utcOffset(0).set({hour:18,minute:29,second:59}).toDate().toISOString()});
                                 this.endDay = end;
+                                this.totalRunningDays = this.duration;
                                 while ( moment(this.endDay).isBefore(moment(futureMonth)) ) {
                                     this.createCalendars(this.endDay, days, weekday);
                                 }
@@ -332,6 +339,7 @@ export class EditCalendarDialogComponent implements OnInit {
                                 this.recurringCalendar = [];
                                 this.recurringCalendar.push({ startDate: moment(start).utcOffset(0).toDate().toISOString(), endDate: end.utcOffset(0).set({hour:18,minute:29,second:59}).toDate().toISOString()});
                                 this.endDay = end;
+                                this.totalRunningDays = this.duration;
                                 while (moment(this.endDay).isBefore(moment(tillDate))) {
                                     this.createCalendars(this.endDay, days, weekday);
                                 }
@@ -340,7 +348,24 @@ export class EditCalendarDialogComponent implements OnInit {
                                 this.recurringCalendar = [];
         }
         this.nextDays = moment(this.endDay).diff(moment(this.endDate), 'days');
-        //this.nextDays += this.weekDaysStartGap;
+        const calendarItenary = [];
+        for (const content of this.contents) {
+            const eventDate = this.calculateDate(content.startDate, content.schedules[0].startDay);
+            const itenary = {
+            startDay: content.schedules[0].startDay,
+            startDate: eventDate,
+            contents: content
+            };
+            calendarItenary.push(itenary);
+        }
+        // Generate a detail list of proposed collection
+        if(this.recurringCalendar.length > 0) {
+            for (const calendar of this.recurringCalendar) {
+                calendar['content'] = calendarItenary;
+                
+            }
+        }
+        console.log(this.recurringCalendar);
         this.computedEventCalendar = _.cloneDeep(this.eventCalendar);
         if (this.recurringCalendar.length > 0) {
             //Modify recurringCalendar and contents to look same like eventCalendar
@@ -366,6 +391,7 @@ export class EditCalendarDialogComponent implements OnInit {
                     }
                 }
             }
+
             this.sort();
             this.results = [];
             this.results = _.cloneDeep(this.overlap());
@@ -404,6 +430,12 @@ export class EditCalendarDialogComponent implements OnInit {
         this.recurringCount = this.recurringCalendar.length;
     }
 
+    public calculateDate(fromdate, day) {
+        const tempMoment = moment(fromdate);
+        tempMoment.add(day, 'days');
+        return tempMoment;
+    }
+
     private extractDate(dateString: string) {
         return moment.utc(dateString).local().toDate();
     }
@@ -420,13 +452,13 @@ export class EditCalendarDialogComponent implements OnInit {
             start = moment(start).utcOffset(0).set({hour:18,minute:30,second:0});
             tempEnd = moment(start).add(this.duration, 'days').utcOffset(0).set({hour:18,minute:29,second:59});
             this.recurringCalendar.push({ startDate: start.toDate().toISOString(), endDate: tempEnd.toDate().toISOString()});
-            end = tempEnd.format('YYYY-MM-DD');
+            end = tempEnd;//.format('YYYY-MM-DD');
         }
         else if (this.recurring.value.repeatWorkshopGroupOption === 'days') {
             start = moment(start).add(days, 'days').utcOffset(0).set({hour:18,minute:30,second:0});
             tempEnd = moment(start).add(this.duration, 'days').utcOffset(0).set({hour:18,minute:29,second:59});
             this.recurringCalendar.push({ startDate: start.toDate().toISOString(), endDate: tempEnd.toDate().toISOString()});
-            end = tempEnd.format('YYYY-MM-DD');
+            end = tempEnd;//.format('YYYY-MM-DD');
         }
         else if (this.recurring.value.repeatWorkshopGroupOption === 'weekdays') {
             const isoWeekDayForLastDate = moment(end).isoWeekday();
@@ -449,7 +481,7 @@ export class EditCalendarDialogComponent implements OnInit {
             start = moment(start).subtract(1, 'days').utcOffset(0).set({hour:18,minute:30,second:0});
             tempEnd = moment(start).add(this.duration, 'days').utcOffset(0).set({hour:18,minute:29,second:59});
             this.recurringCalendar.push({ startDate: start.toDate().toISOString(), endDate: tempEnd.toDate().toISOString()});
-            end = tempEnd.format('YYYY-MM-DD');
+            end = tempEnd;//.format('YYYY-MM-DD');
         }
         this.totalRunningDays += this.duration;
         this.endDay = end;
@@ -541,6 +573,16 @@ export class EditCalendarDialogComponent implements OnInit {
                 this._collectionService.deleteCalendar(result);
             }
         });
+    }
+
+
+
+    onTabOpen(event) {
+        this.selectedIndex = event.index;
+    }
+
+    onTabClose(event) {
+        this.selectedIndex = -1;
     }
 
 }
