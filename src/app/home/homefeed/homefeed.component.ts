@@ -36,7 +36,8 @@ export class HomefeedComponent implements OnInit {
     const query = {
       'include': [
         { 'collections': [{'owners': 'reviewsAboutYou'}] }
-      ]
+      ],
+      'order': 'createdAt desc'
     };
     this.loadingWorkshops = true;
     this._topicService.getTopics(query).subscribe(
@@ -73,7 +74,8 @@ export class HomefeedComponent implements OnInit {
       'where': {
         'id': {'neq': this.userId}
       },
-      'limit': 6
+      'limit': 6,
+      'order': 'createdAt desc'
     };
     this.loadingPeers = true;
     this._profileService.getAllPeers(query).subscribe((result) => {

@@ -16,25 +16,25 @@
       <div class="loading-container" [hidden]="!loadingWorkshops">
         <ngx-loading [show]="true"></ngx-loading>
       </div>
-      <div *ngIf="!loadingWorkshops" class="row feed-horizontal margin-top-20 margin-bottom-60" style="padding: 0px 7px;">
+      <div *ngIf="!loadingWorkshops" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
         <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
           <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
             <div class="">
               <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
               <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
             </div>
-            <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
-            <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
-            <div class="mat-body-2" style="margin-top: 5px;">{{workshop.title | titlecase}}</div>
+            <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
+            <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
+            <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
             <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
-            <div class="col-sm-12 padding-left-0" style="margin-top: 12px;">
+            <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
               <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
               </p-rating>
               <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
-                <label>{{workshop.ratingCount}} Reviews</label>
+                <label>{{workshop.ratingCount}} reviews</label>
               </span>
               <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
-                <label>0 Reviews</label>
+                <label>0 reviews</label>
               </span>
             </div>
           </a>
@@ -59,23 +59,23 @@
       <div class="loading-container" [hidden]="!loadingPeers">
         <ngx-loading [show]="true"></ngx-loading>
       </div>
-      <div *ngIf="!loadingPeers" class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
+      <div *ngIf="!loadingPeers" class="row feed-horizontal margin-bottom-50" style="padding: 0px 7px;">
         <div class="peer-recommendation-card" *ngFor="let peer of peers">
           <a [routerLink]="'/profile/'+peer.id">
             <div class="">
               <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}" alt="workshpImg">
               <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png" alt="workshpImg">
             </div>
-            <div style="margin-top: 12px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
-            <div style="margin-top: 12px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
-            <div class="col-sm-12 padding-left-0" style="margin-top: 12px;">
+            <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name}} {{peer.profiles[0].last_name}}</div>
+            <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
+            <div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
               <p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
               </p-rating>
               <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length>0" style="text-align: left">
-                <label>{{peer.reviewsAboutYou.length}} Reviews</label>
+                <label>{{peer.reviewsAboutYou.length}} reviews</label>
               </span>
               <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length==0" style="text-align: left">
-                <label>0 Reviews</label>
+                <label>0 reviews</label>
               </span>
             </div>
           </a>

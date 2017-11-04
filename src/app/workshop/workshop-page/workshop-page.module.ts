@@ -21,6 +21,7 @@ import {VgOverlayPlayModule} from 'videogular2/overlay-play';
 import {VgBufferingModule} from 'videogular2/buffering';
 import {InviteFriendsDialogComponent} from './invite-friends-dialog/invite-friends-dialog.component';
 import {ClipboardModule} from 'ngx-clipboard/dist';
+import {StickyModule} from 'ng2-sticky-kit';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import {ClipboardModule} from 'ngx-clipboard/dist';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    ClipboardModule
+    ClipboardModule,
+    StickyModule
   ],
 
   declarations: [WorkshopPageComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent],

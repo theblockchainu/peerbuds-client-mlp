@@ -81,6 +81,7 @@ export class WorkshopPageComponent implements OnInit {
   public busyReview = false;
   public busyReply = false;
   public initialLoad = true;
+  public loggedInUser;
 
   public isReadonly = true;
   public noOfReviews = 3;
@@ -1065,6 +1066,9 @@ export class WorkshopPageComponent implements OnInit {
             isCurrentUserParticipant = true;
             currentUserParticipatingCalendar = responseObj.calendarId;
           }
+          if (responseObj.id === this.userId) {
+              this.loggedInUser = responseObj;
+          }
         }
         if (isCurrentUserParticipant) {
           this.router.navigate(['workshop', this.workshopId, 'calendar', currentUserParticipatingCalendar]);
@@ -1249,6 +1253,11 @@ export class WorkshopPageComponent implements OnInit {
     };
     this.dialogsService.startLiveSession(data).subscribe(result => {
     });
+  }
+
+  scrollToDiscussion() {
+      const el = document.getElementById('discussionTarget');
+      el.scrollIntoView();
   }
 
 
