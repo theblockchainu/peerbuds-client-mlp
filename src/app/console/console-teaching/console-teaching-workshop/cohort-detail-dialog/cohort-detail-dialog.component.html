@@ -1,11 +1,14 @@
 <h1 md-dialog-title>Past Cohort Details</h1>
 <div md-dialog-content>
-  <div class="row" *ngFor="let cohort of cohortsDataArray">
-    <div class="col-md-9">
+  <div class="row" *ngFor="let cohort of cohortsDataArray" style="margin-top: 10px;">
+    <div class="col-md-4">
       <p>{{cohort.startDate |extractTime:'Do MMM'}} - {{cohort.endDate| extractTime:'Do MMM'}}</p>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <p>{{cohort.participants.length}} participants</p>
+    </div>
+    <div class="col-md-4">
+      <button md-raised-button [md-dialog-close] [routerLink]="['workshop',data.id,'calendar',cohort.id]">Open Cohort</button>
     </div>
   </div>
 </div>
