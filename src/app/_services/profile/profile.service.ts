@@ -483,4 +483,12 @@ export class ProfileService {
       .map(response => response.json());
   }
 
+  /**
+   * approvePeer
+   */
+  public approvePeer(peer: any) {
+    return this.http.post(this.config.apiUrl + '/api/peers/' + peer.id + '/approve', {})
+      .map(response => response.json());
+  }
+
 }
