@@ -83,6 +83,7 @@
           <div class="col-md-4">
             <div class="row" style="margin-top: 15px; text-align: right" *ngIf="userType==='teacher' || userType==='participant'">
               <!--<button md-raised-button class="" color="primary" (click)="joinGroupChat()">Join Group Chat</button> &emsp;-->
+              <button md-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'" (click)="scrollToDiscussion()">Discussion</button> &emsp;
               <button md-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="gotoEdit()">Edit</button>&emsp;
               <md-icon [mdMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</md-icon>
               <md-menu #menu="mdMenu">
@@ -98,32 +99,57 @@
           <div class="col-md-7 left-content">
             <!--ABOUT SECTION-->
             <div class="row About">
-              <div class="col-md-12">
-                <h3 *ngIf="userType==='teacher' || userType==='participant'">{{workshop.headline | titlecase}}&emsp;
+              <div class="col-md-4">
+                <h3 *ngIf="userType === 'public'">What we'll do</h3>
+                <h3 *ngIf="(userType === 'teacher' || userType==='participant') && loggedInUser !== undefined">Welcome back, {{loggedInUser.profiles[0].first_name}}</h3>
+              </div>
+              <div class="col-md-8">
+                <!--<h3 *ngIf="userType==='teacher' || userType==='participant'">{{workshop.headline | titlecase}}&emsp;
                   <a (click)="workshopVideoDialog()" *ngIf="workshop.videoUrl">
                     Watch Intro Video
                     <i class="fa fa-play-circle" aria-hidden="true"></i>
                   </a>
-                </h3>
-                <div class="margin-top-10"> {{workshop.description}} </div>
+                </h3>-->
+                <div class="row" *ngIf="userType === 'public'">
+                  <div class="col-md-12">
+                    <md-icon style="top: 7px;">schedule</md-icon>&emsp;
+                    <span>{{totalDuration | i18nPlural : hourMapping}} in total</span>
+                  </div>
+                  <div class="col-md-12 margin-top-10">
+                    <md-icon style="top: 7px;">mic</md-icon>&emsp;
+                    <span>Offered in {{workshop.language[0]}}</span>
+                  </div>
+                  <div class="col-md-12 margin-top-10">
+                    <md-icon style="top: 7px;">dvr</md-icon>&emsp;
+                    <span>{{getContentCount('project')}} Project</span>
+                  </div>
+                  <div class="col-md-12 margin-top-10">
+                    <md-icon style="top: 7px;">play_circle_outline</md-icon>&emsp;
+                    <span>{{getContentCount('video')}} Recorded Videos</span>
+                  </div>
+                </div>
+                <div *ngIf="userType==='public'" class="margin-top-20"> {{workshop.description}} </div>
+                <div *ngIf="userType === 'teacher' || userType==='participant'" style="margin-top: 5px;">As you complete any activity, your progress and updates will show up here.</div>
               </div>
             </div>
             <!--TOPICS SECTION-->
-            <div class="row Topics margin-top-20">
-              <div class="col-md-12">
+            <div class="row Topics margin-top-20" *ngIf="userType === 'public'">
+              <div class="col-md-8 col-md-offset-4">
                 <md-chip-list>
                   <md-chip class="square" *ngFor="let topic of topicFix"> {{topic.name | titlecase}} </md-chip>
                 </md-chip-list>
               </div>
             </div>
+            <hr>
             <!--TODO: Description of workshop-->
             <div class="row Description" *ngIf="userType==='public'">
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-12">
-                    <hr>
-                    <b>Taught by</b>
-                    <div class="row margin-top-20">
+                  <div class="col-md-4">
+                    <h3>Taught by</h3>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="row">
                       <div class="col-md-12">
                         <div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
                           <img (click)="openProfilePage(workshop.owners[0].id)" *ngIf="!workshop.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png"
@@ -139,6 +165,9 @@
                             <div class="col-md-12 mat-h5" *ngIf="workshop.owners[0].headline">
                               {{workshop.owners[0].profiles[0].headline}}
                             </div>
+                            <div class="col-md-12 mat-h5" *ngIf="!workshop.owners[0].headline">
+                              New user
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -148,10 +177,12 @@
                         <p>{{workshop.aboutHost}}</p>
                       </div>
                     </div>
-                    <hr>
                   </div>
                 </div>
               </div>
+            </div>
+            <hr *ngIf="userType==='public'">
+            <div class="row" *ngIf="userType === 'public'">
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-4">
@@ -174,7 +205,7 @@
                 </div>
               </div>
             </div>
-            <hr>
+            <hr *ngIf="userType === 'public'">
             <!--TIMELINE-->
             <div class="row Itenary">
               <div class="featurette" id="about">
@@ -187,7 +218,7 @@
                       <div [ngClass]="{'message-item': true, 'message-item-ticked': hasDatePassed(itenary.startDate)}">
                         <div class="message-inner">
                           <div class="qa-message-content">
-                            <div style="top: -7px; position: relative;">
+                            <div style="top: -4px; position: relative;">
                               <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
                               <div *ngIf="userType==='public'|| calendarId === undefined">Day {{itenary.startDay}}</div>
                             </div>
@@ -197,7 +228,7 @@
                                 {{content.totalUserViewTime}}
                               </div>
                               <div class="col-md-5">
-                                <img style="width: 100%; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}"
+                                <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}"
                                   (error)="_collectionService.imgErrorHandler($event)">
                                 <video #videoContent width="100%" height="120px" *ngIf="content.type==='video'" class="itenary-media" preload="metadata"
                                   poster="../../../assets/images/placeholder-image.jpg">
@@ -242,6 +273,7 @@
                 </div>
               </div>
             </div>
+            <div id="discussionTarget" #discussionTarget></div>
             <hr class="margin-top-80 margin-bottom-40">
             <!--DISCUSSION THREAD-->
             <div class="row Discussion" *ngIf="userType==='teacher' || userType==='participant'">
@@ -406,7 +438,7 @@
                 </div>
               </div>
             </div>
-            <hr style="margin-top: -20px;" *ngIf="(userType==='teacher' || userType==='participant') && comments !== undefined && comments.length === 0">
+            <hr *ngIf="(userType==='teacher' || userType==='participant') && comments !== undefined && comments.length === 0">
             <!--REVIEWS-->
             <div class="loading-container" [hidden]="!loadingReviews && !initialLoad">
               <ngx-loading [show]="true"></ngx-loading>
@@ -650,8 +682,7 @@
               <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
                 <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
                   <span class="cal-day-badge"></span>
-                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
-                    MMM' }})</span>
+                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})</span>
                 </div>
                 <div class="margin-top-10 margin-bottom-10">
                   <span>{{clickedDate | date:'EEEE, MMM d'}}</span>
@@ -689,47 +720,24 @@
                       <!--<slide>
                         <video autoplay loop muted height="800px" class="center-block" (click)="workshopVideoDialog()">
                           <source src="{{config.apiUrl+workshop.videoUrl}}">
+                          <source src="{{config.apiUrl+workshop.videoUrl}}">
                         </video>
                       </slide>-->
                       <slide *ngIf="workshop.imageUrls === undefined">
-                        <img src="../../../assets/images/placeholder-image.jpg" class="img-responsive center-block" style="max-height: 100%" alt="First slide">
+                        <img src="../../../assets/images/placeholder-image.jpg" class="img-responsive" style="width: auto; max-height: 500px;" alt="First slide">
                       </slide>
                       <slide *ngFor="let imageUrl of workshop.imageUrls">
-                        <img src="{{config.apiUrl+imageUrl}}" class="img-responsive center-block" style="max-height: 100%" alt="First slide">
+                        <img src="{{config.apiUrl+imageUrl}}" class="img-responsive" style="width: auto; max-height: 500px;" alt="First slide">
                       </slide>
                     </carousel>
                   </div>
                 </div>
                 <!--HEADLINE-->
-                <div class="row margin-top-10">
-                  <div class="col-md-12">
-                    <h3>
-                      {{workshop.headline | titlecase}}
-                    </h3>
-                  </div>
-                </div>
-                <hr>
-                <!--ABOUT HOST SECTION-->
                 <div class="row">
                   <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-md-12 margin-top-10">
-                        <md-icon style="top: 7px;">schedule</md-icon>&emsp;
-                        <span>{{totalDuration | i18nPlural : hourMapping}} in total</span>
-                      </div>
-                      <div class="col-md-12 margin-top-10">
-                        <md-icon style="top: 7px;">mic</md-icon>&emsp;
-                        <span>Offered in {{workshop.language[0]}}</span>
-                      </div>
-                      <div class="col-md-12 margin-top-10">
-                        <md-icon style="top: 7px;">dvr</md-icon>&emsp;
-                        <span>{{getContentCount('project')}} Project</span>
-                      </div>
-                      <div class="col-md-12 margin-top-10">
-                        <md-icon style="top: 7px;">play_circle_outline</md-icon>&emsp;
-                        <span>{{getContentCount('video')}} Recorded Videos</span>
-                      </div>
-                    </div>
+                    <h3>
+                      {{workshop.headline | titlecase | shorten: '40'}}
+                    </h3>
                   </div>
                 </div>
                 <hr>
@@ -738,15 +746,8 @@
                   <div class="col-md-8">
                     <div class="row">
                       <div class="col-md-12">
-                        <h2 style="display: inline-block;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</h2> &nbsp; per person
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-5">
-                        <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
-                      </div>
-                      <div class="col-md-7" *ngIf="reviews">
-                        <h5>{{reviews.length}} Reviews</h5>
+                        <h2 style="display: inline-block; margin-bottom: -1px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</h2> &nbsp; per person
+                        <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span><span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
                       </div>
                     </div>
                   </div>
@@ -756,7 +757,7 @@
                 </div>
               </div>
             </div>
-            <hr class="margin-top-30 margin-bottom-10">
+            <hr class="margin-top-10 margin-bottom-10">
             <div class="row" style="color: #777777">
               <div class="col-md-4" style="cursor: pointer;">
                 <a (click)="openInviteFriendsDialog()">Invite friends</a>
@@ -776,7 +777,7 @@
         </div>
 
         <!--SIMILAR WORKSHOPS-->
-        <div class="row workshop-suggestions margin-bottom-80" *ngIf="userType!=='teacher'">
+        <div class="row workshop-suggestions" *ngIf="userType!=='teacher'">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-5">
@@ -798,23 +799,21 @@
               <div class="recommendation-card" *ngFor="let workshop of recommendations.collections; let i =index">
                 <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
                   <div class="">
-                    <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
-                      alt="workshpImg">
-                    <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
-                      alt="workshpImg">
+                    <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
+                    <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
                   </div>
-                  <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
-                  <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: workshop.currency: true: '1.0-0'}}</div>
-                  <div class="mat-body-2" style="margin-top: 5px;">{{workshop.title | titlecase}}</div>
+                  <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
+                  <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
+                  <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
                   <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
-                  <div class="col-sm-12 padding-left-0" style="margin-top: 12px;">
+                  <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
                     <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
                     </p-rating>
                     <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
-                      <label>{{workshop.ratingCount}} Reviews</label>
+                      <label>{{workshop.ratingCount}} reviews</label>
                     </span>
                     <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
-                      <label>0 Reviews</label>
+                      <label>0 reviews</label>
                     </span>
                   </div>
                 </a>

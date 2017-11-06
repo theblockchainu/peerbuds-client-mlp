@@ -10,16 +10,17 @@ import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Valida
   styleUrls: ['./index-philosophy.component.scss']
 })
 export class IndexPhilComponent implements OnInit {
+  public first = false;
   private email: string;
   notifyForm: FormGroup;
-  public transformationSelected = false
+  public transformationSelected = false;
   public pplFocussedSelected = false;
   public courageSelected = false;
   public collabSelected = false;
   public optimismSelected = false;
 
   constructor(private authenticationService: AuthenticationService,
-    public _fb: FormBuilder) { 
+    public _fb: FormBuilder) {
     this.transformationSelected = true;
   }
 
@@ -36,7 +37,7 @@ export class IndexPhilComponent implements OnInit {
     this.collabSelected = !state;
     this.optimismSelected = !state;
   }
-  
+
   public showPplFocussed(state) {
     this.transformationSelected = !state;
     this.pplFocussedSelected = state;
@@ -44,7 +45,7 @@ export class IndexPhilComponent implements OnInit {
     this.collabSelected = !state;
     this.optimismSelected = !state;
   }
-  
+
   public showCourage(state) {
     this.transformationSelected = !state;
     this.pplFocussedSelected = !state;
@@ -52,7 +53,7 @@ export class IndexPhilComponent implements OnInit {
     this.collabSelected = !state;
     this.optimismSelected = !state;
   }
-  
+
   public showCollab(state) {
     this.transformationSelected = !state;
     this.pplFocussedSelected = !state;
@@ -60,13 +61,16 @@ export class IndexPhilComponent implements OnInit {
     this.collabSelected = state;
     this.optimismSelected = !state;
   }
-  
   public showOptimism(state) {
     this.transformationSelected = !state;
     this.pplFocussedSelected = !state;
     this.courageSelected = !state;
     this.collabSelected = !state;
     this.optimismSelected = state;
+  }
+
+  public showFirst(state){
+    this.first = state;
   }
   public sendEmailSubscriptions() {
     // this.loading = true;

@@ -73,6 +73,7 @@
     "moment": "^2.19.1",
     "ng-router-loader": "^2.1.0",
     "ng2-device-detector": "^1.0.0",
+    "ng2-sticky-kit": "^5.0.0",
     "ng4-geoautocomplete": "^0.0.9",
     "ngx-bootstrap": "^1.9.3",
     "ngx-clipboard": "^8.1.1",

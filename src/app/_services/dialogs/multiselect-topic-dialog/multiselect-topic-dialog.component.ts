@@ -257,6 +257,5 @@ export class MultiselectTopicDialogComponent implements OnInit { //implements Co
     this.selectedOutput.emit(this.selected);
     this.removedOutput.emit(this.removed);
   }
-
 }
 
