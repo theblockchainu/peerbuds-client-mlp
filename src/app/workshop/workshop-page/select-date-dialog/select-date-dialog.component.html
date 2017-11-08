@@ -6,7 +6,7 @@
       <h2 md-dialog-title *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
       <h2 md-dialog-title *ngIf="mode === 'editDelete'">Existing workshop cohorts</h2>
     </div>
-    <md-dialog-actions class="col-md-2 pull-right" style="padding-top:6px">
+    <md-dialog-actions *ngIf="mode === 'editDelete'" class="col-md-2 pull-right" style="padding-top:6px">
       <button md-raised-button class="mat-raised-button" (click)="closeSelectCohort()" color="primary">Done</button>
     </md-dialog-actions>
   </div>
@@ -48,7 +48,7 @@
               <br>
               <br>
               <div class="col-md-12">
-                <button *ngIf="mode === 'chooseDate'" md-button md-dialog-close="{{itenaryObj.calendar.id}}" class="mat-border-button">Select this cohort</button>
+                <button *ngIf="mode === 'chooseDate'" md-button (click)="selectCohort(itenaryObj.calendar.id)" class="mat-border-button">Select this cohort</button>
                 <button type="button" *ngIf="mode === 'editDelete'" md-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)" [disabled]="itenaryObj.participantCount > 0" class="mat-border-button">Delete this cohort</button>
               </div>
             </div>
