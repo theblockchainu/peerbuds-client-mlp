@@ -11,7 +11,9 @@
 <div class="row" *ngIf="!loadingProfile">
   <div class="col-md-7" style="position: fixed">
     <button md-raised-button color="accent" (click)="saveProfile()" class="pull-right">
-      Update Profile
+      <span *ngIf="!busyUpdate">Update Profile</span>
+      <span *ngIf="busyUpdate"> </span>
+      <ngx-loading [show]="busyUpdate"></ngx-loading>
     </button>
   </div>
 </div>
