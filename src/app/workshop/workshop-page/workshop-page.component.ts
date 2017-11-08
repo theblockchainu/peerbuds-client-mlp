@@ -244,8 +244,10 @@ export class WorkshopPageComponent implements OnInit {
 
   // Modal
   public editCalendar() {
+    const sortedCalendar = this.sort(this.workshop.calendars, 'startDate', 'endDate');
+    
     this.dialogsService
-      .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.workshop.calendars, this.allItenaries, this.allParticipants, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
+      .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.workshop.calendars, this.allItenaries, this.allParticipants, this.events, this.userId, sortedCalendar[sortedCalendar.length - 1].startDate, sortedCalendar[sortedCalendar.length - 1].endDate)
       .subscribe(res => {
         this.result = res;
         if (this.result === 'calendarsSaved') {
@@ -286,7 +288,8 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private initializeAllItenaries() {
-    this.workshop.calendars.forEach((calendar, index) => {
+    const sortedCalendar = this.sort(this.workshop.calendars, 'startDate', 'endDate');
+    sortedCalendar.forEach((calendar, index) => {
       const calendarItenary = [];
       for (const key in this.itenariesObj) {
         if (this.itenariesObj.hasOwnProperty(key)) {
@@ -1259,10 +1262,14 @@ export class WorkshopPageComponent implements OnInit {
     });
   }
 
+  private sort(calendars, param1, param2) {
+    return _.sortBy(calendars, [param1, param2]);
+  }
+
+
   scrollToDiscussion() {
     const el = document.getElementById('discussionTarget');
     el.scrollIntoView();
   }
-
 
 }
