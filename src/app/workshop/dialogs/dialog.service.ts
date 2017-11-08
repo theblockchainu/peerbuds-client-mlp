@@ -18,7 +18,10 @@ export class DialogsService {
     public editCalendar(collection, contents, calendars, allItinerary, participants, events: CalendarEvent[], userId: string, startDate: Date, endDate: Date): Observable<boolean> {
         let dialogRef: MdDialogRef<EditCalendarDialogComponent>;
 
-        dialogRef = this.dialog.open(EditCalendarDialogComponent);
+        dialogRef = this.dialog.open(EditCalendarDialogComponent, {
+            width: '80vw',
+            height: '80vh'}
+        );
 
         dialogRef.componentInstance.collection = collection;
         dialogRef.componentInstance.contents = contents;

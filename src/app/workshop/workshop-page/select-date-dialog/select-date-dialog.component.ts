@@ -16,6 +16,7 @@ export class SelectDateDialogComponent implements OnInit {
   public mode;
   public userType;
   public filteredItineraries = [];
+  public deletedCalendar = [];
 
   constructor(public dialogRef: MdDialogRef<SelectDateDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any) {
@@ -49,6 +50,20 @@ export class SelectDateDialogComponent implements OnInit {
 
   onTabClose(event) {
     this.selectedIndex = -1;
+  }
+
+  deleteCohort(event, calendarId) {
+    event.preventDefault();
+    if (calendarId) {
+      this.filteredItineraries = _.remove(this.filteredItineraries, (item) => {
+        return item.calendar.id != calendarId;
+      });
+      this.deletedCalendar.push(calendarId);
+    }
+  }
+
+  closeSelectCohort() {
+    this.dialogRef.close(this.deletedCalendar);
   }
 
 }

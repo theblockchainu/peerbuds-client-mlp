@@ -287,7 +287,6 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private initializeAllItenaries() {
-    debugger;
     const sortedCalendar = this.sort(this.workshop.calendars, 'startDate', 'endDate');
     sortedCalendar.forEach((calendar, index) => {
       const calendarItenary = [];
@@ -360,7 +359,6 @@ export class WorkshopPageComponent implements OnInit {
           console.log(res);
           this.workshop = res;
           this.setCurrentCalendar();
-          debugger;
           this.workshop.contents.forEach(contentObj => {
             if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
               this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
@@ -378,7 +376,6 @@ export class WorkshopPageComponent implements OnInit {
               });
             }
           });
-          debugger;
           for (const key in this.itenariesObj) {
             if (this.itenariesObj.hasOwnProperty(key)) {
               let startDate, endDate;
@@ -405,7 +402,6 @@ export class WorkshopPageComponent implements OnInit {
                 endDate: endDate,
                 contents: this.itenariesObj[key]
               };
-              debugger;
               this.itenaryArray.push(itenary);
             }
           }
