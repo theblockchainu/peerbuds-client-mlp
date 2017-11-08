@@ -231,7 +231,6 @@ export class EditCalendarDialogComponent implements OnInit {
         this.duration = Math.round(moment.duration(moment(this.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment(this.startDate, 'YYYY-MM-DD HH:mm:ss'))).asDays()) + 1;
         this.daysOption = this.getDaysArray();
         this.events = this.inpEvents;
-        debugger;
         this.monthOption = this.getMonthArray();
         //Get all the events for a user
         this._contentService.getEvents(this.userId)
@@ -613,7 +612,6 @@ export class EditCalendarDialogComponent implements OnInit {
             data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher' }
         });
         dialogRef.afterClosed().subscribe((data) => {
-            debugger;
             // Handle the deleted calendar if any
             if (data && data.length > 0) {
                 data.forEach(calendar => {
@@ -624,12 +622,10 @@ export class EditCalendarDialogComponent implements OnInit {
                     this.calendars = _.remove(this.calendars, (item) => {
                         return item.id != calendar;
                     });
-                    debugger;
                     this.events = _.remove(this.events, (item) => {
                         return !item.title.includes(':' + calendar + ':');
                     });
                 });
-                debugger;
                 //As sorting is taken care of no need to sort now
                 this.endDate = this.allItenaries[this.allItenaries.length - 1].calendar.endDate;
             }
