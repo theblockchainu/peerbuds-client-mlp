@@ -26,6 +26,7 @@ export class VerifyEmailDialogComponent implements OnInit {
   public otpReceived: string;
   public userId;
 
+
   constructor(
     public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -49,10 +50,10 @@ export class VerifyEmailDialogComponent implements OnInit {
       Validators.pattern(EMAIL_REGEX)]],
       verificationIdUrl: ['', Validators.required]
     });
-
     this.otp = this._fb.group({
       inputOTP: [null]
     });
+
     this._profileService.getPeerNode(this.userId)
       .subscribe((res) => {
         this.peer.controls.email.setValue(res.email);

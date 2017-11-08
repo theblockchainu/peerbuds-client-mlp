@@ -3,12 +3,13 @@
 }
 
 .workshopsFeed{
-    padding-top: 50px;
+    padding-top: 30px;
 }
 
 .workshop-feed label{
     color: #484848;
-    font-size: 13px;    
+    font-size: 13px;
+    font-weight: 400;
 }
 
 .workshop-feed .title {
@@ -27,14 +28,18 @@
     font-size:16px !important;
 }
 
-.homefeed{
-    padding-top: 50px;
+.homefeed {
+    padding-top: 30px;
 }
 
 .recommendation-thumb{
     object-fit: cover;
     height: 290px;
     width: 100%;
+}
+
+.sticky {
+    border-bottom: 1px solid #ddd;
 }
 
 .peer-recommendation-thumb{
@@ -49,7 +54,7 @@
     padding-right: 8px;
     width: 20%;
     float: left;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
 }
 
 .peer-recommendation-card{

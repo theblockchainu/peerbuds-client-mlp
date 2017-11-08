@@ -447,6 +447,11 @@ h3 {
     float: left;
 }
 
+.recommendation-card label {
+    font-size: 12px;
+    font-weight: 400;
+}
+
 .workshop-feed .headline {
     font-size:16px !important;
     color: #767676 !important;
@@ -455,4 +460,8 @@ h3 {
 .workshop-suggestions {
     margin-top: -20px;
     padding-bottom: 20px;
+}
+
+.right-content {
+    padding-right: 55px;
 }

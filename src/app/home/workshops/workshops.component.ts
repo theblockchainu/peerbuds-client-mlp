@@ -129,6 +129,7 @@ export class WorkshopsComponent implements OnInit {
           });
         }
         this.workshops = _.uniqBy(workshops, 'id');
+        this.workshops = _.orderBy(this.workshops, ['createdAt'], ['desc']);
         if (!this.initialized) {
           this.setPriceRange();
           this.initialized = true;

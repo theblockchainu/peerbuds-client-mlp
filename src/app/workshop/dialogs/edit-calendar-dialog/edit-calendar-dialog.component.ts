@@ -1,7 +1,7 @@
 import { MdDialogRef, MdDialog, MdDialogConfig, MdIconModule, MdSelectModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import {
-  FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
+    FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
 
 import { ContentService } from '../../../_services/content/content.service';
@@ -13,21 +13,21 @@ import _ from 'lodash';
 import { ViewConflictDialogComponent } from '../view-conflict-dialog/view-conflict-dialog.component';
 
 import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours
+    startOfDay,
+    endOfDay,
+    subDays,
+    addDays,
+    endOfMonth,
+    isSameDay,
+    isSameMonth,
+    addHours
 } from 'date-fns';
 import { Subject } from 'rxjs/Subject';
 import {
-  CalendarEvent,
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
-  CalendarDateFormatter
+    CalendarEvent,
+    CalendarEventAction,
+    CalendarEventTimesChangedEvent,
+    CalendarDateFormatter
 } from 'angular-calendar';
 import { CustomDateFormatter } from '../../workshop-page/custom-date-formatter.provider';
 import { SelectDateDialogComponent } from '../../workshop-page/select-date-dialog/select-date-dialog.component';
@@ -35,28 +35,28 @@ import { Router } from '@angular/router';
 
 const colors: any = {
     red: {
-      primary: '#ad2121',
-      secondary: '#FAE3E3'
+        primary: '#ad2121',
+        secondary: '#FAE3E3'
     },
     blue: {
-      primary: '#1e90ff',
-      secondary: '#D1E8FF'
+        primary: '#1e90ff',
+        secondary: '#D1E8FF'
     },
     yellow: {
-      primary: '#e3bc08',
-      secondary: '#FDF1BA'
+        primary: '#e3bc08',
+        secondary: '#FDF1BA'
     }
-  };
+};
 
 @Component({
     selector: 'app-edit-calendar-dialog',
     templateUrl: './edit-calendar-dialog.component.html',
     styleUrls: ['./edit-calendar-dialog.component.scss'],
     providers: [
-      {
-        provide: CalendarDateFormatter,
-        useClass: CustomDateFormatter
-      }
+        {
+            provide: CalendarDateFormatter,
+            useClass: CustomDateFormatter
+        }
     ]
 })
 export class EditCalendarDialogComponent implements OnInit {
@@ -75,14 +75,14 @@ export class EditCalendarDialogComponent implements OnInit {
 
     public daysOption;
     public weekDayOption = [
-                            { value: 1, text: 'Monday'},
-                            { value: 2, text: 'Tuesday'},
-                            { value: 3, text: 'Wednesday'},
-                            { value: 4, text: 'Thursday'},
-                            { value: 5, text: 'Friday'},
-                            { value: 6, text: 'Saturday'},
-                            { value: 7, text: 'Sunday'}
-                            ];
+        { value: 1, text: 'Monday' },
+        { value: 2, text: 'Tuesday' },
+        { value: 3, text: 'Wednesday' },
+        { value: 4, text: 'Thursday' },
+        { value: 5, text: 'Friday' },
+        { value: 6, text: 'Saturday' },
+        { value: 7, text: 'Sunday' }
+    ];
     public monthOption;
     public dateRepeat;
 
@@ -194,7 +194,7 @@ export class EditCalendarDialogComponent implements OnInit {
     public getDaysArray() {
         const days = [];
         for (let i = 1; i <= 30; i++) {
-        days.push(i);
+            days.push(i);
         }
         return days;
     }
@@ -206,7 +206,7 @@ export class EditCalendarDialogComponent implements OnInit {
     public getMonthArray() {
         const months = [];
         for (let i = 1; i <= 15; i++) {
-        months.push(i);
+            months.push(i);
         }
         return months;
     }
@@ -222,9 +222,9 @@ export class EditCalendarDialogComponent implements OnInit {
         private router: Router,
         private _collectionService: CollectionService,
         private _cookieUtilsService: CookieUtilsService) {
-            
-            this.userId = _cookieUtilsService.getValue('userId');
-            
+
+        this.userId = _cookieUtilsService.getValue('userId');
+
     }
     public ngOnInit() {
         this.duration = Math.round(moment.duration(moment(this.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment(this.startDate, 'YYYY-MM-DD HH:mm:ss'))).asDays()) + 1;
@@ -266,6 +266,12 @@ export class EditCalendarDialogComponent implements OnInit {
         .subscribe((response) => {
             this.dialogRef.close('calendarsSaved');
         });
+        console.log(this.recurringCalendar);
+
+        this._collectionService.postCalendars(this.collection.id, this.recurringCalendar)
+            .subscribe((response) => {
+                this.dialogRef.close('calendarsSaved');
+            });
     }
 
     public computeWeekday(value) {
@@ -284,36 +290,36 @@ export class EditCalendarDialogComponent implements OnInit {
         this.computedEventCalendar = [];
         switch (value) {
             case 'immediate':
-                                // this.startDay = this.endDate;
-                                this.startDay = moment(this.endDate).add(1, 'days').format('YYYY-MM-DD');
-                                break;
+                // this.startDay = this.endDate;
+                this.startDay = moment(this.endDate).add(1, 'days').format('YYYY-MM-DD');
+                break;
             case 'days':
-                                this.startDay = moment(this.endDate).add(this.recurring.controls['days'].value + 1, 'days').format('YYYY-MM-DD');
-                                break;
+                this.startDay = moment(this.endDate).add(this.recurring.controls['days'].value + 1, 'days').format('YYYY-MM-DD');
+                break;
             case 'weekdays':
-                                const isoWeekDay = this.recurring.controls['weekdays'].value;
-                                const isoWeekDayForLastDate = moment(this.endDate).isoWeekday();
-                                if (isoWeekDayForLastDate < isoWeekDay) {
-                                    // then just give me this week's instance of that day
-                                    this.startDay =  moment(this.endDate).isoWeekday(isoWeekDay);
-                                    // this.startDay =  moment(this.endDate).add(isoWeekDay - isoWeekDayForLastDate, 'days');
-                                } else if (isoWeekDayForLastDate > isoWeekDay) {
-                                    // otherwise, give me next week's instance of that day
-                                    // this.startDay = moment(this.endDate).add(7 - isoWeekDayForLastDate + 1, 'days');//.isoWeekday(isoWeekDay)    
-                                    if (isoWeekDayForLastDate + isoWeekDay >= 7) {
-                                        this.startDay = moment(this.endDate).add(1, 'weeks').subtract(isoWeekDayForLastDate - isoWeekDay, 'days');
-                                    }
-                                    else {
-                                        this.startDay = moment(this.endDate).add(7 - isoWeekDayForLastDate + 1, 'days');//.isoWeekday(isoWeekDay)
-                                    }
-                                }
-                                else if (isoWeekDayForLastDate == isoWeekDay) {
-                                    this.startDay = moment(this.endDate).add(1, 'weeks').isoWeekday(isoWeekDay);
-                                }
-                                this.weekDaysStartGap = 7 - isoWeekDayForLastDate;
-                                break;
+                const isoWeekDay = this.recurring.controls['weekdays'].value;
+                const isoWeekDayForLastDate = moment(this.endDate).isoWeekday();
+                if (isoWeekDayForLastDate < isoWeekDay) {
+                    // then just give me this week's instance of that day
+                    this.startDay = moment(this.endDate).isoWeekday(isoWeekDay);
+                    // this.startDay =  moment(this.endDate).add(isoWeekDay - isoWeekDayForLastDate, 'days');
+                } else if (isoWeekDayForLastDate > isoWeekDay) {
+                    // otherwise, give me next week's instance of that day
+                    // this.startDay = moment(this.endDate).add(7 - isoWeekDayForLastDate + 1, 'days');//.isoWeekday(isoWeekDay)    
+                    if (isoWeekDayForLastDate + isoWeekDay >= 7) {
+                        this.startDay = moment(this.endDate).add(1, 'weeks').subtract(isoWeekDayForLastDate - isoWeekDay, 'days');
+                    }
+                    else {
+                        this.startDay = moment(this.endDate).add(7 - isoWeekDayForLastDate + 1, 'days');//.isoWeekday(isoWeekDay)
+                    }
+                }
+                else if (isoWeekDayForLastDate == isoWeekDay) {
+                    this.startDay = moment(this.endDate).add(1, 'weeks').isoWeekday(isoWeekDay);
+                }
+                this.weekDaysStartGap = 7 - isoWeekDayForLastDate;
+                break;
             default:
-                                this.startDay = this.startDate;
+                this.startDay = this.startDate;
 
         }
         this.repeatTill(this.recurring.value.repeatTillOption);
@@ -362,7 +368,7 @@ export class EditCalendarDialogComponent implements OnInit {
                                 }
                                 break;
             default:
-                                this.recurringCalendar = [];
+                this.recurringCalendar = [];
         }
         if(this.endDay) {
             this.nextDays = moment(this.endDay).diff(moment(this.endDate), 'days');
@@ -468,6 +474,12 @@ export class EditCalendarDialogComponent implements OnInit {
         return tempMoment;
     }
 
+    public calculateDate(fromdate, day) {
+        const tempMoment = moment(fromdate);
+        tempMoment.add(day, 'days');
+        return tempMoment;
+    }
+
     private extractDate(dateString: string) {
         return moment.utc(dateString).local().toDate();
     }
@@ -475,7 +487,7 @@ export class EditCalendarDialogComponent implements OnInit {
     private extractTime(dateString: string) {
         const time = moment.utc(dateString).local().format('HH:mm:ss');
         return time;
-      }
+    }
 
     public createCalendars(end, days, weekday) {
         let start = end;
@@ -500,7 +512,7 @@ export class EditCalendarDialogComponent implements OnInit {
             const isoWeekDayForLastDate = moment(end).isoWeekday();
             if (isoWeekDayForLastDate < weekday) {
                 // then just give me this week's instance of that day
-                start =  moment(end).isoWeekday(weekday);
+                start = moment(end).isoWeekday(weekday);
                 // start =  moment(end).add(weekday - isoWeekDayForLastDate, 'days');//
             } else if (isoWeekDayForLastDate > weekday) {
                 // otherwise, give me next week's instance of that day
@@ -532,11 +544,11 @@ export class EditCalendarDialogComponent implements OnInit {
             const currentTime = moment(current.startDateTime).toDate().getTime();
             // if the previous is earlier than the current
             if (previousTime < currentTime) {
-            return -1;
+                return -1;
             }
             // if the previous time is the same as the current time
             if (previousTime === currentTime) {
-            return 0;
+                return 0;
             }
             // if the previous time is later than the current time
             return 1;
@@ -560,13 +572,13 @@ export class EditCalendarDialogComponent implements OnInit {
                 result.overlap = true;
                 // store the specific ranges that overlap
                 result.ranges.push({
-                previous: previous,
-                current: current
+                    previous: previous,
+                    current: current
                 });
             }
             return result;
             // seed the reduce
-        }, {overlap: false, ranges: []});
+        }, { overlap: false, ranges: [] });
 
         console.log(result);
         // return the final results
@@ -604,7 +616,7 @@ export class EditCalendarDialogComponent implements OnInit {
         const dialogRef = this.dialog.open(SelectDateDialogComponent, {
             width: '50vw',
             height: '90vh',
-            data: {itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher'}
+            data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher' }
         });
         dialogRef.afterClosed().subscribe((data) => {
             debugger;
@@ -621,22 +633,8 @@ export class EditCalendarDialogComponent implements OnInit {
                 });
             }
 
-        }
-            // result => {
-            //     if (result) {
-            //         this._collectionService.deleteCalendar(result).subscribe();
-            //         this.allItenaries = _.remove(this.allItenaries, (item) => {
-            //             return item.calendar.id != result;
-            //         });
-            //         this.calendars = _.remove(this.calendars, (item) => {
-            //             return item.id != result;
-            //         });
-            //     }
-            // }
-    );
+        });
     }
-
-
 
     onTabOpen(event) {
         this.selectedIndex = event.index;
@@ -645,5 +643,4 @@ export class EditCalendarDialogComponent implements OnInit {
     onTabClose(event) {
         this.selectedIndex = -1;
     }
-
 }

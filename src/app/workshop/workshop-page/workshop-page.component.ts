@@ -81,6 +81,7 @@ export class WorkshopPageComponent implements OnInit {
   public busyReview = false;
   public busyReply = false;
   public initialLoad = true;
+  public loggedInUser;
 
   public isReadonly = true;
   public noOfReviews = 3;
@@ -88,22 +89,22 @@ export class WorkshopPageComponent implements OnInit {
   public bookmarks;
   public hasBookmarked = false;
   public replyingToCommentId: string;
-  public itenaryArray = [];
+  public itenaryArray: Array<any>;
   public workshop: any;
   public currentCalendar: any;
   public chatForm: FormGroup;
   public modalContent: any;
   public topicFix: any;
   public messagingParticipant: any;
-  public allItenaries = [];
-  public itenariesObj = {};
+  public allItenaries: Array<any>;
+  public itenariesObj: any;
   public reviews;
   public defaultProfileUrl = '/assets/images/avatar.png';
   public noWrapSlides = true;
   public peerHasSubmission = false;
-  public contentHasSubmission = {};
-  public participants = [];
-  public allParticipants = [];
+  public contentHasSubmission: any;
+  public participants: Array<any>;
+  public allParticipants: Array<any>;
   public isRatingReceived = false;
 
   public replyForm: FormGroup;
@@ -122,7 +123,7 @@ export class WorkshopPageComponent implements OnInit {
   public clickedCohortId;
   public clickedCohortStartDate;
   public clickedCohortEndDate;
-  public eventsForTheDay = {};
+  public eventsForTheDay: any;
   public toOpenDialogName;
   objectKeys = Object.keys;
 
@@ -183,10 +184,10 @@ export class WorkshopPageComponent implements OnInit {
     this.initializeWorkshop();
     this.initializeForms();
     this.initialLoad = false;
+    this.eventsForTheDay = {};
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    this.eventsForTheDay = {};
     if (events.length === 0) {
       this.dateClicked = false;
       return;
@@ -318,8 +319,6 @@ export class WorkshopPageComponent implements OnInit {
         cssClass: 'workshopCohortCalendar'
       });
     });
-
-    console.log(this.allItenaries);
     for (const indvIterinary of this.allItenaries) {
       const calendarId = indvIterinary.calendar.id;
       for (const iterinary of indvIterinary.itenary) {
@@ -337,10 +336,11 @@ export class WorkshopPageComponent implements OnInit {
         }
       }
     }
-    console.log(this.events);
   }
 
   private initializeWorkshop() {
+    this.allParticipants = [];
+    this.allItenaries = [];
     const query = {
       'include': [
         'topics',
@@ -359,6 +359,8 @@ export class WorkshopPageComponent implements OnInit {
           console.log(res);
           this.workshop = res;
           this.setCurrentCalendar();
+          this.itenariesObj = {};
+          this.itenaryArray = [];
           this.workshop.contents.forEach(contentObj => {
             if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
               this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
@@ -376,6 +378,7 @@ export class WorkshopPageComponent implements OnInit {
               });
             }
           });
+          console.log(this.itenariesObj);
           for (const key in this.itenariesObj) {
             if (this.itenariesObj.hasOwnProperty(key)) {
               let startDate, endDate;
@@ -408,6 +411,9 @@ export class WorkshopPageComponent implements OnInit {
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
+
+          console.log(this.itenariesObj);
+
 
 
         },
@@ -463,7 +469,6 @@ export class WorkshopPageComponent implements OnInit {
       if (err) {
         console.log(err);
       } else {
-        console.log(response);
         this.reviews = response;
         this.userRating = this._collectionService.calculateRating(this.reviews);
         this.loadingReviews = false;
@@ -860,7 +865,6 @@ export class WorkshopPageComponent implements OnInit {
     };
     this._topicService.getTopics(query).subscribe(
       (response) => {
-        console.log(response);
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.status === 'active' && collection.id !== this.workshopId) {
@@ -873,6 +877,7 @@ export class WorkshopPageComponent implements OnInit {
           });
         }
         this.recommendations.collections = _.uniqBy(this.recommendations.collections, 'id');
+        this.recommendations.collections = _.orderBy(this.recommendations.collections, ['createdAt'], ['desc']);
         this.recommendations.collections = _.chunk(this.recommendations.collections, 5)[0];
         this.loadingSimilarWorkshops = false;
       }, (err) => {
@@ -1033,7 +1038,6 @@ export class WorkshopPageComponent implements OnInit {
   addReplyUpvote(reply: any) {
     this._commentService.addReplyUpvote(reply.id, {}).subscribe(
       response => {
-        console.log(response);
         if (reply.upvotes !== undefined) {
           reply.upvotes.push(response.json());
         }
@@ -1048,6 +1052,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   public getParticipants() {
+    this.participants = [];
     this.loadingParticipants = true;
     const query = {
       'relInclude': 'calendarId',
@@ -1058,7 +1063,6 @@ export class WorkshopPageComponent implements OnInit {
     this._collectionService.getParticipants(this.workshopId, query).subscribe(
       (response: any) => {
         this.allParticipants = response.json();
-        console.log(this.allParticipants);
         for (const responseObj of response.json()) {
           if (this.calendarId && this.calendarId === responseObj.calendarId) {
             this.participants.push(responseObj);
@@ -1067,6 +1071,9 @@ export class WorkshopPageComponent implements OnInit {
             // current user is a participant of this workshop
             isCurrentUserParticipant = true;
             currentUserParticipatingCalendar = responseObj.calendarId;
+          }
+          if (responseObj.id === this.userId) {
+            this.loggedInUser = responseObj;
           }
         }
         if (isCurrentUserParticipant) {
@@ -1256,7 +1263,13 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private sort(calendars, param1, param2) {
-
     return _.sortBy(calendars, [param1, param2]);
   }
+
+
+  scrollToDiscussion() {
+    const el = document.getElementById('discussionTarget');
+    el.scrollIntoView();
+  }
+
 }
