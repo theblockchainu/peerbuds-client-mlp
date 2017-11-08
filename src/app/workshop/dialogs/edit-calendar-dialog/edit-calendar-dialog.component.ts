@@ -72,6 +72,7 @@ export class EditCalendarDialogComponent implements OnInit {
     public duration;
 
     public selectedIndex;
+    public cohortDeleted: boolean = false;
 
     public daysOption;
     public weekDayOption = [
@@ -230,6 +231,7 @@ export class EditCalendarDialogComponent implements OnInit {
         this.duration = Math.round(moment.duration(moment(this.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment(this.startDate, 'YYYY-MM-DD HH:mm:ss'))).asDays()) + 1;
         this.daysOption = this.getDaysArray();
         this.events = this.inpEvents;
+        debugger;
         this.monthOption = this.getMonthArray();
         //Get all the events for a user
         this._contentService.getEvents(this.userId)
@@ -264,14 +266,12 @@ export class EditCalendarDialogComponent implements OnInit {
         });
         this._collectionService.postCalendars(this.collection.id, tempCalendar)
         .subscribe((response) => {
-            this.dialogRef.close('calendarsSaved');
+            this.dialogRef.close({
+                calendarsSaved: 'calendarsSaved', 
+                cohortDeleted: this.cohortDeleted
+            });
         });
         console.log(this.recurringCalendar);
-
-        this._collectionService.postCalendars(this.collection.id, this.recurringCalendar)
-            .subscribe((response) => {
-                this.dialogRef.close('calendarsSaved');
-            });
     }
 
     public computeWeekday(value) {
@@ -624,9 +624,16 @@ export class EditCalendarDialogComponent implements OnInit {
                     this.calendars = _.remove(this.calendars, (item) => {
                         return item.id != calendar;
                     });
+                    debugger;
+                    this.events = _.remove(this.events, (item) => {
+                        return !item.title.includes(':' + calendar + ':');
+                    });
                 });
+                debugger;
+                //As sorting is taken care of no need to sort now
+                this.endDate = this.allItenaries[this.allItenaries.length - 1].calendar.endDate;
             }
-
+            this.cohortDeleted = true;
         });
     }
 
@@ -636,5 +643,12 @@ export class EditCalendarDialogComponent implements OnInit {
 
     onTabClose(event) {
         this.selectedIndex = -1;
+    }
+
+    addDeleteEvents() {
+        this.dialogRef.close({
+            calendarsSaved: 'calendarsSaved', 
+            cohortDeleted: this.cohortDeleted
+        });
     }
 }
