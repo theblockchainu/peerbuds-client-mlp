@@ -474,12 +474,6 @@ export class EditCalendarDialogComponent implements OnInit {
         return tempMoment;
     }
 
-    public calculateDate(fromdate, day) {
-        const tempMoment = moment(fromdate);
-        tempMoment.add(day, 'days');
-        return tempMoment;
-    }
-
     private extractDate(dateString: string) {
         return moment.utc(dateString).local().toDate();
     }
