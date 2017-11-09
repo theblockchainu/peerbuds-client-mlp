@@ -63,9 +63,9 @@
                 {{itenary.startDate | date:'EE, MMM d'}}
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12" *ngFor="let content of itenary.contents">
               <div class="col-md-12" style="margin: 3px 0px 10px 0px;">
-                {{itenary.contents[0].schedules[0].startTime | extractTime:'hh:mm a'}} to {{itenary.contents[0].schedules[itenary.contents[0].schedules.length-1].endTime | extractTime:'h:mm a'}}
+                  <b>{{ content.title | titlecase}}</b> - {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
               </div>
             </div>
           </div>

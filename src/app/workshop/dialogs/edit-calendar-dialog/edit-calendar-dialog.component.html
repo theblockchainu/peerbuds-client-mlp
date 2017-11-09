@@ -1,27 +1,36 @@
 <div class="mat-dialog-focus-trap"></div>
 <form [formGroup]="recurring">
-    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="addDeleteEvents()">
-        <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
-    </button>
-    <div style="display: inline-block">
-        <h3 md-dialog-title>Add more cohorts your {{ duration }} day workshop</h3>
-    </div>
-    <br>
-    <div style="margin: -12px 0 20px 45px;">
-        <span>You have
-            <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
-        <a href="javascript:void(0);" (click)="viewCohorts()">View and manage</a>
+    <div class="row margin-bottom-10" style="margin-left:0px">
+        <button md-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="addDeleteEvents()">
+            <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+        </button>
+        <div class="col-md-4"> <!--style="display: inline-block"-->
+            <h3 md-dialog-title>Add more cohorts your {{ duration }} day workshop</h3>
+            <div>
+                <span>You have
+                    <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
+                <a href="javascript:void(0);" (click)="viewCohorts()">View and manage</a>
+            </div>
+        </div>
+        <div class="col-md-4 pull-right" *ngIf="recurringCount">
+            <h3 style="margin-bottom:10px">Peerbuds Insights</h3>
+            <div>
+                <label>You will have total of <b>{{ recurringCount }}</b> recurring sessions</label>
+            </div>
+            <div style="margin-top:5px">
+                <label>Your workshop will run for <b>{{ totalRunningDays }}</b> of the next <b>{{nextDays}}</b> days</label>
+            </div>
+        </div>
     </div>
     <hr style="margin-top: 0px;">
     <md-dialog-content>
         <div class="row margin-bottom-20">
-            <div class="col-md-6">
+            <div class="col-md-7 right-border">
                 <p class="mat-caption" *ngIf="calendars.length === 1">
                     <md-icon style="vertical-align:sub;font-size: 16px;">info</md-icon>
                     Your first cohort was automatically created when this Workshop was approved. You can add more Cohorts to your workshop at
                     any time.
                 </p>
-                <br>
                 <br>
                 <label *ngIf="calendars.length > 0">After your last existing cohort ends, the next cohort starts...</label>
                 <br>
@@ -46,7 +55,7 @@
                         </md-select>
                     </md-radio-button>
                 </md-radio-group>
-                <div class="margin-Top-50 flex-column">
+                <div class="margin-top-40 flex-column">
                     <label>It will continue repeating up to..</label>
                     <br>
                     <md-radio-group class="repeat-workshop-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
@@ -68,24 +77,34 @@
                             <span class="valignMiddle">the date</span>
                             &nbsp;&nbsp;
                             <md-input-container>
-                                <input mdInput [mdDatepicker]="dateRepeat" formControlName="dateRepeat" (change)="repeatTillTrigger()">
+                                <input mdInput [min]="minDate" [mdDatepicker]="dateRepeat" formControlName="dateRepeat" (change)="repeatTillTrigger()">
                                 <md-datepicker-toggle mdSuffix [for]="dateRepeat"></md-datepicker-toggle>
                             </md-input-container>
                             <md-datepicker #dateRepeat></md-datepicker>
                         </md-radio-button>
                     </md-radio-group>
                     <div class="margin-top-20">
-                        <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0">Save Workshop Batches</button>
+                        <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Save Workshop Batches</button>
                     </div>
                 </div>
             </div>
-            <div class="editCalendar col-md-6">
-                <div class="mat-content border-calendar calendar" style="margin-right:10px" *ngIf="recurringCalendar && recurringCalendar.length > 0" > 
-                    <h3>List of New/Proposed Cohorts</h3>
+            <div class="editCalendar left-border col-md-5">
+                <div class="mat-content calendar" style="margin-right:10px" *ngIf="(recurringCalendar && recurringCalendar.length > 0) || computedConflict.length > 0" > 
+                    <h3>Preview Cohorts</h3>
+                    <div class="margin-top-30 flex-column" *ngIf="computedConflict.length > 0">
+                        <h3>Avoid Conflicts</h3>
+                        <div>
+                            <label>{{computedConflict.length}} of your workshop sessions will have conflicts with
+                                <br/> existing calendar events.</label>
+                        </div>
+                        <div class="margin-top-20 margin-bottom-20">
+                            <button md-button class="mat-border-button" color="primary" (click)="viewConflict()">View Conflict</button>
+                        </div>
+                    </div>
                     <p-accordion (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">
                         <p-accordionTab *ngFor="let day of recurringCalendar; let i=index" tabindex="-1">
                             <p-header>
-                                <div>
+                                <div *ngIf="!day.markedForDelete">
                                     <div class="row">
                                         <div class="col-md-8 padding-left-0">
                                             <div class="col-md-12 padding-left-0">
@@ -170,25 +189,6 @@
                         <hr>
                     </div>
                 </div>  -->
-                <div class="margin-top-30 flex-column" *ngIf="computedConflict.length > 0">
-                    <h3>Avoid Conflicts</h3>
-                    <div>
-                        <label>{{computedConflict.length}} of your workshop sessions will have conflicts with
-                            <br/> existing calendar events.</label>
-                    </div>
-                    <div class="margin-top-20 margin-bottom-20">
-                        <button md-raised-button (click)="viewConflict()" color="grey">View Conflict</button>
-                    </div>
-                </div>
-                <div class="margin-top-30 flex-column" *ngIf="recurringCount">
-                    <h3>Peerbuds Insights</h3>
-                    <div>
-                        <label>You will have total of {{ recurringCount }} recurring sessions</label>
-                    </div>
-                    <div class="margin-top-20">
-                        <label>Your workshop will run for {{ totalRunningDays }} of the next {{nextDays}} days</label>
-                    </div>
-                </div>
             </div>
         </div>
     </md-dialog-content>
