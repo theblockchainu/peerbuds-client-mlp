@@ -4,7 +4,7 @@
   }
   
 .repeat-workshop-button {
-    margin: 10px 5px;
+    margin-left: 10px;
 }
 
 .flex-row {
@@ -294,8 +294,11 @@ div.event span:first-child {
 }
 
 .editCalendar .calendar {
-    max-height: 300px;
     overflow-y: scroll;
+}
+
+.right-border {
+    border-right: 1px solid #888686;
 }
 
 
