@@ -13,7 +13,8 @@
             <p class="mat-caption">You will need to provide identification before you book, so get a head start by doing it now</p>
           </div>
           <div class="col-md-4">
-            <button class="provideId" md-button class="mat-border-button" color="accent" style="border-color:#ff5b5f !important" (click)="openIdVerify()">Provide ID</button>
+            <button class="provideId" md-button class="mat-border-button" color="accent" style="border-color:#ff5b5f !important" *ngIf="" (click)="openIdVerify()">Provide ID</button>
+            <a *ngIf=""> Awaiting verification</a>
           </div>
         </div>
         <hr>
@@ -28,11 +29,11 @@
               </div>
               <br> 
               <div class="row">
-              <div class="col-sm-1">
+              <div class="col-sm-1" style="width:7.3333% !important;">
                 <!--<button md-mini-fab> <md-icon> check </md-icon> </button>-->
                   <i class="mdi mdi-check-circle-outline mdi-24px primaryColor pull-right" style="margin-top: 2px"></i>
               </div>
-                <p class="mat-caption" style="color:#767676">{{verifiedObj.value}}</p> 
+                <p class="mat-caption" style="color:#767676;">{{verifiedObj.value}}</p> 
               </div>
             </div>
           </div>
