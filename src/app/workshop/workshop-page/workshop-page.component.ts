@@ -356,7 +356,8 @@ export class WorkshopPageComponent implements OnInit {
             title: iterinary.contents[i].title + ':' + calendarId + ':content:' + iterinary.contents[i].id,
             color: colors.red,
             start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
-            end: moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate()
+            end: moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
+            cssClass: 'customEventClass'
           });
         }
       }

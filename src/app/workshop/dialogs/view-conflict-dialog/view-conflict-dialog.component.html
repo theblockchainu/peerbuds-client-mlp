@@ -1,27 +1,32 @@
 <div class="mat-dialog-focus-trap"></div>
 <form [formGroup]="conflicts">
-    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef1.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
-    <div style="display: inline-block;">
-        <md-icon class="mat-icon material-icons mat-icon-small" style="position: relative; top: 1px;">error_outline</md-icon>
-        <h3 md-dialog-title class="conflicts" style="display: inline-block;">Avoid Conflicts</h3>
-    </div>
-    <br>
-    <div style="margin: -7px 0 20px 45px;">
-        <span>We have found {{ data.conflicts.length }} conflict/s with your existing calendar</span>
-    </div>
+    <div class="row margin-bottom-10" style="margin-left:0px">
+        <button md-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="closeConflictDialog()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+        <div class="col-md-6">
+            <md-icon class="mat-icon material-icons mat-icon-small" style="position: relative; top: 1px;">error_outline</md-icon>
+            <h3 md-dialog-title class="conflicts" style="display: inline-block;">Avoid Conflicts</h3>
+            <div>
+                <span>We have found {{ data.conflicts.length }} conflict/s with your existing calendar</span>
+            </div>
+        </div>
+        <div class="col-md-5" style="padding-top:6px">
+            <md-dialog-actions class="pull-right">
+                <button md-raised-button class="mat-raised-button" (click)="closeConflictDialog()" color="primary">{{proceedButtonText}}</button>
+            </md-dialog-actions>
+        </div>
+    </div>  
     <hr style="margin-top: 0px;">
     <md-dialog-content>
         <div class="row">
             <div class="col-md-12">
-                <div class="row margin-top-50 margin-bottom-20" *ngFor="let conflict of data.conflicts">
-                    <div class="col-md-6">
+                <div class="row margin-top-20 margin-bottom-20" *ngFor="let conflict of data.conflicts; let i=index">
+                    <div class="col-md-7">
                         <span class="mat-body-2">Event on {{ conflict.event.startDateTime | date:'dd MMM' }}, {{ conflict.event.startDateTime | date:'hh:mm a' }} to {{ conflict.event.endDateTime | date:'hh:mm a' }}</span>
                         <h5>conflicts with <b>{{conflict.conflictWith.contentName | titlecase}}</b> of workshop <b>{{conflict.conflictWith.collectionName | titlecase}}</b> </h5>
                     </div>
-                    <div class="col-md-6">
-                        <button md-button class="mat-border-button" color="warn" (click)="dropCalendar(conflict.event.startDateTime,conflict.event.endDateTime)">Remove from plan</button>
-                        &emsp;
-                        <button md-button class="mat-border-button" color="primary" (click)="continueAnyways()">Plan anyways</button>
+                    <div class="col-md-offset-1 col-md-3">
+                        <button md-button *ngIf= "!conflict.markedForDelete" class="mat-border-button" color="warn" (click)="deleteCalendar(i)" style="margin-left:25px">Remove from plan</button>
+                        <button md-button *ngIf= "conflict.markedForDelete" class="mat-border-button" color="primary" (click)="undoDeleteCalendar(i)" style="margin-left:50px">Include in plan</button>
                     </div>
                 </div>
             </div>
