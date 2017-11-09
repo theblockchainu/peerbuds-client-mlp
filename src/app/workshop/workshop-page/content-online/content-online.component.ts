@@ -5,6 +5,7 @@ import { CollectionService } from '../../../_services/collection/collection.serv
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../../_services/comment/comment.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import {DialogsService} from '../../dialogs/dialog.service';
 
 @Component({
   selector: 'app-content-online',
@@ -28,7 +29,8 @@ export class ContentOnlineComponent implements OnInit {
     public dialogRef: MdDialogRef<ContentOnlineComponent>,
     private _fb: FormBuilder,
     private _commentService: CommentService,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private dialogsService: DialogsService
   ) {
       this.userType = data.userType;
       this.workshopId = data.collectionId;
@@ -176,6 +178,20 @@ export class ContentOnlineComponent implements OnInit {
 
     public isMyComment(comment) {
         return comment.peer[0].id === this.userId;
+    }
+
+    /**
+     * joinLiveSession
+     */
+    public joinLiveSession(content: any) {
+        const data = {
+            roomName: content.id + this.data.calendarId,
+            teacherId: this.data.collection.owners[0].id,
+            content: content,
+            participants: this.data.collection.participants
+        };
+        this.dialogsService.startLiveSession(data).subscribe(result => {
+        });
     }
 
 }

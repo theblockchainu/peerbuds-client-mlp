@@ -5,6 +5,7 @@ import { Http, Response, } from '@angular/http';
 import { SubmitEntryComponent } from '../submit-entry/submit-entry.component';
 import { SubmissionViewComponent } from '../submission-view/submission-view.component';
 import { ProjectSubmissionService } from '../../../_services/project-submission/project-submission.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-content-project',
@@ -16,6 +17,7 @@ export class ContentProjectComponent implements OnInit {
   public noImage = 'assets/images/no-image.jpg';
   public defaultProfileUrl = '/assets/images/avatar.png';
   public hasPublicSubmission = false;
+  public isSubmissionPossible = false;
   public publicSubmissionCount = 0;
 
   constructor(public config: AppConfig,
@@ -30,6 +32,10 @@ export class ContentProjectComponent implements OnInit {
                 this.publicSubmissionCount++;
             }
         });
+    }
+    if (data.startDate !== undefined) {
+      const startDateMoment = moment(data.startDate);
+      this.isSubmissionPossible = moment().diff(startDateMoment) <= 0;
     }
   }
   ngOnInit() {

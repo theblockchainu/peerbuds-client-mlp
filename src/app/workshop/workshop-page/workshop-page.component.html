@@ -98,22 +98,15 @@
         <div class="row workshop-content">
           <div class="col-md-7 left-content">
             <!--ABOUT SECTION-->
-            <div class="row About">
+            <div class="row About" *ngIf="calendarId === undefined && (userType === 'public')">
               <div class="col-md-4">
                 <h3 *ngIf="userType === 'public'">What we'll do</h3>
-                <h3 *ngIf="(userType === 'teacher' || userType==='participant') && loggedInUser !== undefined">Welcome back, {{loggedInUser.profiles[0].first_name}}</h3>
               </div>
               <div class="col-md-8">
-                <!--<h3 *ngIf="userType==='teacher' || userType==='participant'">{{workshop.headline | titlecase}}&emsp;
-                  <a (click)="workshopVideoDialog()" *ngIf="workshop.videoUrl">
-                    Watch Intro Video
-                    <i class="fa fa-play-circle" aria-hidden="true"></i>
-                  </a>
-                </h3>-->
                 <div class="row" *ngIf="userType === 'public'">
                   <div class="col-md-12">
                     <md-icon style="top: 7px;">schedule</md-icon>&emsp;
-                    <span>{{totalDuration | i18nPlural : hourMapping}} in total</span>
+                    <span>{{totalDuration | i18nPlural : hourMapping}} total</span>
                   </div>
                   <div class="col-md-12 margin-top-10">
                     <md-icon style="top: 7px;">mic</md-icon>&emsp;
@@ -129,7 +122,16 @@
                   </div>
                 </div>
                 <div *ngIf="userType==='public'" class="margin-top-20"> {{workshop.description}} </div>
-                <div *ngIf="userType === 'teacher' || userType==='participant'" style="margin-top: 5px;">As you complete any activity, your progress and updates will show up here.</div>
+              </div>
+            </div>
+            <div class="row Progress" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">
+              <div class="col-md-4">
+                <h3 *ngIf="userType==='participant' && loggedInUser !== undefined">Welcome back, {{loggedInUser.profiles[0].first_name}}</h3>
+                <h3 *ngIf="userType==='teacher'">Welcome back, {{workshop.owners[0].profiles[0].first_name}}</h3>
+              </div>
+              <div class="col-md-8">
+                <div *ngIf="userType==='participant'" style="margin-top: 5px;">As you complete any activity, your progress and updates will show up here.</div>
+                <div *ngIf="userType==='teacher'" style="margin-top: 5px;">As your students complete any activity, their progress and updates will show up here.</div>
               </div>
             </div>
             <!--TOPICS SECTION-->
@@ -140,7 +142,7 @@
                 </md-chip-list>
               </div>
             </div>
-            <hr>
+            <hr *ngIf="calendarId !== undefined || userType === 'public'">
             <!--TODO: Description of workshop-->
             <div class="row Description" *ngIf="userType==='public'">
               <div class="col-md-12">
@@ -200,7 +202,7 @@
                     <h3>Cancellation policy</h3>
                   </div>
                   <div class="col-md-8 margin-top-10">
-                    <p>{{workshop.cancellationPolicy}}</p>
+                    <p>Get a full refund if you cancel within {{workshop.cancellationPolicy}} of signing up.</p>
                   </div>
                 </div>
               </div>
@@ -259,7 +261,7 @@
                                 </div>
                                 <div class="row margin-top-10">
                                   <div class="col-md-12">
-                                    <a href="javascript:void(0);" (click)="openDialog(content)">See details</a>
+                                    <a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate)">See details</a>
                                   </div>
                                 </div>
                               </div>
@@ -558,7 +560,7 @@
                         <h3>Cancellation policy</h3>
                       </div>
                       <div class="col-md-8 margin-top-10">
-                        <p>{{workshop.cancellationPolicy}}</p>
+                        <p>Get a full refund if you cancel within {{workshop.cancellationPolicy}} of signing up.</p>
                       </div>
                     </div>
                   </div>
@@ -724,10 +726,11 @@
                         </video>
                       </slide>-->
                       <slide *ngIf="workshop.imageUrls === undefined">
-                        <img src="../../../assets/images/placeholder-image.jpg" class="img-responsive" style="width: auto; max-height: 500px;" alt="First slide">
+                        <img src="../../../assets/images/placeholder-image.jpg" class="img-responsive" style="width: auto; max-height: 500px; min-width: 100%;" alt="First slide">
                       </slide>
+
                       <slide *ngFor="let imageUrl of workshop.imageUrls">
-                        <img src="{{config.apiUrl+imageUrl}}" class="img-responsive" style="width: auto; max-height: 500px;" alt="First slide">
+                        <img src="{{config.apiUrl+imageUrl}}" class="img-responsive" style="width: auto; max-height: 500px; min-width: 100%;" alt="First slide">
                       </slide>
                     </carousel>
                   </div>
