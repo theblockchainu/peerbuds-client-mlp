@@ -662,12 +662,12 @@
               </div>
               <br>
               <div class="mat-content border-calendar calendar">
-                <div class="flex flexContainer">
+                <div class="flex flexContainer" style="margin-bottom:10px">
                   <div class="col-md-8">
                     <h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
                   </div>
                   <span class="flex"></span>
-                  <div class="prevNext">
+                  <div class="prevNext" style="margin-top: -5px">
                     <button md-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
                       <md-icon class="" aria-hidden="true">chevron_left</md-icon>
                     </button>
@@ -677,7 +677,11 @@
                   </div>
                 </div>
                 <div [ngSwitch]="view">
-                  <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (dayClicked)="dayClicked($event.day)">
+                  <mwl-calendar-month-view *ngSwitchCase="'month'" 
+                    [viewDate]="viewDate" 
+                    [events]="events" 
+                    [refresh]="refresh" 
+                    (dayClicked)="dayClicked($event.day)">
                   </mwl-calendar-month-view>
                 </div>
               </div>

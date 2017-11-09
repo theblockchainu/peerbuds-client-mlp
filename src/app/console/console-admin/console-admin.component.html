@@ -1,21 +1,19 @@
 <div class="row">
   <div class="col-md-12 margin-top-20">
-    <div *ngIf="!loaded" class="center">
+    <div *ngIf="!collectionsLoaded" class="center">
       <ngx-loading [show]="true"></ngx-loading>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12 margin-top-10" *ngIf="loaded">
-    <div #noContentView *ngIf="unapprovedCollections.length === 0 " class="center" style="margin-top: 10%">
+  <div class="col-md-12 margin-top-10" *ngIf="collectionsLoaded">
+    <div style="display:inline;">
+      <h2>Collections Approvals</h2>
+    </div>
+    <div #noContentView *ngIf="unapprovedCollections.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
       <div class="lightText">
         No Approval Pending !
       </div>
     </div>
     <div *ngIf="unapprovedCollections.length > 0">
-      <div style="display:inline;">
-        <h2>Pending Approval</h2>
-      </div>
       <div class="row">
         <div>
           <div style="margin-top:20px;" class="col-md-12">
@@ -48,6 +46,64 @@
                     </md-menu>
                     <md-card-footer class="cardFooter" style="line-height: 30px">
                       <button md-button (click)="approveWorkshop(collection)">Approve</button>
+                    </md-card-footer>
+                  </md-card>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 margin-top-20">
+    <div *ngIf="!peersLoaded" class="center">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
+  <div class="col-md-12 margin-top-10" *ngIf="peersLoaded">
+    <div style="display:inline;">
+      <h2>Peers Approvals</h2>
+    </div>
+    <div #noContentView *ngIf="unapprovedPeers.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+      <div class="lightText">
+        No Approval Pending !
+      </div>
+    </div>
+    <div *ngIf="unapprovedPeers.length > 0">
+      <div class="row">
+        <div>
+          <div style="margin-top:20px;" class="col-md-12">
+            <div class="row">
+              <div *ngFor="let peer of unapprovedPeers">
+                <div class="col-md-3" style="margin-top: 20px;">
+                  <md-card style="text-align: center; padding: 20px;height: 200px">
+                    <md-card-content style="height: 110px">
+                      <div style="text-align: right">
+                        <div class="pull-right">
+                          <a md-icon-button [mdMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+                            <md-icon>more_vert</md-icon>
+                          </a>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="collectionTitle" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                    </md-card-content>
+                    <md-menu #approvalCardMenu>
+                      <button md-menu-item>
+                        Delete
+                      </button>
+                      <button md-menu-item [routerLink]="['/profile/'+peer.id]">
+                        View Profile
+                      </button>
+                    </md-menu>
+                    <md-card-footer class="cardFooter" style="line-height: 30px">
+                      <button (click)="approvePeer(peer)" md-button>Approve</button>
                     </md-card-footer>
                   </md-card>
                 </div>

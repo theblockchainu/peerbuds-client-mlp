@@ -28,7 +28,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   public pastWorkshopsObject: any;
   public liveWorkshopsObject: any;
   public upcomingWorkshopsObject: any;
-  
+
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleTeachingComponent: ConsoleTeachingComponent,
@@ -138,6 +138,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   public openCohortDetailDialog(cohortData: any) {
     const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
       width: '700px',
+      height: '600px',
       data: cohortData
     });
   }
