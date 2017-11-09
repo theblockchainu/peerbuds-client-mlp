@@ -13,6 +13,11 @@
                   Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will
                   be visible both here and on your public profile.
                 </div>
+                <div class="review-section" *ngIf="!profile.peer[0].reviewsAboutYou ||profile.peer[0].reviewsAboutYou.length ===0">
+                  <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText text-center">
+                    No Reviews Recieved
+                  </div>
+                </div>
                 <div class="review-section" *ngFor="let review of profile.peer[0].reviewsAboutYou">
                   <div *ngIf="review.peer !== undefined">
                     <div class="review-top">
@@ -112,6 +117,11 @@
                 </div>
                 <div class="review-section-title" *ngIf="profile.peer[0].reviewsByYou !== undefined && profile.peer[0].reviewsByYou.length > 0">
                   Reviews You've Written
+                </div>
+                <div class="review-section" *ngIf="!profile.peer[0].reviewsByYou ||profile.peer[0].reviewsByYou.length ===0">
+                  <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText text-center">
+                    No Reviews Given
+                  </div>
                 </div>
                 <div class="review-section" *ngFor="let review of profile.peer[0].reviewsByYou">
                   <div *ngIf="review.reviewedPeer !== undefined">

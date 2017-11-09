@@ -576,7 +576,7 @@ h3.calendarTitle  {
     border-radius: 15px;
     text-align: center;
     padding-top: 3px;
-    margin-top: 12px;
+    margin-top: 4px;
     margin-right: 0px !important;
 }
 
@@ -1257,6 +1257,10 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .editCalendar p-accordion{
     max-width: 50% !important;
+}
+
+.editCalendar .ui-accordion {
+    border-bottom: none !important;
 }
 
 .buttonBar{
