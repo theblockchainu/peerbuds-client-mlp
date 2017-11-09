@@ -231,6 +231,7 @@ export class EditCalendarDialogComponent implements OnInit {
         this.duration = Math.round(moment.duration(moment(this.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment(this.startDate, 'YYYY-MM-DD HH:mm:ss'))).asDays()) + 1;
         this.daysOption = this.getDaysArray();
         this.events = this.inpEvents;
+        debugger;
         this.monthOption = this.getMonthArray();
         //Get all the events for a user
         this._contentService.getEvents(this.userId)
