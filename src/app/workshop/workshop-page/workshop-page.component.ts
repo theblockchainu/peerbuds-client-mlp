@@ -21,17 +21,22 @@ import {
   endOfDay,
   subDays,
   addDays,
+  startOfMonth,
   endOfMonth,
   isSameDay,
   isSameMonth,
-  addHours
+  addHours,
+  subWeeks,
+  addWeeks
 } from 'date-fns';
+import { GetMonthViewArgs, MonthView, getMonthView } from 'calendar-utils';
 import { Subject } from 'rxjs/Subject';
 import {
   CalendarEvent,
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
-  CalendarDateFormatter
+  CalendarDateFormatter,
+  CalendarUtils
 } from 'angular-calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
 import { DialogsService } from '../dialogs/dialog.service';
@@ -54,6 +59,15 @@ const colors: any = {
     secondary: '#FDF1BA'
   }
 };
+
+export class MyCalendarUtils extends CalendarUtils {
+  getMonthView(args: GetMonthViewArgs): MonthView {
+    args.viewStart = subWeeks(startOfMonth(args.viewDate), 1);
+    args.viewEnd = addWeeks(endOfMonth(args.viewDate), 1);
+    return getMonthView(args);
+  }
+}
+
 
 @Component({
   selector: 'app-workshop-page',
@@ -187,7 +201,13 @@ export class WorkshopPageComponent implements OnInit {
     this.eventsForTheDay = {};
   }
 
+  refreshView(): void {
+    this.refresh.next();
+  }
+
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    this.eventsForTheDay = {};
+
     if (events.length === 0) {
       this.dateClicked = false;
       return;
@@ -244,12 +264,17 @@ export class WorkshopPageComponent implements OnInit {
 
   // Modal
   public editCalendar() {
+    const sortedCalendar = this.sort(this.workshop.calendars, 'startDate', 'endDate');
+
     this.dialogsService
-      .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.workshop.calendars, this.allItenaries, this.allParticipants, this.events, this.userId, this.workshop.calendars[0].startDate, this.workshop.calendars[0].endDate)
+      .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.workshop.calendars, this.allItenaries, this.allParticipants, this.events, this.userId, sortedCalendar[sortedCalendar.length - 1].startDate, sortedCalendar[sortedCalendar.length - 1].endDate)
       .subscribe(res => {
         this.result = res;
-        if (this.result === 'calendarsSaved') {
+        if (this.result.calendarsSaved === 'calendarsSaved') {
           this.initializeWorkshop();
+        }
+        if (this.result.cohortDeleted) {
+          this.refreshView();
         }
       });
   }
@@ -286,7 +311,10 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   private initializeAllItenaries() {
-    this.workshop.calendars.forEach((calendar, index) => {
+    this.events = [];
+    const sortedCalendar = this.sort(this.workshop.calendars, 'startDate', 'endDate');
+    this.viewDate = new Date(sortedCalendar[sortedCalendar.length - 1].endDate);
+    sortedCalendar.forEach((calendar, index) => {
       const calendarItenary = [];
       for (const key in this.itenariesObj) {
         if (this.itenariesObj.hasOwnProperty(key)) {
@@ -333,6 +361,8 @@ export class WorkshopPageComponent implements OnInit {
         }
       }
     }
+    this.refreshView();
+
   }
 
   private initializeWorkshop() {
@@ -1259,10 +1289,14 @@ export class WorkshopPageComponent implements OnInit {
     });
   }
 
+  private sort(calendars, param1, param2) {
+    return _.sortBy(calendars, [param1, param2]);
+  }
+
+
   scrollToDiscussion() {
     const el = document.getElementById('discussionTarget');
     el.scrollIntoView();
   }
-
 
 }

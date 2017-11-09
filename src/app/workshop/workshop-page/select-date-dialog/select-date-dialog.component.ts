@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-select-date-dialog',
@@ -15,6 +16,7 @@ export class SelectDateDialogComponent implements OnInit {
   public mode;
   public userType;
   public filteredItineraries = [];
+  public deletedCalendar = [];
 
   constructor(public dialogRef: MdDialogRef<SelectDateDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any) {
@@ -48,6 +50,29 @@ export class SelectDateDialogComponent implements OnInit {
 
   onTabClose(event) {
     this.selectedIndex = -1;
+  }
+
+  deleteCohort(event, calendarId) {
+    event.preventDefault();
+    if (calendarId) {
+      this.filteredItineraries = _.remove(this.filteredItineraries, (item) => {
+        return item.calendar.id != calendarId;
+      });
+      this.deletedCalendar.push(calendarId);
+    }
+  }
+
+  closeSelectCohort() {
+    if(this.mode === 'editDelete') {
+      this.dialogRef.close(this.deletedCalendar);
+    }
+    else {
+      this.dialogRef.close();
+    }
+  }
+
+  selectCohort(calendarId) {
+    this.dialogRef.close(calendarId);
   }
 
 }

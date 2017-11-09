@@ -1,6 +1,6 @@
 <div class="mat-dialog-focus-trap"></div>
 <form [formGroup]="recurring">
-    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()">
+    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="addDeleteEvents()">
         <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
     </button>
     <div style="display: inline-block">
@@ -17,7 +17,7 @@
         <div class="row margin-bottom-20">
             <div class="col-md-6">
                 <p class="mat-caption" *ngIf="calendars.length === 1">
-                    <md-icon style="top: 3px; font-size: 16px;">info</md-icon>
+                    <md-icon style="vertical-align:sub;font-size: 16px;">info</md-icon>
                     Your first cohort was automatically created when this Workshop was approved. You can add more Cohorts to your workshop at
                     any time.
                 </p>
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-offset-1 editCalendar col-md-5">
+            <div class="editCalendar col-md-6">
                 <div class="mat-content border-calendar calendar" style="margin-right:10px" *ngIf="recurringCalendar && recurringCalendar.length > 0" > 
                     <h3>List of New/Proposed Cohorts</h3>
                     <p-accordion (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">
