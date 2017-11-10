@@ -20,13 +20,14 @@
                     </div> -->
             </div>
             <div class="row border-top">
-                <hr><br>
+                <hr>
+                <br>
                 <div class="col-md-1">
                     <md-icon>mic_none</md-icon>
                 </div>
                 <div class="col-md-10">
                     <p>
-                        {{this.other_languages || 'No language provided'}}
+                        {{other_languages || 'No language provided'}}
                     </p>
                 </div>
                 <div class="col-md-1">
@@ -46,7 +47,7 @@
                     <h3>Social Profiles</h3>
                 </div>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
-                    <i *ngIf="connectedIdentities.fb" class="fa fa-facebook defaultFB socialIcons"></i>
+                    <i *ngIf="connectedIdentities['fb']" class="fa fa-facebook defaultFB socialIcons"></i>
                     <i *ngIf="!connectedIdentities.fb" class="fa fa-facebook dcSocial socialIcons"></i>
                     <i *ngIf="connectedIdentities.google" class="fa fa-google defaultGoogle socialIcons"></i>
                     <i *ngIf="!connectedIdentities.google" class="fa fa-google dcSocial socialIcons"></i>
@@ -296,12 +297,12 @@
                                     </md-tab> -->
                         <md-tab label="Teaching Journey" style="min-width: min-content !important;">
                             <div class="row">
-                                <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                    Currently Running
-                                </div>
-                                <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index">
-                                    <div *ngFor="let calendar of collectionObj.calendars">
-                                        <div *ngIf="calendar.startDate <= today.toISOString() && calendar.endDate >= today.toISOString()">
+                                <div *ngIf="upcomingWorkshops.length>0">
+                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                        Upcoming Workshops
+                                    </div>
+                                    <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of upcomingWorkshops ; let i=index">
+                                        <div *ngIf="i<4">
                                             <div class="col-md-5 padding-left-0">
                                                 <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
                                                 <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
@@ -319,18 +320,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-12 margin-top-10" style="border-top: 1px solid grey">
+                                        <a style="font-size:0.9rem;color:#484848;font-weight:300" (click)="openWorkshopGrid('Upcoming Workshops', upcomingWorkshops)">Show more</a>
+                                    </div>
                                 </div>
-                                <div class="col-md-12 margin-top-10" style="border-top: 1px solid grey">
-                                    <a style="font-size:0.9rem;color:#484848;font-weight:300">Show more</a>
-                                </div>
-
-                                <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                    Past
-                                </div>
-                                <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of profileObj.peer['0'].ownedCollections ; let i=index">
-                                    <div *ngFor="let calendar of collectionObj.calendars">
-                                        <div *ngIf="calendar.endDate <= today.toISOString()">
-                                            <div class="col-md-3 padding-left-0">
+                                <div *ngIf="ongoingWorkshops.length>0">
+                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                        Currently Running
+                                    </div>
+                                    <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of ongoingWorkshops ; let i=index">
+                                        <div *ngIf="i<4">
+                                            <div class="col-md-5 padding-left-0">
                                                 <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
                                                 <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                             </div>
@@ -347,9 +347,37 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-12 margin-top-10" style="border-top: 1px solid grey">
+                                        <a style="font-size:0.9rem;color:#484848;font-weight:300" (click)=" openWorkshopGrid('Ongoing Workshops',ongoingWorkshops)">Show more</a>
+                                    </div>
                                 </div>
-                                <div class="col-md-12 margin-top-10" style="border-top: 1px solid grey">
-                                    <a style="font-size:0.9rem;color:#484848;font-weight:300">Show more</a>
+                                <div *ngIf="pastWorkshops.length>0">
+                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                        Past
+                                    </div>
+                                    <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of pastWorkshops ; let i=index">
+                                        <div *ngIf="i<4">
+                                            <div class="col-md-3 padding-left-0">
+                                                <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="col-md-12">
+                                                    {{collectionObj.title}} {{'('+collectionObj.pastCohortCount+')'}}
+                                                </div>
+                                                <div class="col-md-12" style="min-height:55px">
+                                                    <p>{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12 margin-top-10" style="border-top: 1px solid grey">
+                                        <a style="font-size:0.9rem;color:#484848;font-weight:300" (click)="openWorkshopGrid('Past Workshops',pastWorkshops)">Show more</a>
+                                    </div>
                                 </div>
                             </div>
                         </md-tab>
