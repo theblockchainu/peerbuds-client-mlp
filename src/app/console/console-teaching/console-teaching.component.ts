@@ -18,7 +18,7 @@ export class ConsoleTeachingComponent implements OnInit {
   public activeTab: string;
   public now: Date;
   private userId;
-
+  public accountVerified: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
@@ -36,6 +36,7 @@ export class ConsoleTeachingComponent implements OnInit {
 
   ngOnInit() {
     this.loaded = false;
+    this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true') ? true : false;
   }
 
   /**
@@ -92,5 +93,6 @@ export class ConsoleTeachingComponent implements OnInit {
   imgErrorHandler(event) {
     event.target.src = '/assets/images/user-placeholder.jpg';
   }
+
 
 }

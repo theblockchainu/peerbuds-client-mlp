@@ -1,6 +1,8 @@
 <div class="row">
   <div class="col-md-12">
-    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="closeSelectCohort()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="closeSelectCohort()">
+      <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+    </button>
     <div style="display: inline-block">
       <h2 md-dialog-title *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</h2>
       <h2 md-dialog-title *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
@@ -40,8 +42,12 @@
                 </div>
               </div>
               <div class="col-md-12">
-                <h5 *ngIf="i!==selectedIndex"><b>View Schedule</b></h5>
-                <h5 *ngIf="i===selectedIndex"><b>Hide Schedule</b></h5>
+                <h5 *ngIf="i!==selectedIndex">
+                  <b>View Schedule</b>
+                </h5>
+                <h5 *ngIf="i===selectedIndex">
+                  <b>Hide Schedule</b>
+                </h5>
               </div>
             </div>
             <div class="col-md-4">
@@ -49,7 +55,10 @@
               <br>
               <div class="col-md-12">
                 <button *ngIf="mode === 'chooseDate'" md-button (click)="selectCohort(itenaryObj.calendar.id)" class="mat-border-button">Select this cohort</button>
-                <button type="button" *ngIf="mode === 'editDelete'" md-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)" [disabled]="itenaryObj.participantCount > 0" class="mat-border-button">Delete this cohort</button>
+                <span mdTooltip="Participant present!" [mdTooltipDisabled]="itenaryObj.participantCount <= 0">
+                  <button type="button" *ngIf="mode === 'editDelete'" md-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)"
+                    [disabled]="itenaryObj.participantCount > 0" class="mat-border-button">Delete this cohort</button>
+                </span>
               </div>
             </div>
           </div>
@@ -65,7 +74,8 @@
             </div>
             <div class="col-md-12" *ngFor="let content of itenary.contents">
               <div class="col-md-12" style="margin: 3px 0px 10px 0px;">
-                  <b>{{ content.title | titlecase}}</b> - {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
+                <b>{{ content.title | titlecase}}</b> - {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime
+                | extractTime:'h:mm a'}}
               </div>
             </div>
           </div>
