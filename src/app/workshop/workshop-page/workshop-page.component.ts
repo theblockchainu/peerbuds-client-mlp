@@ -265,7 +265,7 @@ export class WorkshopPageComponent implements OnInit {
   // Modal
   public editCalendar() {
     const sortedCalendar = this.sort(this.workshop.calendars, 'startDate', 'endDate');
-    
+
     this.dialogsService
       .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.workshop.calendars, this.allItenaries, this.allParticipants, this.events, this.userId, sortedCalendar[sortedCalendar.length - 1].startDate, sortedCalendar[sortedCalendar.length - 1].endDate)
       .subscribe(res => {
@@ -363,7 +363,7 @@ export class WorkshopPageComponent implements OnInit {
       }
     }
     this.refreshView();
-    
+
   }
 
   private initializeWorkshop() {

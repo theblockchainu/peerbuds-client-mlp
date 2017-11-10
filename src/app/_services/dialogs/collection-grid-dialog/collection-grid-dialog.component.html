@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <div class="collection-grid">
+    <div class="recommendation-card" *ngFor="let workshop of data.collections; let i =index">
+      <a (click)="openCollectionPage(workshop.id)">
+        <div class="">
+          <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
+            alt="workshpImg">
+          <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+            alt="workshpImg">
+        </div>
+        <div *ngIf="workshop.currency && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
+        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
+        <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
+        <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
+      </a>
+    </div>
+  </div>
+</div>

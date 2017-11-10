@@ -42,9 +42,9 @@ import { CommentService } from '../_services/comment/comment.service';
 import { NotificationService } from '../_services/notification/notification.service';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { ExtractTimePipe } from './extract-time/extract-time.pipe';
-import {SocketService} from '../_services/socket/socket.service';
-import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
-import {StickyModule} from 'ng2-sticky-kit';
+import { SocketService } from '../_services/socket/socket.service';
+import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
+import { StickyModule } from 'ng2-sticky-kit';
 
 @NgModule({
   imports: [
