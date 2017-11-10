@@ -735,15 +735,16 @@ export class WorkshopEditComponent implements OnInit {
   /**
    * goto(toggleStep)  */
   public goto(toggleStep) {
-    this.busyBasics = true;
+    this.busyBasics = false;
     this.busyWorkshopPage = false;
     this.step = toggleStep;
     this.router.navigate(['workshop', this.workshopId, 'edit', +toggleStep]);
     if (toggleStep === 2) {
+      this.busyBasics = true;
       this.busyBasics = false;
     }
-    if (toggleStep === 6){
-      this.busyWorkshopPage = false;
+    if (toggleStep === 6) {
+      this.busyWorkshopPage = true;
     }
   }
 
@@ -980,6 +981,7 @@ export class WorkshopEditComponent implements OnInit {
   openWorkshop() {
     this.busyPreview = true;
     this.router.navigate(['/workshop', this.workshopId]);
+    this.busyPreview = false;
   }
 
 }

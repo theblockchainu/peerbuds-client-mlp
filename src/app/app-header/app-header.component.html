@@ -6,8 +6,8 @@
     </a>
   </span>
   <span class="search-form">
-    <md-input-container style="color: #767676 !important;" floatPlaceholder="never" class="mat-block" *ngIf="(isLoggedIn | async)">
-      <input name="search" style="color: #767676 !important;" class="mat-block search-box mat-focused" mdInput [formControl]="myControl" [mdAutocomplete]="auto" placeholder="Search people, topic...">
+    <md-input-container style="color:#767676 !important" floatPlaceholder="never" class="mat-block" *ngIf="(isLoggedIn | async)">
+      <input name="search" style="color:#767676 !important" class="mat-block search-box" mdInput [formControl]="myControl" [mdAutocomplete]="auto" placeholder="Search people, topic..." >
     </md-input-container>
     <md-autocomplete #auto="mdAutocomplete">
       <md-option *ngFor="let option of options" [value]="getSearchOptionText(option)" (click)="onSearchOptionClicked(option)">
