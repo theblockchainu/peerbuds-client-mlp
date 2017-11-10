@@ -1,7 +1,9 @@
 <div class="mat-dialog-focus-trap"></div>
 <div class="row">
     <div class="col-md-12">
-        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()">
+            <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+        </button>
         <div style="display: inline-block">
             <h3 md-dialog-title>{{getAddOrEditText()}} project activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
         </div>
@@ -34,7 +36,8 @@
                             <div class="loading-container" [hidden]="!uploadingVideo">
                                 <ngx-loading [show]="true"></ngx-loading>
                             </div>
-                            <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)" maxFileSize="10000000" chooseLabel="Browse" accept="image/*,video/*" ></p-fileUpload>
+                            <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)"
+                                maxFileSize="10000000" chooseLabel="Browse" accept="image/*,video/*"></p-fileUpload>
                             <!-- <md-grid-list cols="2" rowHeight="100px" gutterSize="10px" *ngIf="mediaObject && mediaObject.hasOwnProperty('type') && mediaObject.hasOwnProperty('url')">
                                 <md-grid-tile>
                                     <img *ngIf="mediaObject.type.includes('image')" src="{{config.apiUrl + mediaObject.url}}" width="150" (error)="imgErrorHandler($event)">
@@ -45,7 +48,8 @@
                                 </md-grid-tile>
                             </md-grid-list> -->
                             <div *ngIf="mediaObject && mediaObject.hasOwnProperty('type') && mediaObject.hasOwnProperty('url')" class="col-md-6 padding-left-0 pic delete imageContainerVideo">
-                                <img *ngIf="mediaObject.type.includes('image')" src="{{config.apiUrl + mediaObject.url}}" width="150" (error)="imgErrorHandler($event)" style="border: 0.5px solid #ccc">
+                                <img *ngIf="mediaObject.type.includes('image')" src="{{config.apiUrl + mediaObject.url}}" width="150" (error)="imgErrorHandler($event)"
+                                    style="border: 0.5px solid #ccc">
                                 <md-icon *ngIf="mediaObject.type.includes('image')" (click)="deleteFromContainer(mediaObject.url, 'image')" class="delete-image">close</md-icon>
                                 <video *ngIf="mediaObject.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
                                     <source src="{{config.apiUrl + mediaObject.url}}"> Your browser does not support the video tag.
@@ -61,7 +65,8 @@
                     </md-input-container>
 
                     <md-input-container class="pb-block margin-top-20 margin-bottom-20">
-                        <textarea mdInput #prerequisites maxlength="500" rows="5" formControlName="prerequisites" placeholder="What do learners need to know?" [required]="true"></textarea>
+                        <textarea mdInput #prerequisites maxlength="500" rows="5" formControlName="prerequisites" placeholder="What do learners need to know?"
+                            [required]="true"></textarea>
                         <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
                     </md-input-container>
 
@@ -76,11 +81,12 @@
                             <ngx-loading [show]="true"></ngx-loading>
                         </div>
                         <p-fileUpload *ngIf="!uploadingAttachments" name="attachments" accept="application/pdf,application/msword,
-                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" customUpload="true" (uploadHandler)="uploadNew($event)" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" customUpload="true"
+                            (uploadHandler)="uploadNew($event)" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
                             <ng-template pTemplate="toolbar">
-                                    <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image/video</div>
+                                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image/video</div>
                             </ng-template>
-                            
+
                         </p-fileUpload>
                         <!-- <ng-template pTemplate="content"> -->
                         <!-- <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls.length">
@@ -96,7 +102,9 @@
                             <div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
                                 <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
                                 <md-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</md-icon>
-                                <div *ngIf="file.type.includes('application')" class="uploaded_file"><a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a></div>
+                                <div *ngIf="file.type.includes('application')" class="uploaded_file">
+                                    <a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+                                </div>
                                 <md-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</md-icon>
                             </div>
                         </div>
@@ -105,7 +113,9 @@
             </div>
         </md-dialog-content>
         <md-dialog-actions>
-            <button md-raised-button [md-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length==0 && endDay == null && description.value.length == 0 && prerequisites.value.length == 0">Save</button> &emsp;
+            <span mdTooltip="Recheck the inputs!" [mdTooltipDisabled]="title.value.length!==0 || endDay !== null || description.value.length !== 0 || prerequisites.value.length !== 0">
+                <button md-raised-button [md-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length==0 && endDay == null && description.value.length == 0 && prerequisites.value.length == 0">Save</button> &emsp;
+            </span>
             <button md-raised-button [md-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
             <button md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
             <button md-button [md-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
