@@ -160,7 +160,7 @@
 <div md-dialog-actions *ngIf="data.userType==='teacher' || data.userType==='participant' ">
   <div class="row">
     <div class="col-md-12">
-      <a md-raised-button color="primary" *ngIf="data.content.isLive" href="/static/live/public/index.html" target="_blank">Join</a>
+      <a md-raised-button color="primary" *ngIf="data.content.isLive" (click)="joinLiveSession(data.content)">Join</a>
       <button md-button class="mat-border-button" *ngIf="data.content.timetoSession" [disabled]="true" tabindex="-1"> {{data.content.timetoSession}} </button>
     </div>
   </div>
