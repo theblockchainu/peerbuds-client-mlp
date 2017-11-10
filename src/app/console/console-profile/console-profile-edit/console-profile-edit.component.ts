@@ -30,6 +30,7 @@ declare var moment: any;
 })
 export class ConsoleProfileEditComponent implements OnInit {
   public loadingProfile = false;
+  public busyUpdate = false;
   private userId;
   public profile: any;
   public peer: any;
@@ -400,6 +401,7 @@ export class ConsoleProfileEditComponent implements OnInit {
     // profileData = this.sanitize(profileData);
     console.log(email);
     //console.log(phone_numbers);
+    this.busyUpdate = true;
     this._profileService.updateProfile(this.userId, profileData)
       .flatMap((response) => {
         return this._profileService.updatePhoneNumbers(this.userId, this.profile.id, phone_numbers);
@@ -416,11 +418,13 @@ export class ConsoleProfileEditComponent implements OnInit {
       }).flatMap((response) => {
         return this._profileService.updatePeer(this.userId, {'phone': profileData.phone_numbers});
       }).subscribe((response) => {
+        this.busyUpdate = false;
         this.snackBar.open('Profile Updated', 'Close');
       }, (err) => {
         console.log('Error updating Peer: ');
         console.log(err);
-        this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe(() => {
+        this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response) => {
+          this.busyUpdate = false;
           this.saveProfile();
         });
       });

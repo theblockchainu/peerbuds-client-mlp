@@ -29,12 +29,11 @@ export class LoginComponentDialog implements OnInit {
   isLoggedIn: Observable<boolean>;
   private email: string;
   public passWord: string;
-  public rememberMe: boolean;
+  public rememberMe = false;
   public loginForm: FormGroup;
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
-
- 
+  public isChecked = false;
   public showError = false;
 
   constructor(
@@ -68,11 +67,16 @@ export class LoginComponentDialog implements OnInit {
     });
   }
 
+  public toggle() {
+    this.isChecked = true;
+   this.isChecked = !(this.isChecked);
+  }
+
   public login() {
       this.email = this.loginForm.controls['email'].value;
       this.passWord = this.loginForm.controls['password'].value;
       this.rememberMe = this.loginForm.controls['rememberMe'].value;
-      this.authenticationService.login(this.email, this.passWord)
+      this.authenticationService.login(this.email, this.passWord, this.rememberMe)
           .subscribe(
               (data) => {
                   this.dialogRef.close();

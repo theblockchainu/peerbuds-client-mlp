@@ -16,7 +16,7 @@ md-dialog-content {
 
 .page-signin
 {
-    width: 442px;
+    width: 390px;
     height: 434px;
   
 }
@@ -25,8 +25,8 @@ md-dialog-content {
     margin: 47px;
 }
 .logincontent{
-    width: 440px;
-    height: 530px;
+    width: 390px;
+    height: 498px;
     overflow: disable;
 }
 
@@ -40,7 +40,7 @@ md-dialog-content {
             display: inline-block;
             left: 0;
             position: relative;
-            top: 22px;
+            top: 9px;
             width: 100%;
         }
 
@@ -48,6 +48,7 @@ md-dialog-content {
             border-radius: 24px;
             color: rgba(74, 74, 74, 0.5);
             display: inline-block;
+            bottom: 14px;
             height: 30px;
             line-height: 30px;
             width: 50px;
@@ -63,7 +64,7 @@ md-dialog-content {
             font-weight:800;
         }
 .check {
-    margin-right: 50% !important;
+    margin-right: 57% !important;
 }
 .loginbtn{
     background-color: #ff6d71;
@@ -77,13 +78,13 @@ md-dialog-content {
 }
 
 .fa-facebook{
-    background-color: #335397;
-    color: #fff!important;
+    background-color: #ffffff;
+    color: #335397!important;
 }
 
 .fa-google{
-    background-color: #dd4a38;
-    color: #fff!important;
+    background-color: #ffffff;
+    color: #dd4a38!important;
 }
 
 .circle-icon1 {
@@ -104,7 +105,29 @@ md-dialog-content {
 
 .btn-block{
    font-size:15px;
-   color:#484848;
+   color:#ffffff;
+}
+.invert-fb{
+    background-color: #335397;
+}
+.invert-fb:hover, .invert-fb:active{
+     background-color: #ffffff;
+     color: #335397;
+     .fa-facebook{
+         background-color:#335397;
+         color: #ffffff !important;
+     }
+}
+.invert-google{
+    background-color: #dd4a38;
+}
+.invert-google:hover, .invert-google:active {
+    background-color: #ffffff;
+    color: #dd4a38;
+     .fa-google {
+         background-color: #dd4a38;
+         color: #ffffff !important;
+     }
 }
 .alert{
     text-align: left;

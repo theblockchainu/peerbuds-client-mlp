@@ -22,14 +22,15 @@ export class LoginComponent implements OnInit {
   public loading = false;
   public returnUrl: string;
   isLoggedIn : Observable<boolean>;
+  public rememberMe: boolean;
   public email: string;
   public passWord: string;
   // TypeScript public modifiers
 
   public loginForm = new FormGroup({
-    email : new FormControl(null, [Validators.required, Validators.pattern("^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$")]), /* putting reg ex as well */
+    email : new FormControl(null, [Validators.required, Validators.pattern('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$')]), /* putting reg ex as well */
     password : new FormControl(null, Validators.required)
-  })
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +51,8 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.email = this.loginForm.controls['email'].value;
       this.passWord = this.loginForm.controls['password'].value;
-      this.authenticationService.login(this.email, this.passWord)
+      this.rememberMe = this.loginForm.controls['this.rememberMe'].value;
+      this.authenticationService.login(this.email, this.passWord, this.rememberMe)
           .subscribe(
               (data) => {
                   this.router.navigate([this.returnUrl]);
