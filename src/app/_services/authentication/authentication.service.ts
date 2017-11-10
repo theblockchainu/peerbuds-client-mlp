@@ -57,10 +57,10 @@ export class AuthenticationService {
   /**
   *  Login the user then tell all the subscribers about the new status
   */
-  login(email: string, password: string): any {
+  login(email: string, password: string, rememberMe: boolean): any {
     // localStorage.setItem('token', 'JWT');
     // this.isLoginSubject.next(true);
-    const body = `{"email":"${email}","password":"${password}"}`;
+    const body = `{"email":"${email}","password":"${password}","rememberMe":${rememberMe}}`;
     return this.http
       .post(this.config.apiUrl + '/auth/local', body, this.options)
       .map((response: Response) => {

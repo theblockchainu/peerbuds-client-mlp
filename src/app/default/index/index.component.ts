@@ -19,6 +19,7 @@ import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Valida
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
+  public loadingHome: boolean;
   private email: string;
   notifyForm: FormGroup;
   public isLoggedIn;
@@ -37,9 +38,11 @@ export class IndexComponent implements OnInit {
                 if (this.loggedIn) {
                   setTimeout(() => this._router.navigate(['home', 'homefeed']));
                 }
+             
               });
    }
    ngOnInit() {
+    this.loadingHome = true;
     this.notifyForm = this._fb.group(
       {email: ['', Validators.requiredTrue]}
     );

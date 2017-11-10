@@ -6,20 +6,20 @@
      <div class="signin-form mat-whiteframe-z1">
        <div class="md-content__body extra-padding">
 
-        <form [formGroup]="loginForm" class="form-horizontal">
-         <md-dialog-content>
+        <form [formGroup]="loginForm" class="form-horizontal" style="padding: 0px !important;">
+         <md-dialog-content style="padding: 0px !important;">
              <div class="flex-body">
                
                <div class="margin-bottom-20">
-                 <a md-raised-button class="btn-width-large btn-block" href="{{config.apiUrl}}/auth/facebook?returnTo=/">
+                 <a md-raised-button class="invert-fb btn-width-large btn-block" href="{{config.apiUrl}}/auth/facebook?returnTo=/">
                    <i class="fa fa-facebook circle-icon1"></i>Continue with Facebook</a>
                  </div>
 
                  <div class="margin-bottom-20">
-                   <a md-raised-button class="btn-width-large btn-block" href="{{config.apiUrl}}/auth/google?returnTo=/">
+                   <a md-raised-button class="invert-google btn-width-large btn-block" href="{{config.apiUrl}}/auth/google?returnTo=/">
                      <i class="fa fa-google circle-icon2"></i>Continue with Gmail</a>
                    </div>
-                   <div class="btn-hide position-relative margin-bottom-10 text-center">
+                   <div class="btn-hide position-relative text-center">
                      <div class="or-seperator-vertical"></div>
                      <span class="round-or-text or-text-vertical">or</span>
                    </div>
@@ -28,17 +28,17 @@
                       <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Wrong Username/password
                     </div>
                     
-                   <div class="margin-bottom-20">
+                   <div class="margin-bottom-10">
                      <md-input-container class="pb-block">
                        <input mdInput placeholder="Email" formControlName="email" type="email">
                      </md-input-container>
                    </div>
-                   <div class="margin-bottom-20">
+                   <div class="margin-bottom-10">
                      <md-input-container class="pb-block">
                        <input mdInput placeholder="Password" formControlName="password" type="password">
                      </md-input-container>
                    </div>
-                   <div class="check margin-bottom-10">
+                   <div class="check margin-top-10 margin-bottom-10">
                      <md-checkbox formControlName="rememberMe"> Remember me </md-checkbox>
                    </div>
                    <div class="margin-bottom-20">

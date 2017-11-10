@@ -106,7 +106,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           });
         }
       }
-      if (peer.accountVerified && peer.verificationIdUrl) {
+      if (peer.verificationIdUrl) {
         this.alreadyVerified.push({
           text: 'Government Id',
           value: peer.verificationIdUrl
@@ -124,7 +124,6 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           });
         }
       }
-
       this.socialIdentitiesConnected = peer;
       // this.socialIdentitiesConnected.forEach(socialIdentity => {
       if (this.socialIdentitiesConnected.identities.length > 0) {

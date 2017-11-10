@@ -34,7 +34,6 @@ export class LoginComponentDialog implements OnInit {
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
 
- 
   public showError = false;
 
   constructor(
@@ -72,7 +71,7 @@ export class LoginComponentDialog implements OnInit {
       this.email = this.loginForm.controls['email'].value;
       this.passWord = this.loginForm.controls['password'].value;
       this.rememberMe = this.loginForm.controls['rememberMe'].value;
-      this.authenticationService.login(this.email, this.passWord)
+      this.authenticationService.login(this.email, this.passWord, this.rememberMe)
           .subscribe(
               (data) => {
                   this.dialogRef.close();
