@@ -31,7 +31,6 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
       console.log(urlSegment[0].path);
       consoleAccountComponent.setActiveTab(urlSegment[0].path);
     });
-    
     this.userId = _cookieUtilsService.getValue('userId');
   }
 
