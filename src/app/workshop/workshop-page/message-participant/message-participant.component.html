@@ -10,7 +10,10 @@
         </md-input-container>
       </div>
       <div class="col-md-12">
-        <button type="submit" [disabled]="!messageForm.valid" md-button class="pull-right">Submit</button>
+        <span mdTooltip="Invalid input!" [mdTooltipDisabled]="messageForm.valid">
+
+          <button type="submit" [disabled]="!messageForm.valid" md-button class="pull-right">Submit</button>
+        </span>
       </div>
     </form>
   </div>
