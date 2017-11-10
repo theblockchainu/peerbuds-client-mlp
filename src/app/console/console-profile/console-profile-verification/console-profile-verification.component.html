@@ -13,12 +13,11 @@
             <p class="mat-caption">You will need to provide identification before you book, so get a head start by doing it now</p>
           </div>
           <div class="col-md-4">
-            <button class="provideId" md-button class="mat-border-button" color="accent" style="border-color:#ff5b5f !important" *ngIf="" (click)="openIdVerify()">Provide ID</button>
-            <a *ngIf=""> Awaiting verification</a>
+            <button class="provideId" md-button class="mat-border-button" color="accent" style="border-color:#ff5b5f !important"  (click)="openIdVerify()">Provide ID</button>
           </div>
         </div>
         <hr>
-        <div class="row">
+        <div class="row" *ngIf="alreadyVerified?.length > 0">
           <div class="col-md-12">
             <h3>Already Verified</h3>
           </div>
@@ -38,7 +37,7 @@
             </div>
           </div>
         </div>
-        <hr>
+        <hr *ngIf="alreadyVerified?.length > 0">
         <div class="row">
           <div class="col-md-12">
             <h3>Yet to be Verified</h3>

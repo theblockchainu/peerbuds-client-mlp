@@ -73,6 +73,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
   public sendOTP() {
     this._profileService.sendVerifySms(this.peer.controls.phone.value)
       .subscribe();
+    console.log(this.phone);
     console.log('otp sent');
   }
 
