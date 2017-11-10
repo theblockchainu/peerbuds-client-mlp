@@ -459,7 +459,7 @@ export class WorkshopPageComponent implements OnInit {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
                 if (content.id === this.toOpenDialogName) {
-                  this.openDialog(content);
+                  this.openDialog(content, itinerary.startDate);
                 }
               });
             });
@@ -761,7 +761,8 @@ export class WorkshopPageComponent implements OnInit {
 
   openDeleteDialog(action: string) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action
+      data: action,
+      height: '30vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -806,7 +807,7 @@ export class WorkshopPageComponent implements OnInit {
   /**
   * openDialog
   content:any   */
-  public openDialog(content: any) {
+  public openDialog(content: any, startDate) {
     this.modalContent = content;
     switch (content.type) {
       case 'online':
@@ -814,8 +815,11 @@ export class WorkshopPageComponent implements OnInit {
           const dialogRef = this.dialog.open(ContentOnlineComponent, {
             data: {
               content: content,
+              startDate: startDate,
               userType: this.userType,
-              collectionId: this.workshopId
+              collectionId: this.workshopId,
+              collection: this.workshop,
+              calendarId: this.calendarId
             },
             width: '40vw',
             height: '100vh'
@@ -827,6 +831,7 @@ export class WorkshopPageComponent implements OnInit {
           const dialogRef = this.dialog.open(ContentVideoComponent, {
             data: {
               content: content,
+              startDate: startDate,
               userType: this.userType,
               collectionId: this.workshopId
             },
@@ -840,6 +845,7 @@ export class WorkshopPageComponent implements OnInit {
           const dialogRef = this.dialog.open(ContentProjectComponent, {
             data: {
               content: content,
+              startDate: startDate,
               userType: this.userType,
               peerHasSubmission: this.peerHasSubmission,
               collectionId: this.workshopId
