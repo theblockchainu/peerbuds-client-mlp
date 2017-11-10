@@ -106,7 +106,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           });
         }
       }
-      if (peer.verificationIdUrl) {
+      if (peer.accountVerified && peer.verificationIdUrl) {
         this.alreadyVerified.push({
           text: 'Government Id',
           value: peer.verificationIdUrl

@@ -33,7 +33,7 @@ export class LoginComponentDialog implements OnInit {
   public loginForm: FormGroup;
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
-  public isChecked = true;
+  public isChecked = false;
   public showError = false;
 
   constructor(
@@ -51,8 +51,6 @@ export class LoginComponentDialog implements OnInit {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
     }
 
- 
-
   public ngOnInit() {
     //reset login status
    this.authenticationService.logout();
@@ -67,6 +65,11 @@ export class LoginComponentDialog implements OnInit {
       this.forgotpwdForm = this._fb.group({
       email : ['', Validators.email] /* putting reg ex as well */
     });
+  }
+
+  public toggle() {
+    this.isChecked = true;
+   this.isChecked = !(this.isChecked);
   }
 
   public login() {
