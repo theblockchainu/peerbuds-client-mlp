@@ -75,6 +75,8 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
         this.drafts.push(workshop);
       } else {
         workshop.calendars.forEach(calendar => {
+          calendar.startDate = moment(calendar.startDate).add(1, 'days').toISOString();
+          calendar.endDate = moment(calendar.endDate).add(1, 'days').toISOString();
           if (calendar.endDate) {
             if (now.diff(moment.utc(calendar.endDate)) < 0) {
               if (!now.isBetween(calendar.startDate, calendar.endDate)) {
