@@ -21,6 +21,7 @@ import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
+import { CollectionGridDialogComponent } from './collection-grid-dialog/collection-grid-dialog.component';
 
 @NgModule({
   imports: [
@@ -35,10 +36,10 @@ import { VgBufferingModule } from 'videogular2/buffering';
   ],
   exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
-    , VerifyPhoneDialogComponent, LiveSessionDialogComponent],
+    , VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent],
   declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent
     , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
-    , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent],
+    , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent],
   providers: [
     DialogsService,
     TwilioServicesService
@@ -46,6 +47,6 @@ import { VgBufferingModule } from 'videogular2/buffering';
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, MultiselectTopicDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
-    , LiveSessionDialogComponent],
+    , LiveSessionDialogComponent, CollectionGridDialogComponent],
 })
 export class DialogsModule { }

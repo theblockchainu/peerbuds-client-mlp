@@ -1,6 +1,8 @@
 <div class="row">
     <div class="col-md-12">
-        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()">
+            <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+        </button>
         <div style="display: inline-block">
             <h3 md-dialog-title>{{getAddOrEditText()}} online session for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
         </div>
@@ -28,57 +30,61 @@
                         </md-input-container>
                     </div>
 
-                        <div class="form-group margin-top-20">
-                            <label class="title">Upload a photo:</label>
-                            <div class="upload-image-section imageHolder">
+                    <div class="form-group margin-top-20">
+                        <label class="title">Upload a photo:</label>
+                        <div class="upload-image-section imageHolder">
 
-                                <div class="loading-container" [hidden]="!uploadingImage">
-                                    <ngx-loading [show]="true"></ngx-loading>
-                                </div>
-                                <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true"  (uploadHandler)="uploadImage($event)" maxFileSize="10000000" accept="image/*" chooseLabel="Browse">
-                                    <ng-template pTemplate="toolbar">
-                                        <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
-                                    </ng-template>
-                                </p-fileUpload>
-                                <!-- <ng-template pTemplate="content"> -->
-                                <!-- <md-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
+                            <div class="loading-container" [hidden]="!uploadingImage">
+                                <ngx-loading [show]="true"></ngx-loading>
+                            </div>
+                            <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+                                accept="image/*" chooseLabel="Browse">
+                                <ng-template pTemplate="toolbar">
+                                    <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
+                                </ng-template>
+                            </p-fileUpload>
+                            <!-- <ng-template pTemplate="content"> -->
+                            <!-- <md-grid-list cols="4" gutterSize="10px" *ngIf="image.value">
                                     <md-grid-tile>
                                         <img src="{{config.apiUrl + image.value}}" width="150" (error)="imgErrorHandler($event)">
                                         <md-icon (click)="deleteFromContainer(image.value, 'image')" class="delete-button">close</md-icon>
                                     </md-grid-tile>
                                 </md-grid-list> -->
-                                <!-- </ng-template> -->
+                            <!-- </ng-template> -->
 
-                                <div *ngIf="image.value" class="col-md-6 padding-left-0 pic delete imageContainer">
-                                    <img src="{{config.apiUrl + image.value}}" width="150" style="border: 0.5px solid #ccc">
-                                    <md-icon (click)="deleteFromContainer(image.value, 'image')" class="delete-button">close</md-icon>
-                                </div>
+                            <div *ngIf="image.value" class="col-md-6 padding-left-0 pic delete imageContainer">
+                                <img src="{{config.apiUrl + image.value}}" width="150" style="border: 0.5px solid #ccc">
+                                <md-icon (click)="deleteFromContainer(image.value, 'image')" class="delete-button">close</md-icon>
                             </div>
                         </div>
-                        <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                            <textarea mdInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true" class="title"></textarea>
-                            <md-hint align="end">{{description.value.length}} / 500</md-hint>
-                        </md-input-container>
-                        <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                            <textarea mdInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?" class="title" [required]="true"></textarea>
-                            <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
-                        </md-input-container>
-                        <div class="form-group">
-                            <label class="display-block title">Add supporting material</label>
-                            <div class="loading-container" [hidden]="!uploadingAttachments">
-                                <ngx-loading [show]="true"></ngx-loading>
-                            </div>
-                            <p-fileUpload *ngIf="!uploadingAttachments" #fubauto name="file" customUpload="true" (uploadHandler)="uploadAttachments($event)" maxFileSize="10000000" chooseLabel="Browse" accept="application/pdf,application/msword,
+                    </div>
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                        <textarea mdInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true"
+                            class="title"></textarea>
+                        <md-hint align="end">{{description.value.length}} / 500</md-hint>
+                    </md-input-container>
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                        <textarea mdInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?"
+                            class="title" [required]="true"></textarea>
+                        <md-hint align="end">{{prerequisites.value.length}} / 500</md-hint>
+                    </md-input-container>
+                    <div class="form-group">
+                        <label class="display-block title">Add supporting material</label>
+                        <div class="loading-container" [hidden]="!uploadingAttachments">
+                            <ngx-loading [show]="true"></ngx-loading>
+                        </div>
+                        <p-fileUpload *ngIf="!uploadingAttachments" #fubauto name="file" customUpload="true" (uploadHandler)="uploadAttachments($event)"
+                            maxFileSize="10000000" chooseLabel="Browse" accept="application/pdf,application/msword,
                             application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" multiple="multiple">
-                                <ng-template pTemplate="toolbar">
-                                    <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
-                                </ng-template>
-                                <!-- <ng-template #file pTemplate="file">
+                            <ng-template pTemplate="toolbar">
+                                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
+                            </ng-template>
+                            <!-- <ng-template #file pTemplate="file">
                                 </ng-template> -->
 
-                            </p-fileUpload>
-                            <!-- <ng-template pTemplate="content">  -->
-                            <!-- <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls.length">
+                        </p-fileUpload>
+                        <!-- <ng-template pTemplate="content">  -->
+                        <!-- <md-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls.length">
                                 <md-grid-tile *ngFor="let file of attachmentUrls">
                                     <div style="float: left; margin-right: 15px; cursor: pointer;">
                                         <md-icon (click)="deleteFromContainer(file, 'file')" class="">close</md-icon>
@@ -86,24 +92,28 @@
                                     <a href="{{config.apiUrl + file}}">{{file}}</a>
                                 </md-grid-tile>
                             </md-grid-list> -->
-                            <!-- </ng-template> -->
-                            <div *ngIf="attachmentUrls.length" class="pic delete">
-                                <div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
-                                    <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
-                                    <md-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</md-icon>
-                                    <div *ngIf="file.type.includes('application')" class="uploaded_file"><a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a></div>
-                                    <md-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</md-icon>
+                        <!-- </ng-template> -->
+                        <div *ngIf="attachmentUrls.length" class="pic delete">
+                            <div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
+                                <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+                                <md-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</md-icon>
+                                <div *ngIf="file.type.includes('application')" class="uploaded_file">
+                                    <a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
                                 </div>
+                                <md-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</md-icon>
                             </div>
                         </div>
                     </div>
                 </div>
-            </md-dialog-content>
-            <md-dialog-actions>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <span mdTooltip="Recheck the inputs!" [mdTooltipDisabled]="title.value.length!==0 || description.value.length !== 0 || prerequisites.value.length !== 0">
                 <button md-raised-button [md-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length==0 && description.value.length == 0 && prerequisites.value.length == 0">Save</button> &emsp;
-                <button md-raised-button [md-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
-                <button md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
-                <button md-button [md-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
-            </md-dialog-actions>
-        </form>
-    </div>
+            </span>
+            <button md-raised-button [md-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
+            <button md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
+            <button md-button [md-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
+        </md-dialog-actions>
+    </form>
+</div>
