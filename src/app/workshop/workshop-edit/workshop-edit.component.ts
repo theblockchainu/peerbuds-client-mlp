@@ -979,7 +979,6 @@ export class WorkshopEditComponent implements OnInit {
 
   openWorkshop() {
     this.busyPreview = true;
-    this.busyPreview = false;
     this.router.navigate(['/workshop', this.workshopId]);
   }
 

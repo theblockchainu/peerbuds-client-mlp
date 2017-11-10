@@ -29,11 +29,11 @@ export class LoginComponentDialog implements OnInit {
   isLoggedIn: Observable<boolean>;
   private email: string;
   public passWord: string;
-  public rememberMe: boolean;
+  public rememberMe = false;
   public loginForm: FormGroup;
   public forgotpwdForm: FormGroup;
   // TypeScript public modifiers
-
+  public isChecked = true;
   public showError = false;
 
   constructor(
@@ -50,6 +50,8 @@ export class LoginComponentDialog implements OnInit {
   ) {
       this.isLoggedIn = this.authenticationService.isLoggedIn();
     }
+
+ 
 
   public ngOnInit() {
     //reset login status
