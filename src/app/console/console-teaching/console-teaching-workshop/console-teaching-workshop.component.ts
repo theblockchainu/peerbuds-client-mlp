@@ -75,9 +75,13 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
         this.drafts.push(workshop);
       } else {
         workshop.calendars.forEach(calendar => {
-          if (calendar.endDate) {
-            if (now.diff(moment.utc(calendar.endDate)) < 0) {
-              if (!now.isBetween(calendar.startDate, calendar.endDate)) {
+          calendar.startDate = moment(calendar.startDate).toDate();
+          calendar.endDate = moment(calendar.endDate).hours(23).minutes(59).toDate();
+          const startDateMoment = moment(calendar.startDate).toDate();
+          const endDateMoment = moment(calendar.endDate).hours(23).minutes(59).toDate();
+          if (endDateMoment) {
+            if (now.diff(endDateMoment) < 0) {
+              if (!now.isBetween(startDateMoment, endDateMoment)) {
                 if (workshop.id in this.upcomingWorkshopsObject) {
                   this.upcomingWorkshopsObject[workshop.id]['workshop']['calendars'].push(calendar);
                 } else {

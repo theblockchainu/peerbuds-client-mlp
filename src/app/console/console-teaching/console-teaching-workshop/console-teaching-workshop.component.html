@@ -52,7 +52,8 @@
                     <div class="collectionTitle mat-body-2" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
                     <!-- <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar> -->
                     <div class="cohortDate">
-                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
+                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+                        MMM' }}</span>
                     </div>
                     <div class="collectionSubtitle" (click)="_collectionService.openCollection(collection)">
                       {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
@@ -279,7 +280,7 @@
         <div>
           <div style="margin-top:20px;" class="col-md-12">
             <div class="row">
-              <div *ngFor="let collection of pastArray" >
+              <div *ngFor="let collection of pastArray">
                 <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
                 <ng-template #noTopicText>No Topics</ng-template>
                 <div class="col-md-4" style="margin-top: 20px;">
