@@ -12,8 +12,8 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-import {AuthenticationService} from '../authentication/authentication.service';
-
+import { AuthenticationService } from '../authentication/authentication.service';
+import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 @Injectable()
 export class PaymentService {
   public key = 'userId';
@@ -25,7 +25,8 @@ export class PaymentService {
     private route: ActivatedRoute,
     public router: Router,
     private authService: AuthenticationService,
-    public _requestHeaderService: RequestHeaderService
+    public _requestHeaderService: RequestHeaderService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     this.options = this._requestHeaderService.getOptions();
   }
@@ -117,6 +118,42 @@ export class PaymentService {
           console.log('Error: ' + err);
         });
     }
+  }
+
+  /**
+   * convertCurrency
+   */
+  public convertCurrency(amount: number, from: string) {
+    const body = {
+      'from': from,
+      'to': this._cookieUtilsService.getValue('currency'),
+      'amount': amount
+    };
+    return this.http.post(this.config.apiUrl + '/convertCurrency', body, this.options)
+      .map((response: Response) => {
+        const res = response.json();
+        if (res.success) {
+          // return {
+          //   amount: res,
+          //   currency: this._cookieUtilsService.getValue('currency')
+          // }; change this when currency layer starts working
+          return {
+            amount: amount,
+            currency: from
+          };
+        } else {
+          return {
+            amount: amount,
+            currency: from
+          };
+        }
+
+      }, (err) => {
+        return {
+          amount: amount,
+          currency: from
+        };
+      });
   }
 
 }

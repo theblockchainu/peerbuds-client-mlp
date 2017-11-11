@@ -6,13 +6,21 @@
     <!-- Page Content -->
     <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 100vh; min-height: 100vh; overflow-y: scroll">
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value !== 'active'">
-        <button md-button (click)="saveandexit()">Save &amp; Exit</button>
+        <button md-button (click)="saveandexit()">
+            <span *ngIf="!busySave">Save &amp; Exit</span>
+            <span *ngIf="busySave"> </span>
+            <ngx-loading [show]="busySave"></ngx-loading>
+        </button>
       </div>
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value === 'active'">
         <button md-button (click)="exit()">Exit</button>
       </div>
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12">
-        <button md-button (click)="openWorkshop()">Preview</button>
+        <button md-button (click)="openWorkshop()">
+          <span *ngIf="!busyPreview">Preview</span>
+          <span *ngIf="busyPreview"> </span>
+          <ngx-loading [show]="busyPreview"></ngx-loading>
+        </button>
       </div>
       <div class="pull-left">
         <md-chip-list>
@@ -39,7 +47,11 @@
               <li>Respect Others</li>
             </ol>
             <div class="margin-top-20">
-              <a md-raised-button (click)="goto(2)" color="accent" class="pull-right">Continue</a>
+              <button md-raised-button (click)="goto(2)" color="accent" class="pull-right">
+                <span *ngIf="!busyBasics">Continue</span>
+                <span *ngIf="busyBasics"> </span>
+                <ngx-loading [show]="busyBasics"></ngx-loading>
+              </button>
             </div>
           </div>
         </div>
@@ -104,6 +116,11 @@
                 </div>-->
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(1)>Back</a> -->
+                  <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
+                    <span *ngIf="!busyInterest">Continue</span>
+                    <span *ngIf="busyInterest"> </span>
+                    <ngx-loading [show]="busyInterest"></ngx-loading>
+                  </button>
                   <span mdTooltip="Add More interests!" [mdTooltipDisabled]="interests.length !== 0">
                     <a md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">Continue</a>
                   </span>
@@ -131,6 +148,11 @@
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(2)>Back</a> -->
+                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
+                    <span *ngIf="!busyLanguage">Continue</span>
+                    <span *ngIf="busyLanguage"> </span>
+                    <ngx-loading [show]="busyLanguage"></ngx-loading>
+                  </button>
                   <span mdTooltip="Select Language!" [mdTooltipDisabled]="selectedLanguages!==undefined">
                     <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">Continue</button>
                   </span>
@@ -157,6 +179,11 @@
                 </div>
                 <div style="margin-top:50px;">
                   <!-- <a md-button (click)=goto(3)>Back</a> -->
+                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
+                    <span *ngIf="!busyHost">Continue</span>
+                    <span *ngIf="busyHost"> </span>
+                    <ngx-loading [show]="busyHost"></ngx-loading>
+                    </button>
                   <span mdTooltip="Enter something about yourself!" [mdTooltipDisabled]="aboutHost.value.length !== 0">
                     <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">Continue</button>
                   </span>
@@ -175,7 +202,11 @@
               </p>
               <br/>
               <div style="margin-top:60px;">
-                <a md-raised-button (click)="goto(6)" color="accent" class="pull-right">Continue</a>
+                <a md-raised-button (click)="goto(6)" color="accent" class="pull-right">
+                  <span *ngIf="!busyWorkshopPage">Continue</span>
+                  <span *ngIf="busyWorkshopPage"> </span>
+                  <ngx-loading [show]="busyWorkshopPage"></ngx-loading>
+                </a>
               </div>
             </div>
           </div>
@@ -568,6 +599,11 @@
                     <md-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
                   </md-radio-group>
                 </div>
+                <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+                  <span *ngIf="!busyPayment">Continue</span>
+                  <span *ngIf="busyPayment"> </span>
+                  <ngx-loading [show]="busyPayment"></ngx-loading>
+                </button>
                 <span mdTooltip="Phone number not verified!" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
 
                   <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">Continue</button>

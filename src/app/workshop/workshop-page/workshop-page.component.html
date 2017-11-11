@@ -751,7 +751,7 @@
                   <div class="col-md-8">
                     <div class="row">
                       <div class="col-md-12">
-                        <h2 style="display: inline-block; margin-bottom: -1px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</h2> &nbsp; per person
+                        <h2 style="display: inline-block; margin-bottom: -1px;">{{workshop.price | convertCurrency: workshop.currency |async}}</h2> &nbsp; per person
                         <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;
                         <span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span>
                         <span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>

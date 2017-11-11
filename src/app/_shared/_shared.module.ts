@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgSwitch } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CurrencyPipe } from '@angular/common';
 
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
@@ -46,6 +47,7 @@ import { ExtractTimePipe } from './extract-time/extract-time.pipe';
 import { SocketService } from '../_services/socket/socket.service';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { StickyModule } from 'ng2-sticky-kit';
+import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
 
 @NgModule({
   imports: [
@@ -68,7 +70,7 @@ import { StickyModule } from 'ng2-sticky-kit';
     Ng2DeviceDetectorModule.forRoot(),
     StickyModule
   ],
-  declarations: [ExtractTimePipe],
+  declarations: [ExtractTimePipe, ConvertCurrencyPipe],
   providers: [
     CollectionService,
     CountryPickerService,
@@ -84,7 +86,10 @@ import { StickyModule } from 'ng2-sticky-kit';
     CommentService,
     TopicService,
     NotificationService,
-    SocketService
+    SocketService,
+    ExtractTimePipe,
+    ConvertCurrencyPipe,
+    CurrencyPipe
   ],
   exports: [
     CommonModule,
@@ -117,7 +122,7 @@ import { StickyModule } from 'ng2-sticky-kit';
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
     SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
-    LoadingModule, MdTooltipModule
+    LoadingModule, MdTooltipModule, ConvertCurrencyPipe
   ]
 })
 export class SharedModule { }
