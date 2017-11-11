@@ -3,11 +3,11 @@
     <div class="col-md-12">
       <div style="text-align: center; margin-top: 0px; margin-bottom: 30px;">
         <hr>
-        <div style="margin-top: -30px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
+        <div style="margin-top: -36px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
           <md-icon>wb_sunny</md-icon>
           <input mdInput [mdDatepicker]="startDatePicker" formControlName="date" [hidden]="true">
           <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
-          <a *ngIf="itenaryForm.value.date" style="float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" >({{showItineraryDate(itenaryForm.value.date)}})</a>
+          <a *ngIf="itenaryForm.value.date" style="float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" >({{showItineraryDate(itenaryForm.value.date) }})</a>
           <md-datepicker touchUi="true" #startDatePicker [startAt]="collectionStartDate"></md-datepicker>
           <a style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;">
             Day {{itenaryId + 1}}

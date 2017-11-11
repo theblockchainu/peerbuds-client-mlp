@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf, Pipe, PipeTransform } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from '../_services/authentication/authentication.service';

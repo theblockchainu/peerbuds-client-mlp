@@ -5,7 +5,8 @@ import { CollectionService } from '../../../_services/collection/collection.serv
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../../_services/comment/comment.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
-import {DialogsService} from '../../dialogs/dialog.service';
+import { DialogsService } from '../../dialogs/dialog.service';
+import { ContentService } from '../../../_services/content/content.service';
 
 @Component({
   selector: 'app-content-online',
@@ -21,6 +22,7 @@ export class ContentOnlineComponent implements OnInit {
   public replyingToCommentId: string;
   public comments: Array<any>;
   public userId;
+  public attachmentUrls = [];
 
   constructor(
     public config: AppConfig,
@@ -30,11 +32,17 @@ export class ContentOnlineComponent implements OnInit {
     private _fb: FormBuilder,
     private _commentService: CommentService,
     private _cookieUtilsService: CookieUtilsService,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private contentService: ContentService
   ) {
       this.userType = data.userType;
       this.workshopId = data.collectionId;
       this.userId = _cookieUtilsService.getValue('userId');
+      data.content.supplementUrls.forEach(file => {
+        this.contentService.getMediaObject(file).subscribe((res) => {
+            this.attachmentUrls.push(res[0]);
+        })
+      });
   }
 
   ngOnInit() {

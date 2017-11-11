@@ -20,7 +20,7 @@ export class DialogsService {
 
         dialogRef = this.dialog.open(EditCalendarDialogComponent, {
             width: '80vw',
-            height: '95vh'}
+            height: '99vh'}
         );
 
         dialogRef.componentInstance.collection = collection;

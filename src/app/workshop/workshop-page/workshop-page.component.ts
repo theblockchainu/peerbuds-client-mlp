@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar } from '@angular/material';
+import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
@@ -902,7 +902,7 @@ export class WorkshopPageComponent implements OnInit {
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.status === 'active' && collection.id !== this.workshopId) {
-              if (collection.owners[0].reviewsAboutYou) {
+              if (collection.owners && collection.owners[0].reviewsAboutYou) {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
@@ -1306,4 +1306,15 @@ export class WorkshopPageComponent implements OnInit {
     el.scrollIntoView();
   }
 
+  add1ToIndex(index) {
+    return 'Day ' + (+index + 1);
+  }
+
+  oneDay() {
+    return this.itenaryArray.length > 1;
+  }
+
+  displayNone() {
+    return 'display: none';
+  }
 }
