@@ -133,9 +133,13 @@ export class PaymentService {
       .map((response: Response) => {
         const res = response.json();
         if (res.success) {
+          // return {
+          //   amount: res,
+          //   currency: this._cookieUtilsService.getValue('currency')
+          // }; change this when currency layer starts working
           return {
-            amount: res,
-            currency: this._cookieUtilsService.getValue('currency')
+            amount: amount,
+            currency: from
           };
         } else {
           return {
