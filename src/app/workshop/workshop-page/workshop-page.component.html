@@ -217,12 +217,12 @@
                   </div>
                   <div class="qa-message-list" id="wallmessages">
                     <div class="message-item-wrapper" *ngFor="let itenary of itenaryArray">
-                      <div [ngClass]="{'message-item': true, 'message-item-ticked': hasDatePassed(itenary.startDate)}">
+                      <div [ngClass]="{'message-item': oneDay() , 'message-item-ticked': hasDatePassed(itenary.startDate)}">
                         <div class="message-inner">
                           <div class="qa-message-content">
-                            <div style="top: -4px; position: relative;">
+                            <div style="top: -8px; position: relative;">
                               <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
-                              <div *ngIf="userType==='public'|| calendarId === undefined">Day {{itenary.startDay}}</div>
+                              <div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
                             </div>
                             <div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'padding-top-40': true, 'padding-bottom-20': true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
                               *ngFor="let content of itenary.contents">
@@ -249,7 +249,7 @@
                                       {{_collectionService.getContentTypeFullName(content.type) | titlecase}}
                                     </div>
                                   </div>
-                                  <div class="col-md-12 margin-top-10">
+                                  <div class="col-md-12 margin-top-10 textJustify">
                                     <span> {{content.description | shorten: 115 : '...'}} </span>
                                   </div>
                                 </div>
@@ -650,8 +650,8 @@
                 </div>
               </div>
             </div>
-            <hr class="margin-top-30 margin-bottom-30" *ngIf="userType==='teacher'">
             <div *ngIf="userType==='teacher' && workshop.isApproved">
+              <hr class="margin-top-30 margin-bottom-30" *ngIf="userType==='teacher'">
               <div>
                 <h3 style="display: inline-block;">Workshop Batches</h3>
                 <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;">

@@ -9,6 +9,7 @@ import {SocketService} from '../../../_services/socket/socket.service';
 import {Router} from '@angular/router';
 import {Ng2DeviceService} from 'ng2-device-detector';
 import {VgAPI} from 'videogular2/core';
+import { ContentService } from '../../../_services/content/content.service';
 
 @Component({
   selector: 'app-content-video',
@@ -26,6 +27,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
   public userId;
   public startedView;
   api: VgAPI;
+  public attachmentUrls = [];
 
   constructor(
     public config: AppConfig,
@@ -37,11 +39,17 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
     private cookieUtilsService: CookieUtilsService,
     private _socketService: SocketService,
     private router: Router,
-    private deviceService: Ng2DeviceService
+    private deviceService: Ng2DeviceService,
+    private contentService: ContentService
   ) {
       this.userType = data.userType;
       this.workshopId = data.collectionId;
       this.userId = cookieUtilsService.getValue('userId');
+      this.data.content.supplementUrls.forEach(file => {
+        this.contentService.getMediaObject(file).subscribe((res) => {
+            this.attachmentUrls.push(res[0]);
+        })
+      });
   }
 
   ngOnInit() {
