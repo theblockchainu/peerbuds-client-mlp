@@ -36,6 +36,7 @@
     </div>
   </div>
   <div class="row margin-top-20">
+    <hr>
     <div class="col-md-12">
       <h3>{{data.content.title | titlecase}}</h3>
     </div>
@@ -47,7 +48,22 @@
       </p>
     </div>
   </div>
-  <hr>
+  <div *ngIf="attachmentUrls.length" class="pic delete">
+    <hr>
+    <div>
+      <b>Supplement Materials</b>
+    </div>
+    <br>
+    <div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
+        <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+        <div *ngIf="file.type.includes('application')" class="uploaded_file">
+            <a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+        </div>
+        <video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+            <source src="{{config.apiUrl + file.url}}">
+        </video>
+    </div>
+  </div>
   <!--DISCUSSION THREAD-->
   <div class="row Discussion margin-top-20" *ngIf="userType==='teacher' || userType==='participant'">
     <div class="col-md-12 margin-bottom-20">

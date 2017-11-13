@@ -86,6 +86,10 @@
                                 <md-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</md-icon>
                                 <div *ngIf="file.type.includes('application')" class="uploaded_file"><a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a></div>
                                 <md-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</md-icon>
+                                <video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+                                    <source src="{{config.apiUrl + file.url}}">
+                                </video>
+                                <md-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')" class="delete-button">close</md-icon>
                             </div>
                         </div>
                         <!-- </ng-template> -->

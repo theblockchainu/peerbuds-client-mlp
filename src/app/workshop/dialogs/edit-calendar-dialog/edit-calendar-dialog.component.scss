@@ -301,4 +301,27 @@ div.event span:first-child {
     border-right: 1px solid #888686;
 }
 
+.content {
+    z-index: 1;
+}
+
+.content:after {
+    content: '';
+    clear: both;
+    display: block;
+}
+
+.wrapper {
+    position: absolute;
+    width: 100%
+}
+
+.wrapper > div {
+    height: 100%;
+}
+
+.rightContent {
+   overflow-y: scroll;
+   height: 500px !important;
+}
 

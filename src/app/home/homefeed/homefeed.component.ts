@@ -47,7 +47,7 @@ export class HomefeedComponent implements OnInit {
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.status === 'active') {
-              if (collection.owners[0].reviewsAboutYou) {
+              if (collection.owners && collection.owners[0].reviewsAboutYou) {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
