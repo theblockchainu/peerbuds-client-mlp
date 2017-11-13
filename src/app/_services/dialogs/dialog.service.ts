@@ -12,7 +12,7 @@ import { VerifyPhoneDialogComponent } from './verify-phone-dialog/verify-phone-d
 import { CollectionGridDialogComponent } from './collection-grid-dialog/collection-grid-dialog.component';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
-
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -137,6 +137,14 @@ export class DialogsService {
             }
         });
 
+        return dialogRef.afterClosed();
+    }
+
+    openDeleteDialog(action: string) {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            data: action,
+            height: '30vh'
+        });
         return dialogRef.afterClosed();
     }
 
