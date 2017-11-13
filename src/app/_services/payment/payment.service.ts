@@ -129,17 +129,15 @@ export class PaymentService {
       'to': this._cookieUtilsService.getValue('currency'),
       'amount': amount
     };
+    console.log(body);
     return this.http.post(this.config.apiUrl + '/convertCurrency', body, this.options)
       .map((response: Response) => {
         const res = response.json();
+        console.log(res);
         if (res.success) {
-          // return {
-          //   amount: res,
-          //   currency: this._cookieUtilsService.getValue('currency')
-          // }; change this when currency layer starts working
           return {
-            amount: amount,
-            currency: from
+            amount: res.result,
+            currency: this._cookieUtilsService.getValue('currency')
           };
         } else {
           return {

@@ -160,31 +160,34 @@ export class ConsoleLearningComponent implements OnInit {
    * @returns {number}
    */
   public getProgressValue(workshop) {
-    switch (workshop.status) {
-      case 'active':
-        if (this.getLearnerCalendar(workshop)) {
-          if (this.getLearnerCalendar(workshop).startDate > this.now) {
-            return 0;
+    let max = 0;
+    let progress = 0;
+    workshop.contents.forEach(content => {
+      max++;
+      switch (content.type) {
+        case 'online':
+          if (content.views && content.views.length > 0) {
+            progress++;
           }
-          const totalContents = workshop.contents.length;
-          let pendingContents = 0;
-          workshop.contents.forEach((content) => {
-            if (moment(this.getLearnerCalendar(workshop).startDate).add(content.schedules[0].startDay, 'days') > this.now) {
-              pendingContents++;
-            }
-          });
-          return (1 - (pendingContents / totalContents)) * 100;
+          break;
 
-        } else {
-          return 0;
-        }
-      case 'submitted':
-        return 100;
-      case 'complete':
-        return 100;
-      default:
-        return 0;
-    }
+        case 'video':
+          if (content.views && content.views.length > 0) {
+            progress++;
+          }
+          break;
+
+        case 'project':
+          if (content.submissions && content.submissions.length > 0) {
+            progress++;
+          }
+          break;
+
+        default:
+          break;
+      }
+    });
+    return (progress / max) * 100;
   }
 
   public peerHasReview(collection) {

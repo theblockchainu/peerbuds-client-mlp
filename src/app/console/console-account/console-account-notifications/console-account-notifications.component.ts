@@ -9,37 +9,37 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 declare var moment: any;
 
 @Component({
-  selector: 'app-console-account-notifications',
-  templateUrl: './console-account-notifications.component.html',
-  styleUrls: ['./console-account-notifications.component.scss'],
+    selector: 'app-console-account-notifications',
+    templateUrl: './console-account-notifications.component.html',
+    styleUrls: ['./console-account-notifications.component.scss'],
     providers: [UcWordsPipe]
 })
 export class ConsoleAccountNotificationsComponent implements OnInit {
 
-  public picture_url = false;
-  public notifications = [];
-  public loaded = false;
-  private userId;
+    public picture_url = false;
+    public notifications = [];
+    public loaded = false;
+    private userId;
 
-  constructor(
-    public activatedRoute: ActivatedRoute,
-    public consoleAccountComponent: ConsoleAccountComponent,
-    private config: AppConfig,
-    public _notificationService: NotificationService,
-    private ucwords: UcWordsPipe,
-    public router: Router,
-    private _cookieUtilsService: CookieUtilsService
-  ) {
-    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
-      if (urlSegment[0] === undefined) {
-        consoleAccountComponent.setActiveTab('notifications');
-      } else {
-        consoleAccountComponent.setActiveTab(urlSegment[0].path);
-      }
-    });
+    constructor(
+        public activatedRoute: ActivatedRoute,
+        public consoleAccountComponent: ConsoleAccountComponent,
+        private config: AppConfig,
+        public _notificationService: NotificationService,
+        private ucwords: UcWordsPipe,
+        public router: Router,
+        private _cookieUtilsService: CookieUtilsService
+    ) {
+        activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
+            if (urlSegment[0] === undefined) {
+                consoleAccountComponent.setActiveTab('notifications');
+            } else {
+                consoleAccountComponent.setActiveTab(urlSegment[0].path);
+            }
+        });
 
-    this.userId = _cookieUtilsService.getValue('userId');
-  }
+        this.userId = _cookieUtilsService.getValue('userId');
+    }
 
     ngOnInit() {
 
@@ -59,10 +59,15 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
     }
 
     public getNotificationText(notification) {
-        const replacements = {'%username%': '<b>' + this.ucwords.transform(notification.actor[0].profiles[0].first_name) + ' ' + this.ucwords.transform(notification.actor[0].profiles[0].last_name) + '</b>', '%collectionTitle%': this.ucwords.transform(notification.collection[0].title), '%collectionName%': '<b>' + this.ucwords.transform(notification.collection[0].title) + '</b>', '%collectionType%': this.ucwords.transform(notification.collection[0].type)},
+        const replacements = {
+            '%username%': '<b>' + this.ucwords.transform(notification.actor[0].profiles[0].first_name) + ' ' + this.ucwords.transform(notification.actor[0].profiles[0].last_name) + '</b>',
+            '%collectionTitle%': notification.collection !== undefined ? this.ucwords.transform(notification.collection[0].title) : '***',
+            '%collectionName%': notification.collection !== undefined ? '<b>' + this.ucwords.transform(notification.collection[0].title) + '</b>' : '***',
+            '%collectionType%': notification.collection !== undefined ? this.ucwords.transform(notification.collection[0].type) : '***'
+        },
             str = notification.description;
 
-        return str.replace(/%\w+%/g, function(all) {
+        return str.replace(/%\w+%/g, function (all) {
             return replacements[all] || all;
         });
     }

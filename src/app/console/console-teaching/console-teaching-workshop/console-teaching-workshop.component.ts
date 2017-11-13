@@ -9,6 +9,8 @@ declare var moment: any;
 import { MdDialog } from '@angular/material';
 import { CohortDetailDialogComponent } from './cohort-detail-dialog/cohort-detail-dialog.component';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-console-teaching-workshop',
@@ -34,9 +36,11 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     public consoleTeachingComponent: ConsoleTeachingComponent,
     public _collectionService: CollectionService,
     private _cookieUtilsService: CookieUtilsService,
+    private _dialogService: DialogsService,
     public router: Router,
     public config: AppConfig,
-    public dialog: MdDialog
+    public dialog: MdDialog,
+    public snackBar: MdSnackBar
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
@@ -50,6 +54,10 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
 
   ngOnInit() {
     this.loaded = false;
+    this.fetchData();
+  }
+
+  private fetchData() {
     this._collectionService.getOwnedCollections(this.userId, '{ "where": {"type":"workshop"}, "include": ["calendars", "owners", {"participants": "profiles"}, "topics", {"contents":"schedules"}] }', (err, result) => {
       if (err) {
         console.log(err);
@@ -112,16 +120,38 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
         });
       }
     });
+
+    this.drafts.sort((a, b) => {
+      return moment(a.updatedAt).diff(moment(b.updatedAt), 'days');
+    });
+
     for (const key in this.pastWorkshopsObject) {
       if (this.pastWorkshopsObject.hasOwnProperty(key)) {
+        this.pastWorkshopsObject[key].workshop.calendars.sort((a, b) => {
+          return this.compareCalendars(a, b);
+        });
         this.pastArray.push(this.pastWorkshopsObject[key].workshop);
       }
     }
+
+    this.pastArray.sort((a, b) => {
+      return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
+    });
+
     for (const key in this.upcomingWorkshopsObject) {
       if (this.upcomingWorkshopsObject.hasOwnProperty(key)) {
+        this.upcomingWorkshopsObject[key].workshop.calendars.sort((a, b) => {
+          return this.compareCalendars(a, b);
+        });
         this.upcomingArray.push(this.upcomingWorkshopsObject[key].workshop);
       }
     }
+
+    this.upcomingArray.sort((a, b) => {
+      return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
+    });
+
+
     for (const key in this.liveWorkshopsObject) {
       if (this.liveWorkshopsObject.hasOwnProperty(key)) {
         this.ongoingArray.push(this.liveWorkshopsObject[key].workshop);
@@ -139,6 +169,13 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     });
   }
 
+  /**
+   * compareCalendars
+   */
+  public compareCalendars(a, b) {
+    return moment(a.startDate).diff(moment(b.startDate), 'days');
+  }
+
   public openCohortDetailDialog(cohortData: any) {
     const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
       width: '700px',
@@ -146,4 +183,30 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
       data: cohortData
     });
   }
+
+  public deleteWorkshop(action: string, workshop: any) {
+    this._dialogService.openDeleteDialog(action).subscribe(result => {
+      if (result === 'delete') {
+        this._collectionService.deleteCollection(workshop.id).subscribe(res => {
+          this.fetchData();
+          this.snackBar.open('Workshop Deleted', 'Close', {
+            duration: 800
+          });
+        });
+      } else if (result === 'cancel') {
+        const cancelObj = {
+          isCancelled: true
+        };
+        this._collectionService.patchCollection(workshop.id, cancelObj).subscribe((response) => {
+          this.fetchData();
+          this.snackBar.open('Workshop Cancelled', 'Close', {
+            duration: 800
+          });
+        });
+      } else {
+        console.log(result);
+      }
+    });
+  }
+
 }
