@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleLearningComponent } from '../console-learning.component';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { MdSnackBar } from '@angular/material';
 
 declare var moment: any;
 import * as _ from 'lodash';
@@ -35,7 +37,9 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     public consoleLearningComponent: ConsoleLearningComponent,
     public _collectionService: CollectionService,
     public router: Router,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private _dialogService: DialogsService,
+    public snackBar: MdSnackBar
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
@@ -50,6 +54,10 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
 
   ngOnInit() {
     this.loaded = false;
+    this.fetchWorkshop();
+  }
+
+  private fetchWorkshop() {
     this._collectionService.getParticipatingCollections(this.userId, '{ "relInclude": "calendarId", "where": {"type":"workshop"}, "include": ["calendars", {"owners":"profiles"}, {"participants": "profiles"}, "topics", {"contents":["schedules","views","submissions"]}, {"reviews":"peer"}] }', (err, result) => {
       if (err) {
         console.log(err);
@@ -66,7 +74,6 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
       }
     });
   }
-
 
   private createOutput(data: any) {
     const now = moment();
@@ -140,6 +147,24 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
   }
   public onSelect(workshop) {
     this.router.navigate(['workshop', workshop.id, 'edit', 1]);
+  }
+
+  /**
+   * exitWorkshop
+   */
+  public exitWorkshop(collection: any) {
+    this._dialogService.openDeleteDialog('cancel').subscribe(result => {
+      if (result === 'cancel') {
+        this._collectionService.removeParticipant(collection.id, this.userId).subscribe((response) => {
+          this.fetchWorkshop();
+          this.snackBar.open('Workshop Cancelled', 'Close', {
+            duration: 800
+          });
+        });
+      } else {
+        console.log(result);
+      }
+    });
   }
 
 }

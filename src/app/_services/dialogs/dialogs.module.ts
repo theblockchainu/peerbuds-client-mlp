@@ -47,6 +47,6 @@ import { CollectionGridDialogComponent } from './collection-grid-dialog/collecti
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, MultiselectTopicDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
-    , LiveSessionDialogComponent, CollectionGridDialogComponent],
+    , LiveSessionDialogComponent, CollectionGridDialogComponent, DeleteDialogComponent],
 })
 export class DialogsModule { }

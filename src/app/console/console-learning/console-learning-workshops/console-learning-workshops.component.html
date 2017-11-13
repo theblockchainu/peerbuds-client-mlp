@@ -31,7 +31,7 @@
                   <md-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
-                        <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a [mdMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
@@ -72,6 +72,11 @@
                   <br>
                 </md-card>
               </div>
+              <md-menu #ongoingCardMenu>
+                <button md-menu-item (click)="exitWorkshop(collection)">
+                  Cancel
+                </button>
+              </md-menu>
             </div>
             <div *ngFor="let collection of upcomingArray" [ngSwitch]="collection.status">
               <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
@@ -81,7 +86,7 @@
                   <md-card-content>
                     <div style="text-align: right">
                       <div class="pull-right">
-                        <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                        <a [mdMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
                           <md-icon>more_vert</md-icon>
                         </a>
                       </div>
@@ -124,6 +129,11 @@
                   <br>
                 </md-card>
               </div>
+              <md-menu #upcomingCardMenu>
+                <button md-menu-item (click)="exitWorkshop(collection)">
+                  Cancel
+                </button>
+              </md-menu>
             </div>
           </div>
         </div>
@@ -145,13 +155,13 @@
                 <div class="col-md-4" style="margin-top: 20px;">
                   <md-card style="text-align: center; padding: 20px;">
                     <md-card-content>
-                      <div class="clearfix" style="text-align: right">
+                      <!-- <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
                           <a md-icon-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
-                      </div>
+                      </div> -->
                       <div class="collectionParticipantImageCarousel">
                         <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
                           <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
@@ -189,8 +199,3 @@
     </div>
   </div>
 </div>
-<md-menu #collectionCardMenu>
-  <button md-menu-item>
-    Cancel
-  </button>
-</md-menu>
