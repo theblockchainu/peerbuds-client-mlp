@@ -7,7 +7,8 @@ import {
   MdCardModule, MdToolbarModule, MdIconModule, MdProgressBarModule,
   MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
   MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
-  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, MdAutocompleteModule
+  MdNativeDateModule, MdSliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, MdAutocompleteModule,
+  MdTooltipModule
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
@@ -42,9 +43,9 @@ import { CommentService } from '../_services/comment/comment.service';
 import { NotificationService } from '../_services/notification/notification.service';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { ExtractTimePipe } from './extract-time/extract-time.pipe';
-import {SocketService} from '../_services/socket/socket.service';
-import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
-import {StickyModule} from 'ng2-sticky-kit';
+import { SocketService } from '../_services/socket/socket.service';
+import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
+import { StickyModule } from 'ng2-sticky-kit';
 
 @NgModule({
   imports: [
@@ -116,7 +117,7 @@ import {StickyModule} from 'ng2-sticky-kit';
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
     SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
-    LoadingModule
+    LoadingModule, MdTooltipModule
   ]
 })
 export class SharedModule { }

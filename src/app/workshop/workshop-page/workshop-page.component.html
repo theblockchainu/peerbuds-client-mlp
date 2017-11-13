@@ -677,18 +677,15 @@
                   </div>
                 </div>
                 <div [ngSwitch]="view">
-                  <mwl-calendar-month-view *ngSwitchCase="'month'" 
-                    [viewDate]="viewDate" 
-                    [events]="events" 
-                    [refresh]="refresh" 
-                    (dayClicked)="dayClicked($event.day)">
+                  <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (dayClicked)="dayClicked($event.day)">
                   </mwl-calendar-month-view>
                 </div>
               </div>
               <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
                 <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
                   <span class="cal-day-badge"></span>
-                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})</span>
+                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
+                    MMM' }})</span>
                 </div>
                 <div class="margin-top-10 margin-bottom-10">
                   <span>{{clickedDate | date:'EEEE, MMM d'}}</span>
@@ -754,12 +751,16 @@
                     <div class="row">
                       <div class="col-md-12">
                         <h2 style="display: inline-block; margin-bottom: -1px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</h2> &nbsp; per person
-                        <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span><span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
+                        <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;
+                        <span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span>
+                        <span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <button md-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
+                    <span mdTooltip="Accont not approved!" [mdTooltipDisabled]="accountApproved === 'true'">
+                      <button md-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -806,8 +807,10 @@
               <div class="recommendation-card" *ngFor="let workshop of recommendations.collections; let i =index">
                 <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
                   <div class="">
-                    <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
-                    <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
+                    <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
+                      alt="workshpImg">
+                    <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+                      alt="workshpImg">
                   </div>
                   <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
                   <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>

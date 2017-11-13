@@ -33,6 +33,14 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class WorkshopEditComponent implements OnInit {
+  public busySave = false;
+  public busyPreview = false;
+  public busyInterest = false;
+  public busyLanguage = false;
+  public busyBasics = false;
+  public busyHost = false;
+  public busyWorkshopPage = false;
+  public busyPayment = false;
   public sidebarFilePath = 'assets/menu/workshop-static-left-sidebar-menu.json';
   public sidebarMenuItems;
   public itenariesForMenu = [];
@@ -138,6 +146,8 @@ export class WorkshopEditComponent implements OnInit {
       this.step = params['step'];
       // this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.apiUrl + '/workshop/' + this.workshopId + '/edit/' + this.step + '&state=1';
       this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.clientUrl + '/console/account/payoutmethods&state=' + this.config.clientUrl + '/workshop/' + this.workshopId + '/edit/' + this.step;
+      this.searchTopicURL = config.searchUrl + '/api/search/topics/suggest?field=name&query=';
+      this.createTopicURL = config.apiUrl + '/api/topics';
     });
 
 
@@ -428,9 +438,11 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public languageChange(event) {
+    this.busyLanguage = true;
     if (event) {
       console.log(event);
       this.selectedLanguages = event;
+      this.busyLanguage = false;
       //this.workshop.controls.selectedLanguage.setValue(event.value);
     }
   }
@@ -686,6 +698,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public submitInterests() {
+    this.busyInterest = true;
     let body = {};
     let topicArray = [];
     this.interests.forEach((topic) => {
@@ -711,6 +724,7 @@ export class WorkshopEditComponent implements OnInit {
           this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(res, this.sidebarMenuItems);
         });
         this.workshopStepUpdate();
+        this.busyInterest = false;
         this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
       });
     } else {
@@ -723,9 +737,19 @@ export class WorkshopEditComponent implements OnInit {
   /**
    * goto(toggleStep)  */
   public goto(toggleStep) {
+    this.busyBasics = false;
+    this.busyWorkshopPage = false;
     this.step = toggleStep;
     this.router.navigate(['workshop', this.workshopId, 'edit', +toggleStep]);
+    if (toggleStep === 2) {
+      this.busyBasics = true;
+      this.busyBasics = false;
+    }
+    if (toggleStep === 6) {
+      this.busyWorkshopPage = true;
+    }
   }
+
 
 
   submitForReview() {
@@ -750,6 +774,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   saveandexit() {
+    this.busySave = true;
     this.workshopStepUpdate();
     if (this.step === 13) {
       const data = this.timeline;
@@ -757,6 +782,7 @@ export class WorkshopEditComponent implements OnInit {
       if (body.startDate && body.endDate) {
         this.http.patch(this.config.apiUrl + '/api/collections/' + this.workshopId + '/calendar', body, this.options)
           .map((response) => {
+            this.busySave = false;
             this.router.navigate(['console/teaching/workshops']);
           })
           .subscribe();
@@ -942,6 +968,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   takeToPayment() {
+    this.busyPayment = true;
     this.step++;
     this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
   }
@@ -954,7 +981,9 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   openWorkshop() {
+    this.busyPreview = true;
     this.router.navigate(['/workshop', this.workshopId]);
+    this.busyPreview = false;
   }
 
 }

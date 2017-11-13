@@ -4,7 +4,8 @@
         <button md-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="addDeleteEvents()">
             <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
         </button>
-        <div class="col-md-4"> <!--style="display: inline-block"-->
+        <div class="col-md-4">
+            <!--style="display: inline-block"-->
             <h3 md-dialog-title>Add more cohorts your {{ duration }} day workshop</h3>
             <div>
                 <span>You have
@@ -15,10 +16,13 @@
         <div class="col-md-4 pull-right" *ngIf="recurringCount">
             <h3 style="margin-bottom:10px">Peerbuds Insights</h3>
             <div>
-                <label>You will have total of <b>{{ recurringCount }}</b> recurring sessions</label>
+                <label>You will have total of
+                    <b>{{ recurringCount }}</b> recurring sessions</label>
             </div>
             <div style="margin-top:5px">
-                <label>Your workshop will run for <b>{{ totalRunningDays }}</b> of the next <b>{{nextDays}}</b> days</label>
+                <label>Your workshop will run for
+                    <b>{{ totalRunningDays }}</b> of the next
+                    <b>{{nextDays}}</b> days</label>
             </div>
         </div>
     </div>
@@ -84,12 +88,15 @@
                         </md-radio-button>
                     </md-radio-group>
                     <div class="margin-top-20">
-                        <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Save Workshop Batches</button>
+                        <span mdTooltip="Solve Conflicts!" [mdTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
+                            <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Save Workshop Batches</button>
+                        </span>
+
                     </div>
                 </div>
             </div>
             <div class="editCalendar left-border col-md-5">
-                <div class="mat-content calendar" style="margin-right:10px" *ngIf="(recurringCalendar && recurringCalendar.length > 0) || computedConflict.length > 0" > 
+                <div class="mat-content calendar" style="margin-right:10px" *ngIf="(recurringCalendar && recurringCalendar.length > 0) || computedConflict.length > 0">
                     <h3>Preview Cohorts</h3>
                     <div class="margin-top-30 flex-column" *ngIf="computedConflict.length > 0">
                         <h3>Avoid Conflicts</h3>
@@ -136,7 +143,9 @@
                                         </div>
                                         <div class="col-md-12 padding-left-0">
                                             <div class="col-md-12 padding-left-0" style="margin: 3px 0px 10px 0px;">
-                                                <b>{{ content.contents.title | titlecase}}</b> - {{content.contents.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.contents.schedules[0].endTime | extractTime:'h:mm a'}}
+                                                <b>{{ content.contents.title | titlecase}}</b> - {{content.contents.schedules[0].startTime
+                                                | extractTime:'hh:mm a'}} to {{content.contents.schedules[0].endTime | extractTime:'h:mm
+                                                a'}}
                                             </div>
                                         </div>
                                     </div>

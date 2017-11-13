@@ -6,13 +6,21 @@
     <!-- Page Content -->
     <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 100vh; min-height: 100vh; overflow-y: scroll">
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value !== 'active'">
-        <button md-button (click)="saveandexit()">Save &amp; Exit</button>
+        <button md-button (click)="saveandexit()">
+            <span *ngIf="!busySave">Save &amp; Exit</span>
+            <span *ngIf="busySave"> </span>
+            <ngx-loading [show]="busySave"></ngx-loading>
+        </button>
       </div>
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && workshop.controls['status'].value === 'active'">
         <button md-button (click)="exit()">Exit</button>
       </div>
       <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12">
-        <button md-button (click)="openWorkshop()">Preview</button>
+        <button md-button (click)="openWorkshop()">
+          <span *ngIf="!busyPreview">Preview</span>
+          <span *ngIf="busyPreview"> </span>
+          <ngx-loading [show]="busyPreview"></ngx-loading>
+        </button>
       </div>
       <div class="pull-left">
         <md-chip-list>
@@ -39,7 +47,11 @@
               <li>Respect Others</li>
             </ol>
             <div class="margin-top-20">
-              <a md-raised-button (click)="goto(2)" color="accent" class="pull-right">Continue</a>
+              <button md-raised-button (click)="goto(2)" color="accent" class="pull-right">
+                <span *ngIf="!busyBasics">Continue</span>
+                <span *ngIf="busyBasics"> </span>
+                <ngx-loading [show]="busyBasics"></ngx-loading>
+              </button>
             </div>
           </div>
         </div>
@@ -104,7 +116,14 @@
                 </div>-->
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(1)>Back</a> -->
-                  <a md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">Continue</a>
+                  <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
+                    <span *ngIf="!busyInterest">Continue</span>
+                    <span *ngIf="busyInterest"> </span>
+                    <ngx-loading [show]="busyInterest"></ngx-loading>
+                  </button>
+                  <span mdTooltip="Add More interests!" [mdTooltipDisabled]="interests.length !== 0">
+                    <a md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">Continue</a>
+                  </span>
                 </div>
               </form>
             </div>
@@ -129,7 +148,15 @@
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(2)>Back</a> -->
-                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">Continue</button>
+                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
+                    <span *ngIf="!busyLanguage">Continue</span>
+                    <span *ngIf="busyLanguage"> </span>
+                    <ngx-loading [show]="busyLanguage"></ngx-loading>
+                  </button>
+                  <span mdTooltip="Select Language!" [mdTooltipDisabled]="selectedLanguages!==undefined">
+
+                    <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">Continue</button>
+                  </span>
                 </div>
               </form>
             </div>
@@ -153,7 +180,14 @@
                 </div>
                 <div style="margin-top:50px;">
                   <!-- <a md-button (click)=goto(3)>Back</a> -->
-                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">Continue</button>
+                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
+                    <span *ngIf="!busyHost">Continue</span>
+                    <span *ngIf="busyHost"> </span>
+                    <ngx-loading [show]="busyHost"></ngx-loading>
+                    </button>
+                  <span mdTooltip="Enter something about yourself!" [mdTooltipDisabled]="aboutHost.value.length !== 0">
+                    <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">Continue</button>
+                  </span>
                 </div>
               </form>
             </div>
@@ -169,7 +203,11 @@
               </p>
               <br/>
               <div style="margin-top:60px;">
-                <a md-raised-button (click)="goto(6)" color="accent" class="pull-right">Continue</a>
+                <a md-raised-button (click)="goto(6)" color="accent" class="pull-right">
+                  <span *ngIf="!busyWorkshopPage">Continue</span>
+                  <span *ngIf="busyWorkshopPage"> </span>
+                  <ngx-loading [show]="busyWorkshopPage"></ngx-loading>
+                </a>
               </div>
             </div>
           </div>
@@ -212,7 +250,11 @@
                 </div>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(5)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
+                  <span mdTooltip="Please fill all details!" [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
+
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
+
+                  </span>
                 </div>
               </form>
             </div>
@@ -235,7 +277,10 @@
                 </div>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(6)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Continue</button>
+                  <span mdTooltip="Please fill the description!" [mdTooltipDisabled]="description.value.length !== 0">
+
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Continue</button>
+                  </span>
                 </div>
               </form>
             </div>
@@ -264,7 +309,10 @@
                 </div>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(7)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="difficultyLevel && notes.value.length == 0">Continue</button>
+                  <span mdTooltip="Please fill the details!" [mdTooltipDisabled]="!difficultyLevel || notes.value.length !== 0">
+
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="difficultyLevel && notes.value.length == 0">Continue</button>
+                  </span>
                 </div>
               </form>
             </div>
@@ -288,7 +336,10 @@
                 <br/>
                 <div style="padding-top:60px;">
                   <!-- <a md-button (click)=goto(8)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0">Continue</button>
+                  <span mdTooltip="Please select the number of spots!" [mdTooltipDisabled]="maxSpots.value.length !== 0">
+
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0">Continue</button>
+                  </span>
                 </div>
               </form>
             </div>
@@ -356,8 +407,8 @@
                       <!-- </ng-template> -->
                       <div *ngIf="urlForImages.length" class="pic delete">
                         <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
-                            <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
-                            <md-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</md-icon>
+                          <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+                          <md-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</md-icon>
                         </div>
                       </div>
                       <div class="loading-container" [hidden]="!uploadingImage">
@@ -409,7 +460,11 @@
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(10)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="price.value.length == 0 && !currency && !cancellationPolicy">Continue</button>
+                  <span mdTooltip="Please select the number of spots!" [mdTooltipDisabled]="price.value.length !== 0 || currency || cancellationPolicy">
+
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="price.value.length == 0 && !currency && !cancellationPolicy">Continue</button>
+
+                  </span>
                 </div>
               </form>
             </div>
@@ -421,8 +476,8 @@
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Add content to your Workshop</h2>
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
-                <p class="subtitle">Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners
-                  will see this before they sign up for your workshop.</p>
+                <p class="subtitle">Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
+                  see this before they sign up for your workshop.</p>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(11)>Back</a> -->
                   <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
@@ -478,7 +533,9 @@
                 <div class="row">
                   <div style="margin-top:100px;">
                     <!-- <a md-button (click)=goto(12)>Back</a> -->
-                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate)">Continue</button>
+                    <span mdTooltip="Please select the Dates!" [mdTooltipDisabled]="(timeline.controls.calendar.value.startDate || timeline.controls.calendar.value.endDate)">
+                      <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate)">Continue</button>
+                    </span>
                   </div>
                 </div>
               </form>
@@ -497,8 +554,11 @@
                 <div style="margin-top:20px;">
                   <md-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</md-checkbox>
                 </div>
-                <button md-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] || !selectedValues[1]">
-                Submit for Review</button>
+                <span mdTooltip="Please select the Terms and conditions!" [mdTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+
+                  <button md-raised-button color="accent" (click)="submitForReview();" class="pull-right" [disabled]="!selectedValues[0] || !selectedValues[1]">
+                    Submit for Review</button>
+                </span>
               </div>
               <div *ngIf="isSubmitted" style="margin-top: 70px;">
                 Your workshop has been submitted for review and is awaiting approval from Peerbuds team.
@@ -540,7 +600,15 @@
                     <md-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
                   </md-radio-group>
                 </div>
-                <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">Continue</button>
+                <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+                  <span *ngIf="!busyPayment">Continue</span>
+                  <span *ngIf="busyPayment"> </span>
+                  <ngx-loading [show]="busyPayment"></ngx-loading>
+                </button>
+                <span mdTooltip="Phone number not verified!" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
+
+                  <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">Continue</button>
+                </span>
               </form>
             </div>
           </div>
@@ -565,4 +633,4 @@
       </div>
     </div>
   </md-sidenav-container>
-  </div>
+</div>

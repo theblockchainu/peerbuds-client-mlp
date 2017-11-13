@@ -759,7 +759,7 @@ export class WorkshopPageComponent implements OnInit {
   openDeleteDialog(action: string) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: action,
-      height: '30vh'
+      height: '20vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {

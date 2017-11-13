@@ -71,7 +71,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     MdProgressBarModule,
     DialogsModule,
     AppRoutingModule,
-    CarouselModule.forRoot(),
+    //CarouselModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM' }),
     Ng4GeoautocompleteModule.forRoot(),

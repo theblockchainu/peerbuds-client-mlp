@@ -9,7 +9,7 @@ import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-d
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
 import { VideoDialogComponent } from './video-dialog/video-dialog.component';
 import { VerifyPhoneDialogComponent } from './verify-phone-dialog/verify-phone-dialog.component';
-
+import { CollectionGridDialogComponent } from './collection-grid-dialog/collection-grid-dialog.component';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
 
@@ -122,5 +122,22 @@ export class DialogsService {
         return dialogRef5.afterClosed();
     }
 
+    /**
+     * openCollectionGrid
+     */
+    public openCollectionGrid(title, collections) {
+        let dialogRef: MdDialogRef<CollectionGridDialogComponent>;
+
+        dialogRef = this.dialog.open(CollectionGridDialogComponent, {
+            width: '80vw',
+            height: '80vh',
+            data: {
+                title: title,
+                collections: collections
+            }
+        });
+
+        return dialogRef.afterClosed();
+    }
 
 }

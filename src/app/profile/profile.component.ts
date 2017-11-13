@@ -4,6 +4,7 @@ import { AppConfig } from '../app.config';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ProfileService } from '../_services/profile/profile.service';
 import { CollectionService } from '../_services/collection/collection.service';
+import { DialogsService } from '../_services/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ReportProfileComponent } from './report-profile/report-profile.component';
@@ -33,12 +34,16 @@ export class ProfileComponent implements OnInit {
   public isTeacher: boolean;
   public offsetString = 'col-md-offset-1';
   private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
-  private connectedIdentities = {
+  public connectedIdentities = {
     'facebook': false,
     'google': false
   };
-  private other_languages;
+  public other_languages;
   public today = new Date();
+  public pastWorkshops: Array<any>;
+  public ongoingWorkshops: Array<any>;
+  public upcomingWorkshops: Array<any>;
+
 
   constructor(
     public config: AppConfig,
@@ -49,7 +54,8 @@ export class ProfileComponent implements OnInit {
     public _collectionService: CollectionService,
     private _topicService: TopicService,
     public dialog: MdDialog,
-    public snackBar: MdSnackBar
+    public snackBar: MdSnackBar,
+    public _dialogsService: DialogsService
   ) {
     this.activatedRoute.params.subscribe((param) => {
       const calledUserId = param['profileId'];
@@ -158,8 +164,8 @@ export class ProfileComponent implements OnInit {
                 { 'contents': ['schedules'] }
                 , 'calendars']
             },
-            {'reviewsAboutYou':{'peer':'profiles'}},
-            { 'collections':{'reviews': {'peer': 'profiles'}}}
+            { 'reviewsAboutYou': { 'peer': 'profiles' } },
+            { 'collections': { 'reviews': { 'peer': 'profiles' } } }
           ]
         }
       ]
@@ -202,10 +208,44 @@ export class ProfileComponent implements OnInit {
   }
 
   private calculateCollectionDurations() {
+    this.pastWorkshops = [];
+    this.upcomingWorkshops = [];
+    this.ongoingWorkshops = [];
     this.profileObj.peer['0'].ownedCollections.forEach(collection => {
-      collection.totalDuration = this.calculateTotalHours(collection);
-      collection.itenaryArray = this.calculateItenaries(collection);
+      if (collection.status === 'active') {
+        collection.totalDuration = this.calculateTotalHours(collection);
+        collection.itenaryArray = this.calculateItenaries(collection);
+        collection = this.calculateCohorts(collection);
+        if (collection.pastCohortCount > 0) {
+          this.pastWorkshops.push(collection);
+        }
+        if (collection.upcomingCohortCount > 0) {
+          this.upcomingWorkshops.push(collection);
+        }
+        if (collection.currentCohortCount > 0) {
+          this.ongoingWorkshops.push(collection);
+        }
+      }
     });
+  }
+
+  private calculateCohorts(collection): any {
+    collection.pastCohortCount = 0;
+    collection.upcomingCohortCount = 0;
+    collection.currentCohortCount = 0;
+
+    collection.calendars.forEach(calendar => {
+      if (calendar.endDate < this.today.toISOString()) {
+        collection.pastCohortCount++;
+      }
+      if (calendar.startDate > this.today.toISOString()) {
+        collection.upcomingCohortCount++;
+      }
+      if (calendar.endDate > this.today.toISOString() && calendar.startDate < this.today.toISOString()) {
+        collection.currentCohortCount++;
+      }
+    });
+    return collection;
   }
 
   private calculateItenaries(workshop) {
@@ -329,6 +369,18 @@ export class ProfileComponent implements OnInit {
   }
 
   public redirectToCollection(peer, reviewCollectionId, collectionCalendarId) {
-    return "/" + this.getReviewedCollection(peer, reviewCollectionId).type + "/" + reviewCollectionId + "/calendar/" + collectionCalendarId + "";
+    return '/' + this.getReviewedCollection(peer, reviewCollectionId).type + '/' + reviewCollectionId + '/calendar/' + collectionCalendarId + '';
   }
+
+  /**
+   * openCollectionGrid
+type:string,title:string,collecions   */
+  public openWorkshopGrid(title: string, collections: Array<any>) {
+    this._dialogsService.openCollectionGrid(title, collections).subscribe(result => {
+      if (result) {
+        this.router.navigateByUrl('/workshop/' + result);
+      }
+    });
+  }
+
 }

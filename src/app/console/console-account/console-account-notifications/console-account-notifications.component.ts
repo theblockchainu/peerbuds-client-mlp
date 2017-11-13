@@ -59,7 +59,10 @@ export class ConsoleAccountNotificationsComponent implements OnInit {
     }
 
     public getNotificationText(notification) {
-        const replacements = {'%username%': '<b>' + this.ucwords.transform(notification.actor[0].profiles[0].first_name) + ' ' + this.ucwords.transform(notification.actor[0].profiles[0].last_name) + '</b>', '%collectionTitle%': this.ucwords.transform(notification.collection[0].title), '%collectionName%': '<b>' + this.ucwords.transform(notification.collection[0].title) + '</b>', '%collectionType%': this.ucwords.transform(notification.collection[0].type)},
+        const replacements = {'%username%': '<b>' + this.ucwords.transform(notification.actor[0].profiles[0].first_name) + ' ' + this.ucwords.transform(notification.actor[0].profiles[0].last_name) + '</b>',
+                '%collectionTitle%': notification.collection !== undefined ? this.ucwords.transform(notification.collection[0].title) : '***',
+                '%collectionName%': notification.collection !== undefined ? '<b>' + this.ucwords.transform(notification.collection[0].title) + '</b>' : '***',
+                '%collectionType%': notification.collection !== undefined ? this.ucwords.transform(notification.collection[0].type) : '***'},
             str = notification.description;
 
         return str.replace(/%\w+%/g, function(all) {

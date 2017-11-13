@@ -2,19 +2,20 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
+import {AppConfig} from '../../app.config';
 
 @Injectable()
 export class SocketService {
 
-    private url = 'http://localhost:3000';
     private socket;
     private userId;
 
     constructor(
-        private _cookieUtilsService: CookieUtilsService
+        private _cookieUtilsService: CookieUtilsService,
+        private config: AppConfig
     ) {
         this.userId = _cookieUtilsService.getValue('userId');
-        this.socket = io(this.url);
+        this.socket = io(this.config.apiUrl);
         this.addUser(this.userId);
     }
 

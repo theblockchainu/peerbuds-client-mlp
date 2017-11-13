@@ -19,6 +19,7 @@ import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Valida
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
+  public loadingHome = false;
   private email: string;
   notifyForm: FormGroup;
   public isLoggedIn;
@@ -40,6 +41,7 @@ export class IndexComponent implements OnInit {
               });
    }
    ngOnInit() {
+     this.loadingHome = false;
     this.notifyForm = this._fb.group(
       {email: ['', Validators.requiredTrue]}
     );
