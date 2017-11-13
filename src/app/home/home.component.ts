@@ -19,8 +19,8 @@ export class HomeComponent implements OnInit {
     private _collectionService: CollectionService,
     private appConfig: AppConfig,
     private _cookieUtilsService: CookieUtilsService) {
-      
-      this.userId = _cookieUtilsService.getValue('userId');
+
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {

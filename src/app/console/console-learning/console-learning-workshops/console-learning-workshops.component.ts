@@ -106,14 +106,28 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     });
     for (const key in this.pastWorkshopsObject) {
       if (this.pastWorkshopsObject.hasOwnProperty(key)) {
+        this.pastWorkshopsObject[key].workshop.calendars.sort((a, b) => {
+          return this.compareCalendars(a, b);
+        });
         this.pastArray.push(this.pastWorkshopsObject[key].workshop);
       }
     }
+    this.pastArray.sort((a, b) => {
+      return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
+    });
     for (const key in this.upcomingWorkshopsObject) {
       if (this.upcomingWorkshopsObject.hasOwnProperty(key)) {
+        this.upcomingWorkshopsObject[key].workshop.calendars.sort((a, b) => {
+          return this.compareCalendars(a, b);
+        });
         this.upcomingArray.push(this.upcomingWorkshopsObject[key].workshop);
       }
     }
+
+    this.upcomingArray.sort((a, b) => {
+      return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
+    });
+
     for (const key in this.liveWorkshopsObject) {
       if (this.liveWorkshopsObject.hasOwnProperty(key)) {
         this.ongoingArray.push(this.liveWorkshopsObject[key].workshop);
@@ -121,6 +135,9 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     }
   }
 
+  public compareCalendars(a, b) {
+    return moment(a.startDate).diff(moment(b.startDate), 'days');
+  }
   public onSelect(workshop) {
     this.router.navigate(['workshop', workshop.id, 'edit', 1]);
   }

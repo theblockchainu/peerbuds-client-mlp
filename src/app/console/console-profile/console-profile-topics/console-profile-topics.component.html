@@ -22,15 +22,15 @@
                 </div>
 
                 <div class="review-section" *ngFor="let topic of topicsLearning">
-                    <div class="topic-row">
-                        <div class="col-md-9 padding-left-0" style="padding-bottom: 10px">
-                          <div class="topic-name pull-left mat-body-2">
-                            <span>{{topic['name']}}</span>
-                          </div>
-                          <i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="unfollowTopic('learning', topic)" style="cursor: pointer;"></i>
-                        </div>
+                  <div class="topic-row">
+                    <div class="col-md-9 padding-left-0" style="padding-bottom: 10px">
+                      <div class="topic-name pull-left mat-body-2">
+                        <span>{{topic['name'] | titlecase}}</span>
+                      </div>
+                      <i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="unfollowTopic('learning', topic)" style="cursor: pointer;"></i>
                     </div>
                   </div>
+                </div>
               </md-tab>
               <md-tab label="Topics Teaching" style="min-width: min-content !important;">
                 <div class="row" style="margin: 0px">
@@ -43,21 +43,22 @@
                   <div style="cursor: pointer" class="margin-bottom-20 pull-left" (click)="openFollowTopicDialog('teaching')">
                     <a style="font-size: 12px">+ Add more topics</a>
                   </div>
-                </div> 
+                </div>
                 <div class="review-section" *ngFor="let topic of topicsTeaching">
-                    <div class="topic-name col-md-8 padding-left-0">
-                      <span class="col-md-9 padding-left-0 mat-body-2">{{topic.name}}</span>
-                    </div>
-                    <i class="mdi mdi-content-save mdiIcon darkColor pull-left alignDelete" (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
-                    <i class="mdi mdi-close-circle mdiIcon darkColor pull-left alignDelete" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
-                  
-                    <div class="topic-experience col-md-8 padding-left-0">
-                      <md-input-container style="margin-bottom: 20px; width:100%">
-                        <textarea mdInput #experience name="experience" rows="3" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?" required></textarea>
-                        <md-error>This field is required</md-error>
-                        <md-hint align="end">{{experience.value.length}} / 1000</md-hint>
-                      </md-input-container>
-                    </div>
+                  <div class="topic-name col-md-8 padding-left-0">
+                    <span class="col-md-9 padding-left-0 mat-body-2">{{topic.name |titlecase}}</span>
+                  </div>
+                  <i class="mdi mdi-content-save mdiIcon darkColor pull-left alignDelete" (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
+                  <i class="mdi mdi-close-circle mdiIcon darkColor pull-left alignDelete" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
+
+                  <div class="topic-experience col-md-8 padding-left-0">
+                    <md-input-container style="margin-bottom: 20px; width:100%">
+                      <textarea mdInput #experience name="experience" rows="3" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?"
+                        required></textarea>
+                      <md-error>This field is required</md-error>
+                      <md-hint align="end">{{experience.value.length}} / 1000</md-hint>
+                    </md-input-container>
+                  </div>
                 </div>
               </md-tab>
             </md-tab-group>

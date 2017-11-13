@@ -41,8 +41,10 @@
                                     <div class="col-md-10">
                                         <a class="lightText" (click)="deleteCard(card.id)">
                                             Remove
-                                            <md-icon style="font-size: 14px">help</md-icon>
                                         </a>
+                                        <span mdTooltip="Do you want to remove this card ?" style="cursor:pointer">
+                                            <md-icon style="font-size: 14px">help</md-icon>
+                                        </span>
                                     </div>
                                     <div class="col-md-2">
                                         <img class="card-brand" src="/assets/icon/payment-icons/svg/single/{{card.brand.split(' ')[0] | lowercase}}.svg" alt="{{card.brand}}">
