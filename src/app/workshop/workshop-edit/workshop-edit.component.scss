@@ -260,7 +260,7 @@ a:hover {
 
 .profileVideo .delete-video {
   top:-10px;
-  right:6px;
+  right:5px;
 }
 
 .pic:before {
@@ -292,4 +292,8 @@ a:hover {
   height: 100px;
   width: 200px;
   margin-bottom: 10px;
+}
+
+.videoContainer {
+  width: 165px;
 }

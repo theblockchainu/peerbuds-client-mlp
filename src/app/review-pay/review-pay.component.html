@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="fs-17">{{ collection.title | titlecase}} <br>
                                     <span class="display-inline-block fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}</span>
-                                    <span class="display-inline-block pull-right fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</span>
+                                    <span class="display-inline-block pull-right fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name | titlecase}}</span>
                                 </div>
                             </div>
                         </div>

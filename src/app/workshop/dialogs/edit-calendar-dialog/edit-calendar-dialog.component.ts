@@ -381,24 +381,35 @@ export class EditCalendarDialogComponent implements OnInit {
                 this.recurringCalendar = [];
         }
         if (this.endDay) {
-            this.nextDays = moment(this.endDay).diff(moment(this.endDate), 'days') + 1;
-
+            this.nextDays = moment(this.endDay).diff(moment(this.endDate), 'days');
             // Generate a detail list of proposed collection
             if (this.recurringCalendar.length > 0) {
                 let length = this.contents.length;
                 this.recurringCalendar.forEach(calendar => {
                     const calendarItenary = [];
+                    let itenary = {};
+                    let tempStartDay;
                     for (const content of this.contents) {
+                        if (tempStartDay) {
+                            if (tempStartDay !== content.schedules[0].startDay) {
+                                calendarItenary.push(itenary);
+                                itenary = {};
+                            }
+                        }
+                        else {
+                            tempStartDay = content.schedules[0].startDay;
+                        }
                         const eventDate = this.calculateDate(calendar.startDate, content.schedules[0].startDay);
-                        const itenary = {
-                            startDay: content.schedules[0].startDay,
-                            startDate: eventDate,
-                            contents: content
-                        };
-                        calendarItenary.push(itenary);
-                        length--;
-                        if (!length) {
-                            break;
+                        if (itenary && itenary['startDay'] == content.schedules[0].startDay) {
+                            itenary['contents'].push(content);
+                        }
+                        else {
+                            itenary = {
+                                startDay: content.schedules[0].startDay,
+                                startDate: eventDate,
+                                contents: [content]
+                            };
+
                         }
                     }
                     calendar['content'] = calendarItenary;

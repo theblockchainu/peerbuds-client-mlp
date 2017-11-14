@@ -138,12 +138,12 @@
                                                     {{content.startDate | date:'EE, MMM d'}}
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12 padding-left-0">
-                                            <div class="col-md-12 padding-left-0" style="margin: 3px 0px 10px 0px;">
-                                                <b>{{ content.contents.title | titlecase}}</b> - {{content.contents.schedules[0].startTime
-                                                | extractTime:'hh:mm a'}} to {{content.contents.schedules[0].endTime | extractTime:'h:mm
-                                                a'}}
+                                            <div class="col-md-12 padding-left-0" *ngFor="let content of content.contents">
+                                                <div class="col-md-12 padding-left-0" style="margin: 3px 0px 10px 0px;">
+                                                    <b>{{ content.title | titlecase}}</b> - {{content.schedules[0].startTime
+                                                    | extractTime:'hh:mm a'}} to {{content.schedules[0].endTime | extractTime:'h:mm
+                                                    a'}}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
