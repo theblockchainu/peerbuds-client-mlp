@@ -48,6 +48,7 @@ import { SocketService } from '../_services/socket/socket.service';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { StickyModule } from 'ng2-sticky-kit';
 import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
+import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
 
 @NgModule({
   imports: [
@@ -70,7 +71,7 @@ import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
     Ng2DeviceDetectorModule.forRoot(),
     StickyModule
   ],
-  declarations: [ExtractTimePipe, ConvertCurrencyPipe],
+  declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent],
   providers: [
     CollectionService,
     CountryPickerService,
@@ -122,7 +123,7 @@ import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
     SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
-    LoadingModule, MdTooltipModule, ConvertCurrencyPipe
+    LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent
   ]
 })
 export class SharedModule { }
