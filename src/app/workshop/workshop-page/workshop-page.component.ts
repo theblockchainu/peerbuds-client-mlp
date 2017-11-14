@@ -1208,7 +1208,7 @@ export class WorkshopPageComponent implements OnInit {
   public hasDatePassed(date) {
     const eventDate = moment(date);
     const currentDate = moment();
-    return (this.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0);
+    return (this.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0) && this.oneDay();
   }
 
   public setContentViews(contents) {
