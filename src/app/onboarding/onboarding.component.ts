@@ -23,7 +23,7 @@ export class OnboardingComponent implements OnInit {
   public step = 1;
   private userId;
   public placeholderStringTopic = 'Search for a topic ';
- 
+
   public suggestedTopics = [];
   public interests = [];
   public active = true;
@@ -51,7 +51,8 @@ export class OnboardingComponent implements OnInit {
   constructor(
     public router: Router,
     private activatedRoute: ActivatedRoute,
-    private http: Http, private config: AppConfig,
+    private http: Http,
+    private config: AppConfig,
     private _fb: FormBuilder,
     private countryPickerService: CountryPickerService,
     private _contentService: ContentService,
@@ -59,7 +60,9 @@ export class OnboardingComponent implements OnInit {
     private _topicService: TopicService,
     private _cookieUtilsService: CookieUtilsService
   ) {
-    
+
+    this.searchTopicURL = config.searchUrl + '/api/search/topics/suggest?field=name&query=';
+    this.createTopicURL = config.apiUrl + '/api/topics';
     this.activatedRoute.params.subscribe(params => {
         this.step = params['step'];
       });
@@ -67,18 +70,18 @@ export class OnboardingComponent implements OnInit {
     });
     this.countryPickerService.getCountries()
       .subscribe((countries) => this.countries = countries);
-    
+
     this.userId = _cookieUtilsService.getValue('userId');
-    
+
     this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.userId)
     .subscribe((response: Response) => {
       this.socialIdentitiesConnected = response;
 
       // this.socialIdentitiesConnected.forEach(socialIdentity => {
-        if(this.socialIdentitiesConnected.identities.length > 0) {
+        if (this.socialIdentitiesConnected.identities.length > 0) {
           this.boolShowConnectedSocials = true;
           this.socialIdentitiesConnected.identities.forEach(element => {
-            if(element.provider === 'google') {
+            if (element.provider === 'google') {
                 this.connectedIdentities.google = true;
             }
             else if (element.provider === 'facebook') {
@@ -86,10 +89,10 @@ export class OnboardingComponent implements OnInit {
             }
           });
         }
-        if(this.socialIdentitiesConnected.credentials.length > 0) {
+        if (this.socialIdentitiesConnected.credentials.length > 0) {
           this.boolShowConnectedSocials = true;
           this.socialIdentitiesConnected.credentials.forEach(element => {
-            if(element.provider === 'google') {
+            if (element.provider === 'google') {
                 this.connectedIdentities.google = true;
             }
             else if (element.provider === 'facebook') {
@@ -124,7 +127,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   public requestNewTopicEnabled(event) {
-    if(event !== '') {
+    if (event !== '') {
       this.showRequestNewTopic = true;
       this.topicForRequest = event;
     }
@@ -155,7 +158,7 @@ export class OnboardingComponent implements OnInit {
       options = new RequestOptions({
         headers: headers,
         body: body
-      })
+      });
       if (topicArray.length !== 0) {
         // this.http.delete(this.config.apiUrl + '/api/collections/' + this.userId + '/topics/rel', body)
         topicArray.forEach(topicId => {
@@ -169,7 +172,7 @@ export class OnboardingComponent implements OnInit {
   public ngOnInit() {
     this._topicService.getDefaultTopics()
         .subscribe((suggestions) => {
-          this.suggestedTopics = suggestions.splice(0,10);
+          this.suggestedTopics = suggestions.splice(0, 10);
         });
   }
 
@@ -202,9 +205,9 @@ export class OnboardingComponent implements OnInit {
   }
 
   public requestNewTopic(topic: string) {
-    this._topicService.requestNewTopic(topic).subscribe((res)=> {
+    this._topicService.requestNewTopic(topic).subscribe((res) => {
       console.log(res);
-    })
+    });
   }
 
   public queriesSearched(event) {
@@ -223,7 +226,7 @@ export class OnboardingComponent implements OnInit {
               });
               console.log(temp);
               suggestions.slice(0, 10 - this.interests.length).forEach(element => {
-                let itemPresent = _.find(this.suggestedTopics, function(entry) { return element.id == entry.id; });
+                const itemPresent = _.find(this.suggestedTopics, function(entry) { return element.id == entry.id; });
                 if (!itemPresent) {
                   this.suggestedTopics.push(element);
                 }
@@ -238,13 +241,13 @@ export class OnboardingComponent implements OnInit {
   }
 
   private select(item) {
-    let itemPresent = _.find(this.interests, function(entry) { return item.id == entry.id; });
+    const itemPresent = _.find(this.interests, function(entry) { return item.id == entry.id; });
     if (itemPresent) {
-      this.interests = _.remove(this.interests, function(entry) {return item.id != entry.id;});
+      this.interests = _.remove(this.interests, function(entry) {return item.id != entry.id; });
     }
     else {
       this.interests.push(item);
-      this.suggestedTopics = _.remove(this.suggestedTopics, function(entry) {return item.id != entry.id;});
+      this.suggestedTopics = _.remove(this.suggestedTopics, function(entry) {return item.id != entry.id; });
     }
   }
 }

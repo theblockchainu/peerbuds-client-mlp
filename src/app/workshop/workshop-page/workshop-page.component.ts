@@ -33,8 +33,6 @@ import { GetMonthViewArgs, MonthView, getMonthView } from 'calendar-utils';
 import { Subject } from 'rxjs/Subject';
 import {
   CalendarEvent,
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
   CalendarDateFormatter,
   CalendarUtils
 } from 'angular-calendar';
@@ -216,12 +214,12 @@ export class WorkshopPageComponent implements OnInit {
       this.dateClicked = true; // !this.dateClicked;
     }
     this.clickedDate = date;
-    this.clickedCohort = this.parseTitle(events[0].title)[0];
-    this.clickedCohortId = this.parseTitle(events[0].title)[1];
+    this.clickedCohort = WorkshopPageComponent.parseTitle(events[0].title)[0];
+    this.clickedCohortId = WorkshopPageComponent.parseTitle(events[0].title)[1];
     this.clickedCohortStartDate = events[0].start;
     this.clickedCohortEndDate = events[0].end;
     for (const event of events) {
-      const titleCalIdArray = this.parseTitle(event.title);
+      const titleCalIdArray = WorkshopPageComponent.parseTitle(event.title);
       const calId = titleCalIdArray[1];
       const title = titleCalIdArray[0];
       const type = titleCalIdArray[2];
@@ -258,7 +256,7 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
 
-  public parseTitle(title) {
+  public static parseTitle(title) {
     return title.split(':');
   }
 
@@ -363,7 +361,6 @@ export class WorkshopPageComponent implements OnInit {
       }
     }
     this.refreshView();
-
   }
 
   private initializeWorkshop() {
@@ -762,7 +759,7 @@ export class WorkshopPageComponent implements OnInit {
   openDeleteDialog(action: string) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: action,
-      height: '30vh'
+      height: '20vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1183,11 +1180,7 @@ export class WorkshopPageComponent implements OnInit {
       const cohortStartDate = moment(calendar.startDate);
       const cohortEndDate = moment(calendar.endDate);
       const currentMoment = moment();
-      if (cohortStartDate.diff(currentMoment, 'seconds') > 0) {
-        result = true;
-      } else {
-        result = false;
-      }
+      result = cohortStartDate.diff(currentMoment, 'seconds') > 0;
     });
     return result;
   }
