@@ -69,8 +69,7 @@ import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
       tertiaryColour: '#ff6d71'
     }),
     Ng2DeviceDetectorModule.forRoot(),
-    StickyModule
-  ],
+    StickyModule],
   declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent],
   providers: [
     CollectionService,

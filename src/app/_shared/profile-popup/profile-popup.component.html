@@ -1,3 +1,6 @@
-<p>
-  profile-popup works!
-</p>
+<div #profilePic (mouseenter)="openPriceDialog()" (mouseleave)="closePriceDialog()">
+  <img *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5"
+    style="margin-left: 0px;">
+  <img *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}"
+    class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+</div>
