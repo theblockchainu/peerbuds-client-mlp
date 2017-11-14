@@ -115,8 +115,9 @@
                     </div>
                     <div class="row" *ngIf="topicsTeaching.length === 0">
                         <div class="col-md-12">
-                            <p style="text-align: left">This user is not teaching yet.
-                                <a [routerLink]="['/','console','teaching', 'workshops']" *ngIf="cookieUserId === urluserId">Start Teaching</a>
+                            <p style="text-align: left" *ngIf="cookieUserId !== urluserId">This user is not teaching yet.</p>
+                            <p style="text-align: left" *ngIf="cookieUserId === urluserId">You are not teaching yet.
+                                <a [routerLink]="['/','console','teaching', 'workshops']" >Start Teaching</a>
                             </p>
                         </div>
                     </div>
@@ -131,7 +132,7 @@
                             <h3>Resume</h3>
                         </div>
                     </div>
-                    <div class="row" style="padding-top: 25px;">
+                    <div class="row" style="padding-top: 20px;">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
@@ -153,7 +154,7 @@
                                     <div class="row">
                                         <div class="col-md-12 work-title">
                                             <span style="font-size: 16px;font-weight: bolder;">{{workObj.position | titlecase}} </span> &emsp;
-                                            <md-icon style="font-size: 5px;  top: -2px; height: 20px;">fiber_manual_record</md-icon>
+                                            <md-icon style="font-size: 5px;line-height:24px;vertical-align:middle;width: 15px;margin-left: -5px;">fiber_manual_record</md-icon>
                                             <span class="lighttext" style="font-size: 15px;">
                                                 {{workObj.company | titlecase}}</span>
                                         </div>
@@ -169,7 +170,7 @@
                         </div>
                     </div>
 
-                    <div class="row" style="padding-top: 25px;">
+                    <div class="row" style="padding-top: 20px;">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
@@ -221,7 +222,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h4>Review From Learners</h4>
+                            <h4 class="font16"><b>From Learners</b></h4>
                         </div>
                         <div class="col-md-12 text-center">
 
@@ -247,7 +248,7 @@
                                             </span>
                                             <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
                                                 review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
-                                            <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)" class="pull-right">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title }}</a>
+                                            <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -259,7 +260,7 @@
                     </div>
                     <div class="row" style="padding-top: 20px;">
                         <div class="col-md-12">
-                            <h4>Review From Teachers</h4>
+                            <h4 class="font16"><b>From Teachers</b></h4>
                         </div>
                         <div class="col-md-12 text-center">
                             <!-- <hr> -->
@@ -275,7 +276,7 @@
         <div class="col-md-3 right-panel" *ngIf="isTeacher">
             <div class="row">
                 <div class="col-md-12">
-                    <md-tab-group>
+                    <md-tab-group disableRipple class="noJustify">
                         <!-- <md-tab label="Session">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -290,88 +291,85 @@
                                             </div>
                                         </div>
                                     </md-tab> -->
-                        <md-tab label="Teaching Journey" style="min-width: min-content !important;">
+                        <md-tab label="Workshops" style="min-width: min-content !important;">
                             <div class="row">
                                 <div *ngIf="upcomingWorkshops.length>0">
                                     <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Upcoming Workshops
+                                        Upcoming ({{upcomingWorkshops.length}})
                                     </div>
                                     <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of upcomingWorkshops ; let i=index">
                                         <div *ngIf="i<4">
-                                            <div class="col-md-3 padding-left-0">
-                                                <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
-                                                <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="col-md-12">
-                                                    <b>{{collectionObj.title}}</b>
+                                            <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+                                                <div class="col-md-3 padding-left-0">
+                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                                 </div>
-                                                <div class="col-md-12" style="min-height:55px">
-                                                    <p>{{collectionObj.description | ucfirst | shorten: 25: '....'}}</p>
+                                                <div class="col-md-9">
+                                                    <div class="col-md-12">
+                                                        <b>{{collectionObj.title}}</b>
+                                                    </div>
+                                                    <div class="col-md-12" style="min-height:55px">
+                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 margin-top-10" style="border-top: 1px solid grey">
-                                        <a style="font-size:0.9rem;color:#484848;font-weight:300" (click)="openWorkshopGrid('Upcoming Workshops', upcomingWorkshops)">Show more</a>
+                                    <div class="col-md-12 margin-top-20 center">
+                                        <a style="font-size:0.99rem;color:#484848;font-weight:400" (click)="openWorkshopGrid('Upcoming Workshops', upcomingWorkshops)">Show more</a>
                                     </div>
                                 </div>
                                 <div *ngIf="ongoingWorkshops.length>0">
                                     <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Currently Running
+                                        Currently Running ({{ongoingWorkshops.length}})
                                     </div>
                                     <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of ongoingWorkshops ; let i=index">
                                         <div *ngIf="i<4">
-                                            <div class="col-md-3 padding-left-0">
-                                                <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
-                                                <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="col-md-12">
-                                                    <b>{{collectionObj.title}}</b>
+                                            <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+                                                <div class="col-md-3 padding-left-0">
+                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                                 </div>
-                                                <div class="col-md-12" style="min-height:55px">
-                                                    <p>{{collectionObj.description | ucfirst | shorten: 25: '....'}}</p>
+                                                <div class="col-md-9">
+                                                    <div class="col-md-12">
+                                                        <b>{{collectionObj.title}}</b>
+                                                    </div>
+                                                    <div class="col-md-12" style="min-height:55px">
+                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 margin-top-10" style="border-top: 1px solid grey">
-                                        <a style="font-size:0.9rem;color:#484848;font-weight:300" (click)=" openWorkshopGrid('Ongoing Workshops',ongoingWorkshops)">Show more</a>
+                                    <div class="col-md-12 margin-top-20 center">
+                                        <a style="font-size:0.99rem;color:#484848;font-weight:400" (click)=" openWorkshopGrid('Ongoing Workshops',ongoingWorkshops)">Show more</a>
                                     </div>
                                 </div>
                                 <div *ngIf="pastWorkshops.length>0">
                                     <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Past
+                                        Past ({{pastWorkshops.length}})
                                     </div>
                                     <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of pastWorkshops ; let i=index">
                                         <div *ngIf="i<4">
-                                            <div class="col-md-3 padding-left-0">
-                                                <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
-                                                <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="col-md-12">
-                                                    <b>{{collectionObj.title}}</b> {{'('+collectionObj.pastCohortCount+')'}}
+                                            <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+                                                <div class="col-md-3 padding-left-0">
+                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                                 </div>
-                                                <div class="col-md-12" style="min-height:55px">
-                                                    <p>{{collectionObj.description | ucfirst | shorten: 25: '....'}}</p>
+                                                <div class="col-md-9">
+                                                    <div class="col-md-12">
+                                                        <b>{{collectionObj.title}}</b> {{'('+collectionObj.pastCohortCount+')'}}
+                                                    </div>
+                                                    <div class="col-md-12" style="min-height:55px">
+                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
 
                                     </div>
-                                    <div class="col-md-12 margin-top-10" style="border-top: 1px solid grey">
-                                        <a style="font-size:0.9rem;color:#484848;font-weight:300" (click)="openWorkshopGrid('Past Workshops',pastWorkshops)">Show more</a>
+                                    <div class="col-md-12 margin-top-20 center">
+                                        <a style="font-size:0.99rem;color:#484848;font-weight:400" (click)="openWorkshopGrid('Past Workshops',pastWorkshops)">Show more</a>
                                     </div>
                                 </div>
                             </div>
@@ -385,7 +383,8 @@
     <div class="loading-container" style="width:60%" [hidden]="!loadingLearningJourney">
         <ngx-loading [show]="true"></ngx-loading>
     </div>
-    <div class="row margin-top-20" style="margin-left:0px;margin-right:0px;" *ngIf="!loadingLearningJourney">
+    <div class="row margin-top-30" style="margin-left:0px;margin-right:0px;" *ngIf="!loadingLearningJourney">
+        <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
         <div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
             <div class="row">
                 <div class="col-md-9">
@@ -404,28 +403,6 @@
             </div>
             <div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
                 <div class="recommendation-card" *ngFor="let workshop of participatingWorkshops; let i =index">
-                    <!-- <a *ngIf="i<4" [routerLink]="'/workshop/'+workshop.id">
-                        <div class="">
-                            <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
-                                alt="workshpImg">
-                            <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
-                                alt="workshpImg">
-                        </div>
-                        <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
-                        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 12px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
-                        <div class="mat-body-2" style="margin-top: 5px;">{{workshop.title | titlecase}}</div>
-                        <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
-                        <div class="col-sm-12 padding-left-0" style="margin-top: 12px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
-                                <label>{{workshop.ratingCount}} Reviews</label>
-                            </span>
-                            <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
-                                <label>0 Reviews</label>
-                            </span>
-                        </div>
-                    </a> -->
                     <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
                         <div class="">
                           <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
@@ -458,6 +435,7 @@
         <ngx-loading [show]="true"></ngx-loading>
     </div>
     <div class="row" *ngIf="!loadingPeers" style="margin-left:0px;margin-right:0px;">
+        <!-- <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="!(!participatingWorkshops && cookieUserId === urluserId) || !participatingWorkshops"> -->
         <div class="col-md-offset-1 col-md-10">
             <div class="row">
                 <div class="col-md-9">
@@ -471,25 +449,6 @@
             </div>
             <div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
                 <div class="peer-recommendation-card" *ngFor="let peer of recommendedpeers; let i =index">
-                    <!-- <a [routerLink]="'/profile/'+peer.id">
-                        <div class="peer-thumb">
-                            <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}"
-                                alt="peerImg">
-                            <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png" alt="peerImg">
-                        </div>
-                        <div style="margin-top: 12px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase }} {{peer.profiles[0].last_name | titlecase }}</div>
-                        <div style="margin-top: 12px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
-                        <div class="col-sm-12 padding-left-0" style="margin-top: 12px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length>0" style="text-align: left">
-                                <label>{{peer.reviewsAboutYou.length}} Reviews</label>
-                            </span>
-                            <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length==0" style="text-align: left">
-                                <label>0 Reviews</label>
-                            </span>
-                        </div>
-                    </a> -->
                     <a *ngIf="i<5" [routerLink]="'/profile/'+peer.id">
                         <div class="">
                           <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}" alt="peerImg">
