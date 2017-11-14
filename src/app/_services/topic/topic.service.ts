@@ -6,7 +6,6 @@ import { AppConfig } from '../../app.config';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { Observable } from 'rxjs/Observable';
-import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable()
 export class TopicService {

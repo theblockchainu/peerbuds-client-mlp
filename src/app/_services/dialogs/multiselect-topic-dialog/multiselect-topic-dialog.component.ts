@@ -11,7 +11,6 @@ import {
   Http, Headers, Response, BaseRequestOptions, RequestOptions
   , RequestOptionsArgs
 } from '@angular/http';
-import { Observable } from 'rxjs';
 
 import { RequestHeaderService } from '../../requestHeader/request-header.service';
 
