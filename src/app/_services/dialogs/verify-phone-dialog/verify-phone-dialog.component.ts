@@ -93,6 +93,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
         this.success = res;
         //this.peer.controls.phone.setValue(res.phone);
         this.dialogRef.close();
+        return res;
       });
   }
 }

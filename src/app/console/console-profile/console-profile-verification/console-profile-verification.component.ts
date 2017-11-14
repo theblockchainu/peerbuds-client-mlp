@@ -51,11 +51,11 @@ export class ConsoleProfileVerificationComponent implements OnInit {
   }
 
    public openIdVerify() {
-    this.dialogsService.openIdVerify().subscribe();
+     this.dialogsService.openIdVerify().subscribe();
   }
 
   public openEmailVerify() {
-   this.dialogsService.openEmailVerify().subscribe();
+    this.dialogsService.openEmailVerify().subscribe();
   }
 
   public openPhoneVerify() {
@@ -106,7 +106,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           });
         }
       }
-      if (peer.accountVerified && peer.verificationIdUrl) {
+      if (peer.verificationIdUrl) {
         this.alreadyVerified.push({
           text: 'Government Id',
           value: peer.verificationIdUrl
