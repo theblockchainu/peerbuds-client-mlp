@@ -1,24 +1,14 @@
-import {
-  Component, Input, OnInit, forwardRef, ElementRef, Inject, EventEmitter
-  , HostBinding, HostListener, Output
-} from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import {Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
+import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
-import {
-  Http, URLSearchParams, Headers, Response, BaseRequestOptions
-  , RequestOptions, RequestOptionsArgs
-} from '@angular/http';
+import {Http, Response} from '@angular/http';
 import { AppConfig } from '../../app.config';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
-import { debug } from 'util';
-import { concat } from 'rxjs/operators/concat';
-import { containsTree } from '@angular/router/src/url_tree';
 import { MdDialog } from '@angular/material';
 import * as moment from 'moment';
-import { WorkshopSubmitDialogComponent } from '../workshop-edit/workshop-submit-dialog/workshop-submit-dialog.component';
 import { WorkshopCloneDialogComponent } from '../workshop-edit/workshop-clone-dialog/workshop-clone-dialog.component';
 
 @Component({
@@ -140,7 +130,7 @@ export class WorkshopContentComponent implements OnInit {
         }
         //TBD Patch calendar and timeline
         this.router.navigate(['workshop', collectionId, 'edit', 13]);
-        
+
       }).subscribe();
   }
 
