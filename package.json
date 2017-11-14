@@ -83,7 +83,7 @@
     "ngx-pipes": "^1.6.5",
     "node-sass": "^4.5.3",
     "primeng": "^4.2.2",
-    "rxjs": "^5.4.3",
+    "rxjs": "^5.5.2",
     "socket.io-client": "^2.0.3",
     "sockjs-client": "^1.1.4",
     "twilio-video": "^1.6.0",

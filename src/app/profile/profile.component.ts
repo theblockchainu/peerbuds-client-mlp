@@ -20,17 +20,19 @@ import _ from 'lodash';
 })
 export class ProfileComponent implements OnInit {
   public cookieUserId;
-  public loading = false;
+  public loadingProfile = false;
+  public loadingLearningJourney = true;
+  public loadingPeers = true;
   public urluserId: string;
   public profileObj: any;
   public interestsArray: Array<string>;
   public userRating: number;
   public collectionTypes = ['workshops'];
   public participatingWorkshops: Array<any>;
-  public recommendedpeers: Array<any>;
+  public recommendedpeers = [];
   public socialIdentities: any = [];
   public maxVisibleInterest = 3;
-  public topicsTeaching: Array<any>;
+  public topicsTeaching = [];
   public isTeacher: boolean;
   public offsetString = 'col-md-offset-1';
   private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
@@ -72,13 +74,9 @@ export class ProfileComponent implements OnInit {
 
   private fetchData() {
     this.cookieUserId = this._cookieUtilsService.getValue('userId');
-    this.loading = true;
+    this.loadingProfile = true;
     this.isTeacher = false;
     this.getProfileData();
-    this.getIdentities();
-    this.getTeachingTopics();
-    this.getRecommendedPeers();
-    this.loading = false;
   }
   private getIdentities() {
     this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.urluserId).subscribe(
@@ -104,6 +102,7 @@ export class ProfileComponent implements OnInit {
             }
           });
         }
+        this.getTeachingTopics();
       }
     );
   }
@@ -125,6 +124,7 @@ export class ProfileComponent implements OnInit {
         responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
         this.recommendedpeers.push(responseObj);
       }
+      this.loadingPeers = false;
     }, (err) => {
       console.log(err);
     });
@@ -137,6 +137,17 @@ export class ProfileComponent implements OnInit {
     this._profileService.getTeachingExternalTopics(this.urluserId, queryTeaching).subscribe((response) => {
       console.log(response);
       this.topicsTeaching = response;
+      this.loadingProfile = false;
+      this.loadingLearningJourney = true;
+      if (this.profileObj.peer[0].collections) {
+        this.getRecommendedWorkshops(this.profileObj.peer[0].collections);
+      }
+      else {
+        this.loadingLearningJourney = false;
+        this.loadingPeers = true;
+        this.getRecommendedPeers();
+
+      }
     });
   }
 
@@ -150,6 +161,9 @@ export class ProfileComponent implements OnInit {
       this.participatingWorkshops.push(collection);
     });
     this.participatingWorkshops = _.uniqBy(this.participatingWorkshops, 'id');
+    this.loadingLearningJourney = false;
+    this.loadingPeers = true;
+    this.getRecommendedPeers();
   }
 
   private getProfileData() {
@@ -183,11 +197,11 @@ export class ProfileComponent implements OnInit {
       if (this.profileObj.peer['0'].ownedCollections && this.profileObj.peer['0'].ownedCollections.length > 0) {
         this.calculateCollectionDurations();
         this.isTeacher = true;
-        // this.offsetString = '';
       }
-      if (this.profileObj.peer[0].collections) {
-        this.getRecommendedWorkshops(this.profileObj.peer[0].collections);
+      else {
+        this.offsetString = 'custom-margin-left-20pc';
       }
+      this.getIdentities();
     });
   }
 
@@ -234,17 +248,19 @@ export class ProfileComponent implements OnInit {
     collection.upcomingCohortCount = 0;
     collection.currentCohortCount = 0;
 
-    collection.calendars.forEach(calendar => {
-      if (calendar.endDate < this.today.toISOString()) {
-        collection.pastCohortCount++;
-      }
-      if (calendar.startDate > this.today.toISOString()) {
-        collection.upcomingCohortCount++;
-      }
-      if (calendar.endDate > this.today.toISOString() && calendar.startDate < this.today.toISOString()) {
-        collection.currentCohortCount++;
-      }
-    });
+    if(collection.calendars) {
+      collection.calendars.forEach(calendar => {
+        if (calendar.endDate < this.today.toISOString()) {
+          collection.pastCohortCount++;
+        }
+        if (calendar.startDate > this.today.toISOString()) {
+          collection.upcomingCohortCount++;
+        }
+        if (calendar.endDate > this.today.toISOString() && calendar.startDate < this.today.toISOString()) {
+          collection.currentCohortCount++;
+        }
+      });
+    }
     return collection;
   }
 
@@ -361,11 +377,16 @@ export class ProfileComponent implements OnInit {
   }
 
   public getReviewedCalendar(calendars, calendarId) {
-    return calendars.find((calendar) => {
-      return calendar.id === calendarId;
-    }) !== undefined ? calendars.find((calendar) => {
-      return calendar.id === calendarId;
-    }) : {};
+    if(calendars) {
+      return calendars.find((calendar) => {
+        return calendar.id === calendarId;
+      }) !== undefined ? calendars.find((calendar) => {
+        return calendar.id === calendarId;
+      }) : {};
+    }
+    else {
+      return {};
+    }
   }
 
   public redirectToCollection(peer, reviewCollectionId, collectionCalendarId) {

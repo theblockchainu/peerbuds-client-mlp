@@ -1,9 +1,9 @@
 <div class="profile-page main-content">
-    <div class="loading-container" style="width:60%" [hidden]="!loading">
+    <div class="loading-container" style="width:60%" [hidden]="!loadingProfile">
         <ngx-loading [show]="true"></ngx-loading>
     </div>
-    <div class="row" *ngIf="profileObj && !loading">
-        <div class="col-md-8 {{offsetString}} left-panel">
+    <div class="row" *ngIf="profileObj && !loadingProfile">
+        <div class="col-md-3 {{offsetString}} left-panel">
             <div class="row text-center">
                 <div class="col-md-12">
                     <img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{config.apiUrl+profileObj.picture_url}}" alt="profile_pic">
@@ -16,12 +16,10 @@
                     <h4>{{profileObj.headline | titlecase}}</h4>
                 </div>
                 <!-- <div class="col-md-12">
-                        <button md-button>Message</button>
-                    </div> -->
+                    <button md-button>Message</button>
+                </div> -->
             </div>
             <div class="row border-top">
-                <hr>
-                <br>
                 <div class="col-md-1">
                     <md-icon>mic_none</md-icon>
                 </div>
@@ -42,24 +40,21 @@
                 </div>
             </div>
             <div class="row border-top">
-                <hr>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <h3>Social Profiles</h3>
                 </div>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
-                    <i *ngIf="connectedIdentities['fb']" class="fa fa-facebook defaultFB socialIcons"></i>
+                    <i *ngIf="connectedIdentities.fb" class="fa fa-facebook defaultFB socialIcons"></i>
                     <i *ngIf="!connectedIdentities.fb" class="fa fa-facebook dcSocial socialIcons"></i>
                     <i *ngIf="connectedIdentities.google" class="fa fa-google defaultGoogle socialIcons"></i>
                     <i *ngIf="!connectedIdentities.google" class="fa fa-google dcSocial socialIcons"></i>
                 </div>
             </div>
             <div class="row border-top">
-                <hr>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
                     <h3>Interest</h3>
                 </div>
                 <div class="col-md-offset-1 col-md-10 padding-left-0">
-                    <hr>
                     <md-chip-list>
                         <span *ngFor="let interest of interestsArray;let i=index" style="margin: 0px 10px 10px 0px">
                             <md-chip *ngIf="i<maxVisibleInterest">{{interest | titlecase}}</md-chip>
@@ -80,12 +75,12 @@
                 </div>
             </div>
             <div class="row border-top" *ngIf="urluserId!==cookieUserId" style="padding-top: 20px;text-align:center;cursor:pointer">
-                <div class="col-md-10">
+                <div class="col-md-12">
                     <h5 (click)="reportProfile()">Report profile</h5>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 center-feed">
+        <div class="col-md-5 center-feed">
 
             <div class="row">
                 <div class="col-md-12">
@@ -215,7 +210,7 @@
 
             <hr style="border-top:1px solid #eeeeee;">
             <div class="row">
-                <div class="col-md-10">
+                <div class=col-md-12>
                     <div class="row">
                         <div class="col-md-12 review">
                             <h3 style="display:inline-block">Reviews</h3>
@@ -303,16 +298,16 @@
                                     </div>
                                     <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of upcomingWorkshops ; let i=index">
                                         <div *ngIf="i<4">
-                                            <div class="col-md-5 padding-left-0">
+                                            <div class="col-md-3 padding-left-0">
                                                 <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
                                                 <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                             </div>
                                             <div class="col-md-9">
                                                 <div class="col-md-12">
-                                                    {{collectionObj.title}}
+                                                    <b>{{collectionObj.title}}</b>
                                                 </div>
                                                 <div class="col-md-12" style="min-height:55px">
-                                                    <p>{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    <p>{{collectionObj.description | ucfirst | shorten: 25: '....'}}</p>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
@@ -330,16 +325,16 @@
                                     </div>
                                     <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of ongoingWorkshops ; let i=index">
                                         <div *ngIf="i<4">
-                                            <div class="col-md-5 padding-left-0">
+                                            <div class="col-md-3 padding-left-0">
                                                 <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
                                                 <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
                                             </div>
                                             <div class="col-md-9">
                                                 <div class="col-md-12">
-                                                    {{collectionObj.title}}
+                                                    <b>{{collectionObj.title}}</b>
                                                 </div>
                                                 <div class="col-md-12" style="min-height:55px">
-                                                    <p>{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    <p>{{collectionObj.description | ucfirst | shorten: 25: '....'}}</p>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
@@ -363,10 +358,10 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <div class="col-md-12">
-                                                    {{collectionObj.title}} {{'('+collectionObj.pastCohortCount+')'}}
+                                                    <b>{{collectionObj.title}}</b> {{'('+collectionObj.pastCohortCount+')'}}
                                                 </div>
                                                 <div class="col-md-12" style="min-height:55px">
-                                                    <p>{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    <p>{{collectionObj.description | ucfirst | shorten: 25: '....'}}</p>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <a [routerLink]="['/workshop',collectionObj.id]" style="font-size:0.9rem">See Dates</a>
@@ -387,7 +382,10 @@
         </div>
     </div>
     
-    <div class="row margin-top-20" style="margin-left:0px;margin-right:0px;" *ngIf="!loading">
+    <div class="loading-container" style="width:60%" [hidden]="!loadingLearningJourney">
+        <ngx-loading [show]="true"></ngx-loading>
+    </div>
+    <div class="row margin-top-20" style="margin-left:0px;margin-right:0px;" *ngIf="!loadingLearningJourney">
         <div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
             <div class="row">
                 <div class="col-md-9">
@@ -406,7 +404,7 @@
             </div>
             <div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
                 <div class="recommendation-card" *ngFor="let workshop of participatingWorkshops; let i =index">
-                    <a *ngIf="i<4" [routerLink]="'/workshop/'+workshop.id">
+                    <!-- <a *ngIf="i<4" [routerLink]="'/workshop/'+workshop.id">
                         <div class="">
                             <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}"
                                 alt="workshpImg">
@@ -427,26 +425,27 @@
                                 <label>0 Reviews</label>
                             </span>
                         </div>
-                        <!-- <div class="margin-top-20">
-                                <h4 class="title">{{workshop.currency}} {{workshop.price}}</h4>
-                            </div>
-                            <div class="">
-                                <h4 class="margin-bottom-2 title">{{workshop.title}}</h4>
-                            </div>
-                            <div class="headline">
-                                <p>{{workshop.headline | shorten: 20 : '...'}}</p>
-                            </div>
-                            <div class="col-sm-12 padding-left-0">
-                                <p-rating class="col-sm-7 padding-left-0" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
-                                </p-rating>
-                                <span class="col-sm-5 padding-left-0" *ngIf="workshop.reviews">
-                                            <label>{{workshop.reviews.length}} Reviews</label>
-                                          </span>
-                                <span class="col-sm-5 padding-left-0" *ngIf="!workshop.reviews">
-                                            <label>0 Reviews</label>
-                                          </span>
-                            </div> -->
-                    </a>
+                    </a> -->
+                    <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
+                        <div class="">
+                          <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
+                          <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
+                        </div>
+                        <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
+                        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
+                        <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
+                        <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
+                        <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
+                          <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+                          </p-rating>
+                          <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
+                            <label>{{workshop.ratingCount}} reviews</label>
+                          </span>
+                          <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
+                            <label>0 reviews</label>
+                          </span>
+                        </div>
+                      </a>
                 </div>
                 <div *ngIf="!participatingWorkshops">
                     <a class="col-md-3 default" [routerLink]="['/','home', 'workshops']" *ngIf="cookieUserId === urluserId">Start Learning</a>
@@ -455,7 +454,10 @@
         </div>
     </div>
     <br>
-    <div class="row" *ngIf="!loading" style="margin-left:0px;margin-right:0px;">
+    <div class="loading-container" style="width:60%" [hidden]="!loadingPeers">
+        <ngx-loading [show]="true"></ngx-loading>
+    </div>
+    <div class="row" *ngIf="!loadingPeers" style="margin-left:0px;margin-right:0px;">
         <div class="col-md-offset-1 col-md-10">
             <div class="row">
                 <div class="col-md-9">
@@ -468,8 +470,8 @@
                 </div>
             </div>
             <div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
-                <div class="peer-recommendation-card" *ngFor="let peer of recommendedpeers">
-                    <a [routerLink]="'/profile/'+peer.id">
+                <div class="peer-recommendation-card" *ngFor="let peer of recommendedpeers; let i =index">
+                    <!-- <a [routerLink]="'/profile/'+peer.id">
                         <div class="peer-thumb">
                             <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}"
                                 alt="peerImg">
@@ -486,6 +488,24 @@
                             <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length==0" style="text-align: left">
                                 <label>0 Reviews</label>
                             </span>
+                        </div>
+                    </a> -->
+                    <a *ngIf="i<5" [routerLink]="'/profile/'+peer.id">
+                        <div class="">
+                          <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}" alt="peerImg">
+                          <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png" alt="peerImg">
+                        </div>
+                        <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
+                        <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
+                        <div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
+                          <p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
+                          </p-rating>
+                          <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length>0" style="text-align: left">
+                            <label>{{peer.reviewsAboutYou.length}} reviews</label>
+                          </span>
+                          <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length==0" style="text-align: left">
+                            <label>0 reviews</label>
+                          </span>
                         </div>
                     </a>
                 </div>

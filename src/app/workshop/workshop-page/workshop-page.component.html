@@ -223,6 +223,7 @@
                             <div style="top: -8px; position: relative;">
                               <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
                               <div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
+                              <div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
                             </div>
                             <div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'padding-top-40': true, 'padding-bottom-20': true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
                               *ngFor="let content of itenary.contents">
