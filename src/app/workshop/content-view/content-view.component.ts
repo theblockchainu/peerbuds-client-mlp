@@ -25,10 +25,12 @@ export class ContentViewComponent implements OnInit {
   public itenaryForm: FormGroup;
   @Input()
   public itenaryId: Number;
-    @Input()
-    public collectionStartDate: any;
-    @Input()
-    public collectionEndDate: any;
+  @Input()
+  public collectionStartDate: any;
+  @Input()
+  public collectionEndDate: any;
+  @Input()
+  public workshopStatus: string;
 
   @Output()
   triggerSave: EventEmitter<any> = new EventEmitter<any>();
@@ -164,7 +166,6 @@ export class ContentViewComponent implements OnInit {
       this.resetProgressBar();
   }
 
-
   resetNewUrls(event) {
     console.log(event);
     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -216,7 +217,7 @@ export class ContentViewComponent implements OnInit {
 
   public showItineraryDate(date) {
     if (date) {
-      return moment(date).format('DD/MM/YYYY');
+      return moment(date).format('MM/DD/YYYY');
     }
     else {
       return 'Select date';
@@ -227,50 +228,58 @@ export class ContentViewComponent implements OnInit {
      * Open dialog for creating new online content
      */
     public findAndOpenDialog(index) {
-      let isEdit = true;
-      const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-      if (index === -1) {
-          index = contentsFArray.controls.length - 1;
-          isEdit = false;
+      if (this.workshopStatus === 'active') {
+        this.triggerSave.emit({
+          action: 'dialog',
+          value: index
+        });
       }
-      const contentForm = <FormGroup>contentsFArray.controls[index];
-      const contentType = contentForm.value.type;
-      let dialogRef: any;
-      switch (contentType) {
-          case 'online':
-              dialogRef = this.dialog.open(WorkshopContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
-              break;
-          case 'project':
-              dialogRef = this.dialog.open(WorkshopContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
-              break;
-          case 'video':
-              dialogRef = this.dialog.open(WorkshopContentVideoComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
-              break;
-          default:
-              break;
-      }
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result !== undefined) {
-            console.log(result);
-            result = JSON.parse(result);
-            if (result.status === 'save') {
-                this.saveContent(result.data);
-            }
-            else if (result.status === 'edit') {
-                this.editContent(result.data);
-            }
-            else if (result.status === 'delete') {
-                this.removeContent(result.data);
-            }
-            else if (result.status === 'close') {
-                // do nothing
-            }
-            else {
-                this.removeContentForm(result.data);
-            }
+      else {
+        let isEdit = true;
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        if (index === -1) {
+            index = contentsFArray.controls.length - 1;
+            isEdit = false;
         }
-      });
+        const contentForm = <FormGroup>contentsFArray.controls[index];
+        const contentType = contentForm.value.type;
+        let dialogRef: any;
+        switch (contentType) {
+            case 'online':
+                dialogRef = this.dialog.open(WorkshopContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
+                break;
+            case 'project':
+                dialogRef = this.dialog.open(WorkshopContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
+                break;
+            case 'video':
+                dialogRef = this.dialog.open(WorkshopContentVideoComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '40vw', height: '90vh'});
+                break;
+            default:
+                break;
+        }
+  
+        dialogRef.afterClosed().subscribe(result => {
+          if (result !== undefined) {
+              console.log(result);
+              result = JSON.parse(result);
+              if (result.status === 'save') {
+                  this.saveContent(result.data);
+              }
+              else if (result.status === 'edit') {
+                  this.editContent(result.data);
+              }
+              else if (result.status === 'delete') {
+                  this.removeContent(result.data);
+              }
+              else if (result.status === 'close') {
+                  // do nothing
+              }
+              else {
+                  this.removeContentForm(result.data);
+              }
+          }
+        });
+      }
     }
 
     getCollectionStartDate() {

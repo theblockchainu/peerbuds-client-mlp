@@ -1,23 +1,83 @@
 <div class="mat-dialog-focus-trap"></div>
 <div md-dialog-content *ngIf="data">
-  <div class="content-image" *ngIf="data.content.imageUrl">
-    <img class="img-responsive media-middle" width="100%" style="max-height: 400px;" src="{{config.apiUrl+data.content.imageUrl}}" alt="image">
-  </div>
-  <div class="default-image" *ngIf="!data.content.imageUrl">
-    <i class="fa fa-picture-o"></i>
-  </div>
-  <div class="content-box margin-top-20">
-    <h3 class="margin-bottom-0">{{data.content.title | titlecase}}</h3>
-    <div class="seperate-section">
-      <div class="section-subhead">What we'll do</div>
-      <div class="section-description"> {{data.content.description}} </div>
+  <div class="row">
+    <div class="content-image" *ngIf="data.content.imageUrl">
+      <img *ngIf="data.content.imageUrl.includes('.jpeg') || data.content.imageUrl.includes('.jpg') || data.content.imageUrl.includes('.png')" class="img-responsive media-middle" width="100%" style="max-height: 400px;" src="{{config.apiUrl+data.content.imageUrl}}" alt="image">
+      <div *ngIf="data.content.imageUrl.includes('.mp4') || data.content.imageUrl.includes('.mpeg') || data.content.imageUrl.includes('.mpg')" class="col-md-12 embed-responsive embed-responsive-16by9">
+        <vg-player (onPlayerReady)="onPlayerReady($event)" *ngIf="userType !== 'public'">
+          <vg-overlay-play></vg-overlay-play>
+          <vg-buffering></vg-buffering>
+
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+
+          <vg-controls>
+            <vg-play-pause></vg-play-pause>
+            <vg-playback-button></vg-playback-button>
+
+            <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+            <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+
+            <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
+            <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+            <vg-track-selector></vg-track-selector>
+            <vg-mute></vg-mute>
+            <vg-volume></vg-volume>
+
+            <vg-fullscreen></vg-fullscreen>
+          </vg-controls>
+
+          <video [vgMedia]="media" #media id="singleVideo" width="100%" preload="auto" style="max-height: 300px;" crossorigin>
+            <source src="{{config.apiUrl+data.content.imageUrl}}" type="video/mp4">
+          </video>
+        </vg-player>
+      </div>
     </div>
-    <div class="seperate-section" *ngIf="data.content.notes">
-      <div class="section-subhead">Need to know</div>
-      <div class="section-description"> {{data.content.notes}} </div>
+    <div class="default-image" *ngIf="!data.content.imageUrl">
+      <i class="fa fa-picture-o"></i>
+    </div>
+  </div>  
+  <div class="row margin-top-20">
+    <hr>
+    <div class="col-md-12">
+      <h3>{{data.content.title | titlecase}} (Deadline: {{calculateDate(data.startDate, data.content.schedules[0].endDay)}})</h3>
+    </div>
+    <div class="col-md-12">
+      <b>What we'll do</b>
+      <br>
+      <p>
+        {{data.content.description}}
+      </p>
     </div>
   </div>
-  <div class="margin-top-20 margin-bottom-10">
+  <div *ngIf="data.content.prerequisites" >
+    <hr>
+    <div class="">
+      <b>Need to know</b>
+    </div>
+    <br>
+    <p>
+      {{data.content.prerequisites}}
+    </p>
+  </div>
+  <div *ngIf="attachmentUrls.length" class="pic delete">
+      <hr>
+      <div class="">
+        <b>Supplement Materials</b>
+      </div>
+      <br>
+      <div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
+          <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+          <video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+              <source src="{{config.apiUrl + file.url}}">
+          </video>
+      </div>
+  </div>
+  <div class="margin-top-20 margin-bottom-10" style="clear:both">
     <button (click)="openSubmitEntryDialog(data)" *ngIf="data.userType==='participant' && !data.peerHasSubmission && isSubmissionPossible" md-button class="mat-border-button" tabindex="-1">Submit Entry</button>
     <button *ngIf="data.userType==='participant' && !isSubmissionPossible" md-button class="mat-border-button" tabindex="-1" [disabled]="true">Submission date passed</button>
     <button *ngIf="data.userType==='participant' && data.peerHasSubmission" md-button class="mat-border-button" tabindex="-1">Submitted</button>

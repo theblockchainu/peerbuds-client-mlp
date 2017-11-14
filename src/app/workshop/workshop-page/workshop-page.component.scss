@@ -465,3 +465,11 @@ h3 {
 .right-content {
     padding-right: 55px;
 }
+
+.message-item-wrapper:last-child::after {
+    display: none;
+}
+
+.textJustify {
+    text-align: justify;
+}

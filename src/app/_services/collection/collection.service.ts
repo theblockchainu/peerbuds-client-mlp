@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-import {AuthenticationService} from '../authentication/authentication.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 declare var moment: any;
 
 @Injectable()
@@ -183,7 +183,7 @@ export class CollectionService {
     } else {
       const a = moment(calendar.startDate);
       const b = moment(calendar.endDate);
-      return b.diff(a, 'days');
+      return b.diff(a, 'days') + 1;
     }
   }
 
@@ -429,28 +429,28 @@ export class CollectionService {
   }
 
   public saveBookmark(collectionId, cb) {
-      const body = {};
-      this.http
-          .post(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks', body, this.options)
-          .map((response) => {
-              cb(null, response.json());
-          }, (err) => {
-              cb(err);
-          }).subscribe();
+    const body = {};
+    this.http
+      .post(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks', body, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
   }
 
   /**
    * getBookmarks
    */
   public getBookmarks(collectionId: string, query: any, cb) {
-      const filter = JSON.stringify(query);
-      this.http
-          .get(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks' + '?filter=' + filter, this.options)
-          .map((response) => {
-              cb(null, response.json());
-          }, (err) => {
-              cb(err);
-          }).subscribe();
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
   }
 
   /**
@@ -696,8 +696,8 @@ collectionID:string,userId:string,calendarId:string   */
    * deleteComment
    */
   public deleteReview(reviewId: string) {
-      return this.http
-          .delete(this.config.apiUrl + '/api/reviews/' + reviewId, this.options);
+    return this.http
+      .delete(this.config.apiUrl + '/api/reviews/' + reviewId, this.options);
   }
 
 }
