@@ -22,6 +22,7 @@ import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { CollectionGridDialogComponent } from './collection-grid-dialog/collection-grid-dialog.component';
+import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-card.component';
 
 @NgModule({
   imports: [
@@ -36,10 +37,11 @@ import { CollectionGridDialogComponent } from './collection-grid-dialog/collecti
   ],
   exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
-    , VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent],
+    , VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent],
   declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent
     , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
-    , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent],
+    , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent
+    , ProfilePopupCardComponent],
   providers: [
     DialogsService,
     TwilioServicesService
@@ -47,6 +49,6 @@ import { CollectionGridDialogComponent } from './collection-grid-dialog/collecti
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, MultiselectTopicDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
-    , LiveSessionDialogComponent, CollectionGridDialogComponent, DeleteDialogComponent],
+    , LiveSessionDialogComponent, CollectionGridDialogComponent, DeleteDialogComponent, ProfilePopupCardComponent],
 })
 export class DialogsModule { }
