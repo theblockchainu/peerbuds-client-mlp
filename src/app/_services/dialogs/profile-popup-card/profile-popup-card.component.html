@@ -18,7 +18,7 @@
     <div class="row" *ngIf="data.reviewsAboutYou">
       <div class="col-md-12" style="height: 18px;">
         <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 0.67rem; float: left;"></p-rating>
-        <p style="font-size: 0.67rem;">({{data.reviewsAboutYou.length}})</p>
+        <p style="font-size: 0.67rem;">&nbsp;({{data.reviewsAboutYou.length}})</p>
       </div>
     </div>
     <div class="row" *ngIf="data.profiles[0].description && data.profiles[0].description.length>0">
@@ -28,14 +28,14 @@
         </h5>
       </div>
     </div>
-    <div class="row" *ngIf="this.ownedCollections && this.ownedCollections.length>0">
+    <div class="row margin-top-10" *ngIf="this.ownedCollections && this.ownedCollections.length>0">
       <div class="col-md-6" class="lightText" style="margin-left: 15px;">
-        <h5>Workshops({{this.ownedCollections.length}})</h5>
+        <h5><b>Workshops ({{this.ownedCollections.length}})</b></h5>
       </div>
     </div>
-    <div class="row" *ngIf="this.ownedCollections && this.ownedCollections.length>0">
+    <div class="row" *ngIf="this.ownedCollections && this.ownedCollections.length>0" style="margin-top: -5px;">
       <div *ngFor="let workshop of this.ownedCollections; let i=index">
-        <div class="col-md-4" *ngIf="(workshop.status==='active'||workshop.status==='completed') && i<3">
+        <div class="col-md-4" *ngIf="(workshop.status==='active'||workshop.status==='completed') && i<3 && workshop.imageUrls !== undefined">
           <img style="width: 55px" src="{{_config.apiUrl+ workshop.imageUrls[0]}}" (error)="_collectionService.imgErrorHandler($event)">
         </div>
       </div>
