@@ -116,13 +116,12 @@
                 </div>-->
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(1)>Back</a> -->
-                  <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
-                    <span *ngIf="!busyInterest">Continue</span>
-                    <span *ngIf="busyInterest"> </span>
-                    <ngx-loading [show]="busyInterest"></ngx-loading>
-                  </button>
                   <span mdTooltip="Add More interests!" [mdTooltipDisabled]="interests.length !== 0">
-                    <a md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">Continue</a>
+                    <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
+                      <span *ngIf="!busyInterest">Continue</span>
+                      <span *ngIf="busyInterest"> </span>
+                      <ngx-loading [show]="busyInterest"></ngx-loading>
+                    </button>
                   </span>
                 </div>
               </form>
@@ -148,13 +147,12 @@
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(2)>Back</a> -->
-                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
-                    <span *ngIf="!busyLanguage">Continue</span>
-                    <span *ngIf="busyLanguage"> </span>
-                    <ngx-loading [show]="busyLanguage"></ngx-loading>
-                  </button>
                   <span mdTooltip="Select Language!" [mdTooltipDisabled]="selectedLanguages!==undefined">
-                    <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">Continue</button>
+                    <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
+                      <span *ngIf="!busyLanguage">Continue</span>
+                      <span *ngIf="busyLanguage"> </span>
+                      <ngx-loading [show]="busyLanguage"></ngx-loading>
+                    </button>
                   </span>
                 </div>
               </form>
@@ -179,13 +177,12 @@
                 </div>
                 <div style="margin-top:50px;">
                   <!-- <a md-button (click)=goto(3)>Back</a> -->
-                  <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
-                    <span *ngIf="!busyHost">Continue</span>
-                    <span *ngIf="busyHost"> </span>
-                    <ngx-loading [show]="busyHost"></ngx-loading>
+                  <span mdTooltip="Enter something about yourself!" [mdTooltipDisabled]="aboutHost.value.length !== 0"> 
+                    <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
+                      <span *ngIf="!busyHost">Continue</span>
+                      <span *ngIf="busyHost"> </span>
+                      <ngx-loading [show]="busyHost"></ngx-loading>
                     </button>
-                  <span mdTooltip="Enter something about yourself!" [mdTooltipDisabled]="aboutHost.value.length !== 0">
-                    <button md-raised-button class="pull-right" color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">Continue</button>
                   </span>
                 </div>
               </form>
@@ -308,9 +305,9 @@
                 </div>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(7)>Back</a> -->
-                  <span mdTooltip="Please fill the details!" [mdTooltipDisabled]="!difficultyLevel || notes.value.length !== 0">
+                  <span mdTooltip="Please fill the details!" [mdTooltipDisabled]="difficultyLevel != '' && notes.value.length > 0">
 
-                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="difficultyLevel && notes.value.length == 0">Continue</button>
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="!difficultyLevel && notes.value.length == 0">Continue</button>
                   </span>
                 </div>
               </form>
@@ -335,9 +332,8 @@
                 <br/>
                 <div style="padding-top:60px;">
                   <!-- <a md-button (click)=goto(8)>Back</a> -->
-                  <span mdTooltip="Please select the number of spots!" [mdTooltipDisabled]="maxSpots.value.length !== 0">
-
-                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0">Continue</button>
+                  <span mdTooltip="Please select the number of spots!" [mdTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Continue</button>
                   </span>
                 </div>
               </form>
@@ -374,7 +370,7 @@
                       </md-grid-list> -->
                       <!-- </ng-template> -->
                       <div *ngIf="urlForVideo.length" class="profileVideo delete">
-                        <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0">
+                        <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
                           <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
                             <source src="{{config.apiUrl + file}}"> Your browser does not support the video tag.
                           </video>
@@ -418,8 +414,9 @@
 
                   <div class="row">
                     <div class="margin-top-60">
-                      <!-- <a md-button (click)=goto(9)>Back</a> -->
-                      <button class="pull-right" md-raised-button color="accent" type="Submit">Continue</button>
+                      <span mdTooltip="Please upload images" [mdTooltipDisabled]="urlForImages.length === 0 || urlForVideo.length === 0">
+                        <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 || urlForVideo.length === 0">Continue</button>
+                      </span>
                     </div>
                   </div>
                 </form>
@@ -440,7 +437,7 @@
                 <div class="row margin-left-0">
                   <div class="col-md-3 padding-left-0">
                     <md-input-container [floatPlaceholder]="false" class="margin-top-20">
-                      <input type="number" mdInput #price formControlName="price" placeholder="" min="1">
+                      <input type="number" mdInput #price formControlName="price" placeholder="" min="1" required>
                     </md-input-container>
                   </div>
                   <div class="col-md-2 col-md-offset-2 priceAlignParent">
@@ -460,9 +457,7 @@
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(10)>Back</a> -->
                   <span mdTooltip="Please select the number of spots!" [mdTooltipDisabled]="price.value.length !== 0 || currency || cancellationPolicy">
-
-                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="price.value.length == 0 && !currency && !cancellationPolicy">Continue</button>
-
+                    <button class="pull-right" md-raised-button color="accent" type="Submit" [disabled]="(price.value.length == 0 && cancellationPolicy == undefined && currency == undefined)">Continue</button>
                   </span>
                 </div>
               </form>

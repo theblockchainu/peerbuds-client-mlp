@@ -590,10 +590,7 @@
                 <div *ngFor="let participant of participants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter clickable">
-                      <img (click)="openProfilePage(participant.id)" *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png"
-                        alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
-                      <img (click)="openProfilePage(participant.id)" *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}"
-                        class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+                      <app-profile-popup [participant]="participant"></app-profile-popup>
                     </div>
                     <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
@@ -619,10 +616,7 @@
                 <div *ngFor="let participant of allParticipants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter clickable">
-                      <img (click)="openProfilePage(participant.id)" *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png"
-                        alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
-                      <img (click)="openProfilePage(participant.id)" *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}"
-                        class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+                      <app-profile-popup [participant]="participant"></app-profile-popup>
                     </div>
                     <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;

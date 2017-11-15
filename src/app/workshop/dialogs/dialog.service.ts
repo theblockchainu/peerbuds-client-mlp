@@ -22,7 +22,6 @@ export class DialogsService {
             width: '80vw',
             height: '99vh'}
         );
-
         dialogRef.componentInstance.collection = collection;
         dialogRef.componentInstance.contents = contents;
         dialogRef.componentInstance.calendars = calendars;
