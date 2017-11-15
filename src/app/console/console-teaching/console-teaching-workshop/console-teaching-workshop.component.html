@@ -56,7 +56,7 @@
                         MMM' }}</span>
                     </div>
                     <div class="collectionSubtitle" (click)="_collectionService.openCollection(collection)">
-                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                      {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
                     <span *ngIf="_collectionService.getUpcomingEvent(collection).timeToStart >= 0">
@@ -135,7 +135,7 @@
                         MMM' }}</span>
                     </div>
                     <div class="collectionSubtitle">
-                      {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                      {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
                     <p class="upcomingEventLabel">
@@ -191,7 +191,7 @@
                           </button>
                         </div>
                       </div>
-                      <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                      <div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
                       <ng-template #draftMessage>
                         <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
                         <p class="lightText" style="margin-top:20px">
@@ -232,7 +232,7 @@
                           </a>
                         </div>
                       </div>
-                      <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
+                      <div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
                       <ng-template #draftMessage>
                         <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
                         <p class="lightText" style="margin-top:20px">
@@ -310,7 +310,7 @@
                       </div>
                       <div class="collectionTitle mat-body-2">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
                       <div class="collectionSubtitle">
-                        {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                        {{ collection.itenaries.length}} Days | {{collection.contents.length}} Activity |
                         <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                       </div>
                       <div class="teachingRatingReminder" (click)="consoleTeachingComponent.showRateStudentsPopup()">

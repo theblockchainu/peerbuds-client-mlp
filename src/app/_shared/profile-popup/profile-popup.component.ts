@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, Renderer2 } from '@angular/core';
 import { AppConfig } from '../../app.config';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile-popup',
   templateUrl: './profile-popup.component.html',
@@ -10,34 +10,42 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 })
 export class ProfilePopupComponent implements OnInit {
 
-  @Input() participant: any;
+  @Input() peer: any;
   @ViewChild('profilePic') profilePic;
 
   private dialogref: MdDialogRef<any>;
 
   constructor(public config: AppConfig,
     public dialog: MdDialog,
-    private _dialogsService: DialogsService
+    private _dialogsService: DialogsService,
+    private _router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  openPriceDialog(): void {
+  openProfileDialog(event): void {
+    console.log(event);
     const config = {
       hasBackdrop: false,
       width: '250px',
       height: '200px',
-      data: this.participant,
+      data: this.peer,
       position: {
-        top: (this.profilePic.nativeElement.getBoundingClientRect().top - 200) + 'px',
-        left: (this.profilePic.nativeElement.getBoundingClientRect().right) + 'px'
+        left: (event.x + 20) + 'px',
+        top: (event.y - 220) + 'px'
       }
     };
     this.dialogref = this._dialogsService.openProfilePopup(config);
   }
 
-  public closePriceDialog(): void {
+  public closeProfileDialog(): void {
     this.dialogref.close();
   }
+
+  public openProfile() {
+    this.dialogref.close();
+    this._router.navigateByUrl('/profile/' + this.peer.id);
+  }
+
 }

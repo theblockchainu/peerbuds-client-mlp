@@ -17,8 +17,8 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
   styleUrls: ['./verify-email-dialog.component.scss']
 })
 export class VerifyEmailDialogComponent implements OnInit {
- public step = 2;
- // private idProofImagePending: Boolean;
+  public step = 2;
+  // private idProofImagePending: Boolean;
   public peer: FormGroup;
   public otp: FormGroup;
   private email: string;
@@ -38,16 +38,16 @@ export class VerifyEmailDialogComponent implements OnInit {
     public dialogRef: MdDialogRef<VerifyEmailDialogComponent>,
     private _cookieUtilsService: CookieUtilsService,
     @Inject(MD_DIALOG_DATA) public data: any) {
-      this.activatedRoute.params.subscribe(params => {
-      });
-      this.userId = _cookieUtilsService.getValue('userId');
+    this.activatedRoute.params.subscribe(params => {
+    });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
     this.peer = this._fb.group({
       email: ['',
-      [Validators.required,
-      Validators.pattern(EMAIL_REGEX)]],
+        [Validators.required,
+        Validators.pattern(EMAIL_REGEX)]],
       verificationIdUrl: ['', Validators.required]
     });
     this.otp = this._fb.group({
@@ -62,11 +62,11 @@ export class VerifyEmailDialogComponent implements OnInit {
 
   continue(p) {
     this.step = p;
-   console.log('email dialog opened');
-   if (p === 3) {
-    //this.peer.controls['email'].setValue(this.email);
-    this.sendOTP();
-  }
+    console.log('email dialog opened');
+    if (p === 3) {
+      //this.peer.controls['email'].setValue(this.email);
+      this.sendOTP();
+    }
   }
 
   public sendOTP() {
@@ -86,6 +86,8 @@ export class VerifyEmailDialogComponent implements OnInit {
         console.log('verified email');
         this.success = res;
         this.dialogRef.close(res.email);
+      }, err => {
+        console.log(err);
       });
   }
 }

@@ -590,7 +590,7 @@
                 <div *ngFor="let participant of participants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter clickable">
-                      <app-profile-popup [participant]="participant"></app-profile-popup>
+                      <app-profile-popup [peer]="participant"></app-profile-popup>
                     </div>
                     <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
@@ -616,9 +616,9 @@
                 <div *ngFor="let participant of allParticipants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter clickable">
-                      <app-profile-popup [participant]="participant"></app-profile-popup>
+                      <app-profile-popup [peer]="participant"></app-profile-popup>
                     </div>
-                    <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
+                    <div class="col-md-9 vcenter" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
                       <span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
                     </div>

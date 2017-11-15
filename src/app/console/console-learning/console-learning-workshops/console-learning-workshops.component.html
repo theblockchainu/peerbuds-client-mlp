@@ -38,31 +38,45 @@
                     </div>
                     <div class="collectionParticipantImageCarousel">
                       <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                        <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
+                        <app-profile-popup [peer]="owner"></app-profile-popup>
                       </div>
                     </div>
                     <div class="teacherName">
-                      <span>{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
+                      <span class="mat-body-1">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
                       </span>
                     </div>
                     <div class="teacherHeadline">
                       <span>{{collection.owners[0].profiles[0].headline}} </span>
                     </div>
-                    <div class="collectionTitle" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' }} </div>
+                    <div class="collectionTitle mat-body-2" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
                     <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
                     <div class="collectionSubtitle">
-                      {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Parts |
+                      {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
-                    <p class="upcomingEventLabel">
-                      Up Next
-                    </p>
-                    <div class="upcomingEventTitle">
-                      {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).title }}
+                    <div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart===0">
+                      <p class="upcomingEventLabel">
+                        Ongoing
+                      </p>
+                      <div class="upcomingEventTitle">
+                        {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).title }}
+                      </div>
+                      <div class="upcomingEventTime">
+                        {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord
+                        + ' today'}}
+                      </div>
                     </div>
-                    <div class="upcomingEventTime">
-                      {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord
-                      + ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' Days' }}
+                    <div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart>0">
+                      <p class="upcomingEventLabel">
+                        Up Next
+                      </p>
+                      <div class="upcomingEventTitle">
+                        {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).title }}
+                      </div>
+                      <div class="upcomingEventTime">
+                        {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord
+                        + ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' Days' }}
+                      </div>
                     </div>
                   </md-card-content>
                   <md-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).hasStarted">
@@ -97,18 +111,18 @@
                       </div>
                     </div>
                     <div class="teacherName">
-                      <span>{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
+                      <span class="mat-body-1">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
                       </span>
                     </div>
                     <div class="teacherHeadline">
                       <span>{{collection.owners[0].profiles[0].headline}} </span>
                     </div>
-                    <div class="collectionTitle" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' }} </div>
+                    <div class="collectionTitle mat-body-2" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
                     <div class="lighterText">
                       Booked {{consoleLearningComponent.getDaysBetween(collection.updatedAt, now)}}
                     </div>
                     <div class="collectionSubtitle">
-                      {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Parts |
+                      {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
                     <p class="upcomingEventLabel">
@@ -168,16 +182,16 @@
                         </div>
                       </div>
                       <div class="teacherName">
-                        <span>{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
+                        <span class="mat-body-1">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
                         </span>
                       </div>
                       <div class="teacherHeadline">
                         <span>{{collection.owners[0].profiles[0].headline}} </span>
                       </div>
-                      <div style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' }} </div>
+                      <div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
                       <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
                       <div class="collectionSubtitle">
-                        {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Parts |
+                        {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity |
                         <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                       </div>
                     </md-card-content>

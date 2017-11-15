@@ -5,6 +5,9 @@ import { CollectionService } from '../../_services/collection/collection.service
 import { ProfileService } from '../../_services/profile/profile.service';
 import { MdSnackBar } from '@angular/material';
 
+declare var moment: any;
+
+
 @Component({
   selector: 'app-console-admin',
   templateUrl: './console-admin.component.html',
@@ -43,6 +46,9 @@ export class ConsoleAdminComponent implements OnInit {
     };
     this._profileService.getAllPeers(query).subscribe(result => {
       this.unapprovedPeers = result.json();
+      this.unapprovedPeers.sort((a, b) => {
+        return moment(a.updatedAt).diff(moment(b.updatedAt), 'days');
+      });
       this.peersLoaded = true;
     }, err => {
       console.log(err);
@@ -60,6 +66,9 @@ export class ConsoleAdminComponent implements OnInit {
     this._collectionService.getAllCollections(query).subscribe(
       result => {
         this.unapprovedCollections = result;
+        this.unapprovedCollections.sort((a, b) => {
+          return moment(a.updatedAt).diff(moment(b.updatedAt), 'days');
+        });
         this.collectionsLoaded = true;
       }, err => {
         console.log(err);
