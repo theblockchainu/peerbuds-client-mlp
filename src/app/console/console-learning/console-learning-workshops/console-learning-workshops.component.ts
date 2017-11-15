@@ -58,7 +58,7 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
   }
 
   private fetchWorkshop() {
-    this._collectionService.getParticipatingCollections(this.userId, '{ "relInclude": "calendarId", "where": {"type":"workshop"}, "include": ["calendars", {"owners":"profiles"}, {"participants": "profiles"}, "topics", {"contents":["schedules","views","submissions"]}, {"reviews":"peer"}] }', (err, result) => {
+    this._collectionService.getParticipatingCollections(this.userId, '{ "relInclude": "calendarId", "where": {"type":"workshop"}, "include": ["calendars", {"owners":["profiles", "reviewsAboutYou", "ownedCollections"]}, {"participants": "profiles"}, "topics", {"contents":["schedules","views","submissions"]}, {"reviews":"peer"}] }', (err, result) => {
       if (err) {
         console.log(err);
       } else {
@@ -79,7 +79,7 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     const now = moment();
     data.forEach(workshop => {
       workshop.calendars.forEach(calendar => {
-        if (calendar.endDate) {
+        if (workshop.calendarId === calendar.id && calendar.endDate) {
           if (now.diff(moment.utc(calendar.endDate)) < 0) {
             if (!now.isBetween(calendar.startDate, calendar.endDate)) {
               if (workshop.id in this.upcomingWorkshopsObject) {
@@ -165,6 +165,10 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
         console.log(result);
       }
     });
+  }
+
+  public openCollection(collection: any) {
+    this.router.navigateByUrl('/workshop/' + collection.id + '/calendar/' + collection.calendarId);
   }
 
 }

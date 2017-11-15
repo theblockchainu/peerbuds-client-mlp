@@ -24,7 +24,7 @@
               <div class="pull-right">
                 <!--<button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>-->
                 <span mdTooltip="Invalid Email!" [mdTooltipDisabled]="!peer.controls.email.invalid || !peer.controls.email.dirty && email.value.length !== 0">
-                  <button md-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls.email.invalid && peer.controls.email.dirty || email.value.length == 0">Continue</button>
+                  <button md-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls['email'].invalid && peer.controls['email'].dirty || email.value.length == 0">Continue</button>
                 </span>
               </div>
             </div>
@@ -50,8 +50,9 @@
                         <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" />
                       </div> -->
               <md-input-container style="width:20% !important" class="pb-block margin-bottom-10">
-                <input type="number" mdInput #inputOTP formControlName="inputOTP" />
+                <input type="text" mdInput #inputOTP formControlName="inputOTP" />
               </md-input-container>
+              {{this.otp.controls['inputOTP'].value}}
               <div>
                 <p class="description1">
                   <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before

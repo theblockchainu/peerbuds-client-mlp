@@ -86,6 +86,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
 
   verifyPhone() {
     //this.peer.controls['phone'].setValue(this.phone);
+    console.log(this.otp.controls['inputOTP'].value);
     this._profileService.confirmSmsOTP(this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
         console.log(res.phone);
@@ -93,6 +94,8 @@ export class VerifyPhoneDialogComponent implements OnInit {
         this.success = res;
         //this.peer.controls.phone.setValue(res.phone);
         this.dialogRef.close();
+      }, err => {
+        console.log(err);
       });
   }
 }

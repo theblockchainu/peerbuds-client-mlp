@@ -316,7 +316,7 @@ export class WorkshopPageComponent implements OnInit {
       const calendarItenary = [];
       for (const key in this.itenariesObj) {
         if (this.itenariesObj.hasOwnProperty(key)) {
-          const eventDate = this.calculateDate(calendar.startDate, key);
+          const eventDate = this._collectionService.calculateDate(calendar.startDate, key);
           this.itenariesObj[key].sort(function (a, b) {
             return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
           });
@@ -408,11 +408,11 @@ export class WorkshopPageComponent implements OnInit {
             if (this.itenariesObj.hasOwnProperty(key)) {
               let startDate, endDate;
               if (this.currentCalendar) {
-                startDate = this.calculateDate(this.currentCalendar.startDate, key);
-                endDate = this.calculateDate(this.currentCalendar.startDate, key);
+                startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+                endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
               } else {
-                startDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
-                endDate = this.calculateDate(this.workshop.calendars[0].startDate, key);
+                startDate = this._collectionService.calculateDate(this.workshop.calendars[0].startDate, key);
+                endDate = this._collectionService.calculateDate(this.workshop.calendars[0].startDate, key);
               }
               this.itenariesObj[key].sort(function (a, b) {
                 return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
@@ -436,11 +436,6 @@ export class WorkshopPageComponent implements OnInit {
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
-
-          console.log(this.itenariesObj);
-
-
-
         },
         err => console.log('error'),
         () => {
@@ -648,14 +643,7 @@ export class WorkshopPageComponent implements OnInit {
     });
   }
 
-  /**
-   * calculateDate
-   */
-  public calculateDate(fromdate, day) {
-    const tempMoment = moment(fromdate);
-    tempMoment.add(day, 'days');
-    return tempMoment;
-  }
+
 
   /**
    * postComment

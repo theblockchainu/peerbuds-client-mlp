@@ -147,9 +147,13 @@ export class ConsoleLearningComponent implements OnInit {
       fillerWord = 'recording';
     else if (contents[0].type === 'project')
       fillerWord = 'submission';
-    const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
-    const timeToStart = contentStartDate.diff(moment(), 'days');
-    contents[0].timeToStart = timeToStart;
+    if (currentCalendar) {
+      const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
+      const timeToStart = contentStartDate.diff(moment(), 'days');
+      contents[0].timeToStart = timeToStart;
+    } else {
+      contents[0].timeToStart = 0;
+    }
     contents[0].fillerWord = fillerWord;
     contents[0].hasStarted = false;
     return contents[0];

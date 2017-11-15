@@ -20,8 +20,7 @@
                         <div class="col-md-10 col-md-offset-1 bottom-section clearfix margin-top-30">
                             <div class="pull-right">
                                 <span mdTooltip="Invalid Number!" [mdTooltipDisabled]="!peer.controls.phone.invalid || !peer.controls.phone.dirty && phone.value.length !== 0">
-
-                                    <button md-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls.phone.invalid && peer.controls.phone.dirty || phone.value.length == 0">Continue</button>
+                                    <button md-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls['phone'].invalid && peer.controls['phone'].dirty || phone.value.length == 0">Continue</button>
                                 </span>
                             </div>
                         </div>

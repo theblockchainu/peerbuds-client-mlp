@@ -82,6 +82,8 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
       if (workshop.status === 'draft' || workshop.status === 'submitted') {
         this.drafts.push(workshop);
       } else {
+        workshop.itenaries = this._collectionService.calcualteItenaries(workshop, workshop.calendars[0]);
+        console.log(workshop);
         workshop.calendars.forEach(calendar => {
           calendar.startDate = moment(calendar.startDate).toDate();
           calendar.endDate = moment(calendar.endDate).hours(23).minutes(59).toDate();
