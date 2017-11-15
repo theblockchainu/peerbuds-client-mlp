@@ -142,15 +142,15 @@ export class WorkshopPageComponent implements OnInit {
   public view = 'month';
 
   public activityMapping:
-  { [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
+    { [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
   public hourMapping:
-  { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
+    { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
   public cohortMapping:
-  { [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
+    { [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
   public dayMapping:
-  { [k: string]: string } = { '=0': 'Less than a day', '=1': 'One day', 'other': '# days' };
+    { [k: string]: string } = { '=0': 'Less than a day', '=1': 'One day', 'other': '# days' };
   public discussionMapping:
-  { [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
+    { [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
 
   public viewDate: Date = new Date();
 
@@ -1087,7 +1087,7 @@ export class WorkshopPageComponent implements OnInit {
     this.loadingParticipants = true;
     const query = {
       'relInclude': 'calendarId',
-      'include': ['profiles']
+      'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
     };
     let isCurrentUserParticipant = false;
     let currentUserParticipatingCalendar = '';

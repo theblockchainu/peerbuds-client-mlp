@@ -124,7 +124,7 @@
                 <div *ngIf="userType==='public'" class="margin-top-20"> {{workshop.description}} </div>
               </div>
             </div>
-            <div class="row Progress" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">
+            <div class="row Progress margin-top-20" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">
               <div class="col-md-4">
                 <h3 *ngIf="userType==='participant' && loggedInUser !== undefined">Welcome back, {{loggedInUser.profiles[0].first_name}}</h3>
                 <h3 *ngIf="userType==='teacher'">Welcome back, {{workshop.owners[0].profiles[0].first_name}}</h3>
@@ -216,7 +216,7 @@
                     Itinerary
                   </div>
                   <div class="qa-message-list" id="wallmessages">
-                    <div class="message-item-wrapper" *ngFor="let itenary of itenaryArray">
+                    <div [ngClass]="{'message-item-wrapper' : oneDay(), 'message-item-wrapper-one-day': !oneDay()}" *ngFor="let itenary of itenaryArray">
                       <div [ngClass]="{'message-item': oneDay() , 'message-item-ticked': hasDatePassed(itenary.startDate)}">
                         <div class="message-inner">
                           <div class="qa-message-content">
@@ -590,10 +590,7 @@
                 <div *ngFor="let participant of participants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter clickable">
-                      <img (click)="openProfilePage(participant.id)" *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png"
-                        alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
-                      <img (click)="openProfilePage(participant.id)" *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}"
-                        class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+                      <app-profile-popup [participant]="participant"></app-profile-popup>
                     </div>
                     <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
@@ -603,7 +600,7 @@
                 </div>
                 <div>
                   <div class="row">
-                    <div class="col-md-12 margin-top-20">
+                    <div class="col-md-12 margin-top-20 margin-bottom-40">
                       <a (click)="viewParticipants()" style="cursor: pointer;" *ngIf="participants.length > 0"> View all participants </a>
                     </div>
                   </div>
@@ -619,10 +616,7 @@
                 <div *ngFor="let participant of allParticipants; let i=index">
                   <div class="row" *ngIf="participant.profiles && i<4">
                     <div class="col-md-2 vcenter clickable">
-                      <img (click)="openProfilePage(participant.id)" *ngIf="!participant.profiles || !participant.profiles[0].picture_url" src="/assets/images/avatar.png"
-                        alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px;">
-                      <img (click)="openProfilePage(participant.id)" *ngIf="participant.profiles && participant.profiles[0].picture_url" src="{{config.apiUrl+participant.profiles[0].picture_url}}"
-                        class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px;">
+                      <app-profile-popup [participant]="participant"></app-profile-popup>
                     </div>
                     <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
@@ -759,7 +753,7 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <span mdTooltip="Accont not approved!" [mdTooltipDisabled]="accountApproved === 'true'">
+                    <span mdTooltip="Please wait for your account to be approved before signing up for workshops" [mdTooltipDisabled]="accountApproved === 'true'">
                       <button md-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
                     </span>
                   </div>
@@ -784,7 +778,7 @@
             </div>
           </div>
         </div>
-
+        <hr class="margin-bottom-60" *ngIf="userType === 'participant'">
         <!--SIMILAR WORKSHOPS-->
         <div class="row workshop-suggestions" *ngIf="userType!=='teacher'">
           <div class="col-md-12">
@@ -813,8 +807,8 @@
                     <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
                       alt="workshpImg">
                   </div>
-                  <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
-                  <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
+                  <div *ngIf="workshop.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{workshop.price | convertCurrency: workshop.currency |async}}</span> / person</div>
+                  <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" style="margin-top: -5px;"><span class="mat-body-2">{{workshop.price | convertCurrency: 'USD' |async}}</span> / person</div>
                   <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
                   <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
                   <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">

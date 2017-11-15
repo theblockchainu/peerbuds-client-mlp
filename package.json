@@ -1,7 +1,7 @@
 {
-  "name": "peerbuds-client",
+  "name": "peerbuds",
   "version": "0.0.1",
-  "license": "Peerbuds",
+  "license": "Peerbuds Inc",
   "scripts": {
     "build:dev": "npm run clean:dist && webpack --config config/webpack.dev.js --progress --profile",
     "build:docker": "npm run build:prod && docker build -t angular2-webpack-start:latest .",

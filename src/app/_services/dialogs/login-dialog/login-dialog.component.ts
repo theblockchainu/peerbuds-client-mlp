@@ -60,7 +60,7 @@ export class LoginComponentDialog implements OnInit {
     this.loginForm = this._fb.group({
       email : ['', Validators.email], /* putting reg ex as well */
       password : ['', Validators.required],
-      rememberMe: ['']
+      rememberMe: ['false']
     });
       this.forgotpwdForm = this._fb.group({
       email : ['', Validators.email] /* putting reg ex as well */

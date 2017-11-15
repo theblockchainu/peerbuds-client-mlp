@@ -13,6 +13,8 @@ import { CollectionGridDialogComponent } from './collection-grid-dialog/collecti
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-card.component';
+
 @Injectable()
 export class DialogsService {
 
@@ -146,6 +148,10 @@ export class DialogsService {
             height: '30vh'
         });
         return dialogRef.afterClosed();
+    }
+
+    openProfilePopup(config: any) {
+        return this.dialog.open(ProfilePopupCardComponent, config);
     }
 
 }
