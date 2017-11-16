@@ -83,7 +83,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
         workshop.itenaries = [];
         this.drafts.push(workshop);
       } else {
-        workshop.itenaries = this._collectionService.calcualteItenaries(workshop, workshop.calendars[0]);
+        workshop.itenaries = this._collectionService.calculateItenaries(workshop, workshop.calendars[0]);
         console.log(workshop);
         workshop.calendars.forEach(calendar => {
           calendar.startDate = moment(calendar.startDate).toDate();
