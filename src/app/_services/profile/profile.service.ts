@@ -182,7 +182,7 @@ export class ProfileService {
         console.log('Error: ' + err);
       });
 
-  }
+  } 
 
   public confirmEmail(userId, inputToken: string) {
     const body = {};
@@ -190,9 +190,7 @@ export class ProfileService {
     console.log(inputToken);
     return this.http
       .post(this.config.apiUrl + '/api/peers/confirmEmail?uid=' + userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
-      .map((response: Response) => response.json(), (err) => {
-        console.log('Error: ' + err);
-      });
+      .map((response: Response) => response.json());
 
   }
 

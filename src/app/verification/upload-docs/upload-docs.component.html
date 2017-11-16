@@ -99,9 +99,10 @@
                 <label class="display-block margin-bottom-0"><strong>OTP</strong></label>
                 <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" />
               </div> -->
-            <md-input-container style="width:20% !important" class="pb-block margin-bottom-10">
+            <md-input-container style="width:20% !important" class="margin-bottom-10">
               <input type="number" mdInput #inputOTP formControlName="inputOTP" />
             </md-input-container>
+            <span *ngIf="otpError" style="color:red;margin-left:10px;">{{otpError}}</span>
             <div>
               <p class="description1">
                 <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before

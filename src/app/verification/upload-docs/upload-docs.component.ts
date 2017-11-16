@@ -30,6 +30,7 @@ export class UploadDocsComponent implements OnInit {
   private fileType;
   private fileName;
   public userId;
+  private otpError: string;
 
   constructor(
     public router: Router,
@@ -101,11 +102,20 @@ export class UploadDocsComponent implements OnInit {
   verifyEmail() {
     this._profileService.confirmEmail(this.userId, this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
-        console.log(res);
-        console.log('verified email');
-        this.success = res;
-        this.router.navigate(['/onboarding/1']);
-      });
+          console.log(res);
+          console.log('verified email');
+          this.success = res;
+          this.router.navigate(['/onboarding/1']);
+        },
+        (err) => {
+          console.log(err);
+          if(err.status === 400) {
+            this.otpError = "Wrong or Invalid OTP";
+            //this.otp.controls['inputOTP'].setValue('');
+          }
+
+        }
+    );
   }
 
   redirectToOnboarding() {
