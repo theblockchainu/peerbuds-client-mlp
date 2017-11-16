@@ -505,6 +505,7 @@ collectionID:string,userId:string,calendarId:string   */
    * @param collection
    */
   public openCollection(collection) {
+    console.log(collection);
     switch (collection.type) {
       case 'workshop':
         this.router.navigate(['/workshop', collection.id]);
@@ -698,6 +699,61 @@ collectionID:string,userId:string,calendarId:string   */
   public deleteReview(reviewId: string) {
     return this.http
       .delete(this.config.apiUrl + '/api/reviews/' + reviewId, this.options);
+  }
+
+
+  public calculateItenaries(workshop: any, currentCalendar: any) {
+    const itenariesObj = {};
+    const itenaryArray = [];
+    workshop.contents.forEach(contentObj => {
+      if (itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+        itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
+      } else {
+        itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
+      }
+    });
+    console.log(itenariesObj);
+    for (const key in itenariesObj) {
+      if (itenariesObj.hasOwnProperty(key)) {
+        let startDate, endDate;
+        if (currentCalendar) {
+          startDate = this.calculateDate(currentCalendar.startDate, key);
+          endDate = this.calculateDate(currentCalendar.startDate, key);
+        } else {
+          startDate = this.calculateDate(workshop.calendars[0].startDate, key);
+          endDate = this.calculateDate(workshop.calendars[0].startDate, key);
+        }
+        itenariesObj[key].sort(function (a, b) {
+          return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
+        });
+        itenariesObj[key].forEach(content => {
+          if (content.schedules[0].startTime !== undefined) {
+            content.schedules[0].startTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].startTime.split('T')[1];
+            content.schedules[0].endTime = startDate.format().toString().split('T')[0] + 'T' + content.schedules[0].endTime.split('T')[1];
+          }
+        });
+        const itenary = {
+          startDay: key,
+          startDate: startDate,
+          endDate: endDate,
+          contents: itenariesObj[key]
+        };
+        itenaryArray.push(itenary);
+      }
+    }
+    itenaryArray.sort(function (a, b) {
+      return parseFloat(a.startDay) - parseFloat(b.startDay);
+    });
+    return itenaryArray;
+  }
+
+  /**
+  * calculateDate
+  */
+  public calculateDate(fromdate, day) {
+    const tempMoment = moment(fromdate);
+    tempMoment.add(day, 'days');
+    return tempMoment;
   }
 
 }

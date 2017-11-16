@@ -1,12 +1,16 @@
 <div *ngIf="data==='delete'">
-  <div md-dialog-content>Are you sure you want to delete the workshop?</div>
+  <div md-dialog-content>
+    <h3>Are you sure you want to delete the workshop?</h3>
+  </div>
   <div md-dialog-actions>
     <button md-button md-dialog-close="delete">Delete</button>
     <button md-button md-dialog-close>Cancel</button>
   </div>
 </div>
 <div *ngIf="data==='cancel'">
-  <div md-dialog-content>Are you sure you want to cancel the workshop?</div>
+  <div md-dialog-content>
+    <h3> Are you sure you want to cancel the workshop?</h3>
+  </div>
   <div md-dialog-actions>
     <button md-button md-dialog-close="cancel">Cancel Workshop</button>
     <button md-button md-dialog-close>Cancel</button>

@@ -76,37 +76,28 @@ export class OnboardingComponent implements OnInit {
     this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.userId)
     .subscribe((response: Response) => {
       this.socialIdentitiesConnected = response;
-
-      // this.socialIdentitiesConnected.forEach(socialIdentity => {
-        if (this.socialIdentitiesConnected.identities.length > 0) {
-          this.boolShowConnectedSocials = true;
-          this.socialIdentitiesConnected.identities.forEach(element => {
-            if (element.provider === 'google') {
-                this.connectedIdentities.google = true;
-            }
-            else if (element.provider === 'facebook') {
-              this.connectedIdentities.fb = true;
-            }
-          });
-        }
-        if (this.socialIdentitiesConnected.credentials.length > 0) {
-          this.boolShowConnectedSocials = true;
-          this.socialIdentitiesConnected.credentials.forEach(element => {
-            if (element.provider === 'google') {
-                this.connectedIdentities.google = true;
-            }
-            else if (element.provider === 'facebook') {
-              this.connectedIdentities.fb = true;
-            }
-          });
-        }
-        // if (socialIdentity.provider === 'google') {
-        //   this.connectedIdentities.google = true;
-        // }
-        // if (socialIdentity.provider === 'facebook') {
-        //   this.connectedIdentities.fb = true;
-        // }
-      // });
+      if (this.socialIdentitiesConnected.identities.length > 0) {
+        this.boolShowConnectedSocials = true;
+        this.socialIdentitiesConnected.identities.forEach(element => {
+          if (element.provider === 'google') {
+              this.connectedIdentities.google = true;
+          }
+          else if (element.provider === 'facebook') {
+            this.connectedIdentities.fb = true;
+          }
+        });
+      }
+      if (this.socialIdentitiesConnected.credentials.length > 0) {
+        this.boolShowConnectedSocials = true;
+        this.socialIdentitiesConnected.credentials.forEach(element => {
+          if (element.provider === 'google') {
+              this.connectedIdentities.google = true;
+          }
+          else if (element.provider === 'facebook') {
+            this.connectedIdentities.fb = true;
+          }
+        });
+      }
     },
     (err) => {
       console.log('Error: ' + err);

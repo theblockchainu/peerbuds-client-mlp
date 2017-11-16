@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <hr style="border-top:1px solid #eeeeee;">
+            <hr>
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
@@ -209,7 +209,7 @@
                 </div>
             </div>
 
-            <hr style="border-top:1px solid #eeeeee;">
+            <hr>
             <div class="row">
                 <div class=col-md-12>
                     <div class="row">
@@ -233,7 +233,7 @@
                                             <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb-viewpage" (error)="imgErrorHandler($event)">
                                         </div>
                                         <div class="col-md-4 reviewer padding-left-0">
-                                            <div class="reviewer-name margin-bottom-10">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name
+                                            <div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name
                                                 }}
                                             </div>
                                             <!-- <div class="reviewer-headline">{{ review.peer[0].profiles[0].headline }}</div> -->
@@ -255,7 +255,7 @@
                             </div>
                             <!-- <hr> -->
                             <p style="text-align: left" *ngIf="!profileObj.peer[0].reviewsAboutYou">This user has not received a review yet</p>
-                            <hr style="border-top:1px solid #eeeeee;">
+                            <hr>
                         </div>
                     </div>
                     <div class="row" style="padding-top: 20px;">
@@ -265,7 +265,7 @@
                         <div class="col-md-12 text-center">
                             <!-- <hr> -->
                             <p style="text-align: left">This user has not received a review yet</p>
-                            <hr style="border-top:1px solid #eeeeee;">
+                            <hr>
                         </div>
                     </div>
                 </div>
@@ -298,7 +298,7 @@
                                         Upcoming ({{upcomingWorkshops.length}})
                                     </div>
                                     <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of upcomingWorkshops ; let i=index">
-                                        <div *ngIf="i<4">
+                                        <div *ngIf="i<2">
                                             <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
                                                 <div class="col-md-3 padding-left-0">
                                                     <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
@@ -315,8 +315,8 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 margin-top-20 center">
-                                        <a style="font-size:0.99rem;color:#484848;font-weight:400" (click)="openWorkshopGrid('Upcoming Workshops', upcomingWorkshops)">Show more</a>
+                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
+                                        <a style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Upcoming Workshops', upcomingWorkshops)">Show more</a>
                                     </div>
                                 </div>
                                 <div *ngIf="ongoingWorkshops.length>0">
@@ -324,7 +324,7 @@
                                         Currently Running ({{ongoingWorkshops.length}})
                                     </div>
                                     <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of ongoingWorkshops ; let i=index">
-                                        <div *ngIf="i<4">
+                                        <div *ngIf="i<2">
                                             <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
                                                 <div class="col-md-3 padding-left-0">
                                                     <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
@@ -341,8 +341,8 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 margin-top-20 center">
-                                        <a style="font-size:0.99rem;color:#484848;font-weight:400" (click)=" openWorkshopGrid('Ongoing Workshops',ongoingWorkshops)">Show more</a>
+                                    <div class="col-md-12 margin-top-10 margin-bottom-20 center">
+                                        <a style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openWorkshopGrid('Ongoing Workshops',ongoingWorkshops)">Show more</a>
                                     </div>
                                 </div>
                                 <div *ngIf="pastWorkshops.length>0">
@@ -350,7 +350,7 @@
                                         Past ({{pastWorkshops.length}})
                                     </div>
                                     <div class="col-md-12 margin-top-10" *ngFor="let collectionObj of pastWorkshops ; let i=index">
-                                        <div *ngIf="i<4">
+                                        <div *ngIf="i<2">
                                             <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
                                                 <div class="col-md-3 padding-left-0">
                                                     <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
@@ -368,8 +368,8 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-12 margin-top-20 center">
-                                        <a style="font-size:0.99rem;color:#484848;font-weight:400" (click)="openWorkshopGrid('Past Workshops',pastWorkshops)">Show more</a>
+                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
+                                        <a style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Past Workshops',pastWorkshops)">Show more</a>
                                     </div>
                                 </div>
                             </div>
@@ -408,8 +408,8 @@
                           <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
                           <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
                         </div>
-                        <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | currency: workshop.currency: true:'1.0-0'}}</div>
-                        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | currency: 'USD': true: '1.0-0'}}</div>
+                        <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div><!--{{workshop.price | currency: workshop.currency: true:'1.0-0'}}-->
+                        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div> <!--{{workshop.price | currency: 'USD': true: '1.0-0'}}-->
                         <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
                         <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
                         <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">

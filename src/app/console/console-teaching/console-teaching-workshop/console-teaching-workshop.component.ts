@@ -79,9 +79,12 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   private createOutput(data: any) {
     const now = moment();
     data.forEach(workshop => {
-      if (workshop.status === 'draft' || workshop.status === 'submitted') {
+      if (workshop.status === 'draft' || workshop.status === 'submitted' || workshop.calendars.length === 0) {
+        workshop.itenaries = [];
         this.drafts.push(workshop);
       } else {
+        workshop.itenaries = this._collectionService.calculateItenaries(workshop, workshop.calendars[0]);
+        console.log(workshop);
         workshop.calendars.forEach(calendar => {
           calendar.startDate = moment(calendar.startDate).toDate();
           calendar.endDate = moment(calendar.endDate).hours(23).minutes(59).toDate();

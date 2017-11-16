@@ -18,7 +18,9 @@ export class ProfilePopupCardComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.data);
-    this.userRating = this._collectionService.calculateRating(this.data.reviewsAboutYou);
+    if (this.data.reviewsAboutYou) {
+      this.userRating = this._collectionService.calculateRating(this.data.reviewsAboutYou);
+    }
     this.ownedCollections = this.data.ownedCollections.filter((collection) =>
       collection.status === 'active' || collection.status === 'completed');
   }
