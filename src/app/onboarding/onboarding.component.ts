@@ -61,8 +61,8 @@ export class OnboardingComponent implements OnInit {
     private _cookieUtilsService: CookieUtilsService
   ) {
 
-    this.searchTopicURL = config.searchUrl + '/api/search/topics/suggest?field=name&query=';
-    this.createTopicURL = config.apiUrl + '/api/topics';
+    this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
+    this.createTopicURL = config.apiUrl + '/api/' + this.config.uniqueDeveloperCode + '_topics';
     this.activatedRoute.params.subscribe(params => {
         this.step = params['step'];
       });
