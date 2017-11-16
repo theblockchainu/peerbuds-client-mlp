@@ -31,6 +31,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     ContactComponent,
     AboutUsComponent,
     WhitePaperComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    TermsOfServiceComponent
   ],
   imports: [
     BrowserModule,

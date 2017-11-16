@@ -3,19 +3,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { IndexComponent } from './default/index/index.component';
 import { IndexComponent1 } from './default/index1/index1.component';
 import { NoContentComponent } from './no-content/no-content.component';
-import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
 import { LoginComponent } from './login/login.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
-import { DialogsService } from './_services/dialogs/dialog.service';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ContactComponent } from './contact-us/contact-us.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import {TermsOfServiceComponent} from './terms-of-service/terms-of-service.component';
 
 const routes: Routes = [
   {
@@ -34,6 +33,10 @@ const routes: Routes = [
   {
     path: 'privacy-policy',
     component: PrivacyPolicyComponent
+  },
+  {
+      path: 'terms-of-service',
+      component: TermsOfServiceComponent
   },
   {
     path: 'philosophy',
