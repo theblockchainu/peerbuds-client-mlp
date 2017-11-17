@@ -212,7 +212,7 @@ a h4{
   }
 
   .border-top {
-    border-top: 0.5px solid #eeeeee;
+    border-top: 1px solid #dbdbdb;
     padding: 30px 0px 20px 0px;
   }
 
@@ -229,7 +229,7 @@ a h4{
 
   .reviewer {
     text-align: left;
-    margin-top: 10px;
+    margin-top: 8px;
     font-weight: 400;
   }
 
@@ -274,5 +274,9 @@ a h4{
 
   .font16 {
       font-size: 16px;
+  }
+
+  .review-thumb {
+      width: 15%;
   }
 

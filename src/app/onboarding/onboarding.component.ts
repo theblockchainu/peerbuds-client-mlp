@@ -29,8 +29,8 @@ export class OnboardingComponent implements OnInit {
   public active = true;
   public interest1: FormGroup;
   public countries: any[];
-  public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
-  public createTopicURL = 'http://localhost:3000/api/topics';
+  public searchTopicURL = '';
+  public createTopicURL = '';
 
   public socialIdentitiesConnected: any = [];
   public boolShowConnectedSocials = false;
@@ -61,8 +61,8 @@ export class OnboardingComponent implements OnInit {
     private _cookieUtilsService: CookieUtilsService
   ) {
 
-    this.searchTopicURL = config.searchUrl + '/api/search/topics/suggest?field=name&query=';
-    this.createTopicURL = config.apiUrl + '/api/topics';
+    this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
+    this.createTopicURL = config.apiUrl + '/api/' + this.config.uniqueDeveloperCode + '_topics';
     this.activatedRoute.params.subscribe(params => {
         this.step = params['step'];
       });
@@ -76,37 +76,28 @@ export class OnboardingComponent implements OnInit {
     this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.userId)
     .subscribe((response: Response) => {
       this.socialIdentitiesConnected = response;
-
-      // this.socialIdentitiesConnected.forEach(socialIdentity => {
-        if (this.socialIdentitiesConnected.identities.length > 0) {
-          this.boolShowConnectedSocials = true;
-          this.socialIdentitiesConnected.identities.forEach(element => {
-            if (element.provider === 'google') {
-                this.connectedIdentities.google = true;
-            }
-            else if (element.provider === 'facebook') {
-              this.connectedIdentities.fb = true;
-            }
-          });
-        }
-        if (this.socialIdentitiesConnected.credentials.length > 0) {
-          this.boolShowConnectedSocials = true;
-          this.socialIdentitiesConnected.credentials.forEach(element => {
-            if (element.provider === 'google') {
-                this.connectedIdentities.google = true;
-            }
-            else if (element.provider === 'facebook') {
-              this.connectedIdentities.fb = true;
-            }
-          });
-        }
-        // if (socialIdentity.provider === 'google') {
-        //   this.connectedIdentities.google = true;
-        // }
-        // if (socialIdentity.provider === 'facebook') {
-        //   this.connectedIdentities.fb = true;
-        // }
-      // });
+      if (this.socialIdentitiesConnected.identities.length > 0) {
+        this.boolShowConnectedSocials = true;
+        this.socialIdentitiesConnected.identities.forEach(element => {
+          if (element.provider === 'google') {
+              this.connectedIdentities.google = true;
+          }
+          else if (element.provider === 'facebook') {
+            this.connectedIdentities.fb = true;
+          }
+        });
+      }
+      if (this.socialIdentitiesConnected.credentials.length > 0) {
+        this.boolShowConnectedSocials = true;
+        this.socialIdentitiesConnected.credentials.forEach(element => {
+          if (element.provider === 'google') {
+              this.connectedIdentities.google = true;
+          }
+          else if (element.provider === 'facebook') {
+            this.connectedIdentities.fb = true;
+          }
+        });
+      }
     },
     (err) => {
       console.log('Error: ' + err);
