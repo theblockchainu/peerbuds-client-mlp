@@ -1,4 +1,4 @@
-import {BrowserModule, Title} from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
@@ -10,7 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule, MdTooltipModule } from '@angular/material';
 import { IndexComponent } from './default/index/index.component';
 import { IndexComponent1 } from './default/index1/index1.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
@@ -71,19 +71,21 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     MdNativeDateModule,
     MdProgressSpinnerModule,
     MdProgressBarModule,
+    MdTooltipModule,
     DialogsModule,
     AppRoutingModule,
     //CarouselModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM' }),
+      apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
+    }),
     Ng4GeoautocompleteModule.forRoot(),
     LoadingModule.forRoot({
-        animationType: ANIMATION_TYPES.threeBounce,
-        backdropBackgroundColour: 'rgba(0,0,0,0)',
-        backdropBorderRadius: '0px',
-        primaryColour: '#33bd9e',
-        secondaryColour: '#ff5b5f',
-        tertiaryColour: '#ff6d71'
+      animationType: ANIMATION_TYPES.threeBounce,
+      backdropBackgroundColour: 'rgba(0,0,0,0)',
+      backdropBorderRadius: '0px',
+      primaryColour: '#33bd9e',
+      secondaryColour: '#ff5b5f',
+      tertiaryColour: '#ff6d71'
     })
   ],
   bootstrap: [AppComponent],

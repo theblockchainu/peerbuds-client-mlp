@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import {
   FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators
 } from '@angular/forms';
+import { MdSnackBar } from '@angular/material';
+import { DialogsService } from '../_services/dialogs/dialog.service';
 
 
 @Component({
@@ -20,14 +22,12 @@ import {
 export class ResetPasswordComponent implements OnInit {
   // Set our default values
   // public loading = false;
-  public returnUrl: string;
-
   isLoggedIn: Observable<boolean>;
-  public passWord: string;
-  public confirmpassWord: string;
+  public password: string;
+  public confirmPassword: string;
   public email: string;
   public resetpwdForm: FormGroup;
-
+  private verificationToken: string;
   // TypeScript public modifiers
 
   constructor(
@@ -36,14 +36,17 @@ export class ResetPasswordComponent implements OnInit {
     public authenticationService: AuthenticationService,
     private alertService: AlertService,
     private _fb: FormBuilder,
+    private snackBar: MdSnackBar,
+    private _dialogsService: DialogsService
   ) {
     this.isLoggedIn = this.authenticationService.isLoggedIn();
     this.email = this.route.queryParams['value'].email;
+    this.verificationToken = this.route.queryParams['value'].code;
+    console.log(this.email + ' ' + this.verificationToken);
   }
 
   public ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.returnUrl = '/login';
 
     this.resetpwdForm = this._fb.group({
       password: ['', Validators.required],
@@ -53,21 +56,32 @@ export class ResetPasswordComponent implements OnInit {
 
   public resetpwd(value: string) {
     // this.loading = true;
-    this.passWord = this.resetpwdForm.controls['password'].value;
-    this.confirmpassWord = this.resetpwdForm.controls['confirmpassword'].value;
-    this.authenticationService.resetpwd(this.email, this.passWord)
+    this.password = this.resetpwdForm.controls['password'].value;
+    this.confirmPassword = this.resetpwdForm.controls['confirmPassword'].value;
+    const body = {
+      'email': this.email,
+      'password': this.resetpwdForm.controls['password'].value,
+      'verificationToken': this.verificationToken
+    };
+    this.authenticationService.resetPassword(body)
       .subscribe(
       (data) => {
-        this.router.navigate([this.returnUrl]);
+        if (data.success) {
+          this.snackBar.open(data.message + ', redirecting...', 'Ok', {
+            duration: 800
+          });
+          this.router.navigateByUrl('');
+        } else {
+          this.snackBar.open(data.message);
+        }
       },
       (error) => {
-        this.alertService.error(error._body);
-        // this.loading = false;
-
+        console.log(error);
+        this.snackBar.open(error.json().error.message, 'Resend Email').onAction().subscribe(res => {
+          this._dialogsService.openForgotPassword(this.email).afterClosed().subscribe(data => {
+            this.router.navigateByUrl('');
+          });
+        });
       });
-  }
-
-  private redirect() {
-    this.router.navigate([this.returnUrl]); // use the stored url here
   }
 }

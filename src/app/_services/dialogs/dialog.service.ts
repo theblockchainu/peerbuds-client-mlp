@@ -14,6 +14,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-card.component';
+import { RequestPasswordDialogComponent } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -153,5 +154,12 @@ export class DialogsService {
     openProfilePopup(config: any) {
         return this.dialog.open(ProfilePopupCardComponent, config);
     }
+
+    openForgotPassword(email: string) {
+        return this.dialog.open(RequestPasswordDialogComponent, {
+            data: email
+        });
+    }
+
 
 }

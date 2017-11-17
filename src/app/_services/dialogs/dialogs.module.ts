@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 
 import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
-import { ForgotpwdComponentDialog } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
+import { RequestPasswordDialogComponent } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 import { TwilioServicesService } from '../twlio_services/twilio-services.service';
@@ -35,10 +35,10 @@ import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-ca
     VgOverlayPlayModule,
     VgBufferingModule
   ],
-  exports: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent, AddCardDialogComponent
+  exports: [SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, DeleteDialogComponent, AddCardDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
     , VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent],
-  declarations: [SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, DeleteDialogComponent
+  declarations: [SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, DeleteDialogComponent
     , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
     , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent
     , ProfilePopupCardComponent],
@@ -47,7 +47,7 @@ import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-ca
     TwilioServicesService
   ],
   entryComponents: [
-    SignupComponentDialog, LoginComponentDialog, ForgotpwdComponentDialog, AddCardDialogComponent, MultiselectTopicDialogComponent
+    SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent, MultiselectTopicDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
     , LiveSessionDialogComponent, CollectionGridDialogComponent, DeleteDialogComponent, ProfilePopupCardComponent],
 })
