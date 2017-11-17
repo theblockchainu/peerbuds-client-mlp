@@ -29,8 +29,8 @@ export class OnboardingComponent implements OnInit {
   public active = true;
   public interest1: FormGroup;
   public countries: any[];
-  public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
-  public createTopicURL = 'http://localhost:3000/api/topics';
+  public searchTopicURL = '';
+  public createTopicURL = '';
 
   public socialIdentitiesConnected: any = [];
   public boolShowConnectedSocials = false;

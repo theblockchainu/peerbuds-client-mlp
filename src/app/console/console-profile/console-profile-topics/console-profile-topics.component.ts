@@ -21,7 +21,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
   public loading: boolean;
   public topicsLearning: Array<any>;
   public topicsTeaching: Array<any>;
-  public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
+  public searchTopicURL = '';
   public placeholderStringTopic = 'Search for a topic ';
   private newTopics: Array<any>;
   private selectedTopicsLearning = [];

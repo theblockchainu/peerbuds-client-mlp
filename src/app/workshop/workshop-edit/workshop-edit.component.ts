@@ -68,8 +68,8 @@ export class WorkshopEditComponent implements OnInit {
   public selectedValues: boolean[] = [false, false];
   public selectedOption = -1;
 
-  public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
-  public createTopicURL = 'http://localhost:3000/api/topics';
+  public searchTopicURL = '';
+  public createTopicURL = '';
   public placeholderStringTopic = 'Search for a topic ';
   public maxTopicMsg = 'Choose max 3 related topics';
 
