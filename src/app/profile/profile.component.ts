@@ -207,6 +207,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private setInterests() {
+    debugger;
     this.interestsArray = [];
     if (this.profileObj.peer[0].topicsTeaching && this.profileObj.peer[0].topicsTeaching.length > 0) {
       this.profileObj.peer[0].topicsTeaching.forEach(topic => {
@@ -360,6 +361,7 @@ export class ProfileComponent implements OnInit {
     let foundCollection: any;
     const collectionsArray = peer.collections;
     const ownedCollectionsArray = peer.ownedCollections;
+    debugger;
     if (collectionsArray !== undefined) {
       foundCollection = collectionsArray.find((collection) => {
         return collection.id === collectionId;
@@ -378,6 +380,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public getReviewedCalendar(calendars, calendarId) {
+    debugger;
     if(calendars) {
       return calendars.find((calendar) => {
         return calendar.id === calendarId;

@@ -702,7 +702,7 @@ collectionID:string,userId:string,calendarId:string   */
   }
 
 
-  public calcualteItenaries(workshop: any, currentCalendar: any) {
+  public calculateItenaries(workshop: any, currentCalendar: any) {
     const itenariesObj = {};
     const itenaryArray = [];
     workshop.contents.forEach(contentObj => {

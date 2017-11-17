@@ -68,8 +68,8 @@ export class WorkshopEditComponent implements OnInit {
   public selectedValues: boolean[] = [false, false];
   public selectedOption = -1;
 
-  public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
-  public createTopicURL = 'http://localhost:3000/api/topics';
+  public searchTopicURL = '';
+  public createTopicURL = '';
   public placeholderStringTopic = 'Search for a topic ';
   public maxTopicMsg = 'Choose max 3 related topics';
 
@@ -147,8 +147,8 @@ export class WorkshopEditComponent implements OnInit {
       this.step = params['step'];
       // this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.apiUrl + '/workshop/' + this.workshopId + '/edit/' + this.step + '&state=1';
       this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.clientUrl + '/console/account/payoutmethods&state=' + this.config.clientUrl + '/workshop/' + this.workshopId + '/edit/' + this.step;
-      this.searchTopicURL = config.searchUrl + '/api/search/topics/suggest?field=name&query=';
-      this.createTopicURL = config.apiUrl + '/api/topics';
+      this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
+      this.createTopicURL = config.apiUrl + '/api/' + this.config.uniqueDeveloperCode + '_topics';
     });
 
 
