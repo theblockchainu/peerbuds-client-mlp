@@ -12,7 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-import {SocketService} from '../socket/socket.service';
+import { SocketService } from '../socket/socket.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -25,13 +25,13 @@ export class AuthenticationService {
   isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: Http, private config: AppConfig,
-        private _cookieService: CookieService,
-        private route: ActivatedRoute,
-        public router: Router,
-        public _requestHeaderService: RequestHeaderService,
-        private _socketService: SocketService
+    private _cookieService: CookieService,
+    private route: ActivatedRoute,
+    public router: Router,
+    public _requestHeaderService: RequestHeaderService,
+    private _socketService: SocketService
   ) {
-      this.options = this._requestHeaderService.getOptions();
+    this.options = this._requestHeaderService.getOptions();
   }
 
   /**
@@ -64,7 +64,7 @@ export class AuthenticationService {
     return this.http
       .post(this.config.apiUrl + '/auth/local', body, this.options)
       .map((response: Response) => {
-      //if res code is xxx and response "error"
+        //if res code is xxx and response "error"
         // login successful if there's a jwt token in the response
         const user = response.json();
         if (user && user.access_token) {
@@ -97,7 +97,7 @@ export class AuthenticationService {
   }
 
   public broadcastNewUserId(userId) {
-      this.getLoggedInUser.emit(userId);
+    this.getLoggedInUser.emit(userId);
   }
 
   /**
@@ -126,20 +126,17 @@ export class AuthenticationService {
       });
   }
 
-  resetpwd(email: string, password: string): any {
-    const body = `{"email":"${email}","password":"${password}"}`;
+  resetPassword(body: any): any {
     return this.http
-      .post(this.config.apiUrl + '/api/peers/reset', body, this.options)
-      .map((response: Response) => response.json(), (err) => {
-        console.log('Error: ' + err);
-      });
+      .post(this.config.apiUrl + '/api/peers/resetPassword', body, this.options)
+      .map((response: Response) => response.json());
   }
   createGuestContacts(first_name, last_name, email, subject, message): any {
     const body = `{"first_name":"${first_name}","last_name":"${last_name}","email":"${email}","subject":"${subject}","message":"${message}"}`;
-      return this.http
+    return this.http
       .post(this.config.apiUrl + '/api/guestContacts', body, this.options)
       .map((response: Response) => response.json(), (err) => {
         console.log('Error: ' + err);
       });
-    }
+  }
 }
