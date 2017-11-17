@@ -9,6 +9,7 @@ import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 import _ from 'lodash';
+import {AppConfig} from '../../../app.config';
 @Component({
   selector: 'app-console-profile-topics',
   templateUrl: './console-profile-topics.component.html',
@@ -37,13 +38,15 @@ export class ConsoleProfileTopicsComponent implements OnInit {
     public _profileService: ProfileService,
     public snackBar: MdSnackBar,
     public _dialogService: DialogsService,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private config: AppConfig
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleProfileComponent.setActiveTab(urlSegment[0].path);
     });
     this.userId = _cookieUtilsService.getValue('userId');
+    this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
   }
 
   ngOnInit() {
