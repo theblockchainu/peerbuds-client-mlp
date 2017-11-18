@@ -48,6 +48,7 @@ import { SocketService } from '../_services/socket/socket.service';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { StickyModule } from 'ng2-sticky-kit';
 import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
+import { TrimPipe } from './trim/trim.pipe';
 import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
 
 @NgModule({
@@ -69,8 +70,9 @@ import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
       tertiaryColour: '#ff6d71'
     }),
     Ng2DeviceDetectorModule.forRoot(),
-    StickyModule],
-  declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent],
+    StickyModule
+  ],
+  declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe],
   providers: [
     CollectionService,
     CountryPickerService,
@@ -122,7 +124,7 @@ import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
     SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
-    LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent
+    LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe
   ]
 })
 export class SharedModule { }

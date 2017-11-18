@@ -7,6 +7,7 @@ import { CommentService } from '../../../_services/comment/comment.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { DialogsService } from '../../dialogs/dialog.service';
 import { ContentService } from '../../../_services/content/content.service';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-content-online',

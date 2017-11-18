@@ -24,6 +24,7 @@ import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.se
 
 import { DialogsService } from '../dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
+import { DISABLED } from '@angular/forms/src/model';
 
 
 @Component({
@@ -60,6 +61,8 @@ export class WorkshopEditComponent implements OnInit {
 
   private workshopId: string;
   private workshopData:any;
+  public isWorkShopActive= false;
+  public activeWorkshop = '';
   // Set our default values
   public localState = { value: '' };
   public countries: any[];
@@ -119,7 +122,7 @@ export class WorkshopEditComponent implements OnInit {
       'topics',
       'calendars',
       { 'participants': [{ 'profiles': ['work'] }] },
-      { 'owners': ['profiles'] },
+      { 'owners': [{'profiles': ['phone_numbers']}] },
       { 'contents': ['schedules'] }
     ]
   };
@@ -248,6 +251,11 @@ export class WorkshopEditComponent implements OnInit {
       calendar['startDate'] = this.extractDate(calendar.startDate);
       calendar['endDate'] = this.extractDate(calendar.endDate);
       this._collectionService.sanitize(calendar);
+
+      if (this.workshopData.status === 'active') {
+        this.isWorkShopActive = true;
+        this.activeWorkshop = 'disabledMD';
+      }
       this.timeline.controls.calendar.patchValue(calendar);
       this.initializeContentForm(res);
     }
@@ -554,7 +562,9 @@ export class WorkshopEditComponent implements OnInit {
 
     this.isSubmitted = this.workshop.controls.status.value === 'submitted';
 
-    this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].phone);
+    if (res.owners[0].profiles[0].phone_numbers && res.owners[0].profiles[0].phone_numbers.length) {
+      this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].profiles[0].phone_numbers[0].subscriber_number);
+    }
     if (!this.timeline.controls.calendar.value.startDate || !this.timeline.controls.calendar.value.endDate) {
       this.makeDatesEditable();
     }

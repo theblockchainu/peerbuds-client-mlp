@@ -493,15 +493,15 @@
                   <div class="row" style="margin: 30px 0px 15px -15px;">
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
-                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle"></md-datepicker-toggle>
+                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" [readonly]="isWorkShopActive">
+                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle {{activeWorkshop}}" [disabled]="isWorkshopActive"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
                     </div>
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
-                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle"></md-datepicker-toggle>
+                        <input mdInput [mdDatepicker]="endDatePicker" [min]="timeline.controls.calendar.value.startDate" placeholder="End date" formControlName="endDate" [readonly]="isWorkShopActive">
+                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle" [disabled]="isWorkshopActive"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>
@@ -594,14 +594,12 @@
                     <md-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
                   </md-radio-group>
                 </div>
-                <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
-                  <span *ngIf="!busyPayment">Continue</span>
-                  <span *ngIf="busyPayment"> </span>
-                  <ngx-loading [show]="busyPayment"></ngx-loading>
-                </button>
                 <span mdTooltip="Phone number not verified!" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
-
-                  <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">Continue</button>
+                  <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+                    <span *ngIf="!busyPayment">Continue</span>
+                    <span *ngIf="busyPayment"> </span>
+                    <ngx-loading [show]="busyPayment"></ngx-loading>
+                  </button>
                 </span>
               </form>
             </div>

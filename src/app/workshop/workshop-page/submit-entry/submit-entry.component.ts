@@ -28,9 +28,11 @@ export class SubmitEntryComponent implements OnInit {
   public submissionView;
   public savingDraft = false;
   public loader = 'assets/images/ajax-loader.gif';
+  public uploadingImage = false;
+  public urlForImages = [];
 
-  public searchTopicURL = 'http://localhost:4000/api/search/topics/suggest?field=name&query=';
-  public createTopicURL = 'http://localhost:3000/api/topics';
+  public searchTopicURL;
+  public createTopicURL;
   public placeholderStringTopic = 'Submission Tag';
   public maxTopicMsg = 'Choose max 3 related tags';
 
@@ -43,12 +45,15 @@ export class SubmitEntryComponent implements OnInit {
     private _cookieUtilsService: CookieUtilsService
   ) {
     this.userId = _cookieUtilsService.getValue('userId');
+    this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
+    this.createTopicURL = config.apiUrl + '/api/' + this.config.uniqueDeveloperCode + '_topics';
+
   }
 
   ngOnInit() {
     this.submitEntryForm = this._fb.group({
         name: [''],
-        picture_url: [''],
+        picture_url: [],
         description: [''],
         isPrivate: [true]
     });
@@ -94,24 +99,41 @@ export class SubmitEntryComponent implements OnInit {
     });
   }
 
-  public addUrl(value: String) {
-    const control = <FormArray>this.submitEntryForm.controls['picture_url'];
-    control.push(new FormControl(value));
-  }
+  // public addUrl(value: String) {
+  //   const control = <FormArray>this.submitEntryForm.controls['picture_url'];
+  //   control.push(new FormControl(value));
+  // }
+
+  // uploadImage(event) {
+  //   // console.log(event.files);
+
+  //   for (const file of event.files) {
+  //     this.mediaUploader.upload(file).map((responseObj: Response) => {
+  //     }).subscribe();
+
+  //     this.mediaUploader.upload(file).subscribe((response) => {
+  //       // this.addUrl(responseObj.url);
+  //       this.submitEntryForm.controls['picture_url'].setValue(response.url);
+  //       // console.log(responseObj);
+  //     });
+  //   }
+  // }
 
   uploadImage(event) {
-    // console.log(event.files);
-
+    this.uploadingImage = true;
     for (const file of event.files) {
-      this.mediaUploader.upload(file).map((responseObj: Response) => {
-      }).subscribe();
-
       this.mediaUploader.upload(file).subscribe((response) => {
-        // this.addUrl(responseObj.url);
-        this.submitEntryForm.controls['picture_url'].setValue(response.url);
-        // console.log(responseObj);
+        this.addImageUrl(response.url);
+        this.uploadingImage = false;
       });
     }
+  }
+
+  public addImageUrl(value) {
+    console.log('Adding image url: ' + value);
+    this.urlForImages.push(value);
+    const control = <FormArray>this.submitEntryForm.controls['picture_url'];
+    control.patchValue(this.urlForImages);
   }
 
 }

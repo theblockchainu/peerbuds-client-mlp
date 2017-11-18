@@ -1,7 +1,10 @@
 <div class="mat-dialog-focus-trap"></div>
 <div class="row">
-    <div class="col-md-12">
-        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()">
+    <div class="col-md-12 collectionContent">
+        <button disableRipple md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit" style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;">
+            <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+        </button>
+        <button disableRipple md-button *ngIf="isEdit" style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
             <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
         </button>
         <div style="display: inline-block">
@@ -24,7 +27,7 @@
 
                     <div formGroupName="schedule" class="margin-top-20 margin-bottom-20">
                         <md-form-field class="dateStyles">
-                            <input mdInput [mdDatepicker]="endDayDatePicker" placeholder="Deadline" formControlName="endDay" [required]="true">
+                            <input mdInput [mdDatepicker]="endDayDatePicker" [min]="itenaryForm.value.date" [max]="collectionEndDate" placeholder="Deadline" formControlName="endDay" [required]="true">
                             <md-datepicker-toggle mdSuffix [for]="endDayDatePicker" class="svgStyle"></md-datepicker-toggle>
                         </md-form-field>
                         <md-datepicker touchUi="true" #endDayDatePicker></md-datepicker>

@@ -1,6 +1,11 @@
 <div class="row">
-    <div class="col-md-12">
-        <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+    <div class="col-md-12 collectionContent">
+        <button disableRipple md-button [md-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit" style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;">
+            <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+        </button>
+        <button disableRipple md-button *ngIf="isEdit" style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+            <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+        </button>
         <div style="display: inline-block">
             <h3 md-dialog-title>{{getAddOrEditText()}} video activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</h3>
         </div>
