@@ -13,12 +13,14 @@ import 'hammerjs';
 import { WorkshopSubmitDialogComponent } from './workshop-edit/workshop-submit-dialog/workshop-submit-dialog.component';
 import { WorkshopCloneDialogComponent } from './workshop-edit/workshop-clone-dialog/workshop-clone-dialog.component';
 import { DialogsModule } from './dialogs/dialogs.module';
+import { DateTimePickerModule } from 'ng-pick-datetime';
 
 @NgModule({
     imports: [
         SharedModule,
         WorkshopRoutingModule,
-        DialogsModule
+        DialogsModule,
+        DateTimePickerModule
     ],
     declarations: [
         WorkshopEditComponent,

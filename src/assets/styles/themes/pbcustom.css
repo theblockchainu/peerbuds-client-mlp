@@ -1097,7 +1097,7 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 /* Landing Page Ends */
 
-.footerButtons .mat-button-focus-overlay {
+.footerButtons .mat-button-focus-overlay, .collectionContent .mat-button-focus-overlay{
     background: none;
 }
 
@@ -1322,4 +1322,19 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .noJustify .mat-tab-header {
     border: none !important;
+}
+
+.pre-wrapped {
+    white-space: pre-wrap;
+}
+
+.alignJustify {
+    text-align: justify;
+}
+
+
+
+md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepicker-toggle.disableMD .mat-icon-button{
+    pointer-events: none !important;
+    color:grey !important;
 }

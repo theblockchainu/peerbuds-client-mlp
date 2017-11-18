@@ -1,11 +1,11 @@
-<div [formGroup]="itenaryForm">
+<div [formGroup]="itenaryForm" class="margin-bottom-30">
   <div class="row">
     <div class="col-md-12">
-      <div style="text-align: center; margin-top: 0px; margin-bottom: 30px;">
+      <div style="text-align: center; margin-top: 0px; margin-bottom: 10px;">
         <hr>
         <div style="margin-top: -36px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
           <md-icon>wb_sunny</md-icon>
-          <input mdInput [mdDatepicker]="startDatePicker" formControlName="date" [hidden]="true">
+          <input mdInput [mdDatepicker]="startDatePicker" formControlName="date" [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate">
           <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
           <a *ngIf="itenaryForm.value.date" style="float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" >({{showItineraryDate(itenaryForm.value.date) }})</a>
           <md-datepicker touchUi="true" #startDatePicker [startAt]="collectionStartDate"></md-datepicker>
@@ -19,7 +19,7 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="!itenaryForm.value.date">
+  <div class="row margin-bottom-10" *ngIf="!itenaryForm.value.date">
     <div class="col-md-12">
       <div style="text-align: center; color: #777777; font-size: 90%;">
         <md-icon style="position: relative; top: 5px;">

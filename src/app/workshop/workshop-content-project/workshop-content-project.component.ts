@@ -25,6 +25,8 @@ export class WorkshopContentProjectComponent implements OnInit {
         data: 0
     };
     public isEdit = false;
+    public collectionStartDate;
+    public collectionEndDate;
     public urlForVideo;
     public mediaObject;
     private uploadingVideo;
@@ -43,6 +45,8 @@ export class WorkshopContentProjectComponent implements OnInit {
         private contentService: ContentService
     ) {
         this.options = requestHeaders.getOptions();
+        this.collectionEndDate = inputData.collectionEndDate;
+        this.collectionStartDate = inputData.collectionStartDate;
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;

@@ -33,6 +33,7 @@ export class ContentProjectComponent implements OnInit {
   constructor(public config: AppConfig,
     @Inject(MD_DIALOG_DATA) public data: any,
     public dialog: MdDialog,
+    public dialogRef: MdDialogRef<ContentProjectComponent>,
     public projectSubmissionService: ProjectSubmissionService,
     private contentService: ContentService,
     private deviceService: Ng2DeviceService,

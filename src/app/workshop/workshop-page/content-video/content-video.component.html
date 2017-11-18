@@ -1,3 +1,13 @@
+<div class="row">
+    <div class="col-md-12 collectionContent">
+        <button disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+            <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+        </button>
+        <div style="display: inline-block" *ngIf="data.content">
+            <h3 md-dialog-title>{{data.content.title | titlecase}}</h3>
+        </div>
+    </div>
+</div>
 <div class="mat-dialog-focus-trap"></div>
 <div md-dialog-content *ngIf="data.content">
   <div class="row">
@@ -35,21 +45,19 @@
       </vg-player>
     </div>
   </div>
-  <div class="row margin-top-20">
+  <!-- <div class="row margin-top-20">
     <hr>
     <div class="col-md-12">
       <h3>{{data.content.title | titlecase}}</h3>
     </div>
-  </div>
-  <div class="row">
+  </div> -->
+  <div class="row margin-top-20">
     <div class="col-md-12">
-      <p>
-        {{data.content.description}}
-      </p>
+      <p class="pre-wrapped">{{data.content.description}}</p>
     </div>
   </div>
   <div *ngIf="attachmentUrls.length" class="pic delete">
-    <hr>
+    <hr style="margin-top:0px;">
     <div>
       <b>Supplement Materials</b>
     </div>
@@ -66,12 +74,13 @@
   </div>
   <!--DISCUSSION THREAD-->
   <div class="row Discussion margin-top-20" *ngIf="userType==='teacher' || userType==='participant'">
+    <hr style="margin-top:0px;width:95%">
     <div class="col-md-12 margin-bottom-20">
-      <h3 *ngIf="comments !== undefined">Discussion ({{comments.length}})</h3>
-      <h3 *ngIf="comments === undefined">Discussion (0)</h3>
+      <b *ngIf="comments !== undefined">Discussion ({{comments.length}})</b>
+      <b *ngIf="comments === undefined">Discussion (0)</b>
       <form [formGroup]="chatForm" (ngSubmit)="postComment()">
         <md-input-container class="full-width" [floatPlaceholder]="false">
-          <input mdInput type="text" formControlName="description" placeholder="Post your thoughts on this workshop" tabindex="-1">
+          <input mdInput type="text" formControlName="description" placeholder="Post your thoughts on this activity" tabindex="-1">
         </md-input-container>
         <span mdTooltip="Invalid input!" [mdTooltipDisabled]="chatForm.valid">
 
@@ -82,7 +91,7 @@
     <div class="col-md-12">
       <div class="row lighterText" *ngIf="comments !== undefined && comments.length === 0">
         <div class="col-md-12">
-          <div class="emptySectionText">Be the first one to start a discussion on this workshop..</div>
+          <div class="emptySectionText">Be the first one to start a discussion on this activity..</div>
         </div>
       </div>
       <div class="margin-top-30"></div>
