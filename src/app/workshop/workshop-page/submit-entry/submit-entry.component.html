@@ -9,13 +9,34 @@
         <button md-button class="mat-border-button">Publish</button>
       </div>
     </div>
-    <div class="fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload photo (jpg, png, gif)</div>
-    <div class="uploadContainer">
+    <!-- <div class="fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload photo (jpg, png, gif)</div> -->
+    <!-- <div class="uploadContainer">
       <p-fileUpload #fubauto name="image" customUpload="true" accept="image/*" maxFileSize="1000000" (uploadHandler)="uploadImage($event)" auto="true"></p-fileUpload>
       <div *ngIf="imageUrl">
         <div><img src="{{config.apiUrl+imageUrl}}" width="50"></div>
         <div>{{imageUrl.split('/')[5]}}</div>
       </div>
+    </div> -->
+    <div class="form-group">
+        <label class="title fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload photo (jpg, png, gif)</label>
+        <div class="upload-image-section imageHolder">
+            <div class="loading-container" [hidden]="!uploadingImage">
+                <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+                accept="image/*" chooseLabel="Browse" multiple="multiple">
+            </p-fileUpload>
+            <!-- <div *ngIf="picture_url" class="col-md-6 padding-left-0 pic delete imageContainer">
+                <img src="{{config.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
+                <md-icon (click)="deleteFromContainer(picture_url, 'image')" class="delete-button">close</md-icon>
+            </div> -->
+            <div *ngIf="urlForImages.length" class="pic delete">
+              <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
+                  <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+                  <md-icon (click)="deleteFromContainer(file, 'file')" class="delete-image">close</md-icon>
+                  </div>
+            </div>
+        </div>
     </div>
     <div class="row margin-top-20">
       <div class="col-sm-12">
