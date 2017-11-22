@@ -80,6 +80,7 @@ export class VerifyEmailDialogComponent implements OnInit {
   }
 
   verifyEmail() {
+    this.peer.controls['email'].setValue(this.email);
     this._profileService.confirmEmail(this.userId, this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
         console.log(res.email);
