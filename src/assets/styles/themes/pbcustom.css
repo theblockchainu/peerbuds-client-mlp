@@ -1211,7 +1211,7 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     max-width: none;
     width: 100vw;
     height: 100vh;
-   
+    background:#1d1d1d;    
   }
 
 .mainStream{
@@ -1279,14 +1279,15 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .buttonBar{
     position: absolute;
-    bottom: 16%;
+    bottom: 13%;
     height: 16%;
-    right: 46%;
     z-index: 1001;
+    width: 0%;
+    left: 3%;
 }
 .buttonBar .session_actions{
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 

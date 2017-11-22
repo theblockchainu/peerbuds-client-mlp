@@ -31,6 +31,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   @ViewChild('mainStream') mainStream: ElementRef;
   @ViewChild('otherStream') otherStream: ElementRef;
   @ViewChild('localStream') localStream: ElementRef;
+  @ViewChild('otherStreamTeacher') otherStreamTeacher: ElementRef;
 
   constructor(
     private _twilioServicesService: TwilioServicesService,
@@ -80,7 +81,12 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       }
     }).then((createdRoom) => {
       this.room = createdRoom;
+      console.log('Connected to Room "%s"', this.room.name);
+
       const localParticipant = this.room.localParticipant;
+      const localDiv = this.renderer.createElement('div');
+      localDiv.id = localParticipant.identity;
+
       localParticipant.tracks.forEach(track => {
         if (track.kind === 'audio') {
           this.localAudioTrack = track;
@@ -100,81 +106,79 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
             console.log('enabled');
           });
         }
+        this.trackAdded(localDiv, track);
+
         if (localParticipant.identity === this.dialogData.teacherId) {
           this.isTeacher = true;
-          this.renderer.appendChild(this.mainStream.nativeElement, track.attach());
           this.mainLoading = false;
+          this.renderer.appendChild(this.mainStream.nativeElement, localDiv);
         } else {
-          console.log(track.attach());
-          this.renderer.appendChild(this.localStream.nativeElement, track.attach());
-        }
-      });
-      const otherParticipants = this.room.participants;
-      // Log any Participants already connected to the Room
-      otherParticipants.forEach(participant => {
-        console.log('Already in Room: ' + participant.identity);
-        if (participant.identity === this.dialogData.teacherId) {
-          participant.on('trackAdded', (track, error) => {
-            if (error) {
-              console.log('Error in track:', error);
-            } else {
-              this.mainLoading = false;
-              this.renderer.appendChild(this.mainStream.nativeElement, track.attach());
-            }
-          });
-        } else {
-          this.joinedParticipantArray.push(participant);
-          this.participantCount++;
-          if (this.participantCount < 5) {
-            participant.on('trackAdded', (track, error) => {
-              if (error) {
-                console.log('Error in track:', error);
-              } else {
-                this.renderer.appendChild(this.otherStream.nativeElement, track.attach());
-              }
-            });
-          }
+          this.renderer.appendChild(this.localStream.nativeElement, localDiv);
         }
       });
 
-      // Log new Participants as they connect to the Room
-      this.room.once('participantConnected', participant => {
-        console.log('Participant "%s" has connected to the Room', participant.identity);
-        if (participant.identity === this.dialogData.teacherId) {
-          participant.on('trackAdded', (track, error) => {
-            if (error) {
-              console.log('Error in track:', error);
-            } else {
-              this.mainLoading = false;
-              this.renderer.appendChild(this.mainStream.nativeElement, track.attach());
-            }
-          });
-        } else {
-          this.participantCount++;
-          if (this.participantCount < 5) {
-            participant.on('trackAdded', (track, error) => {
-              if (error) {
-                console.log('Error in track:', error);
-              } else {
-                this.mainLoading = false;
-                this.renderer.appendChild(this.otherStream.nativeElement, track.attach());
-              }
-            });
-          }
-        }
-      });
+      this.room.participants.forEach(participant => this.participantConnected(participant));
+      this.room.on('participantConnected', participant => this.participantConnected(participant));
 
-      // Log Participants as they disconnect from the Room
-      this.room.once('participantDisconnected', participant => {
-        console.log('Participant has disconnected from Room', participant);
-        participant.tracks.forEach(track => {
-          track.detach();
-        });
-      });
+      this.room.on('participantDisconnected', participant => this.participantDisconnected(participant));
+      this.room.once('disconnected', error => this.room.participants.forEach(participant => this.participantDisconnected(participant)));
 
-    }, function (error) {
+
+    }, (error) => {
       console.error('Unable to connect to Room: ' + error.message);
     });
+  }
+
+  private participantConnected(participant: any) {
+    console.log('Already in Room: ' + participant.identity);
+    const div = this.renderer.createElement('div');
+    div.id = participant.identity;
+    // div.innerText = participant.identity;
+    if (participant.identity === this.dialogData.teacherId) {
+      this.mainLoading = false;
+      participant.on('trackAdded', track => this.trackAdded(div, track));
+      participant.tracks.forEach(track => this.trackAdded(div, track));
+      participant.on('trackRemoved', track => this.trackRemoved(track));
+      this.renderer.appendChild(this.mainStream.nativeElement, div);
+    } else {
+      this.joinedParticipantArray.push(participant);
+      this.participantCount++;
+      if (this.isTeacher) {
+        if (this.participantCount < 6) {
+          participant.on('trackAdded', track => this.trackAdded(div, track));
+          participant.tracks.forEach(track => this.trackAdded(div, track));
+          participant.on('trackRemoved', track => this.trackRemoved(track));
+          this.renderer.appendChild(this.otherStreamTeacher.nativeElement, div);
+          console.log('added');
+        }
+      } else {
+        if (this.participantCount < 5) {
+          participant.on('trackAdded', track => this.trackAdded(div, track));
+          participant.tracks.forEach(track => this.trackAdded(div, track));
+          participant.on('trackRemoved', track => this.trackRemoved(track));
+          this.renderer.appendChild(this.otherStream.nativeElement, div);
+          console.log('added');
+        }
+      }
+
+    }
+  }
+
+  private participantDisconnected(participant: any) {
+    console.log('Participant "%s" disconnected', participant.identity);
+    // participant.tracks.forEach(this.trackRemoved);
+    // document.getElementById(participant.sid).remove();
+    const elem: Element = document.getElementById(participant.identity);
+    console.log(elem);
+  }
+
+  private trackAdded(div, track) {
+    div.appendChild(track.attach());
+  }
+
+  private trackRemoved(track) {
+    // track.detach().forEach(element => element.remove());
+    // console.log(track.detach());
   }
 
   private recordSessionStart() {
