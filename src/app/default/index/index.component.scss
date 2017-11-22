@@ -253,3 +253,8 @@ color: #484848;
     justify-content: center;
     align-items: center;
 }
+mat-dialog-container, mat-dialog-content {
+    display: initial !important;
+    padding : 0px !important;
+    background-color: #484848 !important;
+}
