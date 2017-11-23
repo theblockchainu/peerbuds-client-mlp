@@ -166,11 +166,6 @@ export class WorkshopPageComponent implements OnInit {
   public loadingWorkshop = true;
   public loadingReviews = true;
   public accountApproved = 'false';
-
-  public static parseTitle(title) {
-    return title.split(':');
-  }
-
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
     private _cookieUtilsService: CookieUtilsService,
@@ -218,12 +213,12 @@ export class WorkshopPageComponent implements OnInit {
       this.dateClicked = true; // !this.dateClicked;
     }
     this.clickedDate = date;
-    this.clickedCohort = WorkshopPageComponent.parseTitle(events[0].title)[0];
-    this.clickedCohortId = WorkshopPageComponent.parseTitle(events[0].title)[1];
+    this.clickedCohort = this.parseTitle(events[0].title)[0];
+    this.clickedCohortId = this.parseTitle(events[0].title)[1];
     this.clickedCohortStartDate = events[0].start;
     this.clickedCohortEndDate = events[0].end;
     for (const event of events) {
-      const titleCalIdArray = WorkshopPageComponent.parseTitle(event.title);
+      const titleCalIdArray = this.parseTitle(event.title);
       const calId = titleCalIdArray[1];
       const title = titleCalIdArray[0];
       const type = titleCalIdArray[2];
@@ -1269,7 +1264,7 @@ export class WorkshopPageComponent implements OnInit {
   public joinLiveSession(content: any) {
     const data = {
       roomName: content.id + this.calendarId,
-      teacherId: this.workshop.owners[0].id,
+      teacher: this.workshop.owners[0],
       content: content,
       participants: this.workshop.participants
     };
@@ -1298,4 +1293,9 @@ export class WorkshopPageComponent implements OnInit {
   displayNone() {
     return 'display: none';
   }
+
+  public parseTitle(title) {
+    return title.split(':');
+  }
+
 }

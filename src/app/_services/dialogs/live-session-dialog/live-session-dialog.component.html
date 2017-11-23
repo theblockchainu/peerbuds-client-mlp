@@ -3,32 +3,34 @@
     <div *ngIf="mainLoading">
       <ngx-loading [show]="true"></ngx-loading>
     </div>
-    <div class="buttonBar" *ngIf="room">
-      <span class="session_actions">
-        <button md-fab (click)="dialogRef.close('close')">
-          <md-icon>call_end</md-icon>
-        </button>
-      </span>
-      <span class="session_actions">
-        <button md-fab (click)="toggleAudio()">
-          <md-icon *ngIf="this.localAudioTrack.isEnabled">mic</md-icon>
-          <md-icon *ngIf="!this.localAudioTrack.isEnabled">mic_off</md-icon>
-        </button>
-      </span>
-      <span class="session_actions">
-        <button md-fab (click)="toggleVideo()">
-          <md-icon *ngIf="this.localVideoTrack.isEnabled">videocam</md-icon>
-          <md-icon *ngIf="!this.localVideoTrack.isEnabled">videocam_off</md-icon>
-        </button>
-      </span>
+    <div *ngIf="room" class="buttonBar">
+      <div *ngIf="localAudioTrack && localVideoTrack" class="call-action-buttons">
+        <span class="session_actions">
+          <button md-fab (click)="endCall()">
+            <md-icon>call_end</md-icon>
+          </button>
+        </span>
+        <span class="session_actions">
+          <button md-fab (click)="toggleAudio()">
+            <md-icon *ngIf="this.localAudioTrack.isEnabled">mic</md-icon>
+            <md-icon *ngIf="!this.localAudioTrack.isEnabled">mic_off</md-icon>
+          </button>
+        </span>
+        <span class="session_actions">
+          <button md-fab (click)="toggleVideo()">
+            <md-icon *ngIf="this.localVideoTrack.isEnabled">videocam</md-icon>
+            <md-icon *ngIf="!this.localVideoTrack.isEnabled">videocam_off</md-icon>
+          </button>
+        </span>
+      </div>
     </div>
-    <div class="bottomBar" *ngIf="!isTeacher">
+    <div class="bottomBar" [hidden]="isTeacher">
       <div class="otherStream" #otherStream>
       </div>
       <div class="localStream" #localStream>
       </div>
     </div>
-    <div class="bottomBar" *ngIf="isTeacher">
+    <div class="bottomBar" [hidden]="!isTeacher">
       <div class="otherStreamTeacher" #otherStreamTeacher>
       </div>
     </div>

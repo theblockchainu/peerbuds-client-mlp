@@ -725,7 +725,8 @@
                         </video>
                       </slide>-->
                       <slide *ngIf="workshop.imageUrls === undefined">
-                        <img src="../../../assets/images/placeholder-image.jpg" class="img-responsive" style="width: auto; max-height: 500px; min-width: 100%;" alt="First slide">
+                        <img src="../../../assets/images/placeholder-image.jpg" class="img-responsive" style="width: auto; max-height: 500px; min-width: 100%;"
+                          alt="First slide">
                       </slide>
 
                       <slide *ngFor="let imageUrl of workshop.imageUrls">
@@ -810,8 +811,10 @@
                     <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
                       alt="workshpImg">
                   </div>
-                  <div *ngIf="workshop.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{workshop.price | convertCurrency: workshop.currency |async}}</span> / person</div>
-                  <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" style="margin-top: -5px;"><span class="mat-body-2">{{workshop.price | convertCurrency: 'USD' |async}}</span> / person</div>
+                  <div *ngIf="workshop.currency.length > 0" style="margin-top: 3px;">
+                    <span class="mat-body-2">{{workshop.price | convertCurrency: workshop.currency |async}}</span> / person</div>
+                  <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" style="margin-top: -5px;">
+                    <span class="mat-body-2">{{workshop.price | convertCurrency: 'USD' |async}}</span> / person</div>
                   <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
                   <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
                   <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">

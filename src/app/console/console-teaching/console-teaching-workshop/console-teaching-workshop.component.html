@@ -59,7 +59,18 @@
                       {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
-                    <span *ngIf="_collectionService.getUpcomingEvent(collection).timeToStart >= 0">
+                    <span *ngIf="_collectionService.getUpcomingEvent(collection).timeToStart === 0">
+                      <p class="upcomingEventLabel">
+                        Today
+                      </p>
+                      <div class="upcomingEventTitle">
+                        {{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+                      </div>
+                      <div class="upcomingEventTime">
+                        {{ _collectionService.getUpcomingEvent(collection).type | titlecase}} today.
+                      </div>
+                    </span>
+                    <span *ngIf="_collectionService.getUpcomingEvent(collection).timeToStart > 0">
                       <p class="upcomingEventLabel">
                         Up Next
                       </p>
