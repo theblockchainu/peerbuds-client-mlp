@@ -1385,3 +1385,44 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
     padding: 7px;
     z-index: 6;
 }
+
+.otherStream img{
+    position: relative;
+    bottom: 69px;
+    left: 196px;
+    width: 100px;
+    height: 100px;
+}
+
+.otherStreamTeacher img{
+    position: relative;
+    bottom: 69px;
+    left: 196px;
+    width: 100px;
+    height: 100px;
+}
+
+.otherStream .studentName{
+    position: relative;
+    bottom: 6px;
+    left: 129px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    padding: 1px;
+    z-index: 6;
+}
+
+
+.otherStreamTeacher .studentName{
+    position: relative;
+    bottom: 6px;
+    left: 129px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    padding: 1px;
+    z-index: 6;
+}
