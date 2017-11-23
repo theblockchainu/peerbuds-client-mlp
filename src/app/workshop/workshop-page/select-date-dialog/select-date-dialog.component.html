@@ -1,23 +1,23 @@
-<div class="row">
-  <div class="col-md-12">
-    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="closeSelectCohort()">
-      <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
-    </button>
-    <div style="display: inline-block">
-      <h2 md-dialog-title *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</h2>
-      <h2 md-dialog-title *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
-      <h2 md-dialog-title *ngIf="mode === 'editDelete'">Existing workshop cohorts</h2>
+<div md-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-md-12">
+      <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="closeSelectCohort()">
+        <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+      </button>
+      <div style="display: inline-block">
+        <h2 md-dialog-title *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</h2>
+        <h2 md-dialog-title *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
+        <h2 md-dialog-title *ngIf="mode === 'editDelete'">Existing workshop cohorts</h2>
+      </div>
+      <div *ngIf="mode === 'editDelete'" class="col-md-2 pull-right" style="padding-top:6px">
+        <button md-raised-button class="mat-raised-button" (click)="closeSelectCohort()" color="primary">Done</button>
+      </div>
     </div>
-    <md-dialog-actions *ngIf="mode === 'editDelete'" class="col-md-2 pull-right" style="padding-top:6px">
-      <button md-raised-button class="mat-raised-button" (click)="closeSelectCohort()" color="primary">Done</button>
-    </md-dialog-actions>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
+  <div class="row">
+    <div class="col-md-12">
+    </div>
   </div>
-</div>
-<div md-dialog-content>
   <div class="row" *ngIf="filteredItineraries.length === 0">
     <div class="col-md-12 margin-top-60 margin-left-40">
       <md-icon style="top: 5px;">info</md-icon>
@@ -32,13 +32,13 @@
             <div class="col-md-8">
               <div class="col-md-12">
                 <div class="margin-top-20 margin-bottom-20">
-                  <span class="mat-body-2">
-                    {{itenaryObj.calendar.startDate | date:'EEE, MMM d'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d'}}
-                  </span>
+                <span class="mat-body-2">
+                  {{itenaryObj.calendar.startDate | date:'EEE, MMM d'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d'}}
+                </span>
                   <br>
                   <span class="mat-caption">
-                    {{itenaryObj.participantCount}} participants
-                  </span>
+                  {{itenaryObj.participantCount}} participants
+                </span>
                 </div>
               </div>
               <div class="col-md-12">
@@ -56,9 +56,9 @@
               <div class="col-md-12">
                 <button *ngIf="mode === 'chooseDate'" md-button (click)="selectCohort(itenaryObj.calendar.id)" class="mat-border-button">Select this cohort</button>
                 <span mdTooltip="Participant present!" [mdTooltipDisabled]="itenaryObj.participantCount <= 0">
-                  <button type="button" *ngIf="mode === 'editDelete'" md-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)"
-                    [disabled]="itenaryObj.participantCount > 0" class="mat-border-button">Delete this cohort</button>
-                </span>
+                <button type="button" *ngIf="mode === 'editDelete'" md-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)"
+                        [disabled]="itenaryObj.participantCount > 0" class="mat-border-button">Delete this cohort</button>
+              </span>
               </div>
             </div>
           </div>

@@ -144,6 +144,44 @@ md-icon {
     line-height: 18px;
 }
 
+.message-item-one-day {
+    padding-bottom: 25px;
+    margin-left: 40px;
+    position: relative;
+}
+
+.message-item-one-day .message-inner {
+    border-radius: 3px;
+    padding: 0px 10px;
+    position: relative;
+}
+
+.message-item-one-day:before {
+    background: #ccc;
+    bottom: -30px;
+    box-shadow: none;
+    content: "";
+    height: 100%;
+    left: -30px;
+    position: absolute;
+    width: 1px;
+}
+
+.message-item-one-day:not(.message-item-ticked):after {
+    background: #aaaaaa;
+    border-radius: 50%;
+    box-shadow: none;
+    content: "";
+    height: 10px;
+    width: 10px;
+    left: -34px;
+    position: absolute;
+    top: 0px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+}
+
 .clearfix:before,
 .clearfix:after {
     content: " ";
@@ -373,7 +411,7 @@ h3 {
 
 .timelineRowItem {
     border-left: 0px;
-    margin-top: 40px;
+    padding-top: 40px;
     margin-bottom: 20px;
 }
 

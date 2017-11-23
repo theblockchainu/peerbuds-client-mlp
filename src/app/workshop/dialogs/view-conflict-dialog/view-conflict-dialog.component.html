@@ -1,22 +1,22 @@
-<div class="mat-dialog-focus-trap"></div>
-<form [formGroup]="conflicts">
-    <div class="row margin-bottom-10" style="margin-left:0px">
-        <button md-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="closeConflictDialog()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
-        <div class="col-md-6">
-            <md-icon class="mat-icon material-icons mat-icon-small" style="position: relative; top: 1px;">error_outline</md-icon>
-            <h3 md-dialog-title class="conflicts" style="display: inline-block;">Avoid Conflicts</h3>
-            <div>
-                <span>We have found {{ data.conflicts.length }} conflict/s with your existing calendar</span>
+<div class="dialog-container" md-dialog-content>
+    <div class="mat-dialog-focus-trap"></div>
+    <form [formGroup]="conflicts">
+        <div class="row margin-bottom-10" style="margin-left:0px">
+            <button md-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="closeConflictDialog()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
+            <div class="col-md-6">
+                <md-icon class="mat-icon material-icons mat-icon-small" style="position: relative; top: 1px;">error_outline</md-icon>
+                <h3 md-dialog-title class="conflicts" style="display: inline-block;">Avoid Conflicts</h3>
+                <div>
+                    <span>We have found {{ data.conflicts.length }} conflict/s with your existing calendar</span>
+                </div>
+            </div>
+            <div class="col-md-5" style="padding-top:6px">
+                <md-dialog-actions class="pull-right">
+                    <button md-raised-button class="mat-raised-button" (click)="closeConflictDialog()" color="primary">{{proceedButtonText}}</button>
+                </md-dialog-actions>
             </div>
         </div>
-        <div class="col-md-5" style="padding-top:6px">
-            <md-dialog-actions class="pull-right">
-                <button md-raised-button class="mat-raised-button" (click)="closeConflictDialog()" color="primary">{{proceedButtonText}}</button>
-            </md-dialog-actions>
-        </div>
-    </div>  
-    <hr style="margin-top: 0px;">
-    <md-dialog-content>
+        <hr style="margin-top: 0px;">
         <div class="row">
             <div class="col-md-12">
                 <div class="row margin-top-20 margin-bottom-20" *ngFor="let conflict of data.conflicts; let i=index">
@@ -31,6 +31,6 @@
                 </div>
             </div>
         </div>
-    </md-dialog-content>
-</form>
-<div class="mat-dialog-focus-trap"></div>
+    </form>
+    <div class="mat-dialog-focus-trap"></div>
+</div>

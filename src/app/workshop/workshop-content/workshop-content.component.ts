@@ -124,26 +124,25 @@ export class WorkshopContentComponent implements OnInit {
         let collectionId;
         if (result.isNewInstance) {
           collectionId = result.id;
+          this.router.navigate(['workshop', collectionId, 'edit', 13]);
         }
         else {
-          collectionId = collection.id;
+          window.location.reload();
         }
-        //TBD Patch calendar and timeline
-        this.router.navigate(['workshop', collectionId, 'edit', 13]);
 
       }).subscribe();
   }
 
   showDialogForActiveWorkshop() {
     let dialogRef: any;
-    dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%', height: '50vh' });
+    dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'accept') {
         this.executeSubmitWorkshop(this.collection);
       }
       else if (result === 'reject') {
         // Do nothing
-        this.router.navigate(['/console/teaching/workshops']);
+        this.router.navigate(['console', 'teaching', 'workshops']);
       }
     });
   }
