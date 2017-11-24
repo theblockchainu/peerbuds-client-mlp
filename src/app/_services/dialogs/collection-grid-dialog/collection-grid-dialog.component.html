@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
-<div mat-dialog-content>
+<div mat-dialog-content class="dialog-container">
+  <h1 mat-dialog-title>{{data.title}}</h1>
   <div class="collection-grid">
     <div class="recommendation-card" *ngFor="let workshop of data.collections; let i =index">
       <a (click)="openCollectionPage(workshop.id)">
