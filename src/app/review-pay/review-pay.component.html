@@ -84,13 +84,13 @@
                         </div>
                         <div class="seperate-section">
                             <div class="margin-bottom-10">
-                                <span class="text-grey">{{collection.price | currency: collection.currency: true: '1.0-0'}} x {{ guestCount }} Student</span>
-                                <span class="pull-right">{{ collection.price * guestCount | currency: collection.currency: true: '1.0-0' }}</span>
+                                <span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}} x {{ guestCount }} Student</span>
+                                <span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency |async}}</span>
                             </div>
                             <!--<a href="#" class="display-inline-block margin-bottom-10">Add coupon</a>-->
                             <div class="margin-bottom-10">
                                 <span class="fw-bold">Total</span>
-                                <span class="pull-right fw-bold">{{ collection.price * guestCount | currency: collection.currency: true: '1.0-0' }}</span>
+                                <span class="pull-right fw-bold">{{collection.price * guestCount | convertCurrency: collection.currency |async}}</span>
                             </div>
                         </div>
                         <div class="seperate-section">

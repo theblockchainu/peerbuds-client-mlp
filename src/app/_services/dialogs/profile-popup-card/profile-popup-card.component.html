@@ -1,42 +1,44 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="row">
-      <div class="col-md-12">
-        <b> {{data.profiles[0].first_name +" "+data.profiles[0].last_name |titlecase}}</b>
+<div class="dialog-container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <b> {{data.profiles[0].first_name +" "+data.profiles[0].last_name |titlecase}}</b>
+        </div>
       </div>
-    </div>
-    <div class="row" *ngIf="(!data.profiles[0].headline || data.profiles[0].headline===0) && (!data.profiles[0].description || data.profiles[0].description===0)">
-      <div class="col-md-12" class="lightText" style="height: 18px;margin-left: 15px;">
-        <h5>Joined on {{data.createdAt | extractTime:'D/M/YY'}}</h5>
+      <div class="row" *ngIf="(!data.profiles[0].headline || data.profiles[0].headline===0) && (!data.profiles[0].description || data.profiles[0].description===0)">
+        <div class="col-md-12" class="lightText" style="height: 18px;margin-left: 15px;">
+          <h5>Joined on {{data.createdAt | extractTime:'D/M/YY'}}</h5>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12" class="lightText" style="height: 18px;margin-left: 15px;">
-        <h5>{{data.profiles[0].headline | titlecase}}</h5>
+      <div class="row">
+        <div class="col-md-12" class="lightText" style="height: 18px;margin-left: 15px;">
+          <h5>{{data.profiles[0].headline | titlecase}}</h5>
+        </div>
       </div>
-    </div>
-    <div class="row" *ngIf="data.reviewsAboutYou">
-      <div class="col-md-12" style="height: 18px;">
-        <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 0.67rem; float: left;"></p-rating>
-        <p style="font-size: 0.67rem;">&nbsp;({{data.reviewsAboutYou.length}})</p>
+      <div class="row" *ngIf="data.reviewsAboutYou">
+        <div class="col-md-12" style="height: 18px;">
+          <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 0.67rem; float: left;"></p-rating>
+          <p style="font-size: 0.67rem;">&nbsp;({{data.reviewsAboutYou.length}})</p>
+        </div>
       </div>
-    </div>
-    <div class="row" *ngIf="data.profiles[0].description && data.profiles[0].description.length>0">
-      <div class="col-md-12">
-        <h5 style="margin: 0">
-          {{data.profiles[0].description|shorten: 60 : '...'}}
-        </h5>
+      <div class="row" *ngIf="data.profiles[0].description && data.profiles[0].description.length>0">
+        <div class="col-md-12">
+          <h5 style="margin: 0">
+            {{data.profiles[0].description|shorten: 60 : '...'}}
+          </h5>
+        </div>
       </div>
-    </div>
-    <div class="row margin-top-10" *ngIf="this.ownedCollections && this.ownedCollections.length>0">
-      <div class="col-md-6" class="lightText" style="margin-left: 15px;">
-        <h5><b>Workshops ({{this.ownedCollections.length}})</b></h5>
+      <div class="row margin-top-10" *ngIf="this.ownedCollections && this.ownedCollections.length>0">
+        <div class="col-md-6" class="lightText" style="margin-left: 15px;">
+          <h5><b>Workshops ({{this.ownedCollections.length}})</b></h5>
+        </div>
       </div>
-    </div>
-    <div class="row" *ngIf="this.ownedCollections && this.ownedCollections.length>0" style="margin-top: -5px;">
-      <div *ngFor="let workshop of this.ownedCollections; let i=index">
-        <div class="col-md-4" *ngIf="(workshop.status==='active'||workshop.status==='completed') && i<3 && workshop.imageUrls !== undefined">
-          <img style="width: 55px" src="{{_config.apiUrl+ workshop.imageUrls[0]}}" (error)="_collectionService.imgErrorHandler($event)">
+      <div class="row" *ngIf="this.ownedCollections && this.ownedCollections.length>0" style="margin-top: -5px;">
+        <div *ngFor="let workshop of this.ownedCollections; let i=index">
+          <div class="col-md-4" *ngIf="(workshop.status==='active'||workshop.status==='completed') && i<3 && workshop.imageUrls !== undefined">
+            <img style="width: 55px" src="{{_config.apiUrl+ workshop.imageUrls[0]}}" (error)="_collectionService.imgErrorHandler($event)">
+          </div>
         </div>
       </div>
     </div>

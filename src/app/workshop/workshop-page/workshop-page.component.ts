@@ -145,6 +145,10 @@ export class WorkshopPageComponent implements OnInit {
     { [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
   public hourMapping:
     { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
+  public projectMapping:
+      { [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
+  public onlineSessionMapping:
+      { [k: string]: string } = { '=0': 'No online sessions', '=1': 'One online session', 'other': '# online sessions' };
   public cohortMapping:
     { [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
   public dayMapping:
@@ -741,8 +745,7 @@ export class WorkshopPageComponent implements OnInit {
 
   openDeleteDialog(action: string) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action,
-      height: '20vh'
+      data: action
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -801,7 +804,7 @@ export class WorkshopPageComponent implements OnInit {
               collection: this.workshop,
               calendarId: this.calendarId
             },
-            width: '40vw',
+            width: '45vw',
             height: '100vh'
           });
           break;
@@ -813,9 +816,11 @@ export class WorkshopPageComponent implements OnInit {
               content: content,
               startDate: startDate,
               userType: this.userType,
-              collectionId: this.workshopId
+              collectionId: this.workshopId,
+              collection: this.workshop,
+              calendarId: this.calendarId
             },
-            width: '40vw',
+            width: '45vw',
             height: '100vh'
           });
           break;
@@ -828,9 +833,11 @@ export class WorkshopPageComponent implements OnInit {
               startDate: startDate,
               userType: this.userType,
               peerHasSubmission: this.peerHasSubmission,
-              collectionId: this.workshopId
+              collectionId: this.workshopId,
+              collection: this.workshop,
+              calendarId: this.calendarId
             },
-            width: '40vw',
+            width: '45vw',
             height: '100vh'
           });
           break;
@@ -1254,8 +1261,7 @@ export class WorkshopPageComponent implements OnInit {
       data: {
         url: 'workshop/' + this.workshop.id
       },
-      width: '40vw',
-      height: '50vh'
+      width: '40vw'
     });
   }
   /**

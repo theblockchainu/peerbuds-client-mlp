@@ -232,7 +232,7 @@ a:hover {
 }
 
 .profileVideo {
-  max-height: 100px;
+  max-height: 100%;
   // display: inline-block;
   min-height: 100px;
   margin-bottom: 10px;
@@ -289,7 +289,7 @@ a:hover {
 }
 
 .pic .imageContainer {
-  height: 100px;
+  height: auto;
   width: 200px;
   margin-bottom: 10px;
 }

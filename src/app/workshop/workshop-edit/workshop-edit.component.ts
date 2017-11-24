@@ -639,7 +639,7 @@ export class WorkshopEditComponent implements OnInit {
   public submitWorkshop(data, timeline?, step?) {
     if (this.workshop.controls.status.value === 'active') {
       let dialogRef: any;
-      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%', height: '50vh' });
+      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%' });
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'accept') {
           this.executeSubmitWorkshop(data, timeline, step);
@@ -784,7 +784,7 @@ export class WorkshopEditComponent implements OnInit {
         console.log('Workshop submitted for review');
         this.isSubmitted = true;
         let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw', height: '60vh' });
+        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw' });
         // call to get status of workshop
         if (this.workshop.controls.status.value === 'active') {
           this.sidebarMenuItems[3].visible = false;
@@ -792,6 +792,7 @@ export class WorkshopEditComponent implements OnInit {
           this.sidebarMenuItems[4].active = true;
           this.sidebarMenuItems[4].submenu[0].visible = true;
           this.sidebarMenuItems[4].submenu[1].visible = true;
+
         }
       });
 

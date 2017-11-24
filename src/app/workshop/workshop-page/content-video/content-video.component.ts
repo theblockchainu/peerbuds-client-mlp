@@ -9,6 +9,7 @@ import {SocketService} from '../../../_services/socket/socket.service';
 import {Router} from '@angular/router';
 import {Ng2DeviceService} from 'ng2-device-detector';
 import {VgAPI} from 'videogular2/core';
+import * as moment from 'moment';
 import { ContentService } from '../../../_services/content/content.service';
 
 @Component({
@@ -28,6 +29,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
   public startedView;
   api: VgAPI;
   public attachmentUrls = [];
+  public duration = 0;
 
   constructor(
     public config: AppConfig,
@@ -48,7 +50,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
       this.data.content.supplementUrls.forEach(file => {
         this.contentService.getMediaObject(file).subscribe((res) => {
             this.attachmentUrls.push(res[0]);
-        })
+        });
       });
   }
 
@@ -195,6 +197,10 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
     public onPlayerReady(api: VgAPI) {
         this.api = api;
 
+        this.api.getDefaultMedia().subscriptions.canPlay.subscribe(() => {
+            this.duration = Math.round(this.api.duration / 60);
+        });
+
         this.api.getDefaultMedia().subscriptions.playing.subscribe(() => {
             const view = {
                 type: 'user',
@@ -226,6 +232,10 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
                 console.log(endedView);
             });
         });
+    }
+
+    public openProfilePage(peerId) {
+        this.router.navigate(['profile', peerId]);
     }
 
 }
