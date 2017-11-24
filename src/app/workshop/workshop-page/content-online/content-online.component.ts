@@ -7,7 +7,8 @@ import { CommentService } from '../../../_services/comment/comment.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { DialogsService } from '../../dialogs/dialog.service';
 import { ContentService } from '../../../_services/content/content.service';
-import { debug } from 'util';
+import * as moment from 'moment';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-content-online',
@@ -24,6 +25,7 @@ export class ContentOnlineComponent implements OnInit {
   public comments: Array<any>;
   public userId;
   public attachmentUrls = [];
+  public duration = 0;
 
   constructor(
     public config: AppConfig,
@@ -34,7 +36,8 @@ export class ContentOnlineComponent implements OnInit {
     private _commentService: CommentService,
     private _cookieUtilsService: CookieUtilsService,
     private dialogsService: DialogsService,
-    private contentService: ContentService
+    private contentService: ContentService,
+    private router: Router
   ) {
       this.userType = data.userType;
       this.workshopId = data.collectionId;
@@ -42,8 +45,9 @@ export class ContentOnlineComponent implements OnInit {
       data.content.supplementUrls.forEach(file => {
         this.contentService.getMediaObject(file).subscribe((res) => {
             this.attachmentUrls.push(res[0]);
-        })
+        });
       });
+      this.duration = moment(data.content.schedules[0].endTime).diff(moment(data.content.schedules[0].startTime), 'hours');
   }
 
   ngOnInit() {
@@ -201,6 +205,10 @@ export class ContentOnlineComponent implements OnInit {
         };
         this.dialogsService.startLiveSession(data).subscribe(result => {
         });
+    }
+
+    public openProfilePage(peerId) {
+        this.router.navigate(['profile', peerId]);
     }
 
 }

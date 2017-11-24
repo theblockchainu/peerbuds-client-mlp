@@ -114,11 +114,11 @@
                   </div>
                   <div class="col-md-12 margin-top-10">
                     <md-icon style="top: 7px;">dvr</md-icon>&emsp;
-                    <span>{{getContentCount('project')}} Project</span>
+                    <span>{{getContentCount('project') | i18nPlural : projectMapping}}</span>
                   </div>
                   <div class="col-md-12 margin-top-10">
                     <md-icon style="top: 7px;">play_circle_outline</md-icon>&emsp;
-                    <span>{{getContentCount('video')}} Recorded Videos</span>
+                    <span>{{getContentCount('online') | i18nPlural : onlineSessionMapping}}</span>
                   </div>
                 </div>
                 <div *ngIf="userType==='public'" class="margin-top-20"> {{workshop.description}} </div>
@@ -162,7 +162,12 @@
                         <div style="display: inline-block; margin-left: 10px;">
                           <div class="row">
                             <div class="col-md-12 clickable" (click)="openProfilePage(workshop.owners[0].id)">
-                              {{workshop.owners[0].profiles[0].first_name | titlecase }} {{workshop.owners[0].profiles[0].last_name | titlecase }}
+                              <span *ngIf="workshop.owners[0].profiles[0].first_name !== undefined">
+                                {{workshop.owners[0].profiles[0].first_name | titlecase }} {{workshop.owners[0].profiles[0].last_name | titlecase }}
+                              </span>
+                              <span *ngIf="workshop.owners[0].profiles[0].first_name === undefined">
+                                John Doe
+                              </span>
                             </div>
                             <div class="col-md-12 mat-h5" *ngIf="workshop.owners[0].headline">
                               {{workshop.owners[0].profiles[0].headline}}
@@ -220,7 +225,7 @@
                       <div [ngClass]="{'message-item': oneDay() , 'message-item-ticked': hasDatePassed(itenary.startDate)}">
                         <div class="message-inner">
                           <div class="qa-message-content">
-                            <div style="top: -8px; position: relative;">
+                            <div style="top: -5px; position: relative;">
                               <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined"> {{itenary.startDate | date:'EEEE, d MMMM'}} </div>
                               <div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
                               <div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
@@ -234,7 +239,7 @@
                                 <div class="col-md-5">
                                   <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}"
                                     (error)="_collectionService.imgErrorHandler($event)">
-                                  <video #videoContent width="100%" height="120px" *ngIf="content.type==='video'" class="itenary-media" preload="metadata"
+                                  <video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media" preload="metadata"
                                     poster="../../../assets/images/placeholder-image.jpg">
                                     <source src="{{config.apiUrl+content.imageUrl}}">
                                   </video>
@@ -252,7 +257,7 @@
                                       </div>
                                     </div>
                                     <div class="col-md-12 margin-top-10 textJustify">
-                                      <span class="pre-wrapped"> {{content.description | shorten: 115 : '...'}} </span>
+                                      <span class="pre-wrapped">{{content.description | shorten: 115 : '...'}}</span>
                                     </div>
                                   </div>
                                   <div class="row margin-top-10" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
@@ -261,11 +266,11 @@
                                       <button md-button class="mat-border-button" *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
                                     </div>
                                   </div>
-                                  <!-- <div class="row margin-top-10">
+                                   <div class="row margin-top-10">
                                     <div class="col-md-12">
                                       <a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate)">See details</a>
                                     </div>
-                                  </div> -->
+                                  </div>
                                 </div>
                               </a>
                               <!-- </div> -->
@@ -418,9 +423,9 @@
                             <div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
                               <div class="clickable" style="float: left; margin-left: 15px;">
                                 <img (click)="openProfilePage(reply.peer[0].id)" *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png"
-                                  alt="A" class="circle-thumb margin-top-5">
+                                  alt="A" class="clickable circle-thumb margin-top-5">
                                 <img (click)="openProfilePage(reply.peer[0].id)" *ngIf="reply.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ reply.peer[0].profiles[0].picture_url}}"
-                                  class="circle-thumb margin-top-5" alt="dp">
+                                  class="clickable circle-thumb margin-top-5" alt="dp">
                               </div>
                               <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
                                 <div>
@@ -505,10 +510,10 @@
                                   </md-menu>
                                   <div class="clickable" style="float: left;">
                                     <img (click)="openProfilePage(review.peer[0].id)" *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png"
-                                      alt="A" class="circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)"
+                                      alt="A" class="clickable circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)"
                                       style="margin-left: 10px;">
                                     <img (click)="openProfilePage(review.peer[0].id)" *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{config.apiUrl+ review.peer[0].profiles[0].picture_url}}"
-                                      class="circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)"
+                                      class="clickable circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)"
                                       style="margin-left: 10px;">
                                   </div>
                                   <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
@@ -536,8 +541,8 @@
                     </div>
                     <div class="row" *ngIf="reviews && reviews.length>3">
                       <div class="col-md-12 margin-top-20" style="text-align: center">
-                        <a [hidden]="noOfReviews!==3" (click)="toggleReviews()" style="cursor: pointer;">See all {{reviews.length}} reviews</a>
-                        <a [hidden]="noOfReviews===3" (click)="toggleReviews()" style="cursor: pointer;">See fewer reviews</a>
+                        <a [hidden]="noOfReviews!==3" class="clickable" (click)="toggleReviews()" style="cursor: pointer;">See all {{reviews.length}} reviews</a>
+                        <a [hidden]="noOfReviews===3" class="clickable" (click)="toggleReviews()" style="cursor: pointer;">See fewer reviews</a>
                       </div>
                     </div>
                   </div>
@@ -586,7 +591,7 @@
                 <div>
                   <div class="row" *ngIf="participants.length === 0">
                     <div class="col-md-12">
-                      <div class="emptySectionText" (click)="openInviteFriendsDialog()">Invite peers to this cohort?</div>
+                      <div class="clickable emptySectionText" (click)="openInviteFriendsDialog()">Invite peers to this cohort?</div>
                     </div>
                   </div>
                 </div>
@@ -621,7 +626,7 @@
                     <div class="col-md-2 vcenter clickable">
                       <app-profile-popup [peer]="participant"></app-profile-popup>
                     </div>
-                    <div class="col-md-9 vcenter" (click)="openProfilePage(participant.id)">
+                    <div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
                       {{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
                       <span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
                     </div>
@@ -652,7 +657,7 @@
               <hr class="margin-top-30 margin-bottom-30" *ngIf="userType==='teacher'">
               <div>
                 <h3 style="display: inline-block;">Workshop Batches</h3>
-                <span (click)="editCalendar()" class="pull-right" style="cursor: pointer;">
+                <span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
                   <md-icon style="font-size: 1rem; top: 15px;">edit</md-icon>
                 </span>
                 <br>
@@ -697,7 +702,7 @@
                   </div>
                 </div>
                 <div *ngFor="let key of objectKeys(eventsForTheDay);">
-                  <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]" (click)="openEventDialog(clickedCohortId, event.id)"
+                  <div class="displayFlex event clickable" *ngFor="let event of eventsForTheDay[key]" (click)="openEventDialog(clickedCohortId, event.id)"
                     style="cursor: pointer;">
                     <span>{{ event.start | date:'hh:mm' }}</span>
                     <span>
@@ -739,20 +744,20 @@
                     </h3>
                   </div>
                 </div>
-                <hr>
+                <hr style="margin-bottom: 10px;">
                 <!--PRICE SECTION-->
                 <div class="row">
                   <div class="col-md-8">
                     <div class="row">
                       <div class="col-md-12">
-                        <h2 style="display: inline-block; margin-bottom: -1px;">{{workshop.price | convertCurrency: workshop.currency |async}}</h2> &nbsp; per person
+                        <h2 style="display: inline-block; margin-bottom: -1px;">{{workshop.price | convertCurrency: workshop.currency |async}}</h2> &nbsp; per person<br/>
                         <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;
                         <span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span>
                         <span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4" style="padding-top: 9px;">
                     <span mdTooltip="Please wait for your account to be approved before signing up for workshops" [mdTooltipDisabled]="accountApproved === 'true'">
                       <button md-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
                     </span>
@@ -765,15 +770,15 @@
               <div class="col-md-4" style="cursor: pointer;">
                 <a (click)="openInviteFriendsDialog()">Invite friends</a>
               </div>
-              <div class="col-md-4" (click)="saveBookmark()" style="cursor: pointer;">
+              <div class="col-md-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
                 <md-icon [ngClass]="{'hasBookmarked': hasBookmarked}" style="font-size: 1rem; top: 2px;">bookmark</md-icon>
                 <span *ngIf="!hasBookmarked">Bookmark</span>
                 <span *ngIf="hasBookmarked">Saved</span>
               </div>
               <div class="col-md-4" style="cursor: pointer;">
                 Share&nbsp;
-                <i class="fa fa-facebook-square" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnFb()"></i>
-                <i class="fa fa-twitter-square" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnTwitter()"></i>
+                <i class="fa fa-facebook-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnFb()"></i>
+                <i class="fa fa-twitter-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnTwitter()"></i>
               </div>
             </div>
           </div>

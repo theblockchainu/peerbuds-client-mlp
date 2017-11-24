@@ -12,6 +12,7 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { Router } from '@angular/router';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { SocketService } from '../../../_services/socket/socket.service';
+import {CollectionService} from "../../../_services/collection/collection.service";
 
 @Component({
   selector: 'app-content-project',
@@ -29,6 +30,7 @@ export class ContentProjectComponent implements OnInit {
   api: VgAPI;
   public userId;
   public startedView;
+  public userType = 'public';
 
   constructor(public config: AppConfig,
     @Inject(MD_DIALOG_DATA) public data: any,
@@ -39,8 +41,10 @@ export class ContentProjectComponent implements OnInit {
     private deviceService: Ng2DeviceService,
     private router: Router,
     private cookieUtilsService: CookieUtilsService,
-    private _socketService: SocketService
+    private _socketService: SocketService,
+    public _collectionService: CollectionService
   ) {
+    this.userType = data.userType;
     if (data.content.submissions !== undefined) {
         data.content.submissions.forEach(submission => {
             if (submission.isPrivate === 'false') {
@@ -131,4 +135,9 @@ export class ContentProjectComponent implements OnInit {
     tempMoment.add(day, 'days');
     return tempMoment.format('ddd, MMM DD YYYY');
   }
+
+    public openProfilePage(peerId) {
+        this.router.navigate(['profile', peerId]);
+    }
+
 }

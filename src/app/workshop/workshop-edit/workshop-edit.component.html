@@ -435,12 +435,12 @@
                 <h3 class="title">Price</h3>
                 <div class="row margin-left-0">
                   <div class="col-md-3 padding-left-0">
-                    <md-input-container [floatPlaceholder]="false" class="margin-top-20">
-                      <input type="number" mdInput #price formControlName="price" placeholder="" min="1" required>
+                    <md-input-container [floatPlaceholder]="'never'" class="margin-top-20">
+                      <input type="number" mdInput #price formControlName="price" placeholder="0" min="1" required>
                     </md-input-container>
                   </div>
                   <div class="col-md-2 col-md-offset-2 priceAlignParent">
-                    <md-select [floatPlaceholder]="false" formControlName="currency" class="priceAlign padding-top-0 margin-top-20">
+                    <md-select [floatPlaceholder]="'never'" formControlName="currency" class="priceAlign padding-top-0 margin-top-20" placeholder="USD">
                       <md-option *ngFor="let c of currencies" [value]="c">{{c}}</md-option>
                     </md-select>
                   </div>
@@ -448,9 +448,11 @@
                 <h3 class="title">Cancellation Policy</h3>
                 <div class="row margin-left-0">
                   <div class="col-sm-12 padding-left-0">
-                    <md-select [floatPlaceholder]="false" formControlName="cancellationPolicy" style="margin: 20px 0px;">
+                    Students will get full refund if they cancel within
+                    <md-select [floatPlaceholder]="'never'" formControlName="cancellationPolicy" style="margin: 20px 10px; position: relative; top: -5px;" placeholder="3 Days">
                       <md-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</md-option>
                     </md-select>
+                    days of signing up.
                   </div>
                 </div>
                 <div style="margin-top:100px;">
@@ -487,32 +489,29 @@
               <p class="subtitle">
                 Select the start date and end date of your workshop and add itineraries for any of those days.
               </p>
-              <form [formGroup]="timeline" (ngSubmit)="submitWorkshop(workshop, timeline, 13)" novalidate>
-                <!--(ngSubmit)="submitTimeline(timeline)" -->
+              <form [formGroup]="timeline" (ngSubmit)="submitWorkshop(workshop, timeline, 13)" novalidate> <!--(ngSubmit)="submitTimeline(timeline)" -->
                 <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
                   <div class="row" style="margin: 30px 0px 15px -15px;">
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" [readonly]="isWorkShopActive">
+                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" [disabled]="isWorkShopActive">
                         <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle {{activeWorkshop}}" [disabled]="isWorkShopActive"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
                     </div>
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
-                          formControlName="endDate" [readonly]="isWorkShopActive">
+                        <input mdInput [mdDatepicker]="endDatePicker" [min]="timeline.controls.calendar.value.startDate" placeholder="End date" formControlName="endDate" [disabled]="isWorkShopActive">
                         <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle" [disabled]="isWorkShopActive"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>
                   </div>
                 </div>
-                <div formGroupName="calendar" *ngIf="(timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate) && !datesEditable">
+                <div formGroupName="calendar" *ngIf="(timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate) && !datesEditable">
                   <div class="row" style="margin: 30px 0px 15px 0;">
                     <div class="col-md-12 selected-dates">
-                      {{timeline.controls['calendar'].value.startDate | date: 'dd MMM'}} - {{timeline.controls['calendar'].value.endDate | date:
-                      'dd MMM'}} &emsp;
+                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd MMM'}} &emsp;
                       <md-icon color="accent">
                         date_range
                       </md-icon>
@@ -520,8 +519,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" *ngIf="timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate">
-                  <app-workshop-content [myForm]="timeline.controls['contentGroup']" [collection]="workshopData" [calendar]="timeline.controls['calendar'].value"
+                <div class="row" *ngIf="timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate">
+                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collection]="workshopData" [calendar]="timeline.controls.calendar.value"
                     (days)="daysCollection($event)">
                   </app-workshop-content>
                 </div>

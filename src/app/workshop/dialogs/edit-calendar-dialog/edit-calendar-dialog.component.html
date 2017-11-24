@@ -1,29 +1,29 @@
-<div class="mat-dialog-focus-trap"></div>
-<form [formGroup]="recurring">
-    <div class="row margin-bottom-10" style="margin-left:0px">
-        <button md-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="addDeleteEvents()">
-            <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
-        </button>
-        <div class="col-md-4">
-            <h3 md-dialog-title>Add more cohorts your {{ duration }} day workshop</h3>
-            <div>
+<div class="dialog-container" md-dialog-content>
+    <div class="mat-dialog-focus-trap"></div>
+    <form [formGroup]="recurring">
+        <div class="row margin-bottom-10" style="margin-left:0px">
+            <button md-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="addDeleteEvents()">
+                <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+            </button>
+            <div class="col-md-4">
+                <h3 md-dialog-title>Add more cohorts your {{ duration }} day workshop</h3>
+                <div>
                 <span>You have
                     <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
-                <a href="javascript:void(0);" (click)="viewCohorts()">View and manage</a>
+                    <a href="javascript:void(0);" (click)="viewCohorts()">View and manage</a>
+                </div>
+            </div>
+            <div class="col-md-4 pull-right" *ngIf="recurringCount">
+                <h3 style="margin-bottom:10px">Peerbuds Insights</h3>
+                <div>
+                    <label>You will have total of <b>{{ recurringCount }}</b> recurring sessions</label>
+                </div>
+                <div style="margin-top:5px">
+                    <label>Your workshop will run for <b>{{ totalRunningDays }}</b> of the next <b>{{nextDays}}</b> days</label>
+                </div>
             </div>
         </div>
-        <div class="col-md-4 pull-right" *ngIf="recurringCount">
-            <h3 style="margin-bottom:10px">Peerbuds Insights</h3>
-            <div>
-                <label>You will have total of <b>{{ recurringCount }}</b> recurring sessions</label>
-            </div>
-            <div style="margin-top:5px">
-                <label>Your workshop will run for <b>{{ totalRunningDays }}</b> of the next <b>{{nextDays}}</b> days</label>
-            </div>
-        </div>
-    </div>
-    <hr style="margin-top: 0px;">
-    <md-dialog-content>
+        <hr style="margin-top: 0px;">
         <div class="content">
             <div class="row margin-bottom-20 wrapper">
                 <div class="col-md-5 right-border leftContent">
@@ -85,15 +85,15 @@
                             </md-radio-button>
                         </md-radio-group>
                         <div class="margin-top-20">
-                            <span mdTooltip="Solve Conflicts!" [mdTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
-                                <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Save Workshop Batches</button>
-                            </span>
-    
+                        <span mdTooltip="Solve Conflicts!" [mdTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
+                            <button md-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Save Workshop Batches</button>
+                        </span>
+
                         </div>
                     </div>
                 </div>
                 <div class="editCalendar left-border col-md-4 rightContent">
-                    <div class="mat-content calendar" style="margin-right:10px" *ngIf="(recurringCalendar && recurringCalendar.length > 0) || computedConflict.length > 0" > 
+                    <div class="mat-content calendar" style="margin-right:10px" *ngIf="(recurringCalendar && recurringCalendar.length > 0) || computedConflict.length > 0" >
                         <h3>Preview Cohorts</h3>
                         <div class="margin-top-30 flex-column" *ngIf="computedConflict.length > 0">
                             <h3>Avoid Conflicts</h3>
@@ -113,9 +113,9 @@
                                             <div class="col-md-8 padding-left-0">
                                                 <div class="col-md-12 padding-left-0">
                                                     <div class="margin-top-20 margin-bottom-20">
-                                                        <span class="mat-body-2">
-                                                            {{day.startDate | date:'EEE, MMM d'}} to {{day.endDate | date:'EEE, MMM d'}}
-                                                        </span>
+                                                    <span class="mat-body-2">
+                                                        {{day.startDate | date:'EEE, MMM d'}} to {{day.endDate | date:'EEE, MMM d'}}
+                                                    </span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12  padding-left-0">
@@ -151,25 +151,25 @@
                             </p-accordionTab>
                         </p-accordion>
                     </div>
-                    <!-- <div class="mat-content border-calendar calendar"> 
+                    <!-- <div class="mat-content border-calendar calendar">
                         <div class="flex flexContainer">
                             <div class="col-md-7">
                                 <h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
                             </div>
-                        
+
                             <span class="flex"></span>
-                        
+
                             <div class="prevNext">
                             <button md-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
                                 <md-icon class="" aria-hidden="true">chevron_left</md-icon>
                             </button>
-                        
+
                             <button md-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
                                 <md-icon class="" aria-hidden="true">chevron_right</md-icon>
                             </button>
                             </div>
                         </div>
-                        
+
                         <div [ngSwitch]="view">
                             <mwl-calendar-month-view
                             *ngSwitchCase="'month'"
@@ -198,6 +198,6 @@
                 </div>
             </div>
         </div>
-    </md-dialog-content>
-</form>
-<div class="mat-dialog-focus-trap"></div>
+    </form>
+    <div class="mat-dialog-focus-trap"></div>
+</div>

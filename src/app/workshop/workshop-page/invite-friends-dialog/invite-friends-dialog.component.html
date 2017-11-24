@@ -1,18 +1,17 @@
-<div class="row">
-  <div class="col-md-12">
-    <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="dialogRef.close()"><md-icon class="mat-icon material-icons mat-icon-small">close</md-icon></button>
-    <div style="display: inline-block">
-      <h2 md-dialog-title>Invite friends to this workshop</h2>
+<div md-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-md-12">
+      <button disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+        <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+      </button>
+      <div class="mat-display-1" style="margin-bottom: 20px;">
+        Invite friends to this workshop
+      </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-  </div>
-</div>
-<div md-dialog-content>
+  <hr>
   <div class="row">
-    <div class="col-md-12 margin-top-60">
+    <div class="col-md-12 margin-top-20">
       Share this link with your friends to invite them to join this workshop
     </div>
     <div class="col-md-12 ">

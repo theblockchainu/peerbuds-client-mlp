@@ -19,8 +19,8 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 
   private userId;
   public loading: boolean;
-  public topicsLearning: Array<any>;
-  public topicsTeaching: Array<any>;
+  public topicsLearning: Array<any> = [];
+  public topicsTeaching: Array<any> = [];
   public searchTopicURL = '';
   public placeholderStringTopic = 'Search for a topic ';
   private newTopics: Array<any>;
