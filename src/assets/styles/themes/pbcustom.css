@@ -1233,6 +1233,8 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .mainStream video{
     height: 96vh;
+    z-index: 5;
+    position: relative;    
 }
 
 .localStream{
@@ -1240,25 +1242,47 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     bottom: 3%;
     height: 16%;
     right: 10%;
+    z-index: 6;
 }
 
 .localStream video{
     border-style: solid;
     border-color: white;
-    height: 100% !important;
-
+    height: 125px !important;
 }
+
+.localStream img{
+    position: relative;
+    bottom: 69px;
+    left: 196px;
+    width: 100px;
+    height: 100px;
+}
+
+.localStream .studentName{
+    position: relative;
+    bottom: 6px;
+    left: 129px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    padding: 1px;
+    z-index: 6;
+}
+
 
 .otherStream{
     position: absolute;
     bottom: 3%;
     height: 16%;
     right: 24%;
+    z-index: 6;
 }
 
 .otherStream video{
     padding-right: 5px;
-    height: 100% !important;
+    height: 125px !important;
 }
 
 .otherStreamTeacher{
@@ -1266,11 +1290,12 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     bottom: 3%;
     height: 16%;
     right: 10%;
+    z-index: 6;
 }
 
 .otherStreamTeacher video{
     padding-right: 5px;
-    height: 100% !important;
+    height: 125px !important;
 }
 
 
@@ -1358,4 +1383,66 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepicker-toggle.disableMD .mat-icon-button{
     pointer-events: none !important;
     color:grey !important;
+}
+
+.teacherStreamImage{
+    margin-top: 15%;
+    position: fixed;
+    left: 47vw;
+    width: 150px;
+    height: 150px;
+    z-index: 0;
+}
+
+.teacherName{
+    position: absolute;
+    left: 48vw;
+    top: 5vh;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    padding: 7px;
+    z-index: 6;
+}
+
+.otherStream img{
+    position: relative;
+    bottom: 69px;
+    left: 196px;
+    width: 100px;
+    height: 100px;
+}
+
+.otherStreamTeacher img{
+    position: relative;
+    bottom: 69px;
+    left: 196px;
+    width: 100px;
+    height: 100px;
+}
+
+.otherStream .studentName{
+    position: relative;
+    bottom: 6px;
+    left: 129px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    padding: 1px;
+    z-index: 6;
+}
+
+
+.otherStreamTeacher .studentName{
+    position: relative;
+    bottom: 6px;
+    left: 129px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    padding: 1px;
+    z-index: 6;
 }
