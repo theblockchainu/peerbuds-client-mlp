@@ -50,23 +50,23 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     this.getProfile();
   }
 
-   public openIdVerify() {
+  public openIdVerify() {
     this.dialogsService.openIdVerify().subscribe();
   }
 
   public openEmailVerify() {
-   this.dialogsService.openEmailVerify().subscribe();
+    this.dialogsService.openEmailVerify().subscribe();
   }
 
   public openPhoneVerify() {
     this.dialogsService.openPhoneVerify().subscribe();
-   }
+  }
 
   private getProfile() {
     this._profileService.getPeerData(this.userId, this.queryForSocialIdentities).subscribe((peer) => {
       console.log(peer.email);
       console.log(peer);
-     // console.log(phone_numbers);
+      // console.log(phone_numbers);
       this.alreadyVerified = [];
       this.notVerified = [];
       if (peer.phoneVerified && peer.phone) {
@@ -75,8 +75,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
           value: peer.phone
         });
       } else {
-        if (peer.phone)
-        {
+        if (peer.phone) {
           this.notVerified.push({
             text: 'Phone Number',
             value: peer.phone

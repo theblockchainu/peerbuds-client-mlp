@@ -171,6 +171,10 @@ export class WorkshopPageComponent implements OnInit {
   public loadingReviews = true;
   public accountApproved = 'false';
 
+  public static parseTitle(title) {
+    return title.split(':');
+  }
+
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
     private _cookieUtilsService: CookieUtilsService,
@@ -258,10 +262,6 @@ export class WorkshopPageComponent implements OnInit {
         this.viewDate = date;
       }
     }
-  }
-
-  public static parseTitle(title) {
-    return title.split(':');
   }
 
   // Modal

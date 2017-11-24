@@ -9,8 +9,8 @@ export class MediaUploaderService {
   private options;
 
   constructor(private http: HttpClient,
-              private config: AppConfig,
-              private sanitizer: DomSanitizer) {}
+    private config: AppConfig,
+    private sanitizer: DomSanitizer) { }
 
   public upload(file) {
     let type = file;
@@ -19,8 +19,7 @@ export class MediaUploaderService {
     }
     file.src = file.objectURL.changingThisBreaksApplicationSecurity;
     const formData = new FormData();
-    if (file.type.includes('image/'))
-    {
+    if (file.type.includes('image/')) {
       type = 'image';
     }
     else if (file.type.includes('video/')) {
@@ -31,9 +30,9 @@ export class MediaUploaderService {
     }
     formData.append(type, file, file.name);
     return this.http.post(this.config.apiUrl + '/api/media/upload?container=peerbuds-dev1290',
-                          formData,
-                          { withCredentials: true })
-                    .map((response: Response) => response);
+      formData,
+      { withCredentials: true })
+      .map((response: Response) => response);
   }
 
 }

@@ -60,8 +60,8 @@ export class WorkshopEditComponent implements OnInit {
   private uploadingVideo = false;
 
   private workshopId: string;
-  private workshopData:any;
-  public isWorkShopActive= false;
+  public workshopData: any;
+  public isWorkShopActive = false;
   public activeWorkshop = '';
   // Set our default values
   public localState = { value: '' };
@@ -122,7 +122,7 @@ export class WorkshopEditComponent implements OnInit {
       'topics',
       'calendars',
       { 'participants': [{ 'profiles': ['work'] }] },
-      { 'owners': [{'profiles': ['phone_numbers']}] },
+      { 'owners': [{ 'profiles': ['phone_numbers'] }] },
       { 'contents': ['schedules'] }
     ]
   };
@@ -298,8 +298,8 @@ export class WorkshopEditComponent implements OnInit {
           } else if (key === 'supplementUrls') {
             const control = <FormArray>form.controls[key];
             value[key].forEach(supplementUrl => {
-                  control.push(new FormControl(supplementUrl));
-              });
+              control.push(new FormControl(supplementUrl));
+            });
           } else {
             form.controls[key].patchValue(value[key]);
           }
@@ -393,11 +393,11 @@ export class WorkshopEditComponent implements OnInit {
 
     this.languagePickerService.getLanguages()
       .subscribe((languages) => {
-          this.languagesArray = _.map(languages, 'name');
-          this.filteredLanguageOptions = this.workshop.controls.selectedLanguage.valueChanges
-              .startWith(null)
-              .map(val => val ? this.filter(val) : this.languagesArray.slice());
-          console.log(this.filteredLanguageOptions);
+        this.languagesArray = _.map(languages, 'name');
+        this.filteredLanguageOptions = this.workshop.controls.selectedLanguage.valueChanges
+          .startWith(null)
+          .map(val => val ? this.filter(val) : this.languagesArray.slice());
+        console.log(this.filteredLanguageOptions);
       });
 
     if (this.interests.length === 0) {
@@ -415,9 +415,9 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   filter(val: string): string[] {
-      console.log('filtering');
-      return this.languagesArray.filter(option =>
-          option.toLowerCase().indexOf(val.toLowerCase()) === 0);
+    console.log('filtering');
+    return this.languagesArray.filter(option =>
+      option.toLowerCase().indexOf(val.toLowerCase()) === 0);
   }
 
   private initializeWorkshop() {
@@ -473,7 +473,7 @@ export class WorkshopEditComponent implements OnInit {
 
   public removed(event) {
     const body = {};
-    let options;
+    const options = {};
     this.removedInterests = event;
     if (this.removedInterests.length !== 0) {
       this.removedInterests.forEach((topic) => {
@@ -618,6 +618,11 @@ export class WorkshopEditComponent implements OnInit {
       this.mediaUploader.upload(file).subscribe((response) => {
         this.addImageUrl(response.url);
         this.uploadingImage = false;
+      }, err => {
+        this.snackBar.open(err.message, 'close', {
+          duration: 900
+        });
+        this.uploadingImage = false;
       });
     }
   }
@@ -676,7 +681,7 @@ export class WorkshopEditComponent implements OnInit {
           this.workshopStepUpdate();
         }
         this.router.navigate(['workshop', collectionId, 'edit', this.step]);
-        
+
       }).subscribe();
   }
 
@@ -739,10 +744,9 @@ export class WorkshopEditComponent implements OnInit {
       observable.subscribe((res) => {
         this.step++;
         this._collectionService.getCollectionDetail(this.workshopId, this.query)
-        .subscribe((res) => {
-          console.log(res);
-          this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(res, this.sidebarMenuItems);
-        });
+          .subscribe((resData) => {
+            this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
+          });
         this.workshopStepUpdate();
         this.busyInterest = false;
         this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
@@ -834,26 +838,26 @@ export class WorkshopEditComponent implements OnInit {
     tempArray = _.union(this.interests, tempArray);
     let topic;
     this.dialogsService
-    .addNewTopic()
-    .subscribe((res) => {
-      if (res) {
-        topic = res;
-        topic.checked = true;
-        tempArray.push(topic);
-        this.interests = _.union(this.interests, tempArray);
-        this.suggestedTopics = this.interests;
-      }
+      .addNewTopic()
+      .subscribe((res) => {
+        if (res) {
+          topic = res;
+          topic.checked = true;
+          tempArray.push(topic);
+          this.interests = _.union(this.interests, tempArray);
+          this.suggestedTopics = this.interests;
+        }
       });
   }
 
   addNewLanguage() {
     this.dialogsService
-    .addNewLanguage()
-    .subscribe((res) => {
-      if (res) {
-        this.languagesArray.push(res);
-        this.workshop.controls.selectedLanguage.patchValue(res.name);
-      }
+      .addNewLanguage()
+      .subscribe((res) => {
+        if (res) {
+          this.languagesArray.push(res);
+          this.workshop.controls.selectedLanguage.patchValue(res.name);
+        }
       });
 
   }
@@ -983,9 +987,9 @@ export class WorkshopEditComponent implements OnInit {
       .subscribe((res) => {
         console.log('Token Verified');
       },
-          (error) => {
-              this.snackBar.open(error.message);
-          });
+      (error) => {
+        this.snackBar.open(error.message);
+      });
   }
 
   takeToPayment() {

@@ -4,10 +4,10 @@
       <button md-button class="mat-icon-button dialog-close-button" type="button" (click)="closeSelectCohort()">
         <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
       </button>
-      <div style="display: inline-block">
-        <h2 md-dialog-title *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</h2>
-        <h2 md-dialog-title *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
-        <h2 md-dialog-title *ngIf="mode === 'editDelete'">Existing workshop cohorts</h2>
+      <div>
+        <div class="mat-display-1" *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</div>
+        <h2 class="mat-display-1" *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
+        <h2 class="mat-display-1" *ngIf="mode === 'editDelete'">Existing workshop cohorts</h2>
       </div>
       <div *ngIf="mode === 'editDelete'" class="col-md-2 pull-right" style="padding-top:6px">
         <button md-raised-button class="mat-raised-button" (click)="closeSelectCohort()" color="primary">Done</button>
@@ -20,7 +20,7 @@
   </div>
   <div class="row" *ngIf="filteredItineraries.length === 0">
     <div class="col-md-12 margin-top-60 margin-left-40">
-      <md-icon style="top: 5px;">info</md-icon>
+      <md-icon style="position: relative; top: 5px;">info</md-icon>
       There are no upcoming cohorts for this Workshop.
     </div>
   </div>
