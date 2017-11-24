@@ -116,13 +116,8 @@
                 </div>-->
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(1)>Back</a> -->
-                  <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
-                    <span *ngIf="!busyInterest">Continue</span>
-                    <span *ngIf="busyInterest"> </span>
-                    <ngx-loading [show]="busyInterest"></ngx-loading>
-                  </button>
-                  <span mdTooltip="Add More interests!" [mdTooltipDisabled]="interests.length !== 0">
-                    <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
+                  <span mdTooltip="Add More interests!" class="pull-right" [mdTooltipDisabled]="interests.length !== 0">
+                    <button md-raised-button color="accent" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
                       <span *ngIf="!busyInterest">Continue</span>
                       <span *ngIf="busyInterest"> </span>
                       <ngx-loading [show]="busyInterest"></ngx-loading>

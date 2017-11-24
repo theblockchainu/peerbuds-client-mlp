@@ -12,7 +12,6 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule, MdTooltipModule } from '@angular/material';
 import { IndexComponent } from './default/index/index.component';
-import { IndexComponent1 } from './default/index1/index1.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 import 'hammerjs';
 import { DialogsModule } from './_services/dialogs/dialogs.module';
@@ -22,7 +21,6 @@ import { SignupComponent } from './signup/signup.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-//import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 import { ContactComponent } from './contact-us/contact-us.component';
 import { AgmCoreModule } from '@agm/core';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
@@ -30,7 +28,7 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
+
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 
 @NgModule({
@@ -41,7 +39,6 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     AppHeaderComponent,
     AppFooterComponent,
     IndexComponent,
-    IndexComponent1,
     IndexPhilComponent,
     AccessDeniedComponent,
     LoginComponent,
@@ -74,7 +71,6 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     MdTooltipModule,
     DialogsModule,
     AppRoutingModule,
-    //CarouselModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
     }),

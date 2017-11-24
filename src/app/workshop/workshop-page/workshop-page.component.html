@@ -717,22 +717,18 @@
                 <!--COVER IMAGE-->
                 <div class="row">
                   <div class="col-md-12">
-                    <carousel [noWrap]="noWrapSlides">
-                      <!--<slide>
-                        <video autoplay loop muted height="800px" class="center-block" (click)="workshopVideoDialog()">
-                          <source src="{{config.apiUrl+workshop.videoUrl}}">
-                          <source src="{{config.apiUrl+workshop.videoUrl}}">
-                        </video>
-                      </slide>-->
+                    <div style="width: 300px; height: 500px" *ngIf="carouselImages && carouselConfig">
+                      <carousel [sources]="carouselImages" [config]="carouselConfig"></carousel>
+                    </div>
+                    <!-- <carousel [noWrap]="noWrapSlides">
                       <slide *ngIf="workshop.imageUrls === undefined">
                         <img src="../../../assets/images/placeholder-image.jpg" class="img-responsive" style="width: auto; max-height: 500px; min-width: 100%;"
                           alt="First slide">
                       </slide>
-
                       <slide *ngFor="let imageUrl of workshop.imageUrls">
                         <img src="{{config.apiUrl+imageUrl}}" class="img-responsive" style="width: auto; max-height: 500px; min-width: 100%;" alt="First slide">
                       </slide>
-                    </carousel>
+                    </carousel> -->
                   </div>
                 </div>
                 <!--HEADLINE-->
