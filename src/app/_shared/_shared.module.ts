@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, NgSwitch } from '@angular/common';
+import { CommonModule, NgSwitch, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CurrencyPipe } from '@angular/common';
 
 import {
   MdChipsModule, MdDialogModule, MdMenuModule, MdButtonModule,
@@ -91,7 +90,8 @@ import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
     SocketService,
     ExtractTimePipe,
     ConvertCurrencyPipe,
-    CurrencyPipe
+    CurrencyPipe,
+    TitleCasePipe
   ],
   exports: [
     CommonModule,
@@ -124,7 +124,7 @@ import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
     SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
-    LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe
+    LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TitleCasePipe
   ]
 })
 export class SharedModule { }

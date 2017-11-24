@@ -8,6 +8,9 @@ import { SocketService } from '../../socket/socket.service';
 import { Router } from '@angular/router';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { Observable } from 'rxjs/Observable';
+import { AppConfig } from '../../../app.config';
+import { TitleCasePipe } from '@angular/common';
+
 @Component({
   selector: 'app-live-session-dialog',
   templateUrl: './live-session-dialog.component.html',
@@ -21,13 +24,13 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   public mainLoading: boolean;
   public startedView;
   public userId;
-  public isTeacher = false;
+  public isTeacherView = false;
   private participantCount: number;
   public registeredParticipantMapObj: any;
   public joinedParticipantArray: Array<any>;
   public localAudioTrack: any;
   public localVideoTrack: any;
-
+  public localParticipantId: string;
   @ViewChild('mainStream') mainStream: ElementRef;
   @ViewChild('otherStream') otherStream: ElementRef;
   @ViewChild('localStream') localStream: ElementRef;
@@ -41,7 +44,9 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     private cookieUtilsService: CookieUtilsService,
     private _socketService: SocketService,
     private router: Router,
-    private deviceService: Ng2DeviceService
+    private deviceService: Ng2DeviceService,
+    private _config: AppConfig,
+    private _titleCase: TitleCasePipe
   ) {
     this.userId = cookieUtilsService.getValue('userId');
   }
@@ -56,13 +61,10 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     this._twilioServicesService.getToken().subscribe(
       result => {
         this.token = result.token;
+        this.roomName = this.dialogData.roomName;
         this.createRoom();
       }
     );
-    this.roomName = this.dialogData.roomName;
-    this.dialogRef.afterClosed().subscribe(result => {
-      this.room.disconnect();
-    });
     this.recordSessionStart();
   }
 
@@ -82,103 +84,82 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     }).then((createdRoom) => {
       this.room = createdRoom;
       console.log('Connected to Room "%s"', this.room.name);
-
-      const localParticipant = this.room.localParticipant;
-      const localDiv = this.renderer.createElement('div');
-      localDiv.id = localParticipant.identity;
-
-      localParticipant.tracks.forEach(track => {
-        if (track.kind === 'audio') {
-          this.localAudioTrack = track;
-          this.localAudioTrack.on('disabled', (audtrack) => {
-            console.log('disabled');
-          });
-          this.localAudioTrack.on('enabled', (audtrack) => {
-            console.log('enabled');
-          });
-
-        } else if (track.kind === 'video') {
-          this.localVideoTrack = track;
-          this.localVideoTrack.on('disabled', (audtrack) => {
-            console.log('disabled');
-          });
-          this.localVideoTrack.on('enabled', (audtrack) => {
-            console.log('enabled');
-          });
-        }
-        this.trackAdded(localDiv, track);
-
-        if (localParticipant.identity === this.dialogData.teacherId) {
-          this.isTeacher = true;
-          this.mainLoading = false;
-          this.renderer.appendChild(this.mainStream.nativeElement, localDiv);
-        } else {
-          this.renderer.appendChild(this.localStream.nativeElement, localDiv);
-        }
-      });
-
-      this.room.participants.forEach(participant => this.participantConnected(participant));
-      this.room.on('participantConnected', participant => this.participantConnected(participant));
-
-      this.room.on('participantDisconnected', participant => this.participantDisconnected(participant));
-      this.room.once('disconnected', error => this.room.participants.forEach(participant => this.participantDisconnected(participant)));
-
-
+      this.setUpLocalParticipant();
+      this.setUpRemoteParticipants();
     }, (error) => {
       console.error('Unable to connect to Room: ' + error.message);
     });
   }
 
-  private participantConnected(participant: any) {
-    console.log('Already in Room: ' + participant.identity);
-    const div = this.renderer.createElement('div');
-    div.id = participant.identity;
-    // div.innerText = participant.identity;
-    if (participant.identity === this.dialogData.teacherId) {
-      this.mainLoading = false;
-      participant.on('trackAdded', track => this.trackAdded(div, track));
-      participant.tracks.forEach(track => this.trackAdded(div, track));
-      participant.on('trackRemoved', track => this.trackRemoved(track));
-      this.renderer.appendChild(this.mainStream.nativeElement, div);
-    } else {
-      this.joinedParticipantArray.push(participant);
-      this.participantCount++;
-      if (this.isTeacher) {
-        if (this.participantCount < 6) {
-          participant.on('trackAdded', track => this.trackAdded(div, track));
-          participant.tracks.forEach(track => this.trackAdded(div, track));
-          participant.on('trackRemoved', track => this.trackRemoved(track));
-          this.renderer.appendChild(this.otherStreamTeacher.nativeElement, div);
-          console.log('added');
-        }
-      } else {
-        if (this.participantCount < 5) {
-          participant.on('trackAdded', track => this.trackAdded(div, track));
-          participant.tracks.forEach(track => this.trackAdded(div, track));
-          participant.on('trackRemoved', track => this.trackRemoved(track));
-          this.renderer.appendChild(this.otherStream.nativeElement, div);
-          console.log('added');
-        }
-      }
+  private setUpRemoteParticipants() {
+    this.room.participants.forEach(participant => this.participantConnected(participant));
+    this.room.on('participantConnected', participant => this.participantConnected(participant));
+    this.room.on('participantDisconnected', participant => this.participantDisconnected(participant));
+  }
 
+  private setUpLocalParticipant() {
+    const localParticipant = this.room.localParticipant;
+    this.isTeacherView = (localParticipant.identity === this.dialogData.teacher.id);
+    this.localParticipantId = localParticipant.identity;
+    const localDiv = this.renderer.createElement('div');
+    localDiv.id = localParticipant.identity;
+    localDiv.appendChild(this.participantImage(localParticipant, this.isTeacherView));
+    localDiv.appendChild(this.participantName(localParticipant, this.isTeacherView));
+    if (this.isTeacherView) {
+      this.mainLoading = false;
+      this.renderer.appendChild(this.mainStream.nativeElement, localDiv);
+    } else {
+      this.renderer.appendChild(this.localStream.nativeElement, localDiv);
     }
+    localParticipant.tracks.forEach(track => {
+      if (track.kind === 'audio') {
+        this.localAudioTrack = track;
+        this.replaceTrack(localParticipant, this.localAudioTrack);
+      } else if (track.kind === 'video') {
+        this.localVideoTrack = track;
+        this.replaceTrack(localParticipant, this.localVideoTrack);
+      }
+    });
+  }
+
+  private participantConnected(remoteParticipant: any) {
+    console.log('Connected participant: ' + remoteParticipant.identity);
+    const isTeacher = (remoteParticipant.identity === this.dialogData.teacher.id);
+    const remoteDiv = this.renderer.createElement('div');
+    remoteDiv.id = remoteParticipant.identity;
+    remoteDiv.appendChild(this.participantImage(remoteParticipant, isTeacher));
+    remoteDiv.appendChild(this.participantName(remoteParticipant, isTeacher));
+    if (this.isTeacherView) {
+      this.renderer.appendChild(this.otherStreamTeacher.nativeElement, remoteDiv);
+    } else {
+      if (isTeacher) {
+        this.mainLoading = false;
+        this.renderer.appendChild(this.mainStream.nativeElement, remoteDiv);
+      } else {
+        this.renderer.appendChild(this.otherStream.nativeElement, remoteDiv);
+      }
+    }
+    remoteParticipant.on('trackAdded', track => {
+      if (track.kind === 'video') {
+        track.on('disabled', remoteVideoTrack => {
+          console.log('Participant ' + remoteParticipant.identity + ' disabled video');
+          this.remoteVideoDisabled(remoteParticipant, track);
+        });
+        track.on('enabled', remoteVideoTrack => {
+          console.log('Participant ' + remoteParticipant.identity + ' enabled video');
+          this.remoteVideoEnabled(remoteParticipant, track);
+        });
+      }
+      this.replaceTrack(remoteParticipant, track);
+    });
+    remoteParticipant.on('trackRemoved', track => {
+      console.log('track removed');
+      this.removeTrack(remoteParticipant, track);
+    });
   }
 
   private participantDisconnected(participant: any) {
     console.log('Participant "%s" disconnected', participant.identity);
-    // participant.tracks.forEach(this.trackRemoved);
-    // document.getElementById(participant.sid).remove();
-    const elem: Element = document.getElementById(participant.identity);
-    console.log(elem);
-  }
-
-  private trackAdded(div, track) {
-    div.appendChild(track.attach());
-  }
-
-  private trackRemoved(track) {
-    // track.detach().forEach(element => element.remove());
-    // console.log(track.detach());
   }
 
   private recordSessionStart() {
@@ -219,8 +200,22 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   public toggleVideo() {
     if (this.localVideoTrack.isEnabled) {
       this.localVideoTrack.disable();
+      const localDiv = document.getElementById(this.localParticipantId);
+      const tracks = <HTMLCollection>localDiv.children;
+      for (let i = 0; i < tracks.length; i++) {
+        if (tracks.item(i).localName === 'video') {
+          this.renderer.setStyle(tracks.item(i), 'position', 'unset');
+        }
+      }
     } else {
       this.localVideoTrack.enable();
+      const localDiv = document.getElementById(this.localParticipantId);
+      const tracks = <HTMLCollection>localDiv.children;
+      for (let i = 0; i < tracks.length; i++) {
+        if (tracks.item(i).localName === 'video') {
+          this.renderer.setStyle(tracks.item(i), 'position', 'relative');
+        }
+      }
     }
   }
 
@@ -235,4 +230,97 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  /**
+   * remoteVideoToggled
+   */
+  public remoteVideoEnabled(remoteParticipant: any, toggledTrack: any) {
+    const localDiv = document.getElementById(remoteParticipant.identity);
+    const tracks = <HTMLCollection>localDiv.children;
+    for (let i = 0; i < tracks.length; i++) {
+      if (tracks.item(i).localName === 'video') {
+        this.renderer.setStyle(tracks.item(i), 'position', 'relative');
+      }
+    }
+
+  }
+
+  /**
+   * remoteVideoToggled
+   */
+  public remoteVideoDisabled(remoteParticipant: any, toggledTrack: any) {
+    const localDiv = document.getElementById(remoteParticipant.identity);
+    const tracks = <HTMLCollection>localDiv.children;
+    for (let i = 0; i < tracks.length; i++) {
+      if (tracks.item(i).localName === 'video') {
+        this.renderer.setStyle(tracks.item(i), 'position', 'unset');
+      }
+    }
+  }
+
+  private participantImage(participant: any, isTeacher: boolean) {
+    const img = new Image();
+    if (isTeacher) {
+      img.className = 'circle-thumb teacherStreamImage';
+      if ((participant.identity === this.dialogData.teacher.id) && this.dialogData.teacher.profiles[0].picture_url) {
+        img.src = this._config.apiUrl + this.dialogData.teacher.profiles[0].picture_url;
+      } else {
+        img.src = '../../../assets/images/avatar.png';
+      }
+    } else {
+      img.className = 'circle-thumb otherStreamImage';
+      if ((participant.identity in this.registeredParticipantMapObj) && this.registeredParticipantMapObj[participant.identity].profiles[0].picture_url) {
+        img.src = this._config.apiUrl + this.registeredParticipantMapObj[participant.identity].profiles[0].picture_url;
+      } else {
+        img.src = '../../../assets/images/avatar.png';
+      }
+    }
+    return img;
+  }
+
+  private participantName(participant, isTeacher: boolean) {
+    const par = this.renderer.createElement('span');
+    if (isTeacher) {
+      par.className = 'teacherName';
+      par.innerText = this._titleCase.transform(this.dialogData.teacher.profiles[0].first_name);
+    } else if (participant.identity in this.registeredParticipantMapObj) {
+      par.className = 'studentName';
+      par.innerText = this._titleCase.transform(this.registeredParticipantMapObj[participant.identity].profiles[0].first_name);
+    } else {
+      par.innerText = 'Not Registered';
+    }
+    console.log(par);
+    return par;
+  }
+
+  private replaceTrack(participant: any, track: any) {
+    const el = document.getElementById(participant.identity);
+    const tracks = <HTMLCollection>el.children;
+    let trackFound = false;
+    for (let i = 0; i < tracks.length; i++) {
+      if (tracks.item(i).localName === track.kind) {
+        this.renderer.removeChild(el, tracks.item(i));
+        this.renderer.appendChild(el, track.attach());
+        trackFound = true;
+      }
+    }
+    if (!trackFound) {
+      this.renderer.appendChild(el, track.attach());
+    }
+  }
+
+  private removeTrack(participant: any, track: any) {
+    const el = document.getElementById(participant.identity);
+    const tracks = <HTMLCollection>el.children;
+    for (let i = 0; i < tracks.length; i++) {
+      if (tracks.item(i).localName === track.kind) {
+        this.renderer.removeChild(el, tracks.item(i));
+      }
+    }
+  }
+
+  public endCall() {
+    this.room.disconnect();
+    this.dialogRef.close();
+  }
 }
