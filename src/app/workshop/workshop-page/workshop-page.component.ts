@@ -462,7 +462,10 @@ export class WorkshopPageComponent implements OnInit {
             });
           }
           else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-            this.snackBar.open('Your payment was successful. Happy learning!', 'Close');
+            const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
+            snackBarRef.onAction().subscribe(() => {
+              this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
+            });
           }
         });
     } else {
@@ -638,21 +641,38 @@ export class WorkshopPageComponent implements OnInit {
    * cancelWorkshop
    */
   public cancelWorkshop() {
-    if (this.userType === 'participant') {
-      this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
-        location.reload();
-      });
-    } else if (this.userType === 'teacher') {
       const cancelObj = {
-        isCancelled: true
+        isCancelled: true,
+        cancelledBy: this.userId,
+        status: 'cancelled'
       };
       this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
-        location.reload();
+          this.router.navigate(['workshop', this.workshopId]);
       });
-    }
-    else {
-      console.log('cancel Workshop');
-    }
+  }
+
+  /**
+   * dropoutWorkshop
+   */
+  public dropOutWorkshop() {
+      this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
+          this.router.navigate(['workshop', this.workshopId]);
+      });
+  }
+
+  public cancelCohort() {
+    const cancelObj = {
+        status: 'cancelled'
+    };
+    this._collectionService.patchCalendar(this.calendarId, cancelObj).subscribe(() => {
+        this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
+    });
+  }
+
+  public deleteCohort() {
+    this._collectionService.deleteCalendar(this.calendarId).subscribe(() => {
+      this.router.navigate(['workshop', this.workshopId]);
+    });
   }
 
   /**
@@ -767,15 +787,27 @@ export class WorkshopPageComponent implements OnInit {
 
   openDeleteDialog(action: string) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action
+      data: action,
+      width: '30vw'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'delete') {
+      if (result === 'deleteWorkshop') {
         this.deleteWorkshop();
-      } else if (result === 'cancel') {
+      }
+      else if (result === 'deleteCohort') {
+        this.deleteCohort();
+      }
+      else if (result === 'cancelWorkshop') {
         this.cancelWorkshop();
-      } else {
+      }
+      else if (result === 'cancelCohort') {
+        this.cancelCohort();
+      }
+      else if (result === 'dropOut') {
+        this.dropOutWorkshop();
+      }
+      else {
         console.log(result);
       }
     });
@@ -1315,7 +1347,8 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   oneDay() {
-    return this.itenaryArray.length > 1;
+    return true;
+    //return this.itenaryArray.length > 1;
   }
 
   displayNone() {

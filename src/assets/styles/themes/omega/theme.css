@@ -618,35 +618,35 @@ p-togglebutton.ng-dirty.ng-invalid .ui-button {
   width: 21px !important;
   height: 21px !important;
   cursor: default;
-  background: #fff;
-  outline: none;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 50%;
-  border: none;
-  box-shadow: 3px 0px 5px 4px rgba(210,210,210,0.32);
+  background: #33bd9e !important;
+  outline: none !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 50% !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .ui-slider .ui-slider-range {
   position: absolute;
   z-index: 1;
-  font-size: .7em;
+  font-size: .7em !important;
   display: block;
-  border: 0;
-  background: #33bd9e;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) inset;
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) inset;
-  box-shadow: none;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  border: 0 !important;
+  background: #33bd9e !important;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) inset !important;
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) inset !important;
+  box-shadow: none !important;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  border-radius: 3px !important;
 }
 
 .ui-slider .ui-slider-handle.ui-state-active {
   background-position: -17px 0; }
 
 .ui-slider-horizontal {
-  height: 0.5em !important;
+  height: 0.2em !important;
   margin: 20px 0px;
 }
 

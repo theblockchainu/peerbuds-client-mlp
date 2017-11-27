@@ -56,7 +56,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 
   private getLearningTopics() {
     const querylearning = {};
-    this._profileService.getLearningTopics(querylearning).subscribe((response) => {
+    this._profileService.getLearningTopics(this.userId, querylearning).subscribe((response) => {
       this.topicsLearning = response;
     }, (err) => {
       console.log(err);

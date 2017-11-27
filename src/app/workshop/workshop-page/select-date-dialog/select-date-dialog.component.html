@@ -32,11 +32,11 @@
             <div class="col-md-8">
               <div class="col-md-12">
                 <div class="margin-top-20 margin-bottom-20">
-                <span class="mat-body-2">
-                  {{itenaryObj.calendar.startDate | date:'EEE, MMM d'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d'}}
+                <span [ngClass]="{'mat-body-2': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
+                    {{itenaryObj.calendar.startDate | date:'EEE, MMM d'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d'}}
                 </span>
                   <br>
-                  <span class="mat-caption">
+                  <span [ngClass]="{'mat-caption': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
                   {{itenaryObj.participantCount}} participants
                 </span>
                 </div>

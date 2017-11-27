@@ -122,6 +122,14 @@ export class CollectionService {
   }
 
   /**
+   * patchCalendar
+   */
+  public patchCalendar(calendarId: string, body: any) {
+      return this.http.patch(this.config.apiUrl +
+          '/api/calendars/' + calendarId, body, this.options);
+  }
+
+  /**
    * deleteCollection
    */
   public deleteCollection(collectionId: string) {
