@@ -116,8 +116,8 @@
                 </div>-->
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(1)>Back</a> -->
-                  <span mdTooltip="Add More interests!" [mdTooltipDisabled]="interests.length !== 0">
-                    <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
+                  <span class="pull-right" mdTooltip="Add at least one interest to continue" [mdTooltipDisabled]="interests.length !== 0">
+                    <button md-raised-button color="accent" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
                       <span *ngIf="!busyInterest">Continue</span>
                       <span *ngIf="busyInterest"> </span>
                       <ngx-loading [show]="busyInterest"></ngx-loading>
@@ -147,7 +147,7 @@
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(2)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Select Language!" [mdTooltipDisabled]="selectedLanguages!==undefined">
+                  <span class="pull-right" mdTooltip="Select a language to continue" [mdTooltipDisabled]="selectedLanguages!==undefined">
                     <button md-raised-button color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
                       <span *ngIf="!busyLanguage">Continue</span>
                       <span *ngIf="busyLanguage"> </span>
@@ -177,7 +177,7 @@
                 </div>
                 <div style="margin-top:50px;">
                   <!-- <a md-button (click)=goto(3)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Enter something about yourself!" [mdTooltipDisabled]="aboutHost.value.length !== 0">
+                  <span class="pull-right" mdTooltip="A brief description about yourself is mandatory to continue" [mdTooltipDisabled]="aboutHost.value.length !== 0">
                     <button md-raised-button color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
                       <span *ngIf="!busyHost">Continue</span>
                       <span *ngIf="busyHost"> </span>
@@ -246,7 +246,7 @@
                 </div>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(5)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Please fill all details!" [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
+                  <span class="pull-right" mdTooltip="Please fill all details" [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
                     <button md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
                   </span>
                 </div>
@@ -271,7 +271,7 @@
                 </div>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(6)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Please fill the description!" [mdTooltipDisabled]="description.value.length !== 0">
+                  <span class="pull-right" mdTooltip="Describe your workshop in detail to continue" [mdTooltipDisabled]="description.value.length !== 0">
                     <button md-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Continue</button>
                   </span>
                 </div>
@@ -292,7 +292,7 @@
                     <md-option *ngFor="let d of difficulties" [value]="d">{{d}}</md-option>
                   </md-select>
                 </div>
-                <h3 class="title">Notes</h3>
+                <h3 class="title">Pre-requisites</h3>
                 <p class="subtitle">Describe the knowledge prerequisites, if there is any, that learners should know of.</p>
                 <div class="col-sm-12 margin-bottom-30 padding-left-0">
                   <md-input-container class="pb-block">
@@ -302,7 +302,7 @@
                 </div>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(7)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Please fill all the details!" [mdTooltipDisabled]="workshop.controls['difficultyLevel'].value && workshop.controls['notes'].value">
+                  <span class="pull-right" mdTooltip="Please fill all the details" [mdTooltipDisabled]="workshop.controls['difficultyLevel'].value && workshop.controls['notes'].value">
                     <button md-raised-button color="accent" type="Submit" [disabled]="!difficultyLevel && notes.value.length == 0">Continue</button>
                   </span>
                 </div>
@@ -314,7 +314,7 @@
         <div class="onboarding step-9" [hidden]="step!=9">
           <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">How many seats are available? </h2>
+              <h2 class="title">How many seats are available in each cohort? </h2>
               <p class="subtitle">
                 Remember to keep your workshop as personal as possible.
                 <br> The more learners the less attention you can give to everybody.
@@ -328,7 +328,7 @@
                 <br/>
                 <div style="padding-top:60px;">
                   <!-- <a md-button (click)=goto(8)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Please select the number of spots!" [mdTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
+                  <span class="pull-right" mdTooltip="Enter the maximum number of participants you can teach in each Cohort of this workshop" [mdTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
                     <button md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Continue</button>
                   </span>
                 </div>
@@ -342,7 +342,7 @@
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Showcase your workshop</h2>
               <p class="subtitle">
-                Give the world a taste of your experience by showcasing captivating videos and/or photos
+                Give the world a taste of your workshop by showcasing captivating videos and/or photos
               </p>
               <div class="row" style="margin-top:25px;">
                 <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)" novalidate>
@@ -392,7 +392,7 @@
 
                   <div class="row">
                     <div class="margin-top-60">
-                      <span class="pull-right" mdTooltip="Please upload images or video" [mdTooltipDisabled]="urlForImages.length !== 0 || urlForVideo.length !== 0">
+                      <span class="pull-right" mdTooltip="Either a video or an image is mandatory to continue" [mdTooltipDisabled]="urlForImages.length !== 0 || urlForVideo.length !== 0">
                         <button md-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 && urlForVideo.length === 0">Continue</button>
                       </span>
                     </div>
@@ -436,7 +436,7 @@
                 </div>
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(10)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Please select the number of spots, price and currency!" [mdTooltipDisabled]="workshop.controls['price'].value && workshop.controls['currency'].value  && workshop.controls['cancellationPolicy'].value">
+                  <span class="pull-right" mdTooltip="Enter a price you wish to charge for this workshop and its cancellation policy" [mdTooltipDisabled]="workshop.controls['price'].value && workshop.controls['currency'].value  && workshop.controls['cancellationPolicy'].value">
                     <button md-raised-button color="accent" type="Submit" [disabled]="(!workshop.controls['price'].value || !workshop.controls['cancellationPolicy'].value  || !workshop.controls['currency'].value)">Continue</button>
                   </span>
                 </div>
@@ -506,7 +506,7 @@
                 <div class="row">
                   <div style="margin-top:100px;">
                     <!-- <a md-button (click)=goto(12)>Back</a> -->
-                    <span class="pull-right" mdTooltip="Please select the Dates!" [mdTooltipDisabled]="(timeline.controls['calendar'].value.startDate || timeline.controls['calendar'].value.endDate)">
+                    <span class="pull-right" mdTooltip="A minimum of 1 day workshop is mandatory to continue" [mdTooltipDisabled]="(timeline.controls['calendar'].value.startDate || timeline.controls['calendar'].value.endDate)">
                       <button md-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate)">Continue</button>
                     </span>
                   </div>
@@ -527,7 +527,7 @@
                 <div style="margin-top:20px;">
                   <md-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</md-checkbox>
                 </div>
-                <span class="pull-right" mdTooltip="Please select the Terms and conditions!" [mdTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+                <span class="pull-right" mdTooltip="You need to agree to Peerbuds community terms to submit this workshop for approval" [mdTooltipDisabled]="selectedValues[0] && selectedValues[1]">
                   <button md-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
                     Submit for Review</button>
                 </span>
@@ -572,7 +572,7 @@
                     <md-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
                   </md-radio-group>
                 </div>
-                <span class="pull-right" mdTooltip="Phone number not verified!" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
+                <span class="pull-right" mdTooltip="Please verify your phone number to continue" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
                   <button md-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
                     <span *ngIf="!busyPayment">Continue</span>
                     <span *ngIf="busyPayment"> </span>
