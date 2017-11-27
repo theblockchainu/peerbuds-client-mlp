@@ -3,27 +3,14 @@ import { CommonModule } from '@angular/common';
 
 import { IndexComponent } from './index/index.component';
 import { IndexPhilComponent } from './index-philosophy/index-philosophy.component';
-import {
-  MdButtonModule, MdCardModule, MdIconModule, MdInputModule, MdProgressBarModule, MdSelectModule,
-  MdToolbarModule
-} from '@angular/material';
 
-
-
-
+import { SharedModule } from '../_shared/_shared.module';
 @NgModule({
   imports: [
     CommonModule,
-    IndexComponent,
-    IndexPhilComponent,
-    MdCardModule,
-    MdButtonModule,
-    MdToolbarModule,
-    MdIconModule,
-    MdProgressBarModule,
-    MdInputModule,
-    MdSelectModule
+    SharedModule
   ],
-  declarations: [IndexComponent]
+  declarations: [IndexComponent,
+    IndexPhilComponent]
 })
 export class DefaultModule { }

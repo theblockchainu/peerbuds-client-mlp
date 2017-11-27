@@ -1,5 +1,7 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
+import 'hammerjs';
+
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
 import { ExperienceWizardModule } from './experience-wizard/experience-wizard.module';
@@ -11,9 +13,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule, MdTooltipModule } from '@angular/material';
-import { IndexComponent } from './default/index/index.component';
-import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
-import 'hammerjs';
+
 import { DialogsModule } from './_services/dialogs/dialogs.module';
 import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
@@ -28,7 +28,7 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-
+import { DefaultModule } from './default/default.module';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 
 @NgModule({
@@ -38,8 +38,6 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     NoContentComponent,
     AppHeaderComponent,
     AppFooterComponent,
-    IndexComponent,
-    IndexPhilComponent,
     AccessDeniedComponent,
     LoginComponent,
     SignupComponent,
@@ -71,6 +69,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     MdTooltipModule,
     DialogsModule,
     AppRoutingModule,
+    DefaultModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
     }),
