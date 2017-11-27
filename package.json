@@ -127,6 +127,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "less-loader": "^4.0.2",
     "mdi": "^2.0.46",
+    "ng-pick-datetime": "^5.0.0-beta.12",
     "ng4-geoautocomplete": "0.0.9",
     "ngc-webpack": "^3.2.2",
     "optimize-js-plugin": "0.0.4",
