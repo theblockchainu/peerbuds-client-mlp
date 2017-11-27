@@ -19,89 +19,93 @@
           </div>
         </div>
         <hr> -->
-        <div class="row" *ngIf="alreadyVerified?.length > 0">
-          <div class="col-md-12">
-            <h3>Already Verified</h3>
-          </div>
-          <div class="col-md-12">
-            <div class="row" *ngFor="let verifiedObj of alreadyVerified">
-              <div class="col-md-12">
-                <h5 style="margin-bottom:10px;font-weight:bold;">{{verifiedObj.text}}</h5>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-sm-1" style="width:7.3333% !important;">
-                  <!--<button md-mini-fab> <md-icon> check </md-icon> </button>-->
-                  <i class="mdi mdi-check-circle-outline mdi-24px primaryColor pull-right" style="margin-top: 2px"></i>
-                </div>
-                <p class="mat-caption" style="color:#767676;">{{verifiedObj.value}}</p>
-              </div>
+          <div class="row" *ngIf="alreadyVerified?.length > 0">
+            <div class="col-md-12">
+              <h3>Already Verified</h3>
             </div>
-          </div>
-        </div>
-        <hr *ngIf="alreadyVerified?.length > 0">
-        <div class="row" *ngIf="notVerified?.length > 0">
-          <div class="col-md-12">
-            <h3>Yet to be Verified</h3>
-          </div>
-          <div class="col-md-12">
-            <div class="row" *ngFor="let unverifiedObj of notVerified">
-              <div class="col-md-8 margin-top-20">
+            <div class="col-md-12">
+              <div class="row" *ngFor="let verifiedObj of alreadyVerified">
+                <div class="col-md-12">
+                  <h5 style="margin-bottom:10px;font-weight:bold;">{{verifiedObj.text}}</h5>
+                </div>
+                <br>
                 <div class="row">
-                  <div class="col-md-12">
-                    <h5 style="margin-bottom:10px;font-weight:bold;">{{unverifiedObj.text}}</h5>
+                  <div class="col-sm-1" style="width:7.3333% !important;">
+                    <!--<button md-mini-fab> <md-icon> check </md-icon> </button>-->
+                    <i class="mdi mdi-check-circle-outline mdi-24px primaryColor pull-right" style="margin-top: 2px"></i>
                   </div>
-                  <div class="col-md-10">
-                    <p class="mat-caption" style="color:#767676">{{unverifiedObj.value}}</p>
-                  </div>
+                  <p class="mat-caption" style="color:#767676;">{{verifiedObj.value}}</p>
                 </div>
               </div>
-              <div class="col-md-4">
-                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Email address'" (click)="openEmailVerify()">Verify</button>
-                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Government Id'" (click)="openIdVerify()">Verify</button>
-                <button md-button color="primary" *ngIf="unverifiedObj.text == 'Phone Number'" (click)="openPhoneVerify()">Verify</button>
+            </div>
+          </div>
+          <hr *ngIf="alreadyVerified?.length > 0">
+          <div class="row" *ngIf="notVerified?.length > 0">
+            <div class="col-md-12">
+              <h3>Yet to be Verified</h3>
+            </div>
+            <div class="col-md-12">
+              <div class="row" *ngFor="let unverifiedObj of notVerified">
+                <div class="col-md-8 margin-top-20">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h5 style="margin-bottom:10px;font-weight:bold;">{{unverifiedObj.text}}</h5>
+                    </div>
+                    <div class="col-md-10">
+                      <p *ngIf="unverifiedObj.text == 'Government Id' && !unverifiedObj.submitted" class="mat-caption" style="color:#767676">{{unverifiedObj.value}}</p>
+                      <img style="max-width: 150px" *ngIf="unverifiedObj.text == 'Government Id' && unverifiedObj.submitted" src="{{config.apiUrl+unverifiedObj.value}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <button md-button color="primary" *ngIf="unverifiedObj.text == 'Email address'" (click)="openEmailVerify()">Verify</button>
+                  <button md-button color="primary" *ngIf="unverifiedObj.text == 'Government Id' && !unverifiedObj.submitted" (click)="openIdVerify()">Verify</button>
+                  <span mdTooltip="Already submitted!" *ngIf="unverifiedObj.text == 'Government Id' && unverifiedObj.submitted">
+                    <button md-button color="primary" [disabled]="true">Awaiting verification</button>
+                  </span>
+                  <button md-button color="primary" *ngIf="unverifiedObj.text == 'Phone Number'" (click)="openPhoneVerify()">Verify</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <hr *ngIf="notVerified?.length > 0">
-        <div class="row">
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-md-12">
-                <h5 style="font-weight:bold">Facebook</h5>
-              </div>
-              <div class="col-md-10">
-                <p class="mat-caption" style="color:#767676">
-                  Sign in with your facebook and discover your trusted connections to teachers and learners all over the world.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 margin-top-20">
-            <a *ngIf="!connectedIdentities.fb" md-button href="{{config.apiUrl + '/link/Facebook?returnTo=console/profile/verification'}}">Connect</a>
-            <p *ngIf="connectedIdentities.fb" href="#" color="grey">Connected</p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-8 margin-top-20">
-            <div class="row">
-              <div class="col-md-12">
-                <h5 style="font-weight:bold">Google</h5>
-              </div>
-              <div class="col-md-10">
-                <p class="mat-caption" style="color:#767676">
-                  Sign in with your Google and discover your trusted connections to teachers and learners all over the world.
-                </p>
+          <hr *ngIf="notVerified?.length > 0">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5 style="font-weight:bold">Facebook</h5>
+                </div>
+                <div class="col-md-10">
+                  <p class="mat-caption" style="color:#767676">
+                    Sign in with your facebook and discover your trusted connections to teachers and learners all over the world.
+                  </p>
+                </div>
               </div>
             </div>
+            <div class="col-md-4 margin-top-20">
+              <a *ngIf="!connectedIdentities.fb" md-button href="{{config.apiUrl + '/link/Facebook?returnTo=console/profile/verification'}}">Connect</a>
+              <p *ngIf="connectedIdentities.fb" href="#" color="grey">Connected</p>
+            </div>
           </div>
-          <div class="col-md-4 margin-top-40">
-            <a *ngIf="!connectedIdentities.google" md-button href="{{config.apiUrl + '/link/Google?returnTo=console/profile/verification'}}">Connect</a>
-            <p *ngIf="connectedIdentities.google" href="#" color="grey">Connected</p>
+          <div class="row">
+            <div class="col-md-8 margin-top-20">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5 style="font-weight:bold">Google</h5>
+                </div>
+                <div class="col-md-10">
+                  <p class="mat-caption" style="color:#767676">
+                    Sign in with your Google and discover your trusted connections to teachers and learners all over the world.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 margin-top-40">
+              <a *ngIf="!connectedIdentities.google" md-button href="{{config.apiUrl + '/link/Google?returnTo=console/profile/verification'}}">Connect</a>
+              <p *ngIf="connectedIdentities.google" href="#" color="grey">Connected</p>
+            </div>
           </div>
-        </div>
-        <!-- <div class="row">
+          <!-- <div class="row">
           <div class="col-md-8 margin-top-20">
             <div class="row">
               <div class="col-md-12">
@@ -118,7 +122,7 @@
             <a md-button color="accent">Connect</a>
           </div>
         </div> -->
+        </div>
       </div>
     </div>
   </div>
-</div>

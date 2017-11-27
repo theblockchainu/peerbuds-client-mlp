@@ -45,7 +45,6 @@ export class TextIconCarouselComponent implements OnInit {
 
   /* It will be triggered on every slide*/
   onmoveFn(data: NgxCarouselStore) {
-    console.log(data);
     this.currentTestimonial = data.currentSlide;
   }
 
@@ -55,7 +54,6 @@ export class TextIconCarouselComponent implements OnInit {
   //   this.pointers = i;
   // }
   moveTo(i) {
-    console.log('goto' + i);
     this.gotoSlide = i;
   }
 }
