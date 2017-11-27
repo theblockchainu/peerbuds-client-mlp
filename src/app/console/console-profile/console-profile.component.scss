@@ -22,7 +22,9 @@
 .review-section{
   margin-bottom:50px;
   font-size: 80%;
-  &:last-child{margin-bottom:0;}
+  &:last-child{
+    margin-bottom:0;
+  }
   .review-thumb{
     margin-right:15px;
     display: inline-block;

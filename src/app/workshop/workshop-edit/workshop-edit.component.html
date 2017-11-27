@@ -116,11 +116,6 @@
                 </div>-->
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(1)>Back</a> -->
-                  <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
-                    <span *ngIf="!busyInterest">Continue</span>
-                    <span *ngIf="busyInterest"> </span>
-                    <ngx-loading [show]="busyInterest"></ngx-loading>
-                  </button>
                   <span mdTooltip="Add More interests!" [mdTooltipDisabled]="interests.length !== 0">
                     <button md-raised-button color="accent" class="pull-right" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
                       <span *ngIf="!busyInterest">Continue</span>
@@ -252,9 +247,7 @@
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(5)>Back</a> -->
                   <span class="pull-right" mdTooltip="Please fill all details!" [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
-
                     <button md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
-
                   </span>
                 </div>
               </form>
@@ -279,7 +272,6 @@
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(6)>Back</a> -->
                   <span class="pull-right" mdTooltip="Please fill the description!" [mdTooltipDisabled]="description.value.length !== 0">
-
                     <button md-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Continue</button>
                   </span>
                 </div>
@@ -363,16 +355,6 @@
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
                         </ng-template>
                       </p-fileUpload>
-                      <!-- <ng-template pTemplate="content"> -->
-                      <!-- <md-grid-list cols="2" rowHeight="2:1" gutterSize="20px" *ngIf="urlForVideo.length" class="video" style="max-height:100px!important">
-                        <md-grid-tile *ngFor="let file of urlForVideo">
-                          <video controls width="150" style="border: 0.5px solid #ccc;" preload="metadata">
-                            <source src="{{config.apiUrl + file}}"> Your browser does not support the video tag.
-                          </video>
-                          <md-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</md-icon>
-                        </md-grid-tile>
-                      </md-grid-list> -->
-                      <!-- </ng-template> -->
                       <div *ngIf="urlForVideo.length" class="profileVideo delete">
                         <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
                           <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
@@ -396,14 +378,6 @@
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
                         </ng-template>
                       </p-fileUpload>
-                      <!-- <ng-template pTemplate="content"> -->
-                      <!-- <md-grid-list cols="4" gutterSize="10px" *ngIf="urlForImages.length">
-                        <md-grid-tile *ngFor="let file of urlForImages">
-                          <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
-                          <md-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</md-icon>
-                        </md-grid-tile>
-                      </md-grid-list> -->
-                      <!-- </ng-template> -->
                       <div *ngIf="urlForImages.length" class="pic delete">
                         <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
                           <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
@@ -554,7 +528,6 @@
                   <md-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</md-checkbox>
                 </div>
                 <span class="pull-right" mdTooltip="Please select the Terms and conditions!" [mdTooltipDisabled]="selectedValues[0] && selectedValues[1]">
-
                   <button md-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
                     Submit for Review</button>
                 </span>
@@ -599,13 +572,8 @@
                     <md-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
                   </md-radio-group>
                 </div>
-                <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
-                  <span *ngIf="!busyPayment">Continue</span>
-                  <span *ngIf="busyPayment"> </span>
-                  <ngx-loading [show]="busyPayment"></ngx-loading>
-                </button>
-                <span mdTooltip="Phone number not verified!" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
-                  <button md-raised-button (click)="takeToPayment()" class="pull-right" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+                <span class="pull-right" mdTooltip="Phone number not verified!" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
+                  <button md-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
                     <span *ngIf="!busyPayment">Continue</span>
                     <span *ngIf="busyPayment"> </span>
                     <ngx-loading [show]="busyPayment"></ngx-loading>

@@ -1,9 +1,9 @@
-<div md-dialog-content *ngIf="data.selectedRange !== undefined">
+<div class="dialog-container" style="padding: 20px 25px !important;" md-dialog-content *ngIf="data.selectedRange !== undefined">
   <p-slider [(ngModel)]="data.selectedRange" [range]="true" [min]="data.availableRange[0]" [max]="data.availableRange[1]"></p-slider>
-  <p class="mat-body-2"> {{data.selectedRange[0] | currency:'INR':true:'1.0-0'}} - {{data.selectedRange[1] | currency:'INR':true:'1.0-0'}}</p>
-</div>
-<div md-dialog-actions>
+  <p class="mat-body-1"> {{data.selectedRange[0] | currency:userCurrency:true:'1.0-0'}} - {{data.selectedRange[1] | currency:userCurrency:true:'1.0-0'}}</p>
+  <div md-dialog-actions>
   <span mdTooltip="Invalid Range!" [mdTooltipDisabled]="data.selectedRange !== undefined">
     <button md-raised-button [md-dialog-close]="data" color="accent" [disabled]="data.selectedRange === undefined">Apply</button>
   </span>
+  </div>
 </div>
