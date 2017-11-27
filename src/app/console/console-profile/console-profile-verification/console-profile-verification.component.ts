@@ -6,7 +6,7 @@ import { AppConfig } from '../../../app.config';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
-
+import { ContentService } from '../../../_services/content/content.service';
 
 @Component({
   selector: 'app-console-profile-verification',
@@ -36,7 +36,8 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     private dialogsService: DialogsService,
     public _profileService: ProfileService,
     public config: AppConfig,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private contentService: ContentService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
@@ -112,17 +113,23 @@ export class ConsoleProfileVerificationComponent implements OnInit {
         }
       }
       if (peer.accountVerified && peer.verificationIdUrl) {
-        this.alreadyVerified.push({
-          text: 'Government Id',
-          value: peer.verificationIdUrl
-        });
-      } else {
-        if (peer.verificationIdUrl) {
-          this.notVerified.push({
+        this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res) => {
+          this.alreadyVerified.push({
             text: 'Government Id',
-            value: peer.verificationIdUrl,
-            submitted: true
+            value: res[0]
           });
+        });
+
+      } else {
+        if (peer.verificationIdUrl && peer.verificationIdUrl.length > 5) {
+          this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res) => {
+            this.notVerified.push({
+              text: 'Government Id',
+              value: res[0],
+              submitted: true
+            });
+          });
+
         } else {
           this.notVerified.push({
             text: 'Government Id',

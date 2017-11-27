@@ -34,7 +34,8 @@
                     <!--<button md-mini-fab> <md-icon> check </md-icon> </button>-->
                     <i class="mdi mdi-check-circle-outline mdi-24px primaryColor pull-right" style="margin-top: 2px"></i>
                   </div>
-                  <p class="mat-caption" style="color:#767676;">{{verifiedObj.value}}</p>
+                  <p class="mat-caption" *ngIf="verifiedObj.text !== 'Government Id'" style="color:#767676;">{{verifiedObj.value}}</p>
+                  <a *ngIf="verifiedObj.text == 'Government Id'" href="{{config.apiUrl + verifiedObj.value.url}}" target="_blank">{{verifiedObj.value.originalFilename}}</a>
                 </div>
               </div>
             </div>
@@ -52,8 +53,9 @@
                       <h5 style="margin-bottom:10px;font-weight:bold;">{{unverifiedObj.text}}</h5>
                     </div>
                     <div class="col-md-10">
-                      <p *ngIf="unverifiedObj.text == 'Government Id' && !unverifiedObj.submitted" class="mat-caption" style="color:#767676">{{unverifiedObj.value}}</p>
-                      <img style="max-width: 150px" *ngIf="unverifiedObj.text == 'Government Id' && unverifiedObj.submitted" src="{{config.apiUrl+unverifiedObj.value}}">
+                      <p *ngIf="!unverifiedObj.submitted" class="mat-caption" style="color:#767676">{{unverifiedObj.value}}</p>
+                      <a *ngIf="unverifiedObj.text == 'Government Id'  && unverifiedObj.submitted" href="{{config.apiUrl + unverifiedObj.value.url}}"
+                        target="_blank">{{unverifiedObj.value.originalFilename}}</a>
                     </div>
                   </div>
                 </div>
