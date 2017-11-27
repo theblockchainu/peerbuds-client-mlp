@@ -38,6 +38,13 @@
         </span>
       </div>
     </div>
+    <div class="row pending-actions center" *ngIf="calendarId !== undefined && currentCalendar !== undefined && currentCalendar.status === 'cancelled'">
+      <div class="col-md-10 col-md-offset-1">
+        <span>This cohort was cancelled by the teacher.
+          <a href="javascript:void(0);" (click)="selectJoiningDates()">View other cohorts?</a>
+        </span>
+      </div>
+    </div>
     <div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && accountApproved !== 'true')">
       <div class="col-md-10 col-md-offset-1">
         <span>Your account is still under review. You can sign-up for this workshop after you are approved.
@@ -87,8 +94,11 @@
               <button md-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="gotoEdit()">Edit</button>&emsp;
               <md-icon [mdMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</md-icon>
               <md-menu #menu="mdMenu">
-                <button md-menu-item *ngIf="userType==='participant'" (click)="openDeleteDialog('cancel')">Cancel Workshop</button>
-                <button md-menu-item *ngIf="userType==='teacher'" (click)=" openDeleteDialog( 'delete')">Delete Workshop</button>
+                <button md-menu-item *ngIf="userType==='participant'" (click)="openDeleteDialog('dropOut')">Cancel Participation</button>
+                <button md-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0" (click)=" openDeleteDialog( 'deleteWorkshop')">Delete Workshop</button>
+                <button md-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0" (click)=" openDeleteDialog( 'cancelWorkshop')">Cancel Workshop</button>
+                <button md-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0" (click)=" openDeleteDialog( 'deleteCohort')">Delete Cohort</button>
+                <button md-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'" (click)=" openDeleteDialog( 'cancelCohort')">Cancel Cohort</button>
               </md-menu>
             </div>
           </div>

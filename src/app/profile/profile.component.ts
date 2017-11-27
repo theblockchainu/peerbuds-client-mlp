@@ -32,6 +32,7 @@ export class ProfileComponent implements OnInit {
   public recommendedpeers = [];
   public socialIdentities: any = [];
   public maxVisibleInterest = 3;
+  public maxVisibleReviews = 4;
   public topicsTeaching = [];
   public isTeacher: boolean;
   public offsetString = 'col-md-offset-1';
@@ -322,6 +323,14 @@ export class ProfileComponent implements OnInit {
     } else {
       this.maxVisibleInterest = 3;
     }
+  }
+
+  public toggleMaxReviews() {
+      if (this.maxVisibleReviews === 4) {
+          this.maxVisibleReviews = 999;
+      } else {
+          this.maxVisibleReviews = 4;
+      }
   }
 
   public reportProfile() {

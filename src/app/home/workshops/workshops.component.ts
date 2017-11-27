@@ -10,6 +10,7 @@ import { MdDialog } from '@angular/material';
 import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import 'rxjs/add/operator/do';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-workshops',
@@ -27,6 +28,7 @@ export class WorkshopsComponent implements OnInit {
   public initialized: boolean;
   public selectedTopics: Array<any>;
   public loading = false;
+  private today = moment();
 
   constructor(
     public _collectionService: CollectionService,
@@ -98,7 +100,7 @@ export class WorkshopsComponent implements OnInit {
     }
     query = {
       'include': [
-        { 'collections': [{'owners': 'reviewsAboutYou'}] }
+        { 'collections': [{'owners': 'reviewsAboutYou'}, 'calendars'] }
       ],
       'where': { or: this.selectedTopics }
     };
@@ -114,7 +116,14 @@ export class WorkshopsComponent implements OnInit {
                     collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                     collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
                 }
-                if (collection.price) {
+                let hasActiveCalendar = false;
+                collection.calendars.forEach(calendar => {
+                    if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                        hasActiveCalendar = true;
+                        return;
+                    }
+                });
+                if (collection.price && hasActiveCalendar) {
                     if (this.selectedRange) {
                         if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
                             workshops.push(collection);

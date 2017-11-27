@@ -5,6 +5,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { AppConfig } from '../../app.config';
 import { TopicService } from '../../_services/topic/topic.service';
 import _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-feed',
@@ -17,6 +18,8 @@ export class HomefeedComponent implements OnInit {
   public peers: Array<any>;
   public loadingWorkshops = false;
   public loadingPeers = false;
+  private today = moment();
+
   constructor(
     public _collectionService: CollectionService,
     public _profileService: ProfileService,
@@ -35,7 +38,7 @@ export class HomefeedComponent implements OnInit {
   fetchWorkshops() {
     const query = {
       'include': [
-        { 'collections': [{'owners': 'reviewsAboutYou'}] }
+        { 'collections': [{'owners': 'reviewsAboutYou'}, 'calendars'] }
       ],
       'order': 'createdAt desc'
     };
@@ -51,11 +54,21 @@ export class HomefeedComponent implements OnInit {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
-              this.workshops.push(collection);
+              let hasActiveCalendar = false;
+              collection.calendars.forEach(calendar => {
+                if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                  hasActiveCalendar = true;
+                  return;
+                }
+              });
+              if (hasActiveCalendar) {
+                this.workshops.push(collection);
+              }
             }
           });
         }
         this.workshops = _.uniqBy(this.workshops, 'id');
+        this.workshops = _.orderBy(this.workshops, ['createdAt'], ['desc']);
         this.workshops = _.chunk(this.workshops, 5)[0];
 
       }, (err) => {
