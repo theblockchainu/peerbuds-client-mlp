@@ -281,7 +281,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   private participantName(participant, isTeacher: boolean) {
     const par = this.renderer.createElement('span');
     if (isTeacher) {
-      par.className = 'teacherName';
+      par.className = 'sessionTeacherName';
       par.innerText = this._titleCase.transform(this.dialogData.teacher.profiles[0].first_name);
     } else if (participant.identity in this.registeredParticipantMapObj) {
       par.className = 'studentName';

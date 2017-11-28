@@ -121,6 +121,7 @@
 
         .login-section {
             margin: -3%;
+            height: 83vh;
         }
 
         .form-control {
@@ -691,15 +692,15 @@
             xhttp.withCredentials = true;
             xhttp.onreadystatechange = function () {
                 if (xhttp.readyState == 4) {
-                    if(xhttp.responseText){
+                    if (xhttp.responseText) {
                         response = JSON.parse(xhttp.responseText);
-                    if (response.status === 'failed') {
-                        // $("#email").append(new alert(response.reason));
-                        alert(response.reason);
-                    } else {
-                        location.href = 'app-upload-docs/1';
+                        if (response.status === 'failed') {
+                            // $("#email").append(new alert(response.reason));
+                            alert(response.reason);
+                        } else {
+                            location.href = 'app-upload-docs/1';
                         }
-                    }else{
+                    } else {
                         location.href = 'app-upload-docs/1';
                     }
                 }
