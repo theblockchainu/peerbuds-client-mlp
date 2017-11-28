@@ -1394,7 +1394,7 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
     z-index: 0;
 }
 
-.teacherName{
+.sessionTeacherName{
     position: absolute;
     left: 48vw;
     top: 5vh;
