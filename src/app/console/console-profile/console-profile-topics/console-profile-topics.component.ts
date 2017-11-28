@@ -4,6 +4,7 @@ import { ConsoleProfileComponent } from '../console-profile.component';
 import { ProfileService } from '../../../_services/profile/profile.service';
 import { AccordionItem } from '@angular/material';
 import { MdSnackBar } from '@angular/material';
+import { NG_VALIDATORS, FormControl, Validator, ValidationErrors } from '@angular/forms';
 
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';

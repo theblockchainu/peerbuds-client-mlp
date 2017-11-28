@@ -1,8 +1,9 @@
-import {Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { Location } from "@angular/common";
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
-import {Http, Response} from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { AppConfig } from '../../app.config';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { CollectionService } from '../../_services/collection/collection.service';
@@ -10,6 +11,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import { MdDialog } from '@angular/material';
 import * as moment from 'moment';
 import { WorkshopCloneDialogComponent } from '../workshop-edit/workshop-clone-dialog/workshop-clone-dialog.component';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-workshop-content',
@@ -45,7 +47,8 @@ export class WorkshopContentComponent implements OnInit {
     private requestHeaders: RequestHeaderService,
     private dialog: MdDialog,
     public router: Router,
-    public _collectionService: CollectionService
+    public _collectionService: CollectionService,
+    private location: Location
   ) {
     this.options = requestHeaders.getOptions();
   }
@@ -98,13 +101,17 @@ export class WorkshopContentComponent implements OnInit {
 
   checkWorkshopActive() {
     if (this.collection.status === 'active') {
-      this.showDialogForActiveWorkshop();
+      this.showDialogForActiveWorkshop(false);
     }
     else {
       const itenaries = <FormArray>this.myForm.controls['itenary'];
       itenaries.push(this.initItenary());
       this.days.emit(itenaries);
     }
+  }
+
+  reload(collectionId, step) {
+    window.location.href = '/workshop/' + collectionId + '/edit/' + step;
   }
 
   private executeSubmitWorkshop(collection) {
@@ -124,21 +131,22 @@ export class WorkshopContentComponent implements OnInit {
         let collectionId;
         if (result.isNewInstance) {
           collectionId = result.id;
-          this.router.navigate(['workshop', collectionId, 'edit', 13]);
+          this.reload(collectionId, 13);
         }
         else {
           window.location.reload();
         }
-
       }).subscribe();
   }
 
-  showDialogForActiveWorkshop() {
+  showDialogForActiveWorkshop(isContent) {
     let dialogRef: any;
     dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'accept') {
-        this.executeSubmitWorkshop(this.collection);
+        if (!isContent) {
+          this.executeSubmitWorkshop(this.collection);
+        }
       }
       else if (result === 'reject') {
         // Do nothing
@@ -149,141 +157,214 @@ export class WorkshopContentComponent implements OnInit {
 
   saveTriggered(event, i) {
     console.log(this.myForm);
-    if (this.collection.status === 'active') {
-      this.showDialogForActiveWorkshop();
-    }
-    else {
+    // if (this.collection.status === 'active') {
+    //   this.showDialogForActiveWorkshop();
+    // }
+    // else {
       if (event.action === 'add') {
-        const itenaryObj = this.myForm.value.itenary[i];
-        const scheduleDate = itenaryObj.date;
-        const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
-        const schedule = contentObj.schedule;
-        delete schedule.id;
-        delete contentObj.id;
-        delete contentObj.schedule;
-        delete contentObj.pending;
-        if (contentObj.type === 'project' || contentObj.type === 'video') {
-          if (contentObj.type === 'video') {
-            schedule.endDay = 0;
-          }
-          else {
-            const endDate = new Date(schedule.endDay);
-            schedule.endDay = this.numberOfdays(endDate, this.calendar.startDate);
-          }
-          schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
-          schedule.endTime = new Date(0, 0, 0, 1, 0, 0, 0);
-        } else if (contentObj.type === 'online') {
-          const startTimeArr = schedule.startTime.toString().split(':');
-          const startHour = startTimeArr[0];
-          const startMin = startTimeArr[1];
-          schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
-
-          const endTimeArr = schedule.endTime.toString().split(':');
-          const endHour = endTimeArr[0];
-          const endMin = endTimeArr[1];
-          schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
-          schedule.endDay = 0;
-        }
-        schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
-
-        console.log(schedule);
-        this.http.post(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.options)
-          .map((response: Response) => {
-            const contentId = response.json().id;
-            const itenary = <FormArray>this.myForm.controls.itenary;
-            const form = <FormGroup>itenary.controls[i];
-            const contentsArray = <FormArray>form.controls.contents;
-            const contentGroup = <FormGroup>contentsArray.controls[event.value];
-            contentGroup.controls.id.setValue(contentId);
-
-            this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
-              .map((resp: Response) => {
-                if (resp.status === 200) {
-                  const Itenary = <FormArray>this.myForm.controls.itenary;
-                  const Form = <FormGroup>Itenary.controls[i];
-                  const ContentsArray = <FormArray>Form.controls.contents;
-                  const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-                  /*const ContentSchedule = <FormGroup>ContentGroup.controls.schedule;
-                  ContentSchedule.controls.startTime.patchValue('');
-                  ContentSchedule.controls.endTime.patchValue('');*/
-                  ContentGroup.controls.pending.setValue(false);
-                }
-                console.log(response);
-              })
-              .subscribe();
-          })
-          .subscribe();
-
-        } else if (event.action === 'update') {
-        const itenary = <FormArray>this.myForm.controls.itenary;
-        const form = <FormGroup>itenary.controls[i];
-        const contentsArray = <FormArray>form.controls.contents;
-        const contentGroup = <FormGroup>contentsArray.controls[event.value];
-        const ContentSchedule = <FormGroup>contentGroup.controls.schedule;
-        contentGroup.controls.pending.setValue(true);
-
-        const itenaryObj = this.myForm.value.itenary[i];
-        const scheduleDate = itenaryObj.date;
-        const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
-        const schedule = contentObj.schedule;
-        delete schedule.id;
-        const contentId = contentObj.id;
-        delete contentObj.id;
-        delete contentObj.schedule;
-        delete contentObj.pending;
-        if (contentObj.type === 'project') {
-          const endDay = new Date(schedule.endDay);
-          schedule.endDay = endDay;
-        }
-        if (contentObj.type === 'online' || contentObj.type === 'video') {
-          schedule.endDay = 0;
-        }
-        schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
-        if (schedule.startTime === '') {
-          schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
-        } else {
-          const startTimeArr = schedule.startTime.toString().split(':');
-          const startHour = startTimeArr[0];
-          const startMin = startTimeArr[1];
-          schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
-        }
-        if (schedule.endTime === '') {
-          schedule.endTime = new Date(0, 0, 0, 23, 0, 0, 0);
+        let response;
+        if (this.collection.status === 'active') {
+          let dialogRef: any;
+          dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
+          dialogRef.afterClosed().subscribe((result) => {
+            if (result === 'accept') {
+              this.postContent(event, i);
+            }
+            else if (result === 'reject') {
+              // Do nothing
+              this.router.navigate(['console', 'teaching', 'workshops']);
+            }
+          });
         }
         else {
-          const endTimeArr = schedule.endTime.toString().split(':');
-          const endHour = endTimeArr[0];
-          const endMin = endTimeArr[1];
-          schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
+          this.postContent(event, i);
         }
-        console.log(contentId);
-        console.log(schedule);
-        //this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, this.options)
-        this.http.put(this.config.apiUrl + '/api/collections/' + this.collection.id  + '/contents/' + contentId, contentObj, this.options)
-          .map((response: Response) => {
-            this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
-              .map((resp: Response) => {
-                if (resp.status === 200) {
-                  /*ContentSchedule.controls.startTime.patchValue('');
-                  ContentSchedule.controls.endTime.patchValue('');*/
-                  contentGroup.controls.pending.setValue(false);
-                }
-                console.log(resp);
-              })
-              .subscribe();
-          })
-          .subscribe();
-      } else if (event.action === 'delete') {
+
+      } else if (event.action === 'update') {
+        let response;
+        if (this.collection.status === 'active') {
+          let dialogRef: any;
+          dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
+          dialogRef.afterClosed().subscribe((result) => {
+            if (result === 'accept') {
+              this.patchContent(event, i);
+            }
+            else if (result === 'reject') {
+              // Do nothing
+              this.router.navigate(['console', 'teaching', 'workshops']);
+            }
+          });
+        }
+        else {
+          this.patchContent(event, i);
+        }
+      } 
+      else if (event.action === 'delete') {
         this.deleteContent(event.value, i);
       }
       else if (event.action === 'deleteDay') {
         this.deleteContent(null, i);
         const itenary = <FormArray>this.myForm.controls.itenary;
         itenary.removeAt(i);
-      } else {
+      } 
+      else {
         console.log('unhandledEvent Triggered');
       }
+    // }
+  }
+
+  postContent(event, i) {
+    let collectionId;
+    const itenaryObj = this.myForm.value.itenary[i];
+    const scheduleDate = itenaryObj.date;
+    const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
+    const schedule = contentObj.schedule;
+    delete schedule.id;
+    delete contentObj.id;
+    delete contentObj.schedule;
+    delete contentObj.pending;
+
+    let contentId;
+    const itenary = <FormArray>this.myForm.controls.itenary;
+    const form = <FormGroup>itenary.controls[i];
+    const contentsArray = <FormArray>form.controls.contents;
+    const contentGroup = <FormGroup>contentsArray.controls[event.value];
+
+    if (contentObj.type === 'project' || contentObj.type === 'video') {
+      if (contentObj.type === 'video') {
+        schedule.endDay = 0;
+      }
+      else {
+        const endDate = new Date(schedule.endDay);
+        schedule.endDay = this.numberOfdays(endDate, this.calendar.startDate);
+      }
+      schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
+      schedule.endTime = new Date(0, 0, 0, 1, 0, 0, 0);
+    } else if (contentObj.type === 'online') {
+      const startTimeArr = schedule.startTime.toString().split(':');
+      const startHour = startTimeArr[0];
+      const startMin = startTimeArr[1];
+      schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
+
+      const endTimeArr = schedule.endTime.toString().split(':');
+      const endHour = endTimeArr[0];
+      const endMin = endTimeArr[1];
+      schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
+      schedule.endDay = 0;
     }
+    schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
+
+    console.log(schedule);
+    this.http.post(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.options)
+      .map((response: Response) => {
+
+        let result = response.json();
+
+        if (result.isNewInstance) {
+          collectionId = result.id;
+          result.contents.forEach((content) => {
+            if (content.isNewInstance) {
+              contentId = content.id;
+            }
+          })
+        }
+        else {
+          contentId = result.id;
+        }
+        contentGroup.controls.id.setValue(contentId);
+
+        this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
+          .map((resp: Response) => {
+            if (resp.status === 200) {
+              const Itenary = <FormArray>this.myForm.controls.itenary;
+              const Form = <FormGroup>Itenary.controls[i];
+              const ContentsArray = <FormArray>Form.controls.contents;
+              const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
+              /*const ContentSchedule = <FormGroup>ContentGroup.controls.schedule;
+              ContentSchedule.controls.startTime.patchValue('');
+              ContentSchedule.controls.endTime.patchValue('');*/
+              ContentGroup.controls.pending.setValue(false);
+            }
+            console.log(response);
+            
+            this.reload(collectionId, 13);
+          })
+          .subscribe();
+      })
+      .subscribe();
+  }
+
+  patchContent(event, i) {
+    let collectionId;
+    const itenary = <FormArray>this.myForm.controls.itenary;
+    const form = <FormGroup>itenary.controls[i];
+    const contentsArray = <FormArray>form.controls.contents;
+    const contentGroup = <FormGroup>contentsArray.controls[event.value];
+    const ContentSchedule = <FormGroup>contentGroup.controls.schedule;
+    contentGroup.controls.pending.setValue(true);
+
+    const itenaryObj = this.myForm.value.itenary[i];
+    const scheduleDate = itenaryObj.date;
+    const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
+    const schedule = contentObj.schedule;
+    delete schedule.id;
+    let contentId = contentObj.id;
+    delete contentObj.id;
+    delete contentObj.schedule;
+    delete contentObj.pending;
+    if (contentObj.type === 'project') {
+      const endDay = new Date(schedule.endDay);
+      schedule.endDay = endDay;
+    }
+    if (contentObj.type === 'online' || contentObj.type === 'video') {
+      schedule.endDay = 0;
+    }
+    schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
+    if (schedule.startTime === '') {
+      schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
+    } else {
+      const startTimeArr = schedule.startTime.toString().split(':');
+      const startHour = startTimeArr[0];
+      const startMin = startTimeArr[1];
+      schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);
+    }
+    if (schedule.endTime === '') {
+      schedule.endTime = new Date(0, 0, 0, 23, 0, 0, 0);
+    }
+    else {
+      const endTimeArr = schedule.endTime.toString().split(':');
+      const endHour = endTimeArr[0];
+      const endMin = endTimeArr[1];
+      schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
+    }
+    console.log(contentId);
+    console.log(schedule);
+    //this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, this.options)
+    this.http.put(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.options)
+      .map((response: Response) => {
+        let result = response.json();
+        if (result.isNewInstance) {
+          collectionId = result.id;
+          result.contents.forEach((content) => {
+            if (content.isNewInstance) {
+              contentId = content.id;
+            }
+          })
+        }
+        this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
+          .map((resp: Response) => {
+            if (resp.status === 200) {
+              /*ContentSchedule.controls.startTime.patchValue('');
+              ContentSchedule.controls.endTime.patchValue('');*/
+              contentGroup.controls.pending.setValue(false);
+            }
+            console.log(resp);
+
+            this.reload(collectionId, 13);
+          })
+          .subscribe();
+      })
+      .subscribe();
   }
 
   deleteContent(eventIndex, index) {

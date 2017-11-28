@@ -229,13 +229,13 @@ export class ContentViewComponent implements OnInit {
      * Open dialog for creating new online content
      */
     public findAndOpenDialog(index) {
-      if (this.workshopStatus === 'active') {
-        this.triggerSave.emit({
-          action: 'dialog',
-          value: index
-        });
-      }
-      else {
+      // if (this.workshopStatus === 'active') {
+      //   this.triggerSave.emit({
+      //     action: 'dialog',
+      //     value: index
+      //   });
+      // }
+      // else {
         let isEdit = true;
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         if (index === -1) {
@@ -280,7 +280,7 @@ export class ContentViewComponent implements OnInit {
               }
           }
         });
-      }
+      // }
     }
 
     getCollectionStartDate() {

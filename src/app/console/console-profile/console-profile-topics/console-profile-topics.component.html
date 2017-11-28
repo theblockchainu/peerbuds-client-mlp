@@ -45,20 +45,22 @@
                   </div>
                 </div>
                 <div class="review-section" *ngFor="let topic of topicsTeaching">
-                  <div class="topic-name col-md-8 padding-left-0">
-                    <span class="col-md-9 padding-left-0 mat-body-2">{{topic.name |titlecase}}</span>
-                  </div>
-                  <i class="mdi mdi-content-save mdiIcon darkColor pull-left alignDelete" (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
-                  <i class="mdi mdi-close-circle mdiIcon darkColor pull-left alignDelete" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
+                  <form #f="ngForm">
+                    <div class="topic-name col-md-8 padding-left-0">
+                      <span class="col-md-9 padding-left-0 mat-body-2">{{topic.name |titlecase}}</span>
+                    </div>
+                    <i [ngClass]="{'mdi mdi-content-save mdiIcon darkColor pull-left alignDelete':true, 'disabledSpan': (!f.form.controls.experience?.dirty && !f.form.controls.experience?.touched) }" (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
+                    <i class="mdi mdi-close-circle mdiIcon darkColor pull-left alignDelete" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
 
-                  <div class="topic-experience col-md-8 padding-left-0">
-                    <md-input-container style="margin-bottom: 20px; width:100%">
-                      <textarea mdInput #experience name="experience" rows="3" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?"
-                        required></textarea>
-                      <md-error>This field is required</md-error>
-                      <md-hint align="end">{{experience.value.length}} / 1000</md-hint>
-                    </md-input-container>
-                  </div>
+                    <div class="topic-experience col-md-8 padding-left-0">
+                      <md-input-container style="margin-bottom: 20px; width:100%" #experienceContainer>
+                        <textarea mdInput #experience name="experience" rows="3" class="form-control" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?"
+                          required></textarea>
+                        <md-error>This field is required</md-error>
+                        <md-hint align="end">{{experience.value.length}} / 1000</md-hint>
+                      </md-input-container>
+                    </div>
+                  </form>
                 </div>
               </md-tab>
             </md-tab-group>

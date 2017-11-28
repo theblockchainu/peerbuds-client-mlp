@@ -75,9 +75,9 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     DialogsModule,
     AppRoutingModule,
     //CarouselModule.forRoot(),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
-    }),
+    // AgmCoreModule.forRoot({
+    //   apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
+    // }),
     Ng4GeoautocompleteModule.forRoot(),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.threeBounce,
