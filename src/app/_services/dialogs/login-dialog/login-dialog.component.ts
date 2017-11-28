@@ -55,7 +55,7 @@ export class LoginComponentDialog implements OnInit {
     //reset login status
     this.authenticationService.logout();
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home/homefeed';
 
     this.loginForm = this._fb.group({
       email: ['', Validators.email], /* putting reg ex as well */
@@ -79,6 +79,7 @@ export class LoginComponentDialog implements OnInit {
     this.authenticationService.login(this.email, this.passWord, this.rememberMe)
       .subscribe(
       (data) => {
+        console.log(this.returnUrl);
         this.dialogRef.close();
         this.router.navigate([this.returnUrl]);
       },

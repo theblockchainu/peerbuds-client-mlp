@@ -22,8 +22,7 @@ import { PaymentService } from '../_services/payment/payment.service';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule],
   providers: [
     AuthGuardService,
     AuthService,

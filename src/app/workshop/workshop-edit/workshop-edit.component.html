@@ -328,7 +328,8 @@
                 <br/>
                 <div style="padding-top:60px;">
                   <!-- <a md-button (click)=goto(8)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Enter the maximum number of participants you can teach in each Cohort of this workshop" [mdTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
+                  <span class="pull-right" mdTooltip="Enter the maximum number of participants you can teach in each Cohort of this workshop"
+                    [mdTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
                     <button md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Continue</button>
                   </span>
                 </div>
@@ -428,7 +429,8 @@
                 <div class="row margin-left-0">
                   <div class="col-sm-12 padding-left-0">
                     Students will get full refund if they cancel within
-                    <md-select [floatPlaceholder]="'never'" formControlName="cancellationPolicy" style="margin: 20px 10px; position: relative; top: -5px;" placeholder="3 Days">
+                    <md-select [floatPlaceholder]="'never'" formControlName="cancellationPolicy" style="margin: 20px 10px; position: relative; top: -5px;"
+                      placeholder="3 Days">
                       <md-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</md-option>
                     </md-select>
                     days of signing up.
@@ -468,7 +470,8 @@
               <p class="subtitle">
                 Select the start date and end date of your workshop and add itineraries for any of those days.
               </p>
-              <form [formGroup]="timeline" (ngSubmit)="submitWorkshop(workshop, timeline, 13)" novalidate> <!--(ngSubmit)="submitTimeline(timeline)" -->
+              <form [formGroup]="timeline" (ngSubmit)="submitWorkshop(workshop, timeline, 13)" novalidate>
+                <!--(ngSubmit)="submitTimeline(timeline)" -->
                 <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
                   <div class="row" style="margin: 30px 0px 15px -15px;">
                     <div class="col-sm-6">
@@ -480,17 +483,19 @@
                     </div>
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="endDatePicker" [min]="timeline.controls.calendar.value.startDate" placeholder="End date" formControlName="endDate" [disabled]="isWorkShopActive">
+                        <input mdInput [mdDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
+                          formControlName="endDate" [disabled]="isWorkShopActive">
                         <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle" [disabled]="isWorkShopActive"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>
                   </div>
                 </div>
-                <div formGroupName="calendar" *ngIf="(timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate) && !datesEditable">
+                <div formGroupName="calendar" *ngIf="(timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate) && !datesEditable">
                   <div class="row" style="margin: 30px 0px 15px 0;">
                     <div class="col-md-12 selected-dates">
-                      {{timeline.controls.calendar.value.startDate | date: 'dd MMM'}} - {{timeline.controls.calendar.value.endDate | date: 'dd MMM'}} &emsp;
+                      {{timeline.controls['calendar'].value.startDate | date: 'dd MMM'}} - {{timeline.controls['calendar'].value.endDate | date:
+                      'dd MMM'}} &emsp;
                       <md-icon color="accent">
                         date_range
                       </md-icon>
@@ -498,8 +503,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" *ngIf="timeline.controls.calendar.value.startDate && timeline.controls.calendar.value.endDate">
-                  <app-workshop-content [myForm]="timeline.controls.contentGroup" [collection]="workshopData" [calendar]="timeline.controls.calendar.value"
+                <div class="row" *ngIf="timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate">
+                  <app-workshop-content [myForm]="timeline.controls['contentGroup']" [collection]="workshopData" [calendar]="timeline.controls['calendar'].value"
                     (days)="daysCollection($event)">
                   </app-workshop-content>
                 </div>
