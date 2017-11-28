@@ -1446,3 +1446,11 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
     padding: 1px;
     z-index: 6;
 }
+
+.video-popup .mat-dialog-container{
+    padding: 0px !important;
+}
+
+.workshop-content carousel-pins{
+    display: none;
+}

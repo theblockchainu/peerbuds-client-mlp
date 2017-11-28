@@ -12,7 +12,7 @@ import {
 } from '@angular/material';
 import {
   ModalModule, BsDropdownModule, ProgressbarModule,
-  TabsModule, PopoverModule, CarouselModule, DatepickerModule, TimepickerModule
+  TabsModule, PopoverModule, DatepickerModule, TimepickerModule
 } from 'ngx-bootstrap';
 import {
   FileUploadModule, ScheduleModule, DialogModule,
@@ -21,6 +21,8 @@ import {
 } from 'primeng/primeng';
 import { NgPipesModule } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
+import { CarouselModule } from 'angular4-carousel';
+import { NgxCarouselModule } from 'ngx-carousel';
 
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
 import { GenericMultiselectAutocompleteModule } from './generic-multiselect-autocomplete/generic-multiselect-autocomplete.module';
@@ -49,6 +51,7 @@ import { StickyModule } from 'ng2-sticky-kit';
 import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
 import { TrimPipe } from './trim/trim.pipe';
 import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
+import { TextIconCarouselComponent } from './text-icon-carousel/text-icon-carousel.component';
 
 @NgModule({
   imports: [
@@ -69,9 +72,10 @@ import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
       tertiaryColour: '#ff6d71'
     }),
     Ng2DeviceDetectorModule.forRoot(),
-    StickyModule
+    StickyModule,
+    NgxCarouselModule
   ],
-  declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe],
+  declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TextIconCarouselComponent],
   providers: [
     CollectionService,
     CountryPickerService,
@@ -113,7 +117,6 @@ import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
     PopoverModule,
     LightboxModule,
     LeftSidebarModule,
-    CarouselModule,
     DatepickerModule,
     TimepickerModule,
     NgPipesModule,
@@ -123,8 +126,9 @@ import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
     MdListModule, MdTabsModule, MdTableModule, MdInputModule, MdCheckboxModule,
     MdSidenavModule, MdSelectModule, MdDatepickerModule, MdGridListModule, MdRadioModule,
     MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
-    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe, MdSliderModule,
-    LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TitleCasePipe
+    SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
+    LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TitleCasePipe, CarouselModule
+    , TextIconCarouselComponent
   ]
 })
 export class SharedModule { }
