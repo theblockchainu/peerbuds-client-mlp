@@ -152,10 +152,10 @@
                     <p class="upcomingEventLabel">
                       First Session
                     </p>
-                    <div class="upcomingEventTitle">
+                    <div class="upcomingEventTitle" *ngIf="_collectionService.getUpcomingEvent(collection)">
                       {{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
                     </div>
-                    <div class="upcomingEventTime">
+                    <div class="upcomingEventTime" *ngIf="_collectionService.getUpcomingEvent(collection)">
                       {{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
                       + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
                     </div>
@@ -168,7 +168,7 @@
                       Edit Workshop
                     </button>
                   </md-menu>
-                  <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection).hasStarted">
+                  <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
                     <button md-raised-button (click)="_collectionService.viewWorkshop(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                   </md-card-actions>
                   <md-card-footer class="cardFooter" style="line-height: 30px">
@@ -319,7 +319,7 @@
                       <div class="cohortCount">
                         <a (click)="openCohortDetailDialog(collection)">{{collection.calendars.length}} Cohorts completed </a>
                       </div>
-                      <div class="collectionTitle mat-body-2">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
+                      <div class="collectionTitle mat-body-2" (click)="_collectionService.viewWorkshop(collection)">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
                       <div class="collectionSubtitle">
                         {{ collection.itenaries.length}} Days | {{collection.contents.length}} Activity |
                         <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>

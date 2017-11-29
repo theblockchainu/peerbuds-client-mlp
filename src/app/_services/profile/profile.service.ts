@@ -537,7 +537,7 @@ export class ProfileService {
     if (profile.picture_url) {
       pProg['photos'] = true;
     }
-    pProg['progress'] = (progress / totalKeys) * 100;
+    pProg['progress'] = Math.round((progress / totalKeys) * 100);
     return pProg;
   }
 

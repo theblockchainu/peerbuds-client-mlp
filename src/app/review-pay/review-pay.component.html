@@ -19,18 +19,27 @@
                                     <md-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with {{card.last4}}</md-option>
                                 </md-select>
                             </div>
-                            <div class="col-sm-6">
-                                <div *ngIf="cardDetails.id">
-                                    <span class="text-grey" *ngIf="cardDetails.brand === 'Visa'"><i class="fa fa-cc-visa fa-2x"></i></span> &emsp;
-                                    <div class="display-inline-block fs-12 text-grey">
-                                        <span class="display-block lh-1">Name: <span class="text-black">{{cardDetails.name}}</span></span>
-                                        <span>Expires: <span class="text-black">{{cardDetails.exp_month}}/{{cardDetails.exp_year}}</span></span>
-                                    </div>
+                            <div class="col-sm-6" *ngIf="cardDetails.id">
+                                <span class="text-grey" *ngIf="cardDetails.brand === 'Visa'">
+                                    <i class="fa fa-cc-visa fa-2x"></i>
+                                </span> &emsp;
+                                <div class="display-inline-block fs-12 text-grey">
+                                    <span class="display-block lh-1">Name:
+                                        <span class="text-black">{{cardDetails.name}}</span>
+                                    </span>
+                                    <span>Expires:
+                                        <span class="text-black">{{cardDetails.exp_month}}/{{cardDetails.exp_year}}</span>
+                                    </span>
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <md-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or Use another card</md-checkbox>
+                            </div>
+                        </div>
                     </div>
-                    <div class="margin-bottom-50" *ngIf="!isCardExist">
+                    <div class="margin-bottom-50" [hidden]="isCardExist && !useAnotherCard">
                         <h3>Enter payment details</h3>
                         <label>
                             <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
@@ -53,14 +62,18 @@
                     </div>
                     <div class="terms-text">
                         <div class="terms-title">Terms of Service</div>
-                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to Peerbuds additional Terms of Service, Student Release and Waiver, and the Cancellation Policy.</p>
+                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to Peerbuds additional Terms of Service, Student
+                            Release and Waiver, and the Cancellation Policy.</p>
                     </div>
-                    <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards?.length > 0">
+                    <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
                         <i class="fa fa-lock"></i> Your Credit card information is encrypted
                     </div>
-                    <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards?.length > 0" [disabled]="savingData">{{collection.price | currency: collection.currency: true: '1.0-0'}} - Confirm Payment</button>
-                    <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards?.length > 0" [disabled]="!cardDetails.id || savingData">{{collection.price | currency: collection.currency: true: '1.0-0'}} - Confirm Payment</button>
-                    <div class="display-inline-block margin-top-10" *ngIf="savingData"><img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment</div>
+                    <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length < 0 || useAnotherCard"
+                        [disabled]="savingData">{{collection.price | currency: collection.currency: true: '1.0-0'}} - Confirm Payment</button>
+                    <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
+                        [disabled]="!cardDetails.id || savingData">{{collection.price | currency: collection.currency: true: '1.0-0'}} - Confirm Payment</button>
+                    <div class="display-inline-block margin-top-10" *ngIf="savingData">
+                        <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment</div>
                 </form>
             </div>
             <div class="col-sm-3 col-sm-offset-1">
@@ -69,16 +82,20 @@
                         <div class="seperate-section padding-top-0">
                             <div class="display-table">
                                 <div class="margin-bottom-10">
-                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? config.apiUrl+collection.imageUrls[0] : defaultImageUrl" alt="image" />
+                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? config.apiUrl+collection.imageUrls[0] : defaultImageUrl"
+                                        alt="image" />
                                 </div>
-                                <div class="fs-17">{{ collection.title | titlecase}} <br>
+                                <div class="fs-17">{{ collection.title | titlecase}}
+                                    <br>
                                     <span class="display-inline-block fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}</span>
-                                    <span class="display-inline-block pull-right fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name | titlecase}}</span>
+                                    <span class="display-inline-block pull-right fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
+                                        | titlecase}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="seperate-section">
-                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE,
+                                MMM dd' }}</div>
                             <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
                             <!--<a href="#">See details</a>-->
                         </div>
@@ -95,7 +112,8 @@
                         </div>
                         <div class="seperate-section">
                             <div class="fs-18 margin-bottom-10">Cancellation Policy</div>
-                            <div class="fs-14 text-grey">Get a <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}} of purchase.</div>
+                            <div class="fs-14 text-grey">Get a
+                                <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}} of purchase.</div>
                         </div>
                     </div>
                 </div>
