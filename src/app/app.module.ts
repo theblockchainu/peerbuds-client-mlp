@@ -69,10 +69,10 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     MdTooltipModule,
     DialogsModule,
     AppRoutingModule,
-    DefaultModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
-    }),
+    //CarouselModule.forRoot(),
+    // AgmCoreModule.forRoot({
+    //   apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
+    // }),
     Ng4GeoautocompleteModule.forRoot(),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.threeBounce,
