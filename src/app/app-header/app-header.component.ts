@@ -35,7 +35,7 @@ export class AppHeaderComponent implements OnInit {
   public defaultProfileUrl = '/assets/images/default-user.jpg';
   public isTeacher = false;
   public makeOldNotification = [];
-  public profileCompletionObject = {};
+  public profileCompletionObject: any;
   constructor(public authService: AuthenticationService,
     public config: AppConfig,
     private http: Http,

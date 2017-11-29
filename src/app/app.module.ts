@@ -69,6 +69,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     MdTooltipModule,
     DialogsModule,
     AppRoutingModule,
+    DefaultModule,
     //CarouselModule.forRoot(),
     // AgmCoreModule.forRoot({
     //   apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'

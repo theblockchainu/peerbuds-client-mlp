@@ -125,8 +125,8 @@ export class CollectionService {
    * patchCalendar
    */
   public patchCalendar(calendarId: string, body: any) {
-      return this.http.patch(this.config.apiUrl +
-          '/api/calendars/' + calendarId, body, this.options);
+    return this.http.patch(this.config.apiUrl +
+      '/api/calendars/' + calendarId, body, this.options);
   }
 
   /**
@@ -239,19 +239,23 @@ export class CollectionService {
       return moment() < moment(element.startDay);
     });
     let fillerWord = '';
-    if (contents[0].type === 'online') {
-      fillerWord = 'Session';
-    } else if (contents[0].type === 'video') {
-      fillerWord = 'Recording';
-    } else if (contents[0].type === 'project') {
-      fillerWord = 'Submission';
+    if (contents[0]) {
+      if (contents[0].type === 'online') {
+        fillerWord = 'Session';
+      } else if (contents[0].type === 'video') {
+        fillerWord = 'Recording';
+      } else if (contents[0].type === 'project') {
+        fillerWord = 'Submission';
+      }
+      const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
+      const timeToStart = contentStartDate.diff(moment(), 'days');
+      contents[0].timeToStart = timeToStart;
+      contents[0].fillerWord = fillerWord;
+      contents[0].hasStarted = false;
+      return contents[0];
+    } else {
+      return null;
     }
-    const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
-    const timeToStart = contentStartDate.diff(moment(), 'days');
-    contents[0].timeToStart = timeToStart;
-    contents[0].fillerWord = fillerWord;
-    contents[0].hasStarted = false;
-    return contents[0];
   }
 
   /**
