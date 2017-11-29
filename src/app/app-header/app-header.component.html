@@ -27,8 +27,8 @@
       <span class="header-progress-bar" *ngIf="profileCompletionObject" [mdMenuTriggerFor]="profileCompletionMenu">
         Complete Profile
         <div style="line-height: 0rem;">
-          <md-progress-bar mode="determinate" value="40" style="width:70%;display: inline-block"></md-progress-bar>
-          <span style="margin-left:5px;font-size:10px">40%</span>
+          <md-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:70%;display: inline-block"></md-progress-bar>
+          <span style="margin-left:5px;font-size:10px">{{profileCompletionObject.progress}}%</span>
         </div>
       </span>
       <button md-button class="headerButtons" [mdMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
