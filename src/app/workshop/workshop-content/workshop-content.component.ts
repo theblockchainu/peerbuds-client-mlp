@@ -286,8 +286,9 @@ export class WorkshopContentComponent implements OnInit {
               ContentGroup.controls.pending.setValue(false);
             }
             console.log(response);
-            
-            this.reload(collectionId, 13);
+            if (collectionId) {
+              this.reload(collectionId, 13);
+            }
           })
           .subscribe();
       })
@@ -360,7 +361,9 @@ export class WorkshopContentComponent implements OnInit {
             }
             console.log(resp);
 
-            this.reload(collectionId, 13);
+            if (collectionId) {
+              this.reload(collectionId, 13);
+            }
           })
           .subscribe();
       })

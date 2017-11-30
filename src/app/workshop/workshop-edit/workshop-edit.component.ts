@@ -686,9 +686,9 @@ export class WorkshopEditComponent implements OnInit {
         result.owners = this.workshopData.owners;
         this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
 
-        // if (step && step > 12) {
-        //   this.submitTimeline(collectionId, timeline);
-        // }
+        if (step && step > 12) {
+          this.submitTimeline(collectionId, timeline);
+        }
         if (!result.isNewInstance) {
           this.step++;
           this.workshopStepUpdate();
