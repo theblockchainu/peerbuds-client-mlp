@@ -80,10 +80,10 @@ export class ConsoleAdminComponent implements OnInit {
 
     this._collectionService.approveCollection(collection).subscribe(
       result => {
-        console.log(result);
-        this.snackBar.open(result.result, 'Close').onAction().subscribe(() => {
+        if (result) {
           this.fetchCollections();
-        });
+          this.snackBar.open(result.result, 'Close').onAction().subscribe();
+        }
       }, err => {
         console.log(err);
       }
@@ -95,9 +95,11 @@ export class ConsoleAdminComponent implements OnInit {
    */
   public approvePeer(peer) {
     this._profileService.approvePeer(peer).subscribe(result => {
-      this.snackBar.open(result.result, 'Close').onAction().subscribe(() => {
+      if (result) {
         this.fetchPeers();
-      });
+        this.snackBar.open(result.result, 'Close').onAction().subscribe();
+      }
+
     }, err => {
       console.log(err);
     });

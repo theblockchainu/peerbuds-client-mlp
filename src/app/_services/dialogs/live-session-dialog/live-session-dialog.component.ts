@@ -160,6 +160,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
 
   private participantDisconnected(participant: any) {
     console.log('Participant "%s" disconnected', participant.identity);
+    this.removeParticipant(participant);
   }
 
   private recordSessionStart() {
@@ -269,6 +270,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       }
     } else {
       img.className = 'circle-thumb otherStreamImage';
+      console.log('identity' + participant.identity);
       if ((participant.identity in this.registeredParticipantMapObj) && this.registeredParticipantMapObj[participant.identity].profiles[0].picture_url) {
         img.src = this._config.apiUrl + this.registeredParticipantMapObj[participant.identity].profiles[0].picture_url;
       } else {
@@ -315,6 +317,22 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     for (let i = 0; i < tracks.length; i++) {
       if (tracks.item(i).localName === track.kind) {
         this.renderer.removeChild(el, tracks.item(i));
+      }
+    }
+  }
+
+  private removeParticipant(remoteParticipant: any) {
+    remoteParticipant.tracks.forEach(track => {
+      if (track.kind === 'audio' || track.kind === 'video') { track.detach(); }
+    });
+    const el = document.getElementById(remoteParticipant.identity);
+    if (this.isTeacherView) {
+      this.renderer.removeChild(this.otherStreamTeacher, el);
+    } else {
+      if (remoteParticipant.identity === this.dialogData.teacher.id) {
+        this.renderer.removeChild(this.mainStream, el);
+      } else {
+        this.renderer.removeChild(this.otherStream, el);
       }
     }
   }

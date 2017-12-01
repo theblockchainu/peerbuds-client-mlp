@@ -147,9 +147,9 @@ export class WorkshopPageComponent implements OnInit {
   public hourMapping:
     { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
   public projectMapping:
-      { [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
+    { [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
   public onlineSessionMapping:
-      { [k: string]: string } = { '=0': 'No online sessions', '=1': 'One online session', 'other': '# online sessions' };
+    { [k: string]: string } = { '=0': 'No online sessions', '=1': 'One online session', 'other': '# online sessions' };
   public cohortMapping:
     { [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
   public dayMapping:
@@ -271,12 +271,14 @@ export class WorkshopPageComponent implements OnInit {
     this.dialogsService
       .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.workshop.calendars, this.allItenaries, this.allParticipants, this.events, this.userId, sortedCalendar[sortedCalendar.length - 1].startDate, sortedCalendar[sortedCalendar.length - 1].endDate)
       .subscribe(res => {
-        this.result = res;
-        if (this.result.calendarsSaved === 'calendarsSaved') {
-          this.initializeWorkshop();
-        }
-        if (this.result.cohortDeleted) {
-          this.refreshView();
+        if (res) {
+          this.result = res;
+          if (this.result.calendarsSaved === 'calendarsSaved') {
+            this.initializeWorkshop();
+          }
+          if (this.result.cohortDeleted) {
+            this.refreshView();
+          }
         }
       });
   }
@@ -641,31 +643,31 @@ export class WorkshopPageComponent implements OnInit {
    * cancelWorkshop
    */
   public cancelWorkshop() {
-      const cancelObj = {
-        isCancelled: true,
-        cancelledBy: this.userId,
-        status: 'cancelled'
-      };
-      this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
-          this.router.navigate(['workshop', this.workshopId]);
-      });
+    const cancelObj = {
+      isCancelled: true,
+      cancelledBy: this.userId,
+      status: 'cancelled'
+    };
+    this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
+      this.router.navigate(['workshop', this.workshopId]);
+    });
   }
 
   /**
    * dropoutWorkshop
    */
   public dropOutWorkshop() {
-      this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
-          this.router.navigate(['workshop', this.workshopId]);
-      });
+    this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
+      this.router.navigate(['workshop', this.workshopId]);
+    });
   }
 
   public cancelCohort() {
     const cancelObj = {
-        status: 'cancelled'
+      status: 'cancelled'
     };
     this._collectionService.patchCalendar(this.calendarId, cancelObj).subscribe(() => {
-        this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
+      this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
     });
   }
 

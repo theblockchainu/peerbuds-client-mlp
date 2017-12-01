@@ -161,55 +161,55 @@ export class WorkshopContentComponent implements OnInit {
     //   this.showDialogForActiveWorkshop();
     // }
     // else {
-      if (event.action === 'add') {
-        let response;
-        if (this.collection.status === 'active') {
-          let dialogRef: any;
-          dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-          dialogRef.afterClosed().subscribe((result) => {
-            if (result === 'accept') {
-              this.postContent(event, i);
-            }
-            else if (result === 'reject') {
-              // Do nothing
-              this.router.navigate(['console', 'teaching', 'workshops']);
-            }
-          });
-        }
-        else {
-          this.postContent(event, i);
-        }
-
-      } else if (event.action === 'update') {
-        let response;
-        if (this.collection.status === 'active') {
-          let dialogRef: any;
-          dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-          dialogRef.afterClosed().subscribe((result) => {
-            if (result === 'accept') {
-              this.patchContent(event, i);
-            }
-            else if (result === 'reject') {
-              // Do nothing
-              this.router.navigate(['console', 'teaching', 'workshops']);
-            }
-          });
-        }
-        else {
-          this.patchContent(event, i);
-        }
-      } 
-      else if (event.action === 'delete') {
-        this.deleteContent(event.value, i);
+    if (event.action === 'add') {
+      let response;
+      if (this.collection.status === 'active') {
+        let dialogRef: any;
+        dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result === 'accept') {
+            this.postContent(event, i);
+          }
+          else if (result === 'reject') {
+            // Do nothing
+            this.router.navigate(['console', 'teaching', 'workshops']);
+          }
+        });
       }
-      else if (event.action === 'deleteDay') {
-        this.deleteContent(null, i);
-        const itenary = <FormArray>this.myForm.controls.itenary;
-        itenary.removeAt(i);
-      } 
       else {
-        console.log('unhandledEvent Triggered');
+        this.postContent(event, i);
       }
+
+    } else if (event.action === 'update') {
+      let response;
+      if (this.collection.status === 'active') {
+        let dialogRef: any;
+        dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result === 'accept') {
+            this.patchContent(event, i);
+          }
+          else if (result === 'reject') {
+            // Do nothing
+            this.router.navigate(['console', 'teaching', 'workshops']);
+          }
+        });
+      }
+      else {
+        this.patchContent(event, i);
+      }
+    }
+    else if (event.action === 'delete') {
+      this.deleteContent(event.value, i);
+    }
+    else if (event.action === 'deleteDay') {
+      this.deleteContent(null, i);
+      const itenary = <FormArray>this.myForm.controls.itenary;
+      itenary.removeAt(i);
+    }
+    else {
+      console.log('unhandledEvent Triggered');
+    }
     // }
   }
 
@@ -286,8 +286,7 @@ export class WorkshopContentComponent implements OnInit {
               ContentGroup.controls.pending.setValue(false);
             }
             console.log(response);
-            
-            this.reload(collectionId, 13);
+            if (collectionId) { this.reload(collectionId, 13); }
           })
           .subscribe();
       })
@@ -359,8 +358,7 @@ export class WorkshopContentComponent implements OnInit {
               contentGroup.controls.pending.setValue(false);
             }
             console.log(resp);
-
-            this.reload(collectionId, 13);
+            if (collectionId) { this.reload(collectionId, 13); }
           })
           .subscribe();
       })
