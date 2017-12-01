@@ -19,15 +19,12 @@ import { TitleCasePipe } from '@angular/common';
 export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   private token: string;
   private roomName: string;
-  private localTracks;
   public room: any;
   public mainLoading: boolean;
   public startedView;
   public userId;
   public isTeacherView = false;
-  private participantCount: number;
   public registeredParticipantMapObj: any;
-  public joinedParticipantArray: Array<any>;
   public localAudioTrack: any;
   public localVideoTrack: any;
   public localParticipantId: string;
@@ -52,7 +49,6 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.participantCount = 0;
     this.registeredParticipantMapObj = {};
     this.dialogData.participants.forEach(participant => {
       this.registeredParticipantMapObj[participant.id] = participant;
@@ -73,7 +69,6 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   }
 
   private createRoom() {
-    this.joinedParticipantArray = [];
     Video.connect(this.token, {
       name: this.roomName,
       audio: { name: 'microphone' },
