@@ -594,7 +594,7 @@ export class WorkshopEditComponent implements OnInit {
     const control = <FormArray>this.workshop.controls['imageUrls'];
     this.workshopImage1Pending = false;
     control.patchValue(this.urlForImages);
-    let tempWorkshopData = this.workshopData;
+    const tempWorkshopData = this.workshopData;
     tempWorkshopData.imageUrls = this.workshop.controls['imageUrls'].value;
     this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempWorkshopData, this.sidebarMenuItems);
 
@@ -606,7 +606,7 @@ export class WorkshopEditComponent implements OnInit {
     const control = this.workshop.controls['videoUrls'];
     this.workshopVideoPending = false;
     control.patchValue(this.urlForVideo);
-    let tempWorkshopData = this.workshopData;
+    const tempWorkshopData = this.workshopData;
     tempWorkshopData.videoUrls = this.workshop.controls['videoUrls'].value;
     this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempWorkshopData, this.sidebarMenuItems);
   }
@@ -774,7 +774,7 @@ export class WorkshopEditComponent implements OnInit {
     //   topicArray.forEach(topicId => {
     //     observable = this._topicService.relTopicCollection(this.workshopId, topicId)
     //                   .map(response => response).publishReplay().refCount();
-    //     observable.subscribe((res) => { 
+    //     observable.subscribe((res) => {
     //       this.step++;
     //       this._collectionService.getCollectionDetail(this.workshopId, this.query)
     //         .subscribe((resData) => {
