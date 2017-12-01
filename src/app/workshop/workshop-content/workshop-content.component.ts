@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
-import { Location } from "@angular/common";
+import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
@@ -162,7 +162,6 @@ export class WorkshopContentComponent implements OnInit {
     // }
     // else {
     if (event.action === 'add') {
-      let response;
       if (this.collection.status === 'active') {
         let dialogRef: any;
         dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
@@ -181,7 +180,6 @@ export class WorkshopContentComponent implements OnInit {
       }
 
     } else if (event.action === 'update') {
-      let response;
       if (this.collection.status === 'active') {
         let dialogRef: any;
         dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
@@ -258,7 +256,7 @@ export class WorkshopContentComponent implements OnInit {
     this.http.post(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.options)
       .map((response: Response) => {
 
-        let result = response.json();
+        const result = response.json();
 
         if (result.isNewInstance) {
           collectionId = result.id;
@@ -266,7 +264,7 @@ export class WorkshopContentComponent implements OnInit {
             if (content.isNewInstance) {
               contentId = content.id;
             }
-          })
+          });
         }
         else {
           contentId = result.id;
@@ -286,7 +284,9 @@ export class WorkshopContentComponent implements OnInit {
               ContentGroup.controls.pending.setValue(false);
             }
             console.log(response);
-            if (collectionId) { this.reload(collectionId, 13); }
+            if (collectionId) {
+              this.reload(collectionId, 13);
+            }
           })
           .subscribe();
       })
@@ -341,14 +341,14 @@ export class WorkshopContentComponent implements OnInit {
     //this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, this.options)
     this.http.put(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.options)
       .map((response: Response) => {
-        let result = response.json();
+        const result = response.json();
         if (result.isNewInstance) {
           collectionId = result.id;
           result.contents.forEach((content) => {
             if (content.isNewInstance) {
               contentId = content.id;
             }
-          })
+          });
         }
         this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
           .map((resp: Response) => {
@@ -358,7 +358,10 @@ export class WorkshopContentComponent implements OnInit {
               contentGroup.controls.pending.setValue(false);
             }
             console.log(resp);
-            if (collectionId) { this.reload(collectionId, 13); }
+
+            if (collectionId) {
+              this.reload(collectionId, 13);
+            }
           })
           .subscribe();
       })
