@@ -54,6 +54,12 @@ export class TopicService {
 
   }
 
+  public getDefaultTopicsAtOnboarding(url) {
+    return this.http.get(url, this.options)
+                    .map(res => res.json() || []);
+
+  }
+
   public addNewTopic(topicName: string) {
     const body = {
       'name': topicName,

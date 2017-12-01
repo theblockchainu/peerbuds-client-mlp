@@ -64,7 +64,7 @@
               </div>
             </div>
           </div>
-          <div class="selected col-sm-8 padding-left-15 padding-right-0pt5" *ngIf="interests.length > 0 && !active">
+          <div class="selected col-sm-8 padding-left-15 padding-right-0pt5" *ngIf="interests.length > 0">
             <ul *ngFor="let item of interests" style="list-style:none" class="padding-left-0">
               <li class="captitalise topic" (click)="select(item)">
                 <a>
@@ -77,7 +77,7 @@
               </li>
             </ul>
           </div>
-          <div class="suggestions col-sm-8 padding-left-15 padding-right-0pt5" *ngIf="suggestedTopics !== undefined && suggestedTopics.length > 0 && !active">
+          <div class="suggestions col-sm-8 padding-left-15 padding-right-0pt5" *ngIf="suggestedTopics && suggestedTopics.length > 0">
             <ul *ngFor="let item of suggestedTopics" style="list-style:none" class="padding-left-0">
               <li class="captitalise topic" (click)="select(item)">
                 <a>

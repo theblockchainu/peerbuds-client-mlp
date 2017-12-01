@@ -24,13 +24,14 @@ export class OnboardingComponent implements OnInit {
   private userId;
   public placeholderStringTopic = 'Search for a topic ';
 
-  public suggestedTopics = [];
+  public suggestedTopics;
   public interests = [];
   public active = true;
   public interest1: FormGroup;
   public countries: any[];
   public searchTopicURL = '';
   public createTopicURL = '';
+  public suggestTopicURL = '';
 
   public socialIdentitiesConnected: any = [];
   public boolShowConnectedSocials = false;
@@ -60,6 +61,11 @@ export class OnboardingComponent implements OnInit {
     private _topicService: TopicService,
     private _cookieUtilsService: CookieUtilsService
   ) {
+
+    const query = {
+      'limit': 5
+    };
+    this.suggestTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics?filter=' + JSON.stringify(query);
 
     this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
     this.createTopicURL = config.apiUrl + '/api/' + this.config.uniqueDeveloperCode + '_topics';
@@ -110,6 +116,7 @@ export class OnboardingComponent implements OnInit {
     }
     this.active = false;
     this.interests = event;
+    this.suggestedTopics = _.differenceBy(this.suggestedTopics, this.interests, 'id');
     // this.suggestedTopics = event;
     // this.suggestedTopics.map((obj) => {
     //   obj.checked = 'true';
@@ -132,6 +139,8 @@ export class OnboardingComponent implements OnInit {
     let body = {};
     let options;
     this.removedInterests = event;
+    // Add back to suggestions
+    this.suggestedTopics = _.concat(this.suggestedTopics, event);
     if (this.removedInterests.length !== 0) {
       const topicArray = [];
       this.removedInterests.forEach((topic) => {
@@ -161,10 +170,11 @@ export class OnboardingComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this._topicService.getDefaultTopics()
-        .subscribe((suggestions) => {
-          this.suggestedTopics = suggestions.splice(0, 10);
-        });
+    this._topicService.getDefaultTopicsAtOnboarding(this.suggestTopicURL)
+    .subscribe((response: Response) => {
+      this.active = false;
+      this.suggestedTopics = response;
+    });
   }
 
   continue(p) {
@@ -205,7 +215,7 @@ export class OnboardingComponent implements OnInit {
     this.queriesSearchedArray = event;
     if (this.interests.length != 0 && this.queriesSearchedArray.length != 0) {
       this.queriesSearchedArray.forEach(query => {
-        this.suggestedTopics = [];
+        // this.suggestedTopics = [];
         this._topicService.suggestionPerQuery(query)
             .subscribe((suggestions) => {
               let temp = [];
@@ -216,6 +226,9 @@ export class OnboardingComponent implements OnInit {
                 });
               });
               console.log(temp);
+              if (suggestions.length) {
+                this.suggestedTopics = [];
+              }
               suggestions.slice(0, 10 - this.interests.length).forEach(element => {
                 const itemPresent = _.find(this.suggestedTopics, function(entry) { return element.id == entry.id; });
                 if (!itemPresent) {
