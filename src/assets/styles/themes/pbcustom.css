@@ -1451,6 +1451,6 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
     padding: 0px !important;
 }
 
-.workshop-content carousel-pins{
+.workshop-content carousel-pins, .experience-content carousel-pins{
     display: none;
 }

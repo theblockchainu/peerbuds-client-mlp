@@ -4,7 +4,6 @@ import 'hammerjs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
-import { ExperienceWizardModule } from './experience-wizard/experience-wizard.module';
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
@@ -54,7 +53,6 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
   imports: [
     BrowserModule,
     CoreModule,
-    ExperienceWizardModule,
     BrowserAnimationsModule,
     MdCardModule,
     MdButtonModule,

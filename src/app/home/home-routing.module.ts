@@ -5,6 +5,7 @@ import { AuthGuardService } from '../_services/auth-guard/auth-guard.service';
 import { HomeComponent } from './home.component';
 import { HomefeedComponent } from './homefeed/homefeed.component';
 import { WorkshopsComponent } from './workshops/workshops.component';
+import { ExperiencesComponent } from './experiences/experiences.component';
 import { PeersComponent } from './peers/peers.component';
 
 const routes: Routes = [{
@@ -19,6 +20,10 @@ const routes: Routes = [{
     {
       path: 'workshops',
       component: WorkshopsComponent
+    },
+    {
+      path: 'experiences',
+      component: ExperiencesComponent
     },
     {
       path: 'peers',
