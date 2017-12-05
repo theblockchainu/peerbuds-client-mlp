@@ -102,8 +102,10 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     localDiv.appendChild(this.participantName(localParticipant, this.isTeacherView));
     if (this.isTeacherView) {
       this.mainLoading = false;
+      localDiv.className = 'teacher-box';
       this.renderer.appendChild(this.mainStream.nativeElement, localDiv);
     } else {
+      localDiv.className = 'participant-box';
       this.renderer.appendChild(this.localStream.nativeElement, localDiv);
     }
     localParticipant.tracks.forEach(track => {
@@ -125,12 +127,15 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     remoteDiv.appendChild(this.participantImage(remoteParticipant, isTeacher));
     remoteDiv.appendChild(this.participantName(remoteParticipant, isTeacher));
     if (this.isTeacherView) {
+      remoteDiv.className = 'participant-box';
       this.renderer.appendChild(this.otherStreamTeacher.nativeElement, remoteDiv);
     } else {
       if (isTeacher) {
         this.mainLoading = false;
+        remoteDiv.className = 'teacher-box';
         this.renderer.appendChild(this.mainStream.nativeElement, remoteDiv);
       } else {
+        remoteDiv.className = 'participant-box';
         this.renderer.appendChild(this.otherStream.nativeElement, remoteDiv);
       }
     }
@@ -200,7 +205,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       const tracks = <HTMLCollection>localDiv.children;
       for (let i = 0; i < tracks.length; i++) {
         if (tracks.item(i).localName === 'video') {
-          this.renderer.setStyle(tracks.item(i), 'position', 'unset');
+          this.renderer.setStyle(tracks.item(i), 'z-index', '-1');
         }
       }
     } else {
@@ -209,7 +214,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       const tracks = <HTMLCollection>localDiv.children;
       for (let i = 0; i < tracks.length; i++) {
         if (tracks.item(i).localName === 'video') {
-          this.renderer.setStyle(tracks.item(i), 'position', 'relative');
+          this.renderer.setStyle(tracks.item(i), 'z-index', '0');
         }
       }
     }
@@ -235,7 +240,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     const tracks = <HTMLCollection>localDiv.children;
     for (let i = 0; i < tracks.length; i++) {
       if (tracks.item(i).localName === 'video') {
-        this.renderer.setStyle(tracks.item(i), 'position', 'relative');
+        this.renderer.setStyle(tracks.item(i), 'z-index', '0');
       }
     }
 
@@ -249,7 +254,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     const tracks = <HTMLCollection>localDiv.children;
     for (let i = 0; i < tracks.length; i++) {
       if (tracks.item(i).localName === 'video') {
-        this.renderer.setStyle(tracks.item(i), 'position', 'unset');
+        this.renderer.setStyle(tracks.item(i), 'z-index', '-1');
       }
     }
   }

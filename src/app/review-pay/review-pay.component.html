@@ -68,7 +68,7 @@
                     <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
                         <i class="fa fa-lock"></i> Your Credit card information is encrypted
                     </div>
-                    <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length < 0 || useAnotherCard"
+                    <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
                         [disabled]="savingData">{{collection.price | currency: collection.currency: true: '1.0-0'}} - Confirm Payment</button>
                     <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
                         [disabled]="!cardDetails.id || savingData">{{collection.price | currency: collection.currency: true: '1.0-0'}} - Confirm Payment</button>
