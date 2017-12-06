@@ -620,8 +620,8 @@ export class WorkshopPageComponent implements OnInit {
    */
   public cancelWorkshop() {
       const cancelObj = {
-        isCancelled: true,
-        cancelledBy: this.userId,
+        isCanceled: true,
+        canceledBy: this.userId,
         status: 'cancelled'
       };
       this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
