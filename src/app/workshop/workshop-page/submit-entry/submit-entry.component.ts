@@ -4,11 +4,12 @@ import { Http, Response, } from '@angular/http';
 import { MdDialogRef, MD_DIALOG_DATA, MdDialog } from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
-import { FileUploadModule } from 'primeng/primeng';
 import { SubmissionViewComponent } from '../submission-view/submission-view.component';
 import { ProjectSubmissionService } from '../../../_services/project-submission/project-submission.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import 'rxjs/add/operator/map';
+import _ from 'lodash';
+import {ContentService} from '../../../_services/content/content.service';
 
 @Component({
   selector: 'app-submit-entry',
@@ -42,7 +43,8 @@ export class SubmitEntryComponent implements OnInit {
     private _fb: FormBuilder, public http: Http,
     private mediaUploader: MediaUploaderService,
     public projectSubmissionService: ProjectSubmissionService,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private _contentService: ContentService
   ) {
     this.userId = _cookieUtilsService.getValue('userId');
     this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
@@ -67,7 +69,7 @@ export class SubmitEntryComponent implements OnInit {
       isPrivate: this.submitEntryForm.controls['isPrivate'].value
     };
     this.savingDraft = true;
-    this.projectSubmissionService.submitProject((this.data.content.id), submissionForm).subscribe((response: Response) => {
+    this.projectSubmissionService.submitProject(this.data.content.id, submissionForm).subscribe((response: Response) => {
       if (response) {
         this.submissionView = response.json();
         this.savingDraft = false;
@@ -84,40 +86,33 @@ export class SubmitEntryComponent implements OnInit {
   }
 
   public viewSubmission(submissionId) {
-    const query = '{"include":[{"peer": "profiles"}]}';
-    this.projectSubmissionService.viewSubmission(submissionId, query).subscribe((response: Response) => {
-      if (response) {
-        const dialogRef = this.dialog.open(SubmissionViewComponent, {
-          data: {
-            userType: this.data.userType,
-            submission: response.json()
-          },
-          width: '50vw',
-            height: '90vh'
-        });
-      }
-    });
+      const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, {"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
+      this.projectSubmissionService.viewSubmission(submissionId, query).subscribe((response: Response) => {
+          if (response) {
+              const dialogRef = this.dialog.open(SubmissionViewComponent, {
+                  data: {
+                      userType: this.data.userType,
+                      submission: response.json(),
+                      peerHasSubmission: this.data.peerHasSubmission,
+                      collectionId: this.data.collectionId
+                  },
+                  width: '45vw',
+                  height: '100vh'
+              });
+          }
+      });
   }
 
-  // public addUrl(value: String) {
-  //   const control = <FormArray>this.submitEntryForm.controls['picture_url'];
-  //   control.push(new FormControl(value));
-  // }
-
-  // uploadImage(event) {
-  //   // console.log(event.files);
-
-  //   for (const file of event.files) {
-  //     this.mediaUploader.upload(file).map((responseObj: Response) => {
-  //     }).subscribe();
-
-  //     this.mediaUploader.upload(file).subscribe((response) => {
-  //       // this.addUrl(responseObj.url);
-  //       this.submitEntryForm.controls['picture_url'].setValue(response.url);
-  //       // console.log(responseObj);
-  //     });
-  //   }
-  // }
+  public deleteFromContainer(fileUrl, fileType) {
+      const fileurl = fileUrl;
+      fileUrl = _.replace(fileUrl, 'download', 'files');
+      this.http.delete(this.config.apiUrl + fileUrl)
+          .map((response) => {
+              console.log(response);
+              this.urlForImages = [];
+              this.submitEntryForm.controls['picture_url'].patchValue('');
+          }).subscribe();
+  }
 
   uploadImage(event) {
     this.uploadingImage = true;
@@ -131,9 +126,11 @@ export class SubmitEntryComponent implements OnInit {
 
   public addImageUrl(value) {
     console.log('Adding image url: ' + value);
-    this.urlForImages.push(value);
+    this._contentService.getMediaObject(value).subscribe((res) => {
+        this.urlForImages.push(res[0]);
+    });
     const control = <FormArray>this.submitEntryForm.controls['picture_url'];
-    control.patchValue(this.urlForImages);
+    control.patchValue(value);
   }
 
 }

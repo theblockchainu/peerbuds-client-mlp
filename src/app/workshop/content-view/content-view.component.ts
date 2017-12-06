@@ -247,13 +247,13 @@ export class ContentViewComponent implements OnInit {
         let dialogRef: any;
         switch (contentType) {
             case 'online':
-                dialogRef = this.dialog.open(WorkshopContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '45vw', height: '90vh'});
+                dialogRef = this.dialog.open(WorkshopContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'});
                 break;
             case 'project':
-                dialogRef = this.dialog.open(WorkshopContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit, collectionStartDate: this.collectionStartDate, collectionEndDate: this.collectionEndDate}, disableClose: true, hasBackdrop: true, width: '45vw', height: '90vh'});
+                dialogRef = this.dialog.open(WorkshopContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit, collectionStartDate: this.collectionStartDate, collectionEndDate: this.collectionEndDate}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'});
                 break;
             case 'video':
-                dialogRef = this.dialog.open(WorkshopContentVideoComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '45vw', height: '90vh'});
+                dialogRef = this.dialog.open(WorkshopContentVideoComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'});
                 break;
             default:
                 break;

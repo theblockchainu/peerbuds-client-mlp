@@ -145,8 +145,7 @@ export class DialogsService {
 
     openDeleteDialog(action: string) {
         const dialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: action,
-            height: '23vh'
+            data: action
         });
         return dialogRef.afterClosed();
     }
