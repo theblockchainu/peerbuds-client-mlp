@@ -23,7 +23,7 @@
               <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined" src="{{config.apiUrl+getLearnerUpcomingEvent(collection).imageUrl}}" alt="workshpImg">
               <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl === undefined" src="/assets/images/no-image.jpg" alt="workshpImg">
             </div>
-            <div class="mat-body-2" style="margin-top: -3px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}</div>
+            <div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}</div>
             <div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}} {{getLearnerUpcomingEvent(collection).fillerWord}}: {{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}</div>
           </a>
         </div>

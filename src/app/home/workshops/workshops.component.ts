@@ -100,7 +100,7 @@ export class WorkshopsComponent implements OnInit {
     }
     query = {
       'include': [
-        { 'collections': [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'] }
+        { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'workshop'} }}
       ],
       'where': { or: this.selectedTopics }
     };

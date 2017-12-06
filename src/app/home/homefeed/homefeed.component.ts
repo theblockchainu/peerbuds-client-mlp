@@ -166,7 +166,7 @@ export class HomefeedComponent implements OnInit {
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
               let hasActiveCalendar = false;
-              if(collection.calendars) {
+              if (collection.calendars) {
                 collection.calendars.forEach(calendar => {
                   if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
                     hasActiveCalendar = true;
