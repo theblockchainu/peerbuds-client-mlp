@@ -1,39 +1,41 @@
 <div md-dialog-content class="dialog-container">
   <form [formGroup]="submitEntryForm" (ngSubmit)="publishView()">
     <div class="row">
-      <div class="col-sm-6">
-        <h3>Submit Entry to Project</h3>
+      <div class="col-sm-12">
+          <button disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+              <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+          </button>
+          <div class="mat-display-1">Submit your entry to this project</div>
       </div>
-      <div class="col-sm-6" style="text-align: right;">
-        <div class="display-inline-block margin-right-10" *ngIf="savingDraft"><img src="{{loader}}" alt="loader" width="30px" /> <span class="text-grey fs-13">Saving Draft</span></div>
-        <button md-button class="mat-border-button">Publish</button>
+      <div class="col-sm-12">
+        <button md-button class="mat-border-button">Submit</button>
+        <div class="loading-container" [hidden]="!savingDraft">
+          <ngx-loading [show]="true"></ngx-loading>
+        </div>
       </div>
     </div>
-    <!-- <div class="fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload photo (jpg, png, gif)</div> -->
-    <!-- <div class="uploadContainer">
-      <p-fileUpload #fubauto name="image" customUpload="true" accept="image/*" maxFileSize="1000000" (uploadHandler)="uploadImage($event)" auto="true"></p-fileUpload>
-      <div *ngIf="imageUrl">
-        <div><img src="{{config.apiUrl+imageUrl}}" width="50"></div>
-        <div>{{imageUrl.split('/')[5]}}</div>
-      </div>
-    </div> -->
+    <hr>
     <div class="form-group">
-        <label class="title fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload photo (jpg, png, gif)</label>
+        <label class="title fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload submission file (pdf, doc, jpg, png, gif, mp4 etc.)</label>
         <div class="upload-image-section imageHolder">
             <div class="loading-container" [hidden]="!uploadingImage">
                 <ngx-loading [show]="true"></ngx-loading>
             </div>
             <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-                accept="image/*" chooseLabel="Browse" multiple="multiple">
+                accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" chooseLabel="Browse" multiple="multiple">
             </p-fileUpload>
-            <!-- <div *ngIf="picture_url" class="col-md-6 padding-left-0 pic delete imageContainer">
-                <img src="{{config.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
-                <md-icon (click)="deleteFromContainer(picture_url, 'image')" class="delete-button">close</md-icon>
-            </div> -->
             <div *ngIf="urlForImages.length" class="pic delete">
               <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
-                  <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
-                  <md-icon (click)="deleteFromContainer(file, 'file')" class="delete-image">close</md-icon>
+                  <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc; position: relative; top: -20px;">
+                  <md-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</md-icon>
+                  <div *ngIf="file.type.includes('application')" class="uploaded_file">
+                      <a href="{{config.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+                  </div>
+                  <md-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</md-icon>
+                  <video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+                      <source src="{{config.apiUrl + file.url}}">
+                  </video>
+                  <md-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')" class="delete-button">close</md-icon>
                   </div>
             </div>
         </div>
@@ -46,7 +48,7 @@
         </md-input-container>
         <md-input-container class="pb-block margin-bottom-30">
           <input mdInput #description formControlName="description" type="text" placeholder="Submission Description">
-          <md-hint align="end">{{description.value.length}}/200</md-hint>
+          <md-hint align="end">{{description.value.length}}/1000</md-hint>
         </md-input-container>
         <div class="margin-bottom-10">
           <div class="margin-bottom-20; font-weight: 500;">Do you wish to make your submission public?</div>

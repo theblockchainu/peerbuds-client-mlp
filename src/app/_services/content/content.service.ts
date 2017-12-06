@@ -54,7 +54,7 @@ export class ContentService {
                             }
                   };
     return this.http.get(this.config.apiUrl + '/api/media?filter=' + JSON.stringify(query), this.options)
-                    .map((response: Response) => 
+                    .map((response: Response) =>
                       response.json(),
                       (err) => {
                         console.log('Error:' + err);

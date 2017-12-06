@@ -22,6 +22,7 @@ import { VgBufferingModule } from 'videogular2/buffering';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
 import { ClipboardModule } from 'ngx-clipboard/dist';
 import { StickyModule } from 'ng2-sticky-kit';
+import {ViewEntryDialogComponent} from './view-entry-dialog/view-entry-dialog.component';
 
 @NgModule({
   imports: [
@@ -44,8 +45,8 @@ import { StickyModule } from 'ng2-sticky-kit';
     StickyModule
   ],
 
-  declarations: [WorkshopPageComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent],
-  bootstrap: [ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent],
+  declarations: [WorkshopPageComponent, ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent, ViewEntryDialogComponent],
+  bootstrap: [ViewParticipantsComponent, WorkshopVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent, ViewEntryDialogComponent],
   providers: [ProjectSubmissionService]
 
 })

@@ -392,10 +392,13 @@
                         <a href="javascript:void(0);" (click)="createReplyForm(comment)">
                           <md-icon style="top: 5px;">reply</md-icon> Reply</a>
                       </div>
-                      <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
+                      <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: 0px;">
                         <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
-                          <img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-                          <md-input-container style="margin-left: 15px; width: 88%;">
+                          <img (click)="openProfilePage(loggedInUser.id)" *ngIf="!loggedInUser.profiles[0].picture_url" src="/assets/images/avatar.png"
+                               alt="A" class="clickable circle-thumb margin-top-5">
+                          <img (click)="openProfilePage(loggedInUser.id)" *ngIf="loggedInUser.profiles[0].picture_url" src="{{config.apiUrl+ loggedInUser.profiles[0].picture_url}}"
+                               class="clickable circle-thumb margin-top-5" alt="dp">
+                          <md-input-container style="margin-left: 15px; width: 92%;">
                             <input mdInput type="text" formControlName="description" placeholder="Reply to above comment...">
                           </md-input-container>
                           <button [disabled]="!replyForm.valid" md-raised-button class="pull-right" color="primary">

@@ -153,11 +153,11 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
    * exitWorkshop
    */
   public exitWorkshop(collection: any) {
-    this._dialogService.openDeleteDialog('cancel').subscribe(result => {
-      if (result === 'cancel') {
+    this._dialogService.openDeleteDialog('dropOut').subscribe(result => {
+      if (result === 'dropOut') {
         this._collectionService.removeParticipant(collection.id, this.userId).subscribe((response) => {
           this.fetchWorkshop();
-          this.snackBar.open('Workshop Cancelled', 'Close', {
+          this.snackBar.open('You have dropped out of the workshop', 'Close', {
             duration: 800
           });
         });

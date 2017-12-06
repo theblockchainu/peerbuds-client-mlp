@@ -12,7 +12,8 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { Router } from '@angular/router';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { SocketService } from '../../../_services/socket/socket.service';
-import {CollectionService} from "../../../_services/collection/collection.service";
+import {CollectionService} from '../../../_services/collection/collection.service';
+import {ViewEntryDialogComponent} from "../view-entry-dialog/view-entry-dialog.component";
 
 @Component({
   selector: 'app-content-project',
@@ -54,7 +55,7 @@ export class ContentProjectComponent implements OnInit {
         });
     }
     if (data.startDate !== undefined) {
-      const startDateMoment = moment(data.startDate);
+      const startDateMoment = moment(this.calculateDate(data.startDate, data.content.schedules[0].endDay));
       this.isSubmissionPossible = moment().diff(startDateMoment) <= 0;
     }
     this.userId = cookieUtilsService.getValue('userId');
@@ -106,29 +107,41 @@ export class ContentProjectComponent implements OnInit {
 
   openSubmitEntryDialog(data: any) {
     const dialogRef = this.dialog.open(SubmitEntryComponent, {
-      data: data,
-      width: '50vw',
-      height: '90vh'
+        data: data,
+        width: '45vw',
+        height: '100vh'
     });
   }
+
+    openViewEntryDialog(data: any) {
+        const dialogRef = this.dialog.open(ViewEntryDialogComponent, {
+            data: data,
+            width: '45vw',
+            height: '100vh'
+        });
+    }
 
   public viewSubmission(submissionId) {
     const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, {"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
     this.projectSubmissionService.viewSubmission(submissionId, query).subscribe((response: Response) => {
       if (response) {
         const dialogRef = this.dialog.open(SubmissionViewComponent, {
-          data: {
-            userType: this.data.userType,
-            submission: response.json(),
-            peerHasSubmission: this.data.peerHasSubmission,
-            collectionId: this.data.collectionId
-          },
-          width: '50vw',
-          height: '90vh'
+            data: {
+                userType: this.data.userType,
+                submission: response.json(),
+                peerHasSubmission: this.data.peerHasSubmission,
+                collectionId: this.data.collectionId
+            },
+            width: '45vw',
+            height: '100vh'
         });
       }
     });
   }
+
+    imgErrorHandler(event) {
+        event.target.src = '/assets/images/placeholder-image.jpg';
+    }
 
   public calculateDate(fromdate, day) {
     const tempMoment = moment(fromdate);
