@@ -2,13 +2,14 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@a
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
+import * as moment from 'moment';
+import _ from 'lodash';
+import { ICarouselConfig, AnimationConfig } from 'angular4-carousel';
+
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
-
 import { AppConfig } from '../../app.config';
-import * as moment from 'moment';
-import _ from 'lodash';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { WorkshopVideoComponent } from './workshop-video/workshop-video.component';
@@ -146,9 +147,9 @@ export class WorkshopPageComponent implements OnInit {
   public hourMapping:
     { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
   public projectMapping:
-      { [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
+    { [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
   public onlineSessionMapping:
-      { [k: string]: string } = { '=0': 'No online sessions', '=1': 'One online session', 'other': '# online sessions' };
+    { [k: string]: string } = { '=0': 'No online sessions', '=1': 'One online session', 'other': '# online sessions' };
   public cohortMapping:
     { [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
   public dayMapping:
@@ -162,6 +163,10 @@ export class WorkshopPageComponent implements OnInit {
 
   events: CalendarEvent[] = [
   ];
+
+
+  public carouselImages: Array<string>;
+  public carouselConfig: ICarouselConfig;
 
   activeDayIsOpen = true;
   public loadingSimilarWorkshops = true;
@@ -266,12 +271,14 @@ export class WorkshopPageComponent implements OnInit {
     this.dialogsService
       .editCalendar({ id: this.workshopId, type: this.workshop.type, name: this.workshop.title }, this.workshop.contents, this.workshop.calendars, this.allItenaries, this.allParticipants, this.events, this.userId, sortedCalendar[sortedCalendar.length - 1].startDate, sortedCalendar[sortedCalendar.length - 1].endDate)
       .subscribe(res => {
-        this.result = res;
-        if (this.result.calendarsSaved === 'calendarsSaved') {
-          this.initializeWorkshop();
-        }
-        if (this.result.cohortDeleted) {
-          this.refreshView();
+        if (res) {
+          this.result = res;
+          if (this.result.calendarsSaved === 'calendarsSaved') {
+            this.initializeWorkshop();
+          }
+          if (this.result.cohortDeleted) {
+            this.refreshView();
+          }
         }
       });
   }
@@ -446,6 +453,7 @@ export class WorkshopPageComponent implements OnInit {
           this.getParticipants();
           this.getDiscussions();
           this.getBookmarks();
+          this.setUpCarousel();
           if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
@@ -466,6 +474,22 @@ export class WorkshopPageComponent implements OnInit {
       console.log('NO COLLECTION');
     }
   }
+
+  private setUpCarousel() {
+    this.carouselConfig = {
+      verifyBeforeLoad: true,
+      log: false,
+      animation: true,
+      animationType: AnimationConfig.SLIDE_OVERLAP,
+      autoplay: true,
+      autoplayDelay: 2000,
+      stopAutoplayMinWidth: 768
+    };
+    if (this.workshop.imageUrls && this.workshop.imageUrls.length > 0) {
+      this.carouselImages = this.workshop.imageUrls.map(url => this.config.apiUrl + url);
+    }
+  }
+
   private getReviews() {
     this.loadingReviews = true;
     let query = {};
@@ -633,17 +657,17 @@ export class WorkshopPageComponent implements OnInit {
    * dropoutWorkshop
    */
   public dropOutWorkshop() {
-      this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
-          this.router.navigate(['workshop', this.workshopId]);
-      });
+    this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
+      this.router.navigate(['workshop', this.workshopId]);
+    });
   }
 
   public cancelCohort() {
     const cancelObj = {
-        status: 'cancelled'
+      status: 'cancelled'
     };
     this._collectionService.patchCalendar(this.calendarId, cancelObj).subscribe(() => {
-        this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
+      this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
     });
   }
 

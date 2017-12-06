@@ -14,9 +14,11 @@ import * as moment from 'moment';
 })
 export class HomefeedComponent implements OnInit {
   public workshops: Array<any>;
+  public experiences: Array<any>;
   public userId;
   public peers: Array<any>;
   public loadingWorkshops = false;
+  public loadingExperiences = false;
   public loadingPeers = false;
   public loadingContinueLearning = false;
   private today = moment();
@@ -42,6 +44,7 @@ export class HomefeedComponent implements OnInit {
   ngOnInit() {
     this.fetchContinueLearning();
     this.fetchWorkshops();
+    this.fetchExperiences();
     this.fetchPeers();
   }
 
@@ -163,12 +166,14 @@ export class HomefeedComponent implements OnInit {
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
               let hasActiveCalendar = false;
-              collection.calendars.forEach(calendar => {
-                if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-                  hasActiveCalendar = true;
-                  return;
-                }
-              });
+              if(collection.calendars) {
+                collection.calendars.forEach(calendar => {
+                  if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                    hasActiveCalendar = true;
+                    return;
+                  }
+                });
+              }
               if (hasActiveCalendar) {
                 this.workshops.push(collection);
               }
@@ -178,6 +183,50 @@ export class HomefeedComponent implements OnInit {
         this.workshops = _.uniqBy(this.workshops, 'id');
         this.workshops = _.orderBy(this.workshops, ['createdAt'], ['desc']);
         this.workshops = _.chunk(this.workshops, 5)[0];
+
+      }, (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  fetchExperiences() {
+    const query = {
+      'include': [
+        { 'collections': [{'owners': 'reviewsAboutYou'}, 'calendars'] }
+      ],
+      'order': 'createdAt desc'
+    };
+    this.loadingExperiences = true;
+    this._topicService.getTopics(query).subscribe(
+      (response) => {
+        this.loadingWorkshops = false;
+        this.experiences = [];
+        for (const responseObj of response) {
+          responseObj.collections.forEach(collection => {
+            if (collection.status === 'active') {
+              if (collection.owners && collection.owners[0].reviewsAboutYou) {
+                collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+                collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+              }
+              let hasActiveCalendar = false;
+              if(collection.calendars) {
+                collection.calendars.forEach(calendar => {
+                  if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                    hasActiveCalendar = true;
+                    return;
+                  }
+                });
+              }
+              if (hasActiveCalendar) {
+                this.experiences.push(collection);
+              }
+            }
+          });
+        }
+        this.experiences = _.uniqBy(this.experiences, 'id');
+        this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
+        this.experiences = _.chunk(this.experiences, 5)[0];
 
       }, (err) => {
         console.log(err);

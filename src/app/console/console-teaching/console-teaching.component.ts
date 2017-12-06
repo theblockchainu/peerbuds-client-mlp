@@ -53,7 +53,7 @@ export class ConsoleTeachingComponent implements OnInit {
    */
   public createExperience() {
     this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject) => {
-      this.router.navigate(['editExperience', experienceObject.id, 1]);
+      this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
     });
   }
 

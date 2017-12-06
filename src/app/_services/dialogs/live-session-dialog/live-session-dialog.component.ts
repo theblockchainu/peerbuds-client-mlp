@@ -19,15 +19,12 @@ import { TitleCasePipe } from '@angular/common';
 export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   private token: string;
   private roomName: string;
-  private localTracks;
   public room: any;
   public mainLoading: boolean;
   public startedView;
   public userId;
   public isTeacherView = false;
-  private participantCount: number;
   public registeredParticipantMapObj: any;
-  public joinedParticipantArray: Array<any>;
   public localAudioTrack: any;
   public localVideoTrack: any;
   public localParticipantId: string;
@@ -52,7 +49,6 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.participantCount = 0;
     this.registeredParticipantMapObj = {};
     this.dialogData.participants.forEach(participant => {
       this.registeredParticipantMapObj[participant.id] = participant;
@@ -73,7 +69,6 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   }
 
   private createRoom() {
-    this.joinedParticipantArray = [];
     Video.connect(this.token, {
       name: this.roomName,
       audio: { name: 'microphone' },
@@ -107,8 +102,10 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     localDiv.appendChild(this.participantName(localParticipant, this.isTeacherView));
     if (this.isTeacherView) {
       this.mainLoading = false;
+      localDiv.className = 'teacher-box';
       this.renderer.appendChild(this.mainStream.nativeElement, localDiv);
     } else {
+      localDiv.className = 'participant-box';
       this.renderer.appendChild(this.localStream.nativeElement, localDiv);
     }
     localParticipant.tracks.forEach(track => {
@@ -130,12 +127,15 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     remoteDiv.appendChild(this.participantImage(remoteParticipant, isTeacher));
     remoteDiv.appendChild(this.participantName(remoteParticipant, isTeacher));
     if (this.isTeacherView) {
+      remoteDiv.className = 'participant-box';
       this.renderer.appendChild(this.otherStreamTeacher.nativeElement, remoteDiv);
     } else {
       if (isTeacher) {
         this.mainLoading = false;
+        remoteDiv.className = 'teacher-box';
         this.renderer.appendChild(this.mainStream.nativeElement, remoteDiv);
       } else {
+        remoteDiv.className = 'participant-box';
         this.renderer.appendChild(this.otherStream.nativeElement, remoteDiv);
       }
     }
@@ -160,6 +160,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
 
   private participantDisconnected(participant: any) {
     console.log('Participant "%s" disconnected', participant.identity);
+    this.removeParticipant(participant);
   }
 
   private recordSessionStart() {
@@ -204,7 +205,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       const tracks = <HTMLCollection>localDiv.children;
       for (let i = 0; i < tracks.length; i++) {
         if (tracks.item(i).localName === 'video') {
-          this.renderer.setStyle(tracks.item(i), 'position', 'unset');
+          this.renderer.setStyle(tracks.item(i), 'z-index', '-1');
         }
       }
     } else {
@@ -213,7 +214,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       const tracks = <HTMLCollection>localDiv.children;
       for (let i = 0; i < tracks.length; i++) {
         if (tracks.item(i).localName === 'video') {
-          this.renderer.setStyle(tracks.item(i), 'position', 'relative');
+          this.renderer.setStyle(tracks.item(i), 'z-index', '0');
         }
       }
     }
@@ -239,7 +240,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     const tracks = <HTMLCollection>localDiv.children;
     for (let i = 0; i < tracks.length; i++) {
       if (tracks.item(i).localName === 'video') {
-        this.renderer.setStyle(tracks.item(i), 'position', 'relative');
+        this.renderer.setStyle(tracks.item(i), 'z-index', '0');
       }
     }
 
@@ -253,7 +254,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     const tracks = <HTMLCollection>localDiv.children;
     for (let i = 0; i < tracks.length; i++) {
       if (tracks.item(i).localName === 'video') {
-        this.renderer.setStyle(tracks.item(i), 'position', 'unset');
+        this.renderer.setStyle(tracks.item(i), 'z-index', '-1');
       }
     }
   }
@@ -269,6 +270,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       }
     } else {
       img.className = 'circle-thumb otherStreamImage';
+      console.log('identity' + participant.identity);
       if ((participant.identity in this.registeredParticipantMapObj) && this.registeredParticipantMapObj[participant.identity].profiles[0].picture_url) {
         img.src = this._config.apiUrl + this.registeredParticipantMapObj[participant.identity].profiles[0].picture_url;
       } else {
@@ -281,7 +283,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   private participantName(participant, isTeacher: boolean) {
     const par = this.renderer.createElement('span');
     if (isTeacher) {
-      par.className = 'teacherName';
+      par.className = 'sessionTeacherName';
       par.innerText = this._titleCase.transform(this.dialogData.teacher.profiles[0].first_name);
     } else if (participant.identity in this.registeredParticipantMapObj) {
       par.className = 'studentName';
@@ -315,6 +317,22 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     for (let i = 0; i < tracks.length; i++) {
       if (tracks.item(i).localName === track.kind) {
         this.renderer.removeChild(el, tracks.item(i));
+      }
+    }
+  }
+
+  private removeParticipant(remoteParticipant: any) {
+    remoteParticipant.tracks.forEach(track => {
+      if (track.kind === 'audio' || track.kind === 'video') { track.detach(); }
+    });
+    const el = document.getElementById(remoteParticipant.identity);
+    if (this.isTeacherView) {
+      this.renderer.removeChild(this.otherStreamTeacher, el);
+    } else {
+      if (remoteParticipant.identity === this.dialogData.teacher.id) {
+        this.renderer.removeChild(this.mainStream, el);
+      } else {
+        this.renderer.removeChild(this.otherStream, el);
       }
     }
   }

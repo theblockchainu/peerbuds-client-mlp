@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { Observable } from 'rxjs/Rx';
 import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
@@ -7,11 +7,11 @@ import { FormControl } from '@angular/forms';
 import { AppConfig } from '../app.config';
 import { Http } from '@angular/http';
 import { CookieService } from 'ngx-cookie-service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
 import { DialogsService } from '../_services/dialogs/dialog.service';
-import { AppNotificationDialogComponent} from './dialogs/app-notification-dialog/app-notification-dialog.component';
-import { NotificationService} from '../_services/notification/notification.service';
+import { AppNotificationDialogComponent } from './dialogs/app-notification-dialog/app-notification-dialog.component';
+import { NotificationService } from '../_services/notification/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -35,35 +35,35 @@ export class AppHeaderComponent implements OnInit {
   public defaultProfileUrl = '/assets/images/default-user.jpg';
   public isTeacher = false;
   public makeOldNotification = [];
-
+  public profileCompletionObject: any;
   constructor(public authService: AuthenticationService,
-              public config: AppConfig,
-              private http: Http,
-              private _cookieService: CookieService,
-              private _profileService: ProfileService,
-              private router: Router,
-              private dialog: MdDialog,
-              private activatedRoute: ActivatedRoute,
-              private _notificationService: NotificationService,
-              private dialogsService: DialogsService) {
-                this.isLoggedIn = authService.isLoggedIn();
-                authService.isLoggedIn().subscribe((res) => {
-                  this.loggedIn = res;
-                });
+    public config: AppConfig,
+    private http: Http,
+    private _cookieService: CookieService,
+    private _profileService: ProfileService,
+    private router: Router,
+    private dialog: MdDialog,
+    private activatedRoute: ActivatedRoute,
+    private _notificationService: NotificationService,
+    private dialogsService: DialogsService) {
+    this.isLoggedIn = authService.isLoggedIn();
+    authService.isLoggedIn().subscribe((res) => {
+      this.loggedIn = res;
+    });
 
-                authService.getLoggedInUser.subscribe((userId) => {
-                  if (userId !== 0) {
-                    this.userId = userId;
-                    this.getProfile();
-                    this.getNotifications();
-                  }
-                  else {
-                    this.loggedIn = false;
-                  }
-                });
-                this.userId = this.userIdObservable || this.getCookieValue(this.key);
+    authService.getLoggedInUser.subscribe((userId) => {
+      if (userId !== 0) {
+        this.userId = userId;
+        this.getProfile();
+        this.getNotifications();
+      }
+      else {
+        this.loggedIn = false;
+      }
+    });
+    this.userId = this.userIdObservable || this.getCookieValue(this.key);
 
-          }
+  }
 
   ngOnInit() {
     this.getProfile();
@@ -90,12 +90,14 @@ export class AppHeaderComponent implements OnInit {
 
   getProfile() {
     if (this.loggedIn) {
-        this._profileService.getCompactProfile(this.userId).subscribe(profile => {
-            this.profile = profile[0];
-            if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
-                this.isTeacher = true;
-            }
-        });
+      this._profileService.getCompactProfile(this.userId).subscribe(profile => {
+        this.profile = profile[0];
+        if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
+          this.isTeacher = true;
+        }
+        this.profileCompletionObject = this._profileService.getProfileProgressObject(this.profile);
+        console.log(this.profileCompletionObject);
+      });
     }
     else {
       return null;
@@ -129,14 +131,14 @@ export class AppHeaderComponent implements OnInit {
       case 'topic':
         return option.data.name;
       case 'peer':
-          if (option.data.profiles[0] === undefined) {
-              return option.data.id;
-          }
-          else if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
-            return option.data.id;
-          } else {
-            return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
-          }
+        if (option.data.profiles[0] === undefined) {
+          return option.data.id;
+        }
+        else if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
+          return option.data.id;
+        } else {
+          return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
+        }
       default:
         return;
     }
@@ -163,29 +165,29 @@ export class AppHeaderComponent implements OnInit {
   }
 
   public onSearchOptionClicked(option) {
-      switch (option.index) {
-          case 'collection':
-              switch (option.data.type) {
-                  case 'workshop':
-                      this.router.navigate(['/workshop', option.data.id]);
-                      break;
-                  case 'experience':
-                      this.router.navigate(['/experience', option.data.id]);
-                      break;
-                  default:
-                      this.router.navigate(['/console/dashboard']);
-                      break;
-              }
-              break;
-          case 'topic':
-              this.router.navigate(['/console/profile/topics']);
-              break;
-          case 'peer':
-              this.router.navigate(['/profile', option.data.id]);
-              break;
+    switch (option.index) {
+      case 'collection':
+        switch (option.data.type) {
+          case 'workshop':
+            this.router.navigate(['/workshop', option.data.id]);
+            break;
+          case 'experience':
+            this.router.navigate(['/experience', option.data.id]);
+            break;
           default:
-              break;
-      }
+            this.router.navigate(['/console/dashboard']);
+            break;
+        }
+        break;
+      case 'topic':
+        this.router.navigate(['/console/profile/topics']);
+        break;
+      case 'peer':
+        this.router.navigate(['/profile', option.data.id]);
+        break;
+      default:
+        break;
+    }
   }
 
   public openSignup() {
@@ -193,7 +195,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
 
-   public openLogin() {
+  public openLogin() {
     this.dialogsService.openLogin().subscribe();
   }
 
@@ -207,48 +209,48 @@ export class AppHeaderComponent implements OnInit {
   }
 
   public getNotifications() {
-      this._notificationService.getNotifications(this.userId, '{}', (err, result) => {
-          if (err) {
-              console.log(err);
-          } else {
-              result.forEach(resultItem => {
-                  if (resultItem.new) {
-                      this.hasNewNotification = true;
-                      resultItem.new = false;
-                      resultItem.seen = true;
-                      delete resultItem.createdAt;
-                      delete resultItem.updatedAt;
-                      this.makeOldNotification.push(resultItem);
-                  }
-              });
+    this._notificationService.getNotifications(this.userId, '{}', (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        result.forEach(resultItem => {
+          if (resultItem.new) {
+            this.hasNewNotification = true;
+            resultItem.new = false;
+            resultItem.seen = true;
+            delete resultItem.createdAt;
+            delete resultItem.updatedAt;
+            this.makeOldNotification.push(resultItem);
           }
-      });
+        });
+      }
+    });
   }
 
   openNotificationsDialog(): void {
-      const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
-          width: '350px',
-          height: '70vh',
-          data: {
-          },
-          disableClose: false,
-          position: {
-              top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
-              left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 170 + 'px'
-          }
-      });
+    const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
+      width: '350px',
+      height: '70vh',
+      data: {
+      },
+      disableClose: false,
+      position: {
+        top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
+        left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 170 + 'px'
+      }
+    });
 
-      dialogRef.afterClosed().subscribe(result => {
-          if (this.makeOldNotification.length > 0) {
-              this.makeOldNotification.forEach(notifItem => {
-                  this._notificationService.updateNotification(this.userId, notifItem, (err, patchResult) => {
-                      if (err) {
-                          console.log(err);
-                      }
-                  });
-              });
-              this.hasNewNotification = false;
-          }
-      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (this.makeOldNotification.length > 0) {
+        this.makeOldNotification.forEach(notifItem => {
+          this._notificationService.updateNotification(this.userId, notifItem, (err, patchResult) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+        });
+        this.hasNewNotification = false;
+      }
+    });
   }
 }

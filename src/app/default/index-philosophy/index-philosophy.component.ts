@@ -26,7 +26,7 @@ export class IndexPhilComponent implements OnInit {
 
   ngOnInit() {
     this.notifyForm = this._fb.group(
-      {email: ['', Validators.requiredTrue]}
+      { email: ['', Validators.requiredTrue] }
     );
   }
 
@@ -69,13 +69,13 @@ export class IndexPhilComponent implements OnInit {
     this.optimismSelected = state;
   }
 
-  public showFirst(state){
+  public showFirst(state) {
     this.first = state;
   }
   public sendEmailSubscriptions() {
     // this.loading = true;
     this.email = this.notifyForm.controls['email'].value;
     this.authenticationService.sendEmailSubscriptions(this.email)
-        .subscribe();
-}
+      .subscribe();
+  }
 }

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { IndexComponent } from './default/index/index.component';
-import { IndexComponent1 } from './default/index1/index1.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
@@ -14,7 +13,7 @@ import { ContactComponent } from './contact-us/contact-us.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-import {TermsOfServiceComponent} from './terms-of-service/terms-of-service.component';
+import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 
 const routes: Routes = [
   {
@@ -35,8 +34,8 @@ const routes: Routes = [
     component: PrivacyPolicyComponent
   },
   {
-      path: 'terms-of-service',
-      component: TermsOfServiceComponent
+    path: 'terms-of-service',
+    component: TermsOfServiceComponent
   },
   {
     path: 'philosophy',
@@ -52,7 +51,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: IndexComponent1
+    component: IndexComponent
   },
   {
     path: 'reset',
@@ -80,7 +79,7 @@ const routes: Routes = [
   },
   {
     path: 'experience',
-    loadChildren: 'app/experience-wizard/experience-wizard.module#ExperienceWizardModule'
+    loadChildren: 'app/experience/experience.module#ExperienceModule'
   },
   {
     path: 'workshop',

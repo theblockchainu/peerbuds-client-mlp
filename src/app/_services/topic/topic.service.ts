@@ -43,8 +43,19 @@ export class TopicService {
       .map(res => res.json());
   }
 
+  public relTopicCollection(collectionId, topicId): Observable<any> {
+    return this.http.put(this.config.apiUrl + '/api/collections/' + collectionId + '/topics/rel/' + topicId, {}, this.options)
+      .map(res => res.json());
+  }
+
   public getDefaultTopics() {
     return this.http.get(this.config.searchUrl + '/api/search/topics', this.options)
+                    .map(res => res.json() || []);
+
+  }
+
+  public getDefaultTopicsAtOnboarding(url) {
+    return this.http.get(url, this.options)
                     .map(res => res.json() || []);
 
   }

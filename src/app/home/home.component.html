@@ -1,20 +1,21 @@
 <div class="main-content">
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1" style="margin-top: 2%; margin-bottom: 0%">
-      <nav md-tab-nav-bar disableRipple class="noJustify" >
-        <a md-tab-link [routerLink]="'/home/homefeed'" routerLinkActive #feedLink="routerLinkActive" [active]="feedLink.isActive">
-          Homefeed </a>
-        <a md-tab-link [routerLink]="'/home/workshops'" routerLinkActive #workshopLink="routerLinkActive" [active]="workshopLink.isActive">
-          Workshops
-        </a>
-        <a md-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive">
-          Peers
-        </a>
-      </nav>
-      <div class="row">
-        <div class="col-md-12">
-          <router-outlet></router-outlet>
-        </div>
+  <div class="col-md-10 col-md-offset-1" style="margin-top: 2%; margin-bottom: 0%">
+    <nav md-tab-nav-bar disableRipple class="noJustify" >
+      <a md-tab-link [routerLink]="'/home/homefeed'" routerLinkActive #feedLink="routerLinkActive" [active]="feedLink.isActive">
+        Homefeed </a>
+      <a md-tab-link [routerLink]="'/home/workshops'" routerLinkActive #workshopLink="routerLinkActive" [active]="workshopLink.isActive">
+        Workshops
+      </a>
+      <a md-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive">
+        Experiences
+      </a>
+      <a md-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive">
+        Peers
+      </a>
+    </nav>
+    <div class="row">
+      <div class="col-md-12">
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

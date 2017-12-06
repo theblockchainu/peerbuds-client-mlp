@@ -25,6 +25,7 @@ import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.se
 import { DialogsService } from '../dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
 import { DISABLED } from '@angular/forms/src/model';
+import { TopicService } from '../../_services/topic/topic.service';
 
 
 @Component({
@@ -143,7 +144,8 @@ export class WorkshopEditComponent implements OnInit {
     private _leftSideBarService: LeftSidebarService,
     private dialogsService: DialogsService,
     private snackBar: MdSnackBar,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private _topicService: TopicService
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['workshopId'];
@@ -225,9 +227,7 @@ export class WorkshopEditComponent implements OnInit {
     this.paymentInfo = this._fb.group({
 
     });
-
     this.initializeFormFields();
-
     this.initializeWorkshop();
 
     this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
@@ -351,7 +351,9 @@ export class WorkshopEditComponent implements OnInit {
         this.itenariesForMenu.push(contentObj.schedule.startDay);
       }
     }
+    // if (this.sidebarMenuItems) {
     this.sidebarMenuItems[2]['submenu'] = [];
+    // }
     let i = 1;
     this.itenariesForMenu.forEach(function (item) {
       const index = i;
@@ -592,6 +594,10 @@ export class WorkshopEditComponent implements OnInit {
     const control = <FormArray>this.workshop.controls['imageUrls'];
     this.workshopImage1Pending = false;
     control.patchValue(this.urlForImages);
+    const tempWorkshopData = this.workshopData;
+    tempWorkshopData.imageUrls = this.workshop.controls['imageUrls'].value;
+    this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempWorkshopData, this.sidebarMenuItems);
+
   }
 
   public addVideoUrl(value: String) {
@@ -600,6 +606,9 @@ export class WorkshopEditComponent implements OnInit {
     const control = this.workshop.controls['videoUrls'];
     this.workshopVideoPending = false;
     control.patchValue(this.urlForVideo);
+    const tempWorkshopData = this.workshopData;
+    tempWorkshopData.videoUrls = this.workshop.controls['videoUrls'].value;
+    this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempWorkshopData, this.sidebarMenuItems);
   }
 
   uploadVideo(event) {
@@ -665,7 +674,6 @@ export class WorkshopEditComponent implements OnInit {
       (response) => {
         const result = response.json();
         let collectionId;
-        this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
         if (result.isNewInstance) {
           this.workshop.controls.status.setValue(result.status);
           collectionId = result.id;
@@ -673,6 +681,11 @@ export class WorkshopEditComponent implements OnInit {
         else {
           collectionId = this.workshopId;
         }
+        result.topics = this.workshopData.topics;
+        result.contents = this.workshopData.contents;
+        result.owners = this.workshopData.owners;
+        this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
+
         if (step && step > 12) {
           this.submitTimeline(collectionId, timeline);
         }
@@ -756,6 +769,28 @@ export class WorkshopEditComponent implements OnInit {
       this.workshopStepUpdate();
       this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
     }
+    // let observable: Rx.Observable<any>;
+    // if (topicArray.length !== 0) {
+    //   topicArray.forEach(topicId => {
+    //     observable = this._topicService.relTopicCollection(this.workshopId, topicId)
+    //                   .map(response => response).publishReplay().refCount();
+    //     observable.subscribe((res) => {
+    //       this.step++;
+    //       this._collectionService.getCollectionDetail(this.workshopId, this.query)
+    //         .subscribe((resData) => {
+    //           this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
+    //         });
+    //       this.workshopStepUpdate();
+    //       this.busyInterest = false;
+    //       this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
+    //     });
+    //   });
+    // }
+    // else {
+    //   this.step++;
+    //   this.workshopStepUpdate();
+    //   this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
+    // }
   }
 
   /**
@@ -936,6 +971,7 @@ export class WorkshopEditComponent implements OnInit {
           });
           this.workshop.controls.imageUrls.patchValue(this.urlForImages);
         }
+        this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.workshop.value, this.sidebarMenuItems);
       }).subscribe();
 
   }

@@ -105,8 +105,8 @@ export class ProfileService {
   public getCompactProfile(userId) {
     const profile = {};
     if (userId) {
-      const filter = '{"include": {"peer": "ownedCollections"}}';
-      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + filter, this.options)
+      const filter = { 'include': [{ 'peer': 'ownedCollections' }, 'work', 'education', 'phone_numbers', 'emergency_contacts'] };
+      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
         .map(
         (response: Response) => response.json()
         );
@@ -182,7 +182,7 @@ export class ProfileService {
         console.log('Error: ' + err);
       });
 
-  } 
+  }
 
   public confirmEmail(userId, inputToken: string) {
     const body = {};
@@ -488,6 +488,57 @@ export class ProfileService {
   public approvePeer(peer: any) {
     return this.http.post(this.config.apiUrl + '/api/peers/' + peer.id + '/approve', {})
       .map(response => response.json());
+  }
+
+  public getProfileProgressObject(profile: any): any {
+    console.log(profile);
+    const pProg = {};
+    let progress = 0;
+    let totalKeys = 0;
+    for (const key in profile) {
+      if (profile.hasOwnProperty(key)) {
+        if (key === 'id' || key === 'joining_date' || key === 'is_teacher' || key === 'promoOptIn' || key === 'onboardingStage' || key === 'custom_url' || key === 'createdAt' || key === 'updatedAt') {
+        } else {
+          totalKeys++;
+          if (profile[key] && profile[key].length > 0) {
+            progress++;
+          }
+        }
+      }
+    }
+
+
+    // if (profile.first_name) { prog++; }
+    // if (profile.last_name) { prog++; }
+    // if (profile.headline) { prog++; }
+    // if (profile.gender) { prog++; }
+    // if (profile.dobDay) { prog++; }
+    // if (profile.dobMonth) { prog++; }
+    // if (profile.dobYear) { prog++; }
+    // if (profile.currency) { prog++; }
+    // if (profile.vat_number) { prog++; }
+    // if (profile.phones && profile.phones.length > 0) { prog++; }
+    // if (profile.location_string) { prog++; }
+    // if (profile.preferred_language) { prog++; }
+    // if (profile.emergency_contacts && profile.emergency_contacts.length > 0) { prog++; }
+
+    if (profile.first_name && profile.last_name && profile.headline && profile.gender && profile.dobDay && profile.dobMonth && profile.dobYear && profile.currency) {
+      pProg['personal'] = true;
+    }
+    if (profile.work && profile.work.length > 0) {
+      pProg['work'] = true;
+    }
+    if (profile.education && profile.education.length > 0) {
+      pProg['education'] = true;
+    }
+    if (profile.vat_number && profile.phones && profile.phones.length > 0 && profile.location_string && profile.preferred_language && profile.emergency_contacts && profile.emergency_contacts.length > 0) {
+      pProg['additional'] = true;
+    }
+    if (profile.picture_url) {
+      pProg['photos'] = true;
+    }
+    pProg['progress'] = Math.round((progress / totalKeys) * 100);
+    return pProg;
   }
 
 }
