@@ -1,0 +1,8 @@
+<h1 md-dialog-title>Delete {{data.type | titlecase}} ?</h1>
+<div md-dialog-content>
+  <p>Are you sure you want to delete {{data.title |titlecase}}?</p>
+</div>
+<div md-dialog-actions>
+  <button md-button (click)="delete()" color="warn" tabindex="2">Ok</button>
+  <button md-button [md-dialog-close] tabindex="-1">No Thanks</button>
+</div>

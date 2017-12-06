@@ -187,27 +187,36 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     });
   }
 
-  public deleteWorkshop(action: string, workshop: any) {
-    this._dialogService.openDeleteDialog(action).subscribe(result => {
-      if (result === 'delete') {
-        this._collectionService.deleteCollection(workshop.id).subscribe(res => {
-          this.fetchData();
-          this.snackBar.open('Workshop Deleted', 'Close', {
-            duration: 800
-          });
-        });
-      } else if (result === 'cancel') {
-        const cancelObj = {
-          isCancelled: true
-        };
-        this._collectionService.patchCollection(workshop.id, cancelObj).subscribe((response) => {
-          this.fetchData();
-          this.snackBar.open('Workshop Cancelled', 'Close', {
-            duration: 800
-          });
+  public deleteDraft(workshop: any) {
+    this._dialogService.openDeleteCollection(workshop).subscribe(result => {
+      if (result) {
+        this.fetchData();
+        this.snackBar.open('Workshop Deleted', 'Close', {
+          duration: 800
         });
       } else {
-        console.log(result);
+        this.snackBar.open('Workshop Couldn&#39;t be deleted', 'Retry', {
+          duration: 800
+        }).onAction().subscribe(res => {
+          this.deleteDraft(workshop);
+        });
+      }
+    });
+  }
+
+  public cancelWorkshop(workshop: any) {
+    this._dialogService.openCancelCollection(workshop).subscribe(result => {
+      if (result) {
+        this.fetchData();
+        this.snackBar.open('Workshop Cancelled', 'Close', {
+          duration: 800
+        });
+      } else {
+        this.snackBar.open('Workshop Couldn&#39;t be Cancelled', 'Retry', {
+          duration: 800
+        }).onAction().subscribe(res => {
+          this.deleteDraft(workshop);
+        });
       }
     });
   }

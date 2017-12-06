@@ -15,6 +15,9 @@ import { Injectable } from '@angular/core';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-card.component';
 import { RequestPasswordDialogComponent } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
+import { ExitCollectionDialogComponent } from './exit-collection-dialog/exit-collection-dialog.component';
+import { CancelCollectionDialogComponent } from './cancel-collection-dialog/cancel-collection-dialog.component';
+import { DeleteCollectionDialogComponent } from './delete-collection-dialog/delete-collection-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -146,6 +149,41 @@ export class DialogsService {
     openDeleteDialog(action: string) {
         const dialogRef = this.dialog.open(DeleteDialogComponent, {
             data: action,
+            height: '23vh'
+        });
+        return dialogRef.afterClosed();
+    }
+
+    openDeleteCollection(collection: any) {
+        const dialogRef = this.dialog.open(DeleteCollectionDialogComponent, {
+            data: {
+                type: collection.type,
+                id: collection.id,
+                name: collection.title
+            },
+            height: '23vh'
+        });
+
+        return dialogRef.afterClosed();
+    }
+
+    openExitCollection(collection: any) {
+        const dialogRef = this.dialog.open(ExitCollectionDialogComponent, {
+            data: {
+                type: collection.type,
+                id: collection.id
+            },
+            height: '23vh'
+        });
+        return dialogRef.afterClosed();
+    }
+
+    openCancelCollection(collection: any) {
+        const dialogRef = this.dialog.open(CancelCollectionDialogComponent, {
+            data: {
+                type: collection.type,
+                id: collection.id
+            },
             height: '23vh'
         });
         return dialogRef.afterClosed();
