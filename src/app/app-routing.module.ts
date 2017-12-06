@@ -79,7 +79,7 @@ const routes: Routes = [
   },
   {
     path: 'experience',
-    loadChildren: 'app/experience-wizard/experience-wizard.module#ExperienceWizardModule'
+    loadChildren: 'app/experience/experience.module#ExperienceModule'
   },
   {
     path: 'workshop',

@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConsoleTeachingComponent } from '../console-teaching.component';
+import 'rxjs/add/operator/map';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../../_services/collection/collection.service';
+import { ConsoleTeachingComponent } from '../console-teaching.component';
+import { AppConfig } from '../../../app.config';
+import * as _ from 'lodash';
+declare var moment: any;
+import { MdDialog } from '@angular/material';
+import { CohortDetailDialogComponent } from '../console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-console-teaching-experience',
@@ -15,65 +23,193 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
   public loaded: boolean;
   public now: Date;
   private userId;
-  private outputResult: any;
-  public activeTab: string;
+  public drafts: Array<any>;
+  public ongoingArray: Array<any>;
+  public upcomingArray: Array<any>;
+  public pastArray: Array<any>;
+  public pastExperiencesObject: any;
+  public liveExperiencesObject: any;
+  public upcomingExperiencesObject: any;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleTeachingComponent: ConsoleTeachingComponent,
-    public router: Router,
     public _collectionService: CollectionService,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private _dialogService: DialogsService,
+    public router: Router,
+    public config: AppConfig,
+    public dialog: MdDialog,
+    public snackBar: MdSnackBar
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
-      console.log(urlSegment[0].path);
-      consoleTeachingComponent.setActiveTab(urlSegment[0].path);
+      if (urlSegment[0] === undefined) {
+        consoleTeachingComponent.setActiveTab('experiences');
+      } else {
+        consoleTeachingComponent.setActiveTab(urlSegment[0].path);
+      }
     });
     this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
     this.loaded = false;
+    this.fetchData();
+  }
+
+  private fetchData() {
     this._collectionService.getOwnedCollections(this.userId, '{ "where": {"type":"experience"}, "include": ["calendars", "owners", {"participants": "profiles"}, "topics", {"contents":"schedules"}] }', (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        let draftCount = 0, activeCount = 0, pastCount = 0;
-        this.outputResult = {};
-        this.outputResult['data'] = [];
-        this.outputResult.draftCount = 0;
-        this.outputResult.activeCount = 0;
-        this.outputResult.pastCount = 0;
-        result.forEach((resultItem) => {
-          switch (resultItem.status) {
-            case 'draft' || 'submitted':
-              draftCount++;
-              break;
-            case 'active':
-              activeCount++;
-              break;
-            case 'complete':
-              pastCount++;
-              break;
-            default:
-              break;
-          }
-          this.outputResult.data.push(resultItem);
-        });
-        this.outputResult.draftCount = draftCount;
-        this.outputResult.activeCount = activeCount;
-        this.outputResult.pastCount = pastCount;
-        this.collections = this.outputResult;
-        console.log(this.collections);
+        this.drafts = [];
+        this.ongoingArray = [];
+        this.upcomingArray = [];
+        this.pastArray = [];
+        this.pastExperiencesObject = {};
+        this.liveExperiencesObject = {};
+        this.upcomingExperiencesObject = {};
+        this.createOutput(result);
         this.now = new Date();
         this.loaded = true;
       }
     });
   }
 
-  public onSelect(workshop) {
-    this.router.navigate(['workshop', workshop.id, 'edit', workshop.stage.length > 0 ? workshop.stage : 1]);
+  private createOutput(data: any) {
+    const now = moment();
+    data.forEach(experience => {
+      if (experience.status === 'draft' || experience.status === 'submitted' || experience.calendars.length === 0) {
+        experience.itenaries = [];
+        this.drafts.push(experience);
+      } else {
+        experience.itenaries = this._collectionService.calculateItenaries(experience, experience.calendars[0]);
+        console.log(experience);
+        experience.calendars.forEach(calendar => {
+          calendar.startDate = moment(calendar.startDate).toDate();
+          calendar.endDate = moment(calendar.endDate).hours(23).minutes(59).toDate();
+          const startDateMoment = moment(calendar.startDate).toDate();
+          const endDateMoment = moment(calendar.endDate).hours(23).minutes(59).toDate();
+          if (endDateMoment) {
+            if (now.diff(endDateMoment) < 0) {
+              if (!now.isBetween(startDateMoment, endDateMoment)) {
+                if (experience.id in this.upcomingExperiencesObject) {
+                  this.upcomingExperiencesObject[experience.id]['experience']['calendars'].push(calendar);
+                } else {
+                  this.upcomingExperiencesObject[experience.id] = {};
+                  this.upcomingExperiencesObject[experience.id]['experience'] = _.clone(experience);
+                  this.upcomingExperiencesObject[experience.id]['experience']['calendars'] = [calendar];
+                }
+              } else {
+                if (experience.id in this.liveExperiencesObject) {
+                  this.liveExperiencesObject[experience.id]['experience']['calendars'].push(calendar);
+                } else {
+                  this.liveExperiencesObject[experience.id] = {};
+                  this.liveExperiencesObject[experience.id]['experience'] = _.clone(experience);
+                  this.liveExperiencesObject[experience.id]['experience']['calendars'] = [calendar];
+                }
+              }
+
+            } else {
+              if (experience.id in this.pastExperiencesObject) {
+                this.pastExperiencesObject[experience.id]['experience']['calendars'].push(calendar);
+              } else {
+                this.pastExperiencesObject[experience.id] = {};
+                this.pastExperiencesObject[experience.id]['experience'] = experience;
+                this.pastExperiencesObject[experience.id]['experience']['calendars'] = [calendar];
+              }
+            }
+          }
+        });
+      }
+    });
+
+    this.drafts.sort((a, b) => {
+      return moment(a.updatedAt).diff(moment(b.updatedAt), 'days');
+    });
+
+    for (const key in this.pastExperiencesObject) {
+      if (this.pastExperiencesObject.hasOwnProperty(key)) {
+        this.pastExperiencesObject[key].experience.calendars.sort((a, b) => {
+          return this.compareCalendars(a, b);
+        });
+        this.pastArray.push(this.pastExperiencesObject[key].experience);
+      }
+    }
+
+    this.pastArray.sort((a, b) => {
+      return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
+    });
+
+    for (const key in this.upcomingExperiencesObject) {
+      if (this.upcomingExperiencesObject.hasOwnProperty(key)) {
+        this.upcomingExperiencesObject[key].experience.calendars.sort((a, b) => {
+          return this.compareCalendars(a, b);
+        });
+        this.upcomingArray.push(this.upcomingExperiencesObject[key].experience);
+      }
+    }
+
+    this.upcomingArray.sort((a, b) => {
+      return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
+    });
+
+
+    for (const key in this.liveExperiencesObject) {
+      if (this.liveExperiencesObject.hasOwnProperty(key)) {
+        this.ongoingArray.push(this.liveExperiencesObject[key].experience);
+      }
+    }
   }
 
+  public onSelect(experience) {
+    this.router.navigate(['/experience/', experience.id, 'edit', experience.stage ? experience.stage : 1]);
+  }
+
+  public createExperience() {
+    this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject) => {
+      this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
+    });
+  }
+
+  /**
+   * compareCalendars
+   */
+  public compareCalendars(a, b) {
+    return moment(a.startDate).diff(moment(b.startDate), 'days');
+  }
+
+  public openCohortDetailDialog(cohortData: any) {
+    const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
+      width: '700px',
+      height: '600px',
+      data: cohortData
+    });
+  }
+
+  public deleteExperience(action: string, experience: any) {
+    this._dialogService.openDeleteDialog(action).subscribe(result => {
+      if (result === 'delete') {
+        this._collectionService.deleteCollection(experience.id).subscribe(res => {
+          this.fetchData();
+          this.snackBar.open('Experience Deleted', 'Close', {
+            duration: 800
+          });
+        });
+      } else if (result === 'cancel') {
+        const cancelObj = {
+          isCancelled: true
+        };
+        this._collectionService.patchCollection(experience.id, cancelObj).subscribe((response) => {
+          this.fetchData();
+          this.snackBar.open('Experience Cancelled', 'Close', {
+            duration: 800
+          });
+        });
+      } else {
+        console.log(result);
+      }
+    });
+  }
 
 }

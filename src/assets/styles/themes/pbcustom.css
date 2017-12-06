@@ -1500,6 +1500,10 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
     padding: 1px;
 }
 
+.workshop-content carousel-pins, .experience-content carousel-pins{
+    display: none;
+}
+
 .teacher-box{
     position: relative;
     top: -47%;
