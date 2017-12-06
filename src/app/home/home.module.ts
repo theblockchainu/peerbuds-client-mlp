@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { WorkshopsComponent } from './workshops/workshops.component';
+import { ExperiencesComponent } from './experiences/experiences.component';
 import { PeersComponent } from './peers/peers.component';
 
 import { MdTabsModule } from '@angular/material';
@@ -21,7 +22,7 @@ import {StickyModule} from 'ng2-sticky-kit';
     SharedModule,
     StickyModule
   ],
-  declarations: [HomeComponent, WorkshopsComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent, SelectPriceComponent],
+  declarations: [HomeComponent, WorkshopsComponent, ExperiencesComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent, SelectPriceComponent],
   providers: [],
   bootstrap: [SelectTopicsComponent, SelectPriceComponent]
 })

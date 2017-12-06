@@ -11,7 +11,7 @@
       <div class="lightText">
         You are not teaching any experience
         <br><br>
-        Start by hosting an <a color="default" [routerLink]="'/editExperience'">Experience </a>
+        Start by hosting an <a color="default" (click)="createExperience()">Experience </a>
       </div>
     </div>
     <div *ngIf="collections.activeCount > 0">
