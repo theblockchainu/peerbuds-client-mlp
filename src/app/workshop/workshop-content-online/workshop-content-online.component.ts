@@ -54,7 +54,7 @@ export class WorkshopContentOnlineComponent implements OnInit {
         this.attachments.value.forEach(file => {
             this.contentService.getMediaObject(file).subscribe((res) => {
                 this.attachmentUrls.push(res[0]);
-            })
+            });
         });
         console.log(this.attachmentUrls);
     }
@@ -220,7 +220,7 @@ export class WorkshopContentOnlineComponent implements OnInit {
                     supplementUrls.push(new FormControl(file));
                     this.contentService.getMediaObject(file).subscribe((res) => {
                         this.attachmentUrls.push(res[0]);
-                    })
+                    });
                 });
                 if (contentForm.controls['id'].value) {
                     this.deleteFromContent(contentForm, {'supplementUrls': []});
@@ -230,7 +230,7 @@ export class WorkshopContentOnlineComponent implements OnInit {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 contentForm.controls['imageUrl'].patchValue('');
-                if(contentForm.controls['id'].value) {
+                if (contentForm.controls['id'].value) {
                     this.deleteFromContent(contentForm, {'imageUrl': ''});
                 }
             }

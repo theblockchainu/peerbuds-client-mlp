@@ -12,6 +12,12 @@
     width: 100%;
 }
 
+.continueLearning-thumb{
+    object-fit: cover;
+    height: 200px;
+    width: 100%;
+}
+
 .peer-recommendation-thumb{
     object-fit: cover;
     height: 238px;
@@ -23,6 +29,14 @@
     padding-left: 8px;
     padding-right: 8px;
     width: 20%;
+    float: left;
+}
+
+.continueLearning-card{
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 33.3%;
     float: left;
 }
 

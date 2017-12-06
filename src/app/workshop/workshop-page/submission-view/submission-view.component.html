@@ -3,7 +3,7 @@
     <a href="javascript:;" class="text-grey" (click)="closeDialog()" style="outline: none;">
       &lt; Back</a>
   </div>
-  <h3 class="margin-bottom-0">{{ data.submission.name | titlecase }}</h3>
+  <div class="mat-display-1">{{ data.submission.name | ucfirst }}</div>
   <div class="margin-bottom-20 clearfix">
     <span class="fs-13 display-inline-block margin-top-10">
       <i *ngIf="!iHaveUpvoted" class="fa fa-thumbs-o-up" style="cursor: pointer;" (click)="addSubmissionUpvote(data.submission)"></i>&nbsp;&nbsp;
@@ -11,11 +11,10 @@
       <span *ngIf="data.submission.upvotes !== undefined">{{data.submission.upvotes.length}}</span>
       <span *ngIf="data.submission.upvotes === undefined">0</span>
     </span>
-    <button class="pull-right mat-border-button" md-button *ngIf="data.userType==='participant' && isMySubmission" tabindex="-1">Edit</button>
+    <!--<button class="pull-right mat-border-button" md-button *ngIf="data.userType==='participant' && isMySubmission" tabindex="-1">Edit</button>-->
     <div class="pull-right" *ngIf="!isMySubmission">
       <div class="position-relative" *ngIf="data.submission.peer && data.submission.peer.length>0">
-        <img class="circle-thumb" src="{{data.submission.peer[0].profiles[0].picture_url}}" alt="thumb" (error)="_collectionService.imgErrorHandler($event)"
-        />
+        <img class="circle-thumb" src="{{data.submission.peer[0].profiles[0].picture_url}}" alt="thumb" (error)="_collectionService.imgErrorHandler($event)"/>
         <div style="display: inline-block; position: relative; top: 11px;">
           {{data.submission.peer[0].profiles[0].first_name}} {{data.submission.peer[0].profiles[0].last_name}}
           <br>
@@ -24,28 +23,30 @@
       </div>
     </div>
   </div>
+  <hr>
   <div class="content-image" *ngIf="data.submission.picture_url">
-    <img class="img-responsive media-middle" style="width: 100%" src="{{config.apiUrl+data.submission.picture_url.split(',')[0]}}" alt="image">
+    <img class="img-responsive media-middle" style="width: 100%" src="{{config.apiUrl+data.submission.picture_url.split(',')[0]}}" alt="image" (error)="_collectionService.imgErrorHandler($event)">
   </div>
   <div class="default-image" *ngIf="!data.submission.picture_url">
     <i class="fa fa-picture-o"></i>
   </div>
   <div class="content-box">
     <div class="margin-top-20 margin-bottom-20">
-      <div class="section-subhead">
+      <div>
         <b>Description</b>
       </div>
       <div class="section-description margin-top-20 margin-bottom-20">{{ data.submission.description }}</div>
     </div>
   </div>
+  <hr>
   <!--DISCUSSION THREAD-->
   <div class="row Discussion" *ngIf="userType==='teacher' || userType==='participant'">
     <div class="col-md-12 margin-bottom-20">
-      <h3 *ngIf="comments !== undefined">Discussion ({{comments.length}})</h3>
-      <h3 *ngIf="comments === undefined">Discussion (0)</h3>
+      <div *ngIf="comments !== undefined"><b>Discussion ({{comments.length}})</b></div>
+      <div *ngIf="comments === undefined"><b>Discussion (0)</b></div>
       <form [formGroup]="chatForm" (ngSubmit)="postComment()">
         <md-input-container class="full-width margin-top-10" [floatPlaceholder]="false">
-          <input mdInput type="text" formControlName="description" placeholder="Post your thoughts on this workshop" tabindex="-1">
+          <input mdInput type="text" formControlName="description" placeholder="Post your thoughts on this project submission" tabindex="-1">
         </md-input-container>
         <span mdTooltip="Invalid Input!" [mdTooltipDisabled]="chatForm.valid">
           <button md-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right" tabindex="-1">Post</button>
@@ -55,7 +56,7 @@
     <div class="col-md-12">
       <div class="row lighterText" *ngIf="comments !== undefined && comments.length === 0">
         <div class="col-md-12">
-          <div class="emptySectionText">Be the first one to start a discussion on this workshop..</div>
+          <div class="emptySectionText">Be the first one to start a discussion on this project submission..</div>
         </div>
       </div>
       <div class="margin-top-30"></div>

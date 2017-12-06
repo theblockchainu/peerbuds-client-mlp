@@ -643,14 +643,14 @@ export class WorkshopPageComponent implements OnInit {
    * cancelWorkshop
    */
   public cancelWorkshop() {
-    const cancelObj = {
-      isCancelled: true,
-      cancelledBy: this.userId,
-      status: 'cancelled'
-    };
-    this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
-      this.router.navigate(['workshop', this.workshopId]);
-    });
+      const cancelObj = {
+        isCanceled: true,
+        canceledBy: this.userId,
+        status: 'cancelled'
+      };
+      this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
+          this.router.navigate(['workshop', this.workshopId]);
+      });
   }
 
   /**
