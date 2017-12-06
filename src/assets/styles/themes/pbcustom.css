@@ -1227,78 +1227,6 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
     background:#1d1d1d;    
   }
 
-.mainStream{
-    text-align: center;
-}
-
-.mainStream video{
-    height: 96vh;
-    z-index: 5;
-    position: relative;    
-}
-
-.localStream{
-    position: absolute;
-    bottom: 3%;
-    height: 16%;
-    right: 10%;
-    z-index: 6;
-}
-
-.localStream video{
-    border-style: solid;
-    border-color: white;
-    height: 125px !important;
-}
-
-.localStream img{
-    position: relative;
-    bottom: 69px;
-    left: 196px;
-    width: 100px;
-    height: 100px;
-}
-
-.localStream .studentName{
-    position: relative;
-    bottom: 6px;
-    left: 129px;
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-    background: rgba(0, 0, 0, 0.500);
-    padding: 1px;
-    z-index: 6;
-}
-
-
-.otherStream{
-    position: absolute;
-    bottom: 3%;
-    height: 16%;
-    right: 24%;
-    z-index: 6;
-}
-
-.otherStream video{
-    padding-right: 5px;
-    height: 125px !important;
-}
-
-.otherStreamTeacher{
-    position: absolute;
-    bottom: 3%;
-    height: 16%;
-    right: 10%;
-    z-index: 6;
-}
-
-.otherStreamTeacher video{
-    padding-right: 5px;
-    height: 125px !important;
-}
-
-
 .topics .mat-tab-label {
     min-width: min-content !important;
 }
@@ -1313,19 +1241,6 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .editCalendar .ui-accordion {
     border-bottom: none !important;
-}
-
-.buttonBar{
-    position: absolute;
-    bottom: 13%;
-    height: 16%;
-    z-index: 1001;
-    width: 0%;
-    left: 3%;
-}
-.buttonBar .session_actions{
-    padding-top: 5px;
-    padding-bottom: 5px;
 }
 
 .mat-dialog-actions:last-child {
@@ -1386,71 +1301,212 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
 }
 
 .teacherStreamImage{
-    margin-top: 15%;
-    position: fixed;
-    left: 47vw;
+    position: relative;
+    top: 23%;
+    left: 46%;
     width: 150px;
     height: 150px;
-    z-index: 0;
 }
 
 .sessionTeacherName{
-    position: absolute;
-    left: 48vw;
-    top: 5vh;
+    position: relative;
+    z-index: 2;
+    left: 36%;
+    top: -4%;
     font-size: 30px;
     font-weight: bold;
     color: white;
     background: rgba(0, 0, 0, 0.500);
     padding: 7px;
-    z-index: 6;
 }
 
-.otherStream img{
+.buttonBar{
     position: relative;
-    bottom: 69px;
-    left: 196px;
-    width: 100px;
-    height: 100px;
+    top: 75%;
+    width: min-content;
+    z-index: 1001;    
+}
+.buttonBar .session_actions{
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
-.otherStreamTeacher img{
+
+.mainStream{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 1%;
+}
+
+.mainStream video{
+    z-index: 0;
+    height: 96vh;
     position: relative;
-    bottom: 69px;
-    left: 196px;
-    width: 100px;
-    height: 100px;
+    top: -22%;
+    left: 7%;    
 }
 
-.otherStream .studentName{
-    position: relative;
-    bottom: 6px;
-    left: 129px;
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-    background: rgba(0, 0, 0, 0.500);
-    padding: 1px;
-    z-index: 6;
+.localStream{
+    display: inline-block;
+    width: 17%;
+    height: 100%;   
 }
 
-
-.otherStreamTeacher .studentName{
-    position: relative;
-    bottom: 6px;
-    left: 129px;
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-    background: rgba(0, 0, 0, 0.500);
-    padding: 1px;
-    z-index: 6;
-}
 
 .video-popup .mat-dialog-container{
     padding: 0px !important;
 }
 
+.workshop-content carousel-pins{
+    display: none;
+}
+
+.bottomBar{
+    position: relative;
+    top: 52%;
+    left: 5%;
+    width: 88%;
+    height: 23%;
+    z-index: 1;
+}
+
+.participant-box{
+    background: rgba(0, 0, 0, 0.623)
+}
+
+.localStream .participant-box{
+    width: 17%;
+    height: 79%;
+    position: absolute;
+}
+
+.localStream img{
+    top: 6%;
+    position: relative;
+    left: 35%;
+    width: 100px;
+    height: 100px;
+}
+
+.localStream .studentName{
+    position: relative;
+    top: 51%;
+    z-index: 2;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    left: 5%;
+} 
+
+
+.localStream video{
+    border-style: solid;
+    border-color: white;
+    height: 129px !important;
+    z-index: 1;
+    position: relative;
+    top: -78%;
+    left: 0%;
+}
+
+.otherStream .participant-box{
+    width: 18%;
+    height: 100%;
+}
+
+.otherStream img{
+    position: relative;
+    left: 35%;
+    top: 7%;
+    width: 100px;
+    height: 100px; 
+}
+
+.otherStream{
+    display: inline-flex;
+    height: 90%;
+    position: relative;
+    top: -67%;
+    flex-direction: row-reverse;
+    width: 79%;
+}
+
+.otherStream video{
+    position: relative;
+    left: 2%;
+    z-index: 1;
+    top: -75%;
+    height: 125px !important;
+}
+
+.otherStream .studentName{
+    position: relative;
+    top: 52%;
+    left: 3%;
+    z-index: 2;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    padding: 1px;
+}
+
+
+/*Teacher Stream*/
+
+.otherStreamTeacher .participant-box{
+    width: 22%;
+    height: 89%;
+    top: 1%;
+    position: relative;
+}
+
+.otherStreamTeacher img{
+    position: relative;
+    left: 35%;
+    top: 7%;
+    width: 100px;
+    height: 100px;
+}
+
+.otherStreamTeacher{
+    display: inline-flex;
+    height: 90%;
+    position: relative;
+    top: 5%;
+    flex-direction: row-reverse;
+    width: 96%; 
+}
+
+.otherStreamTeacher video{
+    position: relative;
+    left: 0%;
+    z-index: 1;
+    top: -81%;
+    height: 125px !important;
+}
+
+.otherStreamTeacher .studentName{
+    position: relative;
+    top: 52%;
+    left: 3%;
+    z-index: 2;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.500);
+    padding: 1px;
+}
+
 .workshop-content carousel-pins, .experience-content carousel-pins{
     display: none;
+}
+
+.teacher-box{
+    position: relative;
+    top: -47%;
+    height: 100%;
+    width: 100%;
 }
