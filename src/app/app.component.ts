@@ -52,11 +52,11 @@ export class AppComponent implements OnInit {
     }
 
   modifyFooter(location) {
-   this.showFooter = !(location.url === '/app-upload-docs' || location.url === '/onboarding' || /^\/workshop\/.*\/edit\/./.test(location.url));
+   this.showFooter = !(location.url === '/app-upload-docs' || location.url === '/onboarding' || /^\/workshop\/.*\/edit\/./.test(location.url) || /^\/experience\/.*\/edit\/./.test(location.url));
   }
 
    modifyHeader(location) {
-     this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url));
+     this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url) || /^\/experience\/.*\/edit\/./.test(location.url));
   }
 
   public setTitle( newTitle: string) {
