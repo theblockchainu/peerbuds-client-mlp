@@ -3,6 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleLearningComponent } from '../console-learning.component';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import {DialogsService} from '../../../_services/dialogs/dialog.service';
+import {MdSnackBar} from '@angular/material';
+declare var moment: any;
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-console-learning-all',
@@ -18,12 +22,21 @@ export class ConsoleLearningAllComponent implements OnInit {
   public activeTab: string;
   private userId;
 
+  public ongoingArray: Array<any>;
+  public upcomingArray: Array<any>;
+  public pastArray: Array<any>;
+  public pastCollectionsObject: any;
+  public liveCollectionsObject: any;
+  public upcomingCollectionsObject: any;
+
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleLearningComponent: ConsoleLearningComponent,
     public _collectionService: CollectionService,
     public router: Router,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private _dialogService: DialogsService,
+    public snackBar: MdSnackBar
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
@@ -37,39 +50,129 @@ export class ConsoleLearningAllComponent implements OnInit {
 
   ngOnInit() {
     this.loaded = false;
-    this._collectionService.getParticipatingCollections(this.userId, '{ "relInclude": "calendarId", "where": {"type":"workshop"}, "include": ["calendars", {"owners":"profiles"}, {"participants": "profiles"}, "topics", {"contents":"schedules"}, {"reviews":"peer"}] }', (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        let activeCount = 0, pastCount = 0;
-        this.outputResult = {};
-        this.outputResult['data'] = [];
-        this.outputResult.activeCount = 0;
-        this.outputResult.pastCount = 0;
-        result.forEach((resultItem) => {
-          switch (resultItem.status) {
-            case 'active':
-              activeCount++;
-              break;
-            case 'complete':
-              pastCount++;
-              break;
-            default:
-              break;
-          }
-          this.outputResult.data.push(resultItem);
-        });
-        this.outputResult.activeCount = activeCount;
-        this.outputResult.pastCount = pastCount;
-        this.collections = this.outputResult;
-        console.log(this.collections);
-        this.now = new Date();
-        this.loaded = true;
-      }
-    });
+    this.fetchCollections();
   }
 
-  public onSelect(workshop) {
-    this.router.navigate(['workshop', workshop.id, 'edit', 1]);
+  private fetchCollections() {
+      this._collectionService.getParticipatingCollections(this.userId, '{ "relInclude": "calendarId", "include": ["calendars", {"owners":["profiles", "reviewsAboutYou", "ownedCollections"]}, {"participants": "profiles"}, "topics", {"contents":["schedules","views","submissions"]}, {"reviews":"peer"}] }', (err, result) => {
+          if (err) {
+              console.log(err);
+          } else {
+              this.ongoingArray = [];
+              this.upcomingArray = [];
+              this.pastArray = [];
+              this.pastCollectionsObject = {};
+              this.liveCollectionsObject = {};
+              this.upcomingCollectionsObject = {};
+              this.createOutput(result);
+              this.now = new Date();
+              this.loaded = true;
+          }
+      });
   }
+
+  private createOutput(data: any) {
+      const now = moment();
+      data.forEach(collection => {
+          collection.calendars.forEach(calendar => {
+              if (collection.calendarId === calendar.id && calendar.endDate) {
+                  if (now.diff(moment.utc(calendar.endDate)) < 0) {
+                      if (!now.isBetween(calendar.startDate, calendar.endDate)) {
+                          if (collection.id in this.upcomingCollectionsObject) {
+                              this.upcomingCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
+                          } else {
+                              this.upcomingCollectionsObject[collection.id] = {};
+                              this.upcomingCollectionsObject[collection.id]['collection'] = _.clone(collection);
+                              this.upcomingCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
+                          }
+                      } else {
+                          if (collection.id in this.liveCollectionsObject) {
+                              this.liveCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
+                          } else {
+                              this.liveCollectionsObject[collection.id] = {};
+                              this.liveCollectionsObject[collection.id]['collection'] = _.clone(collection);
+                              this.liveCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
+                          }
+                      }
+
+                  } else {
+                      if (collection.id in this.pastCollectionsObject) {
+                          this.pastCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
+                      } else {
+                          this.pastCollectionsObject[collection.id] = {};
+                          this.pastCollectionsObject[collection.id]['collection'] = collection;
+                          this.pastCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
+                      }
+                  }
+              }
+          });
+      });
+      for (const key in this.pastCollectionsObject) {
+          if (this.pastCollectionsObject.hasOwnProperty(key)) {
+              this.pastCollectionsObject[key].collection.calendars.sort((a, b) => {
+                  return this.compareCalendars(a, b);
+              });
+              this.pastArray.push(this.pastCollectionsObject[key].collection);
+          }
+      }
+      this.pastArray.sort((a, b) => {
+          return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
+      });
+      for (const key in this.upcomingCollectionsObject) {
+          if (this.upcomingCollectionsObject.hasOwnProperty(key)) {
+              this.upcomingCollectionsObject[key].collection.calendars.sort((a, b) => {
+                  return this.compareCalendars(a, b);
+              });
+              this.upcomingArray.push(this.upcomingCollectionsObject[key].collection);
+          }
+      }
+
+      this.upcomingArray.sort((a, b) => {
+          return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
+      });
+
+      for (const key in this.liveCollectionsObject) {
+          if (this.liveCollectionsObject.hasOwnProperty(key)) {
+              this.ongoingArray.push(this.liveCollectionsObject[key].collection);
+          }
+      }
+  }
+
+  public compareCalendars(a, b) {
+      return moment(a.startDate).diff(moment(b.startDate), 'days');
+  }
+  public onSelect(collection) {
+      this.router.navigate([collection.type, collection.id, 'edit', 1]);
+  }
+
+  /**
+   * exitWorkshop
+   */
+  public exitCollection(collection: any) {
+      this._dialogService.openDeleteDialog('dropOut').subscribe(result => {
+          if (result === 'dropOut') {
+              this._collectionService.removeParticipant(collection.id, this.userId).subscribe((response) => {
+                  this.fetchCollections();
+                  this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {
+                      duration: 800
+                  });
+              });
+          } else {
+              console.log(result);
+          }
+      });
+  }
+
+  public openCollection(collection: any) {
+      this.router.navigateByUrl('/' + collection.type + '/' + collection.id + '/calendar/' + collection.calendarId);
+  }
+
+  public openProfile(peer: any) {
+    this.router.navigate(['profile', peer.id]);
+  }
+
+  public viewTransaction(collection: any) {
+      this.router.navigate(['console', 'account', 'transactions']);
+  }
+
 }

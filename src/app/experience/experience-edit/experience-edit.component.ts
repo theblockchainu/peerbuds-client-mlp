@@ -8,7 +8,6 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
-import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
 import { CollectionService } from '../../_services/collection/collection.service';
@@ -21,10 +20,8 @@ import { MdDialog, MdSnackBar } from '@angular/material';
 import { ExperienceSubmitDialogComponent } from './experience-submit-dialog/experience-submit-dialog.component';
 import { ExperienceCloneDialogComponent } from './experience-clone-dialog/experience-clone-dialog.component';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
-
 import { DialogsService } from '../dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
-import { DISABLED } from '@angular/forms/src/model';
 import { TopicService } from '../../_services/topic/topic.service';
 
 

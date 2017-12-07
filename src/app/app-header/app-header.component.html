@@ -24,7 +24,7 @@
     <!-- This fills the remaining space of the current row -->
     <span class="example-spacer"></span>
     <span>
-      <span class="header-progress-bar" *ngIf="profileCompletionObject" [mdMenuTriggerFor]="profileCompletionMenu">
+      <span class="header-progress-bar" *ngIf="profileCompletionObject && isLoggedIn | async" [mdMenuTriggerFor]="profileCompletionMenu">
         Complete Profile
         <div style="line-height: 0rem;">
           <md-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:70%;display: inline-block"></md-progress-bar>
@@ -79,7 +79,7 @@
   <!--<button md-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
     Dashboard
   </button>-->
-  <button md-menu-item [routerLink]="['/console/teaching/workshops']" *ngIf="isTeacher">
+  <button md-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
     Teaching Journey
   </button>
   <button md-menu-item [routerLink]="['/console/account/transactions']" *ngIf="isTeacher">
@@ -103,7 +103,7 @@
   <!--<button md-menu-item [routerLink]="['/console/dashboard']">
     Dashboard
   </button>-->
-  <button md-menu-item [routerLink]="['/console/learning/workshops']">
+  <button md-menu-item [routerLink]="['/console/learning/all']">
     Learning Journey
   </button>
   <button md-menu-item [routerLink]="['/console/account/transactions']">

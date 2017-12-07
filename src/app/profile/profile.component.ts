@@ -46,6 +46,9 @@ export class ProfileComponent implements OnInit {
   public pastWorkshops: Array<any>;
   public ongoingWorkshops: Array<any>;
   public upcomingWorkshops: Array<any>;
+  public pastExperiences: Array<any>;
+  public ongoingExperiences: Array<any>;
+  public upcomingExperiences: Array<any>;
 
 
   constructor(
@@ -181,7 +184,7 @@ export class ProfileComponent implements OnInit {
                 , 'calendars']
             },
             { 'reviewsAboutYou': { 'peer': 'profiles' } },
-            { 'collections': { 'reviews': { 'peer': 'profiles' } } }
+            { 'collections': [ {'reviews': { 'peer': 'profiles' }}, {'owners' : ['profiles']} ] }
           ]
         }
       ]
@@ -227,19 +230,31 @@ export class ProfileComponent implements OnInit {
     this.pastWorkshops = [];
     this.upcomingWorkshops = [];
     this.ongoingWorkshops = [];
+    this.pastExperiences = [];
+    this.upcomingExperiences = [];
+    this.ongoingExperiences = [];
     this.profileObj.peer['0'].ownedCollections.forEach(collection => {
       if (collection.status === 'active') {
         collection.totalDuration = this.calculateTotalHours(collection);
         collection.itenaryArray = this.calculateItenaries(collection);
         collection = this.calculateCohorts(collection);
-        if (collection.pastCohortCount > 0) {
+        if (collection.type === 'workshop' && collection.pastCohortCount > 0) {
           this.pastWorkshops.push(collection);
         }
-        if (collection.upcomingCohortCount > 0) {
+        if (collection.type === 'workshop' && collection.upcomingCohortCount > 0) {
           this.upcomingWorkshops.push(collection);
         }
-        if (collection.currentCohortCount > 0) {
+        if (collection.type === 'workshop' && collection.currentCohortCount > 0) {
           this.ongoingWorkshops.push(collection);
+        }
+        if (collection.type === 'experience' && collection.pastCohortCount > 0) {
+            this.pastExperiences.push(collection);
+        }
+        if (collection.type === 'experience' && collection.upcomingCohortCount > 0) {
+            this.upcomingExperiences.push(collection);
+        }
+        if (collection.type === 'experience' && collection.currentCohortCount > 0) {
+            this.ongoingExperiences.push(collection);
         }
       }
     });

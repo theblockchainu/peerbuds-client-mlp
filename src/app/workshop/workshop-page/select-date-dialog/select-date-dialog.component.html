@@ -6,18 +6,15 @@
       </button>
       <div>
         <div class="mat-display-1" *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</div>
-        <h2 class="mat-display-1" *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</h2>
-        <h2 class="mat-display-1" *ngIf="mode === 'editDelete'">Existing workshop cohorts</h2>
+        <div class="mat-display-1" *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this workshop?</div>
+        <div class="mat-display-1" *ngIf="mode === 'editDelete'">Existing workshop cohorts</div>
       </div>
-      <div *ngIf="mode === 'editDelete'" class="col-md-2 pull-right" style="padding-top:6px">
+      <div *ngIf="mode === 'editDelete'" class="col-md-2 pull-left" style="padding-top:6px">
         <button md-raised-button class="mat-raised-button" (click)="closeSelectCohort()" color="primary">Done</button>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12">
-    </div>
-  </div>
+  <hr>
   <div class="row" *ngIf="filteredItineraries.length === 0">
     <div class="col-md-12 margin-top-60 margin-left-40">
       <md-icon style="position: relative; top: 5px;">info</md-icon>

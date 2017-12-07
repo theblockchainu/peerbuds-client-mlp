@@ -41,14 +41,14 @@
                         <app-profile-popup [peer]="owner"></app-profile-popup>
                       </div>
                     </div>
-                    <div class="teacherName">
-                      <span class="mat-body-1">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
+                    <div class="teacherName" (click)="openProfile(collection.owners[0])">
+                      <span class="mat-body-1 clickable">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
                       </span>
                     </div>
                     <div class="teacherHeadline">
                       <span>{{collection.owners[0].profiles[0].headline}} </span>
                     </div>
-                    <div class="collectionTitle mat-body-2" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
+                    <div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
                     <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
                     <div class="collectionSubtitle">
                       {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity |
@@ -107,17 +107,17 @@
                     </div>
                     <div class="collectionParticipantImageCarousel">
                       <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                        <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
+                        <app-profile-popup [peer]="owner"></app-profile-popup>
                       </div>
                     </div>
-                    <div class="teacherName">
-                      <span class="mat-body-1">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
+                    <div class="teacherName" (click)="openProfile(collection.owners[0])">
+                      <span class="mat-body-1 clickable">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
                       </span>
                     </div>
                     <div class="teacherHeadline">
                       <span>{{collection.owners[0].profiles[0].headline}} </span>
                     </div>
-                    <div class="collectionTitle mat-body-2" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
+                    <div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
                     <div class="lighterText">
                       Booked {{consoleLearningComponent.getDaysBetween(collection.updatedAt, now)}}
                     </div>
@@ -169,26 +169,26 @@
                 <div class="col-md-4" style="margin-top: 20px;">
                   <md-card style="text-align: center; padding: 20px;">
                     <md-card-content>
-                      <!-- <div class="clearfix" style="text-align: right">
+                      <div style="text-align: right">
                         <div class="pull-right">
-                          <a md-icon-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                          <a [mdMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
-                      </div> -->
+                      </div>
                       <div class="collectionParticipantImageCarousel">
                         <div class="circle-thumb-big" *ngFor="let owner of collection.owners">
-                          <img src="{{ owner.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
+                          <app-profile-popup [peer]="owner"></app-profile-popup>
                         </div>
                       </div>
-                      <div class="teacherName">
-                        <span class="mat-body-1">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
+                      <div class="teacherName" (click)="openProfile(collection.owners[0])">
+                        <span class="mat-body-1 clickable">{{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
                         </span>
                       </div>
                       <div class="teacherHeadline">
                         <span>{{collection.owners[0].profiles[0].headline}} </span>
                       </div>
-                      <div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
+                      <div class="mat-body-2 clickable" style="margin-top: 30px; margin-bottom: 30px" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
                       <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
                       <div class="collectionSubtitle">
                         {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity |
@@ -205,6 +205,11 @@
                     <br>
                   </md-card>
                 </div>
+                <md-menu #pastCardMenu>
+                  <button md-menu-item (click)="viewTransaction(collection)">
+                    View Receipt
+                  </button>
+                </md-menu>
               </div>
             </div>
           </div>

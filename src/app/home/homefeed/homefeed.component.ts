@@ -149,7 +149,7 @@ export class HomefeedComponent implements OnInit {
   fetchWorkshops() {
     const query = {
       'include': [
-        { 'collections': [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'] }
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'workshop'} }}
       ],
       'order': 'createdAt desc'
     };
@@ -166,7 +166,7 @@ export class HomefeedComponent implements OnInit {
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
               let hasActiveCalendar = false;
-              if(collection.calendars) {
+              if (collection.calendars) {
                 collection.calendars.forEach(calendar => {
                   if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
                     hasActiveCalendar = true;
@@ -193,14 +193,14 @@ export class HomefeedComponent implements OnInit {
   fetchExperiences() {
     const query = {
       'include': [
-        { 'collections': [{'owners': 'reviewsAboutYou'}, 'calendars'] }
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'experience'} }}
       ],
       'order': 'createdAt desc'
     };
     this.loadingExperiences = true;
     this._topicService.getTopics(query).subscribe(
       (response) => {
-        this.loadingWorkshops = false;
+        this.loadingExperiences = false;
         this.experiences = [];
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
@@ -210,7 +210,7 @@ export class HomefeedComponent implements OnInit {
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
               let hasActiveCalendar = false;
-              if(collection.calendars) {
+              if (collection.calendars) {
                 collection.calendars.forEach(calendar => {
                   if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
                     hasActiveCalendar = true;

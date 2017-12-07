@@ -370,6 +370,13 @@ export class CollectionService {
   }
 
   /**
+   * viewCollection
+   */
+  public viewCollection(collection) {
+      this.router.navigate([collection.type, collection.id]);
+  }
+
+  /**
    * viewSession
    */
   public viewSession(collection) {
@@ -377,17 +384,24 @@ export class CollectionService {
   }
 
   /**
-   *  Workshop
+   *  Edit Workshop
    */
   public openEditWorkshop(collection) {
     this.router.navigate(['workshop', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
   }
 
   /**
-   * viewExperience
+   * Edit experience
    */
   public openEditExperience(collection) {
     this.router.navigate(['experience', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+  }
+
+  /**
+   * editCollection
+   */
+  public openEditCollection(collection) {
+      this.router.navigate([collection.type, collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
   }
 
   /**
@@ -530,27 +544,6 @@ collectionID:string,userId:string,calendarId:string   */
         break;
       default:
         this.router.navigate(['/workshop', collection.id]);
-        break;
-    }
-  }
-
-  /**
-   * open a collection view page based on its type
-   * @param collection
-   */
-  public openEditCollection(collection) {
-    switch (collection.type) {
-      case 'workshop':
-        this.router.navigate(['/workshop', collection.id, 'edit', collection.stage]);
-        break;
-      case 'experience':
-        this.router.navigate(['/experience', collection.id, 'edit', collection.stage]);
-        break;
-      case 'session':
-        this.router.navigate(['/session', collection.id, 'edit', collection.stage]);
-        break;
-      default:
-        this.router.navigate(['/workshop', collection.id, 'edit', collection.stage]);
         break;
     }
   }
