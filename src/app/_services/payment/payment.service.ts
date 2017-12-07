@@ -130,28 +130,30 @@ export class PaymentService {
       'amount': amount
     };
     console.log(body);
-    return this.http.post(this.config.apiUrl + '/convertCurrency', body, this.options)
-      .map((response: Response) => {
-        const res = response.json();
-        console.log(res);
-        if (res.success) {
-          return {
-            amount: res.result,
-            currency: this._cookieUtilsService.getValue('currency')
-          };
-        } else {
-          return {
-            amount: amount,
-            currency: from
-          };
-        }
+    /*if (from.length === 3 && this._cookieUtilsService.getValue('currency').length === 3) {*/
+        return this.http.post(this.config.apiUrl + '/convertCurrency', body, this.options)
+            .map((response: Response) => {
+                const res = response.json();
+                console.log(res);
+                if (res.success) {
+                    return {
+                        amount: res.result,
+                        currency: this._cookieUtilsService.getValue('currency')
+                    };
+                } else {
+                    return {
+                        amount: amount,
+                        currency: from
+                    };
+                }
 
-      }, (err) => {
-        return {
-          amount: amount,
-          currency: from
-        };
-      });
+            }, (err) => {
+                return {
+                    amount: amount,
+                    currency: from
+                };
+            });
+    //}
   }
 
 }

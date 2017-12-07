@@ -6,7 +6,7 @@
   </div>
   <div class="col-md-12 margin-top-10" *ngIf="collectionsLoaded">
     <div style="display:inline;">
-      <h2>Collections Approvals</h2>
+      <h2>Collection Approvals</h2>
     </div>
     <div #noContentView *ngIf="unapprovedCollections.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
       <div class="lightText">
@@ -20,14 +20,17 @@
             <div class="row">
               <div *ngFor="let collection of unapprovedCollections">
                 <div class="col-md-3" style="margin-top: 20px;">
-                  <md-card style="text-align: center; padding: 20px;height: 200px">
-                    <md-card-content style="height: 110px">
+                  <md-card style="text-align: center; padding: 20px;height: 220px">
+                    <md-card-content style="height: 130px">
                       <div style="text-align: right">
                         <div class="pull-right">
                           <a md-icon-button [mdMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
                             <md-icon>more_vert</md-icon>
                           </a>
                         </div>
+                      </div>
+                      <div class="mat-body-2">
+                        {{collection.type | ucfirst}}
                       </div>
                       <div class="cohortDate" style="padding-top: 10px" *ngIf="collection.calendars && collection.calendars[0]">
                         <span>{{collection.calendars[0].startDate |extractTime:'Do MMMM'}} - {{ collection.calendars[0].endDate
@@ -40,8 +43,11 @@
                       <button md-menu-item>
                         Delete
                       </button>
-                      <button md-menu-item [routerLink]="['/workshop/'+collection.id]">
+                      <button *ngIf="collection.type ==='workshop'" md-menu-item [routerLink]="['/workshop/'+collection.id]">
                         View Workshop
+                      </button>
+                      <button *ngIf="collection.type ==='experience'" md-menu-item [routerLink]="['/experience/'+collection.id]">
+                        View Experience
                       </button>
                     </md-menu>
                     <md-card-footer class="cardFooter" style="line-height: 30px">
@@ -68,7 +74,7 @@
   </div>
   <div class="col-md-12 margin-top-10" *ngIf="peersLoaded">
     <div style="display:inline;">
-      <h2>Peers Approvals</h2>
+      <h2>Peer Approvals</h2>
     </div>
     <div #noContentView *ngIf="unapprovedPeers.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
       <div class="lightText">
@@ -92,7 +98,12 @@
                         </div>
                       </div>
                       <br>
-                      <div class="collectionTitle" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                      <div class="collectionTitle" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name + ' ' + peer.profiles[0].last_name || 'No name' | ucwords }} </div>
+                      <br><br>
+                      <div class="mat-body-2">
+                        <a href="{{appConfig.apiUrl + peer.verificationIdUrl}}" target="_blank" *ngIf="peer.verificationIdUrl !== undefined">View ID</a>
+                        <span *ngIf="peer.verificationIdUrl === undefined">No ID submitted</span>
+                      </div>
                     </md-card-content>
                     <md-menu #approvalCardMenu>
                       <button md-menu-item>
