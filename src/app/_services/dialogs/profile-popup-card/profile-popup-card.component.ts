@@ -21,8 +21,10 @@ export class ProfilePopupCardComponent implements OnInit {
     if (this.data.reviewsAboutYou) {
       this.userRating = this._collectionService.calculateRating(this.data.reviewsAboutYou);
     }
-    this.ownedCollections = this.data.ownedCollections.filter((collection) =>
-      collection.status === 'active' || collection.status === 'completed');
+    if (this.data.ownedCollections !== undefined) {
+        this.ownedCollections = this.data.ownedCollections.filter((collection) =>
+            (collection.status === 'active' || collection.status === 'completed') && collection.imageUrls !== undefined);
+    }
   }
 }
 

@@ -291,9 +291,10 @@
         <div class="col-md-3 right-panel" *ngIf="isTeacher">
             <div class="row">
                 <div class="col-md-12">
+                    <div class="mat-title" style="padding-left: 5px;">Teaching Journey</div>
                     <md-tab-group disableRipple class="noJustify">
-                        <md-tab label="Workshops" style="min-width: min-content !important;">
-                            <div class="row">
+                        <md-tab label="Workshops" style="padding-left: 0px !important; min-width: min-content !important;">
+                            <div class="row" style="padding-left: 5px;">
                                 <div *ngIf="upcomingWorkshops.length>0">
                                     <div class="col-md-12 mat-subheading-2 margin-top-20">
                                         Upcoming ({{upcomingWorkshops.length}})
@@ -307,7 +308,7 @@
                                                 </div>
                                                 <div class="col-md-9">
                                                     <div class="col-md-12">
-                                                        <b>{{collectionObj.title}}</b>
+                                                        <b>{{collectionObj.title | ucwords}}</b>
                                                     </div>
                                                     <div class="col-md-12" style="min-height:55px">
                                                         <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
@@ -318,7 +319,7 @@
                                     </div>
                                     <div class="col-md-12 margin-top-10  margin-bottom-20 center">
                                         <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Upcoming Workshops', upcomingWorkshops)">View all</a>
+                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Upcoming Workshops to be taught', upcomingWorkshops)">View all</a>
                                         <hr>
                                     </div>
                                 </div>
@@ -335,7 +336,7 @@
                                                 </div>
                                                 <div class="col-md-9">
                                                     <div class="col-md-12">
-                                                        <b>{{collectionObj.title}}</b>
+                                                        <b>{{collectionObj.title | ucwords}}</b>
                                                     </div>
                                                     <div class="col-md-12" style="min-height:55px">
                                                         <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
@@ -346,7 +347,7 @@
                                     </div>
                                     <div class="col-md-12 margin-top-10 margin-bottom-20 center">
                                         <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openWorkshopGrid('Ongoing Workshops',ongoingWorkshops)">View all</a>
+                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openWorkshopGrid('Workshops currently being taught',ongoingWorkshops)">View all</a>
                                         <hr>
                                     </div>
                                 </div>
@@ -363,7 +364,7 @@
                                                 </div>
                                                 <div class="col-md-9">
                                                     <div class="col-md-12">
-                                                        <b>{{collectionObj.title}}</b> {{'('+collectionObj.pastCohortCount+')'}}
+                                                        <b>{{collectionObj.title | ucwords}}</b> {{'('+collectionObj.pastCohortCount+')'}}
                                                     </div>
                                                     <div class="col-md-12" style="min-height:55px">
                                                         <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
@@ -374,8 +375,106 @@
                                     </div>
                                     <div class="col-md-12 margin-top-10  margin-bottom-20 center">
                                         <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Past Workshops',pastWorkshops)">View all</a>
+                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Workshops taught in the past',pastWorkshops)">View all</a>
                                         <hr>
+                                    </div>
+                                </div>
+                                <div *ngIf="upcomingWorkshops.length === 0 && ongoingWorkshops.length === 0 && pastWorkshops.length === 0">
+                                    <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
+                                        <span>{{profileObj.first_name | ucwords}} is not teaching any workshops yet</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-tab>
+                        <md-tab label="Experiences" style="min-width: min-content !important;">
+                            <div class="row" style="padding-left: 5px;">
+                                <div *ngIf="upcomingExperiences.length>0">
+                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                        Upcoming ({{upcomingExperiences.length}})
+                                    </div>
+                                    <div *ngFor="let collectionObj of upcomingExperiences ; let i=index">
+                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
+                                            <a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+                                                <div class="col-md-3 padding-left-0">
+                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="col-md-12">
+                                                        <b>{{collectionObj.title | ucwords}}</b>
+                                                    </div>
+                                                    <div class="col-md-12" style="min-height:55px">
+                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
+                                        <hr>
+                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Upcoming Experiences to be taught', upcomingExperiences)">View all</a>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div *ngIf="ongoingExperiences.length>0">
+                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                        Currently Running ({{ongoingExperiences.length}})
+                                    </div>
+                                    <div *ngFor="let collectionObj of ongoingExperiences ; let i=index">
+                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
+                                            <a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+                                                <div class="col-md-3 padding-left-0">
+                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="col-md-12">
+                                                        <b>{{collectionObj.title | ucwords}}</b>
+                                                    </div>
+                                                    <div class="col-md-12" style="min-height:55px">
+                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 margin-top-10 margin-bottom-20 center">
+                                        <hr>
+                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openWorkshopGrid('Experiences currently being taught',ongoingExperiences)">View all</a>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div *ngIf="pastExperiences.length>0">
+                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                        Past ({{pastExperiences.length}})
+                                    </div>
+                                    <div *ngFor="let collectionObj of pastExperiences ; let i=index">
+                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
+                                            <a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+                                                <div class="col-md-3 padding-left-0">
+                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{config.apiUrl+collectionObj.imageUrls[0]}}">
+                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="col-md-12">
+                                                        <b>{{collectionObj.title | ucwords}}</b> {{'('+collectionObj.pastCohortCount+')'}}
+                                                    </div>
+                                                    <div class="col-md-12" style="min-height:55px">
+                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
+                                        <hr>
+                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Experiences taught in the past',pastExperiences)">View all</a>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div *ngIf="upcomingExperiences.length === 0 && ongoingExperiences.length === 0 && pastExperiences.length === 0">
+                                    <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
+                                        <span>{{profileObj.first_name | ucwords}} is not teaching any experiences yet</span>
                                     </div>
                                 </div>
                             </div>
@@ -393,7 +492,7 @@
         <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
         <div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-10">
                     <div class="mat-title">Learning Journey</div>
                 </div>
                 <div class="col-md-2">
@@ -402,7 +501,7 @@
                     </a>
                 </div>
             </div>
-            <div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
+            <div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
                 <div class="recommendation-card" *ngFor="let workshop of participatingWorkshops; let i =index">
                     <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
                         <div class="">
@@ -416,7 +515,8 @@
                         <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
                         <!--{{workshop.price | currency: 'USD': true: '1.0-0'}}-->
                         <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
-                        <div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>
+                        <!--<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>-->
+                        <div style="margin-top: 0px;">{{workshop.owners[0].profiles[0].first_name + ' ' + workshop.owners[0].profiles[0].last_name | ucwords}}</div>
                         <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
                             <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
                             </p-rating>
@@ -443,7 +543,7 @@
          <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="!(!participatingWorkshops && cookieUserId === urluserId) || !participatingWorkshops">
         <div class="col-md-offset-1 col-md-10">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-10">
                     <h2>Similar Teachers</h2>
                 </div>
                 <div class="col-md-2">

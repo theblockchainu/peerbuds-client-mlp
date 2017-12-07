@@ -171,4 +171,8 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     this.router.navigateByUrl('/workshop/' + collection.id + '/calendar/' + collection.calendarId);
   }
 
+  public viewTransaction(collection: any) {
+    this.router.navigate(['console', 'account', 'transactions']);
+  }
+
 }

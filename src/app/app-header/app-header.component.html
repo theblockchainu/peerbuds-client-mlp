@@ -24,7 +24,7 @@
     <!-- This fills the remaining space of the current row -->
     <span class="example-spacer"></span>
     <span>
-      <span class="header-progress-bar" *ngIf="profileCompletionObject" [mdMenuTriggerFor]="profileCompletionMenu">
+      <span class="header-progress-bar" *ngIf="profileCompletionObject && isLoggedIn | async" [mdMenuTriggerFor]="profileCompletionMenu">
         Complete Profile
         <div style="line-height: 0rem;">
           <md-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:70%;display: inline-block"></md-progress-bar>

@@ -215,6 +215,13 @@ export class ConsoleLearningComponent implements OnInit {
   }
 
   /**
+   * viewCollection
+   */
+  public viewCollection(collection) {
+      this.router.navigate([collection.type, collection.id]);
+  }
+
+  /**
    * viewSession
    */
   public viewSession(collection) {

@@ -938,7 +938,7 @@ export class WorkshopPageComponent implements OnInit {
     this.loadingSimilarWorkshops = true;
     const query = {
       'include': [
-        { 'collections': [{ 'owners': 'reviewsAboutYou' }, 'calendars'] }
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'workshop'} }}
       ]
     };
     this._topicService.getTopics(query).subscribe(
@@ -1371,6 +1371,10 @@ export class WorkshopPageComponent implements OnInit {
 
   public parseTitle(title) {
     return title.split(':');
+  }
+
+  public backToCollection(collection) {
+    this.router.navigate([collection.type, collection.id]);
   }
 
 }
