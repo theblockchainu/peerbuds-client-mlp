@@ -36,7 +36,7 @@
           </div>
           <div class="col-sm-6 margin-bottom-30">
             <div class="margin-top-20 margin-bottom-20" style="min-height: 300px; border: 1px solid #dbdbdb;">
-              <agm-map [latitude]="lat" [longitude]="lng" [usePanning]="true" [zoom]="14">
+              <agm-map [latitude]="lat" [longitude]="lng" [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false" [streetViewControl]="false">
                 <agm-marker [latitude]="lat" [longitude]="lng" ></agm-marker>
               </agm-map>
             </div>

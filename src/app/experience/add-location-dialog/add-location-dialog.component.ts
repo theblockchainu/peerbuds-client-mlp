@@ -1,13 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {Http} from '@angular/http';
 import {AppConfig} from '../../app.config';
-import {MediaUploaderService} from '../../_services/mediaUploader/media-uploader.service';
-import {ContentService} from '../../_services/content/content.service';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
-import {RequestHeaderService} from '../../_services/requestHeader/request-header.service';
 import {CountryPickerService} from '../../_services/countrypicker/countrypicker.service';
 import {Observable} from 'rxjs/Observable';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-add-location-dialog',
@@ -63,7 +60,6 @@ export class AddLocationDialogComponent implements OnInit {
     getSaveDialogData() {
         this.resultData['status'] = 'save';
         this.resultData['locationForm'] = this.locationForm.value;
-        console.log(this.locationForm.value);
         return JSON.stringify(this.resultData);
     }
 
@@ -74,7 +70,6 @@ export class AddLocationDialogComponent implements OnInit {
     getEditDialogData() {
         this.resultData['status'] = 'edit';
         this.resultData['locationForm'] = this.locationForm.value;
-        console.log(this.locationForm.value);
         return JSON.stringify(this.resultData);
     }
 
@@ -136,18 +131,16 @@ export class AddLocationDialogComponent implements OnInit {
         this.selectedCountry = this.locationForm.controls.country.value;
         this.countryPickerService.getCountries()
             .subscribe((countries) => {
-                this.countriesArray = countries;
+                this.countriesArray = _.map(countries, 'name');
                 this.filteredCountryOptions = this.locationForm.controls.country.valueChanges
                     .startWith(null)
                     .map(val => val ? this.filter(val) : this.countriesArray.slice());
-                console.log(this.filteredCountryOptions);
             });
     }
 
     public countryChange(event) {
         this.busyCountry = true;
         if (event) {
-            console.log(event);
             this.selectedCountry = event;
             this.busyCountry = false;
         }
