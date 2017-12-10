@@ -15,7 +15,6 @@ import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
-import { ClipboardModule } from 'ngx-clipboard/dist';
 import { StickyModule } from 'ng2-sticky-kit';
 
 @NgModule({
@@ -35,7 +34,6 @@ import { StickyModule } from 'ng2-sticky-kit';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    ClipboardModule,
     StickyModule
   ],
 
