@@ -4116,9 +4116,9 @@ ngx-bootstrap@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-1.9.3.tgz#28e75d14fb1beaee609383d7694de4eb3ba03b26"
 
-ngx-carousel@^1.3.3:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/ngx-carousel/-/ngx-carousel-1.3.4.tgz#6842bd98227c7c816f0b74a47907322d4a2de48f"
+ngx-carousel@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/ngx-carousel/-/ngx-carousel-1.3.5.tgz#445deed378ba0fe36bba278d3c84f5b37d7ca5ff"
 
 ngx-clipboard@^8.1.1:
   version "8.1.1"

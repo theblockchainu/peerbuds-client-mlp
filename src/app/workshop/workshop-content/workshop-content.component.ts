@@ -199,9 +199,7 @@ export class WorkshopContentComponent implements OnInit {
     }
     else if (event.action === 'delete') {
       if (this.collection.status === 'active') {
-        let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-        dialogRef.afterClosed().subscribe((result) => {
+        this._dialogsService.openCollectionCloneDialog({ type: 'workshop' }).subscribe((result) => {
           if (result === 'accept') {
             this.deleteContent(event.value, i);
           }
