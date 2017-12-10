@@ -117,7 +117,7 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
   }
 
   private retrieveTransactions() {
-    const query1 = { 'include': { 'collections': ['calendars'] } };
+    const query1 = { 'include': { 'collections': ['calendars'] }, 'order': 'modified desc' };
     this.totalTransactions = 0;
     this._paymentService.getTransactions(this.userId, query1).subscribe(result => {
       this.retrievedTransactions = result;

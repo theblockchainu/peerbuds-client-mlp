@@ -13,7 +13,6 @@ import { AppConfig } from '../../app.config';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ExperienceVideoComponent } from './experience-video/experience-video.component';
-import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
@@ -41,6 +40,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
 import { DialogsService } from '../dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
+import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
 
 declare var FB: any;
 
@@ -126,6 +126,8 @@ export class ExperiencePageComponent implements OnInit {
     collections: []
   };
   public result;
+  public lat;
+  public lng;
 
   public comments: Array<any>;
   private today = moment();
@@ -149,8 +151,8 @@ export class ExperiencePageComponent implements OnInit {
     { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
   public projectMapping:
     { [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
-  public onlineSessionMapping:
-    { [k: string]: string } = { '=0': 'No online sessions', '=1': 'One online session', 'other': '# online sessions' };
+  public inPersonSessionMapping:
+    { [k: string]: string } = { '=0': 'No in-person sessions', '=1': 'One in-person session', 'other': '# in-person sessions' };
   public cohortMapping:
     { [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
   public dayMapping:
@@ -189,10 +191,10 @@ export class ExperiencePageComponent implements OnInit {
     private snackBar: MdSnackBar
   ) {
     this.activatedRoute.params.subscribe(params => {
-      if (this.initialised && (this.experienceId !== params['experienceId'] || this.calendarId !== params['calendarId'])) {
+      if (this.initialised && (this.experienceId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
         location.reload();
       }
-      this.experienceId = params['experienceId'];
+      this.experienceId = params['collectionId'];
       this.calendarId = params['calendarId'];
       this.toOpenDialogName = params['dialogName'];
     });
@@ -380,7 +382,7 @@ export class ExperiencePageComponent implements OnInit {
         'views',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['schedules', { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
+        { 'contents': ['locations', 'schedules', { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
       ],
       'relInclude': 'calendarId'
     };
@@ -408,6 +410,11 @@ export class ExperiencePageComponent implements OnInit {
                   }
                 }
               });
+            }
+
+            if (contentObj.locations && contentObj.locations.length > 0) {
+              this.lat = parseFloat(contentObj.locations[0].map_lat);
+              this.lng = parseFloat(contentObj.locations[0].map_lng);
             }
           });
           console.log(this.itenariesObj);
@@ -726,7 +733,7 @@ export class ExperiencePageComponent implements OnInit {
   public calculateTotalHours() {
     let totalLength = 0;
     this.experience.contents.forEach(content => {
-      if (content.type === 'online') {
+      if (content.type === 'in-person') {
         const startMoment = moment(content.schedules[0].startTime);
         const endMoment = moment(content.schedules[0].endTime);
         const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
@@ -764,6 +771,22 @@ export class ExperiencePageComponent implements OnInit {
       this.timetoSession(content);
       return false;
     }
+  }
+
+  public hasRSVPd(content) {
+    // TODO: check if the user has RSVPd for this content
+  }
+
+  public rsvpToggle(content) {
+    // TODO: add RSVP for this user
+  }
+
+  public viewRSVPs(content) {
+    // TODO: view all RSVPs for this content
+  }
+
+  public getDirections(content) {
+    // TODO: get directions to this content location
   }
 
 
@@ -850,9 +873,9 @@ export class ExperiencePageComponent implements OnInit {
   public openDialog(content: any, startDate) {
     this.modalContent = content;
     switch (content.type) {
-      case 'online':
+      case 'in-person':
         {
-          const dialogRef = this.dialog.open(ContentOnlineComponent, {
+          const dialogRef = this.dialog.open(ContentInpersonComponent, {
             data: {
               content: content,
               startDate: startDate,

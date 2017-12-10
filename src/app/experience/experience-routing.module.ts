@@ -9,11 +9,11 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: ':experienceId',
+        path: ':collectionId',
         loadChildren: './experience-page/experience-page.module#ExperiencePageModule'
       },
       {
-        path: ':experienceId/edit/:step',
+        path: ':collectionId/edit/:step',
         component: ExperienceEditComponent,
         canActivateChild: [AuthGuardService]
       }

@@ -1,7 +1,6 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import 'hammerjs';
-
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
 import { AppComponent } from './app.component';
@@ -12,7 +11,6 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule, MdTooltipModule } from '@angular/material';
-
 import { DialogsModule } from './_services/dialogs/dialogs.module';
 import { GlobalErrorHandler } from './error-handler/globalerrorhandler';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
@@ -68,10 +66,9 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     DialogsModule,
     AppRoutingModule,
     DefaultModule,
-    //CarouselModule.forRoot(),
-    // AgmCoreModule.forRoot({
-    //   apiKey: 'AIzaSyCRlu1idtqJsswvD8ntec8mmYN8kSumZkM'
-    // }),
+    AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
+    }),
     Ng4GeoautocompleteModule.forRoot(),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.threeBounce,

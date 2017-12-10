@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../_shared/_shared.module';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ExperienceVideoComponent } from './experience-video/experience-video.component';
-import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
@@ -22,6 +21,9 @@ import { VgBufferingModule } from 'videogular2/buffering';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
 import { ClipboardModule } from 'ngx-clipboard/dist';
 import { StickyModule } from 'ng2-sticky-kit';
+import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
+import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
   imports: [
@@ -41,11 +43,14 @@ import { StickyModule } from 'ng2-sticky-kit';
     VgOverlayPlayModule,
     VgBufferingModule,
     ClipboardModule,
-    StickyModule
+    StickyModule,
+    AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
+    })
   ],
 
-  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ExperienceVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent],
-  bootstrap: [ViewParticipantsComponent, ExperienceVideoComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent],
+  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ExperienceVideoComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent, ViewEntryDialogComponent, ContentInpersonComponent],
+  bootstrap: [ViewParticipantsComponent, ExperienceVideoComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, SelectDateDialogComponent, SubmitEntryComponent, SubmissionViewComponent, DeleteDialogComponent, InviteFriendsDialogComponent, ViewEntryDialogComponent, ContentInpersonComponent],
   providers: [ProjectSubmissionService]
 
 })

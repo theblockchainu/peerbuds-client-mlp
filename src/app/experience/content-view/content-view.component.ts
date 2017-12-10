@@ -12,6 +12,7 @@ import {ExperienceContentProjectComponent} from '../experience-content-project/e
 import {ExperienceContentVideoComponent} from '../experience-content-video/experience-content-video.component';
 import {CollectionService} from '../../_services/collection/collection.service';
 import { debug } from 'util';
+import {ExperienceContentInpersonComponent} from '../experience-content-inperson/experience-content-inperson.component';
 
 declare var moment: any;
 
@@ -99,6 +100,17 @@ export class ContentViewComponent implements OnInit {
         startTime: [null],
         endTime: [null]
       }),
+        location: this._fb.group({
+            location_name: [''],
+            country: [null],
+            street_address: [null],
+            apt_suite: [null],
+            city: [null],
+            state: [null],
+            zip: [null],
+            map_lat: [null],
+            map_lng: [null]
+        }),
       pending: ['']
     });
   }
@@ -128,7 +140,6 @@ export class ContentViewComponent implements OnInit {
   resetIndex() {
     this.lastIndex--;
   }
-
 
   saveTempForEditDate(content, index) {
 
@@ -229,13 +240,6 @@ export class ContentViewComponent implements OnInit {
      * Open dialog for creating new online content
      */
     public findAndOpenDialog(index) {
-      // if (this.experienceStatus === 'active') {
-      //   this.triggerSave.emit({
-      //     action: 'dialog',
-      //     value: index
-      //   });
-      // }
-      // else {
         let isEdit = true;
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         if (index === -1) {
@@ -248,6 +252,9 @@ export class ContentViewComponent implements OnInit {
         switch (contentType) {
             case 'online':
                 dialogRef = this.dialog.open(ExperienceContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'});
+                break;
+            case 'in-person':
+                dialogRef = this.dialog.open(ExperienceContentInpersonComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'});
                 break;
             case 'project':
                 dialogRef = this.dialog.open(ExperienceContentProjectComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit, collectionStartDate: this.collectionStartDate, collectionEndDate: this.collectionEndDate}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'});

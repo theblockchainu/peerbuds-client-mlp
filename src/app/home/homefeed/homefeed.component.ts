@@ -193,7 +193,7 @@ export class HomefeedComponent implements OnInit {
   fetchExperiences() {
     const query = {
       'include': [
-          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'experience'} }}
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars', {'contents': ['schedules', 'locations']}], 'where': {'type': 'experience'} }}
       ],
       'order': 'createdAt desc'
     };
@@ -202,9 +202,18 @@ export class HomefeedComponent implements OnInit {
       (response) => {
         this.loadingExperiences = false;
         this.experiences = [];
+        let experienceLocation = '';
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.status === 'active') {
+                if (collection.contents) {
+                    collection.contents.forEach(content => {
+                        if (content.locations && content.locations.length > 0) {
+                            experienceLocation = content.locations[0].city;
+                        }
+                    });
+                    collection.location = experienceLocation;
+                }
               if (collection.owners && collection.owners[0].reviewsAboutYou) {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);

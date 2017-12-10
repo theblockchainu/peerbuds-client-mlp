@@ -65,7 +65,7 @@
           <div class="col-md-8">
             <div class="row">
               <div class="col-md-12">
-                <a class="clickable margin-bottom-10" *ngIf="calendarId" (click)="backToCollection(workshop)">< Back to workshop page</a>
+                <a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(workshop)">< Back to workshop page</a>
                 <p class="mat-display-1" style="margin-bottom: 20px !important;">{{workshop.title | titlecase}} <span *ngIf="calendarId">(Cohort View)</span></p>
                 <div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
                   <span *ngIf="currentCalendar">
@@ -128,7 +128,7 @@
                     <span>{{getContentCount('project') | i18nPlural : projectMapping}}</span>
                   </div>
                   <div class="col-md-12 margin-top-10">
-                    <md-icon style="top: 7px;">play_circle_outline</md-icon>&emsp;
+                    <md-icon style="top: 7px;">live_tv</md-icon>&emsp;
                     <span>{{getContentCount('online') | i18nPlural : onlineSessionMapping}}</span>
                   </div>
                 </div>
@@ -736,7 +736,7 @@
                 <!--COVER IMAGE-->
                 <div class="row">
                   <div class="col-md-12">
-                    <div style="width: 300px; height: 500px" *ngIf="carouselImages && carouselConfig">
+                    <div style="width: 340px; height: 500px" *ngIf="carouselImages && carouselConfig">
                       <carousel [sources]="carouselImages" [config]="carouselConfig"></carousel>
                     </div>
                     <!-- <carousel [noWrap]="noWrapSlides">

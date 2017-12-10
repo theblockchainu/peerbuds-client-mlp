@@ -1,4 +1,3 @@
-
 <div md-dialog-content class="dialog-container">
   <div class="row">
     <div class="col-md-12 collectionContent">
@@ -29,11 +28,6 @@
              alt="Content Image" (error)="_collectionService.imgErrorHandler($event)">
       </div>
     </div>
-    <!-- <div class="row margin-top-20">
-      <div class="col-md-12">
-        <h3>{{data.content.title | titlecase}}</h3>
-      </div>
-    </div> -->
     <div class="row margin-top-20">
       <div class="col-md-12">
         <div>
@@ -48,6 +42,23 @@
           </div>
           <br>
           <p class="pre-wrapped alignJustify">{{data.content.prerequisites | trim | ucfirst}}</p>
+        </div>
+        <div *ngIf="data.content.locations">
+          <hr>
+          <div>
+            <b>Location</b>
+          </div>
+          <br>
+          <div *ngIf="userType !== 'public'">
+            <p class="pre-wrapped alignJustify">{{data.content.locations[0].location_name | trim | ucwords}}</p>
+            <p class="pre-wrapped alignJustify">{{data.content.locations[0].apt_suite | ucwords}} {{data.content.locations[0].street_address | ucwords}}, {{data.content.locations[0].city | ucwords}}</p>
+            <p class="pre-wrapped alignJustify">{{data.content.locations[0].state | ucwords}} {{data.content.locations[0].zip | ucwords}}, {{data.content.locations[0].country | ucwords}}</p>
+          </div>
+          <div *ngIf="userType === 'public'">
+            <agm-map [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false" [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false" >
+              <agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'" [strokeOpacity]="0.9" ></agm-circle>
+            </agm-map>
+          </div>
         </div>
         <div *ngIf="attachmentUrls.length" class="pic delete">
           <hr style="margin-top: 0px;">
@@ -205,8 +216,8 @@
   <div *ngIf="data.userType==='teacher' || data.userType==='participant' ">
     <div class="row">
       <div class="col-md-12">
-        <a md-raised-button color="primary" *ngIf="data.content.isLive" (click)="joinLiveSession(data.content)">Join</a>
-        <button md-button class="mat-border-button" *ngIf="data.content.timetoSession" [disabled]="true" tabindex="-1"> {{data.content.timetoSession}} </button>
+        <a md-raised-button color="primary" *ngIf="userType ==='participant' && !data.content.hasRSVPd" (click)="rsvpToggle(data.content)">RSVP</a>
+        <button md-button class="mat-border-button" *ngIf="data.content.hasRSVPd" (click)="viewRSVPs(data.content)" [disabled]="true" tabindex="-1"> View RSVPs </button>
       </div>
     </div>
   </div>

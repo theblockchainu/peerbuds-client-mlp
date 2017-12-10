@@ -13,12 +13,21 @@ import 'hammerjs';
 import { ExperienceSubmitDialogComponent } from './experience-edit/experience-submit-dialog/experience-submit-dialog.component';
 import { ExperienceCloneDialogComponent } from './experience-edit/experience-clone-dialog/experience-clone-dialog.component';
 import { DialogsModule } from './dialogs/dialogs.module';
+import { ExperienceContentInpersonComponent } from './experience-content-inperson/experience-content-inperson.component';
+import { AddLocationDialogComponent } from './add-location-dialog/add-location-dialog.component';
+import {Ng4GeoautocompleteModule} from 'ng4-geoautocomplete';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
     imports: [
         SharedModule,
         ExperienceRoutingModule,
-        DialogsModule],
+        DialogsModule,
+        Ng4GeoautocompleteModule.forRoot(),
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
+        }),
+    ],
     declarations: [
         ExperienceEditComponent,
         ExperienceContentComponent,
@@ -28,10 +37,12 @@ import { DialogsModule } from './dialogs/dialogs.module';
         ExperienceContentProjectComponent,
         ExperienceContentVideoComponent,
         ExperienceSubmitDialogComponent,
-        ExperienceCloneDialogComponent
+        ExperienceCloneDialogComponent,
+        ExperienceContentInpersonComponent,
+        AddLocationDialogComponent
     ],
     providers: [],
     bootstrap: [],
-    entryComponents: [ExperienceContentOnlineComponent, ExperienceContentProjectComponent, ExperienceContentVideoComponent, ExperienceSubmitDialogComponent, ExperienceCloneDialogComponent]
+    entryComponents: [ExperienceContentOnlineComponent, ExperienceContentProjectComponent, ExperienceContentInpersonComponent, ExperienceContentVideoComponent, ExperienceSubmitDialogComponent, ExperienceCloneDialogComponent, AddLocationDialogComponent]
 })
 export class ExperienceModule { }
