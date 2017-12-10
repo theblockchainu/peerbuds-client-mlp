@@ -1,176 +1,176 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../../_services/comment/comment.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
-import { DialogsService } from '../../dialogs/dialog.service';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { ContentService } from '../../../_services/content/content.service';
 import * as moment from 'moment';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-content-online',
-  templateUrl: './content-online.component.html',
-  styleUrls: ['./content-online.component.scss']
+    selector: 'app-content-online',
+    templateUrl: './content-online.component.html',
+    styleUrls: ['./content-online.component.scss']
 })
 export class ContentOnlineComponent implements OnInit {
 
-  public userType = 'public';
-  public workshopId = '';
-  public chatForm: FormGroup;
-  public replyForm: FormGroup;
-  public replyingToCommentId: string;
-  public comments: Array<any>;
-  public userId;
-  public attachmentUrls = [];
-  public duration = 0;
+    public userType = 'public';
+    public workshopId = '';
+    public chatForm: FormGroup;
+    public replyForm: FormGroup;
+    public replyingToCommentId: string;
+    public comments: Array<any>;
+    public userId;
+    public attachmentUrls = [];
+    public duration = 0;
 
-  constructor(
-    public config: AppConfig,
-    public _collectionService: CollectionService,
-    @Inject(MD_DIALOG_DATA) public data: any,
-    public dialogRef: MdDialogRef<ContentOnlineComponent>,
-    private _fb: FormBuilder,
-    private _commentService: CommentService,
-    private _cookieUtilsService: CookieUtilsService,
-    private dialogsService: DialogsService,
-    private contentService: ContentService,
-    private router: Router
-  ) {
-      this.userType = data.userType;
-      this.workshopId = data.collectionId;
-      this.userId = _cookieUtilsService.getValue('userId');
-      data.content.supplementUrls.forEach(file => {
-        this.contentService.getMediaObject(file).subscribe((res) => {
-            this.attachmentUrls.push(res[0]);
+    constructor(
+        public config: AppConfig,
+        public _collectionService: CollectionService,
+        @Inject(MD_DIALOG_DATA) public data: any,
+        public dialogRef: MdDialogRef<ContentOnlineComponent>,
+        private _fb: FormBuilder,
+        private _commentService: CommentService,
+        private _cookieUtilsService: CookieUtilsService,
+        private dialogsService: DialogsService,
+        private contentService: ContentService,
+        private router: Router
+    ) {
+        this.userType = data.userType;
+        this.workshopId = data.collectionId;
+        this.userId = _cookieUtilsService.getValue('userId');
+        data.content.supplementUrls.forEach(file => {
+            this.contentService.getMediaObject(file).subscribe((res) => {
+                this.attachmentUrls.push(res[0]);
+            });
         });
-      });
-      this.duration = moment(data.content.schedules[0].endTime).diff(moment(data.content.schedules[0].startTime), 'hours');
-  }
+        this.duration = moment(data.content.schedules[0].endTime).diff(moment(data.content.schedules[0].startTime), 'hours');
+    }
 
-  ngOnInit() {
-      this.initializeForms();
-      this.getDiscussions();
-  }
+    ngOnInit() {
+        this.initializeForms();
+        this.getDiscussions();
+    }
 
-  private initializeForms() {
-      this.chatForm = this._fb.group({
-          description: ['', Validators.required]
-      });
-  }
+    private initializeForms() {
+        this.chatForm = this._fb.group({
+            description: ['', Validators.required]
+        });
+    }
 
-  /**
-   * postComment
-   */
-  public postComment() {
-      this._collectionService.postContentComments(this.data.content.id, this.chatForm.value, (err, response) => {
-          if (err) {
-              console.log(err);
-          } else {
-              this.chatForm.reset();
-              this.getDiscussions();
-          }
-      });
-  }
+    /**
+     * postComment
+     */
+    public postComment() {
+        this._collectionService.postContentComments(this.data.content.id, this.chatForm.value, (err, response) => {
+            if (err) {
+                console.log(err);
+            } else {
+                this.chatForm.reset();
+                this.getDiscussions();
+            }
+        });
+    }
 
-  public createReplyForm(comment: any) {
-      this.replyingToCommentId = comment.id;
-      this.replyForm = this._fb.group({
-          description: ''
-      });
-  }
+    public createReplyForm(comment: any) {
+        this.replyingToCommentId = comment.id;
+        this.replyForm = this._fb.group({
+            description: ''
+        });
+    }
 
-  /**
-   * postReply
-   */
-  public postReply(comment: any) {
-      this._commentService.replyToComment(comment.id, this.replyForm.value).subscribe(
-          response => {
-              this.getDiscussions();
-              delete this.replyForm;
-          }, err => {
-              console.log(err);
-          }
-      );
-  }
+    /**
+     * postReply
+     */
+    public postReply(comment: any) {
+        this._commentService.replyToComment(comment.id, this.replyForm.value).subscribe(
+            response => {
+                this.getDiscussions();
+                delete this.replyForm;
+            }, err => {
+                console.log(err);
+            }
+        );
+    }
 
-  private getDiscussions() {
-      const query = {
-          'include': [
-              {
-                  'peer': [
-                      { 'profiles': ['work'] }
-                  ]
-              },
-              {
-                  'replies': [
-                      {
-                          'peer': [
-                              {
-                                  'profiles': ['work']
-                              }
-                          ]
-                      },
-                      {
-                          'upvotes': 'peer'
-                      }
-                  ]
-              },
-              {
-                  'upvotes': 'peer'
-              }
-          ],
-          'order': 'createdAt DESC'
-      };
-      this._collectionService.getContentComments(this.data.content.id, query, (err, response) => {
-          if (err) {
-              console.log(err);
-          } else {
-              this.comments = response;
-          }
-      });
-  }
+    private getDiscussions() {
+        const query = {
+            'include': [
+                {
+                    'peer': [
+                        { 'profiles': ['work'] }
+                    ]
+                },
+                {
+                    'replies': [
+                        {
+                            'peer': [
+                                {
+                                    'profiles': ['work']
+                                }
+                            ]
+                        },
+                        {
+                            'upvotes': 'peer'
+                        }
+                    ]
+                },
+                {
+                    'upvotes': 'peer'
+                }
+            ],
+            'order': 'createdAt DESC'
+        };
+        this._collectionService.getContentComments(this.data.content.id, query, (err, response) => {
+            if (err) {
+                console.log(err);
+            } else {
+                this.comments = response;
+            }
+        });
+    }
 
-  addCommentUpvote(comment: any) {
-      this._commentService.addCommentUpvote(comment.id, {}).subscribe(
-          response => {
-              if (comment.upvotes !== undefined) {
-                  comment.upvotes.push(response.json());
-              }
-              else {
-                  comment.upvotes = [];
-                  comment.upvotes.push(response.json());
-              }
-          }, err => {
-              console.log(err);
-          }
-      );
-  }
+    addCommentUpvote(comment: any) {
+        this._commentService.addCommentUpvote(comment.id, {}).subscribe(
+            response => {
+                if (comment.upvotes !== undefined) {
+                    comment.upvotes.push(response.json());
+                }
+                else {
+                    comment.upvotes = [];
+                    comment.upvotes.push(response.json());
+                }
+            }, err => {
+                console.log(err);
+            }
+        );
+    }
 
-  addReplyUpvote(reply: any) {
-      this._commentService.addReplyUpvote(reply.id, {}).subscribe(
-          response => {
-              if (reply.upvotes !== undefined) {
-                  reply.upvotes.push(response.json());
-              }
-              else {
-                  reply.upvotes = [];
-                  reply.upvotes.push(response.json());
-              }
-          }, err => {
-              console.log(err);
-          }
-      );
-  }
+    addReplyUpvote(reply: any) {
+        this._commentService.addReplyUpvote(reply.id, {}).subscribe(
+            response => {
+                if (reply.upvotes !== undefined) {
+                    reply.upvotes.push(response.json());
+                }
+                else {
+                    reply.upvotes = [];
+                    reply.upvotes.push(response.json());
+                }
+            }, err => {
+                console.log(err);
+            }
+        );
+    }
 
-  /**
-   * joinSession
-   */
-  public joinSession() {
-    console.log('Handle Online session here');
-  }
+    /**
+     * joinSession
+     */
+    public joinSession() {
+        console.log('Handle Online session here');
+    }
 
     public hasUpvoted(upvotes) {
         let result = false;

@@ -26,7 +26,17 @@ import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-ca
 import { ExitCollectionDialogComponent } from './exit-collection-dialog/exit-collection-dialog.component';
 import { CancelCollectionDialogComponent } from './cancel-collection-dialog/cancel-collection-dialog.component';
 import { DeleteCollectionDialogComponent } from './delete-collection-dialog/delete-collection-dialog.component';
-
+import { EditCalendarDialogComponent } from './edit-calendar-dialog/edit-calendar-dialog.component';
+import { AddTopicDialogComponent } from './add-topic-dialog/add-topic-dialog.component';
+import { AddLanguageDialogComponent } from './add-language-dialog/add-language-dialog.component';
+import { ViewConflictDialogComponent } from './view-conflict-dialog/view-conflict-dialog.component';
+import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
+import { CollectionCloneDialogComponent } from './collection-clone-dialog/collection-clone-dialog.component';
+import { CollectionSubmitDialogComponent } from './collection-submit-dialog/collection-submit-dialog.component';
+import { SubmissionViewComponent } from './submission-view/submission-view.component';
+import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
+import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
+import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,7 +54,14 @@ import { DeleteCollectionDialogComponent } from './delete-collection-dialog/dele
   declarations: [SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, DeleteDialogComponent
     , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
     , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent
-    , ProfilePopupCardComponent, ExitCollectionDialogComponent, CancelCollectionDialogComponent, DeleteCollectionDialogComponent],
+    , ProfilePopupCardComponent, ExitCollectionDialogComponent, CancelCollectionDialogComponent, DeleteCollectionDialogComponent,
+    EditCalendarDialogComponent,
+    AddTopicDialogComponent,
+    AddLanguageDialogComponent,
+    ViewConflictDialogComponent, SelectDateDialogComponent,
+    CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
+    SubmissionViewComponent,
+    SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent],
   providers: [
     DialogsService,
     TwilioServicesService
@@ -52,6 +69,12 @@ import { DeleteCollectionDialogComponent } from './delete-collection-dialog/dele
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent, MultiselectTopicDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
-    , LiveSessionDialogComponent, CollectionGridDialogComponent, DeleteDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent, ExitCollectionDialogComponent, DeleteCollectionDialogComponent],
+    , LiveSessionDialogComponent, CollectionGridDialogComponent, DeleteDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent, ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
+    EditCalendarDialogComponent,
+    AddTopicDialogComponent,
+    AddLanguageDialogComponent,
+    ViewConflictDialogComponent, SelectDateDialogComponent,
+    CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
+    SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent],
 })
 export class DialogsModule { }

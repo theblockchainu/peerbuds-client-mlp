@@ -10,9 +10,8 @@ import { CollectionService } from '../../_services/collection/collection.service
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import { MdDialog } from '@angular/material';
 import * as moment from 'moment';
-import { WorkshopCloneDialogComponent } from '../workshop-edit/workshop-clone-dialog/workshop-clone-dialog.component';
 import { forEach } from '@angular/router/src/utils/collection';
-
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 @Component({
   selector: 'app-workshop-content',
   // We need to tell Angular's Dependency Injection which providers are in our app.
@@ -48,7 +47,8 @@ export class WorkshopContentComponent implements OnInit {
     private dialog: MdDialog,
     public router: Router,
     public _collectionService: CollectionService,
-    private location: Location
+    private location: Location,
+    private _dialogsService: DialogsService
   ) {
     this.options = requestHeaders.getOptions();
   }
@@ -140,9 +140,9 @@ export class WorkshopContentComponent implements OnInit {
   }
 
   showDialogForActiveWorkshop(isContent) {
-    let dialogRef: any;
-    dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-    dialogRef.afterClosed().subscribe((result) => {
+    this._dialogsService.openCollectionCloneDialog({
+      type: 'workshop'
+    }).subscribe((result) => {
       if (result === 'accept') {
         if (!isContent) {
           this.executeSubmitWorkshop(this.collection);
@@ -163,9 +163,9 @@ export class WorkshopContentComponent implements OnInit {
     // else {
     if (event.action === 'add') {
       if (this.collection.status === 'active') {
-        let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-        dialogRef.afterClosed().subscribe((result) => {
+        this._dialogsService.openCollectionCloneDialog({
+          type: 'workshop'
+        }).subscribe((result) => {
           if (result === 'accept') {
             this.postContent(event, i);
           }
@@ -181,9 +181,9 @@ export class WorkshopContentComponent implements OnInit {
 
     } else if (event.action === 'update') {
       if (this.collection.status === 'active') {
-        let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-        dialogRef.afterClosed().subscribe((result) => {
+        this._dialogsService.openCollectionCloneDialog({
+          type: 'workshop'
+        }).subscribe((result) => {
           if (result === 'accept') {
             this.patchContent(event, i);
           }

@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA, MdSnackBar } from '@angular/material';
 import { CollectionService } from '../../collection/collection.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
+
 @Component({
   selector: 'app-cancel-collection-dialog',
   templateUrl: './cancel-collection-dialog.component.html',
@@ -12,7 +13,8 @@ export class CancelCollectionDialogComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<CancelCollectionDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any,
     private _collectionService: CollectionService,
-    private _cookieUtilsService: CookieUtilsService) { }
+    private _cookieUtilsService: CookieUtilsService,
+    private snackBar: MdSnackBar) { }
 
   ngOnInit() {
   }
@@ -28,7 +30,11 @@ export class CancelCollectionDialogComponent implements OnInit {
         this.dialogRef.close(res.json());
       }
     }, err => {
-      console.log(err);
+      this.snackBar.open('Workshop Couldn&#39;t be Cancelled', 'Retry', {
+        duration: 800
+      }).onAction().subscribe(res => {
+        this.cancel();
+      });
     });
   }
 

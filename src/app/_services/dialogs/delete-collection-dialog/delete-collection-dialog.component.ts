@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA, MdSnackBar } from '@angular/material';
 import { CollectionService } from '../../collection/collection.service';
 
 @Component({
@@ -11,9 +11,15 @@ export class DeleteCollectionDialogComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<DeleteCollectionDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any,
-    private _collectionService: CollectionService) { }
-
+    private _collectionService: CollectionService,
+    private snackBar: MdSnackBar) { }
+  public deleteable: boolean;
   ngOnInit() {
+    if (!this.data.participants || this.data.participants.length === 0) {
+      this.deleteable = true;
+    } else {
+      this.deleteable = false;
+    }
   }
 
   public delete() {
@@ -23,8 +29,13 @@ export class DeleteCollectionDialogComponent implements OnInit {
         this.dialogRef.close(true);
       }
     }, err => {
-      this.dialogRef.close(false);
+      this.snackBar.open('Workshop Couldn&#39;t be deleted', 'Retry', {
+        duration: 800
+      }).onAction().subscribe(res => {
+        this.delete();
+      });
     });
   }
+
 
 }

@@ -10,8 +10,8 @@ import { CollectionService } from '../../_services/collection/collection.service
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import { MdDialog } from '@angular/material';
 import * as moment from 'moment';
-import { ExperienceCloneDialogComponent } from '../experience-edit/experience-clone-dialog/experience-clone-dialog.component';
 import { forEach } from '@angular/router/src/utils/collection';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 @Component({
   selector: 'app-experience-content',
@@ -48,7 +48,8 @@ export class ExperienceContentComponent implements OnInit {
     private dialog: MdDialog,
     public router: Router,
     public _collectionService: CollectionService,
-    private location: Location
+    private location: Location,
+    private _dialogsService: DialogsService
   ) {
     this.options = requestHeaders.getOptions();
   }
@@ -140,19 +141,18 @@ export class ExperienceContentComponent implements OnInit {
   }
 
   showDialogForActiveExperience(isContent) {
-    let dialogRef: any;
-    dialogRef = this.dialog.open(ExperienceCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'accept') {
-        if (!isContent) {
-          this.executeSubmitExperience(this.collection);
+    this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
+      .subscribe((result) => {
+        if (result === 'accept') {
+          if (!isContent) {
+            this.executeSubmitExperience(this.collection);
+          }
         }
-      }
-      else if (result === 'reject') {
-        // Do nothing
-        this.router.navigate(['console', 'teaching', 'experiences']);
-      }
-    });
+        else if (result === 'reject') {
+          // Do nothing
+          this.router.navigate(['console', 'teaching', 'experiences']);
+        }
+      });
   }
 
   saveTriggered(event, i) {
@@ -163,17 +163,16 @@ export class ExperienceContentComponent implements OnInit {
     // else {
     if (event.action === 'add') {
       if (this.collection.status === 'active') {
-        let dialogRef: any;
-        dialogRef = this.dialog.open(ExperienceCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-        dialogRef.afterClosed().subscribe((result) => {
-          if (result === 'accept') {
-            this.postContent(event, i);
-          }
-          else if (result === 'reject') {
-            // Do nothing
-            this.router.navigate(['console', 'teaching', 'experiences']);
-          }
-        });
+        this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
+          .subscribe((result) => {
+            if (result === 'accept') {
+              this.postContent(event, i);
+            }
+            else if (result === 'reject') {
+              // Do nothing
+              this.router.navigate(['console', 'teaching', 'experiences']);
+            }
+          });
       }
       else {
         this.postContent(event, i);
@@ -181,17 +180,16 @@ export class ExperienceContentComponent implements OnInit {
 
     } else if (event.action === 'update') {
       if (this.collection.status === 'active') {
-        let dialogRef: any;
-        dialogRef = this.dialog.open(ExperienceCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
-        dialogRef.afterClosed().subscribe((result) => {
-          if (result === 'accept') {
-            this.patchContent(event, i);
-          }
-          else if (result === 'reject') {
-            // Do nothing
-            this.router.navigate(['console', 'teaching', 'experiences']);
-          }
-        });
+        this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
+          .subscribe((result) => {
+            if (result === 'accept') {
+              this.patchContent(event, i);
+            }
+            else if (result === 'reject') {
+              // Do nothing
+              this.router.navigate(['console', 'teaching', 'experiences']);
+            }
+          });
       }
       else {
         this.patchContent(event, i);
