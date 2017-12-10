@@ -17,10 +17,9 @@ import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import _ from 'lodash';
 import { MdDialog, MdSnackBar } from '@angular/material';
-import { ExperienceSubmitDialogComponent } from './experience-submit-dialog/experience-submit-dialog.component';
-import { ExperienceCloneDialogComponent } from './experience-clone-dialog/experience-clone-dialog.component';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
-import { DialogsService } from '../dialogs/dialog.service';
+
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
 import { TopicService } from '../../_services/topic/topic.service';
 
@@ -644,16 +643,15 @@ export class ExperienceEditComponent implements OnInit {
 
   public submitExperience(data, timeline?, step?) {
     if (this.experience.controls.status.value === 'active') {
-      let dialogRef: any;
-      dialogRef = this.dialog.open(ExperienceCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%' });
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'accept') {
-          this.executeSubmitExperience(data, timeline, step);
-        }
-        else if (result === 'reject') {
-          this.router.navigate(['/console/teaching/experiences']);
-        }
-      });
+      this.dialogsService.openCollectionCloneDialog({ type: 'experience' })
+        .subscribe((result) => {
+          if (result === 'accept') {
+            this.executeSubmitExperience(data, timeline, step);
+          }
+          else if (result === 'reject') {
+            this.router.navigate(['/console/teaching/experiences']);
+          }
+        });
     }
     else {
       this.executeSubmitExperience(data, timeline, step);
@@ -815,8 +813,7 @@ export class ExperienceEditComponent implements OnInit {
         this.experience.controls.status.setValue('submitted');
         console.log('Experience submitted for review');
         this.isSubmitted = true;
-        let dialogRef: any;
-        dialogRef = this.dialog.open(ExperienceSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw' });
+        this.dialogsService.openCollectionSubmitDialog({ type: 'experience' });
         // call to get status of experience
         if (this.experience.controls.status.value === 'active') {
           this.sidebarMenuItems[3].visible = false;

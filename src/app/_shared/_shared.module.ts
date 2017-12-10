@@ -39,7 +39,6 @@ import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.servic
 import { ContentService } from '../_services/content/content.service';
 import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
 import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
-import { DialogsService } from '../workshop/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CommentService } from '../_services/comment/comment.service';
 import { NotificationService } from '../_services/notification/notification.service';
@@ -87,7 +86,6 @@ import { TextIconCarouselComponent } from './text-icon-carousel/text-icon-carous
     ContentService,
     LeftSidebarService,
     CurrencypickerService,
-    DialogsService,
     CommentService,
     TopicService,
     NotificationService,

@@ -57,7 +57,8 @@ export class IndexComponent implements OnInit {
     );
   }
   public openVideo() {
-    this.dialogsService.openVideo().subscribe();
+    const url = 'http://static.videogular.com/assets/videos/videogular.mp4';
+    this.dialogsService.openVideo(url).subscribe();
   }
   public sendEmailSubscriptions(message: string, action: string) {
     // this.loading = true;

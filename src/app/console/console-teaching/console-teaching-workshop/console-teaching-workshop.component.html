@@ -95,7 +95,7 @@
                     </span>
                   </md-card-content>
                   <md-menu #ongoingCardMenu>
-                    <button md-menu-item (click)="deleteWorkshop('cancel',collection)">
+                    <button md-menu-item (click)="cancelWorkshop(collection)">
                       Cancel
                     </button>
                     <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
@@ -159,7 +159,7 @@
                     </div>
                   </md-card-content>
                   <md-menu #upcomingCardMenu>
-                    <button md-menu-item (click)="deleteWorkshop('cancel',collection)">
+                    <button md-menu-item (click)="cancelWorkshop(collection)">
                       Cancel
                     </button>
                     <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
@@ -223,7 +223,7 @@
                     </md-card-footer>
                   </md-card>
                   <md-menu #draftCardMenu>
-                    <button md-menu-item (click)="deleteWorkshop('delete',collection)">
+                    <button md-menu-item (click)="deleteWorkshop(collection)">
                       Delete
                     </button>
                     <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">

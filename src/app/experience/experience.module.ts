@@ -10,15 +10,12 @@ import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { } from '@angular/material';
 import 'hammerjs';
-import { ExperienceSubmitDialogComponent } from './experience-edit/experience-submit-dialog/experience-submit-dialog.component';
-import { ExperienceCloneDialogComponent } from './experience-edit/experience-clone-dialog/experience-clone-dialog.component';
-import { DialogsModule } from './dialogs/dialogs.module';
 
 @NgModule({
     imports: [
         SharedModule,
         ExperienceRoutingModule,
-        DialogsModule],
+    ],
     declarations: [
         ExperienceEditComponent,
         ExperienceContentComponent,
@@ -26,12 +23,10 @@ import { DialogsModule } from './dialogs/dialogs.module';
         AppointmentCalendarComponent,
         ExperienceContentOnlineComponent,
         ExperienceContentProjectComponent,
-        ExperienceContentVideoComponent,
-        ExperienceSubmitDialogComponent,
-        ExperienceCloneDialogComponent
+        ExperienceContentVideoComponent
     ],
     providers: [],
     bootstrap: [],
-    entryComponents: [ExperienceContentOnlineComponent, ExperienceContentProjectComponent, ExperienceContentVideoComponent, ExperienceSubmitDialogComponent, ExperienceCloneDialogComponent]
+    entryComponents: [ExperienceContentOnlineComponent, ExperienceContentProjectComponent, ExperienceContentVideoComponent]
 })
 export class ExperienceModule { }
