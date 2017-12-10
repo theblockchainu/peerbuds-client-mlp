@@ -118,7 +118,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   public getSearchOptionText(option) {
-    switch (option.index) {
+    switch (option.index.split('_')[1]) {
       case 'collection':
         switch (option.data.type) {
           case 'workshop':
@@ -145,7 +145,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   public getSearchOptionType(option) {
-    switch (option.index) {
+    switch (option.index.split('_')[1]) {
       case 'collection':
         switch (option.data.type) {
           case 'workshop':
@@ -165,7 +165,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   public onSearchOptionClicked(option) {
-    switch (option.index) {
+    switch (option.index.split('_')[1]) {
       case 'collection':
         switch (option.data.type) {
           case 'workshop':

@@ -39,7 +39,7 @@
                     <div class="collectionParticipantImageCarousel">
                       <span *ngFor="let participant of collection.participants; let i=index">
                         <div *ngIf="i<7" class="image-inline">
-                          <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                          <app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
                         </div>
                       </span>
                       <div class="image-inline" *ngIf="collection.participants.length === 0">
@@ -49,13 +49,12 @@
                     <div class="participantCount">
                       <span>{{collection.participants.length}} Participants </span>
                     </div>
-                    <div class="collectionTitle mat-body-2" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                    <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
                     <!-- <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar> -->
                     <div class="cohortDate">
-                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
-                        MMM' }}</span>
+                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
                     </div>
-                    <div class="collectionSubtitle" (click)="_collectionService.openCollection(collection)">
+                    <div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
                       {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
@@ -126,7 +125,7 @@
                     <div class="collectionParticipantImageCarousel">
                       <span *ngFor="let participant of collection.participants; let i=index">
                         <div *ngIf="i<6" class="image-inline">
-                          <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                          <app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
                         </div>
                       </span>
                       <div class="image-inline" *ngIf="collection.participants.length === 0">
@@ -137,15 +136,14 @@
                       <span class="participantCount">{{collection.participants.length}} Participants </span> |
                       <span class="lightText">{{collection.maxSpots - collection.participants.length}} available </span>
                     </div>
-                    <div class="collectionTitle mat-body-2" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                    <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
                     <!-- <div class="lighterText">
                           Approved {{_collectionService.getDaysBetween(collection.updatedAt, now)}}
                         </div> -->
                     <div class="cohortDate">
-                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
-                        MMM' }}</span>
+                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
                     </div>
-                    <div class="collectionSubtitle">
+                    <div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
                       {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
@@ -306,7 +304,7 @@
                       <div class="collectionParticipantImageCarousel">
                         <span *ngFor="let participant of collection.participants; let i=index">
                           <div *ngIf="i<7" class="image-inline">
-                            <img src="{{config.apiUrl+participant.profiles[0].picture_url }}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                            <app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
                           </div>
                         </span>
                         <div class="image-inline" *ngIf="collection.participants.length === 0">
@@ -319,12 +317,12 @@
                       <div class="cohortCount">
                         <a (click)="openCohortDetailDialog(collection)">{{collection.calendars.length}} Cohorts completed </a>
                       </div>
-                      <div class="collectionTitle mat-body-2" (click)="_collectionService.viewWorkshop(collection)">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
-                      <div class="collectionSubtitle">
+                      <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.viewWorkshop(collection)">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
+                      <div class="collectionSubtitle clickable" (click)="_collectionService.viewWorkshop(collection)">
                         {{ collection.itenaries.length}} Days | {{collection.contents.length}} Activity |
                         <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                       </div>
-                      <div class="teachingRatingReminder" (click)="consoleTeachingComponent.showRateStudentsPopup()">
+                      <div class="teachingRatingReminder clickable" (click)="consoleTeachingComponent.showRateStudentsPopup()">
                         Rate your students now
                       </div>
                     </md-card-content>

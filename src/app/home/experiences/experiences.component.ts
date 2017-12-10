@@ -98,12 +98,12 @@ export class ExperiencesComponent implements OnInit {
         this.selectedTopics.push({ 'name': topicObj['topic'].name });
       }
     }
-    query = {
-      'include': [
-        { 'collections': [{'owners': 'reviewsAboutYou'}, 'calendars'] }
-      ],
-      'where': { or: this.selectedTopics }
-    };
+      query = {
+          'include': [
+              { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'experience'} }}
+          ],
+          'where': { or: this.selectedTopics }
+      };
 
     this._topicService.getTopics(query)
       .subscribe(

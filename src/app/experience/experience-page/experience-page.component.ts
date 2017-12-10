@@ -123,6 +123,7 @@ export class ExperiencePageComponent implements OnInit {
   public result;
 
   public comments: Array<any>;
+  private today = moment();
 
   // Calendar Start
   public dateClicked = false;
@@ -922,7 +923,7 @@ export class ExperiencePageComponent implements OnInit {
     this.loadingSimilarExperiences = true;
     const query = {
       'include': [
-        { 'collections': [{ 'owners': 'reviewsAboutYou' }] }
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'experience'} }}
       ]
     };
     this._topicService.getTopics(query).subscribe(
@@ -934,7 +935,18 @@ export class ExperiencePageComponent implements OnInit {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
-              this.recommendations.collections.push(collection);
+              let hasActiveCalendar = false;
+              if (collection.calendars) {
+                  collection.calendars.forEach(calendar => {
+                      if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                          hasActiveCalendar = true;
+                          return;
+                      }
+                  });
+              }
+              if (hasActiveCalendar) {
+                  this.recommendations.collections.push(collection);
+              }
             }
           });
         }
@@ -1336,6 +1348,10 @@ export class ExperiencePageComponent implements OnInit {
 
   public parseTitle(title) {
     return title.split(':');
+  }
+
+  public backToCollection(collection) {
+      this.router.navigate([collection.type, collection.id]);
   }
 
 }

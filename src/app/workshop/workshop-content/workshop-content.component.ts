@@ -198,7 +198,22 @@ export class WorkshopContentComponent implements OnInit {
       }
     }
     else if (event.action === 'delete') {
-      this.deleteContent(event.value, i);
+      if (this.collection.status === 'active') {
+        let dialogRef: any;
+        dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result === 'accept') {
+            this.deleteContent(event.value, i);
+          }
+          else if (result === 'reject') {
+            // Do nothing
+            this.router.navigate(['console', 'teaching', 'workshops']);
+          }
+        });
+      }
+      else {
+        this.deleteContent(event.value, i);
+      }
     }
     else if (event.action === 'deleteDay') {
       this.deleteContent(null, i);

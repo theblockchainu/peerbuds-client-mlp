@@ -65,7 +65,7 @@ const routes: Routes = [{
         },
         {
           path: '',
-          component: ConsoleLearningWorkshopsComponent
+          component: ConsoleLearningAllComponent
         }
       ]
     },
@@ -91,7 +91,7 @@ const routes: Routes = [{
         },
         {
           path: '',
-          component: ConsoleTeachingWorkshopComponent
+          component: ConsoleTeachingAllComponent
         }
       ]
     },

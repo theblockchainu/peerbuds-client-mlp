@@ -4,6 +4,7 @@ import { ConsoleComponent } from '../console.component';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { MdSnackBar } from '@angular/material';
+import {AppConfig} from '../../app.config';
 
 declare var moment: any;
 
@@ -23,7 +24,8 @@ export class ConsoleAdminComponent implements OnInit {
     consoleComponent: ConsoleComponent,
     public _collectionService: CollectionService,
     public _profileService: ProfileService,
-    public snackBar: MdSnackBar
+    public snackBar: MdSnackBar,
+    public appConfig: AppConfig
   ) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
@@ -58,7 +60,7 @@ export class ConsoleAdminComponent implements OnInit {
   private fetchCollections() {
     this.collectionsLoaded = false;
     const query = {
-      'where': { 'type': 'workshop', 'isApproved': false, 'status': 'submitted' },
+      'where': { 'isApproved': false, 'status': 'submitted' },
       'include': [
         'calendars'
       ]

@@ -123,6 +123,7 @@ export class WorkshopPageComponent implements OnInit {
     collections: []
   };
   public result;
+  private today = moment();
 
   public comments: Array<any>;
 
@@ -924,7 +925,7 @@ export class WorkshopPageComponent implements OnInit {
     this.loadingSimilarWorkshops = true;
     const query = {
       'include': [
-        { 'collections': [{ 'owners': 'reviewsAboutYou' }] }
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'workshop'} }}
       ]
     };
     this._topicService.getTopics(query).subscribe(
@@ -936,7 +937,18 @@ export class WorkshopPageComponent implements OnInit {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
               }
-              this.recommendations.collections.push(collection);
+              let hasActiveCalendar = false;
+              if (collection.calendars) {
+                  collection.calendars.forEach(calendar => {
+                      if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                          hasActiveCalendar = true;
+                          return;
+                      }
+                  });
+              }
+              if (hasActiveCalendar) {
+                  this.recommendations.collections.push(collection);
+              }
             }
           });
         }
@@ -1337,6 +1349,10 @@ export class WorkshopPageComponent implements OnInit {
 
   public parseTitle(title) {
     return title.split(':');
+  }
+
+  public backToCollection(collection) {
+    this.router.navigate([collection.type, collection.id]);
   }
 
 }

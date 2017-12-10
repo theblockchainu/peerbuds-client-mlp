@@ -58,7 +58,7 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
   }
 
   private fetchData() {
-    this._collectionService.getOwnedCollections(this.userId, '{ "where": {"type":"workshop"}, "include": ["calendars", "owners", {"participants": "profiles"}, "topics", {"contents":"schedules"}] }', (err, result) => {
+    this._collectionService.getOwnedCollections(this.userId, '{ "where": {"type":"workshop"}, "include": ["calendars", "owners", {"participants": ["reviewsAboutYou", "ownedCollections", "profiles"]}, "topics", {"contents":"schedules"}] }', (err, result) => {
       if (err) {
         console.log(err);
       } else {

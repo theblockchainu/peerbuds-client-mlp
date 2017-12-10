@@ -29,7 +29,6 @@ export class ProfilePopupComponent implements OnInit {
     const config = {
       hasBackdrop: false,
       width: '250px',
-      height: '200px',
       data: this.peer,
       position: {
         left: (event.x + 20) + 'px',
