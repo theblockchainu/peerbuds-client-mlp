@@ -121,7 +121,7 @@ export class ExperienceEditComponent implements OnInit {
       'calendars',
       { 'participants': [{ 'profiles': ['work'] }] },
       { 'owners': [{ 'profiles': ['phone_numbers'] }] },
-      { 'contents': ['schedules'] }
+      { 'contents': ['schedules', 'locations'] }
     ]
   };
 
@@ -145,7 +145,7 @@ export class ExperienceEditComponent implements OnInit {
     private _topicService: TopicService
   ) {
     this.activatedRoute.params.subscribe(params => {
-      this.experienceId = params['experienceId'];
+      this.experienceId = params['collectionId'];
       this.step = params['step'];
       // this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.apiUrl + '/experience/' + this.experienceId + '/edit/' + this.step + '&state=1';
       this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.clientUrl + '/console/account/payoutmethods&state=' + this.config.clientUrl + '/experience/' + this.experienceId + '/edit/' + this.step;
@@ -161,16 +161,13 @@ export class ExperienceEditComponent implements OnInit {
 
   public ngOnInit() {
     console.log('Inside oninit experience');
-    this.interest1 = new FormGroup({
-      // interests: this._fb.array([])
-    });
+    this.interest1 = new FormGroup({});
 
     this.newTopic = this._fb.group({
       topicName: ['', Validators.requiredTrue]
     });
 
     this.experience = this._fb.group({
-      // id: '',
       type: 'experience',
       title: '',
       stage: '',
@@ -190,13 +187,9 @@ export class ExperienceEditComponent implements OnInit {
       ageLimit: '',
       aboutHost: '', // [null,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
       notes: '',
-      // isApproved: '',
       approvedBy: '',
-      // isCanceled: '',
       canceledBy: '',
-      status: 'draft',
-      // createdAt: '',
-      // updatedAt: ''
+      status: 'draft'
     });
 
     this.timeline = this._fb.group({
@@ -332,6 +325,17 @@ export class ExperienceEditComponent implements OnInit {
         startTime: [''],
         endTime: ['']
       }),
+      location: this._fb.group({
+          location_name: [''],
+          country: [null],
+          street_address: [null],
+          apt_suite: [null],
+          city: [null],
+          state: [null],
+          zip: [null],
+          map_lat: [null],
+          map_lng: [null]
+      }),
       pending: ['']
     });
   }
@@ -340,7 +344,9 @@ export class ExperienceEditComponent implements OnInit {
     const itenaries = {};
     for (const contentObj of contents) {
       contentObj.schedule = contentObj.schedules[0];
+      contentObj.location = contentObj.locations[0];
       delete contentObj.schedules;
+      delete contentObj.locations;
       if (itenaries.hasOwnProperty(contentObj.schedule.startDay)) {
         itenaries[contentObj.schedule.startDay].push(contentObj);
       } else {

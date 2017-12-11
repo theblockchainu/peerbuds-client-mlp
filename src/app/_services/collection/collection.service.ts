@@ -244,7 +244,10 @@ export class CollectionService {
         fillerWord = 'Session';
       } else if (contents[0].type === 'video') {
         fillerWord = 'Recording';
-      } else if (contents[0].type === 'project') {
+      } else if (contents[0].type === 'in-person') {
+          fillerWord = 'Session';
+      }
+      else if (contents[0].type === 'project') {
         fillerWord = 'Submission';
       }
       const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
@@ -269,7 +272,10 @@ export class CollectionService {
       fillerWord = 'session';
     } else if (contentType === 'video') {
       fillerWord = 'recording';
-    } else if (contentType === 'project') {
+    } else if (contentType === 'in-person') {
+        fillerWord = 'session';
+    }
+    else if (contentType === 'project') {
       fillerWord = 'submission';
     }
     return contentType + ' ' + fillerWord;

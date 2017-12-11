@@ -47,8 +47,9 @@
             </div>
             <div class="col-md-7" (click)="findAndOpenDialog(i)">
               <div class="content-title">{{Content.value.title | titlecase}}</div>
-              <div *ngIf="Content.value.type === 'online'" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
+              <div *ngIf="Content.value.type === 'online' || Content.value.type === 'in-person'" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
               <div *ngIf="Content.value.type === 'project'" class="content-subtitle">Deadline: {{getDeadline(Content)}}</div>
+              <div *ngIf="Content.value.type === 'in-person'" class="content-subtitle">#{{Content.controls.location.controls.apt_suite.value}} {{Content.controls.location.controls.street_address.value}}, {{Content.controls.location.controls.city.value}}</div>
               <span></span>
               <div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase }}</div>
             </div>
@@ -67,17 +68,12 @@
         </span>
         &emsp;
         <span class="activity-subtitle">
-          (Must have at least one online session)
+          (Must have at least one in-person session)
         </span>
         <br><br>
-        <button md-button type="button" (click)="addContent('online'); findAndOpenDialog(-1);" style="padding-left: 0px">
+        <button md-button type="button" (click)="addContent('in-person'); findAndOpenDialog(-1);" style="padding-left: 0px">
           <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
-          Online Session
-        </button>&emsp;
-
-        <button md-button type="button" (click)="addContent('video'); findAndOpenDialog(-1);">
-          <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
-          Video
+          In-person Session
         </button>&emsp;
 
         <button md-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">

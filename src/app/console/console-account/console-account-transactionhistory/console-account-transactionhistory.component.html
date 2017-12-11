@@ -154,7 +154,7 @@
 
                     </div>
                     <div class="row" *ngFor="let transaction of futureTransactions" style="padding-top: 10px; padding-bottom: 10px;">
-                      <div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
+                      <div class="col-md-2">{{transaction.modified | extractTime:'DD/M/YY'}}</div>
                       <div class="col-md-2">Payment</div>
                       <div class="col-md-4">
                         <span *ngIf="transaction.peers && transaction.peers.length>0 && transaction.peers[0].profiles && transaction.peers[0].profiles.length>0">

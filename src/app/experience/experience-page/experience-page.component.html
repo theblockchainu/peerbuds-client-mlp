@@ -65,7 +65,7 @@
           <div class="col-md-8">
             <div class="row">
               <div class="col-md-12">
-                <a class="clickable margin-bottom-10" *ngIf="calendarId" (click)="backToCollection(experience)">< Back to experience page</a>
+                <a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(experience)">< Back to experience page</a>
                 <p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}} <span *ngIf="calendarId">(Cohort View)</span></p>
                 <div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
                   <span *ngIf="currentCalendar">
@@ -128,8 +128,8 @@
                     <span>{{getContentCount('project') | i18nPlural : projectMapping}}</span>
                   </div>
                   <div class="col-md-12 margin-top-10">
-                    <md-icon style="top: 7px;">play_circle_outline</md-icon>&emsp;
-                    <span>{{getContentCount('online') | i18nPlural : onlineSessionMapping}}</span>
+                    <md-icon style="top: 7px;">map</md-icon>&emsp;
+                    <span>{{getContentCount('in-person') | i18nPlural : inPersonSessionMapping}}</span>
                   </div>
                 </div>
                 <div *ngIf="userType==='public'" class="margin-top-20"> {{experience.description}} </div>
@@ -205,11 +205,28 @@
                 <div class="row">
                   <div class="col-md-4">
                     <h3>
-                      Who should come
+                      Location
                     </h3>
                   </div>
                   <div class="col-md-8 margin-top-8">
-                    {{experience.difficultyLevel}} level
+                    <agm-map [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false" [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false" >
+                      <agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'" [strokeOpacity]="0.9" ></agm-circle>
+                    </agm-map>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr *ngIf="userType==='public'">
+            <div class="row" *ngIf="userType === 'public'">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h3>
+                      Need to know
+                    </h3>
+                  </div>
+                  <div class="col-md-8 margin-top-8">
+                    <b>{{experience.difficultyLevel}} level</b>
                     <p class="mat-caption">{{experience.notes}}</p>
                   </div>
                 </div>
@@ -260,21 +277,29 @@
                                     <div class="col-md-12">
                                       <h3> {{content.title | titlecase}}</h3>
                                       <div>
-                                        <span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && content.type === 'online'">
+                                        <span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && content.type === 'in-person'">
                                           {{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}} &nbsp;&nbsp;&nbsp;
                                           <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>
                                         </span>
                                         {{_collectionService.getContentTypeFullName(content.type) | titlecase}}
                                       </div>
+                                      <div *ngIf="content.locations[0] !== undefined && (userType === 'participant' || userType === 'teacher')">
+                                        <md-icon style="top: 2px; font-size: 15px; width: 15px;">place</md-icon>
+                                        {{content.locations[0].apt_suite | ucwords}} {{content.locations[0].street_address | ucwords}}, {{content.locations[0].city | ucwords}}
+                                        <br>
+                                        {{content.locations[0].state | ucwords}} {{content.locations[0].zip | ucwords}}, {{content.locations[0].country | ucwords}}
+                                      </div>
                                     </div>
-                                    <div class="col-md-12 margin-top-10 textJustify">
+                                    <div *ngIf="userType === 'public'" class="col-md-12 margin-top-10 textJustify">
                                       <span class="pre-wrapped">{{content.description | shorten: 115 : '...'}}</span>
                                     </div>
                                   </div>
-                                  <div class="row margin-top-10" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
+                                  <div class="row margin-top-10" *ngIf="content.type==='in-person' && userType==='participant' && calendarId">
                                     <div class="col-md-12">
-                                      <a md-button *ngIf="isLive(content)" class="mat-border-button" (click)="joinLiveSession(content)">Join</a>
-                                      <button md-button class="mat-border-button" *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
+                                      <a md-button *ngIf="!hasRSVPd(content)" class="mat-border-button" (click)="rsvpToggle(content)">RSVP</a>
+                                      <a md-button *ngIf="hasRSVPd(content)" class="mat-border-button" (click)="viewRSVPs(content)">View RSVPs</a>
+                                      <a md-button *ngIf="isLive(content) && hasRSVPd(content)" class="mat-border-button" (click)="getDirections(content)">Get directions</a>
+                                      <button md-button class="mat-border-button" *ngIf="!isLive(content) && hasRSVPd(content)" [disabled]="true">{{content.timetoSession}}</button>
                                     </div>
                                   </div>
                                    <div class="row margin-top-10">
@@ -568,10 +593,10 @@
                   <div class="col-md-12">
                     <div class="row">
                       <div class="col-md-4">
-                        <h3>Who should come</h3>
+                        <h3>Need to know</h3>
                       </div>
                       <div class="col-md-8 margin-top-8">
-                        {{experience.difficultyLevel | titlecase}}
+                        <b>{{experience.difficultyLevel | titlecase}}</b>
                         <p class="mat-caption pre-wrapped">{{experience.notes}}</p>
                       </div>
                     </div>
@@ -698,8 +723,7 @@
               <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
                 <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
                   <span class="cal-day-badge"></span>
-                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
-                    MMM' }})</span>
+                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})</span>
                 </div>
                 <div class="margin-top-10 margin-bottom-10">
                   <span>{{clickedDate | date:'EEEE, MMM d'}}</span>
@@ -733,25 +757,16 @@
                 <!--COVER IMAGE-->
                 <div class="row">
                   <div class="col-md-12">
-                    <div style="width: 300px; height: 500px" *ngIf="carouselImages && carouselConfig">
+                    <div style="width: 340px; height: 500px;" *ngIf="carouselImages && carouselConfig">
                       <carousel [sources]="carouselImages" [config]="carouselConfig"></carousel>
                     </div>
-                    <!-- <carousel [noWrap]="noWrapSlides">
-                      <slide *ngIf="experience.imageUrls === undefined">
-                        <img src="../../../assets/images/placeholder-image.jpg" class="img-responsive" style="width: auto; max-height: 500px; min-width: 100%;"
-                          alt="First slide">
-                      </slide>
-                      <slide *ngFor="let imageUrl of experience.imageUrls">
-                        <img src="{{config.apiUrl+imageUrl}}" class="img-responsive" style="width: auto; max-height: 500px; min-width: 100%;" alt="First slide">
-                      </slide>
-                    </carousel> -->
                   </div>
                 </div>
                 <!--HEADLINE-->
                 <div class="row">
                   <div class="col-md-12">
                     <h3>
-                      {{experience.headline | titlecase | shorten: '40'}}
+                      {{experience.headline | titlecase}}
                     </h3>
                   </div>
                 </div>

@@ -9,11 +9,11 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: ':workshopId',
+        path: ':collectionId',
         loadChildren: './workshop-page/workshop-page.module#WorkshopPageModule'
       },
       {
-        path: ':workshopId/edit/:step',
+        path: ':collectionId/edit/:step',
         component: WorkshopEditComponent,
         canActivateChild: [AuthGuardService]
       }

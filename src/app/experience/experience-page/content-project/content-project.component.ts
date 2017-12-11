@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { SocketService } from '../../../_services/socket/socket.service';
 import {CollectionService} from "../../../_services/collection/collection.service";
+import {ViewEntryDialogComponent} from "../view-entry-dialog/view-entry-dialog.component";
 
 @Component({
   selector: 'app-content-project',
@@ -107,10 +108,18 @@ export class ContentProjectComponent implements OnInit {
   openSubmitEntryDialog(data: any) {
     const dialogRef = this.dialog.open(SubmitEntryComponent, {
       data: data,
-      width: '50vw',
-      height: '90vh'
+      width: '45vw',
+      height: '100vh'
     });
   }
+
+    openViewEntryDialog(data: any) {
+        const dialogRef = this.dialog.open(ViewEntryDialogComponent, {
+            data: data,
+            width: '45vw',
+            height: '100vh'
+        });
+    }
 
   public viewSubmission(submissionId) {
     const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, {"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
@@ -123,8 +132,8 @@ export class ContentProjectComponent implements OnInit {
             peerHasSubmission: this.data.peerHasSubmission,
             collectionId: this.data.collectionId
           },
-          width: '50vw',
-          height: '90vh'
+          width: '45vw',
+          height: '100vh'
         });
       }
     });

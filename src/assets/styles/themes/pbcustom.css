@@ -650,6 +650,7 @@ h3.calendarTitle  {
 
 .ui-fileupload-buttonbar {
     background-color: #fff !important;
+    padding-left: 0px !important;
 }
 
 .ui-autocomplete-token {

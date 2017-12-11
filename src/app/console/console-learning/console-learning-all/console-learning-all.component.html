@@ -56,7 +56,7 @@
                       <div class="teacherHeadline">
                         <span>{{collection.owners[0].profiles[0].headline}} </span>
                       </div>
-                      <div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
+                      <div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title || 'No Title' | ucwords }} </div>
                       <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
                       <div class="collectionSubtitle">
                         {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity |
@@ -133,7 +133,7 @@
                       <div class="teacherHeadline">
                         <span>{{collection.owners[0].profiles[0].headline}} </span>
                       </div>
-                      <div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
+                      <div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title || 'No Title' | ucwords }} </div>
                       <div class="lighterText">
                         Booked {{consoleLearningComponent.getDaysBetween(collection.updatedAt, now)}}
                       </div>
@@ -212,7 +212,7 @@
                       <div class="teacherHeadline">
                         <span>{{collection.owners[0].profiles[0].headline}} </span>
                       </div>
-                      <div class="mat-body-2 clickable" style="margin-top: 30px; margin-bottom: 30px" (click)="openCollection(collection)">{{ collection.title || 'No Title' }} </div>
+                      <div class="mat-body-2 clickable" style="margin-top: 30px; margin-bottom: 30px" (click)="openCollection(collection)">{{ collection.title || 'No Title' | ucwords }} </div>
                       <md-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></md-progress-bar>
                       <div class="collectionSubtitle">
                         {{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity |
