@@ -17,6 +17,7 @@ import { ContentOnlineComponent } from './content-online/content-online.componen
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
+import { AttendiesPopupComponent } from './attendies-dialog/attendies-dialog.component';
 import {
   startOfDay,
   endOfDay,
@@ -845,6 +846,28 @@ export class ExperiencePageComponent implements OnInit {
   }
 
   /**
+   * showAttendiesPopup
+   * experienceId
+   * contentId
+   * userType
+   */
+  public showAttendiesPopup(experienceId, content, userType) {
+      const dialogRef = this.dialog.open(AttendiesPopup, {
+        data: {
+          collectionId: this.experienceId,
+          collection: this.experience,
+          calendarId: this.calendarId,
+          content: content,
+          contentId: content.Id,
+          userType: this.userType
+        },
+        width: '45vw',
+        height: '100vh'
+      });
+    }
+  }
+
+  /**
   * openDialog
   content:any   */
   public openDialog(content: any, startDate) {
@@ -1377,4 +1400,10 @@ export class ExperiencePageComponent implements OnInit {
       this.router.navigate([collection.type, collection.id]);
   }
 
+  /* RSVP node handling */
+  public sendRSVP(experienceId, contentId) {
+    console.log(experienceId);
+    console.log(contentId);
+    console.log("rsvp called");
+  }
 }

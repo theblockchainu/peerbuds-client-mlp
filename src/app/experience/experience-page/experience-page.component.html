@@ -255,7 +255,10 @@
                                     <source src="{{config.apiUrl+content.imageUrl}}">
                                   </video>
                                 </div>
-                                <div class="col-md-7">
+                              </a>
+
+                              <div class="col-md-7">
+                                <a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate)">
                                   <div class="row">
                                     <div class="col-md-12">
                                       <h3> {{content.title | titlecase}}</h3>
@@ -267,24 +270,31 @@
                                         {{_collectionService.getContentTypeFullName(content.type) | titlecase}}
                                       </div>
                                     </div>
-                                    <div class="col-md-12 margin-top-10 textJustify">
-                                      <span class="pre-wrapped">{{content.description | shorten: 115 : '...'}}</span>
+                                    <div *ngIf= "userType==='teacher'" class="col-md-12 margin-top-10 textJustify">
+                                      <span  class="pre-wrapped">{{content.description | shorten: 115 : '...'}}</span>
                                     </div>
                                   </div>
-                                  <div class="row margin-top-10" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
-                                    <div class="col-md-12">
-                                      <a md-button *ngIf="isLive(content)" class="mat-border-button" (click)="joinLiveSession(content)">Join</a>
-                                      <button md-button class="mat-border-button" *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
-                                    </div>
-                                  </div>
-                                   <div class="row margin-top-10">
-                                    <div class="col-md-12">
-                                      <a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate)">See details</a>
-                                    </div>
+                                </a>
+                                <div *ngIf= "userType !== 'participant'" class="col-md-12 textJustify padding-left-0" style="margin-top:35px">
+                                  <button md-button class="mat-border-button" color="primary" (click)="sendRSVP(experienceId, content.id)">Rsvp</button>
+                                </div>
+                                <!-- TBD - check if rsvped participant -->
+                                <div *ngIf= "userType ==='teacher' || userType === 'participant'" class="col-md-12 textJustify padding-left-0" style="margin-top:35px">
+                                  <button md-button class="mat-border-button" color="primary" (click)="showAttendiesPopup(experienceId, content, userType)">Attendies</button>
+                                </div>
+                                <div class="row margin-top-10" *ngIf="content.type==='online' && (userType==='teacher' || userType==='participant') && calendarId">
+                                  <div class="col-md-12">
+                                    <a md-button *ngIf="isLive(content)" class="mat-border-button" (click)="joinLiveSession(content)">Join</a>
+                                    <button md-button class="mat-border-button" *ngIf="!isLive(content)" [disabled]="true">{{content.timetoSession}}</button>
                                   </div>
                                 </div>
-                              </a>
-                              <!-- </div> -->
+                                <div class="row margin-top-10" *ngIf= "userType==='teacher'">
+                                  <div class="col-md-12">
+                                    <a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate)">See details</a>
+                                  </div>
+                                </div>
+                              </div>
+                              
                               <br>
                             </div>
                           </div>
