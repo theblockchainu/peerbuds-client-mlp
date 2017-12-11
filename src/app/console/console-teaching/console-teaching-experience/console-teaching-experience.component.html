@@ -172,7 +172,7 @@
                   <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
                     <button md-raised-button (click)="_collectionService.viewExperience(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                   </md-card-actions>
-                  <md-card-footer class="cardFooter" style="line-height: 30px">
+                  <md-card-footer class="cardFooter" style="line-height: 30px; position: absolute;bottom: 24px;width: 100%;left: 24px;">
                     <a style="font-size: 1.077rem" (click)="_collectionService.viewExperience(collection)">Is this a recurring experience?</a>
                   </md-card-footer>
                 </md-card>
@@ -204,6 +204,7 @@
                         </div>
                       </div>
                       <div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                      <div style="font-size: 12px; margin-top: -30px; margin-bottom: 10px;" *ngIf="collection.status === 'draft'">Last edited on {{collection.updatedAt | extractTime: 'Do MMM'}}</div>
                       <ng-template #draftMessage>
                         <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
                         <p class="lightText" style="margin-top:20px">
@@ -295,7 +296,7 @@
                 <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
                 <ng-template #noTopicText>No Topics</ng-template>
                 <div class="col-md-4" style="margin-top: 20px;">
-                  <md-card style="text-align: center; padding: 20px;">
+                  <md-card class="pastCard" style="text-align: center; padding: 20px;">
                     <md-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
