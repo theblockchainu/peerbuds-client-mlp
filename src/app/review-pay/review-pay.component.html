@@ -5,11 +5,15 @@
             <div class="col-md-offset-1 col-sm-6">
                 <div class="title">Review and pay</div>
                 <div class="seperate-section margin-bottom-20">
-                    <div class="fw-bold margin-bottom-10">Student requirements</div>
-                    <span class="text-grey" *ngIf="collection.prerequisites && collection.prerequisites.length > 0">{{collection.prerequisites}}</span>
-                    <span class="text-grey" *ngIf="!collection.prerequisites">There are no additional requirements to be aware of at this point</span>
+                    <div class="fw-bold margin-bottom-10">Student requirements / prerequisites</div>
+                    <div class="text-grey" *ngIf="collection.difficultyLevel && collection.difficultyLevel.length > 0"><b>This {{collection.type}} is of {{collection.difficultyLevel}} level.</b></div>
+                    <div class="text-grey margin-top-10" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes | ucfirst}}</div>
+                    <div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to be aware of at this point</div>
                 </div>
-                <form>
+                <div class="loading-container" [hidden]="!loadingCards">
+                    <ngx-loading [show]="true"></ngx-loading>
+                </div>
+                <form [hidden]="loadingCards">
                     <div class="payment-message margin-top-20 margin-bottom-20 mat-body-2">{{message}}</div>
                     <div class="margin-bottom-50" *ngIf="isCardExist">
                         <h3>Select payment method</h3>
@@ -33,32 +37,34 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row margin-top-20">
                             <div class="col-sm-6">
-                                <md-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or Use another card</md-checkbox>
+                                <md-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use another card</md-checkbox>
                             </div>
                         </div>
                     </div>
-                    <div class="margin-bottom-50" [hidden]="isCardExist && !useAnotherCard">
-                        <h3>Enter payment details</h3>
-                        <label>
-                            <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
-                            <span>
+                    <div>
+                        <div class="margin-bottom-50" [hidden]="isCardExist && !useAnotherCard">
+                            <h3>Enter payment details</h3>
+                            <label>
+                                <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
+                                <span>
                                 <span>Name</span>
                             </span>
-                        </label>
-                        <label>
-                            <input class="field is-empty" name="cardholder-phone" type="tel" placeholder="(123) 456-7890" />
-                            <span>
+                            </label>
+                            <label>
+                                <input class="field is-empty" name="cardholder-phone" type="tel" placeholder="(123) 456-7890" />
+                                <span>
                                 <span>Phone number</span>
                             </span>
-                        </label>
-                        <label>
-                            <div id="card-element" class="field is-empty"></div>
-                            <span>
-                                <span>Credit or debit card</span>
+                            </label>
+                            <label>
+                                <div id="card-element" class="field is-empty"></div>
+                                <span>
+                                <span>Credit or debit card number</span>
                             </span>
-                        </label>
+                            </label>
+                        </div>
                     </div>
                     <div class="terms-text">
                         <div class="terms-title">Terms of Service</div>
@@ -69,9 +75,9 @@
                         <i class="fa fa-lock"></i> Your Credit card information is encrypted
                     </div>
                     <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
-                        [disabled]="savingData">{{collection.price | currency: collection.currency: true: '1.0-0'}} - Confirm Payment</button>
+                        [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
                     <button md-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
-                        [disabled]="!cardDetails.id || savingData">{{collection.price | currency: collection.currency: true: '1.0-0'}} - Confirm Payment</button>
+                        [disabled]="!cardDetails.id || savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
                     <div class="display-inline-block margin-top-10" *ngIf="savingData">
                         <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment</div>
                 </form>
@@ -82,20 +88,18 @@
                         <div class="seperate-section padding-top-0">
                             <div class="display-table">
                                 <div class="margin-bottom-10">
-                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? config.apiUrl+collection.imageUrls[0] : defaultImageUrl"
-                                        alt="image" />
+                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? config.apiUrl+collection.imageUrls[0] : defaultImageUrl" alt="image" />
                                 </div>
                                 <div class="fs-17">{{ collection.title | titlecase}}
                                     <br>
-                                    <span class="display-inline-block fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}</span>
-                                    <span class="display-inline-block pull-right fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
-                                        | titlecase}}</span>
+                                    <span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}</span>
+                                    <br>
+                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name | ucwords}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="seperate-section">
-                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE,
-                                MMM dd' }}</div>
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
                             <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
                             <!--<a href="#">See details</a>-->
                         </div>

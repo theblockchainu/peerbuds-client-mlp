@@ -179,10 +179,10 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     return moment(a.startDate).diff(moment(b.startDate), 'days');
   }
 
-  public openCohortDetailDialog(cohortData: any) {
+  public openCohortDetailDialog(cohortData: any, status) {
+    cohortData['status'] = status;
     const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
-      width: '700px',
-      height: '600px',
+      width: '45vw',
       data: cohortData
     });
   }

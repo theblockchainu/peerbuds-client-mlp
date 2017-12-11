@@ -186,10 +186,10 @@ export class WorkshopPageComponent implements OnInit {
     private snackBar: MdSnackBar
   ) {
     this.activatedRoute.params.subscribe(params => {
-      if (this.initialised && (this.workshopId !== params['workshopId'] || this.calendarId !== params['calendarId'])) {
+      if (this.initialised && (this.workshopId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
         location.reload();
       }
-      this.workshopId = params['workshopId'];
+      this.workshopId = params['collectionId'];
       this.calendarId = params['calendarId'];
       this.toOpenDialogName = params['dialogName'];
     });

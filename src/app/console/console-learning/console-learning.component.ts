@@ -147,6 +147,8 @@ export class ConsoleLearningComponent implements OnInit {
       fillerWord = 'recording';
     else if (contents[0].type === 'project')
       fillerWord = 'submission';
+    else if (contents[0].type === 'in-person')
+        fillerWord = 'session';
     if (currentCalendar) {
       const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
       const timeToStart = contentStartDate.diff(moment(), 'days');
@@ -186,6 +188,12 @@ export class ConsoleLearningComponent implements OnInit {
             progress++;
           }
           break;
+
+        case 'in-person':
+            if (content.presence && content.presence.length > 0) {
+                progress++;
+            }
+            break;
 
         default:
           break;

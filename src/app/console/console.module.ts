@@ -46,7 +46,6 @@ import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
     CommonModule,
     SharedModule,
     ConsoleRoutingModule,
-    // BrowserAnimationsModule,
     RatingModule,
     MdCardModule,
     MdButtonModule,

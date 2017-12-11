@@ -62,7 +62,7 @@ export class LeftSidebarComponent implements OnInit {
     });
     this.path = this.router.url.split('/')[1];
     this.activatedRoute.params.subscribe(params => {
-      this.id = params['workshopId']; // Need to make it generic or fetch different names like experienceId and put ||
+      this.id = params['collectionId']; // Need to make it generic or fetch different names like experienceId and put ||
       this.step = params['step'];
     });
     if (this.id) {

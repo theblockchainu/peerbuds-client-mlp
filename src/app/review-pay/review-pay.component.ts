@@ -41,6 +41,7 @@ export class ReviewPayComponent implements OnInit {
     public hourMapping:
         { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
     public useAnotherCard = false;
+    public loadingCards = true;
 
     constructor(public config: AppConfig,
         private _cookieUtilsService: CookieUtilsService,
@@ -122,6 +123,7 @@ export class ReviewPayComponent implements OnInit {
 
                 // get all cards
                 this.paymentService.listAllCards(this.userId, this.custId).subscribe(cards => {
+                    this.loadingCards = false;
                     if (cards) {
                         this.listAllCards = cards.json().data;
                         console.log('listAllCards: ' + JSON.stringify(this.listAllCards));
@@ -196,7 +198,6 @@ export class ReviewPayComponent implements OnInit {
             if (card.id === event.value) {
                 this.cardDetails = card;
                 this.createChargeData.source = card.id;
-                // console.log(JSON.stringify(this.cardDetails));
             }
         });
     }
@@ -222,7 +223,7 @@ export class ReviewPayComponent implements OnInit {
     public calculateTotalHours() {
         let totalLength = 0;
         this.collection.contents.forEach(content => {
-            if (content.type === 'online') {
+            if (content.type === 'online' || content.type === 'in-person') {
                 const startMoment = moment(content.schedules[0].startTime);
                 const endMoment = moment(content.schedules[0].endTime);
                 const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
@@ -239,7 +240,7 @@ export class ReviewPayComponent implements OnInit {
             if (err) {
                 console.log(err);
             } else {
-                this.router.navigate(['workshop', this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
             }
         });
     }

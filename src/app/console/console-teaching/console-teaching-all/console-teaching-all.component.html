@@ -65,6 +65,9 @@
                       {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
+                    <span  mdTooltip="{{consoleTeachingComponent.getProgressValue(collection)}}% completed">
+                      <md-progress-bar style="margin-bottom: 15px;" mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></md-progress-bar>
+                    </span>
                     <span *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart === 0">
                       <p class="upcomingEventLabel">
                         Today
@@ -344,7 +347,9 @@
                         <span>{{collection.participants.length}} Participants </span>
                       </div>
                       <div class="cohortCount">
-                        <a (click)="openCohortDetailDialog(collection)">{{collection.calendars.length}} Cohorts completed </a>
+                        <a (click)="openCohortDetailDialog(collection, 'complete')">{{consoleTeachingComponent.getCompletedCalendars(collection.calendars).length}} cohorts completed </a>
+                        <br>
+                        <a (click)="openCohortDetailDialog(collection, 'cancelled')">{{consoleTeachingComponent.getCanceledCalendars(collection.calendars).length}} cohorts cancelled </a>
                       </div>
                       <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.viewCollection(collection)">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
                       <div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">

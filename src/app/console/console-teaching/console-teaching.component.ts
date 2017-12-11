@@ -94,5 +94,66 @@ export class ConsoleTeachingComponent implements OnInit {
     event.target.src = '/assets/images/user-placeholder.jpg';
   }
 
+  /**
+   * Get the progress bar value of this workshop
+   * @param workshop
+   * @returns {number}
+   */
+  public getProgressValue(collection) {
+      let max = 0;
+      let progress = 0;
+      collection.contents.forEach(content => {
+          max++;
+          const currentCalendar = this._collectionService.getCurrentCalendar(collection.calendars);
+          if (currentCalendar !== undefined) {
+              const contentStartDate = moment(currentCalendar.startDate).add(content.schedules[0].startDay, 'days');
+              const contentEndDate = contentStartDate.add(content.schedules[0].endDay, 'days');
+              switch (content.type) {
+                  case 'online':
+                      if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
+                          progress++;
+                      }
+                      break;
+
+                  case 'project':
+                      if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
+                          progress++;
+                      }
+                      break;
+
+                  case 'in-person':
+                      if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
+                          progress++;
+                      }
+                      break;
+
+                  default:
+                      break;
+              }
+          }
+      });
+      return (progress / max) * 100;
+  }
+
+    public getCompletedCalendars(calendars) {
+        const completedCalendars = [];
+        calendars.forEach(calendar => {
+            if (calendar.status === 'complete') {
+                completedCalendars.push(calendar);
+            }
+        });
+        return completedCalendars;
+    }
+
+    public getCanceledCalendars(calendars) {
+        const canceledCalendars = [];
+        calendars.forEach(calendar => {
+            if (calendar.status === 'cancelled') {
+                canceledCalendars.push(calendar);
+            }
+        });
+        return canceledCalendars;
+    }
+
 
 }

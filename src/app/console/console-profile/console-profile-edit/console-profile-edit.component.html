@@ -123,11 +123,6 @@
               </md-autocomplete>
               <md-hint class="hint" align="start">Weʼll show you prices in this currency.</md-hint>
               <br><br>
-              <!-- <md-input-container class="pb-block margin-top-20" style="margin-bottom: 20px">
-                <input mdInput formControlName="location_string" type="text" placeholder="Where do you live" required>
-                <md-error>This field is required</md-error>
-              </md-input-container> -->
-
               <ng4geo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
               
               <md-input-container class="pb-block" style="margin-bottom: 20px">

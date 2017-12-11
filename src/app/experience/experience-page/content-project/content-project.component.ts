@@ -107,6 +107,10 @@ export class ContentProjectComponent implements OnInit {
     this._dialogsService.submitEntry(data);
   }
 
+  openViewEntryDialog(data: any) {
+    this._dialogsService.viewEntry(data);
+  }
+
   public viewSubmission(submissionId) {
     const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, {"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
     this.projectSubmissionService.viewSubmission(submissionId, query).subscribe((response: Response) => {

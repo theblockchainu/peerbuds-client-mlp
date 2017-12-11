@@ -16,6 +16,7 @@ import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { StickyModule } from 'ng2-sticky-kit';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
   imports: [
