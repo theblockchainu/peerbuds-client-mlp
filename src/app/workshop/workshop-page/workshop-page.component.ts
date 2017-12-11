@@ -12,11 +12,9 @@ import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
-import { WorkshopVideoComponent } from './workshop-video/workshop-video.component';
 import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
-import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
 import {
   startOfDay,
   endOfDay,
@@ -37,10 +35,9 @@ import {
   CalendarDateFormatter,
   CalendarUtils
 } from 'angular-calendar';
-import { CustomDateFormatter } from './custom-date-formatter.provider';
-import { DialogsService } from '../dialogs/dialog.service';
+import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
 
 declare var FB: any;
 
@@ -628,30 +625,26 @@ export class WorkshopPageComponent implements OnInit {
    * changeDates
    */
   public changeDates() {
-    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
-      width: '50vw',
-      height: '90vh',
-      data: { itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.router.navigate(['workshop', this.workshopId, 'calendar', result]);
-      }
-    });
+    this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType)
+      .subscribe(result => {
+        if (result) {
+          this.router.navigate(['workshop', this.workshopId, 'calendar', result]);
+        }
+      });
   }
 
   /**
    * cancelWorkshop
    */
   public cancelWorkshop() {
-      const cancelObj = {
-        isCanceled: true,
-        canceledBy: this.userId,
-        status: 'cancelled'
-      };
-      this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
-          this.router.navigate(['workshop', this.workshopId]);
-      });
+    const cancelObj = {
+      isCanceled: true,
+      canceledBy: this.userId,
+      status: 'cancelled'
+    };
+    this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
+      this.router.navigate(['workshop', this.workshopId]);
+    });
   }
 
   /**
@@ -816,12 +809,6 @@ export class WorkshopPageComponent implements OnInit {
     });
   }
 
-  workshopVideoDialog() {
-    const dialogRef = this.dialog.open(WorkshopVideoComponent, {
-      data: this.config.apiUrl + this.workshop.videoUrl
-    });
-  }
-
   viewParticipants() {
     const dialogRef = this.dialog.open(ViewParticipantsComponent, {
       data: {
@@ -979,21 +966,17 @@ export class WorkshopPageComponent implements OnInit {
    * selectJoiningDates
    */
   public selectJoiningDates() {
-    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
-      width: '50vw',
-      height: '90vh',
-      data: { itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (this.userId) {
-          this.router.navigate(['review-pay', 'collection', this.workshopId, result]);
-          //this.joinWorkshop(result);
-        } else {
-          this.router.navigate(['login']);
+    this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType)
+      .subscribe(result => {
+        if (result) {
+          if (this.userId) {
+            this.router.navigate(['review-pay', 'collection', this.workshopId, result]);
+            //this.joinWorkshop(result);
+          } else {
+            this.router.navigate(['login']);
+          }
         }
-      }
-    });
+      });
   }
 
   private joinWorkshop(calendarId: string) {
@@ -1325,12 +1308,7 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   public openInviteFriendsDialog() {
-    const dialogRef = this.dialog.open(InviteFriendsDialogComponent, {
-      data: {
-        url: 'workshop/' + this.workshop.id
-      },
-      width: '40vw'
-    });
+    this.dialogsService.inviteFriends(this.workshop);
   }
   /**
   * joinLiveSession
