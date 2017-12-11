@@ -7,11 +7,9 @@ import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import * as _ from 'lodash';
 import {MdDialog} from '@angular/material';
-import {ExperienceContentOnlineComponent} from '../experience-content-online/experience-content-online.component';
 import {ExperienceContentProjectComponent} from '../experience-content-project/experience-content-project.component';
 import {ExperienceContentVideoComponent} from '../experience-content-video/experience-content-video.component';
 import {CollectionService} from '../../_services/collection/collection.service';
-import { debug } from 'util';
 import {ExperienceContentInpersonComponent} from '../experience-content-inperson/experience-content-inperson.component';
 
 declare var moment: any;
@@ -250,9 +248,6 @@ export class ContentViewComponent implements OnInit {
         const contentType = contentForm.value.type;
         let dialogRef: any;
         switch (contentType) {
-            case 'online':
-                dialogRef = this.dialog.open(ExperienceContentOnlineComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'});
-                break;
             case 'in-person':
                 dialogRef = this.dialog.open(ExperienceContentInpersonComponent, {data: {itenaryForm: this.itenaryForm, index: index, isEdit: isEdit}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'});
                 break;
@@ -287,7 +282,6 @@ export class ContentViewComponent implements OnInit {
               }
           }
         });
-      // }
     }
 
     getCollectionStartDate() {

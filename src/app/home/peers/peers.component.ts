@@ -4,12 +4,24 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { AppConfig } from '../../app.config';
 import { MdDialog } from '@angular/material';
-import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
-import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+
 @Component({
   selector: 'app-peers',
   templateUrl: './peers.component.html',
-  styleUrls: ['./peers.component.scss']
+  styleUrls: ['./peers.component.scss'],
+    animations: [
+        trigger('slideInOut', [
+            state('in', style({
+                transform: 'translate3d(0, 0, 0)'
+            })),
+            state('out', style({
+                transform: 'translate3d(100%, 0, 0)'
+            })),
+            transition('in => out', animate('400ms ease-in-out')),
+            transition('out => in', animate('400ms ease-in-out'))
+        ]),
+    ]
 })
 export class PeersComponent implements OnInit {
   public peers: Array<any>;

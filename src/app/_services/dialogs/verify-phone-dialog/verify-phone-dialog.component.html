@@ -5,7 +5,7 @@
             <div class="position-relative step-2" [hidden]="step!=2">
                 <form [formGroup]="peer">
                     <md-dialog-content>
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-12">
                             <div class="verification-box drop-shadow">
                                 <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
                                     <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         <div class="col-sm-12">
-                            <div class="col-md-10 col-md-offset-1 bottom-section clearfix margin-top-30">
+                            <div class="col-md-12 bottom-section clearfix margin-top-30">
                                 <div class="pull-right">
                                 <span mdTooltip="Invalid Number!" [mdTooltipDisabled]="!peer.controls.phone.invalid || !peer.controls.phone.dirty && phone.value.length !== 0">
                                     <button md-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls['phone'].invalid && peer.controls['phone'].dirty || phone.value.length == 0">Continue</button>
@@ -33,7 +33,7 @@
             <div class="position-relative step-3" [hidden]="step!=3">
                 <form [formGroup]="otp">
                     <md-dialog-content>
-                        <div class="col-md-10 col-md-offset-1 position-relative">
+                        <div class="col-md-12 position-relative">
                             <div class="verification-box drop-shadow">
                                 <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
                                     <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-10 col-md-offset-1 bottom-section clearfix">
+                        <div class="col-md-12 bottom-section clearfix">
                             <div class="pull-right">
                             <span mdTooltip="Invalid OTP length!" [mdTooltipDisabled]="inputOTP.value.length===4">
                                 <button md-raised-button color="accent" (click)="verifyPhone()" [disabled]="inputOTP.value.length!=4">Verify Phone</button>

@@ -5,7 +5,7 @@ import { CollectionService } from '../../../_services/collection/collection.serv
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../../_services/comment/comment.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
-import { DialogsService } from '../../dialogs/dialog.service';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { ContentService } from '../../../_services/content/content.service';
 import * as moment from 'moment';
 import {Router} from '@angular/router';

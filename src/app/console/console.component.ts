@@ -3,12 +3,25 @@ import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../_services/collection/collection.service';
 import { ProfileService } from '../_services/profile/profile.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 import { AppConfig } from '../app.config';
 
 @Component({
   templateUrl: './console.component.html',
-  styleUrls: ['./console.component.scss']
+  styleUrls: ['./console.component.scss'],
+    animations: [
+        trigger('slideInOut', [
+            state('in', style({
+                transform: 'translate3d(0, 0, 0)'
+            })),
+            state('out', style({
+                transform: 'translate3d(100%, 0, 0)'
+            })),
+            transition('in => out', animate('400ms ease-in-out')),
+            transition('out => in', animate('400ms ease-in-out'))
+        ]),
+    ]
 })
 export class ConsoleComponent implements OnInit {
 

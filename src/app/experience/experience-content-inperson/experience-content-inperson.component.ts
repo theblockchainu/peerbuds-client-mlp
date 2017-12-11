@@ -7,7 +7,6 @@ import { ContentService } from '../../_services/content/content.service';
 import {MD_DIALOG_DATA, MdDialog, MdDialogRef} from '@angular/material';
 import _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
-import {ExperienceCloneDialogComponent} from '../experience-edit/experience-clone-dialog/experience-clone-dialog.component';
 import {AddLocationDialogComponent} from '../add-location-dialog/add-location-dialog.component';
 
 @Component({

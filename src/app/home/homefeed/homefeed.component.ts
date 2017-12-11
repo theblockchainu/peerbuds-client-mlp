@@ -6,11 +6,24 @@ import { AppConfig } from '../../app.config';
 import { TopicService } from '../../_services/topic/topic.service';
 import _ from 'lodash';
 import * as moment from 'moment';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-feed',
   templateUrl: './homefeed.component.html',
-  styleUrls: ['./homefeed.component.scss']
+  styleUrls: ['./homefeed.component.scss'],
+    animations: [
+        trigger('slideInOut', [
+            state('in', style({
+                transform: 'translate3d(0, 0, 0)'
+            })),
+            state('out', style({
+                transform: 'translate3d(100%, 0, 0)'
+            })),
+            transition('in => out', animate('400ms ease-in-out')),
+            transition('out => in', animate('400ms ease-in-out'))
+        ]),
+    ]
 })
 export class HomefeedComponent implements OnInit {
   public workshops: Array<any>;

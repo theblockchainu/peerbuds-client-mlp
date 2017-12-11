@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MD_DIALOG_DATA, MdDialog, MdDialogRef} from '@angular/material';
 import {AppConfig} from '../../../app.config';
-import {CollectionService} from '../../../_services/collection/collection.service';
-import {ProjectSubmissionService} from '../../../_services/project-submission/project-submission.service';
+import {CollectionService} from '../../collection/collection.service';
+import {ProjectSubmissionService} from '../../project-submission/project-submission.service';
 import {SubmissionViewComponent} from '../submission-view/submission-view.component';
 
 @Component({
