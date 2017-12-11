@@ -18,15 +18,12 @@ import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import _ from 'lodash';
 import { MdDialog, MdSnackBar } from '@angular/material';
-import { WorkshopSubmitDialogComponent } from './workshop-submit-dialog/workshop-submit-dialog.component';
-import { WorkshopCloneDialogComponent } from './workshop-clone-dialog/workshop-clone-dialog.component';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 
-import { DialogsService } from '../dialogs/dialog.service';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
 import { DISABLED } from '@angular/forms/src/model';
 import { TopicService } from '../../_services/topic/topic.service';
-
 
 @Component({
   selector: 'app-workshop-edit',
@@ -647,9 +644,9 @@ export class WorkshopEditComponent implements OnInit {
 
   public submitWorkshop(data, timeline?, step?) {
     if (this.workshop.controls.status.value === 'active') {
-      let dialogRef: any;
-      dialogRef = this.dialog.open(WorkshopCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30%' });
-      dialogRef.afterClosed().subscribe((result) => {
+      this.dialogsService.openCollectionCloneDialog({
+        type: 'workshop'
+      }).subscribe((result) => {
         if (result === 'accept') {
           this.executeSubmitWorkshop(data, timeline, step);
         }
@@ -818,8 +815,10 @@ export class WorkshopEditComponent implements OnInit {
         this.workshop.controls.status.setValue('submitted');
         console.log('Workshop submitted for review');
         this.isSubmitted = true;
-        let dialogRef: any;
-        dialogRef = this.dialog.open(WorkshopSubmitDialogComponent, { disableClose: true, hasBackdrop: true, width: '40vw' });
+        this.dialogsService.openCollectionSubmitDialog({
+          type: 'workshop'
+        });
+
         // call to get status of workshop
         if (this.workshop.controls.status.value === 'active') {
           this.sidebarMenuItems[3].visible = false;

@@ -10,23 +10,11 @@ import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { } from '@angular/material';
 import 'hammerjs';
-import { ExperienceSubmitDialogComponent } from './experience-edit/experience-submit-dialog/experience-submit-dialog.component';
-import { ExperienceCloneDialogComponent } from './experience-edit/experience-clone-dialog/experience-clone-dialog.component';
-import { DialogsModule } from './dialogs/dialogs.module';
-import { ExperienceContentInpersonComponent } from './experience-content-inperson/experience-content-inperson.component';
-import { AddLocationDialogComponent } from './add-location-dialog/add-location-dialog.component';
-import {Ng4GeoautocompleteModule} from 'ng4-geoautocomplete';
-import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
     imports: [
         SharedModule,
         ExperienceRoutingModule,
-        DialogsModule,
-        Ng4GeoautocompleteModule.forRoot(),
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
-        }),
     ],
     declarations: [
         ExperienceEditComponent,
@@ -35,14 +23,10 @@ import {AgmCoreModule} from '@agm/core';
         AppointmentCalendarComponent,
         ExperienceContentOnlineComponent,
         ExperienceContentProjectComponent,
-        ExperienceContentVideoComponent,
-        ExperienceSubmitDialogComponent,
-        ExperienceCloneDialogComponent,
-        ExperienceContentInpersonComponent,
-        AddLocationDialogComponent
+        ExperienceContentVideoComponent
     ],
     providers: [],
     bootstrap: [],
-    entryComponents: [ExperienceContentOnlineComponent, ExperienceContentProjectComponent, ExperienceContentInpersonComponent, ExperienceContentVideoComponent, ExperienceSubmitDialogComponent, ExperienceCloneDialogComponent, AddLocationDialogComponent]
+    entryComponents: [ExperienceContentOnlineComponent, ExperienceContentProjectComponent, ExperienceContentVideoComponent]
 })
 export class ExperienceModule { }

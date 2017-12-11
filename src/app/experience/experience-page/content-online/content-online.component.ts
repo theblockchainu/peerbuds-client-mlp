@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 export class ContentOnlineComponent implements OnInit {
 
     public userType = 'public';
-    public workshopId = '';
+    public experienceId = '';
     public chatForm: FormGroup;
     public replyForm: FormGroup;
     public replyingToCommentId: string;
@@ -40,7 +40,7 @@ export class ContentOnlineComponent implements OnInit {
         private router: Router
     ) {
         this.userType = data.userType;
-        this.workshopId = data.collectionId;
+        this.experienceId = data.collectionId;
         this.userId = _cookieUtilsService.getValue('userId');
         data.content.supplementUrls.forEach(file => {
             this.contentService.getMediaObject(file).subscribe((res) => {

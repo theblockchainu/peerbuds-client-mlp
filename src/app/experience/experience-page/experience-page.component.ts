@@ -12,10 +12,9 @@ import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
-import { ExperienceVideoComponent } from './experience-video/experience-video.component';
+import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
-import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
 import {
   startOfDay,
   endOfDay,
@@ -36,11 +35,9 @@ import {
   CalendarDateFormatter,
   CalendarUtils
 } from 'angular-calendar';
-import { CustomDateFormatter } from './custom-date-formatter.provider';
-import { DialogsService } from '../dialogs/dialog.service';
+import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
-import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
 
 declare var FB: any;
 
@@ -66,7 +63,6 @@ export class MyCalendarUtils extends CalendarUtils {
     return getMonthView(args);
   }
 }
-
 
 @Component({
   selector: 'app-experience-page',
@@ -95,7 +91,6 @@ export class ExperiencePageComponent implements OnInit {
   public busyReply = false;
   public initialLoad = true;
   public loggedInUser;
-
   public isReadonly = true;
   public noOfReviews = 3;
   private initialised = false;
@@ -635,16 +630,12 @@ export class ExperiencePageComponent implements OnInit {
    * changeDates
    */
   public changeDates() {
-    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
-      width: '50vw',
-      height: '90vh',
-      data: { itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.router.navigate(['experience', this.experienceId, 'calendar', result]);
-      }
-    });
+    this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType)
+      .subscribe(result => {
+        if (result) {
+          this.router.navigate(['experience', this.experienceId, 'calendar', result]);
+        }
+      });
   }
 
   /**
@@ -839,12 +830,6 @@ export class ExperiencePageComponent implements OnInit {
     });
   }
 
-  experienceVideoDialog() {
-    const dialogRef = this.dialog.open(ExperienceVideoComponent, {
-      data: this.config.apiUrl + this.experience.videoUrl
-    });
-  }
-
   viewParticipants() {
     const dialogRef = this.dialog.open(ViewParticipantsComponent, {
       data: {
@@ -1002,21 +987,18 @@ export class ExperiencePageComponent implements OnInit {
    * selectJoiningDates
    */
   public selectJoiningDates() {
-    const dialogRef = this.dialog.open(SelectDateDialogComponent, {
-      width: '50vw',
-      height: '90vh',
-      data: { itineraries: this.allItenaries, mode: 'chooseDate', participants: this.allParticipants, userType: this.userType }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (this.userId) {
-          this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
-          //this.joinExperience(result);
-        } else {
-          this.router.navigate(['login']);
+
+    this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType)
+      .subscribe(result => {
+        if (result) {
+          if (this.userId) {
+            this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
+            //this.joinExperience(result);
+          } else {
+            this.router.navigate(['login']);
+          }
         }
-      }
-    });
+      });
   }
 
   private joinExperience(calendarId: string) {
@@ -1348,12 +1330,7 @@ export class ExperiencePageComponent implements OnInit {
   }
 
   public openInviteFriendsDialog() {
-    const dialogRef = this.dialog.open(InviteFriendsDialogComponent, {
-      data: {
-        url: 'experience/' + this.experience.id
-      },
-      width: '40vw'
-    });
+    this.dialogsService.inviteFriends(this.experience);
   }
   /**
   * joinLiveSession
