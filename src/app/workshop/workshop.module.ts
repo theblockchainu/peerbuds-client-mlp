@@ -10,15 +10,10 @@ import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { } from '@angular/material';
 import 'hammerjs';
-import { WorkshopSubmitDialogComponent } from './workshop-edit/workshop-submit-dialog/workshop-submit-dialog.component';
-import { WorkshopCloneDialogComponent } from './workshop-edit/workshop-clone-dialog/workshop-clone-dialog.component';
-import { DialogsModule } from './dialogs/dialogs.module';
-
 @NgModule({
     imports: [
         SharedModule,
-        WorkshopRoutingModule,
-        DialogsModule],
+        WorkshopRoutingModule],
     declarations: [
         WorkshopEditComponent,
         WorkshopContentComponent,
@@ -26,12 +21,10 @@ import { DialogsModule } from './dialogs/dialogs.module';
         AppointmentCalendarComponent,
         WorkshopContentOnlineComponent,
         WorkshopContentProjectComponent,
-        WorkshopContentVideoComponent,
-        WorkshopSubmitDialogComponent,
-        WorkshopCloneDialogComponent
+        WorkshopContentVideoComponent
     ],
     providers: [],
     bootstrap: [],
-    entryComponents: [WorkshopContentOnlineComponent, WorkshopContentProjectComponent, WorkshopContentVideoComponent, WorkshopSubmitDialogComponent, WorkshopCloneDialogComponent]
+    entryComponents: [WorkshopContentOnlineComponent, WorkshopContentProjectComponent, WorkshopContentVideoComponent]
 })
 export class WorkshopModule { }

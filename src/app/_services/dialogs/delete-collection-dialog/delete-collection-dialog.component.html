@@ -1,0 +1,14 @@
+<h1 md-dialog-title>Delete {{data.type | titlecase}}</h1>
+<div md-dialog-content>
+
+  <div *ngIf="deleteable">
+    <p>Are you sure you want to delete {{data.title |titlecase}}?</p>
+  </div>
+  <div *ngIf="!deleteable">
+    <p>Sorry but you cannot delete the collection as it already has participants in it. Try canceling instead.</p>
+  </div>
+</div>
+<div md-dialog-actions>
+  <button *ngIf="deleteable" md-button (click)="delete()" color="warn" tabindex="2">Ok</button>
+  <button md-button [md-dialog-close] tabindex="-1">Close</button>
+</div>
