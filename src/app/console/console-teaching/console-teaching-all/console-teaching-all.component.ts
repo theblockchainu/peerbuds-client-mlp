@@ -7,7 +7,7 @@ import {AppConfig} from '../../../app.config';
 import {MdDialog, MdSnackBar} from '@angular/material';
 import * as _ from 'lodash';
 import {DialogsService} from '../../../_services/dialogs/dialog.service';
-import {CohortDetailDialogComponent} from "../console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component";
+import {CohortDetailDialogComponent} from '../console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
 declare var moment: any;
 
 @Component({
@@ -173,10 +173,10 @@ export class ConsoleTeachingAllComponent implements OnInit {
         return moment(a.startDate).diff(moment(b.startDate), 'days');
     }
 
-    public openCohortDetailDialog(cohortData: any) {
+    public openCohortDetailDialog(cohortData: any, status) {
+        cohortData['status'] = status;
         const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
-            width: '700px',
-            height: '600px',
+            width: '45vw',
             data: cohortData
         });
     }

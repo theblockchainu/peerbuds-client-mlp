@@ -96,7 +96,7 @@
       <button (click)="openSubmitEntryDialog(data)" *ngIf="data.userType==='participant' && !data.peerHasSubmission && isSubmissionPossible" md-button class="mat-border-button" tabindex="-1">Submit Entry</button>
       <button *ngIf="data.userType==='participant' && !isSubmissionPossible" md-button class="mat-border-button" tabindex="-1" [disabled]="true">Submission date passed</button>
       <button *ngIf="data.userType==='participant' && data.peerHasSubmission" md-button class="mat-border-button" tabindex="-1">Submitted</button>
-      <button *ngIf="data.userType==='teacher' && data.content.submissions && data.content.submissions.length" md-button class="mat-border-button" tabindex="-1">View Entries</button>
+      <button (click)="openViewEntryDialog(data)" *ngIf="data.userType==='teacher' && data.content.submissions && data.content.submissions.length" md-button class="mat-border-button" tabindex="-1">View Entries</button>
     </div>
     <div class="submission-box margin-bottom-40" *ngIf="data.content.submissions">
       <div class="fw-bold margin-bottom-10" *ngIf="(data.userType === 'public' && hasPublicSubmission)">Submissions ({{ publicSubmissionCount }})</div>

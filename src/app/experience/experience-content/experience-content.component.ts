@@ -115,11 +115,6 @@ export class ExperienceContentComponent implements OnInit {
   }
 
   private executeSubmitExperience(collection) {
-    // const lang = <FormArray>this.experience.controls.language;
-    // lang.removeAt(0);
-    // lang.push(this._fb.control(data.value.selectedLanguage));
-    // const body = data.value;
-    // delete body.selectedLanguage;
     const calendars = collection.calendars;
     const timeline = collection.contents;
     delete collection.calendars;
@@ -157,11 +152,8 @@ export class ExperienceContentComponent implements OnInit {
 
   saveTriggered(event, i) {
     console.log(this.myForm);
-    // if (this.collection.status === 'active') {
-    //   this.showDialogForActiveExperience();
-    // }
-    // else {
     if (event.action === 'add') {
+      // Show cloning warning since collection is active
       if (this.collection.status === 'active') {
         let dialogRef: any;
         dialogRef = this.dialog.open(ExperienceCloneDialogComponent, { disableClose: true, hasBackdrop: true, width: '30vw' });
@@ -208,7 +200,6 @@ export class ExperienceContentComponent implements OnInit {
     else {
       console.log('unhandledEvent Triggered');
     }
-    // }
   }
 
   postContent(event, i) {
@@ -217,9 +208,11 @@ export class ExperienceContentComponent implements OnInit {
     const scheduleDate = itenaryObj.date;
     const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
     const schedule = contentObj.schedule;
+    const location = contentObj.location;
     delete schedule.id;
     delete contentObj.id;
     delete contentObj.schedule;
+    delete contentObj.location;
     delete contentObj.pending;
 
     let contentId;
@@ -238,7 +231,8 @@ export class ExperienceContentComponent implements OnInit {
       }
       schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
       schedule.endTime = new Date(0, 0, 0, 1, 0, 0, 0);
-    } else if (contentObj.type === 'online') {
+    }
+    else if (contentObj.type === 'online' || contentObj.type === 'in-person') {
       const startTimeArr = schedule.startTime.toString().split(':');
       const startHour = startTimeArr[0];
       const startMin = startTimeArr[1];
@@ -278,9 +272,6 @@ export class ExperienceContentComponent implements OnInit {
               const Form = <FormGroup>Itenary.controls[i];
               const ContentsArray = <FormArray>Form.controls.contents;
               const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-              /*const ContentSchedule = <FormGroup>ContentGroup.controls.schedule;
-              ContentSchedule.controls.startTime.patchValue('');
-              ContentSchedule.controls.endTime.patchValue('');*/
               ContentGroup.controls.pending.setValue(false);
             }
             console.log(response);
@@ -289,6 +280,25 @@ export class ExperienceContentComponent implements OnInit {
             }
           })
           .subscribe();
+
+        // Add a location to this content
+        if (location !== undefined) {
+            this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, this.options)
+                .map((resp: Response) => {
+                    if (resp.status === 200) {
+                        const Itenary = <FormArray>this.myForm.controls.itenary;
+                        const Form = <FormGroup>Itenary.controls[i];
+                        const ContentsArray = <FormArray>Form.controls.contents;
+                        const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
+                        ContentGroup.controls.pending.setValue(false);
+                    }
+                    console.log(response);
+                    if (collectionId) {
+                        this.reload(collectionId, 13);
+                    }
+                })
+                .subscribe();
+        }
       })
       .subscribe();
   }
@@ -306,16 +316,18 @@ export class ExperienceContentComponent implements OnInit {
     const scheduleDate = itenaryObj.date;
     const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
     const schedule = contentObj.schedule;
+    const location = contentObj.location;
     delete schedule.id;
     let contentId = contentObj.id;
     delete contentObj.id;
     delete contentObj.schedule;
+    delete contentObj.location;
     delete contentObj.pending;
     if (contentObj.type === 'project') {
       const endDay = new Date(schedule.endDay);
       schedule.endDay = endDay;
     }
-    if (contentObj.type === 'online' || contentObj.type === 'video') {
+    if (contentObj.type === 'online' || contentObj.type === 'in-person' || contentObj.type === 'video') {
       schedule.endDay = 0;
     }
     schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
@@ -338,7 +350,6 @@ export class ExperienceContentComponent implements OnInit {
     }
     console.log(contentId);
     console.log(schedule);
-    //this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, this.options)
     this.http.put(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.options)
       .map((response: Response) => {
         const result = response.json();
@@ -353,8 +364,6 @@ export class ExperienceContentComponent implements OnInit {
         this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
           .map((resp: Response) => {
             if (resp.status === 200) {
-              /*ContentSchedule.controls.startTime.patchValue('');
-              ContentSchedule.controls.endTime.patchValue('');*/
               contentGroup.controls.pending.setValue(false);
             }
             console.log(resp);
@@ -364,6 +373,25 @@ export class ExperienceContentComponent implements OnInit {
             }
           })
           .subscribe();
+
+          // Edit a location of this content
+          if (location !== undefined) {
+              this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, this.options)
+                  .map((resp: Response) => {
+                      if (resp.status === 200) {
+                          const Itenary = <FormArray>this.myForm.controls.itenary;
+                          const Form = <FormGroup>Itenary.controls[i];
+                          const ContentsArray = <FormArray>Form.controls.contents;
+                          const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
+                          ContentGroup.controls.pending.setValue(false);
+                      }
+                      console.log(response);
+                      if (collectionId) {
+                          this.reload(collectionId, 13);
+                      }
+                  })
+                  .subscribe();
+          }
       })
       .subscribe();
   }
@@ -374,7 +402,6 @@ export class ExperienceContentComponent implements OnInit {
     if (eventIndex) {
       const contentObj = itenaryObj.contents[eventIndex];
       const contentId = contentObj.id;
-      //this.http.delete(this.config.apiUrl + '/api/contents/' + contentId, this.options)
       this.http.delete(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.options)
         .map((response: Response) => {
           console.log(response);
