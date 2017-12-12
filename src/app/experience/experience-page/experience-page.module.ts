@@ -8,15 +8,14 @@ import { MessageParticipantComponent } from './message-participant/message-parti
 import { ExperiencePageRoutingModule } from './experience-page-routing.module';
 import { ExperiencePageComponent } from './experience-page.component';
 import { ProjectSubmissionService } from '../../_services/project-submission/project-submission.service';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { StickyModule } from 'ng2-sticky-kit';
-import {AgmCoreModule} from '@agm/core';
-import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
+import { AgmCoreModule } from '@agm/core';
+import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 
 @NgModule({
   imports: [
@@ -37,12 +36,12 @@ import {ContentInpersonComponent} from './content-inperson/content-inperson.comp
     VgBufferingModule,
     StickyModule,
     AgmCoreModule.forRoot({
-        apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
+      apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
     })
   ],
 
-  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, DeleteDialogComponent],
-  bootstrap: [ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, DeleteDialogComponent],
+  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent],
+  bootstrap: [ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent],
   providers: [ProjectSubmissionService]
 
 })

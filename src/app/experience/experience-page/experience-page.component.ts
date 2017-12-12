@@ -10,7 +10,6 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
@@ -37,8 +36,8 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 declare var FB: any;
 
@@ -76,16 +75,16 @@ export class MyCalendarUtils extends CalendarUtils {
     }
   ],
   animations: [
-      trigger('slideInOut', [
-          state('in', style({
-              transform: 'translate3d(0, 0, 0)'
-          })),
-          state('out', style({
-              transform: 'translate3d(100%, 0, 0)'
-          })),
-          transition('in => out', animate('400ms ease-in-out')),
-          transition('out => in', animate('400ms ease-in-out'))
-      ]),
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
   ]
 })
 export class ExperiencePageComponent implements OnInit {
@@ -655,13 +654,10 @@ export class ExperiencePageComponent implements OnInit {
    * cancelExperience
    */
   public cancelExperience() {
-    const cancelObj = {
-      isCancelled: true,
-      cancelledBy: this.userId,
-      status: 'cancelled'
-    };
-    this._collectionService.patchCollection(this.experienceId, cancelObj).subscribe((response) => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openCancelCollection(this.experience).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
@@ -669,23 +665,28 @@ export class ExperiencePageComponent implements OnInit {
    * dropoutExperience
    */
   public dropOutExperience() {
-    this._collectionService.removeParticipant(this.experienceId, this.userId).subscribe((response) => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
   public cancelCohort() {
-    const cancelObj = {
-      status: 'cancelled'
-    };
-    this._collectionService.patchCalendar(this.calendarId, cancelObj).subscribe(() => {
-      this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+      if (res) {
+        this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+      }
+    }, err => {
+      console.log(err);
     });
   }
 
   public deleteCohort() {
-    this._collectionService.deleteCalendar(this.calendarId).subscribe(() => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe(res => {
+      if (res) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
@@ -693,8 +694,10 @@ export class ExperiencePageComponent implements OnInit {
    * deleteExperience
    */
   public deleteExperience() {
-    this._collectionService.deleteCollection(this.experienceId).subscribe((response) => {
-      this.router.navigate(['/console/teaching/experiences']);
+    this.dialogsService.openDeleteCollection(this.experience).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['/console/teaching/experiences']);
+      }
     });
   }
 
@@ -815,34 +818,6 @@ export class ExperiencePageComponent implements OnInit {
     }
   }
 
-  openDeleteDialog(action: string) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action,
-      width: '30vw'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'deleteExperience') {
-        this.deleteExperience();
-      }
-      else if (result === 'deleteCohort') {
-        this.deleteCohort();
-      }
-      else if (result === 'cancelExperience') {
-        this.cancelExperience();
-      }
-      else if (result === 'cancelCohort') {
-        this.cancelCohort();
-      }
-      else if (result === 'dropOut') {
-        this.dropOutExperience();
-      }
-      else {
-        console.log(result);
-      }
-    });
-  }
-
   viewParticipants() {
     const dialogRef = this.dialog.open(ViewParticipantsComponent, {
       data: {
@@ -959,7 +934,7 @@ export class ExperiencePageComponent implements OnInit {
     this.loadingSimilarExperiences = true;
     const query = {
       'include': [
-          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'experience'} }}
+        { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars'], 'where': { 'type': 'experience' } } }
       ]
     };
     this._topicService.getTopics(query).subscribe(
@@ -973,15 +948,15 @@ export class ExperiencePageComponent implements OnInit {
               }
               let hasActiveCalendar = false;
               if (collection.calendars) {
-                  collection.calendars.forEach(calendar => {
-                      if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-                          hasActiveCalendar = true;
-                          return;
-                      }
-                  });
+                collection.calendars.forEach(calendar => {
+                  if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                    hasActiveCalendar = true;
+                    return;
+                  }
+                });
               }
               if (hasActiveCalendar) {
-                  this.recommendations.collections.push(collection);
+                this.recommendations.collections.push(collection);
               }
             }
           });
@@ -1374,7 +1349,7 @@ export class ExperiencePageComponent implements OnInit {
   }
 
   public backToCollection(collection) {
-      this.router.navigate([collection.type, collection.id]);
+    this.router.navigate([collection.type, collection.id]);
   }
 
 }
