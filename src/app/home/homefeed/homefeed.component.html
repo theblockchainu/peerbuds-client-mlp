@@ -95,9 +95,17 @@
         <div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
           <a *ngIf="i<5" [routerLink]="'/experience/'+experience.id">
             <div class="">
-              <img class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" src="{{config.apiUrl+experience.imageUrls[0]}}" alt="workshpImg">
-              <img class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
-              <div>{{experience.location | ucwords}}</div>
+              <div class="recommendation-thumb" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + config.apiUrl + experience.imageUrls[0] + ')', 'background-size': 'cover'}">
+                <div class="recommendation-city" [ngClass]="{'hidden': cardInFocus}"><md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon><b>{{experience.location | ucwords}}</b></div>
+                <div class="recommendation-map" [ngClass]="{'hidden': !cardInFocus}">
+                  <agm-map [latitude]="experience.lat" [longitude]="experience.lng" [scrollwheel]="false" [streetViewControl]="false" [zoom]="2">
+                    <agm-circle [latitude]="experience.lat" [longitude]="experience.lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'" [strokeOpacity]="0.9" ></agm-circle>
+                  </agm-map>
+                </div>
+              </div>
+              <div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(/assets/images/no-image.jpg)', 'background-size': 'cover'}">
+                <div class="recommendation-city"><md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon><b>{{experience.location | ucwords}}</b></div>
+              </div>
             </div>
             <div *ngIf="experience.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / person</div>
             <div *ngIf="experience.currency === undefined || experience.currency.length == 0" style="margin-top: -5px;"><span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / person</div>

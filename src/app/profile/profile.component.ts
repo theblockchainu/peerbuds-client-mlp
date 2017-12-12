@@ -9,6 +9,7 @@ import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ReportProfileComponent } from './report-profile/report-profile.component';
 import { MdDialog, MdSnackBar } from '@angular/material';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 import * as moment from 'moment';
 import _ from 'lodash';
@@ -16,7 +17,19 @@ import _ from 'lodash';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  animations: [
+      trigger('slideInOut', [
+          state('in', style({
+              transform: 'translate3d(0, 0, 0)'
+          })),
+          state('out', style({
+              transform: 'translate3d(100%, 0, 0)'
+          })),
+          transition('in => out', animate('400ms ease-in-out')),
+          transition('out => in', animate('400ms ease-in-out'))
+      ]),
+  ]
 })
 export class ProfileComponent implements OnInit {
   public cookieUserId;

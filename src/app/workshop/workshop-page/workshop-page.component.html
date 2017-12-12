@@ -132,7 +132,7 @@
                     <span>{{getContentCount('online') | i18nPlural : onlineSessionMapping}}</span>
                   </div>
                 </div>
-                <div *ngIf="userType==='public'" class="margin-top-20"> {{workshop.description}} </div>
+                <div *ngIf="userType==='public'" class="margin-top-20 pre-wrapped"> {{workshop.description}} </div>
               </div>
             </div>
             <div class="row Progress margin-top-20" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">
@@ -154,7 +154,6 @@
               </div>
             </div>
             <hr *ngIf="calendarId !== undefined || userType === 'public'">
-            <!--TODO: Description of workshop-->
             <div class="row Description" *ngIf="userType==='public'">
               <div class="col-md-12">
                 <div class="row">
@@ -192,7 +191,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <p>{{workshop.aboutHost}}</p>
+                        <p class="pre-wrapped">{{workshop.aboutHost}}</p>
                       </div>
                     </div>
                   </div>
@@ -210,7 +209,7 @@
                   </div>
                   <div class="col-md-8 margin-top-8">
                     {{workshop.difficultyLevel}} level
-                    <p class="mat-caption">{{workshop.notes}}</p>
+                    <p class="mat-caption pre-wrapped">{{workshop.notes}}</p>
                   </div>
                 </div>
                 <div class="row margin-top-10">
@@ -246,7 +245,7 @@
                               <div class="viewTime" *ngIf="content.totalUserViewTime !== undefined" [hidden]="content.isViewTimeHidden">
                                 {{content.totalUserViewTime}}
                               </div>
-                              <a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate)">
+                              <a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
                                 <div class="col-md-5">
                                   <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}"
                                     (error)="_collectionService.imgErrorHandler($event)">

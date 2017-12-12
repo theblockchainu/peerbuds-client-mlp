@@ -4,17 +4,17 @@ import { Http, Response, } from '@angular/http';
 import { AppConfig } from '../../app.config';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { ContentService } from '../../_services/content/content.service';
-import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
+import {MD_DIALOG_DATA, MdDialog, MdDialogRef} from '@angular/material';
 import _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
+import {AddLocationDialogComponent} from '../add-location-dialog/add-location-dialog.component';
 
 @Component({
-    selector: 'app-experience-content-online',
-    templateUrl: './experience-content-online.component.html',
-    styleUrls: ['./experience-content-online.component.scss']
+  selector: 'app-experience-content-inperson',
+  templateUrl: './experience-content-inperson.component.html',
+  styleUrls: ['./experience-content-inperson.component.scss']
 })
-
-export class ExperienceContentOnlineComponent implements OnInit {
+export class ExperienceContentInpersonComponent implements OnInit {
 
     public lastIndex: number;
     public filesToUpload: number;
@@ -32,6 +32,8 @@ export class ExperienceContentOnlineComponent implements OnInit {
     private uploadingAttachments = false;
     private contentId;
     private options;
+    public contentsFArray;
+    public contentForm;
 
     constructor(
         private _fb: FormBuilder,
@@ -40,21 +42,22 @@ export class ExperienceContentOnlineComponent implements OnInit {
         private mediaUploader: MediaUploaderService,
         private contentService: ContentService,
         @Inject(MD_DIALOG_DATA) public inputData: any,
-        public dialogRef: MdDialogRef<ExperienceContentOnlineComponent>,
-        private requestHeaders: RequestHeaderService
+        public dialogRef: MdDialogRef<ExperienceContentInpersonComponent>,
+        private requestHeaders: RequestHeaderService,
+        private dialog: MdDialog,
     ) {
         this.options = requestHeaders.getOptions();
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
-        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-        this.image = contentForm.controls['imageUrl'];
-        this.attachments = contentForm.controls['supplementUrls'];
+        this.contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        this.contentForm = <FormGroup>this.contentsFArray.controls[this.lastIndex];
+        this.image = this.contentForm.controls['imageUrl'];
+        this.attachments = this.contentForm.controls['supplementUrls'];
         this.attachments.value.forEach(file => {
             this.contentService.getMediaObject(file).subscribe((res) => {
                 this.attachmentUrls.push(res[0]);
-            })
+            });
         });
         console.log(this.attachmentUrls);
     }
@@ -168,10 +171,10 @@ export class ExperienceContentOnlineComponent implements OnInit {
     uploadImage(event) {
         this.uploadingImage = true;
         for (const file of event.files) {
-          this.mediaUploader.upload(file).subscribe((response) => {
-            this.addImageUrl(response.url);
-            this.uploadingImage = false;
-          });
+            this.mediaUploader.upload(file).subscribe((response) => {
+                this.addImageUrl(response.url);
+                this.uploadingImage = false;
+            });
         }
     }
 
@@ -183,10 +186,10 @@ export class ExperienceContentOnlineComponent implements OnInit {
     uploadAttachments(event) {
         this.uploadingAttachments = true;
         for (const file of event.files) {
-          this.mediaUploader.upload(file).subscribe((response) => {
-            this.addAttachmentUrl(response);
-            this.uploadingAttachments = false;
-          });
+            this.mediaUploader.upload(file).subscribe((response) => {
+                this.addAttachmentUrl(response);
+                this.uploadingAttachments = false;
+            });
         }
     }
 
@@ -204,46 +207,79 @@ export class ExperienceContentOnlineComponent implements OnInit {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(this.config.apiUrl + fileUrl)
-          .map((response) => {
-            console.log(response);
-            if (fileType === 'file') {
-                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
-                let suppUrl = supplementUrls.value;
-                suppUrl = _.remove(suppUrl, function (n) {
-                    return n !== fileurl;
-                });
-                contentForm.controls['supplementUrls'] = new FormArray([]);
-                this.attachmentUrls = [];
-                suppUrl.forEach(file => {
-                    supplementUrls.push(new FormControl(file));
-                    this.contentService.getMediaObject(file).subscribe((res) => {
-                        this.attachmentUrls.push(res[0]);
-                    })
-                });
-                if (contentForm.controls['id'].value) {
-                    this.deleteFromContent(contentForm, {'supplementUrls': []});
+            .map((response) => {
+                console.log(response);
+                if (fileType === 'file') {
+                    const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+                    const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+                    const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
+                    let suppUrl = supplementUrls.value;
+                    suppUrl = _.remove(suppUrl, function (n) {
+                        return n !== fileurl;
+                    });
+                    contentForm.controls['supplementUrls'] = new FormArray([]);
+                    this.attachmentUrls = [];
+                    suppUrl.forEach(file => {
+                        supplementUrls.push(new FormControl(file));
+                        this.contentService.getMediaObject(file).subscribe((res) => {
+                            this.attachmentUrls.push(res[0]);
+                        });
+                    });
+                    if (contentForm.controls['id'].value) {
+                        this.deleteFromContent(contentForm, {'supplementUrls': []});
+                    }
+                } else if (fileType === 'image') {
+                    this.addImageUrl('');
+                    const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+                    const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+                    contentForm.controls['imageUrl'].patchValue('');
+                    if (contentForm.controls['id'].value) {
+                        this.deleteFromContent(contentForm, {'imageUrl': ''});
+                    }
                 }
-            } else if (fileType === 'image') {
-                this.addImageUrl('');
-                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                contentForm.controls['imageUrl'].patchValue('');
-                if(contentForm.controls['id'].value) {
-                    this.deleteFromContent(contentForm, {'imageUrl': ''});
-                }
-            }
-          }).subscribe((response) => {
+            }).subscribe((response) => {
 
-          });
+        });
 
     }
 
     deleteFromContent(contentForm, body) {
         this.http.patch(this.config.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
-        .map((response: Response) => {})
-        .subscribe();
+            .map((response: Response) => {})
+            .subscribe();
+    }
+
+    public openAddLocationDialog() {
+        let dialogRef1: any;
+        dialogRef1 = this.dialog.open(AddLocationDialogComponent,
+            {
+                data: {
+                    locationForm: _.cloneDeep(this.contentForm.controls.location),
+                    contentFormArray: _.cloneDeep(this.contentsFArray),
+                    contentForm: _.cloneDeep(this.contentForm),
+                    isEdit: this.isEdit
+                },
+                disableClose: true,
+                hasBackdrop: true,
+                width: '45vw',
+                height: '100vh'
+            }
+        );
+        dialogRef1.afterClosed().subscribe((result) => {
+            // do something here
+            if (result !== undefined) {
+                const resultJson = JSON.parse(result);
+                if (resultJson.status === 'save') {
+                    this.contentForm.controls.location.patchValue(resultJson.locationForm);
+                }
+                else if (resultJson.status === 'edit') {
+                    this.contentForm.controls.location.patchValue(resultJson.locationForm);
+                }
+                else {
+                    // do nothing
+                }
+            }
+        });
     }
 
 }

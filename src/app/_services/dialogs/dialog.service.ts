@@ -68,7 +68,7 @@ export class DialogsService {
 
         dialogRef5 = this.dialog.open(VerifyIdDialogComponent, {
             width: '60vw',
-            height: '95vh'
+            height: '100vh'
         });
         return dialogRef5.afterClosed();
     }
@@ -209,7 +209,7 @@ export class DialogsService {
 
         dialogRef = this.dialog.open(EditCalendarDialogComponent, {
             width: '80vw',
-            height: '99vh'
+            height: '100vh'
         }
         );
         dialogRef.componentInstance.collection = collection;
@@ -268,8 +268,8 @@ export class DialogsService {
 
     public selectDateDialog(allItenaries, mode, participants, userType) {
         return this.dialog.open(SelectDateDialogComponent, {
-            width: '70vw',
-            height: '90vh',
+            width: '45vw',
+            height: '100vh',
             data: { itineraries: allItenaries, mode: mode, participants: participants, userType: userType }
         }).afterClosed();
     }
@@ -298,8 +298,8 @@ export class DialogsService {
                 peerHasSubmission: peerHasSubmission,
                 collectionId: collectionId
             },
-            width: '50vw',
-            height: '90vh'
+            width: '45vw',
+            height: '100vh'
         }).afterClosed();
     }
 
@@ -309,8 +309,8 @@ export class DialogsService {
     public submitEntry(data) {
         return this.dialog.open(SubmitEntryComponent, {
             data: data,
-            width: '50vw',
-            height: '90vh'
+            width: '45vw',
+            height: '100vh'
         }).afterClosed();
     }
 

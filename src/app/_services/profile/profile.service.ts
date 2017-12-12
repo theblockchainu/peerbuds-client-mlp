@@ -541,4 +541,11 @@ export class ProfileService {
     return pProg;
   }
 
+  /**
+   * viewProfile
+   */
+  public viewProfile(peer) {
+      this.router.navigate(['profile', peer.id]);
+  }
+
 }

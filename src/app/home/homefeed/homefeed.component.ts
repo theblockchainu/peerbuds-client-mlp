@@ -6,11 +6,24 @@ import { AppConfig } from '../../app.config';
 import { TopicService } from '../../_services/topic/topic.service';
 import _ from 'lodash';
 import * as moment from 'moment';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-feed',
   templateUrl: './homefeed.component.html',
-  styleUrls: ['./homefeed.component.scss']
+  styleUrls: ['./homefeed.component.scss'],
+    animations: [
+        trigger('slideInOut', [
+            state('in', style({
+                transform: 'translate3d(0, 0, 0)'
+            })),
+            state('out', style({
+                transform: 'translate3d(100%, 0, 0)'
+            })),
+            transition('in => out', animate('400ms ease-in-out')),
+            transition('out => in', animate('400ms ease-in-out'))
+        ]),
+    ]
 })
 export class HomefeedComponent implements OnInit {
   public workshops: Array<any>;
@@ -30,6 +43,7 @@ export class HomefeedComponent implements OnInit {
   public liveWorkshopsObject: any;
   public upcomingWorkshopsObject: any;
   public now: Date;
+  public cardInFocus = false;
 
   constructor(
     public _collectionService: CollectionService,
@@ -202,17 +216,23 @@ export class HomefeedComponent implements OnInit {
       (response) => {
         this.loadingExperiences = false;
         this.experiences = [];
-        let experienceLocation = '';
+        let experienceLocation = 'Unknown location';
+        let lat = 37.5293864;
+        let lng = -122.008471;
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.status === 'active') {
                 if (collection.contents) {
                     collection.contents.forEach(content => {
-                        if (content.locations && content.locations.length > 0) {
+                        if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
                             experienceLocation = content.locations[0].city;
+                            lat = parseFloat(content.locations[0].map_lat);
+                            lng = parseFloat(content.locations[0].map_lng);
                         }
                     });
                     collection.location = experienceLocation;
+                    collection.lat = lat;
+                    collection.lng = lng;
                 }
               if (collection.owners && collection.owners[0].reviewsAboutYou) {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
@@ -267,6 +287,14 @@ export class HomefeedComponent implements OnInit {
     }, (err) => {
       console.log(err);
     });
+  }
+
+  onMouseEnter() {
+      this.cardInFocus = true;
+  }
+
+  onMouseLeave() {
+      this.cardInFocus = false;
   }
 }
 

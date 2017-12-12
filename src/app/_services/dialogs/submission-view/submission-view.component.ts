@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA, MdDialog } from '@angular/material';
 import { AppConfig } from '../../../app.config';
-import { CollectionService } from '../../../_services/collection/collection.service';
+import { CollectionService } from '../../collection/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommentService } from '../../../_services/comment/comment.service';
-import { ProjectSubmissionService } from '../../../_services/project-submission/project-submission.service';
-import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { CommentService } from '../../comment/comment.service';
+import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
+import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
 
 @Component({
     selector: 'app-submission-view',

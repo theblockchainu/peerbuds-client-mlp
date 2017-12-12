@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
 import { AppConfig } from '../../../app.config';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,14 +8,14 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { ContentService } from '../../../_services/content/content.service';
 import * as moment from 'moment';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
-    selector: 'app-content-online',
-    templateUrl: './content-online.component.html',
-    styleUrls: ['./content-online.component.scss']
+  selector: 'app-content-inperson',
+  templateUrl: './content-inperson.component.html',
+  styleUrls: ['./content-inperson.component.scss']
 })
-export class ContentOnlineComponent implements OnInit {
+export class ContentInpersonComponent implements OnInit {
 
     public userType = 'public';
     public experienceId = '';
@@ -26,12 +26,14 @@ export class ContentOnlineComponent implements OnInit {
     public userId;
     public attachmentUrls = [];
     public duration = 0;
+    public lat;
+    public lng;
 
     constructor(
         public config: AppConfig,
         public _collectionService: CollectionService,
         @Inject(MD_DIALOG_DATA) public data: any,
-        public dialogRef: MdDialogRef<ContentOnlineComponent>,
+        public dialogRef: MdDialogRef<ContentInpersonComponent>,
         private _fb: FormBuilder,
         private _commentService: CommentService,
         private _cookieUtilsService: CookieUtilsService,
@@ -47,7 +49,14 @@ export class ContentOnlineComponent implements OnInit {
                 this.attachmentUrls.push(res[0]);
             });
         });
-        this.duration = moment(data.content.schedules[0].endTime).diff(moment(data.content.schedules[0].startTime), 'hours');
+        const startMoment = moment(data.content.schedules[0].startTime);
+        const endMoment = moment(data.content.schedules[0].endTime);
+        const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+        this.duration = parseInt(contentLength, 10);
+        if (data.content.locations && data.content.locations.length > 0) {
+            this.lat = parseFloat(data.content.locations[0].map_lat);
+            this.lng = parseFloat(data.content.locations[0].map_lng);
+        }
     }
 
     ngOnInit() {
@@ -165,13 +174,6 @@ export class ContentOnlineComponent implements OnInit {
         );
     }
 
-    /**
-     * joinSession
-     */
-    public joinSession() {
-        console.log('Handle Online session here');
-    }
-
     public hasUpvoted(upvotes) {
         let result = false;
         if (upvotes !== undefined) {
@@ -193,22 +195,16 @@ export class ContentOnlineComponent implements OnInit {
         return comment.peer[0].id === this.userId;
     }
 
-    /**
-     * joinLiveSession
-     */
-    public joinLiveSession(content: any) {
-        const data = {
-            roomName: content.id + this.data.calendarId,
-            teacherId: this.data.collection.owners[0].id,
-            content: content,
-            participants: this.data.collection.participants
-        };
-        this.dialogsService.startLiveSession(data).subscribe(result => {
-        });
-    }
-
     public openProfilePage(peerId) {
         this.router.navigate(['profile', peerId]);
+    }
+
+    public rsvpToggle(content) {
+      // RSVP for participant
+    }
+
+    public viewRSVPs(content) {
+      // Show rsvps to user
     }
 
 }
