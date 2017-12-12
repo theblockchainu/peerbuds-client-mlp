@@ -21,7 +21,7 @@ export class CollectionSubmitDialogComponent implements OnInit {
 
   public closeDialog() {
     this.dialogRef.close('close');
-    this.router.navigate(['console', 'teaching', this.data.type]);
+    this.router.navigate(['console', 'teaching', this.data.type + 's']);
   }
 
 }

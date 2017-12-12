@@ -11,11 +11,24 @@ import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.co
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import 'rxjs/add/operator/do';
 import * as moment from 'moment';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-experiences',
   templateUrl: './experiences.component.html',
-  styleUrls: ['./experiences.component.scss']
+  styleUrls: ['./experiences.component.scss'],
+    animations: [
+        trigger('slideInOut', [
+            state('in', style({
+                transform: 'translate3d(0, 0, 0)'
+            })),
+            state('out', style({
+                transform: 'translate3d(100%, 0, 0)'
+            })),
+            transition('in => out', animate('400ms ease-in-out')),
+            transition('out => in', animate('400ms ease-in-out'))
+        ]),
+    ]
 })
 export class ExperiencesComponent implements OnInit {
   public availableTopics: Array<any>;
@@ -100,7 +113,7 @@ export class ExperiencesComponent implements OnInit {
     }
       query = {
           'include': [
-              { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'experience'} }}
+              { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars', {'contents': ['schedules', 'locations']}], 'where': {'type': 'experience'} }}
           ],
           'where': { or: this.selectedTopics }
       };
@@ -109,9 +122,18 @@ export class ExperiencesComponent implements OnInit {
       .subscribe(
       (response) => {
         const experiences = [];
+        let experienceLocation = 'Unknown location';
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.status === 'active') {
+                if (collection.contents) {
+                    collection.contents.forEach(content => {
+                        if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
+                            experienceLocation = content.locations[0].city;
+                        }
+                    });
+                    collection.location = experienceLocation;
+                }
                 if (collection.owners && collection.owners[0].reviewsAboutYou) {
                     collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                     collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);

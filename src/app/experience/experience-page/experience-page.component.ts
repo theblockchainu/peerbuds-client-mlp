@@ -12,7 +12,6 @@ import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
-import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import {
@@ -38,6 +37,8 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
+import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 declare var FB: any;
 
@@ -73,6 +74,18 @@ export class MyCalendarUtils extends CalendarUtils {
       provide: CalendarDateFormatter,
       useClass: CustomDateFormatter
     }
+  ],
+  animations: [
+      trigger('slideInOut', [
+          state('in', style({
+              transform: 'translate3d(0, 0, 0)'
+          })),
+          state('out', style({
+              transform: 'translate3d(100%, 0, 0)'
+          })),
+          transition('in => out', animate('400ms ease-in-out')),
+          transition('out => in', animate('400ms ease-in-out'))
+      ]),
   ]
 })
 export class ExperiencePageComponent implements OnInit {
@@ -836,8 +849,8 @@ export class ExperiencePageComponent implements OnInit {
         participants: this.participants,
         experienceId: this.experienceId
       },
-      width: '50vw',
-      height: '90vh'
+      width: '45vw',
+      height: '100vh'
     });
   }
 
@@ -847,8 +860,8 @@ export class ExperiencePageComponent implements OnInit {
         participants: this.allParticipants,
         experienceId: this.experienceId
       },
-      width: '50vw',
-      height: '90vh'
+      width: '45vw',
+      height: '100vh'
     });
   }
 
@@ -1331,19 +1344,6 @@ export class ExperiencePageComponent implements OnInit {
 
   public openInviteFriendsDialog() {
     this.dialogsService.inviteFriends(this.experience);
-  }
-  /**
-  * joinLiveSession
-  */
-  public joinLiveSession(content: any) {
-    const data = {
-      roomName: content.id + this.calendarId,
-      teacher: this.experience.owners[0],
-      content: content,
-      participants: this.experience.participants
-    };
-    this.dialogsService.startLiveSession(data).subscribe(result => {
-    });
   }
 
   private sort(calendars, param1, param2) {
