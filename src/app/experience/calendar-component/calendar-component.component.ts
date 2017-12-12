@@ -16,7 +16,7 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarDateFormatter
 } from 'angular-calendar';
-import { CustomDateFormatter } from './custom-date-formatter.provider';
+import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 
 const colors: any = {
   red: {
@@ -47,7 +47,7 @@ const colors: any = {
 export class CalendarComponent implements OnInit {
 
   // Calendar Start
-  public dateClicked: boolean = false;
+  public dateClicked = false;
   public clickedDate;
   public eventsForTheDay;
   public headerTemplate = `<ng-template #headerTemplate>
@@ -60,7 +60,7 @@ export class CalendarComponent implements OnInit {
                           </div>
                           </ng-template>`;
 
-  public view: string = 'month';
+  public view = 'month';
 
   public viewDate: Date = new Date();
 
@@ -74,7 +74,7 @@ export class CalendarComponent implements OnInit {
   events: CalendarEvent[] = [
   ];
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen = true;
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };

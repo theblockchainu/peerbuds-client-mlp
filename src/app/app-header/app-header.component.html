@@ -24,7 +24,8 @@
     <!-- This fills the remaining space of the current row -->
     <span class="example-spacer"></span>
     <span>
-      <span class="header-progress-bar" *ngIf="profileCompletionObject && isLoggedIn | async" [mdMenuTriggerFor]="profileCompletionMenu">
+      <span class="header-progress-bar" *ngIf="profileCompletionObject  && profileCompletionObject.progress<80 && isLoggedIn | async"
+        [mdMenuTriggerFor]="profileCompletionMenu">
         Complete Profile
         <div style="line-height: 0rem;">
           <md-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:70%;display: inline-block"></md-progress-bar>
@@ -142,20 +143,16 @@
       <md-icon class="profile-check" *ngIf="profileCompletionObject['personal']">done</md-icon>
     </button>
     <button md-menu-item [routerLink]="['/console/profile/edit']">
-      Works Experience
-      <md-icon class="profile-check" *ngIf="profileCompletionObject['work']">done</md-icon>
-    </button>
-    <button md-menu-item [routerLink]="['/console/profile/edit']">
-      Education
-      <md-icon class="profile-check" *ngIf="profileCompletionObject['education']">done</md-icon>
-    </button>
-    <button md-menu-item [routerLink]="['/console/profile/edit']">
       Additional Details
       <md-icon class="profile-check" *ngIf="profileCompletionObject['additional']">done</md-icon>
     </button>
     <button md-menu-item [routerLink]="['/console/profile/photos']">
       Photo
       <md-icon class="profile-check" *ngIf="profileCompletionObject['photos']">done</md-icon>
+    </button>
+    <button md-menu-item [routerLink]="['/console/profile/edit']">
+      Verification
+      <md-icon class="profile-check" *ngIf="profileCompletionObject['verification']">done</md-icon>
     </button>
   </span>
 </md-menu>

@@ -4134,7 +4134,7 @@ ngx-loading@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/ngx-loading/-/ngx-loading-1.0.8.tgz#706c11e3f4c1541f531a53c9739ab59f7d482494"
 
-ngx-pipes@^1.6.5:
+ngx-pipes@1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/ngx-pipes/-/ngx-pipes-1.6.5.tgz#7dfe7bf1425b2e661ecde0e8a419e82be575dfa1"
 
