@@ -4,7 +4,7 @@
       <div class="position-relative step-1">
         <form [formGroup]="peer">
           <md-dialog-content>
-            <div class="col-md-10 col-md-offset-1 position-relative">
+            <div class="col-md-12 position-relative">
               <div class="verification-box drop-shadow">
                 <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
                   <i class="fa fa-id-card-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
@@ -40,7 +40,7 @@
               </div>
             </div>
 
-            <div class="col-md-10 col-md-offset-1 position-relative">
+            <div class="col-md-12 position-relative">
               <div class="pull-right">
                 <!--<button md-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>-->
                 <span mdTooltip="Invalid Verification ID!" [mdTooltipDisabled]="this.peer.controls['verificationIdUrl'].value">

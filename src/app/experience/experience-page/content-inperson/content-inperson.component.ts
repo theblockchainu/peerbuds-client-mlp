@@ -1,50 +1,61 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA, MdDialog } from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
 import { AppConfig } from '../../../app.config';
-import { CollectionService } from '../../collection/collection.service';
+import { CollectionService } from '../../../_services/collection/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommentService } from '../../comment/comment.service';
-import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
-import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
+import { CommentService } from '../../../_services/comment/comment.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { ContentService } from '../../../_services/content/content.service';
+import * as moment from 'moment';
+import {Router} from '@angular/router';
 
 @Component({
-    selector: 'app-submission-view',
-    templateUrl: './submission-view.component.html',
-    styleUrls: ['./submission-view.component.scss']
+  selector: 'app-content-inperson',
+  templateUrl: './content-inperson.component.html',
+  styleUrls: ['./content-inperson.component.scss']
 })
-export class SubmissionViewComponent implements OnInit {
+export class ContentInpersonComponent implements OnInit {
 
-    public isMySubmission = false;
-    public userId;
-    public iHaveUpvoted = false;
     public userType = 'public';
-    public workshopId = '';
+    public experienceId = '';
     public chatForm: FormGroup;
     public replyForm: FormGroup;
     public replyingToCommentId: string;
     public comments: Array<any>;
+    public userId;
+    public attachmentUrls = [];
+    public duration = 0;
+    public lat;
+    public lng;
 
-    constructor(public config: AppConfig,
-        @Inject(MD_DIALOG_DATA) public data: any,
+    constructor(
+        public config: AppConfig,
         public _collectionService: CollectionService,
-        public dialogRef: MdDialogRef<SubmissionViewComponent>,
+        @Inject(MD_DIALOG_DATA) public data: any,
+        public dialogRef: MdDialogRef<ContentInpersonComponent>,
         private _fb: FormBuilder,
         private _commentService: CommentService,
-        private _submissionService: ProjectSubmissionService,
-        private _cookieUtilsService: CookieUtilsService
+        private _cookieUtilsService: CookieUtilsService,
+        private dialogsService: DialogsService,
+        private contentService: ContentService,
+        private router: Router
     ) {
         this.userType = data.userType;
-        this.workshopId = data.collectionId;
+        this.experienceId = data.collectionId;
         this.userId = _cookieUtilsService.getValue('userId');
-        if (data.submission.peer[0].id === this.userId) {
-            this.isMySubmission = true;
-        }
-        if (data.submission.upvotes) {
-            data.submission.upvotes.forEach(upvote => {
-                if (upvote.peer[0].id === this.userId) {
-                    this.iHaveUpvoted = true;
-                }
+        data.content.supplementUrls.forEach(file => {
+            this.contentService.getMediaObject(file).subscribe((res) => {
+                this.attachmentUrls.push(res[0]);
             });
+        });
+        const startMoment = moment(data.content.schedules[0].startTime);
+        const endMoment = moment(data.content.schedules[0].endTime);
+        const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+        this.duration = parseInt(contentLength, 10);
+        if (data.content.locations && data.content.locations.length > 0) {
+            this.lat = parseFloat(data.content.locations[0].map_lat);
+            this.lng = parseFloat(data.content.locations[0].map_lng);
         }
     }
 
@@ -63,7 +74,7 @@ export class SubmissionViewComponent implements OnInit {
      * postComment
      */
     public postComment() {
-        this._collectionService.postSubmissionComments(this.data.submission.id, this.chatForm.value, (err, response) => {
+        this._collectionService.postContentComments(this.data.content.id, this.chatForm.value, (err, response) => {
             if (err) {
                 console.log(err);
             } else {
@@ -122,7 +133,7 @@ export class SubmissionViewComponent implements OnInit {
             ],
             'order': 'createdAt DESC'
         };
-        this._collectionService.getSubmissionComments(this.data.submission.id, query, (err, response) => {
+        this._collectionService.getContentComments(this.data.content.id, query, (err, response) => {
             if (err) {
                 console.log(err);
             } else {
@@ -147,22 +158,6 @@ export class SubmissionViewComponent implements OnInit {
         );
     }
 
-    addSubmissionUpvote(submission: any) {
-        this._submissionService.addSubmissionUpvote(submission.id, {}).subscribe(
-            response => {
-                if (submission.upvotes !== undefined) {
-                    submission.upvotes.push(response.json());
-                }
-                else {
-                    submission.upvotes = [];
-                    submission.upvotes.push(response.json());
-                }
-            }, err => {
-                console.log(err);
-            }
-        );
-    }
-
     addReplyUpvote(reply: any) {
         this._commentService.addReplyUpvote(reply.id, {}).subscribe(
             response => {
@@ -177,10 +172,6 @@ export class SubmissionViewComponent implements OnInit {
                 console.log(err);
             }
         );
-    }
-
-    closeDialog() {
-        this.dialogRef.close();
     }
 
     public hasUpvoted(upvotes) {
@@ -201,12 +192,19 @@ export class SubmissionViewComponent implements OnInit {
     }
 
     public isMyComment(comment) {
-        if (comment.peer[0] !== undefined) {
-            return comment.peer[0].id === this.userId;
-        }
-        else {
-            return false;
-        }
+        return comment.peer[0].id === this.userId;
+    }
+
+    public openProfilePage(peerId) {
+        this.router.navigate(['profile', peerId]);
+    }
+
+    public rsvpToggle(content) {
+      // RSVP for participant
+    }
+
+    public viewRSVPs(content) {
+      // Show rsvps to user
     }
 
 }

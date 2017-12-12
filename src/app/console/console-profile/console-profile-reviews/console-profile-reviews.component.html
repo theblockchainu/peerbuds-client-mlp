@@ -8,53 +8,54 @@
         <div style="margin-top:20px;" class="col-md-12">
           <div class="row" style="margin-right: 20px;">
             <md-tab-group disableRipple>
-              <md-tab label="Reviews About You">
-                <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+              <md-tab label="Reviews about you">
+                <div style="margin-top: 25px; margin-bottom: 40px;" class="lightText">
                   Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will
                   be visible both here and on your public profile.
                 </div>
+                <div class="mat-body-2">
+                  Received on workshops and experiences ({{profile.peer[0].reviewsAboutYou !== undefined ?  profile.peer[0].reviewsAboutYou.length : '0'}})
+                </div>
                 <div class="review-section" *ngIf="!profile.peer[0].reviewsAboutYou ||profile.peer[0].reviewsAboutYou.length ===0">
-                  <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText text-center">
-                    No Reviews Recieved
+                  <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+                    No reviews received
                   </div>
                 </div>
                 <div class="review-section" *ngFor="let review of profile.peer[0].reviewsAboutYou">
                   <div *ngIf="review.peer !== undefined">
                     <div class="review-top">
                       <div class="review-thumb pull-left">
-                        <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleProfileComponent.imgErrorHandler($event)">
+                        <app-profile-popup [peer]="review.peer[0]"></app-profile-popup>
                       </div>
                       <div class="reviewer">
-                        <div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name }}</div>
-                        <div class="reviewer-headline">{{ review.peer[0].profiles[0].headline }}</div>
+                        <div class="reviewer-name clickable" (click)="_profileService.viewProfile(review.peer[0])">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name | ucwords }}</div>
+                        <div class="reviewer-headline mat-caption">{{ review.peer[0].profiles[0].headline !== undefined && review.peer[0].profiles[0].headline.length > 0? review.peer[0].profiles[0].headline : 'New User' | ucfirst }}</div>
                       </div>
                     </div>
                     <div class="review-content">
                       <div class="review-bottom lightText">
-                        <span>{{ getReviewedCollection(profile.peer[0], review.collectionId).type | titlecase}} :
-                          <a href="javascript:;">{{ getReviewedCollection(profile.peer[0], review.collectionId).title }}</a>
+                        <span>{{ getReviewedCollection(profile.peer[0], review.collectionId).type | ucwords}} :
+                          <a class="clickable" (click)="_collectionService.viewCollection(getReviewedCollection(profile.peer[0], review.collectionId))">{{ getReviewedCollection(profile.peer[0], review.collectionId).title | ucwords }}</a>
                         </span>
                         <span class="bullet">
                           <p-rating [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
                         </span>
-                        <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
-                          | date: 'dd MMM' }} - {{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars,
-                          review.collectionCalendarId).endDate | date: 'dd MMM' }}</span>
+                        <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate | date: 'dd MMM' }} - {{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).endDate | date: 'dd MMM' }}</span>
                       </div>
-                      <div class="review-desc">{{ review.description }}</div>
+                      <div class="review-desc"><b>{{ review.description | ucfirst }}</b></div>
                     </div>
                   </div>
                 </div>
               </md-tab>
-              <md-tab label="Reviews By You">
-                <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+              <md-tab label="Reviews by you">
+                <div style="margin-top: 25px; margin-bottom: 40px;" class="lightText">
                   Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will
                   be visible both here and on your public profile.
                 </div>
-                <div class="review-section-title" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined && getPendingReviewCollections(profile.peer[0]).length > 0">
-                  Reviews To Write
+                <div class="mat-body-2" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined && getPendingReviewCollections(profile.peer[0]).length > 0">
+                  Reviews to write ({{getPendingReviewCollections(profile.peer[0]).length}})
                 </div>
-                <div class="row" style="margin-left: -12px; margin-bottom: 20px;" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined && getPendingReviewCollections(profile.peer[0]).length > 0">
+                <div class="row margin-bottom-50" style="margin-left: -12px;" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined && getPendingReviewCollections(profile.peer[0]).length > 0">
                   <div>
                     <div style="margin-top:20px;" class="col-md-12">
                       <div class="row">
@@ -64,25 +65,18 @@
                           <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete' || 'canceled'">
                             <md-card style="text-align: center; padding: 20px;">
                               <md-card-content>
-                                <div class="clearfix" style="text-align: right">
-                                  <div class="pull-right">
-                                    <a md-button [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
-                                      <md-icon>more_vert</md-icon>
-                                    </a>
-                                  </div>
-                                </div>
                                 <div style="text-align: center">
                                   <div class="pull-left">
                                     <md-chip-list class="cardTypeChip">
-                                      <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">W</md-chip>
-                                      <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">E</md-chip>
-                                      <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">S</md-chip>
+                                      <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">Workshop</md-chip>
+                                      <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</md-chip>
+                                      <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</md-chip>
                                     </md-chip-list>
                                   </div>
                                 </div>
                                 <div class="collectionParticipantImageCarousel">
                                   <div class="image-inline" *ngFor="let participant of collection.participants">
-                                    <img src="{{ participant?.profiles[0].picture_url }}" alt=" " class="circle-thumb-overlap" (error)="consoleProfileComponent.imgErrorHandler($event)">
+                                    <app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
                                   </div>
                                   <div class="image-inline" *ngIf="collection.participants.length === 0">
                                     <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb-overlap" (error)="consoleProfileComponent.imgErrorHandler($event)">
@@ -91,16 +85,16 @@
                                 <div class="participantCount">
                                   <span>{{collection.participants.length}} Participants </span>
                                 </div>
-                                <div class="collectionTitle">{{ collection.title || 'No Title' }} </div>
+                                <div class="collectionTitle clickable" (click)="_collectionService.viewCollection(collection)">{{ collection.title || 'No Title' | ucwords }} </div>
                                 <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar>
                                 <div class="collectionSubtitle">
-                                  {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Parts |
+                                  {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Activity |
                                   <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                                 </div>
                               </md-card-content>
                               <md-card-actions>
-                                <div class="teachingRatingReminder" (click)="_collectionService.viewWorkshop(collection)">
-                                  Finish rating 4 other students
+                                <div class="teachingRatingReminder clickable" (click)="openRatingsDialog()">
+                                  Finish rating {{collection.pendingReviewParticipantCount}} students
                                 </div>
                               </md-card-actions>
                               <br>
@@ -115,40 +109,37 @@
                     </div>
                   </div>
                 </div>
-                <div class="review-section-title" *ngIf="profile.peer[0].reviewsByYou !== undefined && profile.peer[0].reviewsByYou.length > 0">
-                  Reviews You've Written
+                <div class="mat-body-2" *ngIf="profile.peer[0].reviewsByYou !== undefined && profile.peer[0].reviewsByYou.length > 0">
+                  Reviews you've written ({{profile.peer[0].reviewsByYou !== undefined ? profile.peer[0].reviewsByYou.length : '0'}})
                 </div>
                 <div class="review-section" *ngIf="!profile.peer[0].reviewsByYou ||profile.peer[0].reviewsByYou.length ===0">
-                  <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText text-center">
-                    No Reviews Given
+                  <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+                    No reviews given
                   </div>
                 </div>
                 <div class="review-section" *ngFor="let review of profile.peer[0].reviewsByYou">
                   <div *ngIf="review.reviewedPeer !== undefined">
                     <div class="review-top">
                       <div class="review-thumb pull-left">
-                        <img src="{{ review.reviewedPeer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleProfileComponent.imgErrorHandler($event)">
+                        <app-profile-popup [peer]="review.reviewedPeer[0]"></app-profile-popup>
                       </div>
                       <div class="reviewer">
-                        <div class="reviewer-name">{{ review.reviewedPeer[0].profiles[0].first_name + ' ' + review.reviewedPeer[0].profiles[0].last_name
-                          }}
+                        <div class="reviewer-name clickable" (click)="_profileService.viewProfile(review.reviewedPeer[0])">{{ review.reviewedPeer[0].profiles[0].first_name + ' ' + review.reviewedPeer[0].profiles[0].last_name | ucwords}}
                         </div>
-                        <div class="reviewer-headline">{{ review.reviewedPeer[0].profiles[0].headline }}</div>
+                        <div class="reviewer-headline mat-caption">{{ review.reviewedPeer[0].profiles[0].headline !== undefined && review.reviewedPeer[0].profiles[0].headline.length > 0 ? review.reviewedPeer[0].profiles[0].headline : 'New User' | titlecase }}</div>
                       </div>
                     </div>
                     <div class="review-content">
                       <div class="review-bottom lightText">
-                        <span>{{ getReviewedCollection(profile.peer[0], review.collectionId).type | titlecase }} :
-                          <a href="javascript:;">{{ getReviewedCollection(profile.peer[0], review.collectionId).title }}</a>
+                        <span>{{ getReviewedCollection(profile.peer[0], review.collectionId).type | ucwords }} :
+                          <a (click)="_collectionService.viewCollection(getReviewedCollection(profile.peer[0], review.collectionId))">{{ getReviewedCollection(profile.peer[0], review.collectionId).title | ucwords}}</a>
                         </span>
                         <span class="bullet">
                           <p-rating [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
                         </span>
-                        <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
-                          | date: 'dd MMM' }} - {{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars,
-                          review.collectionCalendarId).endDate | date: 'dd MMM' }}</span>
+                        <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate | date: 'dd MMM' }} - {{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).endDate | date: 'dd MMM' }}</span>
                       </div>
-                      <div class="review-desc">{{ review.description }}</div>
+                      <div class="review-desc"><b>{{ review.description | ucfirst }}</b></div>
                     </div>
                   </div>
                 </div>
@@ -160,12 +151,3 @@
     </div>
   </div>
 </div>
-
-<md-menu #collectionCardMenu>
-  <button md-menu-item>
-    Delete
-  </button>
-  <button md-menu-item>
-    Message Students
-  </button>
-</md-menu>

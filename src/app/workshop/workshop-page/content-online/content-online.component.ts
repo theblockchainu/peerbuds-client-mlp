@@ -47,7 +47,10 @@ export class ContentOnlineComponent implements OnInit {
                 this.attachmentUrls.push(res[0]);
             });
         });
-        this.duration = moment(data.content.schedules[0].endTime).diff(moment(data.content.schedules[0].startTime), 'hours');
+        const startMoment = moment(data.content.schedules[0].startTime);
+        const endMoment = moment(data.content.schedules[0].endTime);
+        const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+        this.duration = parseInt(contentLength, 10);
     }
 
     ngOnInit() {

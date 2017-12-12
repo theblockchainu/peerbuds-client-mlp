@@ -38,6 +38,7 @@ import { SubmissionViewComponent } from './submission-view/submission-view.compo
 import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
 import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
+import {ProjectSubmissionService} from '../project-submission/project-submission.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -66,7 +67,8 @@ import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-fri
     SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent],
   providers: [
     DialogsService,
-    TwilioServicesService
+    TwilioServicesService,
+    ProjectSubmissionService
   ],
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent, MultiselectTopicDialogComponent

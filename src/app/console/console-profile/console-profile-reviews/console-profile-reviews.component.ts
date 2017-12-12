@@ -104,6 +104,7 @@ export class ConsoleProfileReviewsComponent implements OnInit {
       const completeCollections = this._collectionService.filerCompleteCollections(peer.ownedCollections);
       completeCollections.forEach(collection => {
         let hasPending = false;
+        let pendingReviewParticipantCount = 0;
         if (collection.participants !== undefined) {
           collection.participants.forEach(participant => {
             // If one of the participant of a collection does not have a review
@@ -111,16 +112,22 @@ export class ConsoleProfileReviewsComponent implements OnInit {
                 return review.collectionId === collection.id && review.reviewedPeer[0].id === participant.id;
               })) {
               hasPending = true;
+              pendingReviewParticipantCount++;
             }
           });
         }
         if (hasPending) {
+          collection.pendingReviewParticipantCount = pendingReviewParticipantCount;
           pendingReviewCollections.push(collection);
         }
       });
     }
     console.log('pending collections: ' + pendingReviewCollections);
     return pendingReviewCollections;
+  }
+
+  public openRatingsDialog() {
+    // TODO open ratings dialog
   }
 
 }

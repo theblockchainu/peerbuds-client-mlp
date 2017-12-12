@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 margin-top-20">
     <div *ngIf="!loaded" class="center">
       <ngx-loading [show]="true"></ngx-loading>
     </div>
@@ -37,9 +37,9 @@
                     <div style="text-align: center">
                       <div class="pull-left">
                         <md-chip-list class="cardTypeChip">
-                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">W</md-chip>
-                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">E</md-chip>
-                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">S</md-chip>
+                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">Workshop</md-chip>
+                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</md-chip>
+                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</md-chip>
                         </md-chip-list>
                       </div>
                     </div>
@@ -135,9 +135,9 @@
                     <div style="text-align: center">
                       <div class="pull-left">
                         <md-chip-list class="cardTypeChip">
-                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">W</md-chip>
-                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">E</md-chip>
-                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">S</md-chip>
+                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">Workshop</md-chip>
+                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</md-chip>
+                          <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</md-chip>
                         </md-chip-list>
                       </div>
                     </div>
@@ -185,7 +185,7 @@
                   <md-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
                     <button md-raised-button (click)="_collectionService.viewCollection(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
                   </md-card-actions>
-                  <md-card-footer class="cardFooter" style="line-height: 30px">
+                  <md-card-footer class="cardFooter" style="line-height: 30px; position: absolute;bottom: 24px;width: 100%;left: 24px;">
                     <a style="font-size: 1.077rem" (click)="_collectionService.viewCollection(collection)">Is this a recurring {{collection.type}}?</a>
                   </md-card-footer>
                 </md-card>
@@ -218,13 +218,14 @@
                       <div style="text-align: center">
                         <div class="pull-left">
                           <md-chip-list class="cardTypeChip">
-                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">W</md-chip>
-                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">E</md-chip>
-                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">S</md-chip>
+                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">Workshop</md-chip>
+                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</md-chip>
+                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</md-chip>
                           </md-chip-list>
                         </div>
                       </div>
                       <div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                      <div style="font-size: 12px; margin-top: -30px; margin-bottom: 10px;" *ngIf="collection.status === 'draft'">Last edited on {{collection.updatedAt | extractTime: 'Do MMM'}}</div>
                       <ng-template #draftMessage>
                         <md-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></md-progress-bar>
                         <p class="lightText" style="margin-top:20px">
@@ -315,7 +316,7 @@
                 <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
                 <ng-template #noTopicText>No Topics</ng-template>
                 <div class="col-md-4" style="margin-top: 20px;">
-                  <md-card style="text-align: center; padding: 20px;">
+                  <md-card class="pastCard" style="text-align: center; padding: 20px;">
                     <md-card-content>
                       <div class="clearfix" style="text-align: right">
                         <div class="pull-right">
@@ -327,9 +328,9 @@
                       <div style="text-align: center">
                         <div class="pull-left">
                           <md-chip-list class="cardTypeChip">
-                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'workshop'">W</md-chip>
-                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'experience'">E</md-chip>
-                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'session'">S</md-chip>
+                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'workshop'">Workshop</md-chip>
+                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'experience'">Experience</md-chip>
+                            <md-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'session'">Session</md-chip>
                           </md-chip-list>
                         </div>
                       </div>

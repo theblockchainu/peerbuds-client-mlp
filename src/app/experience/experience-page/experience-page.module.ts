@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../_shared/_shared.module';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
-import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
@@ -17,6 +16,7 @@ import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { StickyModule } from 'ng2-sticky-kit';
 import {AgmCoreModule} from '@agm/core';
+import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
 
 @NgModule({
   imports: [
@@ -35,11 +35,14 @@ import {AgmCoreModule} from '@agm/core';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    StickyModule
+    StickyModule,
+    AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
+    })
   ],
 
-  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, DeleteDialogComponent],
-  bootstrap: [ViewParticipantsComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, DeleteDialogComponent],
+  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, DeleteDialogComponent],
+  bootstrap: [ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, DeleteDialogComponent],
   providers: [ProjectSubmissionService]
 
 })

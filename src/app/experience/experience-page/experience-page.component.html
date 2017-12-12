@@ -132,7 +132,7 @@
                     <span>{{getContentCount('in-person') | i18nPlural : inPersonSessionMapping}}</span>
                   </div>
                 </div>
-                <div *ngIf="userType==='public'" class="margin-top-20"> {{experience.description}} </div>
+                <div *ngIf="userType==='public'" class="margin-top-20 pre-wrapped"> {{experience.description}} </div>
               </div>
             </div>
             <div class="row Progress margin-top-20" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">
@@ -192,7 +192,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <p>{{experience.aboutHost}}</p>
+                        <p class="pre-wrapped">{{experience.aboutHost}}</p>
                       </div>
                     </div>
                   </div>
@@ -227,7 +227,7 @@
                   </div>
                   <div class="col-md-8 margin-top-8">
                     <b>{{experience.difficultyLevel}} level</b>
-                    <p class="mat-caption">{{experience.notes}}</p>
+                    <p class="mat-caption pre-wrapped">{{experience.notes}}</p>
                   </div>
                 </div>
                 <div class="row margin-top-10">
@@ -283,14 +283,14 @@
                                         </span>
                                         {{_collectionService.getContentTypeFullName(content.type) | titlecase}}
                                       </div>
-                                      <div *ngIf="content.locations[0] !== undefined && (userType === 'participant' || userType === 'teacher')">
+                                      <div *ngIf="content.type === 'in-person' && content.locations !== undefined && content.locations.length > 0 && (userType === 'participant' || userType === 'teacher')">
                                         <md-icon style="top: 2px; font-size: 15px; width: 15px;">place</md-icon>
                                         {{content.locations[0].apt_suite | ucwords}} {{content.locations[0].street_address | ucwords}}, {{content.locations[0].city | ucwords}}
                                         <br>
                                         {{content.locations[0].state | ucwords}} {{content.locations[0].zip | ucwords}}, {{content.locations[0].country | ucwords}}
                                       </div>
                                     </div>
-                                    <div *ngIf="userType === 'public'" class="col-md-12 margin-top-10 textJustify">
+                                    <div *ngIf="userType === 'public' || content.type === 'project'" class="col-md-12 margin-top-10 textJustify">
                                       <span class="pre-wrapped">{{content.description | shorten: 115 : '...'}}</span>
                                     </div>
                                   </div>

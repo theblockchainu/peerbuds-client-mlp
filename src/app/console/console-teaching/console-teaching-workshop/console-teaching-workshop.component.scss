@@ -1,7 +1,7 @@
 .upcoming-card{
     text-align: center; 
     padding: 20px;
-    min-height: 420px;
+    min-height: 440px;
 }
 
 .collectionTitle{
@@ -17,3 +17,7 @@
 .mat-icon-button .mat-icon, .mat-icon-button i {
     color: #777777;
   }
+
+.pastCard {
+    min-height: 465px;
+}

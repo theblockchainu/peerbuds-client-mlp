@@ -11,11 +11,24 @@ import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.co
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import 'rxjs/add/operator/do';
 import * as moment from 'moment';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-workshops',
   templateUrl: './workshops.component.html',
-  styleUrls: ['./workshops.component.scss']
+  styleUrls: ['./workshops.component.scss'],
+    animations: [
+        trigger('slideInOut', [
+            state('in', style({
+                transform: 'translate3d(0, 0, 0)'
+            })),
+            state('out', style({
+                transform: 'translate3d(100%, 0, 0)'
+            })),
+            transition('in => out', animate('400ms ease-in-out')),
+            transition('out => in', animate('400ms ease-in-out'))
+        ]),
+    ]
 })
 export class WorkshopsComponent implements OnInit {
   public availableTopics: Array<any>;
