@@ -7,7 +7,7 @@
                 <div class="seperate-section margin-bottom-20">
                     <div class="fw-bold margin-bottom-10">Student requirements / prerequisites</div>
                     <div class="text-grey" *ngIf="collection.difficultyLevel && collection.difficultyLevel.length > 0"><b>This {{collection.type}} is of {{collection.difficultyLevel}} level.</b></div>
-                    <div class="text-grey margin-top-10" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes | ucfirst}}</div>
+                    <div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes | ucfirst}}</div>
                     <div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to be aware of at this point</div>
                 </div>
                 <div class="loading-container" [hidden]="!loadingCards">

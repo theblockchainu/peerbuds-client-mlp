@@ -113,7 +113,7 @@ export class ExperiencesComponent implements OnInit {
     }
       query = {
           'include': [
-              { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'experience'} }}
+              { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars', {'contents': ['schedules', 'locations']}], 'where': {'type': 'experience'} }}
           ],
           'where': { or: this.selectedTopics }
       };
@@ -122,9 +122,18 @@ export class ExperiencesComponent implements OnInit {
       .subscribe(
       (response) => {
         const experiences = [];
+        let experienceLocation = 'Unknown location';
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.status === 'active') {
+                if (collection.contents) {
+                    collection.contents.forEach(content => {
+                        if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
+                            experienceLocation = content.locations[0].city;
+                        }
+                    });
+                    collection.location = experienceLocation;
+                }
                 if (collection.owners && collection.owners[0].reviewsAboutYou) {
                     collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                     collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);

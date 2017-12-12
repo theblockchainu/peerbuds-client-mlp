@@ -298,8 +298,8 @@ export class DialogsService {
                 peerHasSubmission: peerHasSubmission,
                 collectionId: collectionId
             },
-            width: '50vw',
-            height: '90vh'
+            width: '45vw',
+            height: '100vh'
         }).afterClosed();
     }
 

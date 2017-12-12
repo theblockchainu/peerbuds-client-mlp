@@ -849,8 +849,8 @@ export class ExperiencePageComponent implements OnInit {
         participants: this.participants,
         experienceId: this.experienceId
       },
-      width: '50vw',
-      height: '90vh'
+      width: '45vw',
+      height: '100vh'
     });
   }
 
@@ -860,8 +860,8 @@ export class ExperiencePageComponent implements OnInit {
         participants: this.allParticipants,
         experienceId: this.experienceId
       },
-      width: '50vw',
-      height: '90vh'
+      width: '45vw',
+      height: '100vh'
     });
   }
 

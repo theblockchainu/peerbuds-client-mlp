@@ -13,6 +13,7 @@ import { SharedModule } from '../_shared/_shared.module';
 import { SelectTopicsComponent } from './dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from './dialogs/select-price/select-price.component';
 import {StickyModule} from 'ng2-sticky-kit';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
   imports: [
@@ -20,7 +21,10 @@ import {StickyModule} from 'ng2-sticky-kit';
     HomeRoutingModule,
     MdTabsModule,
     SharedModule,
-    StickyModule
+    StickyModule,
+    AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
+    }),
   ],
   declarations: [HomeComponent, WorkshopsComponent, ExperiencesComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent, SelectPriceComponent],
   providers: [],

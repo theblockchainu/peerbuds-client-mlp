@@ -828,8 +828,8 @@ export class WorkshopPageComponent implements OnInit {
         participants: this.participants,
         workshopId: this.workshopId
       },
-      width: '50vw',
-      height: '90vh'
+      width: '45vw',
+      height: '100vh'
     });
   }
 
@@ -839,8 +839,8 @@ export class WorkshopPageComponent implements OnInit {
         participants: this.allParticipants,
         workshopId: this.workshopId
       },
-      width: '50vw',
-      height: '90vh'
+      width: '45vw',
+      height: '100vh'
     });
   }
 

@@ -43,7 +43,8 @@ export class ViewEntryDialogComponent implements OnInit {
                       peerHasSubmission: this.data.peerHasSubmission,
                       collectionId: this.data.collectionId
                   },
-                  width: '45vw'
+                  width: '45vw',
+                  height: '100vh'
               });
           }
       });

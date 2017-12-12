@@ -50,20 +50,20 @@ export class MultiselectTopicDialogComponent implements OnInit { //implements Co
 
   // Optional Input Parameter
   @Input('searchUrl')
-  public searchURL: string = '';
+  public searchURL = '';
 
   // Optional Input Parameter
   @Input('multiSelect')
-  private isMultiSelect: boolean = true;
+  private isMultiSelect = true;
 
   @Input('create')
-  private canCreate: boolean = false;
+  private canCreate = false;
 
   @Input('createURL')
-  private postURL: string = '';
+  private postURL = '';
 
   @Input('title')
-  public title: string = '';
+  public title = '';
 
   @Input('preSelectedTopics')
   private preselectedTopics: any = [];
@@ -153,9 +153,9 @@ export class MultiselectTopicDialogComponent implements OnInit { //implements Co
     }
     if (this.query !== '') {
       this.active.emit(true);
-      let query = _.find(this.selectedQueries,
+      const query = _.find(this.selectedQueries,
         (entry) => {
-          return entry == this.query;
+          return entry === this.query;
         });
       if (!query) {
         this.selectedQueries.push(this.query);
@@ -167,13 +167,13 @@ export class MultiselectTopicDialogComponent implements OnInit { //implements Co
         this.emitRequestTopic();
       }
       if (this.searchURL) {
-        let finalSearchURL = this.searchURL + this.query;
+        const finalSearchURL = this.searchURL + this.query;
         this.http.get(finalSearchURL)
           .map(res => {
             this.loadingSuggestions = false;
             this.filteredList = [];
             res.json().map(item => {
-              this.entryInSelected = _.find(this.selected, function (entry) { return entry.id == item.id; });
+              this.entryInSelected = _.find(this.selected, function (entry) { return entry.id === item.id; });
               if (!this.entryInSelected) {
                 showItemNotFound = true;
               }
@@ -181,7 +181,7 @@ export class MultiselectTopicDialogComponent implements OnInit { //implements Co
                 showItemNotFound = false;
               }
 
-              let obj = {};
+              const obj = {};
               obj['id'] = item.id;
               obj['name'] = item.name;
               obj['type'] = item.type;
@@ -218,7 +218,7 @@ export class MultiselectTopicDialogComponent implements OnInit { //implements Co
   }
 
   private emitRequestTopic() {
-    if (this.filteredList.length == 0) {
+    if (this.filteredList.length === 0) {
       this.anyItemNotFound.emit(this.query);
     }
     else {
@@ -227,19 +227,19 @@ export class MultiselectTopicDialogComponent implements OnInit { //implements Co
   }
 
   private select(item) {
-    let itemPresent = _.find(this.selected, function (entry) { return item.id == entry.id; });
+    const itemPresent = _.find(this.selected, function (entry) { return item.id === entry.id; });
     if (itemPresent) {
-      this.selected = _.remove(this.selected, function (entry) { return item.id != entry.id; });
+      this.selected = _.remove(this.selected, function (entry) { return item.id !== entry.id; });
       this.removedOutput.emit(this.removed);
     }
     else {
-      if (this.selected.length >= this.maxSelection && this.maxSelection != -1) {
+      if (this.selected.length >= this.maxSelection && this.maxSelection !== -1) {
         this.query = '';
         this.filteredList = [];
         this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
         return;
       }
-      if (this.preselectedTopics.length != 0) {
+      if (this.preselectedTopics.length !== 0) {
         this.selected = _.union(this.preselectedTopics, this.selected);
       }
       this.selected.push(item);
