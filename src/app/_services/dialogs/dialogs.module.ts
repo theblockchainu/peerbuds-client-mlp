@@ -8,7 +8,6 @@ import { ClipboardModule } from 'ngx-clipboard/dist';
 import { SignupComponentDialog } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { RequestPasswordDialogComponent } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 import { TwilioServicesService } from '../twlio_services/twilio-services.service';
 import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
@@ -38,7 +37,10 @@ import { SubmissionViewComponent } from './submission-view/submission-view.compo
 import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
 import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
-import {ProjectSubmissionService} from '../project-submission/project-submission.service';
+import { ProjectSubmissionService } from '../project-submission/project-submission.service';
+import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohort-dialog.component';
+import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -51,10 +53,10 @@ import {ProjectSubmissionService} from '../project-submission/project-submission
     VgBufferingModule,
     ClipboardModule
   ],
-  exports: [SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, DeleteDialogComponent, AddCardDialogComponent
+  exports: [SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
     , VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent],
-  declarations: [SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, DeleteDialogComponent
+  declarations: [SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent
     , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
     , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent
     , ProfilePopupCardComponent, ExitCollectionDialogComponent, CancelCollectionDialogComponent, DeleteCollectionDialogComponent,
@@ -64,7 +66,9 @@ import {ProjectSubmissionService} from '../project-submission/project-submission
     ViewConflictDialogComponent, SelectDateDialogComponent,
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
     SubmissionViewComponent,
-    SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent],
+    SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
+    CancelCohortDialogComponent
+  ],
   providers: [
     DialogsService,
     TwilioServicesService,
@@ -73,12 +77,14 @@ import {ProjectSubmissionService} from '../project-submission/project-submission
   entryComponents: [
     SignupComponentDialog, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent, MultiselectTopicDialogComponent
     , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
-    , LiveSessionDialogComponent, CollectionGridDialogComponent, DeleteDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent, ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
+    , LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent, ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
     EditCalendarDialogComponent,
     AddTopicDialogComponent,
     AddLanguageDialogComponent,
     ViewConflictDialogComponent, SelectDateDialogComponent,
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
-    SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent],
+    SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
+    CancelCohortDialogComponent, DeleteCohortDialogComponent
+  ],
 })
 export class DialogsModule { }

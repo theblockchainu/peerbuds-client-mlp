@@ -65,26 +65,29 @@
           <div class="col-md-8">
             <div class="row">
               <div class="col-md-12">
-                <a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(experience)">< Back to experience page</a>
-                <p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}} <span *ngIf="calendarId">(Cohort View)</span></p>
-                <div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
-                  <span *ngIf="currentCalendar">
-                    <b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
-                    <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>
-                  </span>
-                  <span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
-                    <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
-                  <span *ngIf="userType==='teacher'">
-                    <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
-                  <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
-                    <md-icon style="top: 5px;">date_range</md-icon> Change cohort </a>
-                  <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
-                    <md-icon style="top: 5px;">date_range</md-icon> Select cohort to view participants </a>
-                </div>
-                <div *ngIf="userType==='public'" style="margin-top: -12px;">
-                  <span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
-                    <md-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
-                </div>
+                <a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(experience)">
+                  < Back to experience page</a>
+                    <p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
+                      <span *ngIf="calendarId">(Cohort View)</span>
+                    </p>
+                    <div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
+                      <span *ngIf="currentCalendar">
+                        <b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
+                        <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>
+                      </span>
+                      <span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
+                        <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
+                      <span *ngIf="userType==='teacher'">
+                        <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
+                      <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
+                        <md-icon style="top: 5px;">date_range</md-icon> Change cohort </a>
+                      <a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
+                        <md-icon style="top: 5px;">date_range</md-icon> Select cohort to view participants </a>
+                    </div>
+                    <div *ngIf="userType==='public'" style="margin-top: -12px;">
+                      <span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
+                        <md-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</md-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
+                    </div>
               </div>
             </div>
           </div>
@@ -95,11 +98,12 @@
               <button md-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="gotoEdit()">Edit</button>&emsp;
               <md-icon [mdMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</md-icon>
               <md-menu #menu="mdMenu">
-                <button md-menu-item *ngIf="userType==='participant'" (click)="openDeleteDialog('dropOut')">Cancel Participation</button>
-                <button md-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0" (click)=" openDeleteDialog( 'deleteExperience')">Delete Experience</button>
-                <button md-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0" (click)=" openDeleteDialog( 'cancelExperience')">Cancel Experience</button>
-                <button md-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0" (click)=" openDeleteDialog( 'deleteCohort')">Delete Cohort</button>
-                <button md-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'" (click)=" openDeleteDialog( 'cancelCohort')">Cancel Cohort</button>
+                <button md-menu-item *ngIf="userType==='participant'" (click)="dropOutExperience()">Cancel Participation</button>
+                <button md-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0" (click)="deleteExperience()">Delete Experience</button>
+                <button md-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0" (click)="cancelExperience()">Cancel Experience</button>
+                <button md-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0" (click)=" deleteCohort()">Delete Cohort</button>
+                <button md-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'"
+                  (click)=" cancelCohort()">Cancel Cohort</button>
               </md-menu>
             </div>
           </div>
@@ -209,8 +213,9 @@
                     </h3>
                   </div>
                   <div class="col-md-8 margin-top-8">
-                    <agm-map [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false" [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false" >
-                      <agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'" [strokeOpacity]="0.9" ></agm-circle>
+                    <agm-map [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false" [usePanning]="true" [zoomControl]="false"
+                      [zoom]="14" [streetViewControl]="false">
+                      <agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'" [strokeOpacity]="0.9"></agm-circle>
                     </agm-map>
                   </div>
                 </div>
@@ -267,8 +272,7 @@
                                 <div class="col-md-5">
                                   <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}"
                                     (error)="_collectionService.imgErrorHandler($event)">
-                                  <video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media" preload="metadata"
-                                    poster="../../../assets/images/placeholder-image.jpg">
+                                  <video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
                                     <source src="{{config.apiUrl+content.imageUrl}}">
                                   </video>
                                 </div>
@@ -285,9 +289,10 @@
                                       </div>
                                       <div *ngIf="content.type === 'in-person' && content.locations !== undefined && content.locations.length > 0 && (userType === 'participant' || userType === 'teacher')">
                                         <md-icon style="top: 2px; font-size: 15px; width: 15px;">place</md-icon>
-                                        {{content.locations[0].apt_suite | ucwords}} {{content.locations[0].street_address | ucwords}}, {{content.locations[0].city | ucwords}}
-                                        <br>
-                                        {{content.locations[0].state | ucwords}} {{content.locations[0].zip | ucwords}}, {{content.locations[0].country | ucwords}}
+                                        {{content.locations[0].apt_suite | ucwords}} {{content.locations[0].street_address | ucwords}}, {{content.locations[0].city
+                                        | ucwords}}
+                                        <br> {{content.locations[0].state | ucwords}} {{content.locations[0].zip | ucwords}},
+                                        {{content.locations[0].country | ucwords}}
                                       </div>
                                     </div>
                                     <div *ngIf="userType === 'public' || content.type === 'project'" class="col-md-12 margin-top-10 textJustify">
@@ -302,7 +307,7 @@
                                       <button md-button class="mat-border-button" *ngIf="!isLive(content) && hasRSVPd(content)" [disabled]="true">{{content.timetoSession}}</button>
                                     </div>
                                   </div>
-                                   <div class="row margin-top-10">
+                                  <div class="row margin-top-10">
                                     <div class="col-md-12">
                                       <a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate)">See details</a>
                                     </div>
@@ -723,7 +728,8 @@
               <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
                 <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
                   <span class="cal-day-badge"></span>
-                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})</span>
+                  <span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
+                    MMM' }})</span>
                 </div>
                 <div class="margin-top-10 margin-bottom-10">
                   <span>{{clickedDate | date:'EEEE, MMM d'}}</span>
@@ -776,7 +782,8 @@
                   <div class="col-md-8">
                     <div class="row">
                       <div class="col-md-12">
-                        <h2 style="display: inline-block; margin-bottom: -1px;">{{experience.price | convertCurrency: experience.currency |async}}</h2> &nbsp; per person<br/>
+                        <h2 style="display: inline-block; margin-bottom: -1px;">{{experience.price | convertCurrency: experience.currency |async}}</h2> &nbsp; per person
+                        <br/>
                         <p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;
                         <span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span>
                         <span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>

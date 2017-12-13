@@ -10,7 +10,6 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
@@ -38,7 +37,7 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 declare var FB: any;
 
@@ -77,16 +76,16 @@ export class MyCalendarUtils extends CalendarUtils {
     }
   ],
   animations: [
-      trigger('slideInOut', [
-          state('in', style({
-              transform: 'translate3d(0, 0, 0)'
-          })),
-          state('out', style({
-              transform: 'translate3d(100%, 0, 0)'
-          })),
-          transition('in => out', animate('400ms ease-in-out')),
-          transition('out => in', animate('400ms ease-in-out'))
-      ]),
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
   ]
 })
 export class WorkshopPageComponent implements OnInit {
@@ -647,55 +646,6 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   /**
-   * cancelWorkshop
-   */
-  public cancelWorkshop() {
-    const cancelObj = {
-      isCanceled: true,
-      canceledBy: this.userId,
-      status: 'cancelled'
-    };
-    this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
-      this.router.navigate(['workshop', this.workshopId]);
-    });
-  }
-
-  /**
-   * dropoutWorkshop
-   */
-  public dropOutWorkshop() {
-    this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
-      this.router.navigate(['workshop', this.workshopId]);
-    });
-  }
-
-  public cancelCohort() {
-    const cancelObj = {
-      status: 'cancelled'
-    };
-    this._collectionService.patchCalendar(this.calendarId, cancelObj).subscribe(() => {
-      this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
-    });
-  }
-
-  public deleteCohort() {
-    this._collectionService.deleteCalendar(this.calendarId).subscribe(() => {
-      this.router.navigate(['workshop', this.workshopId]);
-    });
-  }
-
-  /**
-   * deleteWorkshop
-   */
-  public deleteWorkshop() {
-    this._collectionService.deleteCollection(this.workshopId).subscribe((response) => {
-      this.router.navigate(['/console/teaching/workshops']);
-    });
-  }
-
-
-
-  /**
    * postComment
    */
   public postComment() {
@@ -793,31 +743,53 @@ export class WorkshopPageComponent implements OnInit {
       this.noOfReviews = 3;
     }
   }
-
-  openDeleteDialog(action: string) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action,
-      width: '30vw'
+  /**
+  * cancelWorkshop
+  */
+  public cancelWorkshop() {
+    this.dialogsService.openCancelCollection(this.workshop).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['workshop', this.workshopId]);
+      }
     });
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'deleteWorkshop') {
-        this.deleteWorkshop();
+  /**
+   * dropoutWorkshop
+   */
+  public dropOutWorkshop() {
+    this.dialogsService.openExitCollection(this.workshopId, this.userId).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['workshop', this.workshopId]);
       }
-      else if (result === 'deleteCohort') {
-        this.deleteCohort();
+    });
+  }
+
+  public cancelCohort() {
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+      if (res) {
+        this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
       }
-      else if (result === 'cancelWorkshop') {
-        this.cancelWorkshop();
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  public deleteCohort() {
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+      if (res) {
+        this.router.navigate(['workshop', this.workshopId]);
       }
-      else if (result === 'cancelCohort') {
-        this.cancelCohort();
-      }
-      else if (result === 'dropOut') {
-        this.dropOutWorkshop();
-      }
-      else {
-        console.log(result);
+    });
+  }
+
+  /**
+   * deleteWorkshop
+   */
+  public deleteWorkshop() {
+    this.dialogsService.openDeleteCollection(this.workshop).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['/console/teaching/workshops']);
       }
     });
   }
@@ -938,7 +910,7 @@ export class WorkshopPageComponent implements OnInit {
     this.loadingSimilarWorkshops = true;
     const query = {
       'include': [
-          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'workshop'} }}
+        { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars'], 'where': { 'type': 'workshop' } } }
       ]
     };
     this._topicService.getTopics(query).subscribe(
@@ -952,15 +924,15 @@ export class WorkshopPageComponent implements OnInit {
               }
               let hasActiveCalendar = false;
               if (collection.calendars) {
-                  collection.calendars.forEach(calendar => {
-                      if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-                          hasActiveCalendar = true;
-                          return;
-                      }
-                  });
+                collection.calendars.forEach(calendar => {
+                  if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                    hasActiveCalendar = true;
+                    return;
+                  }
+                });
               }
               if (hasActiveCalendar) {
-                  this.recommendations.collections.push(collection);
+                this.recommendations.collections.push(collection);
               }
             }
           });

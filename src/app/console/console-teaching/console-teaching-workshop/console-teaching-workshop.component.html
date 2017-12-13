@@ -52,13 +52,14 @@
                     <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
                     <!-- <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar> -->
                     <div class="cohortDate">
-                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
+                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+                        MMM' }}</span>
                     </div>
                     <div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
                       {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
                       <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
-                    <span  mdTooltip="{{consoleTeachingComponent.getProgressValue(collection)}}% completed">
+                    <span mdTooltip="{{consoleTeachingComponent.getProgressValue(collection)}}% completed">
                       <md-progress-bar style="margin-bottom: 15px;" mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></md-progress-bar>
                     </span>
                     <span *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart === 0">
@@ -98,7 +99,7 @@
                     </span>
                   </md-card-content>
                   <md-menu #ongoingCardMenu>
-                    <button md-menu-item (click)="cancelWorkshop(collection)">
+                    <button md-menu-item (click)="cancelCollection(collection)">
                       Cancel
                     </button>
                     <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
@@ -144,7 +145,8 @@
                           Approved {{_collectionService.getDaysBetween(collection.updatedAt, now)}}
                         </div> -->
                     <div class="cohortDate">
-                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
+                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+                        MMM' }}</span>
                     </div>
                     <div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
                       {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
@@ -162,7 +164,7 @@
                     </div>
                   </md-card-content>
                   <md-menu #upcomingCardMenu>
-                    <button md-menu-item (click)="cancelWorkshop(collection)">
+                    <button md-menu-item (click)="cancelCollection(collection)">
                       Cancel
                     </button>
                     <button md-menu-item (click)="_collectionService.openEditWorkshop(collection)">
@@ -227,7 +229,7 @@
                     </md-card-footer>
                   </md-card>
                   <md-menu #draftCardMenu>
-                    <button md-menu-item (click)="deleteWorkshop(collection)">
+                    <button md-menu-item (click)="deleteCollection(collection)">
                       Delete
                     </button>
                     <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
@@ -268,7 +270,7 @@
                     </md-card-footer>
                   </md-card>
                   <md-menu #draftCardMenu>
-                    <button md-menu-item>
+                    <button md-menu-item (click)="deleteCollection(collection)">
                       Delete
                     </button>
                     <button md-menu-item (click)="_collectionService.viewWorkshop(collection)">
@@ -319,9 +321,11 @@
                         <span>{{collection.participants.length}} Participants </span>
                       </div>
                       <div class="cohortCount">
-                        <a (click)="openCohortDetailDialog(collection, 'complete')">{{consoleTeachingComponent.getCompletedCalendars(collection.calendars).length}} cohorts completed </a>
+                        <a (click)="openCohortDetailDialog(collection, 'complete')">{{consoleTeachingComponent.getCompletedCalendars(collection.calendars).length}} cohorts completed
+                        </a>
                         <br>
-                        <a (click)="openCohortDetailDialog(collection, 'cancelled')">{{consoleTeachingComponent.getCanceledCalendars(collection.calendars).length}} cohorts cancelled </a>
+                        <a (click)="openCohortDetailDialog(collection, 'cancelled')">{{consoleTeachingComponent.getCanceledCalendars(collection.calendars).length}} cohorts cancelled
+                        </a>
                       </div>
                       <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.viewWorkshop(collection)">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
                       <div class="collectionSubtitle clickable" (click)="_collectionService.viewWorkshop(collection)">

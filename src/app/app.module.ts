@@ -46,8 +46,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     AboutUsComponent,
     WhitePaperComponent,
     PrivacyPolicyComponent,
-    TermsOfServiceComponent
-  ],
+    TermsOfServiceComponent],
   imports: [
     BrowserModule,
     CoreModule,
@@ -67,7 +66,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     AppRoutingModule,
     DefaultModule,
     AgmCoreModule.forRoot({
-        apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
+      apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
     }),
     Ng4GeoautocompleteModule.forRoot(),
     LoadingModule.forRoot({

@@ -149,24 +149,18 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     this.router.navigate(['workshop', workshop.id, 'edit', 1]);
   }
 
-  /**
-   * exitWorkshop
-   */
   public exitWorkshop(collection: any) {
-    this._dialogService.openDeleteDialog('dropOut').subscribe(result => {
-      if (result === 'dropOut') {
-        this._collectionService.removeParticipant(collection.id, this.userId).subscribe((response) => {
-          this.fetchWorkshop();
-          this.snackBar.open('You have dropped out of the workshop', 'Close', {
-            duration: 800
-          });
+    this._dialogService.openExitCollection(collection.id, this.userId).subscribe(result => {
+      if (result) {
+        this.fetchWorkshop();
+        this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {
+          duration: 800
         });
       } else {
         console.log(result);
       }
     });
   }
-
   public openCollection(collection: any) {
     this.router.navigateByUrl('/workshop/' + collection.id + '/calendar/' + collection.calendarId);
   }
