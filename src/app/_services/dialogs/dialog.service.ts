@@ -33,6 +33,7 @@ import { SubmissionViewComponent } from './submission-view/submission-view.compo
 import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
 import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
+import { ReportProfileComponent } from './report-profile/report-profile.component';
 @Injectable()
 export class DialogsService {
 
@@ -329,6 +330,13 @@ export class DialogsService {
             },
             width: '40vw'
         }).afterClosed();
+    }
+
+    public reportProfile() {
+        return this.dialog.open(ReportProfileComponent, {
+            width: '40vw',
+            height: '60vh'
+          }).afterClosed();
     }
 
 }

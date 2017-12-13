@@ -38,7 +38,10 @@ import { SubmissionViewComponent } from './submission-view/submission-view.compo
 import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
 import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
-import {ProjectSubmissionService} from '../project-submission/project-submission.service';
+import { ReportProfileComponent } from './report-profile/report-profile.component';
+
+import { ProjectSubmissionService } from '../project-submission/project-submission.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -64,7 +67,7 @@ import {ProjectSubmissionService} from '../project-submission/project-submission
     ViewConflictDialogComponent, SelectDateDialogComponent,
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
     SubmissionViewComponent,
-    SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent],
+    SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, ReportProfileComponent],
   providers: [
     DialogsService,
     TwilioServicesService,
@@ -79,6 +82,6 @@ import {ProjectSubmissionService} from '../project-submission/project-submission
     AddLanguageDialogComponent,
     ViewConflictDialogComponent, SelectDateDialogComponent,
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
-    SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent],
+    SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, ReportProfileComponent],
 })
 export class DialogsModule { }

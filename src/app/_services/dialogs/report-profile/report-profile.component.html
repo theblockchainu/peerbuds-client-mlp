@@ -1,0 +1,25 @@
+<div md-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-md-12 collectionContent">
+      <button disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+        <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+      </button>
+      <div class="mat-display-1" style="margin-bottom: 20px;">
+        <span>Report User</span>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div md-dialog-content class="alignContent" style="padding-left:0px!important">
+    <div class="content">
+    <p>Please Specify the reason for which you want to report this profile</p>
+    <md-form-field>
+      <textarea class="col-md-10" mdInput type="text" [(ngModel)]="reason"></textarea>
+    </md-form-field>
+    </div>
+  </div>
+  <div md-dialog-actions>
+    <button md-raised-button color="primary" [md-dialog-close]="reason" tabindex="2">Report</button>
+    <button md-raised-button color="grey" [md-dialog-close] tabindex="-1">Cancel</button>
+  </div>
+</div>

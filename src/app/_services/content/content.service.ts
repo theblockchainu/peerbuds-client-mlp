@@ -61,4 +61,16 @@ export class ContentService {
                       }
                     );
   }
+
+
+
+  public createRSVP(contentId, calendarId) {
+    const body = {
+      'contentId': contentId,
+      'calendarId': calendarId
+    };
+    return this.http
+           .post(this.config.apiUrl + '/api/contents/' + contentId + '/rsvps', body, this.options)
+           .map((response: Response) => response.json());
+  }
 }
