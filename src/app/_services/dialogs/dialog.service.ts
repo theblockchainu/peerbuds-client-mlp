@@ -12,7 +12,6 @@ import { VerifyPhoneDialogComponent } from './verify-phone-dialog/verify-phone-d
 import { CollectionGridDialogComponent } from './collection-grid-dialog/collection-grid-dialog.component';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable } from '@angular/core';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-card.component';
 import { RequestPasswordDialogComponent } from './forgot-pwd-dialog/forgot-pwd-dialog.component';
 import { ExitCollectionDialogComponent } from './exit-collection-dialog/exit-collection-dialog.component';
@@ -34,6 +33,8 @@ import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
 import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
 import { ReportProfileComponent } from './report-profile/report-profile.component';
+import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohort-dialog.component';
+
 @Injectable()
 export class DialogsService {
 
@@ -162,25 +163,22 @@ export class DialogsService {
         return dialogRef.afterClosed();
     }
 
-    openDeleteDialog(action: string) {
-        const dialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: action
-        });
-        return dialogRef.afterClosed();
-    }
 
     openDeleteCollection(collection: any) {
         const dialogRef = this.dialog.open(DeleteCollectionDialogComponent, {
             data: collection,
-            height: '23vh'
+            height: '28vh'
         });
 
         return dialogRef.afterClosed();
     }
 
-    openExitCollection(collection: any) {
+    openExitCollection(collectionId: string, userId: string) {
         const dialogRef = this.dialog.open(ExitCollectionDialogComponent, {
-            data: collection,
+            data: {
+                collectionId: collectionId,
+                userId: userId
+            },
             height: '23vh'
         });
         return dialogRef.afterClosed();
@@ -192,6 +190,13 @@ export class DialogsService {
             height: '23vh'
         });
         return dialogRef.afterClosed();
+    }
+
+    openDeleteCohort(calendarId: string) {
+        return this.dialog.open(DeleteCohortDialogComponent, {
+            data: calendarId,
+            height: '23vh'
+        }).afterClosed();
     }
 
     openProfilePopup(config: any) {
@@ -226,15 +231,6 @@ export class DialogsService {
         return dialogRef.afterClosed();
     }
 
-    public deleteCollection(action) {
-        let dialogRef: MdDialogRef<DeleteDialogComponent>;
-
-        dialogRef = this.dialog.open(DeleteDialogComponent);
-        dialogRef.componentInstance.action = action;
-
-        return dialogRef.afterClosed();
-
-    }
 
     public addNewTopic() {
         let dialogRef: MdDialogRef<AddTopicDialogComponent>;

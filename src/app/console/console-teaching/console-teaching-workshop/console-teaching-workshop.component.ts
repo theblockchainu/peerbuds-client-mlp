@@ -187,27 +187,29 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     });
   }
 
-  public deleteWorkshop(workshop: any) {
-    this._dialogService.openDeleteCollection(workshop).subscribe(result => {
+  public deleteCollection(collection: any) {
+    this._dialogService.openDeleteCollection(collection).subscribe(result => {
       if (result) {
         this.fetchData();
-        this.snackBar.open('Workshop Deleted', 'Close', {
+        this.snackBar.open(collection.type + 'Deleted', 'Close', {
           duration: 800
         });
       }
     });
   }
 
-  public cancelWorkshop(workshop: any) {
-    console.log(workshop);
-    // this._dialogService.openCancelCollection(workshop).subscribe(result => {
-    //   if (result) {
-    //     this.fetchData();
-    //     this.snackBar.open('Workshop Cancelled', 'Close', {
-    //       duration: 800
-    //     });
-    //   }
-    // });
+  /**
+   * cancelCollection
+collection:any     */
+  public cancelCollection(collection: any) {
+    this._dialogService.openCancelCollection(collection).subscribe(result => {
+      if (result) {
+        this.fetchData();
+        this.snackBar.open(collection.type + 'Cancelled', 'Close', {
+          duration: 800
+        });
+      }
+    });
   }
 
 }

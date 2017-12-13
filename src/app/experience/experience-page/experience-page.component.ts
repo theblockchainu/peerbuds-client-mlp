@@ -11,7 +11,6 @@ import { CollectionService } from '../../_services/collection/collection.service
 import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
@@ -699,13 +698,10 @@ export class ExperiencePageComponent implements OnInit {
    * cancelExperience
    */
   public cancelExperience() {
-    const cancelObj = {
-      isCancelled: true,
-      cancelledBy: this.userId,
-      status: 'cancelled'
-    };
-    this._collectionService.patchCollection(this.experienceId, cancelObj).subscribe((response) => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openCancelCollection(this.experience).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
@@ -713,23 +709,28 @@ export class ExperiencePageComponent implements OnInit {
    * dropoutExperience
    */
   public dropOutExperience() {
-    this._collectionService.removeParticipant(this.experienceId, this.userId).subscribe((response) => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
   public cancelCohort() {
-    const cancelObj = {
-      status: 'cancelled'
-    };
-    this._collectionService.patchCalendar(this.calendarId, cancelObj).subscribe(() => {
-      this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+      if (res) {
+        this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+      }
+    }, err => {
+      console.log(err);
     });
   }
 
   public deleteCohort() {
-    this._collectionService.deleteCalendar(this.calendarId).subscribe(() => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe(res => {
+      if (res) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
@@ -737,8 +738,10 @@ export class ExperiencePageComponent implements OnInit {
    * deleteExperience
    */
   public deleteExperience() {
-    this._collectionService.deleteCollection(this.experienceId).subscribe((response) => {
-      this.router.navigate(['/console/teaching/experiences']);
+    this.dialogsService.openDeleteCollection(this.experience).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['/console/teaching/experiences']);
+      }
     });
   }
 
@@ -893,34 +896,6 @@ export class ExperiencePageComponent implements OnInit {
     } else {
       this.noOfReviews = 3;
     }
-  }
-
-  openDeleteDialog(action: string) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action,
-      width: '30vw'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'deleteExperience') {
-        this.deleteExperience();
-      }
-      else if (result === 'deleteCohort') {
-        this.deleteCohort();
-      }
-      else if (result === 'cancelExperience') {
-        this.cancelExperience();
-      }
-      else if (result === 'cancelCohort') {
-        this.cancelCohort();
-      }
-      else if (result === 'dropOut') {
-        this.dropOutExperience();
-      }
-      else {
-        console.log(result);
-      }
-    });
   }
 
   viewParticipants() {

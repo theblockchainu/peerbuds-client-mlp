@@ -146,16 +146,14 @@ export class ConsoleLearningAllComponent implements OnInit {
     }
 
     /**
-     * exitWorkshop
+     * exitCollection
      */
     public exitCollection(collection: any) {
-        this._dialogService.openDeleteDialog('dropOut').subscribe(result => {
-            if (result === 'dropOut') {
-                this._collectionService.removeParticipant(collection.id, this.userId).subscribe((response) => {
-                    this.fetchCollections();
-                    this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {
-                        duration: 800
-                    });
+        this._dialogService.openExitCollection(collection.id, this.userId).subscribe(result => {
+            if (result) {
+                this.fetchCollections();
+                this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {
+                    duration: 800
                 });
             } else {
                 console.log(result);
