@@ -37,6 +37,8 @@ import { SubmissionViewComponent } from './submission-view/submission-view.compo
 import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
 import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
+import { ReportProfileComponent } from './report-profile/report-profile.component';
+
 import { ProjectSubmissionService } from '../project-submission/project-submission.service';
 import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohort-dialog.component';
 import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
@@ -67,7 +69,7 @@ import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohor
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
     SubmissionViewComponent,
     SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
-    CancelCohortDialogComponent
+    CancelCohortDialogComponent, ReportProfileComponent
   ],
   providers: [
     DialogsService,
@@ -84,7 +86,7 @@ import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohor
     ViewConflictDialogComponent, SelectDateDialogComponent,
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
     SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
-    CancelCohortDialogComponent, DeleteCohortDialogComponent
+    CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent
   ],
 })
 export class DialogsModule { }

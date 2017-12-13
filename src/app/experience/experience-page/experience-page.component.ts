@@ -8,11 +8,13 @@ import { ICarouselConfig, AnimationConfig } from 'angular4-carousel';
 
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
+import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
+import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
 import {
   startOfDay,
   endOfDay,
@@ -124,6 +126,7 @@ export class ExperiencePageComponent implements OnInit {
   public peerHasSubmission = false;
   public contentHasSubmission: any;
   public participants: Array<any>;
+  public peerRsvps: Array<any>;
   public allParticipants: Array<any>;
   public isRatingReceived = false;
 
@@ -189,6 +192,7 @@ export class ExperiencePageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _cookieUtilsService: CookieUtilsService,
     public _collectionService: CollectionService,
+    public _contentService: ContentService,
     public _topicService: TopicService,
     private _commentService: CommentService,
     public config: AppConfig,
@@ -215,6 +219,19 @@ export class ExperiencePageComponent implements OnInit {
     this.initializeForms();
     this.initialLoad = false;
     this.eventsForTheDay = {};
+
+    // const query = {
+    //   'include': [
+    //       'contents'
+    //   ]
+    // };
+    // this._collectionService.getRSVPd(this.userId, query).subscribe(
+    //   response => {
+    //     console.log(response);
+    //     this.peerRsvps = response;
+    //   }, err => {
+    //     console.log(err);
+    // });
   }
 
   refreshView(): void {
@@ -336,11 +353,13 @@ export class ExperiencePageComponent implements OnInit {
           this.itenariesObj[key].sort(function (a, b) {
             return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
           });
+          const contentObj = this.processContent(key);
           const itenary = {
             startDay: key,
             startDate: eventDate,
-            contents: this.itenariesObj[key]
+            contents: contentObj
           };
+          console.log(itenary);
           calendarItenary.push(itenary);
         }
       }
@@ -379,6 +398,28 @@ export class ExperiencePageComponent implements OnInit {
     this.refreshView();
   }
 
+  private processContent(key) {
+    const contentObj = this.itenariesObj[key];
+    const self = this;
+    if (contentObj) {
+      contentObj.forEach(content => {
+        content.hasRSVPd = false;
+        if (content.rsvps) {
+          content.rsvps.forEach(rsvp => {
+            if (rsvp.peer) {
+              const peer = _.find(rsvp.peer, function(o) { return o.id === self.userId; });
+              if (peer) {
+                content.hasRSVPd = true;
+                return;
+              }
+            }
+          });
+        }
+      });
+    }
+    return contentObj;
+  }
+
   private initializeExperience() {
     this.allParticipants = [];
     this.allItenaries = [];
@@ -389,7 +430,7 @@ export class ExperiencePageComponent implements OnInit {
         'views',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['locations', 'schedules', { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
+        { 'contents': ['locations', 'schedules', {'rsvps': 'peer'}, { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
       ],
       'relInclude': 'calendarId'
     };
@@ -445,12 +486,15 @@ export class ExperiencePageComponent implements OnInit {
                 }
               });
               this.setContentViews(this.itenariesObj[key]);
+              const contentObj = this.processContent(key);
+              // console.log(contentObj);
               const itenary = {
                 startDay: key,
                 startDate: startDate,
                 endDate: endDate,
-                contents: this.itenariesObj[key]
+                contents: contentObj
               };
+              // console.log(itenary);
               this.itenaryArray.push(itenary);
             }
           }
@@ -782,14 +826,50 @@ export class ExperiencePageComponent implements OnInit {
 
   public hasRSVPd(content) {
     // TODO: check if the user has RSVPd for this content
+    console.log('called');
   }
 
-  public rsvpToggle(content) {
-    // TODO: add RSVP for this user
+  rsvpContent(contentId) {
+    this._contentService.createRSVP(contentId, this.calendarId)
+        .subscribe((response: Response) => {
+          console.log(response);
+        });
   }
 
-  public viewRSVPs(content) {
+  public viewRSVPs(content, userType) {
+    let attendies = this.allParticipants;
+    if (content.rsvps) {
+      content.rsvps.forEach(rsvp => {
+        if (rsvp.peer) {
+          const peer = rsvp.peer[0];
+          const peerFound = _.find(attendies, function(o) { return o.id === peer.id; });
+          if (peerFound) {
+            peerFound.hasRSVPd = true;
+            peerFound.rsvpId = rsvp.id;
+            peerFound.isPresent = rsvp.isPresent;
+            return;
+          }
+        }
+      });
+    }
+    attendies = _.filter(attendies, function(o) { return o.hasRSVPd; });
     // TODO: view all RSVPs for this content
+    const dialogRef = this.dialog.open(ShowRSVPPopupComponent, {
+      data: {
+        userType: userType,
+        contentId: content.id,
+        attendies: attendies,
+        experience: this.experienceId
+      },
+      width: '45vw',
+      height: '90vh'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        location.reload();
+      }
+    });
   }
 
   public getDirections(content) {
