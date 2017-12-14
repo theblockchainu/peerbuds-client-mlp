@@ -7,9 +7,8 @@ import { CollectionService } from '../_services/collection/collection.service';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
-import { ReportProfileComponent } from './report-profile/report-profile.component';
 import { MdDialog, MdSnackBar } from '@angular/material';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import * as moment from 'moment';
 import _ from 'lodash';
@@ -19,16 +18,16 @@ import _ from 'lodash';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   animations: [
-      trigger('slideInOut', [
-          state('in', style({
-              transform: 'translate3d(0, 0, 0)'
-          })),
-          state('out', style({
-              transform: 'translate3d(100%, 0, 0)'
-          })),
-          transition('in => out', animate('400ms ease-in-out')),
-          transition('out => in', animate('400ms ease-in-out'))
-      ]),
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
   ]
 })
 export class ProfileComponent implements OnInit {
@@ -197,7 +196,7 @@ export class ProfileComponent implements OnInit {
                 , 'calendars']
             },
             { 'reviewsAboutYou': { 'peer': 'profiles' } },
-            { 'collections': [ {'reviews': { 'peer': 'profiles' }}, {'owners' : ['profiles']} ] }
+            { 'collections': [{ 'reviews': { 'peer': 'profiles' } }, { 'owners': ['profiles'] }] }
           ]
         }
       ]
@@ -261,13 +260,13 @@ export class ProfileComponent implements OnInit {
           this.ongoingWorkshops.push(collection);
         }
         if (collection.type === 'experience' && collection.pastCohortCount > 0) {
-            this.pastExperiences.push(collection);
+          this.pastExperiences.push(collection);
         }
         if (collection.type === 'experience' && collection.upcomingCohortCount > 0) {
-            this.upcomingExperiences.push(collection);
+          this.upcomingExperiences.push(collection);
         }
         if (collection.type === 'experience' && collection.currentCohortCount > 0) {
-            this.ongoingExperiences.push(collection);
+          this.ongoingExperiences.push(collection);
         }
       }
     });
@@ -278,7 +277,7 @@ export class ProfileComponent implements OnInit {
     collection.upcomingCohortCount = 0;
     collection.currentCohortCount = 0;
 
-    if(collection.calendars) {
+    if (collection.calendars) {
       collection.calendars.forEach(calendar => {
         if (calendar.endDate < this.today.toISOString()) {
           collection.pastCohortCount++;
@@ -354,20 +353,15 @@ export class ProfileComponent implements OnInit {
   }
 
   public toggleMaxReviews() {
-      if (this.maxVisibleReviews === 4) {
-          this.maxVisibleReviews = 999;
-      } else {
-          this.maxVisibleReviews = 4;
-      }
+    if (this.maxVisibleReviews === 4) {
+      this.maxVisibleReviews = 999;
+    } else {
+      this.maxVisibleReviews = 4;
+    }
   }
 
   public reportProfile() {
-    const dialogRef = this.dialog.open(ReportProfileComponent, {
-      width: '489px',
-      height: '285px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
+    this._dialogsService.reportProfile().subscribe(result => {
       if (result) {
         console.log('report' + result);
         this._profileService.reportProfile(this.urluserId, {
@@ -415,7 +409,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public getReviewedCalendar(calendars, calendarId) {
-    if(calendars) {
+    if (calendars) {
       return calendars.find((calendar) => {
         return calendar.id === calendarId;
       }) !== undefined ? calendars.find((calendar) => {

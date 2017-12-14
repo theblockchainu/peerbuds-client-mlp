@@ -7,7 +7,6 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { MdTabsModule } from '@angular/material';
 import { SeeDatesWorkshopComponent } from './see-dates-workshop/see-dates-workshop.component';
 import { ExtractLanguagePipe } from '../_shared/extract-language/extract-language.pipe';
-import { ReportProfileComponent } from './report-profile/report-profile.component';
 
 @NgModule({
   imports: [
@@ -16,7 +15,6 @@ import { ReportProfileComponent } from './report-profile/report-profile.componen
     ProfileRoutingModule,
     MdTabsModule
   ],
-  declarations: [ProfileComponent, SeeDatesWorkshopComponent, ExtractLanguagePipe, ReportProfileComponent],
-  bootstrap: [ReportProfileComponent]
+  declarations: [ProfileComponent, SeeDatesWorkshopComponent, ExtractLanguagePipe],
 })
 export class ProfileModule { }
