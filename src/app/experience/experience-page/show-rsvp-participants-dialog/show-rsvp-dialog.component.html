@@ -1,0 +1,36 @@
+<div md-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-md-12 collectionContent">
+      <button disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="closeDialog()">
+        <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+      </button>
+      <div class="mat-display-1" style="margin-bottom: 20px;">
+        <span>Attendies</span>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="margin-bottom-60" style="margin-top: -10px">
+      <span *ngIf="data.userType === 'teacher'" class="mat-body-2 col-md-offset-1 pull-right">Present</span>
+      <span *ngIf="data.userType === 'teacher'" class="mat-body-2 pull-right">Absent</span>
+  </div>
+  <div>
+    <div class="row" *ngFor="let attendie of data.attendies">
+      <div *ngIf="attendie.profiles">
+        <div class="col-md-1 vcenter">
+          <img src="{{config.apiUrl+attendie.profiles[0].picture_url}}" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+        </div>
+        <div class="col-md-6 vcenter">
+          <b>{{attendie.profiles[0].first_name +' '+ attendie.profiles[0].last_name }}</b> &emsp;
+          <span *ngIf="attendie.profiles[0].headline">{{attendie.profiles[0].headline}}</span>
+        </div>
+        <div class="pull-right" style="width:30%">
+            <md-radio-group class="col-md-offset-1">
+                <md-radio-button value="0" (click)="markPresence(attendie, 0)" [checked]="attendie.isPresent ===false" color="primary"></md-radio-button>
+                <md-radio-button value="1" class="col-md-offset-5" (click)="markPresence(attendie, 1)" [checked]="attendie.isPresent === true" color="primary"></md-radio-button>
+            </md-radio-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
