@@ -598,6 +598,47 @@
 
           <!--RIGHT SIDEBAR-->
           <div class="col-md-4 col-md-offset-1 right-content">
+            <div *ngIf="(userType==='teacher' || userType==='participant')">
+              <h3 class="margin-bottom-20">Taught By</h3>
+              <div class="row">
+                  <div class="col-md-12">
+                    <div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+                      <img (click)="openProfilePage(workshop.owners[0].id)" *ngIf="!workshop.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png"
+                        alt="A" class="circle-thumb" style="margin-left: 0px;">
+                      <img (click)="openProfilePage(workshop.owners[0].id)" *ngIf="workshop.owners[0].profiles[0].picture_url" src="{{config.apiUrl+workshop.owners[0].profiles[0].picture_url}}"
+                        class="circle-thumb" style="margin-left: 0px;">
+                    </div>
+                    <div style="display: inline-block; margin-left: 10px;">
+                      <div class="row">
+                        <div class="col-md-12 clickable" (click)="openProfilePage(workshop.owners[0].id)">
+                          <span *ngIf="workshop.owners[0].profiles[0].first_name !== undefined">
+                            {{workshop.owners[0].profiles[0].first_name | titlecase }} {{workshop.owners[0].profiles[0].last_name | titlecase }}
+                          </span>
+                          <span *ngIf="workshop.owners[0].profiles[0].first_name === undefined">
+                            John Doe
+                          </span>
+                        </div>
+                        <div class="col-md-12 mat-h5" *ngIf="workshop.owners[0].headline">
+                          {{workshop.owners[0].profiles[0].headline}}
+                        </div>
+                        <div class="col-md-12 mat-h5" *ngIf="!workshop.owners[0].headline">
+                          New user
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p>
+                      <span class="pre-wrapped">{{workshop.aboutHost | shorten: maxLength : '...'}}</span>
+                      <span *ngIf="workshop.aboutHost.length > maxLength" (click)="showAll(workshop.aboutHost.length)" style="color:#33bd9e">read more</span>
+                      <span *ngIf="workshop.aboutHost.length <= maxLength" (click)="showAll(workshop.aboutHost.length)" style="color:#33bd9e">show less</span>
+                    </p>
+                  </div>
+                </div>
+                <hr class="margin-top-10 margin-bottom-10">
+            </div>
             <div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
               <h3 class="margin-bottom-20">Participants</h3>
               <div>
