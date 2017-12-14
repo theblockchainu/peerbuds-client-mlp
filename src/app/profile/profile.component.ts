@@ -386,10 +386,10 @@ export class ProfileComponent implements OnInit {
   }
 
   public toggleMaxReviews() {
-    if (this.maxVisibleReviews === 2) {
+    if (this.maxVisibleReviews === 4) {
       this.maxVisibleReviews = 999;
     } else {
-      this.maxVisibleReviews = 2;
+      this.maxVisibleReviews = 4;
     }
   }
 
