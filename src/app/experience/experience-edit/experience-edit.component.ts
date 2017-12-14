@@ -130,6 +130,7 @@ export class ExperienceEditComponent implements OnInit {
   private payoutRuleNodeId: string;
   public payoutLoading = true;
   public payoutAccounts: Array<any>;
+  public freeExperience = false;
   // TypeScript public modifiers
   constructor(
     public router: Router,
@@ -1132,5 +1133,10 @@ export class ExperienceEditComponent implements OnInit {
     }
   }
 
+  onFreeChange(event) {
+    if (event) {
+      this.experience.controls['price'].setValue(0);
+    }
+  }
 }
 

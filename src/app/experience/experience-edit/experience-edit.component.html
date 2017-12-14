@@ -413,6 +413,11 @@
                   How much are you going to charge for this experience?
                 </p>
                 <h3 class="title">Price</h3>
+                <div class="row">
+                  <div class="col-md-3">
+                    <md-checkbox [(ngModel)]="freeExperience" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</md-checkbox>
+                  </div>
+                </div>
                 <div class="row margin-left-0">
                   <div class="col-md-3 padding-left-0">
                     <md-input-container [floatPlaceholder]="'never'" class="margin-top-20">
@@ -439,7 +444,7 @@
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(10)>Back</a> -->
                   <span class="pull-right" mdTooltip="Enter a price you wish to charge for this experience and its cancellation policy" [mdTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value">
-                    <button md-raised-button color="accent" type="Submit" [disabled]="(!experience.controls['price'].value || !experience.controls['cancellationPolicy'].value  || !experience.controls['currency'].value)">Continue</button>
+                    <button md-raised-button color="accent" type="Submit" [disabled]="(!workshop.controls['price'].value || !workshop.controls['cancellationPolicy'].value  || !workshop.controls['currency'].value) && !freeExperience">Continue</button>
                   </span>
                 </div>
               </form>
