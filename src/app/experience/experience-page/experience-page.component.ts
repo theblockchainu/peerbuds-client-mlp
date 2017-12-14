@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+// import { Location } from '@angular/common';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
 import * as moment from 'moment';
@@ -129,6 +130,7 @@ export class ExperiencePageComponent implements OnInit {
   public peerRsvps: Array<any>;
   public allParticipants: Array<any>;
   public isRatingReceived = false;
+  public maxLength = 140;
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
@@ -199,7 +201,8 @@ export class ExperiencePageComponent implements OnInit {
     private _fb: FormBuilder,
     private dialog: MdDialog,
     private dialogsService: DialogsService,
-    private snackBar: MdSnackBar
+    private snackBar: MdSnackBar,
+    // private location: Location
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.experienceId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
@@ -219,19 +222,6 @@ export class ExperiencePageComponent implements OnInit {
     this.initializeForms();
     this.initialLoad = false;
     this.eventsForTheDay = {};
-
-    // const query = {
-    //   'include': [
-    //       'contents'
-    //   ]
-    // };
-    // this._collectionService.getRSVPd(this.userId, query).subscribe(
-    //   response => {
-    //     console.log(response);
-    //     this.peerRsvps = response;
-    //   }, err => {
-    //     console.log(err);
-    // });
   }
 
   refreshView(): void {
@@ -525,7 +515,8 @@ export class ExperiencePageComponent implements OnInit {
           else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
             const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
             snackBarRef.onAction().subscribe(() => {
-              this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+              this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);              
+              // this.location.replaceState(this.location.host + '/' + 'experience' + '/' + this.experienceId + '/' + 'calendar' + '/' + this.calendarId);
             });
           }
         });
@@ -579,6 +570,15 @@ export class ExperiencePageComponent implements OnInit {
         this.loadingReviews = false;
       }
     });
+  }
+  public showAll(strLength) 
+  {
+    if (strLength > this.maxLength) {
+      this.maxLength = strLength;
+    }
+    else {
+      this.maxLength = 140;
+    }
   }
 
   private getBookmarks() {

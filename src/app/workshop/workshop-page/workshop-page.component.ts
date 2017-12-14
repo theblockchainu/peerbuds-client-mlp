@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+// import { Location } from '@angular/common';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
 import * as moment from 'moment';
@@ -104,6 +105,7 @@ export class WorkshopPageComponent implements OnInit {
   public busyReply = false;
   public initialLoad = true;
   public loggedInUser;
+  public maxLength = 140;
 
   public isReadonly = true;
   public noOfReviews = 3;
@@ -195,7 +197,8 @@ export class WorkshopPageComponent implements OnInit {
     private _fb: FormBuilder,
     private dialog: MdDialog,
     private dialogsService: DialogsService,
-    private snackBar: MdSnackBar
+    private snackBar: MdSnackBar,
+    // private location: Location
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.workshopId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
@@ -477,6 +480,7 @@ export class WorkshopPageComponent implements OnInit {
             const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
             snackBarRef.onAction().subscribe(() => {
               this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
+              // this.location.replaceState(this.location.host + '/' + 'workshop' + '/' + this.workshopId + '/' + 'calendar' + '/' + this.calendarId);
             });
           }
         });
@@ -497,6 +501,16 @@ export class WorkshopPageComponent implements OnInit {
     };
     if (this.workshop.imageUrls && this.workshop.imageUrls.length > 0) {
       this.carouselImages = this.workshop.imageUrls.map(url => this.config.apiUrl + url);
+    }
+  }
+
+  public showAll(strLength) 
+  {
+    if (strLength > this.maxLength) {
+      this.maxLength = strLength;
+    }
+    else {
+      this.maxLength = 140;
     }
   }
 
