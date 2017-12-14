@@ -35,7 +35,7 @@
                     <i class="mdi mdi-check-circle-outline mdi-24px primaryColor pull-right" style="margin-top: 2px"></i>
                   </div>
                   <p class="mat-caption" *ngIf="verifiedObj.text !== 'Government Id'" style="color:#767676;">{{verifiedObj.value}}</p>
-                  <a *ngIf="verifiedObj.text == 'Government Id'" href="{{config.apiUrl + verifiedObj.value.url}}" target="_blank">{{verifiedObj.value.originalFilename}}</a>
+                  <a *ngIf="verifiedObj.text == 'Government Id' && verifiedObj.value" href="{{config.apiUrl + verifiedObj.value.url}}" target="_blank">{{verifiedObj.value.originalFilename}}</a>
                 </div>
               </div>
             </div>

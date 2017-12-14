@@ -306,8 +306,10 @@
                                   <div class="col-md-12">
                                     <a md-button *ngIf="!content.hasRSVPd && userType==='participant'" class="mat-border-button" (click)="rsvpContent(content.id)">RSVP</a>
                                     <a md-button *ngIf="content.hasRSVPd || userType === 'teacher'" class="mat-border-button" (click)="viewRSVPs(content, userType)">View RSVPs</a>
-                                    <a md-button *ngIf="userType==='participant' && isLive(content) && content.hasRSVPd && calendarId" class="mat-border-button" (click)="getDirections(content)">Get directions</a>
-                                    <button md-button class="mat-border-button margin-top-10" *ngIf="userType==='participant' && !isLive(content) && content.hasRSVPd  && calendarId" [disabled]="true">{{content.timetoSession}}</button>
+                                    <a md-button *ngIf="userType==='participant' && isLive(content) && content.hasRSVPd && calendarId" class="mat-border-button"
+                                      (click)="getDirections(content)">Get directions</a>
+                                    <button md-button class="mat-border-button margin-top-10" *ngIf="userType==='participant' && !isLive(content) && content.hasRSVPd  && calendarId"
+                                      [disabled]="true">{{content.timetoSession}}</button>
                                   </div>
                                 </div>
                                 <div class="row margin-top-10">

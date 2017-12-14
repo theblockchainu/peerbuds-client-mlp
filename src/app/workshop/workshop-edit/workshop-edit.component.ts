@@ -1,6 +1,8 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
+
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
@@ -24,6 +26,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
 import { DISABLED } from '@angular/forms/src/model';
 import { TopicService } from '../../_services/topic/topic.service';
+import { PaymentService } from '../../_services/payment/payment.service';
 
 @Component({
   selector: 'app-workshop-edit',
@@ -51,7 +54,6 @@ export class WorkshopEditComponent implements OnInit {
   public timeline: FormGroup;
   public conditions: FormGroup;
   public phoneDetails: FormGroup;
-  public paymentInfo: FormGroup;
 
   public supplementUrls = new FormArray([]);
   private uploadingImage = false;
@@ -114,17 +116,20 @@ export class WorkshopEditComponent implements OnInit {
   public connectPaymentUrl = '';
 
   filteredLanguageOptions: Observable<string[]>;
-
+  public payoutLoading = true;
+  public payoutAccounts: Array<any>;
   public query = {
     'include': [
       'topics',
       'calendars',
       { 'participants': [{ 'profiles': ['work'] }] },
       { 'owners': [{ 'profiles': ['phone_numbers'] }] },
-      { 'contents': ['schedules'] }
+      { 'contents': ['schedules'] },
+      'payoutrules'
     ]
   };
-
+  public paymentInfo: FormGroup;
+  private payoutRuleNodeId: string;
   // TypeScript public modifiers
   constructor(
     public router: Router,
@@ -142,18 +147,17 @@ export class WorkshopEditComponent implements OnInit {
     private dialogsService: DialogsService,
     private snackBar: MdSnackBar,
     private _cookieUtilsService: CookieUtilsService,
-    private _topicService: TopicService
+    private _topicService: TopicService,
+    private _paymentService: PaymentService,
+    private location: Location
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.workshopId = params['collectionId'];
       this.step = params['step'];
-      // this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.apiUrl + '/workshop/' + this.workshopId + '/edit/' + this.step + '&state=1';
       this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri=' + this.config.clientUrl + '/console/account/payoutmethods&state=' + this.config.clientUrl + '/workshop/' + this.workshopId + '/edit/' + this.step;
       this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
       this.createTopicURL = config.apiUrl + '/api/' + this.config.uniqueDeveloperCode + '_topics';
     });
-
-
     this.userId = _cookieUtilsService.getValue('userId');
     this.options = requestHeaderService.getOptions();
 
@@ -169,6 +173,12 @@ export class WorkshopEditComponent implements OnInit {
       topicName: ['', Validators.requiredTrue]
     });
 
+    this.paymentInfo = this._fb.group({
+      id: ''
+    });
+    // this.paymentInfo.controls['id'].valueChanges.subscribe((res) => {
+    //   this.updatePayoutRule(res);
+    // });
     this.workshop = this._fb.group({
       // id: '',
       type: 'workshop',
@@ -221,9 +231,6 @@ export class WorkshopEditComponent implements OnInit {
       inputOTP: ''
     });
 
-    this.paymentInfo = this._fb.group({
-
-    });
     this.initializeFormFields();
     this.initializeWorkshop();
 
@@ -238,6 +245,41 @@ export class WorkshopEditComponent implements OnInit {
   private extractTime(dateString: string) {
     const time = moment.utc(dateString).local().format('HH:mm:ss');
     return time;
+  }
+
+  private updatePayoutRule(newPayoutId) {
+    if (this.payoutRuleNodeId) {
+      this.payoutLoading = true;
+      this._paymentService.patchPayoutRule(this.payoutRuleNodeId, newPayoutId).subscribe(res => {
+        if (res) {
+          this.payoutLoading = false;
+          this.snackBar.open('Payout Account Updated', 'close', {
+            duration: 500
+          });
+        }
+      }, err => {
+        this.payoutLoading = false;
+        this.snackBar.open('Unable to update account', 'close', {
+          duration: 500
+        });
+      });
+    } else {
+      this._paymentService.postPayoutRule(this.workshopId, newPayoutId).subscribe(res => {
+        if (res) {
+          this.payoutLoading = false;
+          this.snackBar.open('Payout Account Added', 'close', {
+            duration: 500
+          });
+          this.payoutRuleNodeId = res.id;
+        }
+      }, err => {
+        this.payoutLoading = false;
+        this.snackBar.open('Unable to Add account', 'close', {
+          duration: 500
+        });
+      });
+
+    }
   }
 
   private initializeTimeLine(res) {
@@ -426,9 +468,12 @@ export class WorkshopEditComponent implements OnInit {
         .subscribe((res) => {
           console.log(res);
           this.workshopData = res;
+          if (this.workshopData.payoutrules && this.workshopData.payoutrules.length > 0) {
+            this.payoutRuleNodeId = this.workshopData.payoutrules[0].id;
+          }
+          this.retrieveAccounts();
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
-
           if (res.status === 'active') {
             this.sidebarMenuItems[3].visible = false;
             this.sidebarMenuItems[4].visible = true;
@@ -457,6 +502,34 @@ export class WorkshopEditComponent implements OnInit {
   }
 
 
+
+  private retrieveAccounts() {
+    this.payoutAccounts = [];
+    // this._paymentService.retrieveConnectedAccount().subscribe(result => {
+    //   console.log(result);
+    //   result.forEach(account => {
+    //     this.payoutAccounts = this.payoutAccounts.concat(account.external_accounts.data);
+    //   });
+    //   this.payoutLoading = false;
+    // }, err => {
+    //   console.log(err);
+    //   this.payoutLoading = false;
+    // });
+    this._paymentService.retrieveLocalPayoutAccounts().subscribe(result => {
+      console.log(result);
+      this.payoutAccounts = result;
+      this.payoutLoading = false;
+      if (this.payoutRuleNodeId) {
+        this.paymentInfo.controls['id'].patchValue(this.workshopData.payoutrules[0].payoutId1);
+      }
+      this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
+        this.updatePayoutRule(res);
+      });
+    }, err => {
+      console.log(err);
+      this.payoutLoading = false;
+    });
+  }
 
   public selected(event) {
     if (event.length > 3) {
@@ -1020,10 +1093,16 @@ export class WorkshopEditComponent implements OnInit {
   submitOTP() {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
       .subscribe((res) => {
-        console.log('Token Verified');
+        console.log(res);
+        this.snackBar.open('Token Verified', 'close', {
+          duration: 500
+        });
+        this.step++;
       },
       (error) => {
-        this.snackBar.open(error.message);
+        this.snackBar.open(error.message, 'close', {
+          duration: 500
+        });
       });
   }
 

@@ -1,6 +1,7 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
 import * as Rx from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
@@ -22,6 +23,7 @@ import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.se
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
 import { TopicService } from '../../_services/topic/topic.service';
+import { PaymentService } from '../../_services/payment/payment.service';
 
 
 @Component({
@@ -120,10 +122,14 @@ export class ExperienceEditComponent implements OnInit {
       'calendars',
       { 'participants': [{ 'profiles': ['work'] }] },
       { 'owners': [{ 'profiles': ['phone_numbers'] }] },
-      { 'contents': ['schedules', 'locations'] }
+      { 'contents': ['schedules', 'locations'] },
+      'payoutrules'
     ]
   };
 
+  private payoutRuleNodeId: string;
+  public payoutLoading = true;
+  public payoutAccounts: Array<any>;
   // TypeScript public modifiers
   constructor(
     public router: Router,
@@ -141,7 +147,9 @@ export class ExperienceEditComponent implements OnInit {
     private dialogsService: DialogsService,
     private snackBar: MdSnackBar,
     private _cookieUtilsService: CookieUtilsService,
-    private _topicService: TopicService
+    private _topicService: TopicService,
+    private _paymentService: PaymentService,
+    private location: Location
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.experienceId = params['collectionId'];
@@ -214,7 +222,7 @@ export class ExperienceEditComponent implements OnInit {
     });
 
     this.paymentInfo = this._fb.group({
-
+      id: ''
     });
     this.initializeFormFields();
     this.initializeExperience();
@@ -325,15 +333,15 @@ export class ExperienceEditComponent implements OnInit {
         endTime: ['']
       }),
       location: this._fb.group({
-          location_name: [''],
-          country: [null],
-          street_address: [null],
-          apt_suite: [null],
-          city: [null],
-          state: [null],
-          zip: [null],
-          map_lat: [null],
-          map_lng: [null]
+        location_name: [''],
+        country: [null],
+        street_address: [null],
+        apt_suite: [null],
+        city: [null],
+        state: [null],
+        zip: [null],
+        map_lat: [null],
+        map_lng: [null]
       }),
       pending: ['']
     });
@@ -431,6 +439,10 @@ export class ExperienceEditComponent implements OnInit {
         .subscribe((res) => {
           console.log(res);
           this.experienceData = res;
+          if (this.experienceData.payoutrules && this.experienceData.payoutrules.length > 0) {
+            this.payoutRuleNodeId = this.experienceData.payoutrules[0].id;
+          }
+          this.retrieveAccounts();
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
 
@@ -1021,10 +1033,16 @@ export class ExperienceEditComponent implements OnInit {
   submitOTP() {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
       .subscribe((res) => {
-        console.log('Token Verified');
+        console.log(res);
+        this.snackBar.open('Token Verified', 'close', {
+          duration: 500
+        });
+        this.step++;
       },
       (error) => {
-        this.snackBar.open(error.message);
+        this.snackBar.open(error.message, 'close', {
+          duration: 500
+        });
       });
   }
 
@@ -1049,6 +1067,69 @@ export class ExperienceEditComponent implements OnInit {
 
   sort(calendars, param1, param2) {
     return _.sortBy(calendars, [param1, param2]);
+  }
+
+  private retrieveAccounts() {
+    this.payoutAccounts = [];
+    // this._paymentService.retrieveConnectedAccount().subscribe(result => {
+    //   console.log(result);
+    //   result.forEach(account => {
+    //     this.payoutAccounts = this.payoutAccounts.concat(account.external_accounts.data);
+    //   });
+    //   this.payoutLoading = false;
+    // }, err => {
+    //   console.log(err);
+    //   this.payoutLoading = false;
+    // });
+    this._paymentService.retrieveLocalPayoutAccounts().subscribe(result => {
+      console.log(result);
+      this.payoutAccounts = result;
+      this.payoutLoading = false;
+      if (this.payoutRuleNodeId) {
+        this.paymentInfo.controls['id'].patchValue(this.experienceData.payoutrules[0].payoutId1);
+      }
+      this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
+        this.updatePayoutRule(res);
+      });
+    }, err => {
+      console.log(err);
+      this.payoutLoading = false;
+    });
+  }
+
+  private updatePayoutRule(newPayoutId) {
+    if (this.payoutRuleNodeId) {
+      this.payoutLoading = true;
+      this._paymentService.patchPayoutRule(this.payoutRuleNodeId, newPayoutId).subscribe(res => {
+        if (res) {
+          this.payoutLoading = false;
+          this.snackBar.open('Payout Account Updated', 'close', {
+            duration: 500
+          });
+        }
+      }, err => {
+        this.payoutLoading = false;
+        this.snackBar.open('Unable to update account', 'close', {
+          duration: 500
+        });
+      });
+    } else {
+      this._paymentService.postPayoutRule(this.experienceId, newPayoutId).subscribe(res => {
+        if (res) {
+          this.payoutLoading = false;
+          this.snackBar.open('Payout Account Added', 'close', {
+            duration: 500
+          });
+          this.payoutRuleNodeId = res.id;
+        }
+      }, err => {
+        this.payoutLoading = false;
+        this.snackBar.open('Unable to Add account', 'close', {
+          duration: 500
+        });
+      });
+
+    }
   }
 
 }
