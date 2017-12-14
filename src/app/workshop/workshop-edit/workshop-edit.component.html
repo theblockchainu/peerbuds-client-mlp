@@ -555,6 +555,7 @@
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Do you want to provide your phone number to learners?</h2>
               <div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
+              {{phoneDetails.value |json}}
               <form [formGroup]="phoneDetails">
                 <div style="margin-top:50px;">
                   <md-radio-group>

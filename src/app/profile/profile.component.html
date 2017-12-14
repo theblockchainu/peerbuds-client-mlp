@@ -86,7 +86,11 @@
                     <div class="mat-title">About Me</div>
                 </div>
                 <div class="col-md-12">
-                    <p class="pre-wrapped alignJustify" *ngIf="profileObj.description">{{profileObj.description | ucfirst | shorten: 100: 'Read More...'}}</p>
+                    <p class="alignJustify" *ngIf="profileObj.description">
+                        <span class="pre-wrapped alignJustify">{{profileObj.description | ucfirst | shorten: maxLength : '...'}}</span>
+                        <span *ngIf="profileObj.description.length > maxLength" (click)="showAll(profileObj.description.length)" style="color:#33bd9e">read more</span>
+                        <span *ngIf="profileObj.description.length <= maxLength" (click)="showAll(profileObj.description.length)" style="color:#33bd9e">show less</span>
+                    </p>
                     <p *ngIf="!profileObj.description">No description provided.
                         <a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
                     </p>
@@ -220,13 +224,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mat-body-2">
-                                <span>From learners ({{profileObj.peer[0].reviewsAboutYou ? profileObj.peer[0].reviewsAboutYou.length : '0'}})</span>
+                                <span>From Learners ({{reviewsFromLearners ? reviewsFromLearners.length : '0'}})</span>
                             </div>
                         </div>
                         <hr>
                         <div class="col-md-12 text-center reviews">
-                            <div *ngFor="let review of profileObj.peer[0].reviewsAboutYou; let i=index;">
-                                <div class="review-section" *ngIf="review.peer !== undefined && i <= maxVisibleReviews">
+                            <div *ngFor="let review of reviewsFromLearners; let i=index;">
+                                <div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviews">
                                     <div class="row review-top" style="margin-left:0px;">
                                         <div class="col-md-2 padding-left-0 review-thumb pull-left">
                                             <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
@@ -256,18 +260,18 @@
                                 </div>
                             </div>
                             <div class="margin-top-20"></div>
-                            <span *ngIf="profileObj.peer[0].reviewsAboutYou && profileObj.peer[0].reviewsAboutYou.length > maxVisibleReviews">
+                            <span *ngIf="reviewsFromLearners && reviewsFromLearners.length > maxVisibleReviews">
                                 <a class="clickable" (click)="toggleMaxReviews()">
                                     <strong> Show more </strong>
                                 </a>
                             </span>
-                            <span *ngIf="profileObj.peer[0].reviewsAboutYou && profileObj.peer[0].reviewsAboutYou.length < maxVisibleReviews">
+                            <span *ngIf="reviewsFromLearners && reviewsFromLearners.length < maxVisibleReviews && reviewsFromLearners.length > 0">
                                 <a class="clickable" (click)="toggleMaxReviews()">
                                     <strong> Show less </strong>
                                 </a>
                             </span>
                             <!-- <hr> -->
-                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!profileObj.peer[0].reviewsAboutYou">
+                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!reviewsFromLearners">
                                 <span>This user has not received a review yet</span>
                             </div>
                             <hr>
@@ -276,12 +280,57 @@
                     <div class="row" style="padding-top: 20px;">
                         <div class="col-md-12">
                             <div class="mat-body-2">
-                                <span>From teachers (0)</span>
+                                <span>From Teachers ({{reviewsFromTeachers ? reviewsFromTeachers.length : '0'}})</span>
                             </div>
                         </div>
                         <hr>
-                        <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
-                            <span>This user has not received a review yet</span>
+                        <div class="col-md-12 text-center reviews">
+                            <div *ngFor="let review of reviewsFromTeachers; let i=index;">
+                                <div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviews">
+                                    <div class="row review-top" style="margin-left:0px;">
+                                        <div class="col-md-2 padding-left-0 review-thumb pull-left">
+                                            <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
+                                        </div>
+                                        <div class="col-md-4 reviewer padding-left-0">
+                                            <div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
+                                            </div>
+                                            <p-rating class="rating" [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
+                                        </div>
+                                    </div>
+                                    <div class="row review-content mat-body-1 margin-top-10" style="margin-left:0px;">
+
+                                        <div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
+                                        <div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
+                                            <span>{{ getReviewedCollection(profileObj.peer[0], review.collectionId).type | titlecase}}
+                                            </span>
+                                            <span class="bullet"></span>
+                                            <span>{{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
+                                                review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
+                                            <span class="bullet"></span>
+                                            <span>
+                                                <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title }}
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="margin-top-20"></div>
+                            <span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length > maxVisibleReviews">
+                                <a class="clickable" (click)="toggleMaxReviews()">
+                                    <strong> Show more </strong>
+                                </a>
+                            </span>
+                            <span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length < maxVisibleReviews && reviewsFromTeachers.length > 0">
+                                <a class="clickable" (click)="toggleMaxReviews()">
+                                    <strong> Show less </strong>
+                                </a>
+                            </span>
+                            <!-- <hr> -->
+                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!reviewsFromTeachers">
+                                <span>This user has not received a review yet</span>
+                            </div>
+                            <hr>
                         </div>
                     </div>
                 </div>
