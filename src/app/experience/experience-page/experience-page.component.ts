@@ -959,14 +959,23 @@ export class ExperiencePageComponent implements OnInit {
     this.loadingSimilarExperiences = true;
     const query = {
       'include': [
-          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'experience'} }}
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars', 'locations'], 'where': {'type': 'experience'} }}
       ]
     };
     this._topicService.getTopics(query).subscribe(
       (response) => {
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
+            let experienceLocation = 'Unknown location';
             if (collection.status === 'active' && collection.id !== this.experienceId) {
+              if (collection.contents) {
+                  collection.contents.forEach(content => {
+                      if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
+                          experienceLocation = content.locations[0].city;
+                      }
+                  });
+                  collection.location = experienceLocation;
+              }
               if (collection.owners && collection.owners[0].reviewsAboutYou) {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
