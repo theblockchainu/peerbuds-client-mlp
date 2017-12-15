@@ -413,7 +413,12 @@
                   How much are you going to charge for this workshop?
                 </p>
                 <h3 class="title">Price</h3>
-                <div class="row margin-left-0">
+                <div class="row">
+                  <div class="col-md-3">
+                    <md-checkbox [(ngModel)]="freeWorkshop" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</md-checkbox>
+                  </div>
+                </div>
+                <div class="row margin-left-0" *ngIf="!freeWorkshop">
                   <div class="col-md-3 padding-left-0">
                     <md-input-container [floatPlaceholder]="'never'" class="margin-top-20">
                       <input type="number" mdInput #price formControlName="price" placeholder="0" min="1" required>
@@ -439,7 +444,7 @@
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(10)>Back</a> -->
                   <span class="pull-right" mdTooltip="Enter a price you wish to charge for this workshop and its cancellation policy" [mdTooltipDisabled]="workshop.controls['price'].value && workshop.controls['currency'].value  && workshop.controls['cancellationPolicy'].value">
-                    <button md-raised-button color="accent" type="Submit" [disabled]="(!workshop.controls['price'].value || !workshop.controls['cancellationPolicy'].value  || !workshop.controls['currency'].value)">Continue</button>
+                    <button md-raised-button color="accent" type="Submit" [disabled]="(!workshop.controls['price'].value || !workshop.controls['cancellationPolicy'].value  || !workshop.controls['currency'].value) && !freeWorkshop">Continue</button>
                   </span>
                 </div>
               </form>
