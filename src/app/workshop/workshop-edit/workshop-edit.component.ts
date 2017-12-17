@@ -114,7 +114,7 @@ export class WorkshopEditComponent implements OnInit {
   public isPhoneVerified = false;
   public isSubmitted = false;
   public connectPaymentUrl = '';
-
+  public freeWorkshop = false;
   filteredLanguageOptions: Observable<string[]>;
   public payoutLoading = true;
   public payoutAccounts: Array<any>;
@@ -194,7 +194,7 @@ export class WorkshopEditComponent implements OnInit {
       videoUrls: [],
       imageUrls: [],
       totalHours: '',
-      price: '',
+      price: 0,
       currency: '',
       cancellationPolicy: '',
       ageLimit: '',
@@ -1127,6 +1127,12 @@ export class WorkshopEditComponent implements OnInit {
 
   sort(calendars, param1, param2) {
     return _.sortBy(calendars, [param1, param2]);
+  }
+
+  onFreeChange(event) {
+    if (event) {
+      this.workshop.controls['price'].setValue(0);
+    }
   }
 
 }
