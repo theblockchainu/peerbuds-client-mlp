@@ -187,27 +187,27 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
     });
   }
 
-  public deleteExperience(action: string, experience: any) {
-    this._dialogService.openDeleteDialog(action).subscribe(result => {
-      if (result === 'delete') {
-        this._collectionService.deleteCollection(experience.id).subscribe(res => {
-          this.fetchData();
-          this.snackBar.open('Experience Deleted', 'Close', {
-            duration: 800
-          });
+  public deleteCollection(collection: any) {
+    this._dialogService.openDeleteCollection(collection).subscribe(result => {
+      if (result) {
+        this.fetchData();
+        this.snackBar.open(collection.type + 'Deleted', 'Close', {
+          duration: 800
         });
-      } else if (result === 'cancel') {
-        const cancelObj = {
-          isCancelled: true
-        };
-        this._collectionService.patchCollection(experience.id, cancelObj).subscribe((response) => {
-          this.fetchData();
-          this.snackBar.open('Experience Cancelled', 'Close', {
-            duration: 800
-          });
+      }
+    });
+  }
+
+  /**
+   * cancelCollection
+collection:any     */
+  public cancelCollection(collection: any) {
+    this._dialogService.openCancelCollection(collection).subscribe(result => {
+      if (result) {
+        this.fetchData();
+        this.snackBar.open(collection.type + 'Cancelled', 'Close', {
+          duration: 800
         });
-      } else {
-        console.log(result);
       }
     });
   }

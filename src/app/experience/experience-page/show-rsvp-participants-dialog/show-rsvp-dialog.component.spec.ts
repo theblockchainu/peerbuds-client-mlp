@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteDialogComponent } from './delete-dialog.component';
+import { ShowRSVPPopupComponent } from './show-rsvp-dialog.component';
 
-describe('DeleteDialogComponent', () => {
-  let component: DeleteDialogComponent;
-  let fixture: ComponentFixture<DeleteDialogComponent>;
+describe('ContentOnlineComponent', () => {
+  let component: ShowRSVPPopupComponent;
+  let fixture: ComponentFixture<ShowRSVPPopupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeleteDialogComponent ]
+      declarations: [ ShowRSVPPopupComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeleteDialogComponent);
+    fixture = TestBed.createComponent(ShowRSVPPopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

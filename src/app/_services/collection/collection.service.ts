@@ -771,4 +771,16 @@ collectionID:string,userId:string,calendarId:string   */
     return tempMoment;
   }
 
+  /**
+   * markPresence for a peer in content rsvp
+   */
+  public markPresence(peerId, rsvpId, isPresent) {
+    const body= {
+      'isPresent' : isPresent
+    }
+    return this.http
+    .put(this.config.apiUrl + '/api/peers/' + peerId + '/rsvps/' + rsvpId, body , this.options)
+    .map((response: Response) => response.json());
+  }
+
 }

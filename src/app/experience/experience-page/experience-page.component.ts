@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+// import { Location } from '@angular/common';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
 import * as moment from 'moment';
@@ -8,12 +9,13 @@ import { ICarouselConfig, AnimationConfig } from 'angular4-carousel';
 
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
+import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
+import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
 import {
   startOfDay,
   endOfDay,
@@ -125,8 +127,10 @@ export class ExperiencePageComponent implements OnInit {
   public peerHasSubmission = false;
   public contentHasSubmission: any;
   public participants: Array<any>;
+  public peerRsvps: Array<any>;
   public allParticipants: Array<any>;
   public isRatingReceived = false;
+  public maxLength = 140;
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
@@ -190,13 +194,15 @@ export class ExperiencePageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _cookieUtilsService: CookieUtilsService,
     public _collectionService: CollectionService,
+    public _contentService: ContentService,
     public _topicService: TopicService,
     private _commentService: CommentService,
     public config: AppConfig,
     private _fb: FormBuilder,
     private dialog: MdDialog,
     private dialogsService: DialogsService,
-    private snackBar: MdSnackBar
+    private snackBar: MdSnackBar,
+    // private location: Location
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.experienceId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
@@ -337,11 +343,13 @@ export class ExperiencePageComponent implements OnInit {
           this.itenariesObj[key].sort(function (a, b) {
             return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
           });
+          const contentObj = this.processContent(key);
           const itenary = {
             startDay: key,
             startDate: eventDate,
-            contents: this.itenariesObj[key]
+            contents: contentObj
           };
+          console.log(itenary);
           calendarItenary.push(itenary);
         }
       }
@@ -380,6 +388,28 @@ export class ExperiencePageComponent implements OnInit {
     this.refreshView();
   }
 
+  private processContent(key) {
+    const contentObj = this.itenariesObj[key];
+    const self = this;
+    if (contentObj) {
+      contentObj.forEach(content => {
+        content.hasRSVPd = false;
+        if (content.rsvps) {
+          content.rsvps.forEach(rsvp => {
+            if (rsvp.peer) {
+              const peer = _.find(rsvp.peer, function(o) { return o.id === self.userId; });
+              if (peer) {
+                content.hasRSVPd = true;
+                return;
+              }
+            }
+          });
+        }
+      });
+    }
+    return contentObj;
+  }
+
   private initializeExperience() {
     this.allParticipants = [];
     this.allItenaries = [];
@@ -390,7 +420,7 @@ export class ExperiencePageComponent implements OnInit {
         'views',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['locations', 'schedules', { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
+        { 'contents': ['locations', 'schedules', {'rsvps': 'peer'}, { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
       ],
       'relInclude': 'calendarId'
     };
@@ -446,12 +476,15 @@ export class ExperiencePageComponent implements OnInit {
                 }
               });
               this.setContentViews(this.itenariesObj[key]);
+              const contentObj = this.processContent(key);
+              // console.log(contentObj);
               const itenary = {
                 startDay: key,
                 startDate: startDate,
                 endDate: endDate,
-                contents: this.itenariesObj[key]
+                contents: contentObj
               };
+              // console.log(itenary);
               this.itenaryArray.push(itenary);
             }
           }
@@ -483,6 +516,7 @@ export class ExperiencePageComponent implements OnInit {
             const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
             snackBarRef.onAction().subscribe(() => {
               this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+              // this.location.replaceState(this.location.host + '/' + 'experience' + '/' + this.experienceId + '/' + 'calendar' + '/' + this.calendarId);
             });
           }
         });
@@ -536,6 +570,15 @@ export class ExperiencePageComponent implements OnInit {
         this.loadingReviews = false;
       }
     });
+  }
+  public showAll(strLength)
+  {
+    if (strLength > this.maxLength) {
+      this.maxLength = strLength;
+    }
+    else {
+      this.maxLength = 140;
+    }
   }
 
   private getBookmarks() {
@@ -655,13 +698,10 @@ export class ExperiencePageComponent implements OnInit {
    * cancelExperience
    */
   public cancelExperience() {
-    const cancelObj = {
-      isCancelled: true,
-      cancelledBy: this.userId,
-      status: 'cancelled'
-    };
-    this._collectionService.patchCollection(this.experienceId, cancelObj).subscribe((response) => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openCancelCollection(this.experience).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
@@ -669,23 +709,28 @@ export class ExperiencePageComponent implements OnInit {
    * dropoutExperience
    */
   public dropOutExperience() {
-    this._collectionService.removeParticipant(this.experienceId, this.userId).subscribe((response) => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
   public cancelCohort() {
-    const cancelObj = {
-      status: 'cancelled'
-    };
-    this._collectionService.patchCalendar(this.calendarId, cancelObj).subscribe(() => {
-      this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+      if (res) {
+        this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+      }
+    }, err => {
+      console.log(err);
     });
   }
 
   public deleteCohort() {
-    this._collectionService.deleteCalendar(this.calendarId).subscribe(() => {
-      this.router.navigate(['experience', this.experienceId]);
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe(res => {
+      if (res) {
+        this.router.navigate(['experience', this.experienceId]);
+      }
     });
   }
 
@@ -693,8 +738,10 @@ export class ExperiencePageComponent implements OnInit {
    * deleteExperience
    */
   public deleteExperience() {
-    this._collectionService.deleteCollection(this.experienceId).subscribe((response) => {
-      this.router.navigate(['/console/teaching/experiences']);
+    this.dialogsService.openDeleteCollection(this.experience).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['/console/teaching/experiences']);
+      }
     });
   }
 
@@ -779,14 +826,50 @@ export class ExperiencePageComponent implements OnInit {
 
   public hasRSVPd(content) {
     // TODO: check if the user has RSVPd for this content
+    console.log('called');
   }
 
-  public rsvpToggle(content) {
-    // TODO: add RSVP for this user
+  rsvpContent(contentId) {
+    this._contentService.createRSVP(contentId, this.calendarId)
+        .subscribe((response: Response) => {
+          console.log(response);
+        });
   }
 
-  public viewRSVPs(content) {
+  public viewRSVPs(content, userType) {
+    let attendies = this.allParticipants;
+    if (content.rsvps) {
+      content.rsvps.forEach(rsvp => {
+        if (rsvp.peer) {
+          const peer = rsvp.peer[0];
+          const peerFound = _.find(attendies, function(o) { return o.id === peer.id; });
+          if (peerFound) {
+            peerFound.hasRSVPd = true;
+            peerFound.rsvpId = rsvp.id;
+            peerFound.isPresent = rsvp.isPresent;
+            return;
+          }
+        }
+      });
+    }
+    attendies = _.filter(attendies, function(o) { return o.hasRSVPd; });
     // TODO: view all RSVPs for this content
+    const dialogRef = this.dialog.open(ShowRSVPPopupComponent, {
+      data: {
+        userType: userType,
+        contentId: content.id,
+        attendies: attendies,
+        experience: this.experienceId
+      },
+      width: '45vw',
+      height: '90vh'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        location.reload();
+      }
+    });
   }
 
   public getDirections(content) {
@@ -813,34 +896,6 @@ export class ExperiencePageComponent implements OnInit {
     } else {
       this.noOfReviews = 3;
     }
-  }
-
-  openDeleteDialog(action: string) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action,
-      width: '30vw'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'deleteExperience') {
-        this.deleteExperience();
-      }
-      else if (result === 'deleteCohort') {
-        this.deleteCohort();
-      }
-      else if (result === 'cancelExperience') {
-        this.cancelExperience();
-      }
-      else if (result === 'cancelCohort') {
-        this.cancelCohort();
-      }
-      else if (result === 'dropOut') {
-        this.dropOutExperience();
-      }
-      else {
-        console.log(result);
-      }
-    });
   }
 
   viewParticipants() {
@@ -982,15 +1037,15 @@ export class ExperiencePageComponent implements OnInit {
               }
               let hasActiveCalendar = false;
               if (collection.calendars) {
-                  collection.calendars.forEach(calendar => {
-                      if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-                          hasActiveCalendar = true;
-                          return;
-                      }
-                  });
+                collection.calendars.forEach(calendar => {
+                  if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                    hasActiveCalendar = true;
+                    return;
+                  }
+                });
               }
               if (hasActiveCalendar) {
-                  this.recommendations.collections.push(collection);
+                this.recommendations.collections.push(collection);
               }
             }
           });
@@ -1383,7 +1438,7 @@ export class ExperiencePageComponent implements OnInit {
   }
 
   public backToCollection(collection) {
-      this.router.navigate([collection.type, collection.id]);
+    this.router.navigate([collection.type, collection.id]);
   }
 
 }

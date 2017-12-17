@@ -5,10 +5,10 @@ import { ViewParticipantsComponent } from './view-participants/view-participants
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
+import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
 import { ExperiencePageRoutingModule } from './experience-page-routing.module';
 import { ExperiencePageComponent } from './experience-page.component';
 import { ProjectSubmissionService } from '../../_services/project-submission/project-submission.service';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
@@ -41,8 +41,8 @@ import {ContentInpersonComponent} from './content-inperson/content-inperson.comp
     })
   ],
 
-  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, DeleteDialogComponent],
-  bootstrap: [ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, DeleteDialogComponent],
+  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, ShowRSVPPopupComponent],
+  bootstrap: [ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, ShowRSVPPopupComponent],
   providers: [ProjectSubmissionService]
 
 })

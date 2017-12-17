@@ -3,168 +3,168 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleTeachingComponent } from '../console-teaching.component';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
-import {AppConfig} from '../../../app.config';
-import {MdDialog, MdSnackBar} from '@angular/material';
+import { AppConfig } from '../../../app.config';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import * as _ from 'lodash';
-import {DialogsService} from '../../../_services/dialogs/dialog.service';
-import {CohortDetailDialogComponent} from '../console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { CohortDetailDialogComponent } from '../console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
 declare var moment: any;
 
 @Component({
-  selector: 'app-console-teaching-all',
-  templateUrl: './console-teaching-all.component.html',
-  styleUrls: ['./console-teaching-all.component.scss', '../console-teaching.component.scss', '../../console.component.scss']
+    selector: 'app-console-teaching-all',
+    templateUrl: './console-teaching-all.component.html',
+    styleUrls: ['./console-teaching-all.component.scss', '../console-teaching.component.scss', '../../console.component.scss']
 })
 export class ConsoleTeachingAllComponent implements OnInit {
 
-  public collections: any;
-  public loaded: boolean;
-  public now: Date;
-  private userId;
-  private outputResult: any;
-  public activeTab: string;
-  public drafts: Array<any>;
-  public ongoingArray: Array<any>;
-  public upcomingArray: Array<any>;
-  public pastArray: Array<any>;
-  public pastCollectionsObject: any;
-  public liveCollectionsObject: any;
-  public upcomingCollectionsObject: any;
+    public collections: any;
+    public loaded: boolean;
+    public now: Date;
+    private userId;
+    private outputResult: any;
+    public activeTab: string;
+    public drafts: Array<any>;
+    public ongoingArray: Array<any>;
+    public upcomingArray: Array<any>;
+    public pastArray: Array<any>;
+    public pastCollectionsObject: any;
+    public liveCollectionsObject: any;
+    public upcomingCollectionsObject: any;
 
-  constructor(
-    public activatedRoute: ActivatedRoute,
-    public consoleTeachingComponent: ConsoleTeachingComponent,
-    public router: Router,
-    public _collectionService: CollectionService,
-    private _dialogService: DialogsService,
-    private _cookieUtilsService: CookieUtilsService,
-    public config: AppConfig,
-    public dialog: MdDialog,
-    public snackBar: MdSnackBar
-  ) {
-    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
-      if (urlSegment[0] === undefined) {
-        consoleTeachingComponent.setActiveTab('all');
-      } else {
-        consoleTeachingComponent.setActiveTab(urlSegment[0].path);
-      }
-    });
-    this.userId = _cookieUtilsService.getValue('userId');
-  }
+    constructor(
+        public activatedRoute: ActivatedRoute,
+        public consoleTeachingComponent: ConsoleTeachingComponent,
+        public router: Router,
+        public _collectionService: CollectionService,
+        private _dialogService: DialogsService,
+        private _cookieUtilsService: CookieUtilsService,
+        public config: AppConfig,
+        public dialog: MdDialog,
+        public snackBar: MdSnackBar
+    ) {
+        activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
+            if (urlSegment[0] === undefined) {
+                consoleTeachingComponent.setActiveTab('all');
+            } else {
+                consoleTeachingComponent.setActiveTab(urlSegment[0].path);
+            }
+        });
+        this.userId = _cookieUtilsService.getValue('userId');
+    }
 
-  ngOnInit() {
-    this.loaded = false;
-    this.fetchData();
-  }
+    ngOnInit() {
+        this.loaded = false;
+        this.fetchData();
+    }
 
-  private fetchData() {
-      this._collectionService.getOwnedCollections(this.userId, '{"include": ["calendars", "owners", {"participants": ["reviewsAboutYou", "ownedCollections", "profiles"]}, "topics", {"contents":"schedules"}] }', (err, result) => {
-          if (err) {
-              console.log(err);
-          } else {
-              this.drafts = [];
-              this.ongoingArray = [];
-              this.upcomingArray = [];
-              this.pastArray = [];
-              this.pastCollectionsObject = {};
-              this.liveCollectionsObject = {};
-              this.upcomingCollectionsObject = {};
-              this.createOutput(result);
-              this.now = new Date();
-              this.loaded = true;
-          }
-      });
-  }
+    private fetchData() {
+        this._collectionService.getOwnedCollections(this.userId, '{"include": ["calendars", "owners", {"participants": ["reviewsAboutYou", "ownedCollections", "profiles"]}, "topics", {"contents":"schedules"}] }', (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                this.drafts = [];
+                this.ongoingArray = [];
+                this.upcomingArray = [];
+                this.pastArray = [];
+                this.pastCollectionsObject = {};
+                this.liveCollectionsObject = {};
+                this.upcomingCollectionsObject = {};
+                this.createOutput(result);
+                this.now = new Date();
+                this.loaded = true;
+            }
+        });
+    }
 
-  private createOutput(data: any) {
-      const now = moment();
-      data.forEach(collection => {
-          if (collection.status === 'draft' || collection.status === 'submitted' || collection.calendars.length === 0) {
-              collection.itenaries = [];
-              this.drafts.push(collection);
-          } else {
-              collection.itenaries = this._collectionService.calculateItenaries(collection, collection.calendars[0]);
-              console.log(collection);
-              collection.calendars.forEach(calendar => {
-                  calendar.startDate = moment(calendar.startDate).toDate();
-                  calendar.endDate = moment(calendar.endDate).hours(23).minutes(59).toDate();
-                  const startDateMoment = moment(calendar.startDate).toDate();
-                  const endDateMoment = moment(calendar.endDate).hours(23).minutes(59).toDate();
-                  if (endDateMoment) {
-                      if (now.diff(endDateMoment) < 0) {
-                          if (!now.isBetween(startDateMoment, endDateMoment)) {
-                              if (collection.id in this.upcomingCollectionsObject) {
-                                  this.upcomingCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
-                              } else {
-                                  this.upcomingCollectionsObject[collection.id] = {};
-                                  this.upcomingCollectionsObject[collection.id]['collection'] = _.clone(collection);
-                                  this.upcomingCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
-                              }
-                          } else {
-                              if (collection.id in this.liveCollectionsObject) {
-                                  this.liveCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
-                              } else {
-                                  this.liveCollectionsObject[collection.id] = {};
-                                  this.liveCollectionsObject[collection.id]['collection'] = _.clone(collection);
-                                  this.liveCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
-                              }
-                          }
+    private createOutput(data: any) {
+        const now = moment();
+        data.forEach(collection => {
+            if (collection.status === 'draft' || collection.status === 'submitted' || collection.calendars.length === 0) {
+                collection.itenaries = [];
+                this.drafts.push(collection);
+            } else {
+                collection.itenaries = this._collectionService.calculateItenaries(collection, collection.calendars[0]);
+                console.log(collection);
+                collection.calendars.forEach(calendar => {
+                    calendar.startDate = moment(calendar.startDate).toDate();
+                    calendar.endDate = moment(calendar.endDate).hours(23).minutes(59).toDate();
+                    const startDateMoment = moment(calendar.startDate).toDate();
+                    const endDateMoment = moment(calendar.endDate).hours(23).minutes(59).toDate();
+                    if (endDateMoment) {
+                        if (now.diff(endDateMoment) < 0) {
+                            if (!now.isBetween(startDateMoment, endDateMoment)) {
+                                if (collection.id in this.upcomingCollectionsObject) {
+                                    this.upcomingCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
+                                } else {
+                                    this.upcomingCollectionsObject[collection.id] = {};
+                                    this.upcomingCollectionsObject[collection.id]['collection'] = _.clone(collection);
+                                    this.upcomingCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
+                                }
+                            } else {
+                                if (collection.id in this.liveCollectionsObject) {
+                                    this.liveCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
+                                } else {
+                                    this.liveCollectionsObject[collection.id] = {};
+                                    this.liveCollectionsObject[collection.id]['collection'] = _.clone(collection);
+                                    this.liveCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
+                                }
+                            }
 
-                      } else {
-                          if (collection.id in this.pastCollectionsObject) {
-                              this.pastCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
-                          } else {
-                              this.pastCollectionsObject[collection.id] = {};
-                              this.pastCollectionsObject[collection.id]['collection'] = collection;
-                              this.pastCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
-                          }
-                      }
-                  }
-              });
-          }
-      });
+                        } else {
+                            if (collection.id in this.pastCollectionsObject) {
+                                this.pastCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
+                            } else {
+                                this.pastCollectionsObject[collection.id] = {};
+                                this.pastCollectionsObject[collection.id]['collection'] = collection;
+                                this.pastCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
+                            }
+                        }
+                    }
+                });
+            }
+        });
 
       this.drafts.sort((a, b) => {
           return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
       });
 
-      for (const key in this.pastCollectionsObject) {
-          if (this.pastCollectionsObject.hasOwnProperty(key)) {
-              this.pastCollectionsObject[key].collection.calendars.sort((a, b) => {
-                  return this.compareCalendars(a, b);
-              });
-              this.pastArray.push(this.pastCollectionsObject[key].collection);
-          }
-      }
+        for (const key in this.pastCollectionsObject) {
+            if (this.pastCollectionsObject.hasOwnProperty(key)) {
+                this.pastCollectionsObject[key].collection.calendars.sort((a, b) => {
+                    return this.compareCalendars(a, b);
+                });
+                this.pastArray.push(this.pastCollectionsObject[key].collection);
+            }
+        }
 
-      this.pastArray.sort((a, b) => {
-          return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
-      });
+        this.pastArray.sort((a, b) => {
+            return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
+        });
 
-      for (const key in this.upcomingCollectionsObject) {
-          if (this.upcomingCollectionsObject.hasOwnProperty(key)) {
-              this.upcomingCollectionsObject[key].collection.calendars.sort((a, b) => {
-                  return this.compareCalendars(a, b);
-              });
-              this.upcomingArray.push(this.upcomingCollectionsObject[key].collection);
-          }
-      }
+        for (const key in this.upcomingCollectionsObject) {
+            if (this.upcomingCollectionsObject.hasOwnProperty(key)) {
+                this.upcomingCollectionsObject[key].collection.calendars.sort((a, b) => {
+                    return this.compareCalendars(a, b);
+                });
+                this.upcomingArray.push(this.upcomingCollectionsObject[key].collection);
+            }
+        }
 
-      this.upcomingArray.sort((a, b) => {
-          return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
-      });
+        this.upcomingArray.sort((a, b) => {
+            return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
+        });
 
 
-      for (const key in this.liveCollectionsObject) {
-          if (this.liveCollectionsObject.hasOwnProperty(key)) {
-              this.ongoingArray.push(this.liveCollectionsObject[key].collection);
-          }
-      }
-  }
+        for (const key in this.liveCollectionsObject) {
+            if (this.liveCollectionsObject.hasOwnProperty(key)) {
+                this.ongoingArray.push(this.liveCollectionsObject[key].collection);
+            }
+        }
+    }
 
-  public onSelect(collection) {
-    this.router.navigate([collection.type, collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
-  }
+    public onSelect(collection) {
+        this.router.navigate([collection.type, collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+    }
 
     /**
      * compareCalendars
@@ -193,27 +193,27 @@ export class ConsoleTeachingAllComponent implements OnInit {
         });
     }
 
-    public deleteCollection(action: string, collection: any) {
-        this._dialogService.openDeleteDialog(action).subscribe(result => {
-            if (result === 'delete') {
-                this._collectionService.deleteCollection(collection.id).subscribe(res => {
-                    this.fetchData();
-                    this.snackBar.open(collection.type + 'Deleted', 'Close', {
-                        duration: 800
-                    });
+    public deleteCollection(collection: any) {
+        this._dialogService.openDeleteCollection(collection).subscribe(result => {
+            if (result) {
+                this.fetchData();
+                this.snackBar.open(collection.type + 'Deleted', 'Close', {
+                    duration: 800
                 });
-            } else if (result === 'cancel') {
-                const cancelObj = {
-                    isCancelled: true
-                };
-                this._collectionService.patchCollection(collection.id, cancelObj).subscribe((response) => {
-                    this.fetchData();
-                    this.snackBar.open(collection.type + ' Cancelled', 'Close', {
-                        duration: 800
-                    });
+            }
+        });
+    }
+
+    /**
+     * cancelCollection
+collection:any     */
+    public cancelCollection(collection: any) {
+        this._dialogService.openCancelCollection(collection).subscribe(result => {
+            if (result) {
+                this.fetchData();
+                this.snackBar.open(collection.type + 'Cancelled', 'Close', {
+                    duration: 800
                 });
-            } else {
-                console.log(result);
             }
         });
     }

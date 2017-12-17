@@ -9,7 +9,6 @@ import { MessageParticipantComponent } from './message-participant/message-parti
 import { WorkshopPageRoutingModule } from './workshop-page-routing.module';
 import { WorkshopPageComponent } from './workshop-page.component';
 import { ProjectSubmissionService } from '../../_services/project-submission/project-submission.service';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
@@ -37,8 +36,8 @@ import { StickyModule } from 'ng2-sticky-kit';
     StickyModule
   ],
 
-  declarations: [WorkshopPageComponent, ViewParticipantsComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, DeleteDialogComponent],
-  bootstrap: [ViewParticipantsComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent, DeleteDialogComponent],
+  declarations: [WorkshopPageComponent, ViewParticipantsComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent],
+  bootstrap: [ViewParticipantsComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, MessageParticipantComponent],
   providers: [ProjectSubmissionService]
 
 })

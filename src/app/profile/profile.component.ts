@@ -7,7 +7,6 @@ import { CollectionService } from '../_services/collection/collection.service';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
-import { ReportProfileComponent } from './report-profile/report-profile.component';
 import { MdDialog, MdSnackBar } from '@angular/material';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
@@ -47,6 +46,8 @@ export class ProfileComponent implements OnInit {
   public maxVisibleInterest = 3;
   public maxVisibleReviews = 4;
   public topicsTeaching = [];
+  public reviewsFromLearners = [];
+  public reviewsFromTeachers = [];
   public isTeacher: boolean;
   public offsetString = 'col-md-offset-1';
   private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
@@ -62,6 +63,7 @@ export class ProfileComponent implements OnInit {
   public pastExperiences: Array<any>;
   public ongoingExperiences: Array<any>;
   public upcomingExperiences: Array<any>;
+  public maxLength = 100;
 
 
   constructor(
@@ -87,6 +89,16 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  public showAll(strLength)
+  {
+    if (strLength > this.maxLength) {
+      this.maxLength = strLength;
+    }
+    else {
+      this.maxLength = 140;
+    }
   }
 
   private fetchData() {
@@ -197,7 +209,7 @@ export class ProfileComponent implements OnInit {
                 , 'calendars']
             },
             { 'reviewsAboutYou': { 'peer': 'profiles' } },
-            { 'collections': [ {'reviews': { 'peer': 'profiles' }}, {'owners' : ['profiles']} ] }
+            { 'collections': [{ 'reviews': { 'peer': 'profiles' } }, { 'owners': ['profiles'] }] }
           ]
         }
       ]
@@ -212,15 +224,35 @@ export class ProfileComponent implements OnInit {
       else this.other_languages = 'No language provided';
 
       this.setInterests();
-      if (this.profileObj.peer['0'].ownedCollections && this.profileObj.peer['0'].ownedCollections.length > 0) {
+      if (this.profileObj.peer[0].ownedCollections && this.profileObj.peer[0].ownedCollections.length > 0) {
         this.calculateCollectionDurations();
+        this.computeReviews();
         this.isTeacher = true;
       }
       else {
         this.offsetString = 'custom-margin-left-20pc';
       }
+      if (this.profileObj.peer[0].reviewsAboutYou) {
+        this.userRating = this._collectionService.calculateRating(this.profileObj.peer[0].reviewsAboutYou);
+      }
       this.getIdentities();
     });
+  }
+
+  private computeReviews() {
+      //Compute reviews for Peer from Learner and Teachers
+      let ownedCollectionsArray = this.profileObj.peer[0].ownedCollections;
+      const reviewsAboutYou = this.profileObj.peer[0].reviewsAboutYou;
+      if (reviewsAboutYou) {
+        reviewsAboutYou.forEach(collection => {
+          if (_.find(ownedCollectionsArray,function(o) { return o.id === collection.collectionId; })) {
+            this.reviewsFromLearners.push(collection);
+          }
+          else {
+            this.reviewsFromTeachers.push(collection);
+          }
+        });
+    }
   }
 
   private setInterests() {
@@ -261,13 +293,13 @@ export class ProfileComponent implements OnInit {
           this.ongoingWorkshops.push(collection);
         }
         if (collection.type === 'experience' && collection.pastCohortCount > 0) {
-            this.pastExperiences.push(collection);
+          this.pastExperiences.push(collection);
         }
         if (collection.type === 'experience' && collection.upcomingCohortCount > 0) {
-            this.upcomingExperiences.push(collection);
+          this.upcomingExperiences.push(collection);
         }
         if (collection.type === 'experience' && collection.currentCohortCount > 0) {
-            this.ongoingExperiences.push(collection);
+          this.ongoingExperiences.push(collection);
         }
       }
     });
@@ -278,7 +310,7 @@ export class ProfileComponent implements OnInit {
     collection.upcomingCohortCount = 0;
     collection.currentCohortCount = 0;
 
-    if(collection.calendars) {
+    if (collection.calendars) {
       collection.calendars.forEach(calendar => {
         if (calendar.endDate < this.today.toISOString()) {
           collection.pastCohortCount++;
@@ -354,20 +386,15 @@ export class ProfileComponent implements OnInit {
   }
 
   public toggleMaxReviews() {
-      if (this.maxVisibleReviews === 4) {
-          this.maxVisibleReviews = 999;
-      } else {
-          this.maxVisibleReviews = 4;
-      }
+    if (this.maxVisibleReviews === 4) {
+      this.maxVisibleReviews = 999;
+    } else {
+      this.maxVisibleReviews = 4;
+    }
   }
 
   public reportProfile() {
-    const dialogRef = this.dialog.open(ReportProfileComponent, {
-      width: '489px',
-      height: '285px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
+    this._dialogsService.reportProfile().subscribe(result => {
       if (result) {
         console.log('report' + result);
         this._profileService.reportProfile(this.urluserId, {
@@ -415,7 +442,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public getReviewedCalendar(calendars, calendarId) {
-    if(calendars) {
+    if (calendars) {
       return calendars.find((calendar) => {
         return calendar.id === calendarId;
       }) !== undefined ? calendars.find((calendar) => {

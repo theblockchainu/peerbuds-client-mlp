@@ -131,29 +131,56 @@ export class PaymentService {
     };
     console.log(body);
     /*if (from.length === 3 && this._cookieUtilsService.getValue('currency').length === 3) {*/
-        return this.http.post(this.config.apiUrl + '/convertCurrency', body, this.options)
-            .map((response: Response) => {
-                const res = response.json();
-                console.log(res);
-                if (res.success) {
-                    return {
-                        amount: res.result,
-                        currency: this._cookieUtilsService.getValue('currency')
-                    };
-                } else {
-                    return {
-                        amount: amount,
-                        currency: from
-                    };
-                }
+    return this.http.post(this.config.apiUrl + '/convertCurrency', body, this.options)
+      .map((response: Response) => {
+        const res = response.json();
+        console.log(res);
+        if (res.success) {
+          return {
+            amount: res.result,
+            currency: this._cookieUtilsService.getValue('currency')
+          };
+        } else {
+          return {
+            amount: amount,
+            currency: from
+          };
+        }
 
-            }, (err) => {
-                return {
-                    amount: amount,
-                    currency: from
-                };
-            });
+      }, (err) => {
+        return {
+          amount: amount,
+          currency: from
+        };
+      });
     //}
+  }
+
+  /**
+   * patchPayoutRule
+   */
+  public patchPayoutRule(payoutRuleId: string, newPayoutId: string) {
+    return this.http.patch(this.config.apiUrl + '/api/payoutrules/' + payoutRuleId, {
+      'payoutId1': newPayoutId
+    }, this.options).map(result => result.json());
+  }
+
+  /**
+   * postPayoutRule
+   */
+  public postPayoutRule(collectionId: string, newPayoutId: string) {
+    const body = {
+      'percentage1': 100,
+      'payoutId1': 'string'
+    };
+    return this.http.post(this.config.apiUrl + '/api/collections/' + collectionId + '/payoutrules', body, this.options).map(result => result.json());
+  }
+
+  /**
+   * retrieveLocalPayoutAccounts
+   */
+  public retrieveLocalPayoutAccounts() {
+    return this.http.get(this.config.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId') + '/payoutaccs', this.options).map(result => result.json());
   }
 
 }

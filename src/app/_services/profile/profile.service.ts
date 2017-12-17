@@ -497,10 +497,23 @@ export class ProfileService {
     let totalKeys = 0;
     for (const key in profile) {
       if (profile.hasOwnProperty(key)) {
-        if (key === 'id' || key === 'joining_date' || key === 'is_teacher' || key === 'promoOptIn' || key === 'onboardingStage' || key === 'custom_url' || key === 'createdAt' || key === 'updatedAt') {
+        if (key === 'id' || key === 'joining_date' || key === 'is_teacher' || key === 'promoOptIn' || key === 'onboardingStage' || key === 'custom_url' || key === 'createdAt' || key === 'updatedAt' || key === 'other_languages' || key === 'location_string'
+          || key === 'location_lat' || key === 'location_lng' || key === 'portfolio_url' || key === 'vat_number' || key === 'emergency_contact' || key === 'peer') {
         } else {
           totalKeys++;
           if (profile[key] && profile[key].length > 0) {
+            progress++;
+          }
+        }
+      }
+    }
+
+    for (const key in profile.peer[0]) {
+      if (profile.peer[0].hasOwnProperty(key)) {
+        if (key === 'id' || key === 'createdAt' || key === 'updatedAt' || key === 'isAdmin' || key === 'ownedCollections') {
+        } else {
+          totalKeys++;
+          if (profile.peer[0].key && profile.peer[0].key.length > 0) {
             progress++;
           }
         }
@@ -525,18 +538,18 @@ export class ProfileService {
     if (profile.first_name && profile.last_name && profile.headline && profile.gender && profile.dobDay && profile.dobMonth && profile.dobYear && profile.currency) {
       pProg['personal'] = true;
     }
-    if (profile.work && profile.work.length > 0) {
-      pProg['work'] = true;
-    }
-    if (profile.education && profile.education.length > 0) {
-      pProg['education'] = true;
-    }
-    if (profile.vat_number && profile.phones && profile.phones.length > 0 && profile.location_string && profile.preferred_language && profile.emergency_contacts && profile.emergency_contacts.length > 0) {
+    if (profile.work && profile.work.length > 0 && profile.education && profile.education.length > 0 && profile.vat_number && profile.phones && profile.phones.length > 0 && profile.location_string && profile.preferred_language && profile.emergency_contacts && profile.emergency_contacts.length > 0) {
       pProg['additional'] = true;
     }
     if (profile.picture_url) {
       pProg['photos'] = true;
     }
+
+    if (profile.peer[0].phoneVerified && profile.peer[0].phone && profile.peer[0].emailVerified && profile.peer[0].email && profile.peer[0].accountVerified && profile.peer[0].verificationIdUrl) {
+      pProg['verification'] = true;
+
+    }
+
     pProg['progress'] = Math.round((progress / totalKeys) * 100);
     return pProg;
   }
@@ -545,7 +558,21 @@ export class ProfileService {
    * viewProfile
    */
   public viewProfile(peer) {
-      this.router.navigate(['profile', peer.id]);
+    this.router.navigate(['profile', peer.id]);
+  }
+
+  /**
+   * getBookmarks
+   */
+  public getBookmarks(userId: string, query: any, cb) {
+      const filter = JSON.stringify(query);
+      this.http
+          .get(this.config.apiUrl + '/api/peers/' + userId + '/bookmarks' + '?filter=' + filter, this.options)
+          .map((response) => {
+              cb(null, response.json());
+          }, (err) => {
+              cb(err);
+          }).subscribe();
   }
 
 }

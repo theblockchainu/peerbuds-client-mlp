@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+// import { Location } from '@angular/common';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
 import * as moment from 'moment';
@@ -10,7 +11,6 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
 import { AppConfig } from '../../app.config';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ContentOnlineComponent } from './content-online/content-online.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
@@ -105,6 +105,7 @@ export class WorkshopPageComponent implements OnInit {
   public busyReply = false;
   public initialLoad = true;
   public loggedInUser;
+  public maxLength = 140;
 
   public isReadonly = true;
   public noOfReviews = 3;
@@ -196,7 +197,8 @@ export class WorkshopPageComponent implements OnInit {
     private _fb: FormBuilder,
     private dialog: MdDialog,
     private dialogsService: DialogsService,
-    private snackBar: MdSnackBar
+    private snackBar: MdSnackBar,
+    // private location: Location
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.workshopId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
@@ -478,6 +480,7 @@ export class WorkshopPageComponent implements OnInit {
             const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
             snackBarRef.onAction().subscribe(() => {
               this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
+              // this.location.replaceState(this.location.host + '/' + 'workshop' + '/' + this.workshopId + '/' + 'calendar' + '/' + this.calendarId);
             });
           }
         });
@@ -498,6 +501,15 @@ export class WorkshopPageComponent implements OnInit {
     };
     if (this.workshop.imageUrls && this.workshop.imageUrls.length > 0) {
       this.carouselImages = this.workshop.imageUrls.map(url => this.config.apiUrl + url);
+    }
+  }
+
+  public showAll(strLength) {
+    if (strLength > this.maxLength) {
+      this.maxLength = strLength;
+    }
+    else {
+      this.maxLength = 140;
     }
   }
 
@@ -647,55 +659,6 @@ export class WorkshopPageComponent implements OnInit {
   }
 
   /**
-   * cancelWorkshop
-   */
-  public cancelWorkshop() {
-    const cancelObj = {
-      isCanceled: true,
-      canceledBy: this.userId,
-      status: 'cancelled'
-    };
-    this._collectionService.patchCollection(this.workshopId, cancelObj).subscribe((response) => {
-      this.router.navigate(['workshop', this.workshopId]);
-    });
-  }
-
-  /**
-   * dropoutWorkshop
-   */
-  public dropOutWorkshop() {
-    this._collectionService.removeParticipant(this.workshopId, this.userId).subscribe((response) => {
-      this.router.navigate(['workshop', this.workshopId]);
-    });
-  }
-
-  public cancelCohort() {
-    const cancelObj = {
-      status: 'cancelled'
-    };
-    this._collectionService.patchCalendar(this.calendarId, cancelObj).subscribe(() => {
-      this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
-    });
-  }
-
-  public deleteCohort() {
-    this._collectionService.deleteCalendar(this.calendarId).subscribe(() => {
-      this.router.navigate(['workshop', this.workshopId]);
-    });
-  }
-
-  /**
-   * deleteWorkshop
-   */
-  public deleteWorkshop() {
-    this._collectionService.deleteCollection(this.workshopId).subscribe((response) => {
-      this.router.navigate(['/console/teaching/workshops']);
-    });
-  }
-
-
-
-  /**
    * postComment
    */
   public postComment() {
@@ -793,31 +756,53 @@ export class WorkshopPageComponent implements OnInit {
       this.noOfReviews = 3;
     }
   }
-
-  openDeleteDialog(action: string) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: action,
-      width: '30vw'
+  /**
+  * cancelWorkshop
+  */
+  public cancelWorkshop() {
+    this.dialogsService.openCancelCollection(this.workshop).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['workshop', this.workshopId]);
+      }
     });
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'deleteWorkshop') {
-        this.deleteWorkshop();
+  /**
+   * dropoutWorkshop
+   */
+  public dropOutWorkshop() {
+    this.dialogsService.openExitCollection(this.workshopId, this.userId).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['workshop', this.workshopId]);
       }
-      else if (result === 'deleteCohort') {
-        this.deleteCohort();
+    });
+  }
+
+  public cancelCohort() {
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+      if (res) {
+        this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
       }
-      else if (result === 'cancelWorkshop') {
-        this.cancelWorkshop();
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  public deleteCohort() {
+    this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+      if (res) {
+        this.router.navigate(['workshop', this.workshopId]);
       }
-      else if (result === 'cancelCohort') {
-        this.cancelCohort();
-      }
-      else if (result === 'dropOut') {
-        this.dropOutWorkshop();
-      }
-      else {
-        console.log(result);
+    });
+  }
+
+  /**
+   * deleteWorkshop
+   */
+  public deleteWorkshop() {
+    this.dialogsService.openDeleteCollection(this.workshop).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['/console/teaching/workshops']);
       }
     });
   }
@@ -938,7 +923,7 @@ export class WorkshopPageComponent implements OnInit {
     this.loadingSimilarWorkshops = true;
     const query = {
       'include': [
-          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'workshop'} }}
+        { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars'], 'where': { 'type': 'workshop' } } }
       ]
     };
     this._topicService.getTopics(query).subscribe(
@@ -952,15 +937,15 @@ export class WorkshopPageComponent implements OnInit {
               }
               let hasActiveCalendar = false;
               if (collection.calendars) {
-                  collection.calendars.forEach(calendar => {
-                      if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-                          hasActiveCalendar = true;
-                          return;
-                      }
-                  });
+                collection.calendars.forEach(calendar => {
+                  if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                    hasActiveCalendar = true;
+                    return;
+                  }
+                });
               }
               if (hasActiveCalendar) {
-                  this.recommendations.collections.push(collection);
+                this.recommendations.collections.push(collection);
               }
             }
           });
