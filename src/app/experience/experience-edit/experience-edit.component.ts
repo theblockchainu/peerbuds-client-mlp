@@ -190,8 +190,8 @@ export class ExperienceEditComponent implements OnInit {
       imageUrls: [],
       totalHours: '',
       price: '',
-      currency: '',
-      cancellationPolicy: '',
+      currency: 'USD',
+      cancellationPolicy: '24 Hours',
       ageLimit: '',
       aboutHost: '', // [null,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
       notes: '',
@@ -362,9 +362,12 @@ export class ExperienceEditComponent implements OnInit {
         this.itenariesForMenu.push(contentObj.schedule.startDay);
       }
     }
-    // if (this.sidebarMenuItems) {
-    this.sidebarMenuItems[2]['submenu'] = [];
-    // }
+    if (this.sidebarMenuItems) {
+      this.sidebarMenuItems[2]['submenu'] = [];
+    } else {
+      this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.experience.value, this.sidebarMenuItems);
+      this.sidebarMenuItems[2]['submenu'] = [];
+    }
     let i = 1;
     this.itenariesForMenu.forEach(function (item) {
       const index = i;
@@ -569,8 +572,8 @@ export class ExperienceEditComponent implements OnInit {
 
     // Currency, Amount, Cancellation Policy
     this.experience.controls.price.patchValue(res.price);
-    this.experience.controls.currency.patchValue(res.currency);
-    this.experience.controls.cancellationPolicy.setValue(res.cancellationPolicy);
+    if (res.currency) { this.experience.controls.currency.patchValue(res.currency); }
+    if (res.cancellationPolicy) { this.experience.controls.cancellationPolicy.setValue(res.cancellationPolicy); }
 
     // Status
     this.experience.controls.status.setValue(res.status);
