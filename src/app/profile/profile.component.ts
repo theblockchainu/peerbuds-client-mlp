@@ -91,8 +91,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
-  public showAll(strLength)
-  {
+  public showAll(strLength) {
     if (strLength > this.maxLength) {
       this.maxLength = strLength;
     }
@@ -245,7 +244,7 @@ export class ProfileComponent implements OnInit {
       const reviewsAboutYou = this.profileObj.peer[0].reviewsAboutYou;
       if (reviewsAboutYou) {
         reviewsAboutYou.forEach(collection => {
-          if (_.find(ownedCollectionsArray,function(o) { return o.id === collection.collectionId; })) {
+          if (_.find(ownedCollectionsArray, function(o) { return o.id === collection.collectionId; })) {
             this.reviewsFromLearners.push(collection);
           }
           else {
