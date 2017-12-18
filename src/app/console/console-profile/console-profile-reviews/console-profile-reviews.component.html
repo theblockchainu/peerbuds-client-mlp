@@ -52,17 +52,17 @@
                   Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will
                   be visible both here and on your public profile.
                 </div>
-                <div class="mat-body-2" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined && getPendingReviewCollections(profile.peer[0]).length > 0">
-                  Reviews to write ({{getPendingReviewCollections(profile.peer[0]).length}})
+                <div class="mat-body-2" *ngIf="pendingReviewCollections && pendingReviewCollections.length > 0">
+                  Reviews to write ({{pendingReviewCollections.length}})
                 </div>
-                <div class="row margin-bottom-50" style="margin-left: -12px;" *ngIf="getPendingReviewCollections(profile.peer[0]) !== undefined && getPendingReviewCollections(profile.peer[0]).length > 0">
+                <div class="row margin-bottom-50" style="margin-left: -12px;margin-right:12px" *ngIf="pendingReviewCollections && pendingReviewCollections.length > 0">
                   <div>
                     <div style="margin-top:20px;" class="col-md-12">
                       <div class="row">
-                        <div *ngFor="let collection of getPendingReviewCollections(profile.peer[0])" [ngSwitch]="collection.status">
+                        <div *ngFor="let collection of pendingReviewCollections" [ngSwitch]="collection.status">
                           <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
                           <ng-template #noTopicText>No Topics</ng-template>
-                          <div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'complete' || 'canceled'">
+                          <div class="col-md-4" style="margin-top: 20px;">
                             <md-card style="text-align: center; padding: 20px;">
                               <md-card-content>
                                 <div style="text-align: center">
@@ -89,11 +89,11 @@
                                 <md-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></md-progress-bar>
                                 <div class="collectionSubtitle">
                                   {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Activity |
-                                  <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+                                  <span *ngIf="collection.topics && collection.topics.length > 0; then topicName else noTopicText"></span>
                                 </div>
                               </md-card-content>
                               <md-card-actions>
-                                <div class="teachingRatingReminder clickable" (click)="openRatingsDialog()">
+                                <div [class.disabled]="collection.participants.length === collection.participantReviewCount" class="teachingRatingReminder clickable" (click)="showRateStudentsPopup(collection)">
                                   Finish rating {{collection.pendingReviewParticipantCount}} students
                                 </div>
                               </md-card-actions>

@@ -341,13 +341,21 @@ export class CollectionService {
         }
         return value;
       case 'active':
-        if (this.getCurrentCalendar(workshop.calendars).startDate > this.now) {
+        let startDate;
+        const calendarLength = workshop.calendars.length;
+        if (calendarLength > 1) {
+          startDate = this.getCurrentCalendar(workshop.calendars).startDate;
+        }
+        else if (calendarLength === 1) {
+          startDate = workshop.calendars[0];
+        }
+        if ( startDate > this.now) {
           return 0;
         }
-        const totalContents = workshop.contents.length;
+        const totalContents = calendarLength;
         let pendingContents = 0;
         workshop.contents.forEach((content) => {
-          if (moment(this.getCurrentCalendar(workshop.calendars).startDate).add(content.schedules[0].startDay, 'days') > this.now) {
+          if (moment(startDate).add(content.schedules[0].startDay, 'days') > this.now) {
             pendingContents++;
           }
         });
@@ -669,7 +677,7 @@ collectionID:string,userId:string,calendarId:string   */
   /**
    * postReview
    */
-  public postReview(peerId: string, reviewBody: any) {
+  public postReview(  peerId: string, reviewBody: any) {
     return this.http
       .post(this.config.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou', reviewBody, this.options);
   }
@@ -775,9 +783,9 @@ collectionID:string,userId:string,calendarId:string   */
    * markPresence for a peer in content rsvp
    */
   public markPresence(peerId, rsvpId, isPresent) {
-    const body= {
+    const body = {
       'isPresent' : isPresent
-    }
+    };
     return this.http
     .put(this.config.apiUrl + '/api/peers/' + peerId + '/rsvps/' + rsvpId, body , this.options)
     .map((response: Response) => response.json());

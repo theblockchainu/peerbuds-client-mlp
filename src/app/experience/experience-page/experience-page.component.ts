@@ -571,8 +571,7 @@ export class ExperiencePageComponent implements OnInit {
       }
     });
   }
-  public showAll(strLength)
-  {
+  public showAll(strLength) {
     if (strLength > this.maxLength) {
       this.maxLength = strLength;
     }
