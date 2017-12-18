@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 
@@ -19,10 +19,10 @@ export class AppFooterComponent implements OnInit {
     public authService: AuthenticationService,
     public activatedRoute: ActivatedRoute
   ) {
-      this.isLoggedIn = authService.isLoggedIn();
-      authService.isLoggedIn().subscribe((res) => {
-          this.loggedIn = res;
-      });
+    this.isLoggedIn = authService.isLoggedIn();
+    authService.isLoggedIn().subscribe((res) => {
+      this.loggedIn = res;
+    });
   }
   ngOnInit() {
   }

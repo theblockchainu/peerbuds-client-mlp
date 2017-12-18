@@ -366,7 +366,7 @@
                         {{ collection.itenaries.length}} Days | {{collection.contents.length}} Activity |
                         <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
                       </div>
-                      <div class="teachingRatingReminder clickable" (click)="consoleTeachingComponent.showRateStudentsPopup()">
+                      <div [class.disabled]="collection.participants.length === collection.participantReviewCount" class="teachingRatingReminder clickable" (click)="consoleTeachingComponent.showRateStudentsPopup(collection)">
                         Rate your students now
                       </div>
                     </md-card-content>

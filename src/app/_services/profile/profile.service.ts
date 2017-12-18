@@ -45,7 +45,7 @@ export class ProfileService {
   public getProfile(userId) {
     const profile = {};
     if (userId) {
-      const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},"contents","topics"]},{"ownedCollections":["calendars",{"participants":"profiles"},"contents","topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
+      const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},{"contents":"schedules"},"topics"]},{"ownedCollections":["calendars",{"participants":["reviewsAboutYou", "profiles"]},{"contents":"schedules"},"topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
       return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + filter, this.options)
         .map(
         (response: Response) => response.json()
