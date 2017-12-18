@@ -712,6 +712,10 @@ collectionID:string,userId:string,calendarId:string   */
     event.target.src = '/assets/images/placeholder-image.jpg';
   }
 
+    public userImgErrorHandler(event) {
+        event.target.src = '/assets/images/avatar.png';
+    }
+
   /**
    * deleteComment
    */

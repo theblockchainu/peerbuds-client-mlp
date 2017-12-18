@@ -134,10 +134,10 @@ export class ConsoleTeachingAllComponent implements OnInit {
             }
         });
 
-        this.drafts.sort((a, b) => {
-            return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
-        });
-        console.log(this.pastCollectionsObject);
+      this.drafts.sort((a, b) => {
+          return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
+      });
+
         for (const key in this.pastCollectionsObject) {
             if (this.pastCollectionsObject.hasOwnProperty(key)) {
                 this.pastCollectionsObject[key].collection.calendars.sort((a, b) => {

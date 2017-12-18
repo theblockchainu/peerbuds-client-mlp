@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleAccountComponent } from '../console-account.component';
 import { PaymentService } from '../../../_services/payment/payment.service';
 import { AppConfig } from '../../../app.config';
@@ -19,27 +19,29 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
     public consoleAccountComponent: ConsoleAccountComponent,
     private _paymentService: PaymentService,
     private location: Location,
-    public config: AppConfig
+    public config: AppConfig,
+    public router: Router
   ) {
     this.loading = true;
     this.activatedRoute.pathFromRoot[4].queryParams.subscribe(params => {
       if (params['code']) {
-          this.addAccount(params['code']);
-          this.location.replaceState(this.location.path().split('?')[0]);
+        this.addAccount(params['code'], params['state']);
+        this.location.replaceState(this.location.path().split('?')[0]);
       } else {
-          this.retrieveAccounts();
+        this.retrieveAccounts();
       }
-      if (params['state']) {
-        this.location.path(params['state']);
-      }
+
     });
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       consoleAccountComponent.setActiveTab(urlSegment[0].path);
     });
   }
 
-  addAccount(code: string) {
+  addAccount(code: string, state?: string) {
     this._paymentService.createConnectedAccount(code).subscribe(result => {
+      if (state) {
+        location.href = state;
+      }
       this.retrieveAccounts();
     }, err => {
       console.log(err);
@@ -60,6 +62,7 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
       this.loading = false;
     }, err => {
       console.log(err);
+      this.loading = false;
     });
   }
 
