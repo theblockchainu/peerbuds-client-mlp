@@ -40,6 +40,7 @@ import { TimezonePickerService } from '../_services/timezone-picker/timezone-pic
 import { CohortDetailDialogComponent } from './console-teaching/console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
 import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
+import { ContentLearningBookmarksComponent } from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
 
 @NgModule({
   imports: [
@@ -91,7 +92,8 @@ import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
     ConsoleAccountPrivacyComponent,
     ConsoleAccountSettingsComponent,
     CohortDetailDialogComponent,
-    ConsoleAdminComponent
+    ConsoleAdminComponent,
+    ContentLearningBookmarksComponent
   ],
   providers: [TimezonePickerService],
   bootstrap: [CohortDetailDialogComponent]

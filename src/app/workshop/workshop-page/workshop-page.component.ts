@@ -38,7 +38,7 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 declare var FB: any;
 
@@ -77,16 +77,16 @@ export class MyCalendarUtils extends CalendarUtils {
     }
   ],
   animations: [
-    trigger('slideInOut', [
-      state('in', style({
-        transform: 'translate3d(0, 0, 0)'
-      })),
-      state('out', style({
-        transform: 'translate3d(100%, 0, 0)'
-      })),
-      transition('in => out', animate('400ms ease-in-out')),
-      transition('out => in', animate('400ms ease-in-out'))
-    ]),
+      trigger('slideInOut', [
+          state('in', style({
+              transform: 'translate3d(0, 0, 0)'
+          })),
+          state('out', style({
+              transform: 'translate3d(100%, 0, 0)'
+          })),
+          transition('in => out', animate('400ms ease-in-out')),
+          transition('out => in', animate('400ms ease-in-out'))
+      ]),
   ]
 })
 export class WorkshopPageComponent implements OnInit {
@@ -504,8 +504,7 @@ export class WorkshopPageComponent implements OnInit {
     }
   }
 
-  public showAll(strLength) 
-  {
+  public showAll(strLength) {
     if (strLength > this.maxLength) {
       this.maxLength = strLength;
     }

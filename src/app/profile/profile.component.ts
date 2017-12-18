@@ -8,7 +8,7 @@ import { DialogsService } from '../_services/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { MdDialog, MdSnackBar } from '@angular/material';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 import * as moment from 'moment';
 import _ from 'lodash';
@@ -18,16 +18,16 @@ import _ from 'lodash';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   animations: [
-    trigger('slideInOut', [
-      state('in', style({
-        transform: 'translate3d(0, 0, 0)'
-      })),
-      state('out', style({
-        transform: 'translate3d(100%, 0, 0)'
-      })),
-      transition('in => out', animate('400ms ease-in-out')),
-      transition('out => in', animate('400ms ease-in-out'))
-    ]),
+      trigger('slideInOut', [
+          state('in', style({
+              transform: 'translate3d(0, 0, 0)'
+          })),
+          state('out', style({
+              transform: 'translate3d(100%, 0, 0)'
+          })),
+          transition('in => out', animate('400ms ease-in-out')),
+          transition('out => in', animate('400ms ease-in-out'))
+      ]),
   ]
 })
 export class ProfileComponent implements OnInit {
@@ -91,7 +91,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
-  public showAll(strLength) 
+  public showAll(strLength)
   {
     if (strLength > this.maxLength) {
       this.maxLength = strLength;
@@ -242,7 +242,7 @@ export class ProfileComponent implements OnInit {
   private computeReviews() {
       //Compute reviews for Peer from Learner and Teachers
       let ownedCollectionsArray = this.profileObj.peer[0].ownedCollections;
-      const reviewsAboutYou = this.profileObj.peer[0].reviewsAboutYou; 
+      const reviewsAboutYou = this.profileObj.peer[0].reviewsAboutYou;
       if (reviewsAboutYou) {
         reviewsAboutYou.forEach(collection => {
           if (_.find(ownedCollectionsArray,function(o) { return o.id === collection.collectionId; })) {

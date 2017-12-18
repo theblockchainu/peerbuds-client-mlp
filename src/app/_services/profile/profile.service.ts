@@ -561,4 +561,18 @@ export class ProfileService {
     this.router.navigate(['profile', peer.id]);
   }
 
+  /**
+   * getBookmarks
+   */
+  public getBookmarks(userId: string, query: any, cb) {
+      const filter = JSON.stringify(query);
+      this.http
+          .get(this.config.apiUrl + '/api/peers/' + userId + '/bookmarks' + '?filter=' + filter, this.options)
+          .map((response) => {
+              cb(null, response.json());
+          }, (err) => {
+              cb(err);
+          }).subscribe();
+  }
+
 }

@@ -79,7 +79,7 @@
                           Up Next
                         </p>
                         <div class="upcomingEventTitle">
-                          {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).title }}
+                          {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).title | ucwords }}
                         </div>
                         <div class="upcomingEventTime">
                           {{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord

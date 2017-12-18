@@ -170,7 +170,8 @@ export class ExperienceContentComponent implements OnInit {
         this.postContent(event, i);
       }
 
-    } else if (event.action === 'update') {
+    }
+    else if (event.action === 'update') {
       if (this.collection.status === 'active') {
         this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
           .subscribe((result) => {
@@ -188,12 +189,42 @@ export class ExperienceContentComponent implements OnInit {
       }
     }
     else if (event.action === 'delete') {
-      this.deleteContent(event.value, i);
+        if (this.collection.status === 'active') {
+            this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
+                .subscribe((result) => {
+                    if (result === 'accept') {
+                        this.deleteContent(event.value, i);
+                    }
+                    else if (result === 'reject') {
+                        // Do nothing
+                        this.router.navigate(['console', 'teaching', 'experiences']);
+                    }
+                });
+        }
+        else {
+            this.deleteContent(event.value, i);
+        }
     }
     else if (event.action === 'deleteDay') {
-      this.deleteContent(null, i);
-      const itenary = <FormArray>this.myForm.controls.itenary;
-      itenary.removeAt(i);
+        if (this.collection.status === 'active') {
+            this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
+                .subscribe((result) => {
+                    if (result === 'accept') {
+                        this.deleteContent(null, i);
+                        const itenary = <FormArray>this.myForm.controls.itenary;
+                        itenary.removeAt(i);
+                    }
+                    else if (result === 'reject') {
+                        // Do nothing
+                        this.router.navigate(['console', 'teaching', 'experiences']);
+                    }
+                });
+        }
+        else {
+            this.deleteContent(null, i);
+            const itenary = <FormArray>this.myForm.controls.itenary;
+            itenary.removeAt(i);
+        }
     }
     else {
       console.log('unhandledEvent Triggered');
@@ -365,10 +396,6 @@ export class ExperienceContentComponent implements OnInit {
               contentGroup.controls.pending.setValue(false);
             }
             console.log(resp);
-
-            if (collectionId) {
-              this.reload(collectionId, 13);
-            }
           })
           .subscribe();
 
@@ -384,11 +411,11 @@ export class ExperienceContentComponent implements OnInit {
                           ContentGroup.controls.pending.setValue(false);
                       }
                       console.log(response);
-                      if (collectionId) {
-                          this.reload(collectionId, 13);
-                      }
                   })
                   .subscribe();
+          }
+          if (collectionId) {
+              this.reload(collectionId, 13);
           }
       })
       .subscribe();
@@ -397,16 +424,32 @@ export class ExperienceContentComponent implements OnInit {
   deleteContent(eventIndex, index) {
     const itenaryObj = this.myForm.value.itenary[index];
     const scheduleDate = itenaryObj.date;
+    let collectionId;
     if (eventIndex) {
       const contentObj = itenaryObj.contents[eventIndex];
       const contentId = contentObj.id;
       this.http.delete(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.options)
         .map((response: Response) => {
           console.log(response);
-          const itenary = <FormArray>this.myForm.controls.itenary;
-          const form = <FormGroup>itenary.controls[index];
-          const contentsArray = <FormArray>form.controls.contents;
-          contentsArray.removeAt(eventIndex);
+          if (response !== null) {
+              const result = response.json();
+              if (result.isNewInstance) {
+                  collectionId = result.id;
+                  this.reload(collectionId, 13);
+              }
+              else {
+                  const itenary = <FormArray>this.myForm.controls.itenary;
+                  const form = <FormGroup>itenary.controls[index];
+                  const contentsArray = <FormArray>form.controls.contents;
+                  contentsArray.removeAt(eventIndex);
+              }
+          }
+          else {
+              const itenary = <FormArray>this.myForm.controls.itenary;
+              const form = <FormGroup>itenary.controls[index];
+              const contentsArray = <FormArray>form.controls.contents;
+              contentsArray.removeAt(eventIndex);
+          }
         })
         .subscribe();
     }
@@ -415,8 +458,20 @@ export class ExperienceContentComponent implements OnInit {
       contentArray.forEach(content => {
         this.http.delete(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.options)
           .map((response: Response) => {
-            console.log(response);
-            const itenary = <FormArray>this.myForm.controls.itenary;
+              console.log(response);
+              if (response !== null) {
+                  const result = response.json();
+                  if (result.isNewInstance) {
+                      collectionId = result.id;
+                      this.reload(collectionId, 13);
+                  }
+                  else {
+                      const itenary = <FormArray>this.myForm.controls.itenary;
+                  }
+              }
+              else {
+                  const itenary = <FormArray>this.myForm.controls.itenary;
+              }
           })
           .subscribe();
       });

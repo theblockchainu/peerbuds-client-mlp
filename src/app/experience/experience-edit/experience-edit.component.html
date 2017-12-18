@@ -598,65 +598,49 @@
           <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Connect Payment Option</h2>
-              <div class="subtitle">Payment gateway stripe, etc.</div>
-              <div class="row table">
+              <div class="subtitle">Choose from available payout options or add a new one</div>
+              <div class="row loading-container" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">
+                <ngx-loading [show]="true"></ngx-loading>
+              </div>
+              <div class="margin-top-30" *ngIf="!payoutLoading && payoutAccounts && payoutAccounts.length > 0" style="padding-top: 5px; padding-bottom: 15px">
+                <span class="mat-body-2">
+                  Connect existing account
+                </span>
+              </div>
+              <div class="row table" *ngIf="!payoutLoading">
                 <div class="col-md-10">
                   <div class="row table-header">
                     <div class="col-md-3 ">
-                      <h3>Method</h3>
+                      <b>Method</b>
                     </div>
                     <div class="col-md-3">
-                      <h3>Details</h3>
+                      <b>Details</b>
                     </div>
                     <div class="col-md-3">
-                      <h3>Status</h3>
+                      <b>Status</b>
                     </div>
                   </div>
                   <div class="row table-data">
+                    <hr>
                     <div class="col-md-12">
-                      <div class="row loading" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">
-                        <ngx-loading [show]="true"></ngx-loading>
-                      </div>
-                      <div class="text-center" *ngIf="!payoutLoading && (!payoutAccounts || payoutAccounts.length===0)" style="padding-top: 5px; padding-bottom: 5px">
-                        <span class="lightText">
-                          Add Payout Accounts
-                        </span>
-                      </div>
                       <ng-container *ngIf="!addingAccount && payoutAccounts">
                         <form [formGroup]="paymentInfo">
                           <md-radio-group formControlName="id">
-                            <!-- <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
-                                <div class="col-md-3" [ngSwitch]="account.object">
-                                  <b *ngSwitchCase="'card'">Card</b>
-                                  <b *ngSwitchCase="'bank_account'">Bank Account</b>
-                                </div>
-                                <div class="col-md-3">
-                                  <span>**** **** **** {{account.last4}}</span>
-                                </div>
-                                <div class="col-md-3">
-                                  <b *ngIf="account.status">{{account.status | titlecase}}</b>
-                                  <b *ngIf="!account.status">Ready</b>
-                                </div>
-                                <div class="col-md-3">
-                                  <md-radio-button value="{{account.id}}">
-                                    {{season}}
-                                  </md-radio-button>
-                                </div>
-                              </div> -->
                             <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
-                              <!-- <div class="col-md-3" [ngSwitch]="account.object">
-                                    <b *ngSwitchCase="'card'">Card</b>
-                                    <b *ngSwitchCase="'bank_account'">Bank Account</b>
-                                  </div> -->
-                              <div class="col-md-9">
-                                <span>{{account.id}}</span>
+                              <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
+                                <b *ngSwitchCase="'card'">Card</b>
+                                <b *ngSwitchCase="'bank_account'">Bank Account</b>
                               </div>
-                              <!-- <div class="col-md-3">
-                                  <b *ngIf="account.status">{{account.status | titlecase}}</b>
-                                  <b *ngIf="!account.status">Ready</b>
-                                </div> -->
+                              <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
+                                <span *ngSwitchCase="'card'">**** **** **** {{account.external_accounts.data[0].last4}}</span>
+                                <span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}} <br>{{account.external_accounts.data[0].bank_name}} </span>
+                              </div>
                               <div class="col-md-3">
-                                <md-radio-button value="{{account.id}}">
+                                <b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
+                                <b *ngIf="!account.external_accounts.data[0].status">Ready</b>
+                              </div>
+                              <div class="col-md-3">
+                                <md-radio-button value="{{account.payoutaccount.id}}">
                                 </md-radio-button>
                               </div>
                             </div>
@@ -668,15 +652,19 @@
                   </div>
                 </div>
               </div>
+              <div class="margin-top-30" style="padding-top: 5px; padding-bottom: 15px" *ngIf="!payoutLoading">
+                <span class="mat-body-2">
+                  Add new payout account
+                </span>
+              </div>
               <!-- <form [formGroup]="paymentInfo "> -->
-              <div style="margin-top:50px; ">
+              <div style="margin-top:10px; " *ngIf="!payoutLoading">
                 <!--<button md-raised-button>PayTM</button> &emsp;-->
                 <button md-raised-button>
-                  <a [href]="connectPaymentUrl">Stripe</a>
+                  <a [href]="connectPaymentUrl"><img src="../../../assets/images/stripe.png" style="width: 50px;" /></a>
                 </button> &emsp;
                 <!--<button md-raised-button>Paypal</button> &emsp;-->
               </div>
-              <!-- </form> -->
             </div>
           </div>
         </div>
