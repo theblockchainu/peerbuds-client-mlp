@@ -216,11 +216,11 @@ export class HomefeedComponent implements OnInit {
       (response) => {
         this.loadingExperiences = false;
         this.experiences = [];
-        let experienceLocation = 'Unknown location';
-        let lat = 37.5293864;
-        let lng = -122.008471;
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
+            let experienceLocation = 'Unknown location';
+            let lat = 37.5293864;
+            let lng = -122.008471;
             if (collection.status === 'active') {
                 if (collection.contents) {
                     collection.contents.forEach(content => {

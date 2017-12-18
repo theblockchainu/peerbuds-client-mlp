@@ -130,6 +130,7 @@ export class WorkshopEditComponent implements OnInit {
   };
   public paymentInfo: FormGroup;
   private payoutRuleNodeId: string;
+  private payoutRuleAccountId: string;
   // TypeScript public modifiers
   constructor(
     public router: Router,
@@ -254,7 +255,8 @@ export class WorkshopEditComponent implements OnInit {
       this._paymentService.patchPayoutRule(this.payoutRuleNodeId, newPayoutId).subscribe(res => {
         if (res) {
           this.payoutLoading = false;
-          this.snackBar.open('Payout Account Updated', 'close', {
+          this.payoutRuleAccountId = newPayoutId;
+          this.snackBar.open('Payout account updated', 'close', {
             duration: 500
           });
         }
@@ -268,14 +270,15 @@ export class WorkshopEditComponent implements OnInit {
       this._paymentService.postPayoutRule(this.workshopId, newPayoutId).subscribe(res => {
         if (res) {
           this.payoutLoading = false;
-          this.snackBar.open('Payout Account Added', 'close', {
+          this.snackBar.open('Payout account added', 'close', {
             duration: 500
           });
           this.payoutRuleNodeId = res.id;
+          this.payoutRuleAccountId = newPayoutId;
         }
       }, err => {
         this.payoutLoading = false;
-        this.snackBar.open('Unable to Add account', 'close', {
+        this.snackBar.open('Unable to add account', 'close', {
           duration: 500
         });
       });
@@ -475,6 +478,7 @@ export class WorkshopEditComponent implements OnInit {
           this.workshopData = res;
           if (this.workshopData.payoutrules && this.workshopData.payoutrules.length > 0) {
             this.payoutRuleNodeId = this.workshopData.payoutrules[0].id;
+            this.payoutRuleAccountId = this.workshopData.payoutRules[0].payoutId1;
           }
           this.retrieveAccounts();
           this.initializeFormValues(res);
@@ -510,17 +514,23 @@ export class WorkshopEditComponent implements OnInit {
 
   private retrieveAccounts() {
     this.payoutAccounts = [];
-    // this._paymentService.retrieveConnectedAccount().subscribe(result => {
-    //   console.log(result);
-    //   result.forEach(account => {
-    //     this.payoutAccounts = this.payoutAccounts.concat(account.external_accounts.data);
-    //   });
-    //   this.payoutLoading = false;
-    // }, err => {
-    //   console.log(err);
-    //   this.payoutLoading = false;
-    // });
-    this._paymentService.retrieveLocalPayoutAccounts().subscribe(result => {
+    this._paymentService.retrieveConnectedAccount().subscribe(result => {
+       console.log(result);
+       this.payoutAccounts = result;
+       result.forEach(account => {
+           if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
+               this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
+           }
+       });
+      this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
+          this.updatePayoutRule(res);
+      });
+       this.payoutLoading = false;
+    }, err => {
+       console.log(err);
+       this.payoutLoading = false;
+    });
+    /*this._paymentService.retrieveLocalPayoutAccounts().subscribe(result => {
       console.log(result);
       this.payoutAccounts = result;
       this.payoutLoading = false;
@@ -533,7 +543,7 @@ export class WorkshopEditComponent implements OnInit {
     }, err => {
       console.log(err);
       this.payoutLoading = false;
-    });
+    });*/
   }
 
   public selected(event) {

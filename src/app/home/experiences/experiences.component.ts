@@ -125,6 +125,7 @@ export class ExperiencesComponent implements OnInit {
         let experienceLocation = 'Unknown location';
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
+            let experienceLocation = 'Unknown location';
             if (collection.status === 'active') {
                 if (collection.contents) {
                     collection.contents.forEach(content => {

@@ -26,7 +26,7 @@
       <p-header>
         <div>
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-7">
               <div class="col-md-12">
                 <div class="margin-top-20 margin-bottom-20">
                 <span [ngClass]="{'mat-body-2': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
@@ -47,7 +47,7 @@
                 </h5>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <br>
               <br>
               <div class="col-md-12">
@@ -64,15 +64,18 @@
       <div class="accordianContent">
         <div class="row">
           <div class="col-md-12" *ngFor="let itenary of itenaryObj.itenary">
-            <div class="col-md-12">
-              <div class="col-md-12" style="margin: 10px 0px 3px 0px;">
-                {{itenary.startDate | date:'EE, MMM d'}}
-              </div>
+            <div class="col-md-12" style="margin: 10px 0px 3px 0px;">
+              {{itenary.startDate | date:'EE, MMM d'}}
             </div>
             <div class="col-md-12" *ngFor="let content of itenary.contents">
-              <div class="col-md-12" style="margin: 3px 0px 10px 0px;">
-                <b>{{ content.title | titlecase}}</b> - {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime
-                | extractTime:'h:mm a'}}
+              <div *ngIf="content.type === 'online' || content.type === 'in-person'" style="margin: 3px 0px 10px 0px;">
+                <b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
+              </div>
+              <div *ngIf="content.type === 'project'" style="margin: 3px 0px 10px 0px;">
+                <b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; Entries open until {{content.schedules[content.schedules.length-1].endTime | extractTime:'Do MMM'}}
+              </div>
+              <div *ngIf="content.type === 'video'" style="margin: 3px 0px 10px 0px;">
+                <b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; Available all day
               </div>
             </div>
           </div>

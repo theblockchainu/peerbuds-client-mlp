@@ -25,7 +25,7 @@
         <div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
           <a [routerLink]="'/experience/'+experience.id">
             <div class="">
-              <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + config.apiUrl + experience.imageUrls[0] + ')', 'background-size': 'cover'}">
+              <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + config.apiUrl + experience.imageUrls[0] + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
                 <div class="recommendation-city"><md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon><b>{{experience.location | ucwords}}</b></div>
               </div>
               <div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(/assets/images/no-image.jpg)', 'background-size': 'cover'}">

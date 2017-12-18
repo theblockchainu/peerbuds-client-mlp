@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="col-md-12 margin-top-20">
+    <div *ngIf="!loaded" class="center">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 margin-top-10" *ngIf="loaded">
+    <div #noContentView *ngIf="bookmarks.length === 0" class="center" style="margin-top: 10%">
+      <div class="lightText">
+        You do not have any bookmarks
+        <br>
+        <br> Start by bookmarking a
+        <a color="default" [routerLink]="'/home/workshops'">Workshop </a> or <a color="default" [routerLink]="'/home/experiences'">Experience </a>
+      </div>
+    </div>
+    <div *ngIf="bookmarks.length > 0">
+      <div style="display:inline;">
+        <h2>Bookmarks</h2>
+      </div>
+      <div class="row">
+        <div style="margin-top:20px;" class="col-md-12">
+          <div class="row">
+            <div *ngFor="let bookmark of bookmarks">
+              <ng-template #topicName>{{bookmark.collection[0].topics[0].name | titlecase}}</ng-template>
+              <ng-template #noTopicText>No Topics</ng-template>
+              <div class="col-md-4" style="margin-top: 20px;">
+                <md-card style="text-align: center; padding: 20px;">
+                  <md-card-content>
+                    <div style="text-align: right">
+                      <div class="pull-right">
+                        <a [mdMenuTriggerFor]="bookmarkCardMenu" style="text-align: right; padding: 0px">
+                          <md-icon>more_vert</md-icon>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="collectionParticipantImageCarousel">
+                      <div class="circle-thumb-big" *ngFor="let owner of bookmark.collection[0].owners">
+                        <app-profile-popup [peer]="owner"></app-profile-popup>
+                      </div>
+                    </div>
+                    <div class="teacherName" (click)="openProfile(bookmark.collection[0].owners[0])">
+                      <span class="mat-body-1 clickable">{{bookmark.collection[0].owners[0].profiles[0].first_name + ' ' + bookmark.collection[0].owners[0].profiles[0].last_name}}
+                      </span>
+                    </div>
+                    <div class="teacherHeadline">
+                      <span>{{bookmark.collection[0].owners[0].profiles[0].headline}} </span>
+                    </div>
+                    <div class="collectionTitle mat-body-2 clickable" (click)="openCollection(bookmark.collection[0])">{{ bookmark.collection[0].title || 'No Title' | ucwords }} </div>
+                    <div class="collectionSubtitle">
+                      {{ bookmark.collection[0].calendars.length }} Days | {{bookmark.collection[0].contents.length}} Activity |
+                      <span *ngIf="bookmark.collection[0].topics.length > 0; then topicName else noTopicText"></span>
+                    </div>
+                    <div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart===0">
+                      <p class="upcomingEventLabel">
+                        Ongoing
+                      </p>
+                      <div class="upcomingEventTitle">
+                        {{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).title | ucwords }}
+                      </div>
+                      <div class="upcomingEventTime">
+                        {{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).fillerWord
+                        + ' today'}}
+                      </div>
+                    </div>
+                    <div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart>0">
+                      <p class="upcomingEventLabel">
+                        Up Next
+                      </p>
+                      <div class="upcomingEventTitle">
+                        {{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).title }}
+                      </div>
+                      <div class="upcomingEventTime">
+                        {{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).fillerWord
+                        + ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart + ' Days' }}
+                      </div>
+                    </div>
+                  </md-card-content>
+                  <md-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).hasStarted">
+                    <button md-raised-button (click)="onSelect(bookmark.collection[0])">{{consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).upcomingEventButtonText}}</button>
+                  </md-card-actions>
+                  <br>
+                  <br>
+                </md-card>
+              </div>
+              <md-menu #bookmarkCardMenu>
+                <button md-menu-item (click)="deleteBookmark(bookmark)">
+                  Delete bookmark
+                </button>
+              </md-menu>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>

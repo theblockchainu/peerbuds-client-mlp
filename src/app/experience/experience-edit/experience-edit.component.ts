@@ -113,6 +113,7 @@ export class ExperienceEditComponent implements OnInit {
   public isPhoneVerified = false;
   public isSubmitted = false;
   public connectPaymentUrl = '';
+  private payoutRuleAccountId: string;
 
   filteredLanguageOptions: Observable<string[]>;
 
@@ -445,6 +446,7 @@ export class ExperienceEditComponent implements OnInit {
           this.experienceData = res;
           if (this.experienceData.payoutrules && this.experienceData.payoutrules.length > 0) {
             this.payoutRuleNodeId = this.experienceData.payoutrules[0].id;
+            this.payoutRuleAccountId = this.experienceData.payoutRules[0].payoutId1;
           }
           this.retrieveAccounts();
           this.initializeFormValues(res);
@@ -1075,30 +1077,22 @@ export class ExperienceEditComponent implements OnInit {
 
   private retrieveAccounts() {
     this.payoutAccounts = [];
-    // this._paymentService.retrieveConnectedAccount().subscribe(result => {
-    //   console.log(result);
-    //   result.forEach(account => {
-    //     this.payoutAccounts = this.payoutAccounts.concat(account.external_accounts.data);
-    //   });
-    //   this.payoutLoading = false;
-    // }, err => {
-    //   console.log(err);
-    //   this.payoutLoading = false;
-    // });
-    this._paymentService.retrieveLocalPayoutAccounts().subscribe(result => {
-      console.log(result);
-      this.payoutAccounts = result;
-      this.payoutLoading = false;
-      if (this.payoutRuleNodeId) {
-        this.paymentInfo.controls['id'].patchValue(this.experienceData.payoutrules[0].payoutId1);
-      }
-      this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
-        this.updatePayoutRule(res);
+      this._paymentService.retrieveConnectedAccount().subscribe(result => {
+          console.log(result);
+          this.payoutAccounts = result;
+          result.forEach(account => {
+              if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
+                  this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
+              }
+          });
+          this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
+              this.updatePayoutRule(res);
+          });
+          this.payoutLoading = false;
+      }, err => {
+          console.log(err);
+          this.payoutLoading = false;
       });
-    }, err => {
-      console.log(err);
-      this.payoutLoading = false;
-    });
   }
 
   private updatePayoutRule(newPayoutId) {
@@ -1107,6 +1101,7 @@ export class ExperienceEditComponent implements OnInit {
       this._paymentService.patchPayoutRule(this.payoutRuleNodeId, newPayoutId).subscribe(res => {
         if (res) {
           this.payoutLoading = false;
+          this.payoutRuleAccountId = newPayoutId;
           this.snackBar.open('Payout Account Updated', 'close', {
             duration: 500
           });
@@ -1121,6 +1116,7 @@ export class ExperienceEditComponent implements OnInit {
       this._paymentService.postPayoutRule(this.experienceId, newPayoutId).subscribe(res => {
         if (res) {
           this.payoutLoading = false;
+          this.payoutRuleAccountId = newPayoutId;
           this.snackBar.open('Payout Account Added', 'close', {
             duration: 500
           });

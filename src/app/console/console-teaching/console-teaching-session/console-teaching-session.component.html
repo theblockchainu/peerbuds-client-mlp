@@ -299,6 +299,9 @@
                       <div class="teachingRatingReminder" (click)="consoleTeachingComponent.showRateStudentsPopup()">
                         Rate your students now
                       </div>
+                      <!-- <div *ngIf="collection.participants.length > collection.participantReviewCount" class="teachingRatingReminder clickable" (click)="consoleTeachingComponent.showRateStudentsPopup(collection)">
+                        Rate your students now
+                      </div> -->
                     </md-card-content>
                     <md-card-actions>
                       <button md-raised-button (click)="_collectionService.viewSession(collection)">
