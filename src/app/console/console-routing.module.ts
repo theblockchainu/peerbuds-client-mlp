@@ -29,6 +29,7 @@ import { ConsoleAccountSecurityComponent } from './console-account/console-accou
 import { ConsoleAccountPrivacyComponent } from './console-account/console-account-privacy/console-account-privacy.component';
 import { ConsoleAccountSettingsComponent } from './console-account/console-account-settings/console-account-settings.component';
 import { ConsoleAdminComponent } from './console-admin/console-admin.component';
+import {ContentLearningBookmarksComponent} from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
 
 const routes: Routes = [{
   path: '',
@@ -58,6 +59,10 @@ const routes: Routes = [{
         {
           path: 'experiences',
           component: ConsoleLearningExperiencesComponent
+        },
+        {
+            path: 'bookmarks',
+            component: ContentLearningBookmarksComponent
         },
         {
           path: 'sessions',

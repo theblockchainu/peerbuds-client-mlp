@@ -332,7 +332,7 @@ export class DialogsService {
         return this.dialog.open(ReportProfileComponent, {
             width: '40vw',
             height: '60vh'
-          }).afterClosed();
+        }).afterClosed();
     }
 
 }

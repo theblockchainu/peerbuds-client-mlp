@@ -124,9 +124,9 @@ export class ConsoleTeachingAllComponent implements OnInit {
             }
         });
 
-        this.drafts.sort((a, b) => {
-            return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
-        });
+      this.drafts.sort((a, b) => {
+          return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
+      });
 
         for (const key in this.pastCollectionsObject) {
             if (this.pastCollectionsObject.hasOwnProperty(key)) {

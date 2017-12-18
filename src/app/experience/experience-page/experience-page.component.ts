@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+// import { Location } from '@angular/common';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
 import * as moment from 'moment';
@@ -38,8 +39,8 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 declare var FB: any;
 
@@ -77,16 +78,16 @@ export class MyCalendarUtils extends CalendarUtils {
     }
   ],
   animations: [
-    trigger('slideInOut', [
-      state('in', style({
-        transform: 'translate3d(0, 0, 0)'
-      })),
-      state('out', style({
-        transform: 'translate3d(100%, 0, 0)'
-      })),
-      transition('in => out', animate('400ms ease-in-out')),
-      transition('out => in', animate('400ms ease-in-out'))
-    ]),
+      trigger('slideInOut', [
+          state('in', style({
+              transform: 'translate3d(0, 0, 0)'
+          })),
+          state('out', style({
+              transform: 'translate3d(100%, 0, 0)'
+          })),
+          transition('in => out', animate('400ms ease-in-out')),
+          transition('out => in', animate('400ms ease-in-out'))
+      ]),
   ]
 })
 export class ExperiencePageComponent implements OnInit {
@@ -129,6 +130,7 @@ export class ExperiencePageComponent implements OnInit {
   public peerRsvps: Array<any>;
   public allParticipants: Array<any>;
   public isRatingReceived = false;
+  public maxLength = 140;
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
@@ -199,7 +201,8 @@ export class ExperiencePageComponent implements OnInit {
     private _fb: FormBuilder,
     private dialog: MdDialog,
     private dialogsService: DialogsService,
-    private snackBar: MdSnackBar
+    private snackBar: MdSnackBar,
+    // private location: Location
   ) {
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.experienceId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
@@ -219,19 +222,6 @@ export class ExperiencePageComponent implements OnInit {
     this.initializeForms();
     this.initialLoad = false;
     this.eventsForTheDay = {};
-
-    // const query = {
-    //   'include': [
-    //       'contents'
-    //   ]
-    // };
-    // this._collectionService.getRSVPd(this.userId, query).subscribe(
-    //   response => {
-    //     console.log(response);
-    //     this.peerRsvps = response;
-    //   }, err => {
-    //     console.log(err);
-    // });
   }
 
   refreshView(): void {
@@ -526,6 +516,7 @@ export class ExperiencePageComponent implements OnInit {
             const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
             snackBarRef.onAction().subscribe(() => {
               this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
+              // this.location.replaceState(this.location.host + '/' + 'experience' + '/' + this.experienceId + '/' + 'calendar' + '/' + this.calendarId);
             });
           }
         });
@@ -579,6 +570,15 @@ export class ExperiencePageComponent implements OnInit {
         this.loadingReviews = false;
       }
     });
+  }
+  public showAll(strLength)
+  {
+    if (strLength > this.maxLength) {
+      this.maxLength = strLength;
+    }
+    else {
+      this.maxLength = 140;
+    }
   }
 
   private getBookmarks() {
@@ -1014,14 +1014,23 @@ export class ExperiencePageComponent implements OnInit {
     this.loadingSimilarExperiences = true;
     const query = {
       'include': [
-        { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars'], 'where': { 'type': 'experience' } } }
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars', 'locations'], 'where': {'type': 'experience'} }}
       ]
     };
     this._topicService.getTopics(query).subscribe(
       (response) => {
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
+            let experienceLocation = 'Unknown location';
             if (collection.status === 'active' && collection.id !== this.experienceId) {
+              if (collection.contents) {
+                  collection.contents.forEach(content => {
+                      if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
+                          experienceLocation = content.locations[0].city;
+                      }
+                  });
+                  collection.location = experienceLocation;
+              }
               if (collection.owners && collection.owners[0].reviewsAboutYou) {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
                 collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);

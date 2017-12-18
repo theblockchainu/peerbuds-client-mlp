@@ -51,8 +51,8 @@
         <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
           <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
             <div class="">
-              <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg">
-              <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg">
+              <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
+              <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
             </div>
             <div *ngIf="workshop.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{workshop.price | convertCurrency: workshop.currency |async}}</span> / person</div>
             <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" style="margin-top: -5px;"><span class="mat-body-2">{{workshop.price | convertCurrency: 'USD' |async}}</span> / person</div>
@@ -95,7 +95,7 @@
         <div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
           <a *ngIf="i<5" [routerLink]="'/experience/'+experience.id">
             <div class="">
-              <div class="recommendation-thumb" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + config.apiUrl + experience.imageUrls[0] + ')', 'background-size': 'cover'}">
+              <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + config.apiUrl + experience.imageUrls[0] + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
                 <div class="recommendation-city" [ngClass]="{'hidden': cardInFocus}"><md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon><b>{{experience.location | ucwords}}</b></div>
                 <div class="recommendation-map" [ngClass]="{'hidden': !cardInFocus}">
                   <agm-map [latitude]="experience.lat" [longitude]="experience.lng" [scrollwheel]="false" [streetViewControl]="false" [zoom]="2">
@@ -103,7 +103,7 @@
                   </agm-map>
                 </div>
               </div>
-              <div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(/assets/images/no-image.jpg)', 'background-size': 'cover'}">
+              <div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
                 <div class="recommendation-city"><md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon><b>{{experience.location | ucwords}}</b></div>
               </div>
             </div>
@@ -148,8 +148,8 @@
         <div class="peer-recommendation-card" *ngFor="let peer of peers">
           <a [routerLink]="'/profile/'+peer.id">
             <div class="">
-              <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}" alt="workshpImg">
-              <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png" alt="workshpImg">
+              <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{config.apiUrl+peer.profiles[0].picture_url}}" alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
+              <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/avatar.png" alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
             </div>
             <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
             <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>

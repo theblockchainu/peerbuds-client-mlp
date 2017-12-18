@@ -8,7 +8,7 @@ import { DialogsService } from '../_services/dialogs/dialog.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { MdDialog, MdSnackBar } from '@angular/material';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 import * as moment from 'moment';
 import _ from 'lodash';
@@ -18,16 +18,16 @@ import _ from 'lodash';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   animations: [
-    trigger('slideInOut', [
-      state('in', style({
-        transform: 'translate3d(0, 0, 0)'
-      })),
-      state('out', style({
-        transform: 'translate3d(100%, 0, 0)'
-      })),
-      transition('in => out', animate('400ms ease-in-out')),
-      transition('out => in', animate('400ms ease-in-out'))
-    ]),
+      trigger('slideInOut', [
+          state('in', style({
+              transform: 'translate3d(0, 0, 0)'
+          })),
+          state('out', style({
+              transform: 'translate3d(100%, 0, 0)'
+          })),
+          transition('in => out', animate('400ms ease-in-out')),
+          transition('out => in', animate('400ms ease-in-out'))
+      ]),
   ]
 })
 export class ProfileComponent implements OnInit {
@@ -46,6 +46,8 @@ export class ProfileComponent implements OnInit {
   public maxVisibleInterest = 3;
   public maxVisibleReviews = 4;
   public topicsTeaching = [];
+  public reviewsFromLearners = [];
+  public reviewsFromTeachers = [];
   public isTeacher: boolean;
   public offsetString = 'col-md-offset-1';
   private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
@@ -61,6 +63,7 @@ export class ProfileComponent implements OnInit {
   public pastExperiences: Array<any>;
   public ongoingExperiences: Array<any>;
   public upcomingExperiences: Array<any>;
+  public maxLength = 100;
 
 
   constructor(
@@ -86,6 +89,16 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  public showAll(strLength)
+  {
+    if (strLength > this.maxLength) {
+      this.maxLength = strLength;
+    }
+    else {
+      this.maxLength = 140;
+    }
   }
 
   private fetchData() {
@@ -211,15 +224,35 @@ export class ProfileComponent implements OnInit {
       else this.other_languages = 'No language provided';
 
       this.setInterests();
-      if (this.profileObj.peer['0'].ownedCollections && this.profileObj.peer['0'].ownedCollections.length > 0) {
+      if (this.profileObj.peer[0].ownedCollections && this.profileObj.peer[0].ownedCollections.length > 0) {
         this.calculateCollectionDurations();
+        this.computeReviews();
         this.isTeacher = true;
       }
       else {
         this.offsetString = 'custom-margin-left-20pc';
       }
+      if (this.profileObj.peer[0].reviewsAboutYou) {
+        this.userRating = this._collectionService.calculateRating(this.profileObj.peer[0].reviewsAboutYou);
+      }
       this.getIdentities();
     });
+  }
+
+  private computeReviews() {
+      //Compute reviews for Peer from Learner and Teachers
+      let ownedCollectionsArray = this.profileObj.peer[0].ownedCollections;
+      const reviewsAboutYou = this.profileObj.peer[0].reviewsAboutYou;
+      if (reviewsAboutYou) {
+        reviewsAboutYou.forEach(collection => {
+          if (_.find(ownedCollectionsArray,function(o) { return o.id === collection.collectionId; })) {
+            this.reviewsFromLearners.push(collection);
+          }
+          else {
+            this.reviewsFromTeachers.push(collection);
+          }
+        });
+    }
   }
 
   private setInterests() {

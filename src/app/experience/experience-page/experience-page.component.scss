@@ -385,8 +385,19 @@ h3 {
 
 .recommendation-thumb{
     object-fit: cover;
-    height: 240px;
-    width: 200px;
+    height: 290px;
+    width: 100%;
+    position: relative;
+}
+
+.recommendation-city {
+    padding: 7px;
+    background-color: rgba(0,0,0,0.7);
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    color: white;
+    width: 100%;
 }
 
 .peer-recommendation-thumb{
