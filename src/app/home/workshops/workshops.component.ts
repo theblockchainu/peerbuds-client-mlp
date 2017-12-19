@@ -11,24 +11,24 @@ import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.co
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import 'rxjs/add/operator/do';
 import * as moment from 'moment';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 @Component({
   selector: 'app-workshops',
   templateUrl: './workshops.component.html',
   styleUrls: ['./workshops.component.scss'],
-    animations: [
-        trigger('slideInOut', [
-            state('in', style({
-                transform: 'translate3d(0, 0, 0)'
-            })),
-            state('out', style({
-                transform: 'translate3d(100%, 0, 0)'
-            })),
-            transition('in => out', animate('400ms ease-in-out')),
-            transition('out => in', animate('400ms ease-in-out'))
-        ]),
-    ]
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
+  ]
 })
 export class WorkshopsComponent implements OnInit {
   public availableTopics: Array<any>;
@@ -50,17 +50,18 @@ export class WorkshopsComponent implements OnInit {
     private _topicService: TopicService,
     public config: AppConfig,
     public dialog: MdDialog,
-    public elRef: ElementRef
+    public elRef: ElementRef,
+    public _dialogsService: DialogsService
   ) {
     this.userId = _cookieUtilsService.getValue('userId');
   }
   ngOnInit() {
-    this.fetchData().subscribe();
+    this.fetchData();
   }
 
-  fetchData(): Observable<any> {
+  private fetchData() {
     this.loading = true;
-    return this.fetchTopics().map(
+    this.fetchTopics().subscribe(
       response => {
         this.loading = false;
         this.availableTopics = response;
@@ -113,7 +114,7 @@ export class WorkshopsComponent implements OnInit {
     }
     query = {
       'include': [
-        { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars'], 'where': {'type': 'workshop'} }}
+        { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }], 'where': { 'type': 'workshop' } } }
       ],
       'where': { or: this.selectedTopics }
     };
@@ -125,28 +126,28 @@ export class WorkshopsComponent implements OnInit {
         for (const responseObj of response) {
           responseObj.collections.forEach(collection => {
             if (collection.status === 'active') {
-                if (collection.owners && collection.owners[0].reviewsAboutYou) {
-                    collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-                    collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+              if (collection.owners && collection.owners[0].reviewsAboutYou) {
+                collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+                collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+              }
+              let hasActiveCalendar = false;
+              collection.calendars.forEach(calendar => {
+                if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                  hasActiveCalendar = true;
+                  return;
                 }
-                let hasActiveCalendar = false;
-                collection.calendars.forEach(calendar => {
-                    if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-                        hasActiveCalendar = true;
-                        return;
-                    }
-                });
-                if (collection.price && hasActiveCalendar) {
-                    if (this.selectedRange) {
-                        if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
-                            workshops.push(collection);
-                        }
-                    } else {
-                        workshops.push(collection);
-                    }
+              });
+              if (collection.price !== undefined && hasActiveCalendar) {
+                if (this.selectedRange) {
+                  if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
+                    workshops.push(collection);
+                  }
                 } else {
-                    console.log('price unavailable');
+                  workshops.push(collection);
                 }
+              } else {
+                console.log('price unavailable');
+              }
             }
           });
         }
@@ -204,4 +205,17 @@ export class WorkshopsComponent implements OnInit {
       }
     });
   }
+
+  public toggleBookmark(index: number) {
+    if (!(this.workshops[index].bookmarks && this.workshops[index].bookmarks[0] && this.workshops[index].bookmarks[0].peer && this.workshops[index].bookmarks[0].peer[0] && this.workshops[index].bookmarks[0].peer[0].id === this.userId)) {
+      this._collectionService.saveBookmark(this.workshops[index].id, (err, response) => {
+        this.fetchData();
+      });
+    } else {
+      this._collectionService.removeBookmark(this.workshops[index].bookmarks[0].id, (err, response) => {
+        this.fetchData();
+      });
+    }
+  }
+
 }
