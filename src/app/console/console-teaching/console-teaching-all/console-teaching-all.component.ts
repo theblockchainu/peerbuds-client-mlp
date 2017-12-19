@@ -9,11 +9,13 @@ import * as _ from 'lodash';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CohortDetailDialogComponent } from '../console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
 declare var moment: any;
+import { UcFirstPipe } from 'ngx-pipes/esm';
 
 @Component({
     selector: 'app-console-teaching-all',
     templateUrl: './console-teaching-all.component.html',
-    styleUrls: ['./console-teaching-all.component.scss', '../console-teaching.component.scss', '../../console.component.scss']
+    styleUrls: ['./console-teaching-all.component.scss', '../console-teaching.component.scss', '../../console.component.scss'],
+    providers: [UcFirstPipe]
 })
 export class ConsoleTeachingAllComponent implements OnInit {
 
@@ -40,7 +42,8 @@ export class ConsoleTeachingAllComponent implements OnInit {
         private _cookieUtilsService: CookieUtilsService,
         public config: AppConfig,
         public dialog: MdDialog,
-        public snackBar: MdSnackBar
+        public snackBar: MdSnackBar,
+        private ucFirstPipe: UcFirstPipe
     ) {
         activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
             if (urlSegment[0] === undefined) {
@@ -117,6 +120,13 @@ export class ConsoleTeachingAllComponent implements OnInit {
                                 this.pastCollectionsObject[collection.id] = {};
                                 this.pastCollectionsObject[collection.id]['collection'] = collection;
                                 this.pastCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
+                                let participantReviewCount = 0;
+                                this.pastCollectionsObject[collection.id]['collection'].participants.forEach(participant => {
+                                    if (participant.reviewsAboutYou && participant.reviewsAboutYou[0].collectionId === collection.id) {
+                                        participantReviewCount += 1;
+                                    }
+                                });
+                                this.pastCollectionsObject[collection.id]['collection'].participantReviewCount = participantReviewCount;
                             }
                         }
                     }
@@ -197,7 +207,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
         this._dialogService.openDeleteCollection(collection).subscribe(result => {
             if (result) {
                 this.fetchData();
-                this.snackBar.open(collection.type + 'Deleted', 'Close', {
+                this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Deleted', 'Close', {
                     duration: 800
                 });
             }
@@ -211,7 +221,7 @@ collection:any     */
         this._dialogService.openCancelCollection(collection).subscribe(result => {
             if (result) {
                 this.fetchData();
-                this.snackBar.open(collection.type + 'Cancelled', 'Close', {
+                this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Cancelled', 'Close', {
                     duration: 800
                 });
             }

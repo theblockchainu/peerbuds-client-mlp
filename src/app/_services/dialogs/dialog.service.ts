@@ -34,6 +34,8 @@ import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
 import { ReportProfileComponent } from './report-profile/report-profile.component';
 import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohort-dialog.component';
+import { RateParticipantComponent } from './rate-participant-dialog/rate-participant-dialog.component';
+import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -331,8 +333,31 @@ export class DialogsService {
     public reportProfile() {
         return this.dialog.open(ReportProfileComponent, {
             width: '40vw',
-            height: '60vh'
+            height: '70vh'
         }).afterClosed();
+    }
+
+    public rateParticipant(data) {
+        return this.dialog.open(RateParticipantComponent, {
+            data: data,
+            width: '50vw',
+            height: '80vh'
+        }).afterClosed();
+    }
+
+    public shareCollection(type: string, Id: string, title: string, cohortId?: string) {
+        return this.dialog.open(ShareDialogComponent,
+            {
+                data: {
+                    type: type,
+                    id: Id,
+                    cohortId: cohortId,
+                    title: title
+                },
+                width: '40vw',
+                height: '31vh'
+            }
+        ).afterClosed();
     }
 
 }

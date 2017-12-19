@@ -23,13 +23,27 @@
       </div>
       <div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
         <div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
+          <span class="share-panel">
+            <button md-icon-button class="bookmark" (click)="toggleBookmark(i)">
+              <md-icon *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
+                bookmark</md-icon>
+              <md-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
+                color="primary">bookmark</md-icon>
+            </button>
+            <button md-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)">
+              <md-icon>share</md-icon>
+            </button>
+          </span>
           <a [routerLink]="'/experience/'+experience.id">
             <div class="">
               <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + config.apiUrl + experience.imageUrls[0] + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
                 <div class="recommendation-city"><md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon><b>{{experience.location | ucwords}}</b></div>
               </div>
               <div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(/assets/images/no-image.jpg)', 'background-size': 'cover'}">
-                <div class="recommendation-city"><md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon><b>{{experience.location | ucwords}}</b></div>
+                <div class="recommendation-city">
+                  <md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon>
+                  <b>{{experience.location | ucwords}}</b>
+                </div>
               </div>
             </div>
             <div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / person</div>

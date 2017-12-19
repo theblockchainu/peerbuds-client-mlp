@@ -196,8 +196,8 @@ export class WorkshopEditComponent implements OnInit {
       imageUrls: [],
       totalHours: '',
       price: 0,
-      currency: '',
-      cancellationPolicy: '',
+      currency: 'USD',
+      cancellationPolicy: '24 Hours',
       ageLimit: '',
       aboutHost: '', // [null,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
       notes: '',
@@ -234,6 +234,7 @@ export class WorkshopEditComponent implements OnInit {
 
     this.initializeFormFields();
     this.initializeWorkshop();
+
 
     this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
     this._VIDEO = document.querySelector('#main-video');
@@ -393,9 +394,12 @@ export class WorkshopEditComponent implements OnInit {
         this.itenariesForMenu.push(contentObj.schedule.startDay);
       }
     }
-    // if (this.sidebarMenuItems) {
-    this.sidebarMenuItems[2]['submenu'] = [];
-    // }
+    if (this.sidebarMenuItems) {
+      this.sidebarMenuItems[2]['submenu'] = [];
+    } else {
+      this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.workshop.value, this.sidebarMenuItems);
+      this.sidebarMenuItems[2]['submenu'] = [];
+    }
     let i = 1;
     this.itenariesForMenu.forEach(function (item) {
       const index = i;
@@ -418,6 +422,7 @@ export class WorkshopEditComponent implements OnInit {
     this.cancellationPolicies = ['24 Hours', '3 Days', '1 Week'];
 
     this.currencies = ['USD', 'INR', 'GBP'];
+
 
     this.learnerType_array = {
       learner_type: [
@@ -634,8 +639,12 @@ export class WorkshopEditComponent implements OnInit {
 
     // Currency, Amount, Cancellation Policy
     this.workshop.controls.price.patchValue(res.price);
-    this.workshop.controls.currency.patchValue(res.currency);
-    this.workshop.controls.cancellationPolicy.setValue(res.cancellationPolicy);
+    if (res.currency) {
+      this.workshop.controls.currency.patchValue(res.currency);
+    }
+    if (res.cancellationPolicy) {
+      this.workshop.controls.cancellationPolicy.setValue(res.cancellationPolicy);
+    }
 
     // Status
     this.workshop.controls.status.setValue(res.status);

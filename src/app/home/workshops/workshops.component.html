@@ -23,6 +23,17 @@
       </div>
       <div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
         <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
+          <span class="share-panel">
+            <button md-icon-button class="bookmark" (click)="toggleBookmark(i)">
+              <md-icon *ngIf="!(workshop.bookmarks && workshop.bookmarks[0] && workshop.bookmarks[0].peer && workshop.bookmarks[0].peer[0] && workshop.bookmarks[0].peer[0].id===userId)">
+                bookmark</md-icon>
+              <md-icon *ngIf="workshop.bookmarks && workshop.bookmarks[0] && workshop.bookmarks[0].peer && workshop.bookmarks[0].peer[0] && workshop.bookmarks[0].peer[0].id===userId"
+                color="primary">bookmark</md-icon>
+            </button>
+            <button md-icon-button class="share" (click)="_dialogsService.shareCollection('workshop',workshop.id,workshop.title)">
+              <md-icon>share</md-icon>
+            </button>
+          </span>
           <a [routerLink]="'/workshop/'+workshop.id">
             <div class="">
               <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{config.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">

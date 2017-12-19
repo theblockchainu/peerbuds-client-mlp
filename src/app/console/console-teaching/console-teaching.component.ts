@@ -3,6 +3,8 @@ import 'rxjs/add/operator/map';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
+
 import { ConsoleComponent } from '../console.component';
 
 declare var moment: any;
@@ -24,7 +26,8 @@ export class ConsoleTeachingComponent implements OnInit {
     public router: Router,
     public _collectionService: CollectionService,
     private _cookieUtilsService: CookieUtilsService,
-    public consoleComponent: ConsoleComponent) {
+    public consoleComponent: ConsoleComponent,
+    private dialogsService: DialogsService) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
@@ -86,8 +89,11 @@ export class ConsoleTeachingComponent implements OnInit {
   /**
    * Show popup to rate students
    */
-  public showRateStudentsPopup() {
+  public showRateStudentsPopup(collection) {
     // Show popup here
+    const data = collection;
+    this.dialogsService.rateParticipant(data)
+        .subscribe();
   }
 
   imgErrorHandler(event) {

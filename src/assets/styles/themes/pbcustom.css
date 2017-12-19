@@ -1507,3 +1507,16 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
     height: 100%;
     width: 100%;
 }
+
+.share-panel{
+    position: absolute;
+    color: white;
+    flex-direction: row;
+    justify-content: space-between;
+    z-index: 1;
+    display: none;
+    width: 18%;
+}
+.recommendation-card:hover .share-panel {
+    display: inline-flex;
+}
