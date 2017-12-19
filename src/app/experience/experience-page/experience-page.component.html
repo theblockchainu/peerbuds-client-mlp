@@ -268,7 +268,7 @@
                               <div class="viewTime" *ngIf="content.totalUserViewTime !== undefined" [hidden]="content.isViewTimeHidden">
                                 {{content.totalUserViewTime}}
                               </div>
-                              <a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate)">
+                              <a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
                                 <div class="col-md-5">
                                   <img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{config.apiUrl+content.imageUrl}}"
                                     (error)="_collectionService.imgErrorHandler($event)">
@@ -278,7 +278,7 @@
                                 </div>
                               </a>
                               <div class="col-md-7">
-                                <a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate)">
+                                <a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
                                   <div class="row">
                                     <div class="col-md-12">
                                       <h3> {{content.title | titlecase}}</h3>
@@ -314,7 +314,7 @@
                                 </div>
                                 <div class="row margin-top-10">
                                   <div class="col-md-12" *ngIf="userType !=='participant' && userType !== 'teacher'">
-                                    <a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate)">See details</a>
+                                    <a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate, itenary.endDate)">See details</a>
                                   </div>
                                 </div>
                               </div>
@@ -892,8 +892,8 @@
                       <div class="recommendation-city"><md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</md-icon><b>{{experience.location | ucwords}}</b></div>
                     </div>
                   </div>
-                  <div *ngIf="experience.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / person</div>
-                  <div *ngIf="experience.currency === undefined || experience.currency.length == 0" style="margin-top: -5px;"><span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / person</div>
+                  <div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / person</div>
+                  <div *ngIf="experience.currency === undefined || experience.currency.length === 0" style="margin-top: 3px;"><span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / person</div>
                   <div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>
                   <!--<div style="margin-top: 0px;">{{experience.headline | shorten: 20 : '...' | titlecase}}</div>-->
                   <div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' + experience.owners[0].profiles[0].last_name | ucwords}}</div>

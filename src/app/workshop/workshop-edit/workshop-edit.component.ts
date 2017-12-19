@@ -473,7 +473,7 @@ export class WorkshopEditComponent implements OnInit {
           this.workshopData = res;
           if (this.workshopData.payoutrules && this.workshopData.payoutrules.length > 0) {
             this.payoutRuleNodeId = this.workshopData.payoutrules[0].id;
-            this.payoutRuleAccountId = this.workshopData.payoutRules[0].payoutId1;
+            this.payoutRuleAccountId = this.workshopData.payoutrules[0].payoutId1;
           }
           this.retrieveAccounts();
           this.initializeFormValues(res);

@@ -78,8 +78,8 @@ export class DialogsService {
         let dialogRef6: MdDialogRef<VerifyEmailDialogComponent>;
 
         dialogRef6 = this.dialog.open(VerifyEmailDialogComponent, {
-            width: '650px',
-            height: '600px'
+            width: '50vw',
+            height: '80vh'
         });
         return dialogRef6.afterClosed();
     }
@@ -87,8 +87,8 @@ export class DialogsService {
         let dialogRef7: MdDialogRef<IdPolicyDialogComponent>;
 
         dialogRef7 = this.dialog.open(IdPolicyDialogComponent, {
-            width: '500px',
-            height: '600px'
+            width: '45vw',
+            height: '100vh'
         });
         return dialogRef7.afterClosed();
     }
@@ -107,8 +107,8 @@ export class DialogsService {
         let dialogRef9: MdDialogRef<VerifyPhoneDialogComponent>;
 
         dialogRef9 = this.dialog.open(VerifyPhoneDialogComponent, {
-            width: '500px',
-            height: '600px'
+            width: '50vw',
+            height: '80vh'
         });
         return dialogRef9.afterClosed();
     }
@@ -167,7 +167,7 @@ export class DialogsService {
     openDeleteCollection(collection: any) {
         const dialogRef = this.dialog.open(DeleteCollectionDialogComponent, {
             data: collection,
-            height: '28vh'
+            width: '30vw'
         });
 
         return dialogRef.afterClosed();
@@ -179,7 +179,7 @@ export class DialogsService {
                 collectionId: collectionId,
                 userId: userId
             },
-            height: '23vh'
+            width: '30vw'
         });
         return dialogRef.afterClosed();
     }
@@ -187,7 +187,7 @@ export class DialogsService {
     openCancelCollection(collection: any) {
         const dialogRef = this.dialog.open(CancelCollectionDialogComponent, {
             data: collection,
-            height: '23vh'
+            width: '30vw'
         });
         return dialogRef.afterClosed();
     }
@@ -195,7 +195,7 @@ export class DialogsService {
     openDeleteCohort(calendarId: string) {
         return this.dialog.open(DeleteCohortDialogComponent, {
             data: calendarId,
-            height: '23vh'
+            width: '30vw'
         }).afterClosed();
     }
 

@@ -443,7 +443,7 @@ export class ExperienceEditComponent implements OnInit {
           this.experienceData = res;
           if (this.experienceData.payoutrules && this.experienceData.payoutrules.length > 0) {
             this.payoutRuleNodeId = this.experienceData.payoutrules[0].id;
-            this.payoutRuleAccountId = this.experienceData.payoutRules[0].payoutId1;
+            this.payoutRuleAccountId = this.experienceData.payoutrules[0].payoutId1;
           }
           this.retrieveAccounts();
           this.initializeFormValues(res);

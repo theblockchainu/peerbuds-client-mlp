@@ -507,7 +507,7 @@ export class ExperiencePageComponent implements OnInit {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
                 if (content.id === this.toOpenDialogName) {
-                  this.openDialog(content, itinerary.startDate);
+                  this.openDialog(content, itinerary.startDate, itinerary.endDate);
                 }
               });
             });
@@ -571,8 +571,7 @@ export class ExperiencePageComponent implements OnInit {
       }
     });
   }
-  public showAll(strLength)
-  {
+  public showAll(strLength) {
     if (strLength > this.maxLength) {
       this.maxLength = strLength;
     }
@@ -923,7 +922,7 @@ export class ExperiencePageComponent implements OnInit {
   /**
   * openDialog
   content:any   */
-  public openDialog(content: any, startDate) {
+  public openDialog(content: any, startDate, endDate) {
     this.modalContent = content;
     switch (content.type) {
       case 'in-person':
@@ -932,6 +931,7 @@ export class ExperiencePageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               collectionId: this.experienceId,
               collection: this.experience,
@@ -948,6 +948,7 @@ export class ExperiencePageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               collectionId: this.experienceId,
               collection: this.experience,
@@ -964,6 +965,7 @@ export class ExperiencePageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               peerHasSubmission: this.peerHasSubmission,
               collectionId: this.experienceId,
@@ -1014,7 +1016,7 @@ export class ExperiencePageComponent implements OnInit {
     this.loadingSimilarExperiences = true;
     const query = {
       'include': [
-          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars', 'locations'], 'where': {'type': 'experience'} }}
+          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars', {'contents': 'locations'}], 'where': {'type': 'experience'} }}
       ]
     };
     this._topicService.getTopics(query).subscribe(
