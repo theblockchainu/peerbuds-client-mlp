@@ -559,9 +559,9 @@
                             <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
                                 alt="workshpImg">
                         </div>
-                        <div *ngIf="workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
+                        <div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
                         <!--{{workshop.price | currency: workshop.currency: true:'1.0-0'}}-->
-                        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: -5px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
+                        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
                         <!--{{workshop.price | currency: 'USD': true: '1.0-0'}}-->
                         <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
                         <!--<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>-->
