@@ -43,7 +43,6 @@ export class ExperiencesComponent implements OnInit {
   public selectedTopics: Array<any>;
   public loading = false;
   private today = moment();
-
   constructor(
     public _collectionService: CollectionService,
     public _profileService: ProfileService,
