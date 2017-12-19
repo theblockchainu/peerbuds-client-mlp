@@ -471,7 +471,7 @@ export class WorkshopPageComponent implements OnInit {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
                 if (content.id === this.toOpenDialogName) {
-                  this.openDialog(content, itinerary.startDate);
+                  this.openDialog(content, itinerary.startDate, itinerary.endDate);
                 }
               });
             });
@@ -832,7 +832,7 @@ export class WorkshopPageComponent implements OnInit {
   /**
   * openDialog
   content:any   */
-  public openDialog(content: any, startDate) {
+  public openDialog(content: any, startDate, endDate) {
     this.modalContent = content;
     switch (content.type) {
       case 'online':
@@ -841,6 +841,7 @@ export class WorkshopPageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               collectionId: this.workshopId,
               collection: this.workshop,
@@ -857,6 +858,7 @@ export class WorkshopPageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               collectionId: this.workshopId,
               collection: this.workshop,
@@ -873,6 +875,7 @@ export class WorkshopPageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               peerHasSubmission: this.peerHasSubmission,
               collectionId: this.workshopId,
