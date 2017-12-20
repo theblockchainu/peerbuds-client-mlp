@@ -25,6 +25,7 @@ export class RequestPasswordDialogComponent implements OnInit {
   private email: string;
   public passWord: string;
   public forgotpwdForm: FormGroup;
+  public showError = false;
   // TypeScript public modifiers
 
   public showMessage = false;
@@ -67,6 +68,8 @@ export class RequestPasswordDialogComponent implements OnInit {
       },
       (error) => {
         this.alertService.error(error._body);
+        this.showError = true;
+        this.showMessage = false;
         // this.loading = false;
       });
   }
