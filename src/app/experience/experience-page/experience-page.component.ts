@@ -39,8 +39,8 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 declare var FB: any;
 
@@ -78,16 +78,16 @@ export class MyCalendarUtils extends CalendarUtils {
     }
   ],
   animations: [
-      trigger('slideInOut', [
-          state('in', style({
-              transform: 'translate3d(0, 0, 0)'
-          })),
-          state('out', style({
-              transform: 'translate3d(100%, 0, 0)'
-          })),
-          transition('in => out', animate('400ms ease-in-out')),
-          transition('out => in', animate('400ms ease-in-out'))
-      ]),
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
   ]
 })
 export class ExperiencePageComponent implements OnInit {
@@ -397,7 +397,7 @@ export class ExperiencePageComponent implements OnInit {
         if (content.rsvps) {
           content.rsvps.forEach(rsvp => {
             if (rsvp.peer) {
-              const peer = _.find(rsvp.peer, function(o) { return o.id === self.userId; });
+              const peer = _.find(rsvp.peer, function (o) { return o.id === self.userId; });
               if (peer) {
                 content.hasRSVPd = true;
                 return;
@@ -420,7 +420,7 @@ export class ExperiencePageComponent implements OnInit {
         'views',
         { 'participants': [{ 'profiles': ['work'] }] },
         { 'owners': [{ 'profiles': ['work'] }] },
-        { 'contents': ['locations', 'schedules', {'rsvps': 'peer'}, { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
+        { 'contents': ['locations', 'schedules', { 'rsvps': 'peer' }, { 'views': 'peer' }, { 'submissions': [{ 'upvotes': 'peer' }, { 'peer': 'profiles' }] }] }
       ],
       'relInclude': 'calendarId'
     };
@@ -507,7 +507,7 @@ export class ExperiencePageComponent implements OnInit {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
                 if (content.id === this.toOpenDialogName) {
-                  this.openDialog(content, itinerary.startDate);
+                  this.openDialog(content, itinerary.startDate, itinerary.endDate);
                 }
               });
             });
@@ -830,9 +830,9 @@ export class ExperiencePageComponent implements OnInit {
 
   rsvpContent(contentId) {
     this._contentService.createRSVP(contentId, this.calendarId)
-        .subscribe((response: Response) => {
-          console.log(response);
-        });
+      .subscribe((response: Response) => {
+        console.log(response);
+      });
   }
 
   public viewRSVPs(content, userType) {
@@ -841,7 +841,7 @@ export class ExperiencePageComponent implements OnInit {
       content.rsvps.forEach(rsvp => {
         if (rsvp.peer) {
           const peer = rsvp.peer[0];
-          const peerFound = _.find(attendies, function(o) { return o.id === peer.id; });
+          const peerFound = _.find(attendies, function (o) { return o.id === peer.id; });
           if (peerFound) {
             peerFound.hasRSVPd = true;
             peerFound.rsvpId = rsvp.id;
@@ -851,7 +851,7 @@ export class ExperiencePageComponent implements OnInit {
         }
       });
     }
-    attendies = _.filter(attendies, function(o) { return o.hasRSVPd; });
+    attendies = _.filter(attendies, function (o) { return o.hasRSVPd; });
     // TODO: view all RSVPs for this content
     const dialogRef = this.dialog.open(ShowRSVPPopupComponent, {
       data: {
@@ -922,7 +922,7 @@ export class ExperiencePageComponent implements OnInit {
   /**
   * openDialog
   content:any   */
-  public openDialog(content: any, startDate) {
+  public openDialog(content: any, startDate, endDate) {
     this.modalContent = content;
     switch (content.type) {
       case 'in-person':
@@ -931,6 +931,7 @@ export class ExperiencePageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               collectionId: this.experienceId,
               collection: this.experience,
@@ -947,6 +948,7 @@ export class ExperiencePageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               collectionId: this.experienceId,
               collection: this.experience,
@@ -963,6 +965,7 @@ export class ExperiencePageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               peerHasSubmission: this.peerHasSubmission,
               collectionId: this.experienceId,
@@ -1013,7 +1016,7 @@ export class ExperiencePageComponent implements OnInit {
     this.loadingSimilarExperiences = true;
     const query = {
       'include': [
-          { 'relation': 'collections', 'scope' : { 'include' : [{'owners': ['reviewsAboutYou', 'profiles']}, 'calendars', 'locations'], 'where': {'type': 'experience'} }}
+        { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'contents': 'locations' }], 'where': { 'type': 'experience' } } }
       ]
     };
     this._topicService.getTopics(query).subscribe(
@@ -1023,12 +1026,12 @@ export class ExperiencePageComponent implements OnInit {
             let experienceLocation = 'Unknown location';
             if (collection.status === 'active' && collection.id !== this.experienceId) {
               if (collection.contents) {
-                  collection.contents.forEach(content => {
-                      if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
-                          experienceLocation = content.locations[0].city;
-                      }
-                  });
-                  collection.location = experienceLocation;
+                collection.contents.forEach(content => {
+                  if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
+                    experienceLocation = content.locations[0].city;
+                  }
+                });
+                collection.location = experienceLocation;
               }
               if (collection.owners && collection.owners[0].reviewsAboutYou) {
                 collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
@@ -1068,8 +1071,12 @@ export class ExperiencePageComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           if (this.userId) {
-            this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
-            //this.joinExperience(result);
+            if (this.experience.price === 0) {
+              this.joinExperience(result);
+            } else {
+              this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
+            }
+
           } else {
             this.router.navigate(['login']);
           }

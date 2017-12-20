@@ -245,7 +245,7 @@ export class CollectionService {
       } else if (contents[0].type === 'video') {
         fillerWord = 'Recording';
       } else if (contents[0].type === 'in-person') {
-          fillerWord = 'Session';
+        fillerWord = 'Session';
       }
       else if (contents[0].type === 'project') {
         fillerWord = 'Submission';
@@ -273,7 +273,7 @@ export class CollectionService {
     } else if (contentType === 'video') {
       fillerWord = 'recording';
     } else if (contentType === 'in-person') {
-        fillerWord = 'session';
+      fillerWord = 'session';
     }
     else if (contentType === 'project') {
       fillerWord = 'submission';
@@ -349,7 +349,7 @@ export class CollectionService {
         else if (calendarLength === 1) {
           startDate = workshop.calendars[0];
         }
-        if ( startDate > this.now) {
+        if (startDate > this.now) {
           return 0;
         }
         const totalContents = calendarLength;
@@ -387,7 +387,7 @@ export class CollectionService {
    * viewCollection
    */
   public viewCollection(collection) {
-      this.router.navigate([collection.type, collection.id]);
+    this.router.navigate([collection.type, collection.id]);
   }
 
   /**
@@ -415,7 +415,7 @@ export class CollectionService {
    * editCollection
    */
   public openEditCollection(collection) {
-      this.router.navigate([collection.type, collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+    this.router.navigate([collection.type, collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
   }
 
   /**
@@ -472,6 +472,17 @@ export class CollectionService {
     const body = {};
     this.http
       .post(this.config.apiUrl + '/api/collections/' + collectionId + '/bookmarks', body, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
+  }
+
+  public removeBookmark(bookmarkId, cb) {
+    const body = {};
+    this.http
+      .delete(this.config.apiUrl + '/api/bookmarks/' + bookmarkId, this.options)
       .map((response) => {
         cb(null, response.json());
       }, (err) => {
@@ -677,7 +688,7 @@ collectionID:string,userId:string,calendarId:string   */
   /**
    * postReview
    */
-  public postReview(  peerId: string, reviewBody: any) {
+  public postReview(peerId: string, reviewBody: any) {
     return this.http
       .post(this.config.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou', reviewBody, this.options);
   }
@@ -712,9 +723,9 @@ collectionID:string,userId:string,calendarId:string   */
     event.target.src = '/assets/images/placeholder-image.jpg';
   }
 
-    public userImgErrorHandler(event) {
-        event.target.src = '/assets/images/avatar.png';
-    }
+  public userImgErrorHandler(event) {
+    event.target.src = '/assets/images/avatar.png';
+  }
 
   /**
    * deleteComment
@@ -784,11 +795,11 @@ collectionID:string,userId:string,calendarId:string   */
    */
   public markPresence(peerId, rsvpId, isPresent) {
     const body = {
-      'isPresent' : isPresent
+      'isPresent': isPresent
     };
     return this.http
-    .put(this.config.apiUrl + '/api/peers/' + peerId + '/rsvps/' + rsvpId, body , this.options)
-    .map((response: Response) => response.json());
+      .put(this.config.apiUrl + '/api/peers/' + peerId + '/rsvps/' + rsvpId, body, this.options)
+      .map((response: Response) => response.json());
   }
 
 }

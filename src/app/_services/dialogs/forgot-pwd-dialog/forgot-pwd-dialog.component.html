@@ -11,14 +11,22 @@
             <span class="txtcolor">Ok</span>
           </button>
         </div>
-        <div *ngIf="!showMessage">
+        <div *ngIf="showError" class="alert alert-error box-msg" role="alert">
+          <i class="fa fa-close fa-lg" aria-hidden="true"></i>
+          <br>This email does not exist in our database
+          <br><br><br>
+          <button md-dialog-close md-raised-button class="loginbtn btn-width-large vertical-bottom">
+            <span class="txtcolor">Ok</span>
+          </button>
+        </div>
+        <div *ngIf="!showMessage && !showError">
           <div>
             <md-input-container class="pb-block">
               <input mdInput #email placeholder="Email" formControlName="email" type="email">
             </md-input-container>
           </div>
           <div>
-            <span mdTooltip="Invalid Email!" [mdTooltipDisabled]="email.value.length != 0 && !email.invalid">
+            <span mdTooltip="Invalid email" [mdTooltipDisabled]="email.value.length != 0 && !email.invalid">
               <button md-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="sendForgotPwdMail()" [disabled]="email.value.length == 0 || email.invalid">
                 <span class="txtcolor">Request for password</span>
               </button>

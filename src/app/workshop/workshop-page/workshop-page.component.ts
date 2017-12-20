@@ -38,7 +38,7 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 declare var FB: any;
 
@@ -77,16 +77,16 @@ export class MyCalendarUtils extends CalendarUtils {
     }
   ],
   animations: [
-      trigger('slideInOut', [
-          state('in', style({
-              transform: 'translate3d(0, 0, 0)'
-          })),
-          state('out', style({
-              transform: 'translate3d(100%, 0, 0)'
-          })),
-          transition('in => out', animate('400ms ease-in-out')),
-          transition('out => in', animate('400ms ease-in-out'))
-      ]),
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
   ]
 })
 export class WorkshopPageComponent implements OnInit {
@@ -471,7 +471,7 @@ export class WorkshopPageComponent implements OnInit {
             this.itenaryArray.forEach(itinerary => {
               itinerary.contents.forEach(content => {
                 if (content.id === this.toOpenDialogName) {
-                  this.openDialog(content, itinerary.startDate);
+                  this.openDialog(content, itinerary.startDate, itinerary.endDate);
                 }
               });
             });
@@ -832,7 +832,7 @@ export class WorkshopPageComponent implements OnInit {
   /**
   * openDialog
   content:any   */
-  public openDialog(content: any, startDate) {
+  public openDialog(content: any, startDate, endDate) {
     this.modalContent = content;
     switch (content.type) {
       case 'online':
@@ -841,6 +841,7 @@ export class WorkshopPageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               collectionId: this.workshopId,
               collection: this.workshop,
@@ -857,6 +858,7 @@ export class WorkshopPageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               collectionId: this.workshopId,
               collection: this.workshop,
@@ -873,6 +875,7 @@ export class WorkshopPageComponent implements OnInit {
             data: {
               content: content,
               startDate: startDate,
+              endDate: endDate,
               userType: this.userType,
               peerHasSubmission: this.peerHasSubmission,
               collectionId: this.workshopId,
@@ -968,8 +971,11 @@ export class WorkshopPageComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           if (this.userId) {
-            this.router.navigate(['review-pay', 'collection', this.workshopId, result]);
-            //this.joinWorkshop(result);
+            if (this.workshop.price === 0) {
+              this.joinWorkshop(result);
+            } else {
+              this.router.navigate(['review-pay', 'collection', this.workshopId, result]);
+            }
           } else {
             this.router.navigate(['login']);
           }
