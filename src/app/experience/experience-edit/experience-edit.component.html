@@ -418,7 +418,7 @@
                     <md-checkbox [(ngModel)]="freeExperience" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</md-checkbox>
                   </div>
                 </div>
-                <div class="row margin-left-0">
+                <div class="row margin-left-0" *ngIf="!freeExperience">
                   <div class="col-md-3 padding-left-0">
                     <md-input-container [floatPlaceholder]="'never'" class="margin-top-20">
                       <input type="number" mdInput #price formControlName="price" placeholder="0" min="1" required>
@@ -633,7 +633,8 @@
                               </div>
                               <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
                                 <span *ngSwitchCase="'card'">**** **** **** {{account.external_accounts.data[0].last4}}</span>
-                                <span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}} <br>{{account.external_accounts.data[0].bank_name}} </span>
+                                <span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}}
+                                  <br>{{account.external_accounts.data[0].bank_name}} </span>
                               </div>
                               <div class="col-md-3">
                                 <b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
@@ -661,7 +662,9 @@
               <div style="margin-top:10px; " *ngIf="!payoutLoading">
                 <!--<button md-raised-button>PayTM</button> &emsp;-->
                 <button md-raised-button>
-                  <a [href]="connectPaymentUrl"><img src="../../../assets/images/stripe.png" style="width: 50px;" /></a>
+                  <a [href]="connectPaymentUrl">
+                    <img src="../../../assets/images/stripe.png" style="width: 50px;" />
+                  </a>
                 </button> &emsp;
                 <!--<button md-raised-button>Paypal</button> &emsp;-->
               </div>
