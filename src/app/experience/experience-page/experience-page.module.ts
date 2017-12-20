@@ -15,8 +15,7 @@ import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { StickyModule } from 'ng2-sticky-kit';
-import {AgmCoreModule} from '@agm/core';
-import {ContentInpersonComponent} from './content-inperson/content-inperson.component';
+import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 
 @NgModule({
   imports: [
@@ -35,10 +34,7 @@ import {ContentInpersonComponent} from './content-inperson/content-inperson.comp
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    StickyModule,
-    AgmCoreModule.forRoot({
-        apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
-    })
+    StickyModule
   ],
 
   declarations: [ExperiencePageComponent, ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, ShowRSVPPopupComponent],

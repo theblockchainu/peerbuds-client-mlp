@@ -1,57 +1,57 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {AppConfig} from '../../app.config';
-import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
-import {CountryPickerService} from '../../_services/countrypicker/countrypicker.service';
-import {Observable} from 'rxjs/Observable';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AppConfig } from '../../app.config';
+import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { Observable } from 'rxjs/Observable';
 import _ from 'lodash';
 
 @Component({
-  selector: 'app-add-location-dialog',
-  templateUrl: './add-location-dialog.component.html',
-  styleUrls: ['./add-location-dialog.component.scss']
+    selector: 'app-add-location-dialog',
+    templateUrl: './add-location-dialog.component.html',
+    styleUrls: ['./add-location-dialog.component.scss']
 })
 export class AddLocationDialogComponent implements OnInit {
 
-  public contentFormArray: FormArray;
-  public contentForm: FormGroup;
-  public locationForm: FormGroup;
-  public contentTitle = '';
-  public isEdit;
-  public resultData = {
-      status: 'discard'
-  };
-  public userSettings: any = {
-    geoLocation: [37.76999, -122.44696],
-    geoRadius: 5,
-    inputPlaceholderText: 'Where will you meet?',
-    showSearchButton: false,
-  };
-  public lat = 37.76999;
-  public lng = -122.44696;
+    public contentFormArray: FormArray;
+    public contentForm: FormGroup;
+    public locationForm: FormGroup;
+    public contentTitle = '';
+    public isEdit;
+    public resultData = {
+        status: 'discard'
+    };
+    public userSettings: any = {
+        geoLocation: [37.76999, -122.44696],
+        geoRadius: 5,
+        inputPlaceholderText: 'Where will you meet?',
+        showSearchButton: false,
+    };
+    public lat = 37.76999;
+    public lng = -122.44696;
 
-  public filteredCountryOptions: Observable<string[]>;
-  private countriesArray: any[];
-  public busyCountry = false;
-  public selectedCountry;
+    public filteredCountryOptions: Observable<string[]>;
+    private countriesArray: any[];
+    public busyCountry = false;
+    public selectedCountry;
 
-  constructor(
-      public config: AppConfig,
-      @Inject(MD_DIALOG_DATA) public inputData: any,
-      public dialogRef: MdDialogRef<AddLocationDialogComponent>,
-      private countryPickerService: CountryPickerService
-  ) {
-  }
+    constructor(
+        public config: AppConfig,
+        @Inject(MD_DIALOG_DATA) public inputData: any,
+        public dialogRef: MdDialogRef<AddLocationDialogComponent>,
+        private countryPickerService: CountryPickerService
+    ) {
+    }
 
-  ngOnInit() {
-      this.locationForm = <FormGroup>this.inputData.locationForm;
-      this.contentForm = <FormGroup>this.inputData.contentForm;
-      this.contentFormArray = <FormArray>this.inputData.contentFormArray;
-      this.contentTitle = this.contentForm.controls.title.value.length !== 0 ? this.contentForm.controls.title.value : 'new activity';
-      this.isEdit = this.inputData.isEdit;
+    ngOnInit() {
+        this.locationForm = <FormGroup>this.inputData.locationForm;
+        this.contentForm = <FormGroup>this.inputData.contentForm;
+        this.contentFormArray = <FormArray>this.inputData.contentFormArray;
+        this.contentTitle = this.contentForm.controls.title.value.length !== 0 ? this.contentForm.controls.title.value : 'new activity';
+        this.isEdit = this.inputData.isEdit;
 
-      this.initializeFormFields();
-  }
+        this.initializeFormFields();
+    }
 
     /**
      * Get data to return on closing this dialog.

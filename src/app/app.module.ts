@@ -65,10 +65,6 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     DialogsModule,
     AppRoutingModule,
     DefaultModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
-    }),
-    Ng4GeoautocompleteModule.forRoot(),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.threeBounce,
       backdropBackgroundColour: 'rgba(0,0,0,0)',
