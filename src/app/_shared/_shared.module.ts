@@ -51,7 +51,8 @@ import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
 import { TrimPipe } from './trim/trim.pipe';
 import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
 import { TextIconCarouselComponent } from './text-icon-carousel/text-icon-carousel.component';
-
+import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
+import { AgmCoreModule } from '@agm/core';
 @NgModule({
   imports: [
     ProgressbarModule.forRoot(),
@@ -72,7 +73,13 @@ import { TextIconCarouselComponent } from './text-icon-carousel/text-icon-carous
     }),
     Ng2DeviceDetectorModule.forRoot(),
     StickyModule,
-    NgxCarouselModule
+    NgxCarouselModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww',
+      libraries: ['places'],
+      language: 'en-US'
+    }),
+    Ng4GeoautocompleteModule.forRoot()
   ],
   declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TextIconCarouselComponent],
   providers: [
@@ -126,7 +133,7 @@ import { TextIconCarouselComponent } from './text-icon-carousel/text-icon-carous
     MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
     SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
     LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TitleCasePipe, CarouselModule
-    , TextIconCarouselComponent
+    , TextIconCarouselComponent, Ng4GeoautocompleteModule, AgmCoreModule
   ]
 })
 export class SharedModule { }

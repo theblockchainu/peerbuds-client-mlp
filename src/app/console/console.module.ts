@@ -60,8 +60,7 @@ import { ContentLearningBookmarksComponent } from './console-learning/content-le
     MdInputModule,
     MdSelectModule,
     MdSnackBarModule,
-    MdAutocompleteModule,
-    Ng4GeoautocompleteModule.forRoot()
+    MdAutocompleteModule
   ],
   declarations: [
     ConsoleComponent,
