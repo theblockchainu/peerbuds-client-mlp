@@ -190,7 +190,7 @@ export class ExperienceEditComponent implements OnInit {
       videoUrls: [],
       imageUrls: [],
       totalHours: '',
-      price: '',
+      price: 0,
       currency: 'USD',
       cancellationPolicy: '24 Hours',
       ageLimit: '',
@@ -1077,22 +1077,22 @@ export class ExperienceEditComponent implements OnInit {
 
   private retrieveAccounts() {
     this.payoutAccounts = [];
-      this._paymentService.retrieveConnectedAccount().subscribe(result => {
-          console.log(result);
-          this.payoutAccounts = result;
-          result.forEach(account => {
-              if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
-                  this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
-              }
-          });
-          this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
-              this.updatePayoutRule(res);
-          });
-          this.payoutLoading = false;
-      }, err => {
-          console.log(err);
-          this.payoutLoading = false;
+    this._paymentService.retrieveConnectedAccount().subscribe(result => {
+      console.log(result);
+      this.payoutAccounts = result;
+      result.forEach(account => {
+        if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
+          this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
+        }
       });
+      this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
+        this.updatePayoutRule(res);
+      });
+      this.payoutLoading = false;
+    }, err => {
+      console.log(err);
+      this.payoutLoading = false;
+    });
   }
 
   private updatePayoutRule(newPayoutId) {

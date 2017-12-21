@@ -19,8 +19,6 @@ import { AppDesignComponent } from './app-design/app-design.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ContactComponent } from './contact-us/contact-us.component';
-import { AgmCoreModule } from '@agm/core';
-import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { WhitePaperComponent } from './white-paper/white-paper.component';
@@ -65,10 +63,6 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     DialogsModule,
     AppRoutingModule,
     DefaultModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
-    }),
-    Ng4GeoautocompleteModule.forRoot(),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.threeBounce,
       backdropBackgroundColour: 'rgba(0,0,0,0)',
