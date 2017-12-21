@@ -67,7 +67,6 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
       if (err) {
         console.log(err);
       } else {
-        console.log(res);
         res.forEach(collection => {
           payoutAccounts.forEach(account => {
             if (account.payoutaccount.id === collection.payoutrules[0].payoutId1) {
@@ -76,7 +75,6 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
           });
           this.ownedCollections.push(collection);
         });
-        console.log(this.ownedCollections);
         this.loadingRules = false;
       }
     });
@@ -85,7 +83,6 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
   private retrieveAccounts() {
     this.payoutAccounts = [];
     this._paymentService.retrieveConnectedAccount().subscribe(result => {
-      console.log(result);
       result.forEach(account => {
         this.payoutAccounts = this.payoutAccounts.concat(account.external_accounts.data);
       });
@@ -103,7 +100,6 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
   public editAccount(accountId: string) {
     this._paymentService.createLoginLink(accountId).subscribe(
       result => {
-        console.log(result);
         window.location.href = result.url;
       }, err => {
         console.log(err);
