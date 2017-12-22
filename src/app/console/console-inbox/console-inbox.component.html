@@ -1,3 +1,94 @@
-<div style="text-align: center; margin-top: 10%">
-  Inbox content here
-</div>
+<div class="loading-container" style="width:60%" [hidden]="!loadingMessages">
+    <ngx-loading [show]="true"></ngx-loading>
+  </div>
+  <div class="row margin-top-20 margin-left-0 margin-right-0" *ngIf="!loadingMessages">
+    <div class="col-md-3 border-box padding-left-0 padding-right-0">
+      <div class="headerChat col-md-12" style="padding-top:5px;padding-bottom:5px">
+        <span class="">
+          <span id="demo-2">
+            <i class="material-icons" style="line-height:35px;vertical-align:middle">search</i>
+            <input type="search" placeholder="" name="searchbox">
+          </span>
+          <md-select class="padding-left-10" style="margin-left:30px" [(value)]="selected">
+            <md-option value="all">All Messages</md-option>
+            <md-option value="experience">Experience</md-option>
+            <md-option value="workshop">Workshop</md-option>
+          </md-select>
+        </span>
+      </div>
+      <div class="col-md-12 padding-left-0 padding-right-0 margin-top-10">
+        <!--List of Rooms shown as chats -->
+        <div *ngFor="let rooms of joinedRooms" (click)="openChat(rooms)" style="cursor:pointer">
+          <div>
+            <span *ngIf="rooms.collection">
+              <!--dp-->
+            </span>
+            <span *ngIf="!rooms.collection">
+              <!--dp-->
+            </span>
+            <span class="mat-caption">
+              <b>{{ rooms.name }}</b>
+            </span>
+            <span></span>
+            <!--date-->
+          </div>
+          <div>
+            <span></span>
+            <!-- recent msg-->
+            <a color="secondary" class="pull-right" [mdMenuTriggerFor]="showSettingsMenu" style="text-align: right; padding: 0px;">
+              <md-icon style="color:grey;font-size:15px">settings</md-icon>
+            </a>
+            <md-menu #showSettingsMenu>
+              <button md-menu-item>
+                Mute
+              </button>
+              <button md-menu-item>
+                Archive
+              </button>
+              <button md-menu-item>
+                Delete
+              </button>
+              <button md-menu-item>
+                Mark as unread
+              </button>
+              <button md-menu-item>
+                Flag
+              </button>
+            </md-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7 border-box padding-left-0 padding-right-0">
+      <div *ngIf="joinedRooms">
+        <div *ngFor="let room of joinedRooms;let i = index">
+  
+          <div [ngClass]="{'headerChat': true, 'center': true, 'displayNone': displayNone[room.id]}">
+            <span>{{room.participants.length}} Participants</span><br/>
+            <span><h5>{{room.collection[0].type | titlecase }}</h5></span>
+          </div>
+          <div class="center" *ngIf="room.messages" style="padding-top:10px">
+            <span>{{room.messages[0].createdAtLocal}}</span>
+            <div *ngFor="let message of room.messages">
+              <div *ngIf="message.type==='system'" class="center">
+                <h6>
+                  <i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+                </h6>
+              </div>
+              <div *ngIf="message.type==='user'">
+                <span [ngClass]="{'col-md-2': true, 'padding-left-0': true, 'review-thumb': true, 'pull-left': message.peer[0].id != userId, 'pull-right': message.peer[0].id == userId}">
+                  <img src="{{ message.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+                </span>
+                <span>
+                  <h6>{{message.text}}</h6>
+                </span>
+              </div>
+            </div>
+            <div class="pull-right margin-top-10 margin-bottom-10"> <!--Post Msgs-->
+              <button mdButton (click)="postMsg(room.id)">Post Message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
