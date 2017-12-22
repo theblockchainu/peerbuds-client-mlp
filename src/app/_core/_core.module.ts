@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileService } from '../_services/profile/profile.service';
 import { PaymentService } from '../_services/payment/payment.service';
-
 @NgModule({
   imports: [
     CommonModule
@@ -22,7 +21,8 @@ import { PaymentService } from '../_services/payment/payment.service';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule
+  ],
   providers: [
     AuthGuardService,
     AuthService,

@@ -9,19 +9,15 @@ import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { } from '@angular/material';
 import 'hammerjs';
-import {ExperienceContentInpersonComponent} from './experience-content-inperson/experience-content-inperson.component';
-import {AgmCoreModule} from '@agm/core';
-import {Ng4GeoautocompleteModule} from 'ng4-geoautocomplete';
-import {AddLocationDialogComponent} from './add-location-dialog/add-location-dialog.component';
+import { ExperienceContentInpersonComponent } from './experience-content-inperson/experience-content-inperson.component';
+import { AgmCoreModule } from '@agm/core';
+import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
+import { AddLocationDialogComponent } from './add-location-dialog/add-location-dialog.component';
 
 @NgModule({
     imports: [
         SharedModule,
-        ExperienceRoutingModule,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww'
-        }),
-        Ng4GeoautocompleteModule.forRoot()
+        ExperienceRoutingModule
     ],
     declarations: [
         ExperienceEditComponent,

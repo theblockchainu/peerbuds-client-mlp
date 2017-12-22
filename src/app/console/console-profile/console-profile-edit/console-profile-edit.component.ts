@@ -9,7 +9,8 @@ import { TimezonePickerService } from '../../../_services/timezone-picker/timezo
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { MdSnackBar } from '@angular/material';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
-import { Observable, BehaviorSubject} from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map'; import {
   Http, Headers, Response, BaseRequestOptions
@@ -77,19 +78,19 @@ export class ConsoleProfileEditComponent implements OnInit {
     private config: AppConfig,
     private _cookieUtilsService: CookieUtilsService,
     private ucFirstPipe: UcFirstPipe) {
-      activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
-        if (urlSegment[0] === undefined) {
-          consoleProfileComponent.setActiveTab('edit');
-        } else {
-          consoleProfileComponent.setActiveTab(urlSegment[0].path);
-        }
-      });
-      this.languagesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
-      this.language = this.languagesAsync.asObservable();
-      this.currenciesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
-      this.timezoneAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+    activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
+      if (urlSegment[0] === undefined) {
+        consoleProfileComponent.setActiveTab('edit');
+      } else {
+        consoleProfileComponent.setActiveTab(urlSegment[0].path);
+      }
+    });
+    this.languagesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+    this.language = this.languagesAsync.asObservable();
+    this.currenciesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+    this.timezoneAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
 
-      this.userId = _cookieUtilsService.getValue('userId');
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
@@ -167,7 +168,6 @@ export class ConsoleProfileEditComponent implements OnInit {
   }
 
   autoCompleteCallback(data: any): any {
-    // this.componentData6 = JSON.stringify(data);
     this.profileForm.controls['location_string'].patchValue(data.name);
     this.profileForm.controls['location_lat'].patchValue(data.geometry.location.lat);
     this.profileForm.controls['location_lng'].patchValue(data.geometry.location.lng);
@@ -180,19 +180,19 @@ export class ConsoleProfileEditComponent implements OnInit {
       this.languages = data;
       this.languagesAsync.next(this.languages);
       this.profileForm.controls['preferred_language'].valueChanges
-      .startWith(null)
-      .subscribe(val => {
-        if(val) {
-          this.filteredOptions = _.filter(this.languages, (item) => {
-            return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-          });
+        .startWith(null)
+        .subscribe(val => {
+          if (val) {
+            this.filteredOptions = _.filter(this.languages, (item) => {
+              return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+            });
+          }
+          else {
+            this.languages.slice();
+          }
+          // console.log(this.filteredOptions);
         }
-        else {
-          this.languages.slice();
-        }
-        // console.log(this.filteredOptions);
-      }
-      );
+        );
     }, error => console.log('Could not load languages.'));
   }
 
@@ -201,18 +201,18 @@ export class ConsoleProfileEditComponent implements OnInit {
       this.currencies = currencies;
       this.currenciesAsync.next(this.currencies);
       this.profileForm.controls['currency'].valueChanges
-      .startWith(null)
-      .subscribe(val => {
-        if(val) {
-          this.filteredCurrencies = _.filter(this.currencies, (item) => {
-            return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-          });
+        .startWith(null)
+        .subscribe(val => {
+          if (val) {
+            this.filteredCurrencies = _.filter(this.currencies, (item) => {
+              return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+            });
+          }
+          else {
+            this.currencies.slice();
+          }
         }
-        else {
-          this.currencies.slice();
-        }
-      }
-      );
+        );
     }, error => console.log('Could not load currencies'));
 
   }
@@ -223,18 +223,18 @@ export class ConsoleProfileEditComponent implements OnInit {
       this.timezones = timezones;
       this.timezoneAsync.next(this.timezones);
       this.profileForm.controls['timezone'].valueChanges
-      .startWith(null)
-      .subscribe(val => {
-        if(val) {
-          this.filteredTimezones = _.filter(this.timezones, (item) => {
-            return item.text.toLowerCase().indexOf(val.toLowerCase()) > -1;
-          });
+        .startWith(null)
+        .subscribe(val => {
+          if (val) {
+            this.filteredTimezones = _.filter(this.timezones, (item) => {
+              return item.text.toLowerCase().indexOf(val.toLowerCase()) > -1;
+            });
+          }
+          else {
+            this.timezones.slice();
+          }
         }
-        else {
-          this.timezones.slice();
-        }
-      }
-      );
+        );
     }, error => console.log('Could not load timezones'));
   }
 
@@ -275,7 +275,7 @@ export class ConsoleProfileEditComponent implements OnInit {
         const ph_Array = <FormArray>this.profileForm.controls['phone_numbers'];
         profiles[0].phone_numbers.forEach(phObj => {
           let isPrimary = true;
-          if(phObj.isPrimary === false) {
+          if (phObj.isPrimary === false) {
             isPrimary = false;
           }
           ph_Array.push(
@@ -312,7 +312,7 @@ export class ConsoleProfileEditComponent implements OnInit {
               school: educationObj.school,
               startYear: parseInt(educationObj.startYear, 10),
               endYear: parseInt(educationObj.endYear, 10),
-              presentlyPursuing: [educationObj.presentlyPursuing] 
+              presentlyPursuing: [educationObj.presentlyPursuing]
             })
           );
         });
@@ -345,17 +345,17 @@ export class ConsoleProfileEditComponent implements OnInit {
       country_code: [code, Validators.required],
       subscriber_number: [number, Validators.required],
       isPrimary: isPrimary
-    })
+    });
   }
 
   private initializeEmergencyContact(): FormGroup {
     return this._fb.group({
       country_code: ['', Validators.required],
       subscriber_number: ['', Validators.required]
-    })
+    });
   }
 
-  
+
 
   /**
    * Get array of days
@@ -385,7 +385,7 @@ export class ConsoleProfileEditComponent implements OnInit {
    * saveProfile
    */
   public saveProfile() {
-    let profileData = this.profileForm.value;
+    const profileData = this.profileForm.value;
     // delete profileData.education.presentlyPursuing;
     const education = profileData.education;
     delete profileData.education;
@@ -414,9 +414,9 @@ export class ConsoleProfileEditComponent implements OnInit {
       }).flatMap((response) => {
         return this._profileService.updateEducation(this.userId, this.profile.id, education);
       }).flatMap((response) => {
-        return this._profileService.updatePeer(this.userId, {'email': email});
+        return this._profileService.updatePeer(this.userId, { 'email': email });
       }).flatMap((response) => {
-        return this._profileService.updatePeer(this.userId, {'phone': profileData.phone_numbers});
+        return this._profileService.updatePeer(this.userId, { 'phone': profileData.phone_numbers });
       }).subscribe((response) => {
         this.busyUpdate = false;
         this.snackBar.open('Profile Updated', 'Close');
@@ -444,11 +444,11 @@ export class ConsoleProfileEditComponent implements OnInit {
 index:number   */
   public deleteWork(index: number) {
     const work = <FormArray>this.profileForm.controls['work'];
-    if(index > 0) {
+    if (index > 0) {
       work.removeAt(index);
       return;
     }
-    let workEntry = <FormGroup>work.controls[index];
+    const workEntry = <FormGroup>work.controls[index];
     workEntry.controls.position.patchValue('');
     workEntry.controls.company.patchValue('');
     workEntry.controls.startDate.patchValue(null);
@@ -470,11 +470,11 @@ index:number   */
    * deleteeducation(index)  */
   public deleteEducation(index: number) {
     const education = <FormArray>this.profileForm.controls['education'];
-    if(index > 0) {
+    if (index > 0) {
       education.removeAt(index);
       return;
     }
-    let educationEntry = <FormGroup>education.controls[index];
+    const educationEntry = <FormGroup>education.controls[index];
     educationEntry.controls.degree.patchValue('');
     educationEntry.controls.school.patchValue('');
     educationEntry.controls.startYear.patchValue('');
@@ -497,19 +497,19 @@ index:number   */
    */
   public addPhoneControl() {
     const phones = <FormArray>this.profileForm.controls['phone_numbers'];
-    phones.push(this.initializePhone('','',false));
+    phones.push(this.initializePhone('', '', false));
   }
 
   /**
    * clearEntry
 index:number   */
   public clearEntry(index: number, isPrimary: boolean) {
-    let phones = <FormArray>this.profileForm.controls['phone_numbers'];
-    if(!isPrimary) {
+    const phones = <FormArray>this.profileForm.controls['phone_numbers'];
+    if (!isPrimary) {
       phones.removeAt(index);
       return;
     }
-    let phoneNumber = <FormGroup>phones.controls[index];
+    const phoneNumber = <FormGroup>phones.controls[index];
     phoneNumber.controls.country_code.patchValue('');
     phoneNumber.controls.subscriber_number.patchValue('');
   }
@@ -535,12 +535,12 @@ index:number   */
    */
   public deleteEmergencyContact(index: number) {
     const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
-    if(index > 0) {
+    if (index > 0) {
 
       emergency_contact.removeAt(index);
       return;
     }
-    let phoneNumber = <FormGroup>emergency_contact.controls[index];
+    const phoneNumber = <FormGroup>emergency_contact.controls[index];
     phoneNumber.controls.country_code.patchValue('');
     phoneNumber.controls.subscriber_number.patchValue('');
   }
@@ -557,25 +557,25 @@ index:number   */
   public selected(event) {
     const temp_array = [];
     event.forEach(element => {
-      if(element && element.name) {
+      if (element && element.name) {
         temp_array.push(element.name);
       }
-      else if(element) {
+      else if (element) {
         temp_array.push(element);
       }
     });
     const other_languages = <FormArray>this.profileForm.controls['other_languages'];
     temp_array.forEach(language => {
-      if(other_languages.value.indexOf(language) === -1)
+      if (other_languages.value.indexOf(language) === -1)
         other_languages.push(new FormControl(language));
-      });
+    });
   }
 
   public removed(event) {
     const other_languages = <FormArray>this.profileForm.controls['other_languages'];
     let temp_array = [];
     temp_array = _.filter(other_languages.value, (item) => {
-      return item != event[0].name;
+      return item !== event[0].name;
     });
     this.profileForm.setControl('other_languages', this._fb.array(
       temp_array
