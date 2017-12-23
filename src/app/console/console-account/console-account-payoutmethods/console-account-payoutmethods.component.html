@@ -58,5 +58,47 @@
           md-button>Add Payout Method</a>
       </div>
     </div>
+    <br>
+    <div class="row table">
+      <div class="col-md-10">
+        <div class="row table-header">
+          <div class="col-md-4">
+            <h3>Content</h3>
+          </div>
+          <div class="col-md-4">
+            <h3>Payto</h3>
+          </div>
+        </div>
+        <div class="row table-data">
+          <div class="col-md-12">
+            <div class="row loading" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="loadingRules">
+              <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <div class="text-center" *ngIf="!loadingRules && (!ownedCollections || ownedCollections.length===0)" style="padding-top: 5px; padding-bottom: 5px">
+              <span class="lightText">
+                No Rules to display
+              </span>
+            </div>
+            <ng-container *ngIf="!addingAccount && ownedCollections">
+              <div class="row" *ngFor="let collection of ownedCollections" style="padding-top: 5px; padding-bottom: 5px">
+                <div class="col-md-4">
+                  <b>{{collection.type|titlecase}}:{{collection.title}}</b>
+                </div>
+                <div class="col-md-4">
+                  <span>{{collection.payoutrules[0].external_account.object | titlecase}} **** **** {{collection.payoutrules[0].external_account.last4}}</span>
+                </div>
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-2">
+                  <a (click)="editPayout(collection.id)">
+                    edit
+                  </a>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
