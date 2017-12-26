@@ -44,6 +44,7 @@ import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohor
 import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
 import { RateParticipantComponent } from './rate-participant-dialog/rate-participant-dialog.component';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
+import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 
 @NgModule({
   imports: [
@@ -71,7 +72,7 @@ import { ShareDialogComponent } from './share-dialog/share-dialog.component';
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
     SubmissionViewComponent,
     SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
-    CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent, ShareDialogComponent
+    CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent, ShareDialogComponent, DateConflictDialogComponent
   ],
   providers: [
     DialogsService,
@@ -89,7 +90,7 @@ import { ShareDialogComponent } from './share-dialog/share-dialog.component';
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
     SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
     CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
-    ShareDialogComponent
+    ShareDialogComponent, DateConflictDialogComponent
   ],
 })
 export class DialogsModule { }

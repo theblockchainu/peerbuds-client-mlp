@@ -61,6 +61,7 @@ export class ExperienceContentComponent implements OnInit {
   initItenary() {
     return this._fb.group({
       date: [null],
+      startDay: [null],
       contents: this._fb.array([])
     });
   }
@@ -151,7 +152,6 @@ export class ExperienceContentComponent implements OnInit {
   }
 
   saveTriggered(event, i) {
-    console.log(this.myForm);
     if (event.action === 'add') {
       // Show cloning warning since collection is active
       if (this.collection.status === 'active') {
@@ -189,42 +189,42 @@ export class ExperienceContentComponent implements OnInit {
       }
     }
     else if (event.action === 'delete') {
-        if (this.collection.status === 'active') {
-            this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
-                .subscribe((result) => {
-                    if (result === 'accept') {
-                        this.deleteContent(event.value, i);
-                    }
-                    else if (result === 'reject') {
-                        // Do nothing
-                        this.router.navigate(['console', 'teaching', 'experiences']);
-                    }
-                });
-        }
-        else {
-            this.deleteContent(event.value, i);
-        }
+      if (this.collection.status === 'active') {
+        this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
+          .subscribe((result) => {
+            if (result === 'accept') {
+              this.deleteContent(event.value, i);
+            }
+            else if (result === 'reject') {
+              // Do nothing
+              this.router.navigate(['console', 'teaching', 'experiences']);
+            }
+          });
+      }
+      else {
+        this.deleteContent(event.value, i);
+      }
     }
     else if (event.action === 'deleteDay') {
-        if (this.collection.status === 'active') {
-            this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
-                .subscribe((result) => {
-                    if (result === 'accept') {
-                        this.deleteContent(null, i);
-                        const itenary = <FormArray>this.myForm.controls.itenary;
-                        itenary.removeAt(i);
-                    }
-                    else if (result === 'reject') {
-                        // Do nothing
-                        this.router.navigate(['console', 'teaching', 'experiences']);
-                    }
-                });
-        }
-        else {
-            this.deleteContent(null, i);
-            const itenary = <FormArray>this.myForm.controls.itenary;
-            itenary.removeAt(i);
-        }
+      if (this.collection.status === 'active') {
+        this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
+          .subscribe((result) => {
+            if (result === 'accept') {
+              this.deleteContent(null, i);
+              const itenary = <FormArray>this.myForm.controls.itenary;
+              itenary.removeAt(i);
+            }
+            else if (result === 'reject') {
+              // Do nothing
+              this.router.navigate(['console', 'teaching', 'experiences']);
+            }
+          });
+      }
+      else {
+        this.deleteContent(null, i);
+        const itenary = <FormArray>this.myForm.controls.itenary;
+        itenary.removeAt(i);
+      }
     }
     else {
       console.log('unhandledEvent Triggered');
@@ -275,7 +275,6 @@ export class ExperienceContentComponent implements OnInit {
     }
     schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
 
-    console.log(schedule);
     this.http.post(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.options)
       .map((response: Response) => {
 
@@ -302,8 +301,8 @@ export class ExperienceContentComponent implements OnInit {
               const ContentsArray = <FormArray>Form.controls.contents;
               const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
               ContentGroup.controls.pending.setValue(false);
+              Form.controls['startDay'].patchValue(resp.json().startDay);
             }
-            console.log(response);
             if (collectionId) {
               this.reload(collectionId, 13);
             }
@@ -312,21 +311,20 @@ export class ExperienceContentComponent implements OnInit {
 
         // Add a location to this content
         if (location !== undefined) {
-            this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, this.options)
-                .map((resp: Response) => {
-                    if (resp.status === 200) {
-                        const Itenary = <FormArray>this.myForm.controls.itenary;
-                        const Form = <FormGroup>Itenary.controls[i];
-                        const ContentsArray = <FormArray>Form.controls.contents;
-                        const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-                        ContentGroup.controls.pending.setValue(false);
-                    }
-                    console.log(response);
-                    if (collectionId) {
-                        this.reload(collectionId, 13);
-                    }
-                })
-                .subscribe();
+          this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, this.options)
+            .map((resp: Response) => {
+              if (resp.status === 200) {
+                const Itenary = <FormArray>this.myForm.controls.itenary;
+                const Form = <FormGroup>Itenary.controls[i];
+                const ContentsArray = <FormArray>Form.controls.contents;
+                const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
+                ContentGroup.controls.pending.setValue(false);
+              }
+              if (collectionId) {
+                this.reload(collectionId, 13);
+              }
+            })
+            .subscribe();
         }
       })
       .subscribe();
@@ -377,8 +375,6 @@ export class ExperienceContentComponent implements OnInit {
       const endMin = endTimeArr[1];
       schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
     }
-    console.log(contentId);
-    console.log(schedule);
     this.http.put(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.options)
       .map((response: Response) => {
         const result = response.json();
@@ -395,28 +391,26 @@ export class ExperienceContentComponent implements OnInit {
             if (resp.status === 200) {
               contentGroup.controls.pending.setValue(false);
             }
-            console.log(resp);
           })
           .subscribe();
 
-          // Edit a location of this content
-          if (location !== undefined) {
-              this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, this.options)
-                  .map((resp: Response) => {
-                      if (resp.status === 200) {
-                          const Itenary = <FormArray>this.myForm.controls.itenary;
-                          const Form = <FormGroup>Itenary.controls[i];
-                          const ContentsArray = <FormArray>Form.controls.contents;
-                          const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-                          ContentGroup.controls.pending.setValue(false);
-                      }
-                      console.log(response);
-                  })
-                  .subscribe();
-          }
-          if (collectionId) {
-              this.reload(collectionId, 13);
-          }
+        // Edit a location of this content
+        if (location !== undefined) {
+          this.http.patch(this.config.apiUrl + '/api/contents/' + contentId + '/location', location, this.options)
+            .map((resp: Response) => {
+              if (resp.status === 200) {
+                const Itenary = <FormArray>this.myForm.controls.itenary;
+                const Form = <FormGroup>Itenary.controls[i];
+                const ContentsArray = <FormArray>Form.controls.contents;
+                const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
+                ContentGroup.controls.pending.setValue(false);
+              }
+            })
+            .subscribe();
+        }
+        if (collectionId) {
+          this.reload(collectionId, 13);
+        }
       })
       .subscribe();
   }
@@ -430,25 +424,24 @@ export class ExperienceContentComponent implements OnInit {
       const contentId = contentObj.id;
       this.http.delete(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.options)
         .map((response: Response) => {
-          console.log(response);
           if (response !== null) {
-              const result = response.json();
-              if (result.isNewInstance) {
-                  collectionId = result.id;
-                  this.reload(collectionId, 13);
-              }
-              else {
-                  const itenary = <FormArray>this.myForm.controls.itenary;
-                  const form = <FormGroup>itenary.controls[index];
-                  const contentsArray = <FormArray>form.controls.contents;
-                  contentsArray.removeAt(eventIndex);
-              }
-          }
-          else {
+            const result = response.json();
+            if (result.isNewInstance) {
+              collectionId = result.id;
+              this.reload(collectionId, 13);
+            }
+            else {
               const itenary = <FormArray>this.myForm.controls.itenary;
               const form = <FormGroup>itenary.controls[index];
               const contentsArray = <FormArray>form.controls.contents;
               contentsArray.removeAt(eventIndex);
+            }
+          }
+          else {
+            const itenary = <FormArray>this.myForm.controls.itenary;
+            const form = <FormGroup>itenary.controls[index];
+            const contentsArray = <FormArray>form.controls.contents;
+            contentsArray.removeAt(eventIndex);
           }
         })
         .subscribe();
@@ -458,20 +451,19 @@ export class ExperienceContentComponent implements OnInit {
       contentArray.forEach(content => {
         this.http.delete(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.options)
           .map((response: Response) => {
-              console.log(response);
-              if (response !== null) {
-                  const result = response.json();
-                  if (result.isNewInstance) {
-                      collectionId = result.id;
-                      this.reload(collectionId, 13);
-                  }
-                  else {
-                      const itenary = <FormArray>this.myForm.controls.itenary;
-                  }
+            if (response !== null) {
+              const result = response.json();
+              if (result.isNewInstance) {
+                collectionId = result.id;
+                this.reload(collectionId, 13);
               }
               else {
-                  const itenary = <FormArray>this.myForm.controls.itenary;
+                const itenary = <FormArray>this.myForm.controls.itenary;
               }
+            }
+            else {
+              const itenary = <FormArray>this.myForm.controls.itenary;
+            }
           })
           .subscribe();
       });

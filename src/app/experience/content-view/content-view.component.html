@@ -6,8 +6,9 @@
         <div style="margin-top: -36px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
           <md-icon>wb_sunny</md-icon>
           <input mdInput [mdDatepicker]="startDatePicker" formControlName="date" [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate">
-          <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
-          <a *ngIf="itenaryForm.value.date" style="float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;" >({{showItineraryDate(itenaryForm.value.date) }})</a>
+          <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;"
+            (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
+          <a *ngIf="itenaryForm.value.date" style="float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;">({{itenaryForm.value.date| date}})</a>
           <md-datepicker touchUi="true" #startDatePicker [startAt]="collectionStartDate"></md-datepicker>
           <a style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;">
             Day {{itenaryId + 1}}
@@ -39,8 +40,10 @@
           <md-list-item *ngFor="let Content of itenaryForm.controls.contents.controls; let i=index" style="margin: 20px 0px; padding: 0px 0px; height: fit-content;">
             <div class="col-md-3" style="padding-left: 0px; margin-right: 10px;" (click)="findAndOpenDialog(i)">
               <img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
-              <img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{config.apiUrl + Content.value.imageUrl}}" (error)="imgErrorHandler($event)" style="width: 140px;">
-              <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" width="100%" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
+              <img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{config.apiUrl + Content.value.imageUrl}}" (error)="imgErrorHandler($event)"
+                style="width: 140px;">
+              <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" width="100%" class="center-block itenary-media" preload="metadata"
+                poster="../../../assets/images/placeholder-image.jpg" controls>
                 <source src="{{config.apiUrl + Content.value.imageUrl}}" type="video/mp4">
               </video>
               <!-- <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" id="video" src="{{config.apiUrl + Content.value.imageUrl}}" type="video/mp4" controls></video> -->
@@ -49,7 +52,8 @@
               <div class="content-title">{{Content.value.title | titlecase}}</div>
               <div *ngIf="Content.value.type === 'online' || Content.value.type === 'in-person'" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
               <div *ngIf="Content.value.type === 'project'" class="content-subtitle">Deadline: {{getDeadline(Content)}}</div>
-              <div *ngIf="Content.value.type === 'in-person'" class="content-subtitle">#{{Content.controls.location.controls.apt_suite.value}} {{Content.controls.location.controls.street_address.value}}, {{Content.controls.location.controls.city.value}}</div>
+              <div *ngIf="Content.value.type === 'in-person'" class="content-subtitle">#{{Content.controls.location.controls.apt_suite.value}} {{Content.controls.location.controls.street_address.value}},
+                {{Content.controls.location.controls.city.value}}</div>
               <span></span>
               <div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase }}</div>
             </div>
@@ -70,7 +74,8 @@
         <span class="activity-subtitle">
           (Must have at least one in-person session)
         </span>
-        <br><br>
+        <br>
+        <br>
         <button md-button type="button" (click)="addContent('in-person'); findAndOpenDialog(-1);" style="padding-left: 0px">
           <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
           In-person Session

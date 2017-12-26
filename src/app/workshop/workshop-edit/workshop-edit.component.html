@@ -481,16 +481,16 @@
                   <div class="row" style="margin: 30px 0px 15px -15px;">
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" [disabled]="isWorkShopActive">
-                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle {{activeWorkshop}}" [disabled]="isWorkShopActive"></md-datepicker-toggle>
+                        <input mdInput [min]="currentDate" [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
+                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle {{activeWorkshop}}"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
                     </div>
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
                         <input mdInput [mdDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
-                          formControlName="endDate" [disabled]="isWorkShopActive">
-                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle" [disabled]="isWorkShopActive"></md-datepicker-toggle>
+                          formControlName="endDate">
+                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>
@@ -555,7 +555,6 @@
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Do you want to provide your phone number to learners?</h2>
               <div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
-              {{phoneDetails.value |json}}
               <form [formGroup]="phoneDetails">
                 <div style="margin-top:50px;">
                   <md-radio-group>
@@ -626,14 +625,15 @@
                       <ng-container *ngIf="!addingAccount && payoutAccounts">
                         <form [formGroup]="paymentInfo">
                           <md-radio-group formControlName="id">
-                             <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
+                            <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
                               <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
                                 <b *ngSwitchCase="'card'">Card</b>
                                 <b *ngSwitchCase="'bank_account'">Bank Account</b>
                               </div>
                               <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
                                 <span *ngSwitchCase="'card'">**** **** **** {{account.external_accounts.data[0].last4}}</span>
-                                <span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}} <br>{{account.external_accounts.data[0].bank_name}} </span>
+                                <span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}}
+                                  <br>{{account.external_accounts.data[0].bank_name}} </span>
                               </div>
                               <div class="col-md-3">
                                 <b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
@@ -678,7 +678,9 @@
               <div style="margin-top:10px; " *ngIf="!payoutLoading">
                 <!--<button md-raised-button>PayTM</button> &emsp;-->
                 <button md-raised-button>
-                  <a [href]="connectPaymentUrl"><img src="../../../assets/images/stripe.png" style="width: 50px;" /></a>
+                  <a [href]="connectPaymentUrl">
+                    <img src="../../../assets/images/stripe.png" style="width: 50px;" />
+                  </a>
                 </button> &emsp;
                 <!--<button md-raised-button>Paypal</button> &emsp;-->
               </div>

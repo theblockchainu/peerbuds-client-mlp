@@ -481,16 +481,16 @@
                   <div class="row" style="margin: 30px 0px 15px -15px;">
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" [disabled]="isWorkShopActive">
-                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}" [disabled]="isWorkShopActive"></md-datepicker-toggle>
+                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
+                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
                     </div>
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
                         <input mdInput [mdDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
-                          formControlName="endDate" [disabled]="isWorkShopActive">
-                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle" [disabled]="isWorkShopActive"></md-datepicker-toggle>
+                          formControlName="endDate">
+                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>

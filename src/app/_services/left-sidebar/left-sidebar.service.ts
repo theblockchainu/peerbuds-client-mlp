@@ -15,22 +15,22 @@ export class SideBarMenuItem {
 
 @Injectable()
 export class LeftSidebarService {
-    
-  sidebarMenuItems: Observable<SideBarMenuItem>;
 
-  constructor(
-      private http: Http, private config: AppConfig,
-      private route: ActivatedRoute, public router: Router
-  ) {}
+    sidebarMenuItems: Observable<SideBarMenuItem>;
 
-  public getMenuItems(fileLocation: string): Observable<SideBarMenuItem> {
-      return this.http.get(fileLocation)
-                  .map((response: Response) => {
-                    return response.json();
-                  });
-  }
+    constructor(
+        private http: Http, private config: AppConfig,
+        private route: ActivatedRoute, public router: Router
+    ) { }
 
-  public updateSideMenu(collection, sidebarMenuItems) {
+    public getMenuItems(fileLocation: string): Observable<SideBarMenuItem> {
+        return this.http.get(fileLocation)
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
+    public updateSideMenu(collection, sidebarMenuItems) {
         let completedSections = 0;
         if (collection.status === 'draft') {
             sidebarMenuItems[4].visible = false;
@@ -84,7 +84,7 @@ export class LeftSidebarService {
             sidebarMenuItems[1].submenu[1].complete = true;
             completedSections++;
         }
-        if (collection.difficultyLevel !== undefined  && collection.notes !== undefined && collection.difficultyLevel.length > 0 && collection.notes.length > 0) {
+        if (collection.difficultyLevel !== undefined && collection.notes !== undefined && collection.difficultyLevel.length > 0 && collection.notes.length > 0) {
             sidebarMenuItems[1].submenu[2].complete = true;
             completedSections++;
         }
@@ -95,7 +95,7 @@ export class LeftSidebarService {
         // if (collection.imageUrls !== null && collection.videoUrls !== null 
         //     && collection.imageUrls !== undefined && collection.videoUrls !== undefined 
         //     && collection.imageUrls.length > 0 && collection.videoUrls.length > 0) {
-        if ((collection.imageUrls &&  collection.imageUrls.length > 0)
+        if ((collection.imageUrls && collection.imageUrls.length > 0)
             || (collection.videoUrls && collection.videoUrls.length > 0)) {
             sidebarMenuItems[1].submenu[4].complete = true;
             completedSections++;
@@ -122,6 +122,7 @@ export class LeftSidebarService {
         if (collection.owners !== undefined && collection.owners[0].phoneVerified) {
             sidebarMenuItems[4].submenu[0].complete = true;
         }
+        console.log(sidebarMenuItems);
         return sidebarMenuItems;
     }
 }
