@@ -561,7 +561,7 @@
                     <md-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</md-radio-button>
                     <div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
                       <md-input-container [floatPlaceholder]="true" class="pb-block" style="margin: 20px 0px;">
-                        <input type="tel" mdInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" [readOnly]="isPhoneVerified">
+                        <input type="tel" mdInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" [readOnly]="true">
                         <md-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</md-hint>
                         <md-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this workshop</md-hint>
                       </md-input-container>

@@ -516,7 +516,7 @@ export class WorkshopEditComponent implements OnInit {
           this.retrieveAccounts();
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
-          if (res.status === 'active') {
+          if (res.status === 'active' && this.sidebarMenuItems) {
             this.sidebarMenuItems[3].visible = false;
             this.sidebarMenuItems[4].visible = true;
             this.sidebarMenuItems[4].active = true;
