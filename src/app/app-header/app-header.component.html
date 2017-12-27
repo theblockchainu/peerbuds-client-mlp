@@ -46,7 +46,7 @@
       </div>
       <div class="headerButtons" [mdMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">
         <div>
-          <img *ngIf="!profile.picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb">
+          <img *ngIf="!profile.picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
           <img *ngIf="profile.picture_url" src="{{config.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
         </div>
       </div>
@@ -77,9 +77,9 @@
   </md-toolbar>
 </header>
 <md-menu #headerTeachMenu>
-  <!--<button md-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
+  <button md-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
     Dashboard
-  </button>-->
+  </button>
   <button md-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
     Teaching Journey
   </button>
@@ -101,9 +101,9 @@
 </md-menu>
 
 <md-menu #headerLearnMenu>
-  <!--<button md-menu-item [routerLink]="['/console/dashboard']">
+  <button md-menu-item [routerLink]="['/console/dashboard']">
     Dashboard
-  </button>-->
+  </button>
   <button md-menu-item [routerLink]="['/console/learning/all']">
     Learning Journey
   </button>
@@ -125,9 +125,9 @@
   <button md-menu-item [routerLink]="['/console/profile/edit']">
     Edit Profile
   </button>
-  <!--<button md-menu-item [routerLink]="['/console/account/settings']">
+  <button md-menu-item [routerLink]="['/console/account/payoutmethods']">
     Account Settings
-  </button>-->
+  </button>
   <button md-menu-item [routerLink]="['/console/learning/bookmarks']">
     Bookmarks
   </button>

@@ -113,6 +113,21 @@ export class ProfileService {
     }
   }
 
+  public changePassword(userId, oldPassword, newPassword) {
+    if (userId) {
+      const body = {
+        userId: userId,
+        oldPassword: oldPassword,
+        newPassword: newPassword
+      };
+      return this.http
+          .post(this.config.apiUrl + '/api/peers/changePassword', body, this.options)
+          .map((response: Response) => response.json(), (err) => {
+              console.log('Error: ' + err);
+          });
+    }
+  }
+
   public updatePeer(userId, body: any) {
     if (userId) {
       return this.http.patch(this.config.apiUrl + '/api/peers/' + userId, body, this.options).map(
@@ -573,6 +588,10 @@ export class ProfileService {
           }, (err) => {
               cb(err);
           }).subscribe();
+  }
+
+  public imgErrorHandler(event) {
+      event.target.src = '/assets/images/user-placeholder.jpg';
   }
 
 }

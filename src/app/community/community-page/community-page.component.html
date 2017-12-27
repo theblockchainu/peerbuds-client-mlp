@@ -1,0 +1,222 @@
+<div class="main-content">
+    <div class="loading-container" [hidden]="!loadingCommunity" style="margin-left: 8.5%; margin-top: 3%;">
+        <ngx-loading [show]="true"></ngx-loading>
+    </div>
+    <div *ngIf="community">
+        <div class="row pending-actions" *ngIf="community.status === 'cancelled' && userType==='owner' ">
+            <div class="col-md-10 col-md-offset-1">
+                <span>This community has been cancelled by one of the owners</span>
+            </div>
+        </div>
+        <div class="row pending-actions center" *ngIf="community.status === 'submitted' && userType==='owner' ">
+            <div class="col-md-10 col-md-offset-1">
+                <span>This community is pending approval from peerbuds team</span>
+            </div>
+        </div>
+        <div class="row pending-actions center"
+             *ngIf="(community.status === 'draft' || community.status === '' ) && userType==='owner' ">
+            <div class="col-md-10 col-md-offset-1">
+                <span>This is a preview. Submit your community to get it approved</span>
+            </div>
+        </div>
+        <div class="row pending-actions center"
+             *ngIf="(userType === 'public' && userId !== undefined && accountApproved !== 'true')">
+            <div class="col-md-10 col-md-offset-1">
+        <span>Your account is still under review. You can sign-up for this community after you are approved.
+          <a href="javascript:void(0);" (click)="openVerificationPage()">Check verification status</a>
+        </span>
+            </div>
+        </div>
+        <div class="row pending-actions center" *ngIf="(userId === undefined)">
+            <div class="col-md-10 col-md-offset-1">
+        <span>You need to login or sign-up to join this community.
+          <a href="javascript:void(0);" (click)="openLoginPage()">Login now</a>
+        </span>
+            </div>
+        </div>
+        <div class="row margin-top-40">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row community-content">
+                    <div class="col-md-7 left-content">
+                        <!--COVER IMAGE-->
+                        <div class="row coverImage">
+                            <div class="col-md-12">
+                                <div style="width: 100%; height: 300px;" *ngIf="carouselImages && carouselConfig">
+                                    <carousel [sources]="carouselImages" [config]="carouselConfig"></carousel>
+                                </div>
+                            </div>
+                        </div>
+                        <!--TITLE-->
+                        <div class="mat-display-1 margin-top-10" style="margin-bottom: 20px !important;">
+                            {{community.title | ucwords}}
+                        </div>
+                        <!--DESCRIPTION SECTION-->
+                        <div class="row Description">
+                            <div class="col-md-12" style="text-align: justify;">
+                                {{community.description | ucfirst}}
+                            </div>
+                        </div>
+                        <!--TOPICS SECTION-->
+                        <div class="row Topics margin-top-20 margin-bottom-40">
+                            <div class="col-md-12">
+                                <md-chip-list>
+                                    <md-chip class="square" *ngFor="let topic of topicFix"> {{topic.name | ucwords}}
+                                    </md-chip>
+                                </md-chip-list>
+                            </div>
+                        </div>
+                        <!--DISCUSSION THREAD-->
+                        <div class="row Discussion" *ngIf="userType==='owner' || userType==='participant'">
+                            <div class="loading-container" [hidden]="!loadingComments && !initialLoad">
+                                <ngx-loading [show]="true"></ngx-loading>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row" *ngFor="let comment of comments">
+                                    <div *ngIf="comment.isAnnouncement === true">
+                                        <div class="announcement">
+                                            <button *ngIf="userType !== 'public'" md-icon-button
+                                                    [mdMenuTriggerFor]="menuComment" style="float: right;">
+                                                <md-icon style="color: #cccccc">more_vert</md-icon>
+                                            </button>
+                                            <md-menu #menuComment="mdMenu">
+                                                <button *ngIf="userType==='participant'" md-menu-item>
+                                                    <md-icon>flag</md-icon>
+                                                    <span>Flag</span>
+                                                </button>
+                                                <button *ngIf="userType==='owner' || isMyComment(comment)" md-menu-item
+                                                        (click)="deleteComment(comment)">
+                                                    <md-icon>delete</md-icon>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </md-menu>
+                                            <div class="margin-bottom-10">
+                                                <b>Announcement on {{comment.createdAt | extractTime: 'Do MMM,
+                                                    YYYY'}}</b>
+                                            </div>
+                                            <div>{{comment.description}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="questionTarget" #questionTarget></div>
+                        <!--TABS-->
+                        <nav md-tab-nav-bar disableRipple>
+                            <a md-tab-link [routerLink]="['questions']" [active]="getActiveTab() === 'questions'" style="padding-left: 0px !important; min-width: min-content !important;">
+                                Q & A
+                            </a>
+                            <a md-tab-link [routerLink]="['workshops']" [active]="getActiveTab() === 'workshops'" style="min-width: min-content !important;">
+                                Workshops
+                            </a>
+                            <a md-tab-link [routerLink]="['experiences']" [active]="getActiveTab() === 'experiences'" style="min-width: min-content !important;">
+                                Experiences
+                            </a>
+                            <a md-tab-link [routerLink]="['links']" [active]="getActiveTab() === 'links'" style="min-width: min-content !important;">
+                                Shared links
+                            </a>
+                        </nav>
+                        <!--TABS OUTLET-->
+                        <div class="row margin-top-20 margin-bottom-50">
+                            <div class="col-md-12">
+                                <router-outlet></router-outlet>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--RIGHT SIDEBAR-->
+                    <div class="col-md-4 col-md-offset-1 right-content">
+                        <!--ACTION BUTTONS-->
+                        <div class="row" style="margin-top: 15px; text-align: right;" *ngIf="userType === 'public'">
+                            <div class="col-md-12">
+                                <button md-raised-button color="primary" (click)="joinCommunity()" *ngIf="userType === 'public'">Join</button>
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 15px; text-align: right" *ngIf="userType==='owner' || userType==='participant'">
+                            <!--<button md-raised-button class="" color="primary" (click)="joinGroupChat()">Join Group Chat</button> &emsp;-->
+                            <button md-button class="mat-border-button"
+                                    *ngIf="userType ==='participant' || userType === 'owner'"
+                                    (click)="scrollToQuestions()">Questions
+                            </button> &emsp;
+                            <md-icon [mdMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">
+                                more_vert
+                            </md-icon>
+                            <md-menu #menu="mdMenu">
+                                <button md-menu-item *ngIf="userType==='participant'" (click)="dropOutCommunity()">
+                                    Cancel Participation
+                                </button>
+                                <button md-menu-item *ngIf="userType==='owner'" (click)="deleteCommunity()">Delete
+                                    Community
+                                </button>
+                            </md-menu>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                        </div>
+                        <!--PARTICIPANTS-->
+                        <div class="">
+                            <h3 class="margin-bottom-20">Members</h3>
+                            <div>
+                                <div class="loading-container" [hidden]="!loadingParticipants">
+                                    <ngx-loading [show]="true"></ngx-loading>
+                                </div>
+                                <div>
+                                    <div class="row" *ngIf="participants.length === 0">
+                                        <div class="col-md-12">
+                                            <div class="clickable emptySectionText" style="margin-top: 0px;" (click)="openInviteFriendsDialog()">
+                                                No members yet.<br>
+                                                Invite peers to this community?
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngFor="let participant of participants; let i=index">
+                                    <div class="row" *ngIf="participant.profiles && i<4">
+                                        <div class="col-md-2 vcenter clickable">
+                                            <app-profile-popup [peer]="participant"></app-profile-popup>
+                                        </div>
+                                        <div class="col-md-9 vcenter clickable"
+                                             (click)="openProfilePage(participant.id)">
+                                            {{participant.profiles[0].first_name | ucwords}} {{participant.profiles[0].last_name | ucwords}}&emsp;
+                                            <span *ngIf="participant.profiles[0].headline" style="font-weight: 300;"
+                                                  class="lightText">{{participant.profiles[0].headline | ucwords}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-12 margin-top-20 margin-bottom-40">
+                                            <a (click)="viewParticipants()" style="cursor: pointer;"
+                                               *ngIf="participants.length > 0"> View all members </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="margin-top-10 margin-bottom-10">
+                        <!--BOOKMARK SHARE-->
+                        <div class="row" style="color: #777777">
+                            <div class="col-md-4" style="cursor: pointer;">
+                                <a (click)="openInviteFriendsDialog()">Invite friends</a>
+                            </div>
+                            <div class="col-md-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
+                                <md-icon [ngClass]="{'hasBookmarked': hasBookmarked}"
+                                         style="font-size: 1rem; top: 2px;">bookmark
+                                </md-icon>
+                                <span *ngIf="!hasBookmarked">Bookmark</span>
+                                <span *ngIf="hasBookmarked">Saved</span>
+                            </div>
+                            <div class="col-md-4" style="cursor: pointer;">
+                                Share&nbsp;
+                                <i class="fa fa-facebook-square clickable" aria-hidden="true" style="font-size: 1rem;"
+                                   (click)="shareOnFb()"></i>
+                                <i class="fa fa-twitter-square clickable" aria-hidden="true" style="font-size: 1rem;"
+                                   (click)="shareOnTwitter()"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

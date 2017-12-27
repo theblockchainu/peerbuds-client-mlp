@@ -1,9 +1,7 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="row margin-top-20" [hidden]="!loadingCards">
-            <div class="col-md-4 col-md-offset-4">
-                <ngx-loading [show]="true"></ngx-loading>
-            </div>
+        <div *ngIf="loadingCards" class="loading-container">
+            <ngx-loading [show]="true"></ngx-loading>
         </div>
         <div class="row" *ngIf="!loadingCards">
             <div class="col-md-4" style="margin-top: 20px;">

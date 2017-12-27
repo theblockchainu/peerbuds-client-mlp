@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Http, Headers, Response, BaseRequestOptions, RequestOptions
-  , RequestOptionsArgs
-} from '@angular/http';
+import {Http, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -17,12 +14,15 @@ export class CollectionService {
   public key = 'userId';
   public options;
   public now: Date;
-  constructor(private http: Http, private config: AppConfig,
+  constructor(
+    private http: Http,
+    private config: AppConfig,
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     public router: Router,
     private authService: AuthenticationService,
-    private requestHeaderService: RequestHeaderService) {
+    private requestHeaderService: RequestHeaderService
+  ) {
     this.options = requestHeaderService.getOptions();
     this.now = new Date();
   }
@@ -179,6 +179,26 @@ export class CollectionService {
     return collections.filter(collection => {
       return collection.status === 'complete';
     });
+  }
+
+  /**
+   * calculateTotalHours
+   */
+  public calculateTotalHours(collection) {
+      let totalLength = 0;
+      if (collection.contents) {
+          collection.contents.forEach(content => {
+              if (content.type === 'online') {
+                  const startMoment = moment(content.schedules[0].startTime);
+                  const endMoment = moment(content.schedules[0].endTime);
+                  const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+                  totalLength += parseInt(contentLength, 10);
+              } else if (content.type === 'video') {
+
+              }
+          });
+      }
+      return totalLength.toString();
   }
 
   /**
@@ -343,7 +363,7 @@ export class CollectionService {
         let startDate;
         const calendarLength = workshop.calendars.length;
         if (calendarLength > 1) {
-          startDate = this.getCurrentCalendar(workshop.calendars).startDate;
+          startDate = this.getCurrentCalendar(workshop.calendars) !== undefined ? this.getCurrentCalendar(workshop.calendars).startDate : this.now;
         }
         else if (calendarLength === 1) {
           startDate = workshop.calendars[0];
@@ -723,7 +743,7 @@ collectionID:string,userId:string,calendarId:string   */
   }
 
   public userImgErrorHandler(event) {
-    event.target.src = '/assets/images/avatar.png';
+    event.target.src = '/assets/images/user-placeholder.jpg';
   }
 
   /**
