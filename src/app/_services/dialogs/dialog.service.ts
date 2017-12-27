@@ -38,7 +38,7 @@ import { RateParticipantComponent } from './rate-participant-dialog/rate-partici
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import {DeleteCommunityDialogComponent} from './delete-community-dialog/delete-community-dialog.component';
 import {ExitCommunityDialogComponent} from './exit-community-dialog/exit-community-dialog.component';
-
+import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -380,6 +380,13 @@ export class DialogsService {
                 height: '31vh'
             }
         ).afterClosed();
+    }
+
+    public dateConflictDialog() {
+        return this.dialog.open(DateConflictDialogComponent, {
+            width: '40vw',
+            height: '31vh'
+        }).afterClosed();
     }
 
 }

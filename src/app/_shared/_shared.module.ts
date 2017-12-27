@@ -71,6 +71,7 @@ import {Ng4GeoautocompleteModule} from 'ng4-geoautocomplete';
 import {AgmCoreModule} from '@agm/core';
 import {QuestionService} from '../_services/question/question.service';
 import {CommunityService} from '../_services/community/community.service';
+import {InboxService} from '../_services/inbox/inbox.service';
 
 @NgModule({
     imports: [
@@ -119,6 +120,7 @@ import {CommunityService} from '../_services/community/community.service';
         ExtractTimePipe,
         ConvertCurrencyPipe,
         CurrencyPipe,
+        InboxService,
         TitleCasePipe,
         QuestionService,
         CommunityService

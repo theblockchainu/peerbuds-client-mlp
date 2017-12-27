@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleAccountComponent } from '../console-account.component';
 import { PaymentService } from '../../../_services/payment/payment.service';
 import { AppConfig } from '../../../app.config';
-
+import { CollectionService } from '../../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 @Component({
   selector: 'app-console-account-payoutmethods',
   templateUrl: './console-account-payoutmethods.component.html',
@@ -12,17 +13,23 @@ import { AppConfig } from '../../../app.config';
 })
 export class ConsoleAccountPayoutmethodsComponent implements OnInit {
   public loading: boolean;
+  public loadingRules: boolean;
   public payoutAccounts: Array<any>;
-
+  private userId: string;
+  public ownedCollections: Array<any>;
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleAccountComponent: ConsoleAccountComponent,
     private _paymentService: PaymentService,
     private location: Location,
     public config: AppConfig,
-    public router: Router
+    public router: Router,
+    private _collectionService: CollectionService,
+    private _cookieUtilsService: CookieUtilsService
   ) {
     this.loading = true;
+    this.loadingRules = true;
+    this.userId = this._cookieUtilsService.getValue('userId');
     this.activatedRoute.pathFromRoot[4].queryParams.subscribe(params => {
       if (params['code']) {
         this.addAccount(params['code'], params['state']);
@@ -35,6 +42,7 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       consoleAccountComponent.setActiveTab(urlSegment[0].path);
     });
+
   }
 
   addAccount(code: string, state?: string) {
@@ -52,14 +60,34 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
   ngOnInit() {
   }
 
+  private retrievePayoutRules(payoutAccounts) {
+    const query = { 'include': 'payoutrules' };
+    this.ownedCollections = [];
+    this._collectionService.getOwnedCollections(this.userId, JSON.stringify(query), (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.forEach(collection => {
+          payoutAccounts.forEach(account => {
+            if (account.payoutaccount.id === collection.payoutrules[0].payoutId1) {
+              collection.payoutrules[0].external_account = account.external_accounts.data[0];
+            }
+          });
+          this.ownedCollections.push(collection);
+        });
+        this.loadingRules = false;
+      }
+    });
+  }
+
   private retrieveAccounts() {
     this.payoutAccounts = [];
     this._paymentService.retrieveConnectedAccount().subscribe(result => {
-      console.log(result);
       result.forEach(account => {
         this.payoutAccounts = this.payoutAccounts.concat(account.external_accounts.data);
       });
       this.loading = false;
+      this.retrievePayoutRules(result);
     }, err => {
       console.log(err);
       this.loading = false;
@@ -72,11 +100,14 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
   public editAccount(accountId: string) {
     this._paymentService.createLoginLink(accountId).subscribe(
       result => {
-        console.log(result);
         window.location.href = result.url;
       }, err => {
         console.log(err);
       }
     );
+  }
+
+  public editPayout(collectionId: string) {
+    this.router.navigateByUrl('/workshop/' + collectionId + '/edit/17');
   }
 }

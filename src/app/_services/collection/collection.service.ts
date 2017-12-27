@@ -52,7 +52,6 @@ export class CollectionService {
       this.http
         .get(this.config.apiUrl + '/api/peers/' + userId + '/ownedCollections?' + 'filter=' + options)
         .map((response) => {
-          console.log(response.json());
           cb(null, response.json());
         }, (err) => {
           cb(err);

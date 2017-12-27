@@ -60,6 +60,7 @@ export class WorkshopContentComponent implements OnInit {
   initItenary() {
     return this._fb.group({
       date: [null],
+      startDay: [null],
       contents: this._fb.array([])
     });
   }
@@ -205,25 +206,25 @@ export class WorkshopContentComponent implements OnInit {
       }
     }
     else if (event.action === 'deleteDay') {
-        if (this.collection.status === 'active') {
-            this._dialogsService.openCollectionCloneDialog({ type: 'workshop' })
-                .subscribe((result) => {
-                    if (result === 'accept') {
-                        this.deleteContent(null, i);
-                        const itenary = <FormArray>this.myForm.controls.itenary;
-                        itenary.removeAt(i);
-                    }
-                    else if (result === 'reject') {
-                        // Do nothing
-                        this.router.navigate(['console', 'teaching', 'workshops']);
-                    }
-                });
-        }
-        else {
-            this.deleteContent(null, i);
-            const itenary = <FormArray>this.myForm.controls.itenary;
-            itenary.removeAt(i);
-        }
+      if (this.collection.status === 'active') {
+        this._dialogsService.openCollectionCloneDialog({ type: 'workshop' })
+          .subscribe((result) => {
+            if (result === 'accept') {
+              this.deleteContent(null, i);
+              const itenary = <FormArray>this.myForm.controls.itenary;
+              itenary.removeAt(i);
+            }
+            else if (result === 'reject') {
+              // Do nothing
+              this.router.navigate(['console', 'teaching', 'workshops']);
+            }
+          });
+      }
+      else {
+        this.deleteContent(null, i);
+        const itenary = <FormArray>this.myForm.controls.itenary;
+        itenary.removeAt(i);
+      }
     }
     else {
       console.log('unhandledEvent Triggered');
@@ -275,9 +276,7 @@ export class WorkshopContentComponent implements OnInit {
     console.log(schedule);
     this.http.post(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.options)
       .map((response: Response) => {
-
         const result = response.json();
-
         if (result.isNewInstance) {
           collectionId = result.id;
           result.contents.forEach((content) => {
@@ -302,6 +301,7 @@ export class WorkshopContentComponent implements OnInit {
               ContentSchedule.controls.startTime.patchValue('');
               ContentSchedule.controls.endTime.patchValue('');*/
               ContentGroup.controls.pending.setValue(false);
+              Form.controls['startDay'].patchValue(resp.json().startDay);
             }
             console.log(response);
             if (collectionId) {
@@ -356,8 +356,6 @@ export class WorkshopContentComponent implements OnInit {
       const endMin = endTimeArr[1];
       schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
     }
-    console.log(contentId);
-    console.log(schedule);
     //this.http.patch(this.config.apiUrl + '/api/contents/' + contentId, contentObj, this.options)
     this.http.put(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.options)
       .map((response: Response) => {
@@ -376,9 +374,8 @@ export class WorkshopContentComponent implements OnInit {
               /*ContentSchedule.controls.startTime.patchValue('');
               ContentSchedule.controls.endTime.patchValue('');*/
               contentGroup.controls.pending.setValue(false);
-            }
-            console.log(resp);
 
+            }
             if (collectionId) {
               this.reload(collectionId, 13);
             }
@@ -399,25 +396,25 @@ export class WorkshopContentComponent implements OnInit {
       this.http.delete(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.options)
         .map((response: Response) => {
           console.log(response);
-            if (response !== null) {
-                const result = response.json();
-                if (result.isNewInstance) {
-                    collectionId = result.id;
-                    this.reload(collectionId, 13);
-                }
-                else {
-                    const itenary = <FormArray>this.myForm.controls.itenary;
-                    const form = <FormGroup>itenary.controls[index];
-                    const contentsArray = <FormArray>form.controls.contents;
-                    contentsArray.removeAt(eventIndex);
-                }
+          if (response !== null) {
+            const result = response.json();
+            if (result.isNewInstance) {
+              collectionId = result.id;
+              this.reload(collectionId, 13);
             }
             else {
-                const itenary = <FormArray>this.myForm.controls.itenary;
-                const form = <FormGroup>itenary.controls[index];
-                const contentsArray = <FormArray>form.controls.contents;
-                contentsArray.removeAt(eventIndex);
+              const itenary = <FormArray>this.myForm.controls.itenary;
+              const form = <FormGroup>itenary.controls[index];
+              const contentsArray = <FormArray>form.controls.contents;
+              contentsArray.removeAt(eventIndex);
             }
+          }
+          else {
+            const itenary = <FormArray>this.myForm.controls.itenary;
+            const form = <FormGroup>itenary.controls[index];
+            const contentsArray = <FormArray>form.controls.contents;
+            contentsArray.removeAt(eventIndex);
+          }
         })
         .subscribe();
     }
@@ -427,19 +424,19 @@ export class WorkshopContentComponent implements OnInit {
         this.http.delete(this.config.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.options)
           .map((response: Response) => {
             console.log(response);
-              if (response !== null) {
-                  const result = response.json();
-                  if (result.isNewInstance) {
-                      collectionId = result.id;
-                      this.reload(collectionId, 13);
-                  }
-                  else {
-                      const itenary = <FormArray>this.myForm.controls.itenary;
-                  }
+            if (response !== null) {
+              const result = response.json();
+              if (result.isNewInstance) {
+                collectionId = result.id;
+                this.reload(collectionId, 13);
               }
               else {
-                  const itenary = <FormArray>this.myForm.controls.itenary;
+                const itenary = <FormArray>this.myForm.controls.itenary;
               }
+            }
+            else {
+              const itenary = <FormArray>this.myForm.controls.itenary;
+            }
           })
           .subscribe();
       });
