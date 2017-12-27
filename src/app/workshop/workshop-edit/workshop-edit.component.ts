@@ -132,6 +132,7 @@ export class WorkshopEditComponent implements OnInit {
   private payoutRuleNodeId: string;
   private payoutRuleAccountId: string;
   // TypeScript public modifiers
+  public currentDate: Date;
   constructor(
     public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -161,11 +162,10 @@ export class WorkshopEditComponent implements OnInit {
     });
     this.userId = _cookieUtilsService.getValue('userId');
     this.options = requestHeaderService.getOptions();
-
+    this.currentDate = moment().toDate();
   }
 
   public ngOnInit() {
-    console.log('Inside oninit workshop');
     this.interest1 = new FormGroup({
       // interests: this._fb.array([])
     });
@@ -234,8 +234,6 @@ export class WorkshopEditComponent implements OnInit {
 
     this.initializeFormFields();
     this.initializeWorkshop();
-
-
     this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
     this._VIDEO = document.querySelector('#main-video');
   }
@@ -287,9 +285,8 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   private initializeTimeLine(res) {
-
     const sortedCalendar = this.sort(res.calendars, 'startDate', 'endDate');
-    if (sortedCalendar[0] !== undefined && sortedCalendar[0].startDate) {
+    if (sortedCalendar[0] && sortedCalendar[0].startDate) {
       const calendar = sortedCalendar[0];
       calendar['startDate'] = this.extractDate(calendar.startDate);
       calendar['endDate'] = this.extractDate(calendar.endDate);
@@ -302,6 +299,45 @@ export class WorkshopEditComponent implements OnInit {
       this.timeline.controls.calendar.patchValue(calendar);
       this.initializeContentForm(res);
     }
+    this.initializeCalendarCheck(res);
+  }
+
+  private initializeCalendarCheck(workshopData: any) {
+    const calendarForm = <FormGroup>this.timeline.controls['calendar'];
+    const contentGroup = <FormGroup>this.timeline.controls.contentGroup;
+    const itenariesArray = <FormArray>contentGroup.controls['itenary'];
+    calendarForm.valueChanges.subscribe(res => {
+      const contentGroupForm = <FormGroup>this.timeline.controls['contentGroup'];
+      const itenaryArray = <FormArray>contentGroupForm.controls['itenary'];
+      if (this.step.toString() === '13' && this.timeline) {
+        if (itenaryArray.length > 0) {
+          itenariesArray.controls.forEach((itenary: FormGroup) => {
+            if (itenary.controls['startDay']) {
+              const newDate = this.calculatedDate(this.timeline.value.calendar.startDate, itenary.controls['startDay'].value);
+              itenary.controls['date'].patchValue(newDate);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  private createClone() {
+    this.dialogsService.openCollectionCloneDialog({
+      type: 'workshop'
+    }).subscribe((result) => {
+      if (result === 'accept') {
+        this._collectionService.patchCollection(this.workshopId, {}).subscribe(response => {
+          const newCollection = response.json();
+          if (newCollection.isNewInstance) {
+            this.router.navigate(['workshop', newCollection.id, 'edit', this.step]);
+          }
+        });
+      }
+      else if (result === 'reject') {
+        this.router.navigate(['/console/teaching/workshops']);
+      }
+    });
   }
 
   public initializeContentForm(res) {
@@ -311,8 +347,8 @@ export class WorkshopEditComponent implements OnInit {
     for (const key in itenaries) {
       if (itenaries.hasOwnProperty(key)) {
         const itr: FormGroup = this.InitItenary();
-        console.log(itr);
         itr.controls.date.patchValue(moment(this.calculatedDate(this.timeline.value.calendar.startDate, key)).toDate());
+        itr.controls.startDay.patchValue(key);
         for (const contentObj of itenaries[key]) {
           const contentForm: FormGroup = this.InitContent();
           this.assignFormValues(contentForm, contentObj);
@@ -322,7 +358,6 @@ export class WorkshopEditComponent implements OnInit {
         itenary.push(itr);
       }
     }
-    console.log(itenary);
   }
 
   /**
@@ -355,7 +390,8 @@ export class WorkshopEditComponent implements OnInit {
   public InitItenary() {
     return this._fb.group({
       contents: this._fb.array([]),
-      date: ['']
+      date: [''],
+      startDay: ['']
     });
   }
 
@@ -396,23 +432,24 @@ export class WorkshopEditComponent implements OnInit {
     }
     if (this.sidebarMenuItems) {
       this.sidebarMenuItems[2]['submenu'] = [];
+      let i = 1;
+      this.itenariesForMenu.forEach(function (item) {
+        const index = i;
+        this.sidebarMenuItems[2]['submenu'].push({
+          'title': 'Day ' + index,
+          'step': 13 + '_' + index,
+          'active': false,
+          'visible': true,
+          'locked': false,
+          'complete': false
+        });
+        i++;
+      }, this);
     } else {
-      this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.workshop.value, this.sidebarMenuItems);
-      this.sidebarMenuItems[2]['submenu'] = [];
+      // this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.workshop.value, this.sidebarMenuItems);
+      // this.sidebarMenuItems[2]['submenu'] = [];
     }
-    let i = 1;
-    this.itenariesForMenu.forEach(function (item) {
-      const index = i;
-      this.sidebarMenuItems[2]['submenu'].push({
-        'title': 'Day ' + index,
-        'step': 13 + '_' + index,
-        'active': false,
-        'visible': true,
-        'locked': false,
-        'complete': false
-      });
-      i++;
-    }, this);
+
     return itenaries;
   }
 
@@ -446,7 +483,6 @@ export class WorkshopEditComponent implements OnInit {
         this.filteredLanguageOptions = this.workshop.controls.selectedLanguage.valueChanges
           .startWith(null)
           .map(val => val ? this.filter(val) : this.languagesArray.slice());
-        console.log(this.filteredLanguageOptions);
       });
 
     if (this.interests.length === 0) {
@@ -464,17 +500,14 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   filter(val: string): string[] {
-    console.log('filtering');
     return this.languagesArray.filter(option =>
       option.toLowerCase().indexOf(val.toLowerCase()) === 0);
   }
 
   private initializeWorkshop() {
-    console.log('Inside init workshop');
     if (this.workshopId) {
       this._collectionService.getCollectionDetail(this.workshopId, this.query)
         .subscribe((res) => {
-          console.log(res);
           this.workshopData = res;
           if (this.workshopData.payoutrules && this.workshopData.payoutrules.length > 0) {
             this.payoutRuleNodeId = this.workshopData.payoutrules[0].id;
@@ -483,7 +516,7 @@ export class WorkshopEditComponent implements OnInit {
           this.retrieveAccounts();
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
-          if (res.status === 'active') {
+          if (res.status === 'active' && this.sidebarMenuItems) {
             this.sidebarMenuItems[3].visible = false;
             this.sidebarMenuItems[4].visible = true;
             this.sidebarMenuItems[4].active = true;
@@ -503,7 +536,6 @@ export class WorkshopEditComponent implements OnInit {
   public languageChange(event) {
     this.busyLanguage = true;
     if (event) {
-      console.log(event);
       this.selectedLanguages = event;
       this.busyLanguage = false;
       //this.workshop.controls.selectedLanguage.setValue(event.value);
@@ -515,20 +547,19 @@ export class WorkshopEditComponent implements OnInit {
   private retrieveAccounts() {
     this.payoutAccounts = [];
     this._paymentService.retrieveConnectedAccount().subscribe(result => {
-       console.log(result);
-       this.payoutAccounts = result;
-       result.forEach(account => {
-           if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
-               this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
-           }
-       });
-      this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
-          this.updatePayoutRule(res);
+      this.payoutAccounts = result;
+      result.forEach(account => {
+        if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
+          this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
+        }
       });
-       this.payoutLoading = false;
+      this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
+        this.updatePayoutRule(res);
+      });
+      this.payoutLoading = false;
     }, err => {
-       console.log(err);
-       this.payoutLoading = false;
+      console.log(err);
+      this.payoutLoading = false;
     });
     /*this._paymentService.retrieveLocalPayoutAccounts().subscribe(result => {
       console.log(result);
@@ -566,7 +597,6 @@ export class WorkshopEditComponent implements OnInit {
       this.removedInterests.forEach((topic) => {
         this.http.delete(this.config.apiUrl + '/api/collections/' + this.workshopId + '/topics/rel/' + topic.id, options)
           .map((response) => {
-            console.log(response);
           }).subscribe();
       });
 
@@ -678,7 +708,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public addImageUrl(value: String) {
-    console.log('Adding image url: ' + value);
     this.urlForImages.push(value);
     const control = <FormArray>this.workshop.controls['imageUrls'];
     this.workshopImage1Pending = false;
@@ -690,7 +719,6 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public addVideoUrl(value: String) {
-    console.log('Adding video url: ' + value);
     this.urlForVideo.push(value);
     const control = this.workshop.controls['videoUrls'];
     this.workshopVideoPending = false;
@@ -735,21 +763,40 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public submitWorkshop(data, timeline?, step?) {
-    if (this.workshop.controls.status.value === 'active') {
-      this.dialogsService.openCollectionCloneDialog({
-        type: 'workshop'
-      }).subscribe((result) => {
-        if (result === 'accept') {
-          this.executeSubmitWorkshop(data, timeline, step);
-        }
-        else if (result === 'reject') {
-          this.router.navigate(['/console/teaching/workshops']);
-        }
-      });
+    if (this.calendarIsValid()) {
+      if (this.workshop.controls.status.value === 'active') {
+        this.dialogsService.openCollectionCloneDialog({
+          type: 'workshop'
+        }).subscribe((result) => {
+          if (result === 'accept') {
+            this.executeSubmitWorkshop(data, timeline, step);
+          }
+          else if (result === 'reject') {
+            this.router.navigate(['/console/teaching/workshops']);
+          }
+        });
+      }
+      else {
+        this.executeSubmitWorkshop(data, timeline, step);
+      }
     }
-    else {
-      this.executeSubmitWorkshop(data, timeline, step);
+
+  }
+
+  private calendarIsValid() {
+    const calendarGroup = <FormGroup>this.timeline.controls['calendar'];
+    const startMoment = moment(calendarGroup.controls['startDate'].value).local();
+    const endMoment = moment(calendarGroup.controls['endDate'].value).local();
+    if (startMoment.diff(endMoment) > 0) {
+      this.snackBar.open('Start date cannot be after end date!', 'Close');
+      return false;
     }
+    console.log(startMoment.diff(moment()));
+    if (startMoment.diff(moment()) < 0) {
+      this.snackBar.open('Start date cannot be in the past!', 'Close');
+      return false;
+    }
+    return true;
   }
 
   private executeSubmitWorkshop(data, timeline?, step?) {
@@ -809,14 +856,11 @@ export class WorkshopEditComponent implements OnInit {
     const body = data.value.calendar;
     if (body.startDate && body.endDate) {
       this.http.patch(this.config.apiUrl + '/api/collections/' + collectionId + '/calendar', body)
-        .map((response) => {
-          //console.log(this.step);
-          //this.step++;
-          //console.log(this.step);
-          //this.workshopStepUpdate();
-          //this.router.navigate(['workshop', collectionId, 'edit', this.step]);
-        })
-        .subscribe();
+        .subscribe((response) => {
+          this.step++;
+          this.workshopStepUpdate();
+          this.router.navigate(['workshop', collectionId, 'edit', this.step]);
+        });
     } else {
       console.log('Enter Date!');
     }
@@ -834,7 +878,6 @@ export class WorkshopEditComponent implements OnInit {
     this.relTopics.forEach((topic) => {
       topicArray = _.without(topicArray, topic.id);
     });
-    console.log(topicArray);
     body = {
       'targetIds': topicArray
     };
@@ -905,7 +948,6 @@ export class WorkshopEditComponent implements OnInit {
     this._collectionService.submitForReview(this.workshopId)
       .subscribe((res) => {
         this.workshop.controls.status.setValue('submitted');
-        console.log('Workshop submitted for review');
         this.isSubmitted = true;
         this.dialogsService.openCollectionSubmitDialog({
           type: 'workshop'
@@ -1050,7 +1092,6 @@ export class WorkshopEditComponent implements OnInit {
     fileUrl = _.replace(fileUrl, 'download', 'files');
     this.http.delete(this.config.apiUrl + fileUrl)
       .map((response) => {
-        console.log(response);
         if (fileType === 'video') {
           this.urlForVideo = _.remove(this.urlForVideo, function (n) {
             return n !== fileurl;
@@ -1074,7 +1115,6 @@ export class WorkshopEditComponent implements OnInit {
       file = _.replace(file, 'download', 'files');
       this.http.delete(this.config.apiUrl + file)
         .map((response) => {
-          console.log(response);
           if (fileType === 'video') {
             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
               return n !== fileurl;
@@ -1112,7 +1152,6 @@ export class WorkshopEditComponent implements OnInit {
   submitOTP() {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
       .subscribe((res) => {
-        console.log(res);
         this.snackBar.open('Token Verified', 'close', {
           duration: 500
         });

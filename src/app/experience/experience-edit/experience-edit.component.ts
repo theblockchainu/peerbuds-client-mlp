@@ -60,7 +60,7 @@ export class ExperienceEditComponent implements OnInit {
 
   private experienceId: string;
   public experienceData: any;
-  public isWorkShopActive = false;
+  public isExperienceActive = false;
   public activeExperience = '';
   // Set our default values
   public localState = { value: '' };
@@ -132,6 +132,8 @@ export class ExperienceEditComponent implements OnInit {
   public payoutLoading = true;
   public payoutAccounts: Array<any>;
   public freeExperience = false;
+  public currentDate: Date;
+
   // TypeScript public modifiers
   constructor(
     public router: Router,
@@ -165,6 +167,7 @@ export class ExperienceEditComponent implements OnInit {
 
     this.userId = _cookieUtilsService.getValue('userId');
     this.options = requestHeaderService.getOptions();
+    this.currentDate = moment().toDate();
 
   }
 
@@ -252,12 +255,33 @@ export class ExperienceEditComponent implements OnInit {
       this._collectionService.sanitize(calendar);
 
       if (this.experienceData.status === 'active') {
-        this.isWorkShopActive = true;
+        this.isExperienceActive = true;
         this.activeExperience = 'disabledMD';
       }
       this.timeline.controls.calendar.patchValue(calendar);
       this.initializeContentForm(res);
     }
+    this.initializeCalendarCheck(res);
+
+  }
+  private initializeCalendarCheck(experienceData: any) {
+    const calendarForm = <FormGroup>this.timeline.controls['calendar'];
+    const contentGroup = <FormGroup>this.timeline.controls.contentGroup;
+    const itenariesArray = <FormArray>contentGroup.controls['itenary'];
+    calendarForm.valueChanges.subscribe(res => {
+      const contentGroupForm = <FormGroup>this.timeline.controls['contentGroup'];
+      const itenaryArray = <FormArray>contentGroupForm.controls['itenary'];
+      if (this.step.toString() === '13' && this.timeline) {
+        if (itenaryArray.length > 0) {
+          itenariesArray.controls.forEach((itenary: FormGroup) => {
+            if (itenary.controls['startDay']) {
+              const newDate = this.calculatedDate(this.timeline.value.calendar.startDate, itenary.controls['startDay'].value);
+              itenary.controls['date'].patchValue(newDate);
+            }
+          });
+        }
+      }
+    });
   }
 
   public initializeContentForm(res) {
@@ -269,6 +293,7 @@ export class ExperienceEditComponent implements OnInit {
         const itr: FormGroup = this.InitItenary();
         console.log(itr);
         itr.controls.date.patchValue(moment(this.calculatedDate(this.timeline.value.calendar.startDate, key)).toDate());
+        itr.controls.startDay.patchValue(key);
         for (const contentObj of itenaries[key]) {
           const contentForm: FormGroup = this.InitContent();
           this.assignFormValues(contentForm, contentObj);
@@ -311,7 +336,8 @@ export class ExperienceEditComponent implements OnInit {
   public InitItenary() {
     return this._fb.group({
       contents: this._fb.array([]),
-      date: ['']
+      date: [''],
+      startDay: ['']
     });
   }
 
@@ -365,23 +391,24 @@ export class ExperienceEditComponent implements OnInit {
     }
     if (this.sidebarMenuItems) {
       this.sidebarMenuItems[2]['submenu'] = [];
+      this.itenariesForMenu.forEach(function (item) {
+        let i = 1;
+        const index = i;
+        this.sidebarMenuItems[2]['submenu'].push({
+          'title': 'Day ' + index,
+          'step': 13 + '_' + index,
+          'active': false,
+          'visible': true,
+          'locked': false,
+          'complete': false
+        });
+        i++;
+      }, this);
     } else {
-      this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.experience.value, this.sidebarMenuItems);
-      this.sidebarMenuItems[2]['submenu'] = [];
+      // this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.experience.value, this.sidebarMenuItems);
+      // this.sidebarMenuItems[2]['submenu'] = [];
     }
-    let i = 1;
-    this.itenariesForMenu.forEach(function (item) {
-      const index = i;
-      this.sidebarMenuItems[2]['submenu'].push({
-        'title': 'Day ' + index,
-        'step': 13 + '_' + index,
-        'active': false,
-        'visible': true,
-        'locked': false,
-        'complete': false
-      });
-      i++;
-    }, this);
+
     return itenaries;
   }
 
@@ -666,20 +693,38 @@ export class ExperienceEditComponent implements OnInit {
   }
 
   public submitExperience(data, timeline?, step?) {
-    if (this.experience.controls.status.value === 'active') {
-      this.dialogsService.openCollectionCloneDialog({ type: 'experience' })
-        .subscribe((result) => {
-          if (result === 'accept') {
-            this.executeSubmitExperience(data, timeline, step);
-          }
-          else if (result === 'reject') {
-            this.router.navigate(['/console/teaching/experiences']);
-          }
-        });
+    if (this.calendarIsValid()) {
+      if (this.experience.controls.status.value === 'active') {
+        this.dialogsService.openCollectionCloneDialog({ type: 'experience' })
+          .subscribe((result) => {
+            if (result === 'accept') {
+              this.executeSubmitExperience(data, timeline, step);
+            }
+            else if (result === 'reject') {
+              this.router.navigate(['/console/teaching/experiences']);
+            }
+          });
+      }
+      else {
+        this.executeSubmitExperience(data, timeline, step);
+      }
     }
-    else {
-      this.executeSubmitExperience(data, timeline, step);
+  }
+
+  private calendarIsValid() {
+    const calendarGroup = <FormGroup>this.timeline.controls['calendar'];
+    const startMoment = moment(calendarGroup.controls['startDate'].value).local();
+    const endMoment = moment(calendarGroup.controls['endDate'].value).local();
+    if (startMoment.diff(endMoment) > 0) {
+      this.snackBar.open('Start date cannot be after end date!', 'Close');
+      return false;
     }
+    console.log(startMoment.diff(moment()));
+    if (startMoment.diff(moment()) < 0) {
+      this.snackBar.open('Start date cannot be in the past!', 'Close');
+      return false;
+    }
+    return true;
   }
 
   private executeSubmitExperience(data, timeline?, step?) {
@@ -740,11 +785,9 @@ export class ExperienceEditComponent implements OnInit {
     if (body.startDate && body.endDate) {
       this.http.patch(this.config.apiUrl + '/api/collections/' + collectionId + '/calendar', body)
         .map((response) => {
-          //console.log(this.step);
-          //this.step++;
-          //console.log(this.step);
-          //this.experienceStepUpdate();
-          //this.router.navigate(['experience', collectionId, 'edit', this.step]);
+          this.step++;
+          this.experienceStepUpdate();
+          this.router.navigate(['experience', collectionId, 'edit', this.step]);
         })
         .subscribe();
     } else {

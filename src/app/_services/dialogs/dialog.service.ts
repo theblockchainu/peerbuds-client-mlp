@@ -36,7 +36,7 @@ import { ReportProfileComponent } from './report-profile/report-profile.componen
 import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohort-dialog.component';
 import { RateParticipantComponent } from './rate-participant-dialog/rate-participant-dialog.component';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
-
+import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -358,6 +358,13 @@ export class DialogsService {
                 height: '31vh'
             }
         ).afterClosed();
+    }
+
+    public dateConflictDialog() {
+        return this.dialog.open(DateConflictDialogComponent, {
+            width: '40vw',
+            height: '31vh'
+        }).afterClosed();
     }
 
 }
