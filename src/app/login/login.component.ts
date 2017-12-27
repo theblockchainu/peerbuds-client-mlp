@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   public model: any = {};
   public loading = false;
   public returnUrl: string;
-  isLoggedIn : Observable<boolean>;
+  isLoggedIn: Observable<boolean>;
   public rememberMe: boolean;
   public email: string;
   public passWord: string;

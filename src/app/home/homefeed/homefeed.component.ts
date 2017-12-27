@@ -8,6 +8,7 @@ import _ from 'lodash';
 import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
+import {CommunityService} from '../../_services/community/community.service';
 
 @Component({
     selector: 'app-feed',
@@ -29,10 +30,12 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 export class HomefeedComponent implements OnInit {
     public workshops: Array<any>;
     public experiences: Array<any>;
+    public communities: Array<any>;
     public userId;
     public peers: Array<any>;
     public loadingWorkshops = false;
     public loadingExperiences = false;
+    public loadingCommunities = false;
     public loadingPeers = false;
     public loadingContinueLearning = false;
     private today = moment();
@@ -52,7 +55,8 @@ export class HomefeedComponent implements OnInit {
         private _cookieUtilsService: CookieUtilsService,
         public config: AppConfig,
         private _topicService: TopicService,
-        public _dialogsService: DialogsService
+        public _dialogsService: DialogsService,
+        public _communityService: CommunityService
     ) {
         this.userId = _cookieUtilsService.getValue('userId');
     }
@@ -62,6 +66,7 @@ export class HomefeedComponent implements OnInit {
         this.fetchWorkshops();
         this.fetchExperiences();
         this.fetchPeers();
+        this.fetchCommunities();
     }
 
     private fetchContinueLearning() {
@@ -266,6 +271,45 @@ export class HomefeedComponent implements OnInit {
     }
 
 
+    fetchCommunities() {
+        const query = {
+            'include': [
+                { 'relation': 'communities', 'scope': { 'include': [
+                    'topics',
+                    'views',
+                    'invites',
+                    'rooms',
+                    {'collections': ['owners']},
+                    'links',
+                    {'participants': [{'profiles': ['work']}]},
+                    {'owners': [{'profiles': ['work']}]}
+                ] } }
+            ],
+            'order': 'createdAt desc'
+        };
+        this.loadingCommunities = true;
+        this._topicService.getTopics(query).subscribe(
+            (response) => {
+                this.loadingCommunities = false;
+                this.communities = [];
+                for (const responseObj of response) {
+                    responseObj.communities.forEach(community => {
+                        if (community.status === 'active') {
+                            this.communities.push(community);
+                        }
+                    });
+                }
+                this.communities = _.uniqBy(this.communities, 'id');
+                this.communities = _.orderBy(this.communities, ['createdAt'], ['desc']);
+                this.communities = _.chunk(this.communities, 5)[0];
+
+            }, (err) => {
+                console.log(err);
+            }
+        );
+    }
+
+
     fetchPeers() {
         const query = {
             'include': [
@@ -320,6 +364,18 @@ export class HomefeedComponent implements OnInit {
         } else {
             this._collectionService.removeBookmark(this.experiences[index].bookmarks[0].id, (err, response) => {
                 this.fetchExperiences();
+            });
+        }
+    }
+
+    public toggleCommunityBookmark(index: number) {
+        if (!(this.communities[index].bookmarks && this.communities[index].bookmarks[0] && this.communities[index].bookmarks[0].peer && this.communities[index].bookmarks[0].peer[0] && this.communities[index].bookmarks[0].peer[0].id === this.userId)) {
+            this._communityService.saveBookmark(this.communities[index].id, (err, response) => {
+                this.fetchCommunities();
+            });
+        } else {
+            this._communityService.removeBookmark(this.communities[index].bookmarks[0].id, (err, response) => {
+                this.fetchCommunities();
             });
         }
     }
