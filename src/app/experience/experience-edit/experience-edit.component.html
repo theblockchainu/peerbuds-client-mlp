@@ -481,16 +481,16 @@
                   <div class="row" style="margin: 30px 0px 15px -15px;">
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
-                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" [disabled]="isWorkShopActive">
-                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}" [disabled]="isWorkShopActive"></md-datepicker-toggle>
+                        <input mdInput [mdDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
+                        <md-datepicker-toggle mdSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #startDatePicker></md-datepicker>
                     </div>
                     <div class="col-sm-6">
                       <md-form-field class="dateStyles">
                         <input mdInput [mdDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
-                          formControlName="endDate" [disabled]="isWorkShopActive">
-                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle" [disabled]="isWorkShopActive"></md-datepicker-toggle>
+                          formControlName="endDate">
+                        <md-datepicker-toggle mdSuffix [for]="endDatePicker" class="svgStyle"></md-datepicker-toggle>
                       </md-form-field>
                       <md-datepicker touchUi="true" #endDatePicker></md-datepicker>
                     </div>
@@ -562,7 +562,7 @@
                     <md-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</md-radio-button>
                     <div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
                       <md-input-container [floatPlaceholder]="true" class="pb-block" style="margin: 20px 0px;">
-                        <input type="tel" mdInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" [readOnly]="isPhoneVerified">
+                        <input type="tel" mdInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" [readOnly]="true">
                         <md-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</md-hint>
                         <md-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this experience</md-hint>
                       </md-input-container>

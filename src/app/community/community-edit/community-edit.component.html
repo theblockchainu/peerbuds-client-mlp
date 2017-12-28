@@ -1,0 +1,595 @@
+<div class="main-content" style="background: #fff; padding: 0px; min-height: 100vh;">
+  <md-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll">
+    <md-sidenav mode="side" opened="true">
+      <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
+    </md-sidenav>
+    <!-- Page Content -->
+    <div class="navbar-page-content" style="padding: 25px 50px; background: #fff; max-height: 100vh; min-height: 100vh; overflow-y: scroll">
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && community.controls['status'].value !== 'active'">
+        <button md-button (click)="saveandexit()">
+          <span *ngIf="!busySave">Save &amp; Exit</span>
+          <span *ngIf="busySave"> </span>
+          <ngx-loading [show]="busySave"></ngx-loading>
+        </button>
+      </div>
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && community.controls['status'].value === 'active'">
+        <button md-button (click)="exit()">Exit</button>
+      </div>
+      <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12">
+        <button md-button (click)="openCommunity()">
+          <span *ngIf="!busyPreview">Preview</span>
+          <span *ngIf="busyPreview"> </span>
+          <ngx-loading [show]="busyPreview"></ngx-loading>
+        </button>
+      </div>
+      <div class="pull-left">
+        <md-chip-list>
+          <md-chip>
+            {{community.controls['status'].value | titlecase}}
+          </md-chip>
+        </md-chip-list>
+      </div>
+      <br/>
+      <br/>
+      <br/>
+      <!--Disclaimer-->
+      <div class="onboarding step-1" [hidden]="step!=1">
+        <div class="row">
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <h2 class="title">Peerbuds Community Guidelines</h2>
+            <p class="subtitle">We value the quality of content taught on Peerbuds platform and expect all community hosts to follow strict
+              guidelines towards their content.
+            </p>
+            <ol class="guideline-points text-grey">
+              <li>Respect Others</li>
+              <li>Respect Others</li>
+              <li>Respect Others</li>
+              <li>Respect Others</li>
+            </ol>
+            <div class="margin-top-20">
+              <button md-raised-button (click)="goto(2)" color="accent" class="pull-right">
+                <span *ngIf="!busyBasics">Continue</span>
+                <span *ngIf="busyBasics"> </span>
+                <ngx-loading [show]="busyBasics"></ngx-loading>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix">
+        <!-- step 1 starts here -->
+        <div class="onboarding step-2" [hidden]="step!=2">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">What topics does this Community cover?</h2>
+              <p class="subtitle">Select topics that this community covers</p>
+              <br/>
+              <form [formGroup]="interest1" (ngSubmit)="submitInterests()">
+                <div class="row">
+                  <div class="col-sm-12 margin-bottom-30">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
+                          [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+                          [maxSelection]=maxTopics [minSelection]="1"></multiselect-autocomplete>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <span class="col-sm-4" style="font-size: 12px; color: #777">{{maxTopicMsg}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top:60px;">
+                  <!-- <a md-button (click)=goto(1)>Back</a> -->
+                  <span class="pull-right" mdTooltip="Add at least one interest to continue" [mdTooltipDisabled]="interests.length !== 0">
+                    <button md-raised-button color="accent" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
+                      <span *ngIf="!busyInterest">Continue</span>
+                      <span *ngIf="busyInterest"> </span>
+                      <ngx-loading [show]="busyInterest"></ngx-loading>
+                    </button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding step-3" [hidden]="step!=3">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">Which language will you host in?</h2>
+              <p class="subtitle">You will write your descriptions in this language and guests will expect you to speak it during communities.</p>
+              <br/>
+              <form [formGroup]="community" (ngSubmit)="submitCommunity(community)">
+                <div class="row margin-top-60">
+                  <md-form-field class="col-md-4">
+                    <input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" mdInput formControlName="selectedLanguage"
+                      [mdAutocomplete]="auto">
+                    <md-autocomplete #auto="mdAutocomplete">
+                      <md-option *ngFor="let l of filteredLanguageOptions | async" [value]="l" (click)="languageChange(l)">{{l}}</md-option>
+                    </md-autocomplete>
+                  </md-form-field>
+                </div>
+                <div style="margin-top:100px;">
+                  <!-- <a md-button (click)=goto(2)>Back</a> -->
+                  <span class="pull-right" mdTooltip="Select a language to continue" [mdTooltipDisabled]="selectedLanguages!==undefined">
+                    <button md-raised-button color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
+                      <span *ngIf="!busyLanguage">Continue</span>
+                      <span *ngIf="busyLanguage"> </span>
+                      <ngx-loading [show]="busyLanguage"></ngx-loading>
+                    </button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- step 4 ends here  -->
+        <div class="onboarding step-4" [hidden]="step!=4">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">Introduce yourself as a Host</h2>
+              <p class="subtitle">Why are you the best person to host this community?</p>
+
+              <form [formGroup]="community" (ngSubmit)="submitCommunity(community)">
+                <div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
+                  <div class="col-sm-12">
+                    <md-input-container class="pb-block" style="margin-bottom: 20px">
+                      <textarea mdInput #aboutHost maxlength="500" rows="2" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
+                      <md-hint align="end">{{aboutHost.value.length}} / 500</md-hint>
+                    </md-input-container>
+                  </div>
+                </div>
+                <div style="margin-top:50px;">
+                  <!-- <a md-button (click)=goto(3)>Back</a> -->
+                  <span class="pull-right" mdTooltip="A brief description about yourself is mandatory to continue" [mdTooltipDisabled]="aboutHost.value.length !== 0">
+                    <button md-raised-button color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
+                      <span *ngIf="!busyHost">Continue</span>
+                      <span *ngIf="busyHost"> </span>
+                      <ngx-loading [show]="busyHost"></ngx-loading>
+                    </button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!--Disclaimer-->
+        <div class="onboarding step-5" [hidden]="step!=5">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">Create the page learners will see</h2>
+              <p class="subtitle">Write in a clear, straightforward and friendly way. We will give you tips on when to show off your personality
+                and be more descriptive.
+              </p>
+              <br/>
+              <div style="margin-top:60px;">
+                <a md-raised-button (click)="goto(6)" color="accent" class="pull-right">
+                  <span *ngIf="!busyCommunityPage">Continue</span>
+                  <span *ngIf="busyCommunityPage"> </span>
+                  <ngx-loading [show]="busyCommunityPage"></ngx-loading>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Step 6 - Title -->
+        <div class="onboarding step-6" [hidden]="step!=6">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <form [formGroup]="community" (ngSubmit)="submitCommunity(community)">
+                <div class="row">
+                  <div class="col-sm-12 margin-bottom-30">
+                    <div class="form-group">
+                      <h2 class="title">Title your community</h2>
+                      <p class="subtitle">
+                        Make it sweet and simple
+                      </p>
+                      <br/>
+                      <md-input-container class="pb-block" style="margin-bottom: 20px">
+                        <input mdInput #title formControlName="title" maxlength="50" placeholder="Enter Name">
+                        <md-hint align="start">{{50 - title.value.length}} more characters needed</md-hint>
+                        <md-hint align="end">{{title.value.length}} / 50</md-hint>
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 margin-bottom-30">
+                    <div class="form-group">
+                      <h2 class="title">Headline</h2>
+                      <p class="subtitle">
+                        Explain your community in short and descriptive sentences.
+                        <br/> It should give an insight to learners on what they'll do.
+                      </p>
+                      <br/>
+                      <md-input-container class="pb-block" style="margin-bottom: 20px">
+                        <input mdInput #headline formControlName="headline" maxlength="50" placeholder="Write headline">
+                        <md-hint align="start">{{50 - headline.value.length}} more characters needed</md-hint>
+                        <md-hint align="end">{{headline.value.length}} / 50</md-hint>
+                      </md-input-container>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top:60px;">
+                  <!-- <a md-button (click)=goto(5)>Back</a> -->
+                  <span class="pull-right" mdTooltip="Please fill all details" [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
+                    <button md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- step 7 - Description  -->
+        <div class="onboarding step-7" [hidden]="step!=7">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <form [formGroup]="community" (ngSubmit)="submitCommunity(community)">
+                <div class="row">
+                  <div class="col-sm-12 margin-bottom-30">
+                    <h2 class="title">What’s the community about?</h2>
+                    <p class="subtitle">Give a detailed description to learners of what they will do in this community</p>
+                    <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                      <textarea mdInput #description maxlength="800" rows="2" formControlName="description" placeholder="What we'll do in this community?"></textarea>
+                      <md-hint align="end">{{description.value.length}} / 800</md-hint>
+                    </md-input-container>
+                  </div>
+                </div>
+                <div style="margin-top:60px;">
+                  <!-- <a md-button (click)=goto(6)>Back</a> -->
+                  <span class="pull-right" mdTooltip="Describe your community in detail to continue" [mdTooltipDisabled]="description.value.length !== 0">
+                    <button md-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Continue</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- step 8 Difficulty Level-->
+        <div class="onboarding step-8" [hidden]="step!=8">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <form [formGroup]="community" (ngSubmit)="submitCommunity(community)">
+                <h2 class="title">Who should come?</h2>
+                <p class="subtitle">Start with a level of difficulty</p>
+                <div class="col-sm-12 margin-bottom-30 padding-left-0">
+                  <md-select [floatPlaceholder]="false" class="margin-bottom-50" formControlName="difficultyLevel">
+                    <md-option [value]="">--Select--</md-option>
+                    <md-option *ngFor="let d of difficulties" [value]="d">{{d}}</md-option>
+                  </md-select>
+                </div>
+                <h3 class="title">Pre-requisites</h3>
+                <p class="subtitle">Describe the knowledge prerequisites, if there is any, that learners should know of.</p>
+                <div class="col-sm-12 margin-bottom-30 padding-left-0">
+                  <md-input-container class="pb-block">
+                    <textarea mdInput #notes maxlength="500" rows="2" formControlName="notes"></textarea>
+                    <md-hint align="end">{{notes.value.length}} / 500</md-hint>
+                  </md-input-container>
+                </div>
+                <div style="margin-top:60px;">
+                  <!-- <a md-button (click)=goto(7)>Back</a> -->
+                  <span class="pull-right" mdTooltip="Please fill all the details" [mdTooltipDisabled]="community.controls['difficultyLevel'].value && community.controls['notes'].value">
+                    <button md-raised-button color="accent" type="Submit" [disabled]="!difficultyLevel && notes.value.length == 0">Continue</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Step 9 - Max Spots -->
+        <div class="onboarding step-9" [hidden]="step!=9">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">How many seats are available in each cohort? </h2>
+              <p class="subtitle">
+                Remember to keep your community as personal as possible.
+                <br> The more learners the less attention you can give to everybody.
+              </p>
+              <form [formGroup]="community" (ngSubmit)="submitCommunity(community)">
+                <div class="col-sm-4 padding-left-0">
+                  <md-input-container class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+                    <input type="number" mdInput #maxSpots min="1" formControlName="maxSpots" placeholder="Enter Number">
+                  </md-input-container>
+                </div>
+                <br/>
+                <div style="padding-top:60px;">
+                  <!-- <a md-button (click)=goto(8)>Back</a> -->
+                  <span class="pull-right" mdTooltip="Enter the maximum number of participants you can teach in each Cohort of this community"
+                    [mdTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
+                    <button md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Continue</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- step 10 Photos -->
+        <div class="onboarding step-10" [hidden]="step!=10">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">Showcase your community</h2>
+              <p class="subtitle">
+                Give the world a taste of your community by showcasing captivating videos and/or photos
+              </p>
+              <div class="row" style="margin-top:25px;">
+                <form [formGroup]="community" (ngSubmit)="submitCommunity(community)" novalidate>
+                  <div class="row margin-left-0" style="margin-top:40px">
+                    <div class="col-md-8">
+                      <div class="stepHeader">Upload Video</div>
+                      <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
+                        maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
+                        <ng-template pTemplate="toolbar">
+                          <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
+                        </ng-template>
+                      </p-fileUpload>
+                      <div *ngIf="urlForVideo.length" class="profileVideo delete">
+                        <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
+                          <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
+                            <source src="{{config.apiUrl + file}}"> Your browser does not support the video tag.
+                          </video>
+                          <md-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</md-icon>
+                        </div>
+                      </div>
+                      <div class="loading-container" [hidden]="!uploadingVideo">
+                        <ngx-loading [show]="true"></ngx-loading>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="row margin-left-0">
+                    <div class="col-md-8">
+                      <div class="stepHeader margin-top-20">Upload Images</div>
+                      <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
+                        maxFileSize="10000000" chooseLabel="Browse" multiple="multiple" (onRemove)="deleteFromContainerArr($event, 'image')">
+                        <ng-template pTemplate="toolbar">
+                          <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
+                        </ng-template>
+                      </p-fileUpload>
+                      <div *ngIf="urlForImages.length" class="pic delete">
+                        <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
+                          <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+                          <md-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</md-icon>
+                        </div>
+                      </div>
+                      <div class="loading-container" [hidden]="!uploadingImage">
+                        <ngx-loading [show]="true"></ngx-loading>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="margin-top-60">
+                      <span class="pull-right" mdTooltip="Either a video or an image is mandatory to continue" [mdTooltipDisabled]="urlForImages.length !== 0 || urlForVideo.length !== 0">
+                        <button md-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 && urlForVideo.length === 0">Continue</button>
+                      </span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- step 11 - Price -->
+        <div class="onboarding step-11" [hidden]="step!=11">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <form [formGroup]="community" (ngSubmit)="submitCommunity(community)">
+                <h2 class="title">What is the price of the community?</h2>
+                <p class="subtitle">
+                  How much are you going to charge for this community?
+                </p>
+                <h3 class="title">Price</h3>
+                <div class="row">
+                  <div class="col-md-3">
+                    <md-checkbox [(ngModel)]="freeCommunity" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</md-checkbox>
+                  </div>
+                </div>
+                <div class="row margin-left-0" *ngIf="!freeCommunity">
+                  <div class="col-md-3 padding-left-0">
+                    <md-input-container [floatPlaceholder]="'never'" class="margin-top-20">
+                      <input type="number" mdInput #price formControlName="price" placeholder="0" min="1" required>
+                    </md-input-container>
+                  </div>
+                  <div class="col-md-2 col-md-offset-2 priceAlignParent">
+                    <md-select [floatPlaceholder]="'never'" formControlName="currency" class="priceAlign padding-top-0 margin-top-20" placeholder="USD">
+                      <md-option *ngFor="let c of currencies" [value]="c">{{c}}</md-option>
+                    </md-select>
+                  </div>
+                </div>
+                <h3 class="title">Cancellation Policy</h3>
+                <div class="row margin-left-0">
+                  <div class="col-sm-12 padding-left-0">
+                    Students will get full refund if they cancel within
+                    <md-select [floatPlaceholder]="'never'" formControlName="cancellationPolicy" style="margin: 20px 10px; position: relative; top: -5px;"
+                      placeholder="3 Days">
+                      <md-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</md-option>
+                    </md-select>
+                    days of signing up.
+                  </div>
+                </div>
+                <div style="margin-top:100px;">
+                  <!-- <a md-button (click)=goto(10)>Back</a> -->
+                  <span class="pull-right" mdTooltip="Enter a price you wish to charge for this community and its cancellation policy" [mdTooltipDisabled]="community.controls['price'].value && community.controls['currency'].value  && community.controls['cancellationPolicy'].value">
+                    <button md-raised-button color="accent" type="Submit" [disabled]="(!community.controls['price'].value || !community.controls['cancellationPolicy'].value  || !community.controls['currency'].value) && !freeCommunity">Continue</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!--Step 12 - Disclaimer-->
+        <div class="onboarding step-12" [hidden]="step!=12">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">Add content to your Community</h2>
+              <form [formGroup]="community">
+                <p class="subtitle">Create a detailed timeline of your community and add content for every event in your itinerary. Learners
+                  will see this before they sign up for your community.</p>
+                <div style="margin-top:60px;">
+                  <!-- <a md-button (click)=goto(11)>Back</a> -->
+                  <button class="pull-right" md-raised-button color="accent" (click)="goto(13)">Continue</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!--Step 13 - Itinerary-->
+        <div class="onboarding step-13" [hidden]="step!=13">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">What days are your community?</h2>
+              <p class="subtitle">
+                Select the start date and end date of your community and add itineraries for any of those days.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--Step 14 - Submit for review-->
+        <div class="onboarding step-14" [hidden]="step!=14">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">Review and submit</h2>
+              <div *ngIf="!isSubmitted">
+                <div style="margin-top:40px;">
+                  <md-checkbox value="val1" [(ngModel)]="selectedValues[0]">You meet our standards.</md-checkbox>
+                </div>
+                <div style="margin-top:20px;">
+                  <md-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</md-checkbox>
+                </div>
+                <span class="pull-right" mdTooltip="You need to agree to Peerbuds community terms to submit this community for approval"
+                  [mdTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+                  <button md-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
+                    Submit for Review</button>
+                </span>
+              </div>
+              <div *ngIf="isSubmitted" style="margin-top: 70px;">
+                Your community has been submitted for review and is awaiting approval from Peerbuds team.
+                <br>
+                <br> We maintain highest possible standards for all content shared on Peerbuds platform.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="onboarding step-16" [hidden]="step!=16">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">Do you want to provide your phone number to learners?</h2>
+              <div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
+              <form [formGroup]="phoneDetails">
+                <div style="margin-top:50px;">
+                  <md-radio-group>
+                    <md-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</md-radio-button>
+                    <div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
+                      <md-input-container [floatPlaceholder]="true" class="pb-block" style="margin: 20px 0px;">
+                        <input type="tel" mdInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" [readOnly]="isPhoneVerified">
+                        <md-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</md-hint>
+                        <md-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this community</md-hint>
+                      </md-input-container>
+                      <button md-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')" *ngIf="!isPhoneVerified">
+                        Send OTP
+                      </button>
+                      <button md-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
+                        <md-icon md-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</md-icon> Phone Verified
+                      </button>
+                    </div>
+                    <div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
+                      <p>Type the 4 digit verification code</p>
+                      <md-input-container class="pb-block inputOTP" style="margin: 20px 0px;">
+                        <input type="text" mdInput #inputOTP formControlName="inputOTP" placeholder="OTP">
+                      </md-input-container>
+                      <button md-raised-button color="accent" (click)="submitOTP()">Confirm OTP</button>
+                    </div>
+                    <md-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</md-radio-button>
+                  </md-radio-group>
+                </div>
+                <span class="pull-right" mdTooltip="Please verify your phone number to continue" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
+                  <button md-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+                    <span *ngIf="!busyPayment">Continue</span>
+                    <span *ngIf="busyPayment"> </span>
+                    <ngx-loading [show]="busyPayment"></ngx-loading>
+                  </button>
+                </span>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="onboarding step-17" [hidden]="step!=17">
+          <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">Connect Payment Option</h2>
+              <div class="subtitle">Choose from available payout options or add a new one</div>
+              <div class="row loading-container" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">
+                <ngx-loading [show]="true"></ngx-loading>
+              </div>
+              <div class="margin-top-30" *ngIf="!payoutLoading && payoutAccounts && payoutAccounts.length > 0" style="padding-top: 5px; padding-bottom: 15px">
+                <span class="mat-body-2">
+                  Connect existing account
+                </span>
+              </div>
+              <div class="row table" *ngIf="!payoutLoading">
+                <div class="col-md-10">
+                  <div class="row table-header">
+                    <div class="col-md-3 ">
+                      <b>Method</b>
+                    </div>
+                    <div class="col-md-3">
+                      <b>Details</b>
+                    </div>
+                    <div class="col-md-3">
+                      <b>Status</b>
+                    </div>
+                  </div>
+                  <div class="row table-data">
+                    <hr>
+                    <div class="col-md-12">
+                      <ng-container *ngIf="!addingAccount && payoutAccounts">
+                        <form [formGroup]="paymentInfo">
+                          <md-radio-group formControlName="id">
+                            <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
+                              <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
+                                <b *ngSwitchCase="'card'">Card</b>
+                                <b *ngSwitchCase="'bank_account'">Bank Account</b>
+                              </div>
+                              <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
+                                <span *ngSwitchCase="'card'">**** **** **** {{account.external_accounts.data[0].last4}}</span>
+                                <span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}}
+                                  <br>{{account.external_accounts.data[0].bank_name}} </span>
+                              </div>
+                              <div class="col-md-3">
+                                <b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
+                                <b *ngIf="!account.external_accounts.data[0].status">Ready</b>
+                              </div>
+                              <div class="col-md-3">
+                                <md-radio-button value="{{account.payoutaccount.id}}">
+                                </md-radio-button>
+                              </div>
+                            </div>
+                          </md-radio-group>
+                        </form>
+
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="margin-top-30" style="padding-top: 5px; padding-bottom: 15px" *ngIf="!payoutLoading">
+                <span class="mat-body-2">
+                  Add new payout account
+                </span>
+              </div>
+              <!-- <form [formGroup]="paymentInfo "> -->
+              <div style="margin-top:10px; " *ngIf="!payoutLoading">
+                <!--<button md-raised-button>PayTM</button> &emsp;-->
+                <button md-raised-button>
+                  <a [href]="connectPaymentUrl">
+                    <img src="../../../assets/images/stripe.png" style="width: 50px;" />
+                  </a>
+                </button> &emsp;
+                <!--<button md-raised-button>Paypal</button> &emsp;-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </md-sidenav-container>
+</div>

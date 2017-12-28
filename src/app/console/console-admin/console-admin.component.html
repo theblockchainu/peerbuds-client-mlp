@@ -1,6 +1,6 @@
 <div class="row">
-  <div class="col-md-12 margin-top-20">
-    <div *ngIf="!collectionsLoaded" class="center">
+  <div class="col-md-12">
+    <div *ngIf="!collectionsLoaded" class="loading-container">
       <ngx-loading [show]="true"></ngx-loading>
     </div>
   </div>
@@ -67,8 +67,8 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12 margin-top-20">
-    <div *ngIf="!peersLoaded" class="center">
+  <div class="col-md-12 margin-top-40">
+    <div *ngIf="!peersLoaded" class="loading-container">
       <ngx-loading [show]="true"></ngx-loading>
     </div>
   </div>

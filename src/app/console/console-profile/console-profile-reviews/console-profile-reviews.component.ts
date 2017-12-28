@@ -142,11 +142,13 @@ export class ConsoleProfileReviewsComponent implements OnInit, AfterViewChecked 
                   this.completeCollections[collection.id]['collection'] = collection;
                   this.completeCollections[collection.id]['collection']['calendars'] = [calendar];
                   let participantReviewCount = 0;
-                  this.completeCollections[collection.id]['collection'].participants.forEach(participant => {
-                      if (participant.reviewsAboutYou && participant.reviewsAboutYou[0].collectionId === collection.id) {
-                          participantReviewCount += 1;
-                      }
-                  });
+                  if (this.completeCollections[collection.id]['collection'].participants !== undefined) {
+                      this.completeCollections[collection.id]['collection'].participants.forEach(participant => {
+                          if (participant.reviewsAboutYou && participant.reviewsAboutYou[0].collectionId === collection.id) {
+                              participantReviewCount += 1;
+                          }
+                      });
+                  }
                   this.completeCollections[collection.id]['collection'].participantReviewCount = participantReviewCount;
                 }
               }

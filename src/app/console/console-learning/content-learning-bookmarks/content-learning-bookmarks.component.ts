@@ -77,4 +77,16 @@ export class ContentLearningBookmarksComponent implements OnInit {
 
   }
 
+    public openCollection(collection: any) {
+        this.router.navigateByUrl('/' + collection.type + '/' + collection.id + '/calendar/' + collection.calendarId);
+    }
+
+    public openProfile(peer: any) {
+        this.router.navigate(['profile', peer.id]);
+    }
+
+    public viewTransaction(collection: any) {
+        this.router.navigate(['console', 'account', 'transactions']);
+    }
+
 }

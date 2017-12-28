@@ -28,6 +28,7 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
   public futureTransactions: Array<any>;
   public retrievedFutureTransactions: Array<any>;
   public totalFutureTransactions: number;
+  public loadingTransactions = false;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -117,11 +118,13 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
   }
 
   private retrieveTransactions() {
+    this.loadingTransactions = true;
     const query1 = { 'include': { 'collections': ['calendars'] }, 'order': 'modified desc' };
     this.totalTransactions = 0;
     this._paymentService.getTransactions(this.userId, query1).subscribe(result => {
       this.retrievedTransactions = result;
       this.transactions = result;
+      this.loadingTransactions = false;
       result.forEach(element => {
         console.log(element);
         this.totalTransactions -= (element.amount / 100);

@@ -1,5 +1,9 @@
-<div class="loading-container" style="width:60%" *ngIf="loading">
-  <ngx-loading [show]="true"></ngx-loading>
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="loading" class="loading-container">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
 </div>
 <div class="row" *ngIf="!loading">
   <div class="col-md-12">

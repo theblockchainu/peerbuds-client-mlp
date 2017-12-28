@@ -36,7 +36,9 @@ import { ReportProfileComponent } from './report-profile/report-profile.componen
 import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohort-dialog.component';
 import { RateParticipantComponent } from './rate-participant-dialog/rate-participant-dialog.component';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
-
+import {DeleteCommunityDialogComponent} from './delete-community-dialog/delete-community-dialog.component';
+import {ExitCommunityDialogComponent} from './exit-community-dialog/exit-community-dialog.component';
+import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -179,6 +181,26 @@ export class DialogsService {
         const dialogRef = this.dialog.open(ExitCollectionDialogComponent, {
             data: {
                 collectionId: collectionId,
+                userId: userId
+            },
+            width: '30vw'
+        });
+        return dialogRef.afterClosed();
+    }
+
+    openDeleteCommunity(community: any) {
+        const dialogRef = this.dialog.open(DeleteCommunityDialogComponent, {
+            data: community,
+            width: '30vw'
+        });
+
+        return dialogRef.afterClosed();
+    }
+
+    openExitCommunity(communityId: string, userId: string) {
+        const dialogRef = this.dialog.open(ExitCommunityDialogComponent, {
+            data: {
+                communityId: communityId,
                 userId: userId
             },
             width: '30vw'
@@ -358,6 +380,13 @@ export class DialogsService {
                 height: '31vh'
             }
         ).afterClosed();
+    }
+
+    public dateConflictDialog() {
+        return this.dialog.open(DateConflictDialogComponent, {
+            width: '40vw',
+            height: '31vh'
+        }).afterClosed();
     }
 
 }

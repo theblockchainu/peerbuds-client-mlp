@@ -1,7 +1,11 @@
-<!--<div class="col-md-4 loading-container">
-    <ngx-loading [show]="true"></ngx-loading>
-  </div>-->
 <div class="row">
+  <div class="col-md-12">
+    <div *ngIf="loadingTransactions" class="loading-container">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="!loadingTransactions">
   <div class="col-md-12">
     <div class="row">
       <div>

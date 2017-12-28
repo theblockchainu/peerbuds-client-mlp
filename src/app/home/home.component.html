@@ -3,6 +3,9 @@
     <nav md-tab-nav-bar disableRipple class="noJustify" >
       <a md-tab-link [routerLink]="'/home/homefeed'" routerLinkActive #feedLink="routerLinkActive" [active]="feedLink.isActive">
         Homefeed </a>
+        <a md-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive">
+            Communities
+        </a>
       <a md-tab-link [routerLink]="'/home/workshops'" routerLinkActive #workshopLink="routerLinkActive" [active]="workshopLink.isActive">
         Workshops
       </a>

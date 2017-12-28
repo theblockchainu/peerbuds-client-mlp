@@ -14,6 +14,7 @@ import { SelectTopicsComponent } from './dialogs/select-topics/select-topics.com
 import { SelectPriceComponent } from './dialogs/select-price/select-price.component';
 import { StickyModule } from 'ng2-sticky-kit';
 import { AgmCoreModule } from '@agm/core';
+import { CommunitiesComponent } from './communities/communities.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,7 @@ import { AgmCoreModule } from '@agm/core';
     SharedModule,
     StickyModule
   ],
-  declarations: [HomeComponent, WorkshopsComponent, ExperiencesComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent, SelectPriceComponent],
+  declarations: [HomeComponent, WorkshopsComponent, ExperiencesComponent, PeersComponent, HomefeedComponent, SelectTopicsComponent, SelectPriceComponent, CommunitiesComponent],
   providers: [],
   bootstrap: [SelectTopicsComponent, SelectPriceComponent]
 })

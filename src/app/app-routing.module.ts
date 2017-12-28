@@ -86,6 +86,10 @@ const routes: Routes = [
     loadChildren: 'app/workshop/workshop.module#WorkshopModule'
   },
   {
+      path: 'community',
+      loadChildren: 'app/community/community.module#CommunityModule'
+  },
+  {
     path: 'app-upload-docs',
     loadChildren: 'app/verification/verification.module#VerificationModule'
   },
