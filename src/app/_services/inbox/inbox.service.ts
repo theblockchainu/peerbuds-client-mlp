@@ -31,7 +31,7 @@ export class InboxService {
 
   getRoomData() {
     const userId = this._cookieUtilsService.getValue(this.key);
-    const query = { 'include' : ['collection', {'messages': {'peer' : 'profiles'}} , 'participants'] };
+    const query = { 'include' : ['collection', {'messages': {'peer' : 'profiles'}} , {'participants': 'profiles'}]};
     if (userId) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this.options)
         .map(
