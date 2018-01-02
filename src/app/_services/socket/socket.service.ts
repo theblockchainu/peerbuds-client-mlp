@@ -17,6 +17,7 @@ export class SocketService {
         this.userId = _cookieUtilsService.getValue('userId');
         this.socket = io(this.config.apiUrl);
         this.addUser(this.userId);
+        this.listenForNewMessage();
     }
 
     public addUser(userId) {
@@ -55,6 +56,16 @@ export class SocketService {
         return new Observable(observer => {
             this.socket.on('endedView', (data) => {
                 observer.next(data);
+            });
+            return;
+        });
+    }
+
+    public listenForNewMessage() {
+        return new Observable(observer => {
+            this.socket.on('message', (data) => {
+                observer.next(data);
+                console.log(data);
             });
             return;
         });

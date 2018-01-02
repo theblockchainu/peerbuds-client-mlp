@@ -72,6 +72,7 @@ import {AgmCoreModule} from '@agm/core';
 import {QuestionService} from '../_services/question/question.service';
 import {CommunityService} from '../_services/community/community.service';
 import {InboxService} from '../_services/inbox/inbox.service';
+import {SearchService} from '../_services/search/search.service';
 
 @NgModule({
     imports: [
@@ -123,7 +124,8 @@ import {InboxService} from '../_services/inbox/inbox.service';
         InboxService,
         TitleCasePipe,
         QuestionService,
-        CommunityService
+        CommunityService,
+        SearchService
     ],
     exports: [
         CommonModule,

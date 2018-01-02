@@ -11,14 +11,14 @@ export class CommunityPageExperiencesComponent implements OnInit {
 
     constructor(activatedRoute: ActivatedRoute,
                 communityPageComponent: CommunityPageComponent) {
-        activatedRoute.pathFromRoot[5].url.subscribe((urlSegment) => {
+        /*activatedRoute.pathFromRoot[5].url.subscribe((urlSegment) => {
             console.log('activated route is: ' + JSON.stringify(urlSegment));
             if (urlSegment[0] === undefined) {
-                communityPageComponent.setActiveTab('questions');
+                communityPageComponent.setActiveTab('experiences');
             } else {
                 communityPageComponent.setActiveTab(urlSegment[0].path);
             }
-        });
+        });*/
     }
 
     ngOnInit() {

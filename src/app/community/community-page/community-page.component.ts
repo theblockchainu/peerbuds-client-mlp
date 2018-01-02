@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, ViewContainerRef} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router, ActivatedRoute, Params, NavigationStart} from '@angular/router';
 import {MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED} from '@angular/material';
 import {ICarouselConfig, AnimationConfig} from 'angular4-carousel';
@@ -10,6 +10,8 @@ import {AppConfig} from '../../app.config';
 import {ViewParticipantsComponent} from './view-participants/view-participants.component';
 import {CommunityService} from '../../_services/community/community.service';
 import {QuestionService} from '../../_services/question/question.service';
+import {Http} from '@angular/http';
+import {SearchService} from '../../_services/search/search.service';
 import {
     startOfDay,
     endOfDay,
@@ -111,6 +113,8 @@ export class CommunityPageComponent implements OnInit {
     public carouselImages: Array<string>;
     public carouselConfig: ICarouselConfig;
     public activeTab: string;
+    public searchControl = new FormControl('');
+    public searchResults: any[];
 
     constructor(public router: Router,
                 private activatedRoute: ActivatedRoute,
@@ -120,9 +124,11 @@ export class CommunityPageComponent implements OnInit {
                 private _commentService: CommentService,
                 private _questionService: QuestionService,
                 private _communityService: CommunityService,
+                public _searchService: SearchService,
                 public config: AppConfig,
                 private _fb: FormBuilder,
                 private dialog: MdDialog,
+                private http: Http,
                 private dialogsService: DialogsService,
                 private snackBar: MdSnackBar) {
         this.activatedRoute.params.subscribe(params => {
@@ -132,15 +138,6 @@ export class CommunityPageComponent implements OnInit {
             this.communityId = params['communityId'];
             this.toOpenDialogName = params['dialogName'];
         });
-        this.activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
-            console.log('activated route is: ' + JSON.stringify(urlSegment));
-            if (urlSegment[0] === undefined) {
-                this.activeTab = 'questions';
-            }
-            else {
-                this.activeTab = urlSegment[0].path;
-            }
-        });
         this.userId = _cookieUtilsService.getValue('userId');
         this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
     }
@@ -149,24 +146,20 @@ export class CommunityPageComponent implements OnInit {
         this.initialised = true;
         this.initializeCommunity();
         this.initialLoad = false;
+        this.searchControl.valueChanges.subscribe((value) => {
+            this._searchService.getCommunitySearchResults(this.userId, value, (err, result) => {
+                if (!err) {
+                    this.searchResults = result;
+                } else {
+                    console.log(err);
+                }
+            });
+        });
+        this._communityService.getActiveTab().subscribe(data => {
+            this.activeTab = data;
+        });
     }
 
-    /**
-     * Check if the given tab is active tab
-     * @param tabName
-     * @returns {boolean}
-     */
-    public getActiveTab() {
-        return this.activeTab;
-    }
-
-    /**
-     * Set active tab
-     * @param value
-     */
-    public setActiveTab(value) {
-        this.activeTab = value;
-    }
 
     private initializeUserType() {
         if (this.community) {
@@ -325,6 +318,7 @@ export class CommunityPageComponent implements OnInit {
                 console.log(err);
             } else {
                 this.router.navigate(['community', this.communityId]);
+                this.snackBar.open('Thanks for joining the community. Ask questions or share your find partners for your learning journey.', 'Close', { duration: 5000});
             }
         });
     }
@@ -411,5 +405,7 @@ export class CommunityPageComponent implements OnInit {
     public getUserType() {
         return this.userType;
     }
+
+
 
 }

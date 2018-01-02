@@ -5,6 +5,8 @@ import {CookieService} from 'ngx-cookie-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {RequestHeaderService} from '../requestHeader/request-header.service';
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class CommunityService {
@@ -12,6 +14,7 @@ export class CommunityService {
     public key = 'userId';
     public options;
     public now: Date;
+    public activeTab = new BehaviorSubject('question');
 
     constructor(private http: Http,
                 private config: AppConfig,
@@ -217,6 +220,14 @@ export class CommunityService {
     public deleteCommunity(communityId: string) {
         return this.http.delete(this.config.apiUrl +
             '/api/communities/' + communityId);
+    }
+
+    public getActiveTab() {
+        return this.activeTab.asObservable();
+    }
+
+    public setActiveTab(value) {
+        this.activeTab.next(value);
     }
 
 }

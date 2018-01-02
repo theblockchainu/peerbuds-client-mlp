@@ -1,3 +1,23 @@
-<p>
-  community-page-workshops works!
-</p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="loading-container" [hidden]="!loadingWorkshops">
+            <ngx-loading [show]="true"></ngx-loading>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!loadingWorkshops">
+    <div class="col-md-12">
+        <div class="row margin-top-20">
+            <div class="col-md-12">
+                <div class="mat-body-2">Add your workshop</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <md-select placeholder="Select from your existing workshops">
+                    <md-option *ngFor="let workshop of ownedWorkshops" [value]="workshop.id">{{workshop.title | ucwords}}</md-option>
+                </md-select>
+            </div>
+        </div>
+    </div>
+</div>

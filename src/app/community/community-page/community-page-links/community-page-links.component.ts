@@ -13,14 +13,14 @@ export class CommunityPageLinksComponent implements OnInit {
         activatedRoute: ActivatedRoute,
         communityPageComponent: CommunityPageComponent
     ) {
-        activatedRoute.pathFromRoot[5].url.subscribe((urlSegment) => {
+        /*activatedRoute.pathFromRoot[5].url.subscribe((urlSegment) => {
             console.log('activated route is: ' + JSON.stringify(urlSegment));
             if (urlSegment[0] === undefined) {
-                communityPageComponent.setActiveTab('questions');
+                communityPageComponent.setActiveTab('links');
             } else {
                 communityPageComponent.setActiveTab(urlSegment[0].path);
             }
-        });
+        });*/
     }
 
   ngOnInit() {

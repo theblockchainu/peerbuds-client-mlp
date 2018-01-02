@@ -11,12 +11,12 @@
           placeholder="Search people, topic...">
       </md-input-container>
       <md-autocomplete #auto="mdAutocomplete">
-        <md-option *ngFor="let option of options" [value]="getSearchOptionText(option)" (click)="onSearchOptionClicked(option)">
+        <md-option *ngFor="let option of options" [value]="_searchService.getSearchOptionText(option)" (click)="_searchService.onSearchOptionClicked(option)">
           <span class="lightText">
-            {{getSearchOptionType(option)}}
+            {{_searchService.getSearchOptionType(option)}}
           </span>
           <span>
-            {{getSearchOptionText(option)}}
+            {{_searchService.getSearchOptionText(option)}}
           </span>
         </md-option>
       </md-autocomplete>
