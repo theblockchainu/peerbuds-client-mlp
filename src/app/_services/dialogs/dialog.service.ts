@@ -39,6 +39,8 @@ import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import {DeleteCommunityDialogComponent} from './delete-community-dialog/delete-community-dialog.component';
 import {ExitCommunityDialogComponent} from './exit-community-dialog/exit-community-dialog.component';
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
+import { CameraCaptureDialogComponent } from './camera-capture-dialog/camera-capture-dialog.component';
+
 @Injectable()
 export class DialogsService {
 
@@ -386,6 +388,18 @@ export class DialogsService {
         return this.dialog.open(DateConflictDialogComponent, {
             width: '40vw',
             height: '31vh'
+        }).afterClosed();
+    }
+
+    public showCameraToCapture(roomId) {
+        return this.dialog.open(CameraCaptureDialogComponent, {
+            data: {
+                room: roomId
+            },
+            width: '50vw',
+            height: '90vh',
+            disableClose: true,
+            // hasBackdrop: true,
         }).afterClosed();
     }
 

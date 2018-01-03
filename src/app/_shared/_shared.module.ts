@@ -72,6 +72,7 @@ import {AgmCoreModule} from '@agm/core';
 import {QuestionService} from '../_services/question/question.service';
 import {CommunityService} from '../_services/community/community.service';
 import {InboxService} from '../_services/inbox/inbox.service';
+import {LinkifyPipe} from './linkify/linkify.pipe';
 
 @NgModule({
     imports: [
@@ -101,7 +102,7 @@ import {InboxService} from '../_services/inbox/inbox.service';
         }),
         Ng4GeoautocompleteModule.forRoot()
     ],
-    declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TextIconCarouselComponent],
+    declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TextIconCarouselComponent, LinkifyPipe],
     providers: [
         CollectionService,
         CountryPickerService,
@@ -156,7 +157,7 @@ import {InboxService} from '../_services/inbox/inbox.service';
         MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
         SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
         LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TitleCasePipe, CarouselModule
-        , TextIconCarouselComponent, Ng4GeoautocompleteModule, AgmCoreModule
+        , TextIconCarouselComponent, Ng4GeoautocompleteModule, AgmCoreModule, LinkifyPipe
     ]
 })
 export class SharedModule {

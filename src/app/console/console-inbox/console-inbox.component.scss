@@ -154,3 +154,29 @@ md-form-field textarea.mat-input-element {
     display: none !important;
     background: none !important;
 }
+
+.chatButtons {
+    width: 22%;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.chatButtons a {
+    cursor: pointer;
+}
+
+.talktext a {
+    display:block;
+    // color: #6696F5;
+}
+
+.talktext a:hover {
+	// border-bottom:3px solid #6696F5;
+	// padding:5px 5px 4px;
+}
+
+.chatContent {
+    height: 275px;
+    overflow-y: scroll;
+}

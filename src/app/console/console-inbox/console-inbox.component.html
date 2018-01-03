@@ -33,7 +33,12 @@
             <!--date-->
           </div>
           <div [ngClass]="{'col-md-12': true, 'backgroundColorGray': i===0 || displayNone[rooms.id]}">
-            <span *ngIf="rooms.messages" class="lightText" style="padding-left:41px;font-size:0.7rem">{{rooms.messages[rooms.messages.length - 1].text}}</span>
+            <span *ngIf="rooms.messages" class="lightText" style="padding-left:41px;font-size:0.7rem">
+              <!-- {{rooms.messages[rooms.messages.length - 1].text}} -->
+              <h6 *ngIf="!rooms.messages[rooms.messages.length - 1].fileType" style="margin-bottom:0px">{{rooms.messages[rooms.messages.length - 1].text}}</h6>
+              <a *ngIf="rooms.messages[rooms.messages.length - 1].fileType" href="{{rooms.messages[rooms.messages.length - 1].text}}" style="cursor:pointer;" download>{{rooms.messages[rooms.messages.length - 1].filename}}</a>
+                    
+            </span>
             <span *ngIf="!rooms.messages"></span>
             <!-- recent msg-->
             <a color="secondary" class="pull-right" [mdMenuTriggerFor]="showSettingsMenu" style="text-align: right; padding: 0px;">
@@ -62,8 +67,8 @@
     </div>
     <div class="col-md-7 border-box padding-left-0 padding-right-0 noBorderRight noBorderBottom">
       <div *ngIf="tempJoinedRooms">
-        <div *ngFor="let room of tempJoinedRooms;let i = index" class="border-right">
-          <div [ngClass]="{'headerChat': true, 'center': true, 'displayNone': displayNone[room.id]}" style="padding-top:5px;padding-bottom:10px">
+        <div *ngFor="let room of tempJoinedRooms;let i = index" class="">
+          <div [ngClass]="{'headerChat': true, 'border-right': true, 'center': true, 'displayNone': displayNone[room.id]}" style="padding-top:5px;padding-bottom:10px">
             <span>{{room.participantTextHeader}} {{room.participantTextHeaderSub}}</span>
             <span>
               <a color="secondary" class="pull-right" style="padding-top:10px;padding-right:10px">
@@ -77,32 +82,57 @@
             <span><b><h6 class="lightText center" style="margin: 0px !important;line-height: 1.3rem;">{{room.collection[0].type | titlecase }}</h6></b></span>
           </div>
           <div class="center" *ngIf="room.messages">
-            <div *ngFor="let message of room.messages;let i=index" class="col-md-12 margin-top-10">
-              <span *ngIf="i==0">{{message.createdAtLocal}}</span>
-              <span *ngIf="i > 0 && room.messages[i].createdAtLocal != room.messages[i-1].createdAtLocal">{{message.createdAtLocal}}</span>
-              <div *ngIf="message.type==='system'" class="center margin-top-10">
-                <h6 style="margin-bottom:0px">
-                  <i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
-                </h6>
+            <div class="chatContent">
+              <div *ngFor="let message of room.messages;let i=index" class="col-md-12 margin-top-10">
+                <span *ngIf="i==0">{{message.createdAtLocal}}</span>
+                <span *ngIf="i > 0 && room.messages[i].createdAtLocal != room.messages[i-1].createdAtLocal">{{message.createdAtLocal}}</span>
+                <div *ngIf="message.type==='system'" class="center margin-top-10">
+                  <h6 style="margin-bottom:0px">
+                    <i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+                  </h6>
+                </div>
+                <div *ngIf="message.type==='user'" class="margin-top-10">
+                  <span [ngClass]="{'col-md-1': true, 'review-thumb': true, 'pull-left': message.peer[0].id != userId, 'pull-right': message.peer[0].id == userId}">
+                    <img src="{{ config.apiUrl + message.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+                  </span>
+                  <span class="talk-bubble tri-right left-top round" style="margin-top:3px">
+                    <div class="talktext">
+                      <h6 *ngIf="!message.fileType" style="margin-bottom:0px">{{message.text}}</h6>
+                      <a *ngIf="message.fileType" href="{{message.text}}" style="cursor:pointer;" download>{{message.filename}}</a>
+                    </div>
+                  </span>
+                </div>
               </div>
-              <div *ngIf="message.type==='user'" class="margin-top-10">
-                <span [ngClass]="{'col-md-1': true, 'review-thumb': true, 'pull-left': message.peer[0].id != userId, 'pull-right': message.peer[0].id == userId}">
-                  <img src="{{ config.apiUrl + message.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
-                </span>
-                <span class="talk-bubble tri-right left-top round" style="margin-top:3px">
-                  <div class="talktext">
-                    <h6 style="margin-bottom:0px">{{message.text}}</h6>
+            </div>
+            <div class="chatBoxInput">
+              <div class="col-md-11 chatbox margin-top-40" style="margin-left: 30px;height:150px">
+                <md-form-field style="width:100%">
+                  <textarea mdInput [(ngModel)]="message" rows="6" cols="100">
+                  </textarea>
+                  <div class="chatButtons">
+                    <a color="secondary" class="pull-right" style="padding-top:10px;" (click)="openCamera(room.id)">
+                      <md-icon style="color:grey;font-size:20px">add_a_photo</md-icon>
+                    </a>
+                    <a color="secondary" class="pull-right" style="padding-top:10px;">
+                      <md-icon style="color:grey;font-size:20px">mic_none</md-icon>
+                    </a>
+                    <a color="secondary" class="pull-right" style="padding-top:10px;">
+                      <md-icon style="color:grey;font-size:20px">tag_faces</md-icon>
+                    </a>
+                    <input type="file" id="addphotos" name="addphotos" style="visibility: hidden; width: 1px; height: 1px" multiple #addphotos (change)="upload(addphotos, room.id)"/>
+                    <a color="secondary" class="pull-right" style="padding-top:10px;" title="Add Photos" (click)="addphotos.click()">
+                      <md-icon style="color:grey;font-size:20px">photo_library</md-icon>
+                    </a>
+                    <input type="file" id="attach" name="attach" style="visibility: hidden; width: 1px; height: 1px" multiple #file (change)="upload(file, room.id)"/>
+                    <a color="secondary" class="pull-right" style="padding-top:10px;" (click)="file.click()" title="Attach Files">
+                      <md-icon style="color:grey;font-size:20px">attach_file</md-icon>
+                    </a>
                   </div>
-                </span>
+                </md-form-field>
               </div>
-            </div>
-            <div class="col-md-11 chatbox margin-top-40" style="margin-left: 30px">
-              <md-form-field style="width:100%">
-                <textarea mdInput [(ngModel)]="message" rows="9 " cols="100"></textarea>
-              </md-form-field>
-            </div>
-            <div class="pull-right margin-top-20 margin-bottom-10"> <!--Post Msgs-->
-              <button color="primary" md-raised-button (click)="postMsg(room.id)" style="margin-right:27px">Send Message</button>
+              <div class="pull-right margin-top-20 margin-bottom-10"> <!--Post Msgs-->
+                <button color="primary" md-raised-button (click)="postMsg(room.id)" style="margin-right:27px">Send Message</button>
+              </div>
             </div>
           </div>
         </div>

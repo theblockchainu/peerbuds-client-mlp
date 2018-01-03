@@ -1,0 +1,25 @@
+<div class="dialog-container" md-dialog-content>
+    <div class="row">
+        <div class="col-md-7">
+            <button disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="closeDialog()">
+                <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+            </button>
+            <div class="mat-display-1" style="margin-bottom: 20px;">
+                <h3 md-dialog-title>Camera</h3>
+            </div>
+        </div>
+        <div md-dialog-actions class="col-md-3 pull-right margin-top-20 ">
+            <!-- <button md-raised-button color="primary" tabindex="1" (click)="toggleVideo()">Take Video</button> -->
+            <button md-raised-button [ngClass]="{'displayNone': toggleDisplay}" color="primary" tabindex="2" id="takePhoto" (click)="takePhoto()">Take Photo</button>
+            <button md-raised-button [ngClass]="{'displayNone': !toggleDisplay}" color="primary" tabindex="3" id="sendPhoto" (click)="sendPhoto()">Send Photo</button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <video #hardwareVideo style="width:100%" id="videoStream"></video>
+            <div id="capturedPhoto">
+            </div>
+        </div>
+    </div>
+</div>

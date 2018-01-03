@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; 
 import { ActivatedRoute } from '@angular/router';
 import { ConsoleComponent } from '../console.component';
 import { InboxService } from '../../_services/inbox/inbox.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 import { AppConfig } from '../../app.config';
 
@@ -26,13 +28,18 @@ export class ConsoleInboxComponent implements OnInit {
   public displayNone = [];
   public selected = '';
   public message = '';
+  public capturedData;
+
+  public uploadingAttachment = false;
 
   constructor(
     public config: AppConfig,
     public activatedRoute: ActivatedRoute,
     public consoleComponent: ConsoleComponent,
     public _inboxService: InboxService,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private _mediaUploader: MediaUploaderService,
+    private _dialogService: DialogsService
   ) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
@@ -102,6 +109,18 @@ export class ConsoleInboxComponent implements OnInit {
           msg.createdAtLocal = moment(msg.createdAt).format('ddd, MMM D YYYY');
           msg.leftColLatestMsgTime = moment(msg.createdAt).format('ddd');
         }
+        if (msg.text) {
+          const msgArr = msg.text.split('|');
+          if(msgArr[0]) {
+            msg.text = msgArr[0];
+          }
+          if (msgArr[2]) {
+            msg.fileType = msgArr[2];
+          }
+          if (msgArr[1]) {
+            msg.filename = msgArr[1];
+          }
+        }
       });
     }
     return room;
@@ -142,5 +161,34 @@ export class ConsoleInboxComponent implements OnInit {
     else {
       this.tempJoinedRooms = this.joinedRooms;
     }
+  }
+
+  public upload(event, roomId) {
+    // Upload file.files to media library and post in chat
+    this.uploadingAttachment = true;
+    if(event.files) {
+      for (const file of event.files) {
+        this._mediaUploader.upload(file).subscribe((response) => {
+          console.log(response);
+          this.postAttachment(roomId, this.config.apiUrl + response.url + '|' + response['originalFilename'] + '|' + response['type']);
+          this.uploadingAttachment = false;
+        });
+      }
+    }
+  }
+
+  postAttachment(roomId, message) {
+    const body = {
+      'text' : message,
+      'type' : 'user'
+    };
+    this._inboxService.postMessage(roomId, body)
+      .subscribe((response) => {
+        console.log('Posted Attachment');
+      });
+  }
+
+  public openCamera(roomId) {
+    this._dialogService.showCameraToCapture(roomId);
   }
 }
