@@ -86,6 +86,10 @@ const routes: Routes = [
     loadChildren: 'app/workshop/workshop.module#WorkshopModule'
   },
   {
+    path: 'session',
+    loadChildren: 'app/session/session.module#SessionModule'
+  },
+  {
     path: 'app-upload-docs',
     loadChildren: 'app/verification/verification.module#VerificationModule'
   },

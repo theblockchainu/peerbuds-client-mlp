@@ -10,9 +10,9 @@
       <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
         Experiences
       </md-list-item>
-      <!-- <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
+      <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
         Sessions
-      </md-list-item> -->
+      </md-list-item>
       <md-list-item *ngIf="getActiveTab() === 'workshops' ">
         <span mdTooltip="Account Verification Pending!" [mdTooltipDisabled]="accountVerified">
           <button md-raised-button (click)="createWorkshop()" [disabled]="!accountVerified" color="primary">New Workshop</button>
@@ -25,7 +25,14 @@
       </md-list-item>
       <md-list-item *ngIf="getActiveTab() === 'sessions'">
         <span mdTooltip="Account Verification Pending!" [mdTooltipDisabled]="accountVerified">
-          <button md-raised-button (click)="enableSessions()" [disabled]="!accountVerified" color="primary">Enable Sessions</button>
+          <button md-raised-button [disabled]="!accountVerified" color="primary">
+            <span *ngIf="!session" (click)="enableSessions()">
+              Enable Live Session
+            </span>
+            <span *ngIf="session" (click)="editSessions()">
+              Edit live session
+            </span>
+          </button>
         </span>
       </md-list-item>
     </md-list>
