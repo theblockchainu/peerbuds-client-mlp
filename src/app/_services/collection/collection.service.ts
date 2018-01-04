@@ -821,4 +821,42 @@ collectionID:string,userId:string,calendarId:string   */
       .map((response: Response) => response.json());
   }
 
+  public updateProvisions(collectionId: string, body: any) {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + collectionId + '/provisions', this.options).flatMap(res => {
+      return this.http
+        .post(this.config.apiUrl + '/api/collections/' + collectionId + '/provisions', body, this.options)
+        .map((response: Response) => response.json());
+    });
+
+  }
+
+  public postPackages(collectionId: string, body: any) {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + collectionId + '/packages', this.options).flatMap(res => {
+      console.log('deleted');
+      console.log('posting', body);
+      return this.http
+        .post(this.config.apiUrl + '/api/collections/' + collectionId + '/packages', body, this.options)
+        .map((response: Response) => response.json());
+    });
+  }
+
+  public postPreferences(collectionId: string, body: any) {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + collectionId + '/preferences', this.options).flatMap(res => {
+      console.log('deleted');
+      console.log('posting', body);
+      return this.http
+        .post(this.config.apiUrl + '/api/collections/' + collectionId + '/preferences', body, this.options)
+        .map((response: Response) => response.json());
+    });
+  }
+
+  public updateAvailability(collectionId: string, body: any) {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + collectionId + '/availability').flatMap(
+      res => {
+        return this.http.post(this.config.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.options)
+          .map((response: Response) => response.json());
+      }
+    );
+  }
+
 }
