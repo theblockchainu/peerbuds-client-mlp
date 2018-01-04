@@ -4,7 +4,10 @@ import { ConsoleComponent } from '../console.component';
 import { InboxService } from '../../_services/inbox/inbox.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 
+import { AppConfig } from '../../app.config';
+
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-console-inbox',
@@ -14,12 +17,18 @@ import * as moment from 'moment';
 export class ConsoleInboxComponent implements OnInit {
   public loadingMessages = false;
   public joinedRooms = [];
+  public tempJoinedRooms = [];
+  public experienceCollection = [];
+  public workshopCollection = [];
   public defaultLoadedChat;
   public userId;
   private key = 'userId';
   public displayNone = [];
+  public selected = '';
+  public message = '';
 
   constructor(
+    public config: AppConfig,
     public activatedRoute: ActivatedRoute,
     public consoleComponent: ConsoleComponent,
     public _inboxService: InboxService,
@@ -39,7 +48,7 @@ export class ConsoleInboxComponent implements OnInit {
         this.joinedRooms = response;
 
         this.joinedRooms.sort((a, b) => {
-          return moment(b.createdAt).diff(moment(a.createdAt), 'days');
+          return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
         });
         console.log(this.joinedRooms);
         if (this.joinedRooms) {
@@ -48,6 +57,9 @@ export class ConsoleInboxComponent implements OnInit {
           this.displayNone.push[room.id] = false;
           this.defaultLoadedChat = room;
         }
+        this.tempJoinedRooms = this.joinedRooms;
+        this.getCollections();
+        this.selected = 'all';
       });
   }
 
@@ -58,15 +70,46 @@ export class ConsoleInboxComponent implements OnInit {
   }
 
   private formatDateTime(room) {
+    let participantTextHeader = '';
+    let participantTextHeaderSub = '';
+    if (room.participants) {
+      if (room.participants.length > 2) {
+        for (let i = 0; i < room.participants.length; i++) {
+          if ( i < 2) {
+            participantTextHeader += room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ';
+          }
+        }
+        participantTextHeader = participantTextHeader.trim().slice(0, -1);
+        participantTextHeaderSub.concat(' + ');
+        participantTextHeaderSub.concat(room.participants.length - 2 + ' more');
+      }
+      else {
+        for (let i = 0; i < room.participants.length; i++) {
+          participantTextHeader += room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ';
+        }
+        participantTextHeader = participantTextHeader.trim().slice(0, -1);
+      }
+      room.participantTextHeader = participantTextHeader;
+      room.participantTextHeaderSub = participantTextHeaderSub;
+    }
     if (room.messages) {
-      room.messages[0].createdAtLocal = moment(room.messages[0].createdAt).format('ddd, MMM D YYYY');
+      room.messages.forEach(msg => {
+        if (moment(msg.createdAt).format('MMM D YYYY') === moment().format('MMM D YYYY')) {
+          msg.createdAtLocal = 'Today';
+          msg.leftColLatestMsgTime = moment(msg.createdAt).format('LT');
+        }
+        else {
+          msg.createdAtLocal = moment(msg.createdAt).format('ddd, MMM D YYYY');
+          msg.leftColLatestMsgTime = moment(msg.createdAt).format('ddd');
+        }
+      });
     }
     return room;
   }
 
   public postMsg(roomId) {
     const body = {
-      'text' : 'Hi Test',
+      'text' : this.message,
       'type' : 'user'
     };
     this._inboxService.postMessage(roomId, body)
@@ -79,4 +122,25 @@ export class ConsoleInboxComponent implements OnInit {
     event.target.src = '/assets/images/placeholder-image.jpg';
   }
 
+  public getCollections() {
+    this.joinedRooms.forEach(element => {
+      this.experienceCollection = _.filter(element.collection, function(o) { return o.type === 'experience'; });
+    });
+
+    this.joinedRooms.forEach(element => {
+      this.workshopCollection = _.filter(element.collection, function(o) { return o.type === 'workshop'; });
+    });
+  }
+
+  public getSelectedCollection() {
+    if (this.selected === 'workshop') {
+      this.tempJoinedRooms = this.workshopCollection;
+    }
+    else if (this.selected === 'experience') {
+      this.tempJoinedRooms = this.experienceCollection;
+    }
+    else {
+      this.tempJoinedRooms = this.joinedRooms;
+    }
+  }
 }

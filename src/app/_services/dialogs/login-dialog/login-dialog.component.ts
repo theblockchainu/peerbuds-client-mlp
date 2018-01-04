@@ -68,7 +68,6 @@ export class LoginComponentDialog implements OnInit {
   }
 
   public toggle() {
-    this.isChecked = true;
     this.isChecked = !(this.isChecked);
   }
 

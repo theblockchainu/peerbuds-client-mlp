@@ -1,13 +1,8 @@
-<div class="loading-container" style="width:60%" [hidden]="!loadingProfile">
-  <ngx-loading [show]="true"></ngx-loading>
-</div>
-<!-- <div *ngIf="!loadingProfile" class="row">
-  <div class="col-md-12">
-    <div *ngIf="!loaded" class="center">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
+<div class="row">
+  <div class="loading-container" [hidden]="!loadingProfile">
+    <ngx-loading [show]="true"></ngx-loading>
   </div>
-</div> -->
+</div>
 <div class="row" *ngIf="!loadingProfile">
   <div class="col-md-7" style="position: fixed">
     <button md-raised-button color="accent" (click)="saveProfile()" class="pull-right">
@@ -136,7 +131,7 @@
                   <agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
                 </agm-map>
               </div>
-              <md-input-container class="pb-block" style="margin-bottom: 20px">
+              <md-input-container class="pb-block margin-top-30" style="margin-bottom: 20px">
                 <textarea mdInput #description formControlName="description" rows="2" placeholder="Describe yourself" required></textarea>
                 <md-error>This field is required</md-error>
                 <md-hint align="start" class="col-md-10 padding-left-0">Peerbuds is built on relationships. Help other people get to know you. Tell them about the things you like:

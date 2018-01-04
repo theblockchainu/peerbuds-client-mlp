@@ -390,6 +390,13 @@ md-subheader {
     color: white !important;
 }
 
+.mat-raised-button {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    padding: 4px 16px !important;
+}
+
 .mat-raised-button.mat-primary[disabled], .mat-raised-button.mat-accent[disabled], .mat-raised-button.mat-warn[disabled], .mat-raised-button[disabled][disabled], .mat-fab.mat-primary[disabled], .mat-fab.mat-accent[disabled], .mat-fab.mat-warn[disabled], .mat-fab[disabled][disabled], .mat-mini-fab.mat-primary[disabled], .mat-mini-fab.mat-accent[disabled], .mat-mini-fab.mat-warn[disabled], .mat-mini-fab[disabled][disabled] {
     background-color: rgba(0, 0, 0, 0.12) !important;
     color: rgba(0, 0, 0, 0.38) !important;
@@ -485,6 +492,10 @@ md-subheader {
 
 .margin-left-10 {
     margin-left: 10px;
+}
+
+.margin-left-10pc {
+    margin-left: 10%;
 }
 /* Custom Margins Ends */
 
@@ -1523,4 +1534,69 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
 }
 .recommendation-card:hover .share-panel {
     display: inline-flex;
+}
+
+/* Chat Bubble */
+/* CSS talk bubble */
+.talk-bubble {
+	/* margin: 40px; */
+    display: inline-block;
+    position: relative;
+	max-width: 80%;
+	height: auto;
+    background-color: #d3d3d3;
+}
+/* .border {
+    border: 8px solid #666;
+} */
+.round {
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+/* Right triangle placed top left flush. */
+
+.tri-right.left-top:after{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+    left: -9px;
+	right: auto;
+    top: 0px;
+	bottom: auto;
+	border: 22px solid;
+	border-color: #d3d3d3 transparent transparent transparent;
+}
+
+/* talk bubble contents */
+.talktext{
+    padding: 1em;
+    text-align: left;
+    line-height: 1.5em;
+}
+.talktext h6{
+    /* remove webkit p margins */
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+}
+
+/* Chat Bubble Ends */
+
+.chatbox {
+    height: 200px; /* reasonable estimate */
+    overflow-y: auto; /* show scrollbar only when text overflows vertically */
+    position: relative;
+    border: 1px solid #d3d3d3;
+}
+
+.chatbox > p {
+    position: absolute;
+    bottom: 0;
+}
+
+.chatbox .mat-form-field-wrapper .mat-form-field-underline {
+    display: none !important;
+    background: none !important;
 }

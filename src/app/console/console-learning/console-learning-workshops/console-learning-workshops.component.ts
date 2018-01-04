@@ -169,4 +169,8 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
     this.router.navigate(['console', 'account', 'transactions']);
   }
 
+  public openProfile(peer: any) {
+      this.router.navigate(['profile', peer.id]);
+  }
+
 }
