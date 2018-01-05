@@ -36,10 +36,12 @@ import { ReportProfileComponent } from './report-profile/report-profile.componen
 import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohort-dialog.component';
 import { RateParticipantComponent } from './rate-participant-dialog/rate-participant-dialog.component';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
-import {DeleteCommunityDialogComponent} from './delete-community-dialog/delete-community-dialog.component';
-import {ExitCommunityDialogComponent} from './exit-community-dialog/exit-community-dialog.component';
+import { DeleteCommunityDialogComponent } from './delete-community-dialog/delete-community-dialog.component';
+import { ExitCommunityDialogComponent } from './exit-community-dialog/exit-community-dialog.component';
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 import { CameraCaptureDialogComponent } from './camera-capture-dialog/camera-capture-dialog.component';
+import { ViewRoomParticipantsDialogComponent } from './view-room-participants-dialog/view-room-participants-dialog.component';
+
 
 @Injectable()
 export class DialogsService {
@@ -401,6 +403,14 @@ export class DialogsService {
             disableClose: true,
             // hasBackdrop: true,
         }).afterClosed();
+    }
+
+    public showRoomParticipants(roomDetails) {
+        return this.dialog.open(ViewRoomParticipantsDialogComponent, {
+            data: roomDetails,
+            width: '45vw',
+            height: '70vh',
+        })
     }
 
 }

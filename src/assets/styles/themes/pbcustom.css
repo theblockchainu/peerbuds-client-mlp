@@ -1600,3 +1600,7 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
     display: none !important;
     background: none !important;
 }
+
+.left-align {
+    text-align: left;
+}

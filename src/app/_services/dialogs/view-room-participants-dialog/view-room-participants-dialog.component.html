@@ -1,0 +1,41 @@
+<div md-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-md-12 collectionContent">
+      <button disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+        <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
+      </button>
+      <div class="mat-title" style="margin-bottom: 20px;">
+        Host
+      </div>
+      <div class="col-md-12 padding-left-0">
+        <div class="col-md-1 padding-left-0 vcenter">
+          <img src="{{config.apiUrl + data.host.profiles[0].picture_url}}" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+        </div>
+        <div class="col-md-8 vcenter">
+          <b>{{data.host.profiles[0].first_name + ' ' + data.host.profiles[0].last_name}}</b>&emsp;
+          <span *ngIf="data.host.profiles[0].headline">{{data.host.profiles[0].headline}}</span>
+        </div>
+        <div *ngIf="data.loggedInUser !== data.host.id" class="col-md-2 vcenter">
+          <button class="mat-border-button" md-button color="primary" (click)="messageParticipant(data.host)">Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div>
+    <div class="row margin-left-0 margin-bottom-10" *ngFor="let participant of data.participants">
+      <div *ngIf="participant.profiles && participant.id !== data.host.id">
+        <div class="col-md-1 padding-left-0 vcenter">
+          <img src="{{config.apiUrl+participant.profiles[0].picture_url}}" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+        </div>
+        <div class="col-md-8 vcenter">
+          <b>{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}</b> &emsp;
+          <span *ngIf="participant.profiles[0].headline">{{participant.profiles[0].headline}}</span>
+        </div>
+        <div class="col-md-2 vcenter">
+          <button class="mat-border-button" md-button color="primary" (click)="messageParticipant(participant)">Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

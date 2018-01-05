@@ -5,6 +5,7 @@ import { InboxService } from '../../_services/inbox/inbox.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
+import { SocketService } from '../../_services/socket/socket.service';
 
 import { AppConfig } from '../../app.config';
 
@@ -29,6 +30,12 @@ export class ConsoleInboxComponent implements OnInit {
   public selected = '';
   public message = '';
   public capturedData;
+  public colShowShared = 'col-md-7';
+  public boolShowSharedFiles = false;
+  //public filesSharedCount = 0;
+  public filesVideoContent = [];
+  public filesImageContent = [];
+  public filesMediaContent = [];
 
   public uploadingAttachment = false;
 
@@ -39,7 +46,8 @@ export class ConsoleInboxComponent implements OnInit {
     public _inboxService: InboxService,
     private _cookieUtilsService: CookieUtilsService,
     private _mediaUploader: MediaUploaderService,
-    private _dialogService: DialogsService
+    private _dialogService: DialogsService,
+    private _socketService: SocketService
   ) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
@@ -114,15 +122,38 @@ export class ConsoleInboxComponent implements OnInit {
           if(msgArr[0]) {
             msg.text = msgArr[0];
           }
-          if (msgArr[2]) {
-            msg.fileType = msgArr[2];
-          }
           if (msgArr[1]) {
             msg.filename = msgArr[1];
+            // this.filesSharedCount++;
+          }
+          if (msgArr[2]) {
+            msg.fileType = msgArr[2];
+            if (msg.fileType.includes('image')) {
+              this.filesImageContent.push({
+                type: msg.fileType,
+                filename: msg.filename,
+                text: msgArr[0]
+              });
+            }
+            else if (msg.fileType.includes('video')) {
+              this.filesVideoContent.push({
+                type: msg.fileType,
+                filename: msg.filename,
+                text: msgArr[0]
+              });
+            }
+            else {
+              this.filesMediaContent.push({
+                type: msg.fileType,
+                filename: msg.filename,
+                text: msgArr[0]
+              });
+            }
           }
         }
       });
     }
+    console.log(this.filesMediaContent);
     return room;
   }
 
@@ -134,6 +165,9 @@ export class ConsoleInboxComponent implements OnInit {
     this._inboxService.postMessage(roomId, body)
       .subscribe((response) => {
         console.log('Posted');
+        this._socketService.listenForNewChatMessage().subscribe(newMessages => {
+          console.log(newMessages);
+        });
       });
   }
 
@@ -142,20 +176,20 @@ export class ConsoleInboxComponent implements OnInit {
   }
 
   public getCollections() {
-    this.joinedRooms.forEach(element => {
-      this.experienceCollection = _.filter(element.collection, function(o) { return o.type === 'experience'; });
+    this.experienceCollection = _.filter(this.joinedRooms, function(o) {
+      return o.collection[0].type === 'experience';
     });
 
-    this.joinedRooms.forEach(element => {
-      this.workshopCollection = _.filter(element.collection, function(o) { return o.type === 'workshop'; });
+    this.workshopCollection = _.filter(this.joinedRooms, function(o) { 
+      return o.collection[0].type === 'workshop'; 
     });
   }
 
-  public getSelectedCollection() {
-    if (this.selected === 'workshop') {
+  public getSelectedCollection(event) {
+    if (event.value === 'workshop') {
       this.tempJoinedRooms = this.workshopCollection;
     }
-    else if (this.selected === 'experience') {
+    else if (event.value === 'experience') {
       this.tempJoinedRooms = this.experienceCollection;
     }
     else {
@@ -185,10 +219,33 @@ export class ConsoleInboxComponent implements OnInit {
     this._inboxService.postMessage(roomId, body)
       .subscribe((response) => {
         console.log('Posted Attachment');
+        this._socketService.listenForNewChatMessage().subscribe(newMessages => {
+          console.log(newMessages);
+        });
       });
   }
 
   public openCamera(roomId) {
     this._dialogService.showCameraToCapture(roomId);
+  }
+
+  public showSharedFiles(roomId) {
+    this.boolShowSharedFiles = !this.boolShowSharedFiles;
+    if (this.boolShowSharedFiles) {
+      this.colShowShared = 'col-md-9';
+    }
+    else {
+      this.colShowShared = 'col-md-7';
+    }
+  }
+
+  public showParticipantPopUp(room) {
+    this._dialogService.showRoomParticipants({ roomId: room.id, host: room.collection[0].owners[0], participants: room.participants, loggedInUser: this.userId});
+  }
+
+  public deleteRoom(roomId) {
+    return this._inboxService.deleteRoom(roomId, this.userId)
+               .subscribe(data => {
+               });
   }
 }

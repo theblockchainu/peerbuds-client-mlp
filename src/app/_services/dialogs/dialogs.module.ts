@@ -48,6 +48,7 @@ import { DeleteCommunityDialogComponent } from './delete-community-dialog/delete
 import { ExitCommunityDialogComponent } from './exit-community-dialog/exit-community-dialog.component';
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 import { CameraCaptureDialogComponent } from './camera-capture-dialog/camera-capture-dialog.component';
+import { ViewRoomParticipantsDialogComponent } from './view-room-participants-dialog/view-room-participants-dialog.component';
 
 @NgModule({
   imports: [
@@ -73,7 +74,7 @@ import { CameraCaptureDialogComponent } from './camera-capture-dialog/camera-cap
     , CollectionSubmitDialogComponent, SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent
     , InviteFriendsDialogComponent, DeleteCohortDialogComponent, CancelCohortDialogComponent, ReportProfileComponent
     , RateParticipantComponent, ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent
-    , DateConflictDialogComponent, CameraCaptureDialogComponent
+    , DateConflictDialogComponent, CameraCaptureDialogComponent, ViewRoomParticipantsDialogComponent
   ],
   providers: [
     DialogsService,
@@ -89,7 +90,8 @@ import { CameraCaptureDialogComponent } from './camera-capture-dialog/camera-cap
     , SelectDateDialogComponent, CollectionCloneDialogComponent, CollectionSubmitDialogComponent
     , SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent
     , CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent
-    , ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent, CameraCaptureDialogComponent
+    , ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent
+    , CameraCaptureDialogComponent, ViewRoomParticipantsDialogComponent
   ],
 })
 export class DialogsModule { }

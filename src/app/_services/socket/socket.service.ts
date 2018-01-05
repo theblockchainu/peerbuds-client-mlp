@@ -60,5 +60,14 @@ export class SocketService {
         });
     }
 
+    public listenForNewChatMessage() {
+        return new Observable(observer => {
+            this.socket.on('message', (data) => {
+                observer.next(data);
+            });
+            return;
+        })
+    }
+
 
 }

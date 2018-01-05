@@ -8,10 +8,11 @@
                 <h3 md-dialog-title>Camera</h3>
             </div>
         </div>
-        <div md-dialog-actions class="col-md-3 pull-right margin-top-20 ">
+        <div md-dialog-actions [ngClass]="{'customWidth2': toggleDisplay, 'customWidth': !toggleDisplay, 'pull-right': true, 'margin-top-20': true}">
             <!-- <button md-raised-button color="primary" tabindex="1" (click)="toggleVideo()">Take Video</button> -->
-            <button md-raised-button [ngClass]="{'displayNone': toggleDisplay}" color="primary" tabindex="2" id="takePhoto" (click)="takePhoto()">Take Photo</button>
-            <button md-raised-button [ngClass]="{'displayNone': !toggleDisplay}" color="primary" tabindex="3" id="sendPhoto" (click)="sendPhoto()">Send Photo</button>
+            <button md-raised-button [ngClass]="{'displayNone': toggleDisplay }" color="primary" tabindex="2" id="takePhoto" (click)="takePhoto()">Take Photo</button>
+            <button md-raised-button [ngClass]="{'displayNone': !toggleDisplay }" color="primary" tabindex="3" id="retakePhoto" (click)="retakePhoto()">Retake</button>
+            <button md-raised-button [ngClass]="{'displayNone': !toggleDisplay }" color="primary" tabindex="4" id="sendPhoto" (click)="sendPhoto()">Send Photo</button>
         </div>
     </div>
     <hr>

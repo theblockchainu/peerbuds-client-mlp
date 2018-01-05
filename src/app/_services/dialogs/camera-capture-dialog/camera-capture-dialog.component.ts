@@ -25,21 +25,7 @@ export class CameraCaptureDialogComponent implements OnInit {
     public _inboxService: InboxService) { }
 
   ngOnInit() {
-    this.video = this.hardwareVideo.nativeElement;
-    let video = this.video;
-    this.n.getUserMedia = ( this.n.getUserMedia || this.n.webkitGetUserMedia || this.n.mozGetUserMedia  || this.n.msGetUserMedia );
-
-    this.n.mediaDevices.getUserMedia({ video: true })
-    .then(stream => {
-      video.src = window.URL.createObjectURL(stream);
-      this.localStream = stream;
-      this.video = video;
-      this.video.play();
-    })
-    // permission denied:
-    .catch(function(error) {
-      document.body.textContent = 'Could not access the camera. Error: ' + error.name;
-    });;
+    this.startCamera();
   }
 
   public closeDialog() {
@@ -64,9 +50,17 @@ export class CameraCaptureDialogComponent implements OnInit {
     context = this.canvas.getContext('2d');
     context.drawImage(this.video, 0, 0, width, height);
 
-    this.img.src = this.canvas.toDataURL('image/png').replace("image/png", "image/octet-stream"); ;
+    this.img.src = this.canvas.toDataURL('image/png').replace("image/png", "image/octet-stream"); 
     document.getElementById('capturedPhoto').appendChild(this.img);
     document.getElementById('videoStream').style.display = 'none';
+    this.localStream.getVideoTracks()[0].stop();
+    this.toggleDisplay = !this.toggleDisplay;
+  }
+
+  public retakePhoto() {
+    this.startCamera();
+    document.getElementById('videoStream').style.display = 'block';
+    document.getElementById('capturedPhoto').innerHTML = '';
     this.toggleDisplay = !this.toggleDisplay;
   }
 
@@ -80,6 +74,24 @@ export class CameraCaptureDialogComponent implements OnInit {
           console.log('Posted Attachment');
           this.closeDialog();
         });
+  }
+
+  private startCamera() {
+    this.video = this.hardwareVideo.nativeElement;
+    let video = this.video;
+    this.n.getUserMedia = ( this.n.getUserMedia || this.n.webkitGetUserMedia || this.n.mozGetUserMedia  || this.n.msGetUserMedia );
+
+    this.n.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.src = window.URL.createObjectURL(stream);
+      this.localStream = stream;
+      this.video = video;
+      this.video.play();
+    })
+    // permission denied:
+    .catch(function(error) {
+      document.body.textContent = 'Could not access the camera. Error: ' + error.name;
+    });
   }
 
 }
