@@ -1,0 +1,216 @@
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="!loaded" class="loading-container">
+            <ngx-loading [show]="true"></ngx-loading>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" *ngIf="loaded">
+        <div #noContentView *ngIf="upcomingSessions.length === 0 && ongoingSessions.length === 0 && pastSessions.length === 0 && notApproved.length === 0"
+            class="center" style="margin-top: 10%">
+            <div class="lightText" *ngIf="!sessionEnabled">
+                You have not enabled sessions
+                <br>
+                <br> Start by enabling Session
+            </div>
+            <div class="lightText" *ngIf="sessionEnabled">
+                No one has joined your session
+            </div>
+        </div>
+        <div *ngIf="upcomingSessions.length > 0 || ongoingSessions.length > 0">
+            <div style="display:inline;">
+                <h2>Ongoing & Upcoming</h2>
+            </div>
+            <div class="row">
+                <div>
+                    <div style="margin-top:20px;" class="col-md-12">
+                        <div class="row">
+                            <div *ngFor="let session of ongoingSessions" class="col-md-4" style="margin-top: 20px;">
+                                <md-card style="text-align: center; padding: 20px;">
+                                    <md-card-content>
+                                        <div style="text-align: right">
+                                            <div class="pull-right">
+                                                <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                                                    <md-icon>more_vert</md-icon>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="collectionParticipantImageCarousel">
+                                            <div class="circle-thumb-big">
+                                                <img src="{{config.apiUrl+session.peers[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                                            </div>
+                                        </div>
+                                        <div class="teacherName">
+                                            <span>{{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                            </span>
+                                        </div>
+                                        <div class="teacherHeadline">
+                                            <span>{{session.peers[0].profiles[0].headline}} </span>
+                                        </div>
+                                        <div class="collectionTitle">Session</div>
+                                        <p class="upcomingEventLabel">
+                                            On going
+                                        </p>
+                                        <div class="upcomingEventTime">
+                                            Started {{session.startTime |timeToNow}}
+                                        </div>
+                                        <div class="upcomingEventTime">
+                                            {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                                        </div>
+                                    </md-card-content>
+                                    <br>
+                                    <md-card-footer class="cardFooter">
+                                        <button md-button (click)="joinLiveSession(session)">Join</button>
+                                    </md-card-footer>
+                                </md-card>
+                            </div>
+                            <div *ngFor="let session of upcomingSessions" class="col-md-4" style="margin-top: 20px;">
+                                <md-card style="text-align: center; padding: 20px;">
+                                    <md-card-content>
+                                        <div style="text-align: right">
+                                            <div class="pull-right">
+                                                <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                                                    <md-icon>more_vert</md-icon>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="collectionParticipantImageCarousel">
+                                            <div class="circle-thumb-big">
+                                                <img src="{{config.apiUrl+session.peers[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                                            </div>
+                                        </div>
+                                        <div class="teacherName">
+                                            <span>{{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                            </span>
+                                        </div>
+                                        <div class="teacherHeadline">
+                                            <span>{{session.peers[0].profiles[0].headline}} </span>
+                                        </div>
+                                        <div class="collectionTitle">Session</div>
+                                        <!-- <md-progress-bar mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></md-progress-bar> -->
+                                        <p class="upcomingEventLabel">
+                                            Upcoming
+                                        </p>
+                                        <div class="upcomingEventTime">
+                                            Starts {{session.startTime |timeToNow}}
+                                        </div>
+                                        <div class="upcomingEventTime">
+                                            {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                                        </div>
+                                    </md-card-content>
+                                </md-card>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+        <div *ngIf="notApproved.length > 0">
+            <div style="display:inline;">
+                <h2>Waiting to be approved</h2>
+            </div>
+            <div class="row">
+                <div style="margin-top:20px;" class="col-md-12">
+                    <div class="row">
+                        <div *ngFor="let session of notApproved" class="col-md-4" style="margin-top: 20px;">
+                            <md-card style="text-align: center; padding: 20px;">
+                                <md-card-content>
+                                    <div style="text-align: right">
+                                        <div class="pull-right">
+                                            <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                                                <md-icon>more_vert</md-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="collectionParticipantImageCarousel">
+                                        <div class="circle-thumb-big">
+                                            <img src="{{config.apiUrl+ session.peers[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                                        </div>
+                                    </div>
+                                    <div class="teacherName">
+                                        <span>{{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                        </span>
+                                    </div>
+                                    <div class="collectionTitle">Session</div>
+                                    <!-- <md-progress-bar mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></md-progress-bar> -->
+                                    <p class="upcomingEventLabel">
+                                        Unapproved
+                                    </p>
+                                    <div class="upcomingEventTime">
+                                        Starting {{session.startTime | timeToNow}}
+                                    </div>
+                                    <div class="upcomingEventTime">
+                                        {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                                    </div>
+                                </md-card-content>
+                                <md-card-footer class="cardFooter">
+                                    <button md-button (click)="approveSession(session)">Approve</button>
+                                </md-card-footer>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div *ngIf="pastSessions.length > 0">
+            <div style="display:inline;">
+                <h2>Past</h2>
+            </div>
+            <div class="row">
+                <div style="margin-top:20px;" class="col-md-12">
+                    <div class="row">
+                        <div *ngFor="let session of pastSessions" class="col-md-4" style="margin-top: 20px;">
+                            <md-card style="text-align: center; padding: 20px;">
+                                <md-card-content>
+                                    <div style="text-align: right">
+                                        <div class="pull-right">
+                                            <a [mdMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                                                <md-icon>more_vert</md-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="collectionParticipantImageCarousel">
+                                        <div class="circle-thumb-big">
+                                            <img src="{{config.apiUrl+session.peers[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                                        </div>
+                                    </div>
+                                    <div class="teacherName">
+                                        <span>{{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                        </span>
+                                    </div>
+                                    <div class="teacherHeadline">
+                                        <span>{{session.peers[0].profiles[0].headline}} </span>
+                                    </div>
+                                    <div class="collectionTitle">Session</div>
+                                    <!-- <md-progress-bar mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></md-progress-bar> -->
+                                    <p class="upcomingEventLabel">
+                                        Past
+                                    </p>
+                                    <div class="upcomingEventTime">
+                                        Ended {{session.endTime|timeToNow}}
+                                    </div>
+                                    <div class="upcomingEventTime">
+                                        {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<md-menu #collectionCardMenu>
+    <button md-menu-item>
+        Cancel
+    </button>
+    <button md-menu-item>
+        Message Teacher
+    </button>
+</md-menu>

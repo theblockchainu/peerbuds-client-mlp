@@ -72,7 +72,6 @@ import { SessionModule } from './session/session.module';
       secondaryColour: '#ff5b5f',
       tertiaryColour: '#ff6d71'
     }),
-    SessionModule
   ],
   bootstrap: [AppComponent],
   providers: [

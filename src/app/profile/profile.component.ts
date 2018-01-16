@@ -63,6 +63,7 @@ export class ProfileComponent implements OnInit {
   public pastExperiences: Array<any>;
   public ongoingExperiences: Array<any>;
   public upcomingExperiences: Array<any>;
+  public availablePackages: Array<any>;
   public maxLength = 100;
   public learningJourneyFilter: string;
 
@@ -205,10 +206,12 @@ export class ProfileComponent implements OnInit {
             {
               'ownedCollections': [
                 { 'contents': ['schedules'] }
-                , 'calendars']
+                , 'calendars', 'packages']
             },
             { 'reviewsAboutYou': { 'peer': 'profiles' } },
-            { 'collections': [{ 'reviews': { 'peer': 'profiles' } }, { 'owners': ['profiles'] }] }
+            {
+              'collections': [{ 'reviews': { 'peer': 'profiles' } }, { 'owners': ['profiles'] }],
+            }
           ]
         }
       ]
@@ -240,7 +243,7 @@ export class ProfileComponent implements OnInit {
 
   private computeReviews() {
     //Compute reviews for Peer from Learner and Teachers
-    let ownedCollectionsArray = this.profileObj.peer[0].ownedCollections;
+    const ownedCollectionsArray = this.profileObj.peer[0].ownedCollections;
     const reviewsAboutYou = this.profileObj.peer[0].reviewsAboutYou;
     if (reviewsAboutYou) {
       reviewsAboutYou.forEach(collection => {
@@ -277,6 +280,7 @@ export class ProfileComponent implements OnInit {
     this.pastExperiences = [];
     this.upcomingExperiences = [];
     this.ongoingExperiences = [];
+    this.availablePackages = [];
     this.profileObj.peer['0'].ownedCollections.forEach(collection => {
       if (collection.status === 'active') {
         collection.totalDuration = this.calculateTotalHours(collection);
@@ -299,6 +303,11 @@ export class ProfileComponent implements OnInit {
         }
         if (collection.type === 'experience' && collection.currentCohortCount > 0) {
           this.ongoingExperiences.push(collection);
+        }
+        if (collection.type === 'session') {
+          collection.packages.forEach(packageObj => {
+            this.availablePackages.push(packageObj);
+          });
         }
       }
     });
@@ -466,6 +475,13 @@ type:string,title:string,collecions   */
         this.router.navigateByUrl('/workshop/' + result);
       }
     });
+  }
+
+  /**
+   * bookSession
+   */
+  public bookSession() {
+    this.router.navigateByUrl('/session/book/' + this.urluserId);
   }
 
 }

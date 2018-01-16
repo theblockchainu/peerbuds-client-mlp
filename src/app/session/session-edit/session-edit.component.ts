@@ -307,7 +307,6 @@ export class SessionEditComponent implements OnInit {
           isFree: false
         }),
         paidPackages: this._fb.array([
-          this.initializePaidPackageForm()
         ])
       }
     );
@@ -506,7 +505,10 @@ export class SessionEditComponent implements OnInit {
 
     this.availableDurations = [
       { value: 30, text: '30 minutes' },
-      { value: 60, text: '1 hour' }
+      { value: 60, text: '1 hour' },
+      { value: 120, text: '2 hour' },
+      { value: 180, text: '3 hour' },
+      { value: 240, text: '4 hour' }
     ];
 
     this.placeholderStringTopic = 'Search for a topic or enter a new one';
@@ -730,6 +732,10 @@ export class SessionEditComponent implements OnInit {
       const sanitizedPackageObj = this._collectionService.sanitize(packageObj);
       if (sanitizedPackageObj.type === 'trial') {
         this.packageForm.controls['trialPackage'].patchValue(sanitizedPackageObj);
+        if (sanitizedPackageObj.price === 0) {
+          const trialPckg = <FormGroup>this.packageForm.controls['trialPackage'];
+          trialPckg.controls['isFree'].patchValue(true);
+        }
       } else {
         const paidPackages = <FormArray>this.packageForm.controls['paidPackages'];
         paidPackages.push(this.initializePaidPackageForm(sanitizedPackageObj));
@@ -1484,7 +1490,7 @@ export class SessionEditComponent implements OnInit {
       duration: packageObj !== undefined ? packageObj.duration : 30,
       sessionCount: packageObj !== undefined ? packageObj.sessionCount : 1,
       cancellationPolicy: packageObj !== undefined ? packageObj.cancellationPolicy : '3 Days',
-      isFree: false
+      isFree: packageObj.price === 0 ? true : false
     });
   }
 
