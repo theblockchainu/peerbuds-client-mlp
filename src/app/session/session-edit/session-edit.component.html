@@ -201,7 +201,7 @@
               <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
                 <div class="row margin-top-60" formArrayName="other_languages" *ngFor="let control of profileForm.controls['other_languages'].controls; let i=index">
                   <md-input-container>
-                    <input type="text" placeholder="Select Language" mdInput [formControlName]="i" [mdAutocomplete]="auto">
+                    <input type="text" style="border-bottom: 0px;" placeholder="Select Language" mdInput [formControlName]="i" [mdAutocomplete]="auto">
                   </md-input-container>
                 </div>
                 <a (click)="addLanguageField()"> Add language</a>
@@ -240,11 +240,11 @@
                   </div>
                   <div *ngFor="let workObj of workForm.controls['work'].controls; let i=index" [formGroupName]="i" class="margin-bottom-10">
                     <md-input-container style="margin-right:10px;">
-                      <input mdInput formControlName="position" type="text" placeholder="Position">
+                      <input mdInput formControlName="position" type="text" style="border-bottom: 0px;" placeholder="Position">
                       <!-- <md-error>This field is required</md-error> -->
                     </md-input-container>
                     <md-input-container>
-                      <input mdInput formControlName="company" type="text" placeholder="Company">
+                      <input mdInput formControlName="company" type="text" style="border-bottom: 0px;" placeholder="Company">
                       <!-- <md-error>This field is required</md-error> -->
                     </md-input-container>
                     <md-form-field style="margin-right:10px;" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
@@ -274,11 +274,11 @@
                 <div formArrayName="education">
                   <div *ngFor="let educationObj of workForm.controls['education'].controls; let i = index" [formGroupName]="i" class="margin-bottom-10">
                     <md-input-container style="margin-right:10px;">
-                      <input mdInput formControlName="degree" type="text" placeholder="Degree">
+                      <input mdInput formControlName="degree" type="text" style="border-bottom: 0px;" placeholder="Degree">
                       <!-- <md-error>This field is required</md-error> -->
                     </md-input-container>
                     <md-input-container style="margin-right:10px;">
-                      <input mdInput formControlName="school" type="text" placeholder="School / College">
+                      <input mdInput formControlName="school" type="text" style="border-bottom: 0px;" placeholder="School / College">
                       <!-- <md-error>This field is required</md-error> -->
                     </md-input-container>
                     <md-select placeholder="Start Year" style="margin-bottom: 20px;margin-right:10px;" formControlName="startYear" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
@@ -399,7 +399,7 @@
                 <div formArrayName="provisions">
                   <div *ngFor="let provisionObj of provisionForm.controls['provisions'].controls; let i=index" [formGroupName]="i" class="margin-bottom-10">
                     <md-input-container>
-                      <input mdInput formControlName="text" type="text">
+                      <input mdInput style="border-bottom: 0px;" formControlName="text" type="text">
                     </md-input-container>
                   </div>
                 </div>
@@ -426,8 +426,8 @@
                 <md-radio-button value="add">Add</md-radio-button>
                 <md-radio-button value="delete">delete</md-radio-button>
               </md-radio-group>
-              <p-schedule [events]="events" [defaultView]="'agendaWeek'" [editable]="true" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"
-                (onEventDrop)="updateEvent($event)" (onEventResize)="updateEvent($event)"></p-schedule>
+              <p-schedule [events]="events" [eventOverlap]="false" [defaultView]="'agendaWeek'" [editable]="true" (onDayClick)="handleDayClick($event)"
+                (onEventClick)="handleEventClick($event)" (onEventDrop)="updateEvent($event)" (onEventResize)="updateEvent($event)"></p-schedule>
             </div>
           </div>
           <div class="row">
@@ -486,6 +486,7 @@
                 <div formArrayName="paidPackages">
                   <div *ngFor="let formObj of packageForm.controls['paidPackages'].controls; let i = index" [formGroupName]="i">
                     <div class="row">
+                      <i class="mdi mdi-close-circle mdiIcon darkColor pull-right alignDelete" (click)="deletePackage(i)" style="cursor: pointer;"></i>
                       <div class="col-md-3">
                         <md-checkbox formControlName="isFree">Free</md-checkbox>
                       </div>
@@ -529,7 +530,7 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <a (click)="addPackages()"> Add more packages </a>
+                    <a (click)="addPackages()"> Add Paid packages </a>
                   </div>
                 </div>
                 <div style="margin-top:100px;">
@@ -584,7 +585,7 @@
               <div class="subtitle">Select custom URL for your page</div>
               <form [formGroup]="preferencesForm" (ngSubmit)="savePreferences()">
                 <md-form-field>
-                  <input type="text" mdInput #price formControlName="customUrl">
+                  <input type="text" style="border-bottom: 0px;" mdInput #price formControlName="customUrl">
                   <span mdPrefix>peerbuds.com/</span>
                 </md-form-field>
                 <button class="pull-right" md-raised-button color="accent" type="submit">Continue</button>
@@ -658,7 +659,7 @@
                     <div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
                       <p>Type the 4 digit verification code</p>
                       <md-input-container class="pb-block inputOTP" style="margin: 20px 0px;">
-                        <input type="text" mdInput #inputOTP formControlName="inputOTP" placeholder="OTP">
+                        <input type="text" style="border-bottom: 0px;" mdInput #inputOTP formControlName="inputOTP" placeholder="OTP">
                       </md-input-container>
                       <button md-raised-button color="accent" (click)="submitOTP()">Confirm OTP</button>
                     </div>

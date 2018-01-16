@@ -1473,8 +1473,8 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
 /*Teacher Stream*/
 
 .otherStreamTeacher .participant-box{
-    width: 22%;
-    height: 89%;
+    width: 18%;
+    height: 85%;
     top: 1%;
     position: relative;
 }
@@ -1493,7 +1493,8 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
     position: relative;
     top: 5%;
     flex-direction: row-reverse;
-    width: 96%; 
+    width: 95%;
+    left: 3%;
 }
 
 .otherStreamTeacher video{
