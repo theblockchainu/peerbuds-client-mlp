@@ -25,6 +25,7 @@ import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { DefaultModule } from './default/default.module';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { SessionModule } from './session/session.module';
 
 @NgModule({
   declarations: [

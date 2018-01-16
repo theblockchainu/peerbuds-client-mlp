@@ -7,10 +7,6 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      // {
-      //   path: ':collectionId',
-      //   loadChildren: './session-page/session-page.module#SessionPageModule'
-      // },
       {
         path: 'book/:peerId',
         component: BookSessionComponent,
