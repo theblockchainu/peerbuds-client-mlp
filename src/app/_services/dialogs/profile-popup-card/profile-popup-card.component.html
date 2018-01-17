@@ -25,7 +25,7 @@
       <div class="row" *ngIf="data.profiles[0].description && data.profiles[0].description.length>0">
         <div class="col-md-12">
           <h5 style="margin: 0">
-            {{data.profiles[0].description|shorten: 40 : '...'}}
+            {{data.profiles[0].description|shorten: 40 : '...' | titlecase}}
           </h5>
         </div>
       </div>

@@ -36,6 +36,7 @@
 .answerForm, .commentForm {
   border: 1px solid #dbdbdb;
   padding: 35px 30px;
+  background-color: #fff;
 }
 
 .hasUpvoted, .hasFollowed {
@@ -50,4 +51,24 @@
     padding-bottom: 0px;
     border-bottom: 0px;
   }
+}
+
+.smallSquare {
+  padding: 2px 8px;
+  margin-left: 4px;
+}
+
+.questionCommentContainer {
+  background-color: #f0f0f0;
+  border: 1px solid #dbdbdb;
+}
+
+.questionCommentForm {
+  padding: 35px 30px;
+}
+
+.questionCommentsBox {
+  padding: 30px 20px;
+  margin-left: 0px;
+  margin-right: 0px;
 }

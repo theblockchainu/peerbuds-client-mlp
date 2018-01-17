@@ -37,41 +37,42 @@ import {
     CheckboxModule, LightboxModule, RatingModule,
     AccordionModule, SliderModule
 } from 'primeng/primeng';
-import { NgPipesModule } from 'ngx-pipes';
-import { CalendarModule } from 'angular-calendar';
-import { CarouselModule } from 'angular4-carousel';
-import { NgxCarouselModule } from 'ngx-carousel';
-import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
-import { GenericMultiselectAutocompleteModule } from './generic-multiselect-autocomplete/generic-multiselect-autocomplete.module';
-import { SocialSyncModule } from './socialsync/socialsync.module';
-import { LeftSidebarModule } from './left-sidebar/left-sidebar.module';
-import { CollectionService } from '../_services/collection/collection.service';
-import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
-import { LanguagePickerService } from '../_services/languagepicker/languagepicker.service';
-import { AppointmentService } from '../_services/appointment/appointment.service';
-import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
-import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.service';
-import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
-import { ContentService } from '../_services/content/content.service';
-import { LeftSidebarService } from '../_services/left-sidebar/left-sidebar.service';
-import { CurrencypickerService } from '../_services/currencypicker/currencypicker.service';
-import { TopicService } from '../_services/topic/topic.service';
-import { CommentService } from '../_services/comment/comment.service';
-import { NotificationService } from '../_services/notification/notification.service';
-import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
-import { ExtractTimePipe } from './extract-time/extract-time.pipe';
-import { SocketService } from '../_services/socket/socket.service';
-import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
-import { StickyModule } from 'ng2-sticky-kit';
-import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
-import { TrimPipe } from './trim/trim.pipe';
-import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
-import { TextIconCarouselComponent } from './text-icon-carousel/text-icon-carousel.component';
-import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
-import { AgmCoreModule } from '@agm/core';
-import { QuestionService } from '../_services/question/question.service';
-import { CommunityService } from '../_services/community/community.service';
-import { InboxService } from '../_services/inbox/inbox.service';
+import {NgPipesModule} from 'ngx-pipes';
+import {CalendarModule} from 'angular-calendar';
+import {CarouselModule} from 'angular4-carousel';
+import {NgxCarouselModule} from 'ngx-carousel';
+import {MultiselectAutocompleteModule} from './multiselect-autocomplete/multiselect-autocomplete.module';
+import {GenericMultiselectAutocompleteModule} from './generic-multiselect-autocomplete/generic-multiselect-autocomplete.module';
+import {SocialSyncModule} from './socialsync/socialsync.module';
+import {LeftSidebarModule} from './left-sidebar/left-sidebar.module';
+import {CollectionService} from '../_services/collection/collection.service';
+import {CountryPickerService} from '../_services/countrypicker/countrypicker.service';
+import {LanguagePickerService} from '../_services/languagepicker/languagepicker.service';
+import {AppointmentService} from '../_services/appointment/appointment.service';
+import {RequestHeaderService} from '../_services/requestHeader/request-header.service';
+import {MediaUploaderService} from '../_services/mediaUploader/media-uploader.service';
+import {CookieUtilsService} from '../_services/cookieUtils/cookie-utils.service';
+import {ContentService} from '../_services/content/content.service';
+import {LeftSidebarService} from '../_services/left-sidebar/left-sidebar.service';
+import {CurrencypickerService} from '../_services/currencypicker/currencypicker.service';
+import {TopicService} from '../_services/topic/topic.service';
+import {CommentService} from '../_services/comment/comment.service';
+import {NotificationService} from '../_services/notification/notification.service';
+import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
+import {ExtractTimePipe} from './extract-time/extract-time.pipe';
+import {SocketService} from '../_services/socket/socket.service';
+import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
+import {StickyModule} from 'ng2-sticky-kit';
+import {ConvertCurrencyPipe} from './convert-currency/convert-currency.pipe';
+import {TrimPipe} from './trim/trim.pipe';
+import {ProfilePopupComponent} from './profile-popup/profile-popup.component';
+import {TextIconCarouselComponent} from './text-icon-carousel/text-icon-carousel.component';
+import {Ng4GeoautocompleteModule} from 'ng4-geoautocomplete';
+import {AgmCoreModule} from '@agm/core';
+import {QuestionService} from '../_services/question/question.service';
+import {CommunityService} from '../_services/community/community.service';
+import {InboxService} from '../_services/inbox/inbox.service';
+import {SearchService} from '../_services/search/search.service';
 import { TimeToNowPipe } from './timetonow/time-to-now.pipe';
 
 @NgModule({
@@ -125,6 +126,7 @@ import { TimeToNowPipe } from './timetonow/time-to-now.pipe';
         TitleCasePipe,
         QuestionService,
         CommunityService,
+        SearchService,
         TimeToNowPipe
     ],
     exports: [

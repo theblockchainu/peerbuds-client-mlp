@@ -24,11 +24,11 @@
             </md-select>
         </div>
     </div>
-    <div class="row margin-top-30">
+    <div class="row" style="margin-top: -20px;">
         <div class="col-md-12">
             <form [formGroup]="questionForm" (ngSubmit)="postQuestion()">
-                <md-input-container class="full-width margin-top-10" [floatPlaceholder]="false">
-                    <input mdInput type="text" formControlName="text" placeholder="Ask anything related to the topics of this community">
+                <md-input-container class="full-width margin-top-10" style="font-size: 15px;" [floatPlaceholder]="'never'">
+                    <input mdInput formControlName="text" placeholder="Start your question with 'What', 'How', or 'Why', etc">
                 </md-input-container>
                 <button md-raised-button color="primary" [disabled]="!questionForm.valid" class="pull-right">
                     <span *ngIf="!busyQuestion">Post question</span>
@@ -38,14 +38,14 @@
             </form>
         </div>
     </div>
-    <div class="row margin-top-20">
+    <div class="row margin-top-40">
         <div class="loading-container" [hidden]="!busyQuestion">
             <ngx-loading [show]="true"></ngx-loading>
         </div>
         <div class="col-md-12">
             <div class="row lighterText" *ngIf="questions !== undefined && questions.length === 0">
                 <div class="col-md-12">
-                    <div class="emptySectionText">Be the first one to ask a question on this community</div>
+                    <div class="emptySectionText" >Be the first one to ask a question on this community</div>
                 </div>
             </div>
             <div class="row margin-top-10" *ngFor="let question of questions">
@@ -81,15 +81,17 @@
                         <a *ngIf="!hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}" (click)="addQuestionUpvote(question)"><b>{{question.upvotes.length}} Upvote</b></a>
                         <a *ngIf="hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}"><b>{{question.upvotes.length}} Upvote</b></a>
                         <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;margin-left: 12px;">fiber_manual_record</md-icon>
-                        <a class="clickable commentButton"><b>Comment</b></a>
+                        <a class="clickable commentButton" (click)="createQuestionCommentForm(question)"><b>Comment <md-chip class="square smallSquare" *ngIf="question.comments">{{question.comments.length}}</md-chip></b></a>
                         <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;margin-left: 12px;">fiber_manual_record</md-icon>
-                        <a class="clickable followButton" [ngClass]="{'hasFollowed': !!isFollowing(question.followers)}" (click)="addFollower(question)"><b>Follow</b></a>
+                        <a class="clickable followButton" [ngClass]="{'hasFollowed': !!isFollowing(question.followers)}" (click)="addFollower(question)"><b>Follow <md-chip class="square smallSquare" *ngIf="question.followers">{{question.followers.length}}</md-chip></b></a>
                     </div>
+                    <!--FORM TO ADD NEW ANSWER-->
                     <div class="col-md-12 margin-top-30 answerForm" *ngIf="answerForm && answeringToQuestionId===question.id">
                         <form [formGroup]="answerForm" (ngSubmit)="postAnswer(question)">
                             <app-profile-popup [peer]="loggedInUser"></app-profile-popup>
-                            <md-input-container style="margin-left: 15px; width: 88%;">
-                                <input mdInput type="text" formControlName="text" placeholder="Answer the above question...">
+                            <md-input-container style="margin-left: 15px; width: 88%; margin-bottom: 20px;">
+                                <textarea mdInput #answerText maxlength="1000" rows="3" formControlName="text" placeholder="Answer the above question"></textarea>
+                                <md-hint align="end">{{answerText.value.length}} / 1000</md-hint>
                             </md-input-container>
                             <button [disabled]="!answerForm.valid" md-raised-button class="pull-right" color="primary">
                                 <span *ngIf="!busyAnswer">Post answer</span>
@@ -97,6 +99,128 @@
                             </button>
                         </form>
                     </div>
+                    <!--LIST OF COMMENTS FOR QUESTION-->
+                    <div class="questionCommentContainer col-md-12 margin-top-20" *ngIf="(commentForm && commentingToQuestionId === question.id) || (question.comments && question.comments.length > 0)">
+                        <!--FORM TO ADD NEW COMMENT TO ANSWER-->
+                        <div class="margin-top-30 questionCommentForm" *ngIf="commentForm && commentingToQuestionId===question.id">
+                            <form [formGroup]="commentForm" (ngSubmit)="postCommentToQuestion(question)">
+                                <app-profile-popup [peer]="loggedInUser"></app-profile-popup>
+                                <md-input-container style="margin-left: 15px; width: 88%;">
+                                    <input mdInput type="text" formControlName="description" placeholder="Write your comment on the above question">
+                                </md-input-container>
+                                <div style="text-align: right">
+                                    <button [disabled]="!commentForm.valid" md-raised-button color="primary">
+                                        <span *ngIf="!busyComment">Comment</span>
+                                        <ngx-loading [show]="busyComment"></ngx-loading>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row margin-top-20 questionCommentsBox" *ngFor="let comment of question.comments">
+                            <div class="col-md-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
+                                <md-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</md-icon>
+                                <md-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</md-icon>
+                                <div>
+                                    {{(comment.upvotes) ? comment.upvotes.length : '0'}}
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <button *ngIf="userType !== 'public'" md-icon-button [mdMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;">
+                                    <md-icon style="color: #cccccc">more_vert</md-icon>
+                                </button>
+                                <md-menu #menuComment="mdMenu">
+                                    <button *ngIf="userType==='participant'" md-menu-item>
+                                        <md-icon>flag</md-icon>
+                                        <span>Flag</span>
+                                    </button>
+                                    <button *ngIf="userType==='owner' || isMyComment(comment)" md-menu-item (click)="deleteComment(comment)">
+                                        <md-icon>delete</md-icon>
+                                        <span>Delete</span>
+                                    </button>
+                                </md-menu>
+                                <div class="mat-body-1 pre-wrapped">{{comment.description | titlecase}}</div>
+                                <div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
+                                    <div class="clickable" style="float: left;">
+                                        <app-profile-popup [peer]="comment.peer[0]"></app-profile-popup>
+                                    </div>
+                                    <div style="display: inline-block; margin-left: 5px;">
+                                        <div>
+                                            <div>
+                                                <span class="mat-body-2 clickable" (click)="_profileService.viewProfile(comment.peer[0])">{{comment.peer[0].profiles[0].first_name | ucwords}} {{comment.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <span class="mat-caption">{{comment.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
+                                    <a href="javascript:void(0);" (click)="createReplyForm(comment)">
+                                        <md-icon style="top: 5px;">reply</md-icon> Reply</a>
+                                </div>
+                                <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -15px;">
+                                    <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
+                                        <app-profile-popup [peer]="loggedInUser"></app-profile-popup>
+                                        <md-input-container style="margin-left: 15px; width: 85%;">
+                                            <input mdInput type="text" formControlName="description" placeholder="Reply to above comment...">
+                                        </md-input-container>
+                                        <button [disabled]="!replyForm.valid" md-raised-button class="pull-right" color="primary">
+                                            <span *ngIf="!busyReply">Post</span>
+                                            <ngx-loading [show]="busyReply"></ngx-loading>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-md-11 col-md-offset-1 margin-top-10">
+                                    <div class="row margin-top-20" *ngFor="let reply of comment.replies">
+                                        <button *ngIf="userType !== 'public'" md-icon-button [mdMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;">
+                                            <md-icon style="color: #cccccc;">more_vert</md-icon>
+                                        </button>
+                                        <md-menu #menuReply="mdMenu">
+                                            <button *ngIf="userType==='participant'" md-menu-item>
+                                                <md-icon>flag</md-icon>
+                                                <span>Flag</span>
+                                            </button>
+                                            <button *ngIf="userType==='owner' || isMyComment(reply)" md-menu-item (click)="deleteReply(reply)">
+                                                <md-icon>delete</md-icon>
+                                                <span>Delete</span>
+                                            </button>
+                                        </md-menu>
+                                        <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px; float: left;"
+                                             [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+                                            <md-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</md-icon>
+                                            <md-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</md-icon>
+                                            <div>
+                                                <span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
+                                                <span *ngIf="reply.upvotes === undefined">0</span>
+                                            </div>
+                                        </div>
+                                        <div style="width: 90%;">
+                                            <div class="mat-body-1">{{reply.description | titlecase}}</div>
+                                            <div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
+                                                <div class="clickable" style="float: left;">
+                                                    <app-profile-popup [peer]="reply.peer[0]"></app-profile-popup>
+                                                </div>
+                                                <div style="display: inline-block; margin-left: 5px;">
+                                                    <div>
+                                                        <div>
+                                                            <span class="clickable mat-body-2" (click)="_profileService.viewProfile(reply.peer[0])">{{reply.peer[0].profiles[0].first_name | ucwords}} {{reply.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="">
+                                                        <span class="mat-caption">{{reply.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loading-container margin-top-20" [hidden]="!busyAnswer">
+                        <ngx-loading [show]="true"></ngx-loading>
+                    </div>
+                    <!--LIST OF ANSWERS FOR QUESTION-->
                     <div class="col-md-12 answersBox margin-top-20">
                         <div class="row answerRow" *ngFor="let answer of question.answers">
                             <button *ngIf="userType !== 'public'" md-icon-button [mdMenuTriggerFor]="menuAnswer" style="float: right; margin-right: 15px; margin-top: 15px;">
@@ -128,10 +252,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mat-body-1">{{answer.text | titlecase}}</div>
+                                <div class="mat-body-1 pre-wrapped">{{answer.text | titlecase}}</div>
                                 <div style="margin-top: 20px;">
                                     <a class="clickable commentButton" (click)="createAnswerCommentForm(answer)">
-                                        <b>Comment</b>
+                                        <b>Comment <md-chip class="square smallSquare" *ngIf="answer.comments">{{answer.comments.length}}</md-chip></b>
                                     </a>
                                     <md-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</md-icon>
                                     <a *ngIf="!hasUpvoted(answer.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(answer.upvotes)}" (click)="addAnswerUpvote(answer)"><b>{{(answer.upvotes) ? answer.upvotes.length : '0'}} Upvote</b></a>
@@ -177,7 +301,7 @@
                                                 <span>Delete</span>
                                             </button>
                                         </md-menu>
-                                        <div class="mat-body-1 pre-wrapped">{{comment.description}}</div>
+                                        <div class="mat-body-1 pre-wrapped">{{comment.description | titlecase}}</div>
                                         <div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
                                             <div class="clickable" style="float: left;">
                                                 <app-profile-popup [peer]="comment.peer[0]"></app-profile-popup>
@@ -255,6 +379,11 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="question.answers === undefined || question.answers.length === 0">
+                            <div class="col-md-12 emptySectionText" style="margin-bottom: -10px;">
+                                Be the first one to answer this question!
                             </div>
                         </div>
                     </div>

@@ -24,7 +24,7 @@ export class ShareDialogComponent implements OnInit {
     } else {
       this.generatedUrl = config.clientUrl + '/' + data.type + '/' + data.id;
     }
-    this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for the' + this.data.type + ' ' + this.data.title + '&url=' + this.generatedUrl;
+    this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for the ' + this.data.type + ' ' + this.data.title + '&url=' + this.generatedUrl;
     this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=' + this.data.title + '&summary=Join me for the ' + this.data.type + ' ' + this.data.title + ' on ' + this.generatedUrl;
   }
 
