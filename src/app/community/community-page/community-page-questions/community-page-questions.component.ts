@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CommunityPageComponent} from '../community-page.component';
 import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';

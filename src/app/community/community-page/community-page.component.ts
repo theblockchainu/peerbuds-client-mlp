@@ -1,4 +1,7 @@
-import {Component, OnInit, ChangeDetectionStrategy, ViewContainerRef} from '@angular/core';
+import {
+    Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, AfterViewChecked,
+    ChangeDetectorRef
+} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router, ActivatedRoute, Params, NavigationStart} from '@angular/router';
 import {MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED} from '@angular/material';
@@ -61,7 +64,7 @@ declare var FB: any;
     ]
 })
 
-export class CommunityPageComponent implements OnInit {
+export class CommunityPageComponent implements OnInit, AfterViewChecked {
 
     public communityId: string;
     public userId;
@@ -129,6 +132,7 @@ export class CommunityPageComponent implements OnInit {
                 private _fb: FormBuilder,
                 private dialog: MdDialog,
                 private http: Http,
+                private _cdRef: ChangeDetectorRef,
                 private dialogsService: DialogsService,
                 private snackBar: MdSnackBar) {
         this.activatedRoute.params.subscribe(params => {
@@ -155,9 +159,13 @@ export class CommunityPageComponent implements OnInit {
                 }
             });
         });
+    }
+
+    ngAfterViewChecked(): void {
         this._communityService.getActiveTab().subscribe(data => {
             this.activeTab = data;
         });
+        this._cdRef.detectChanges();
     }
 
 

@@ -113,6 +113,40 @@ export class CommunityService {
             }).subscribe();
     }
 
+    /**
+     * Get links within a community
+     * @param {string} communityId
+     * @param query
+     * @param cb
+     */
+    public getLinks(communityId: string, query: any, cb) {
+        const filter = JSON.stringify(query);
+        this.http
+            .get(this.config.apiUrl + '/api/communities/' + communityId + '/links' + '?filter=' + filter, this.options)
+            .map((response) => {
+                cb(null, response.json());
+            }, (err) => {
+                cb(err);
+            }).subscribe();
+    }
+
+    /**
+     * Get questions within a community
+     * @param {string} communityId
+     * @param query
+     * @param cb
+     */
+    public getCollections(communityId: string, query: any, cb) {
+        const filter = JSON.stringify(query);
+        this.http
+            .get(this.config.apiUrl + '/api/communities/' + communityId + '/collections' + '?filter=' + filter, this.options)
+            .map((response) => {
+                cb(null, response.json());
+            }, (err) => {
+                cb(err);
+            }).subscribe();
+    }
+
 
     /**
      * Add a new quesiton to this community
@@ -228,6 +262,22 @@ export class CommunityService {
 
     public setActiveTab(value) {
         this.activeTab.next(value);
+    }
+
+    /**
+     * Add a new link to this community
+     * @param communityId
+     * @param linkBody
+     * @param cb
+     */
+    public addLinkToCommunity(communityId, linkBody, cb) {
+        this.http
+            .post(this.config.apiUrl + '/api/communities/' + communityId + '/links', linkBody, this.options)
+            .map((response) => {
+                cb(null, response.json());
+            }, (err) => {
+                cb(err);
+            }).subscribe();
     }
 
 }
