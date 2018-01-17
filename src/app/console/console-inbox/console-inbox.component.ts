@@ -75,6 +75,7 @@ export class ConsoleInboxComponent implements OnInit {
           room = this.formatDateTime(room);
           this.displayNone.push[room.id] = false;
           this.defaultLoadedChat = room;
+          this._socketService.joinRoom(room.id);
         }
         this.tempJoinedRooms = this.joinedRooms;
         this.getCollections();
@@ -105,6 +106,7 @@ export class ConsoleInboxComponent implements OnInit {
     room = this.formatDateTime(room);
     this.defaultLoadedChat = room;
     this.displayNone.push[room.id] = false;
+    this._socketService.joinRoom(room.id);
   }
 
   private formatDateTime(room) {

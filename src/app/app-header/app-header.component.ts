@@ -12,6 +12,7 @@ import { MdDialog } from '@angular/material';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { AppNotificationDialogComponent } from './dialogs/app-notification-dialog/app-notification-dialog.component';
 import { NotificationService } from '../_services/notification/notification.service';
+import {SearchService} from '../_services/search/search.service';
 
 @Component({
   selector: 'app-header',
@@ -45,6 +46,7 @@ export class AppHeaderComponent implements OnInit {
     private dialog: MdDialog,
     private activatedRoute: ActivatedRoute,
     private _notificationService: NotificationService,
+    public _searchService: SearchService,
     private dialogsService: DialogsService) {
     this.isLoggedIn = authService.isLoggedIn();
     authService.isLoggedIn().subscribe((res) => {
@@ -69,7 +71,7 @@ export class AppHeaderComponent implements OnInit {
     this.getProfile();
     this.getNotifications();
     this.myControl.valueChanges.subscribe((value) => {
-      this.getAllSearchResults(value, (err, result) => {
+      this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
         if (!err) {
           this.options = result;
         } else {
@@ -101,92 +103,6 @@ export class AppHeaderComponent implements OnInit {
     }
     else {
       return null;
-    }
-  }
-
-  public getAllSearchResults(query: any, cb) {
-    if (this.userId) {
-      this.http
-        .get(this.config.searchUrl + '/searchAll?' + 'query=' + query)
-        .map((response) => {
-          console.log(response.json());
-          cb(null, response.json());
-        }, (err) => {
-          cb(err);
-        }).subscribe();
-    }
-  }
-
-  public getSearchOptionText(option) {
-    switch (option.index.split('_')[1]) {
-      case 'collection':
-        switch (option.data.type) {
-          case 'workshop':
-            return option.data.title;
-          case 'experience':
-            return option.data.title;
-          default:
-            return option.data.title;
-        }
-      case 'topic':
-        return option.data.name;
-      case 'peer':
-        if (option.data.profiles[0] === undefined) {
-          return option.data.id;
-        }
-        else if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
-          return option.data.id;
-        } else {
-          return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
-        }
-      default:
-        return;
-    }
-  }
-
-  public getSearchOptionType(option) {
-    switch (option.index.split('_')[1]) {
-      case 'collection':
-        switch (option.data.type) {
-          case 'workshop':
-            return 'Workshop : ';
-          case 'experience':
-            return 'Experience : ';
-          default:
-            return 'Collection : ';
-        }
-      case 'topic':
-        return 'Topic : ';
-      case 'peer':
-        return 'Peer : ';
-      default:
-        return;
-    }
-  }
-
-  public onSearchOptionClicked(option) {
-    switch (option.index.split('_')[1]) {
-      case 'collection':
-        switch (option.data.type) {
-          case 'workshop':
-            this.router.navigate(['/workshop', option.data.id]);
-            break;
-          case 'experience':
-            this.router.navigate(['/experience', option.data.id]);
-            break;
-          default:
-            this.router.navigate(['/console/dashboard']);
-            break;
-        }
-        break;
-      case 'topic':
-        this.router.navigate(['/console/profile/topics']);
-        break;
-      case 'peer':
-        this.router.navigate(['/profile', option.data.id]);
-        break;
-      default:
-        break;
     }
   }
 

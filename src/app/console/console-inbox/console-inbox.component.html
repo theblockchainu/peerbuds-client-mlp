@@ -9,7 +9,11 @@
             <i class="material-icons" style="line-height:35px;vertical-align:middle">search</i>
             <input type="search" placeholder="" name="searchbox">
           </span>
+<<<<<<< HEAD
           <md-select class="col-md-8" style="margin-left:30px" [(value)]="selected" (change)="getSelectedCollection($event)"> 
+=======
+          <md-select class="col-md-8" style="margin-left:30px" [(value)]="selected" (ngModelChange)="getSelectedCollection()"> 
+>>>>>>> origin/develop-material
             <md-option value="all">All Messages ({{tempJoinedRooms.length}})</md-option>
             <md-option value="experience">Experience ({{experienceCollection.length}})</md-option>
             <md-option value="workshop">Workshop ({{workshopCollection.length}})</md-option>

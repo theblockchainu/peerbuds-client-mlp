@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CommunityPageComponent} from '../community-page.component';
 import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
@@ -37,6 +37,7 @@ export class CommunityPageQuestionsComponent implements OnInit {
     public busyComment = false;
     public busyReply = false;
     public userType = 'public';
+    public questionHasQuestionMark = false;
 
     constructor(activatedRoute: ActivatedRoute,
                 public communityPageComponent: CommunityPageComponent,
@@ -48,15 +49,21 @@ export class CommunityPageQuestionsComponent implements OnInit {
                 public snackBar: MdSnackBar,
                 public _profileService: ProfileService) {
 
-        activatedRoute.params.subscribe(params => {
-            this.communityId = params['communityId'];
+        activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+            console.log('activated route is: ' + JSON.stringify(urlSegment));
+            if (urlSegment[0] === undefined) {
+                this.communityId = '';
+            } else {
+                this.communityId = urlSegment[0].path;
+            }
         });
+
         activatedRoute.pathFromRoot[5].url.subscribe((urlSegment) => {
             console.log('activated route is: ' + JSON.stringify(urlSegment));
             if (urlSegment[0] === undefined) {
-                communityPageComponent.setActiveTab('questions');
+                _communityService.setActiveTab('questions');
             } else {
-                communityPageComponent.setActiveTab(urlSegment[0].path);
+                _communityService.setActiveTab(urlSegment[0].path);
             }
         });
         this.userId = _cookieUtilsService.getValue('userId');
@@ -66,6 +73,20 @@ export class CommunityPageQuestionsComponent implements OnInit {
         this.getLoggedInUser();
         this.getQuestions();
         this.initializeForms();
+        this.questionForm.controls.text.valueChanges.subscribe(value => {
+            if (value) {
+                if (value.substring(value.length - 1) !== '?' && value.substring(value.length - 2, value.length - 1) !== '?' && !this.questionHasQuestionMark) {
+                    this.questionHasQuestionMark = true;
+                    this.questionForm.controls.text.setValue(value + '?');
+                }
+                else if (value.substring(value.length - 1) !== '?' && value.substring(value.length - 2, value.length - 1) !== '?' && this.questionHasQuestionMark) {
+                    this.questionForm.controls.text.setValue(value.substring(0, value.length - 1) + '?');
+                }
+                else if (value.substring(value.length - 1) !== '?' && value.substring(value.length - 2, value.length - 1) === '?') {
+                    this.questionForm.controls.text.setValue(value.substring(0, value.length - 2) + value.substring(value.length - 1) + '?');
+                }
+            }
+        });
     }
 
     public getQuestions() {
@@ -80,7 +101,8 @@ export class CommunityPageQuestionsComponent implements OnInit {
                 {'views': 'peer'},
                 {'flags': 'peer'},
                 {'followers': 'profiles'}
-            ]
+            ],
+            'order' : 'createdAt desc'
         };
 
         if (this.communityId) {
@@ -180,6 +202,14 @@ export class CommunityPageQuestionsComponent implements OnInit {
         });
     }
 
+    public createQuestionCommentForm(question: any) {
+        this.commentingToQuestionId = question.id;
+        this.commentForm = this._fb.group({
+            description: '',
+            isAnnouncement: false
+        });
+    }
+
     /**
      * post answer
      */
@@ -203,6 +233,23 @@ export class CommunityPageQuestionsComponent implements OnInit {
     public postCommentToAnswer(answer: any) {
         this.busyComment = true;
         this._questionsService.postCommentToAnswer(answer.id, this.commentForm.value).subscribe(
+            response => {
+                this.busyComment = false;
+                this.getQuestions();
+                delete this.commentForm;
+            }, err => {
+                this.busyComment = false;
+                console.log(err);
+            }
+        );
+    }
+
+    /**
+     * post comment to question
+     */
+    public postCommentToQuestion(question: any) {
+        this.busyComment = true;
+        this._questionsService.postCommentToQuestion(question.id, this.commentForm.value).subscribe(
             response => {
                 this.busyComment = false;
                 this.getQuestions();

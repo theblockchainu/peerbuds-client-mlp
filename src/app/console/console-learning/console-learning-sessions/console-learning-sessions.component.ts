@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ConsoleLearningComponent} from '../console-learning.component';
-import {CollectionService} from '../../../_services/collection/collection.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConsoleLearningComponent } from '../console-learning.component';
+import { CollectionService } from '../../../_services/collection/collection.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { ProfileService } from '../../../_services/profile/profile.service';
+import { AppConfig } from '../../../app.config';
+import * as moment from 'moment';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
 
 @Component({
   selector: 'app-console-learning-sessions',
@@ -11,19 +15,23 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 })
 export class ConsoleLearningSessionsComponent implements OnInit {
 
-  public collections: any;
   public loaded: boolean;
-  public now: Date;
-  private outputResult: any;
   public activeTab: string;
   private userId;
-
+  public pastSessions = [];
+  public ongoingSessions = [];
+  public upcomingSessions = [];
+  public notApproved = [];
+  public participant: any;
   constructor(
     public activatedRoute: ActivatedRoute,
     public consoleLearningComponent: ConsoleLearningComponent,
     public _collectionService: CollectionService,
     public router: Router,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    private _profileService: ProfileService,
+    public config: AppConfig,
+    private dialogsService: DialogsService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
@@ -34,40 +42,63 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 
   ngOnInit() {
     this.loaded = false;
-    this._collectionService.getParticipatingCollections(this.userId, '{ "relInclude": "calendarId", "where": {"type":"session"}, "include": ["calendars", {"owners":"profiles"}, {"participants": "profiles"}, "topics", {"contents":"schedules"}, {"reviews":"peer"}] }', (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        let activeCount = 0, pastCount = 0;
-        this.outputResult = {};
-        this.outputResult['data'] = [];
-        this.outputResult.activeCount = 0;
-        this.outputResult.pastCount = 0;
-        result.forEach((resultItem) => {
-          switch (resultItem.status) {
-            case 'active':
-              activeCount++;
-              break;
-            case 'complete':
-              pastCount++;
-              break;
-            default:
-              break;
-          }
-          this.outputResult.data.push(resultItem);
-        });
-        this.outputResult.activeCount = activeCount;
-        this.outputResult.pastCount = pastCount;
-        this.collections = this.outputResult;
-        console.log(this.collections);
-        this.now = new Date();
-        this.loaded = true;
-      }
+    const filter = {
+      'include': [
+        {
+          'contents': [
+            'availabilities',
+            { 'collections': [{ 'owners': 'profiles' }] }
+          ]
+        },
+        'profiles'
+      ]
+    };
+
+    this._profileService.getPeerData(this.userId, filter).subscribe(res => {
+      this.participant = res;
+      this.filterSessions(res.contents);
     });
   }
 
-  public onSelect(workshop) {
-    this.router.navigate(['workshop', workshop.id, 'edit', 1]);
+  private filterSessions(contents: Array<any>) {
+    contents.forEach(element => {
+      const availabilities = element.availabilities.sort((calEventa, calEventb) => (moment(calEventa.startDateTime).isAfter(moment(calEventb.startDateTime)) ? 1 : -1));
+      console.log(availabilities);
+      const startTime = moment(availabilities[0].startDateTime).local();
+      const endTime = moment(availabilities[availabilities.length - 1].startDateTime).local().add(30, 'minutes');
+      const now = moment();
+      element.startTime = startTime.toDate();
+      element.endTime = endTime.toDate();
+      if (element.sessionIsApproved) {
+        if (now.isBetween(startTime, endTime)) {
+          this.ongoingSessions.push(element);
+        } else if (now.isBefore(startTime)) {
+          this.upcomingSessions.push(element);
+        } else {
+          this.pastSessions.push(element);
+        }
+      } else {
+        this.notApproved.push(element);
+      }
+    });
+    this.loaded = true;
   }
 
+  public getEndTime(time: string): string {
+    return moment(time).add(30, 'minutes').toISOString();
+  }
+
+  /**
+ * joinLiveSession
+ */
+  public joinLiveSession(session: any) {
+    const data = {
+      roomName: session.id,
+      teacher: session.collections[0].owners[0],
+      content: session,
+      participants: [this.participant]
+    };
+    this.dialogsService.startLiveSession(data).subscribe(result => {
+    });
+  }
 }

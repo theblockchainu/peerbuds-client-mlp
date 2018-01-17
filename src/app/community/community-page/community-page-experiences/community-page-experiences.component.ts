@@ -1,6 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {CommunityPageComponent} from '../community-page.component';
 import {ActivatedRoute} from '@angular/router';
+import _ from 'lodash';
+import * as moment from 'moment';
+import {CollectionService} from '../../../_services/collection/collection.service';
+import {CommunityService} from '../../../_services/community/community.service';
+import {DialogsService} from '../../../_services/dialogs/dialog.service';
+import {AppConfig} from '../../../app.config';
+import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
     selector: 'app-community-page-experiences',
@@ -9,19 +16,111 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class CommunityPageExperiencesComponent implements OnInit {
 
-    constructor(activatedRoute: ActivatedRoute,
-                communityPageComponent: CommunityPageComponent) {
-        activatedRoute.pathFromRoot[5].url.subscribe((urlSegment) => {
+    public ownedExperiences;
+    public userId;
+    public communityId;
+    public experiences;
+    private today = moment();
+    public loadingExperiences = true;
+
+    constructor(public activatedRoute: ActivatedRoute,
+                public communityPageComponent: CommunityPageComponent,
+                public _collectionService: CollectionService,
+                public _communityService: CommunityService,
+                public _dialogsService: DialogsService,
+                public config: AppConfig,
+                public _cookieUtilsService: CookieUtilsService) {
+        activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
             console.log('activated route is: ' + JSON.stringify(urlSegment));
             if (urlSegment[0] === undefined) {
-                communityPageComponent.setActiveTab('questions');
+                this.communityId = '';
             } else {
-                communityPageComponent.setActiveTab(urlSegment[0].path);
+                this.communityId = urlSegment[0].path;
+            }
+        });
+        this.activatedRoute.pathFromRoot[5].url.subscribe((urlSegment) => {
+            console.log('activated route is: ' + JSON.stringify(urlSegment));
+            if (urlSegment[0] === undefined) {
+                this._communityService.setActiveTab('experiences');
+            } else {
+                this._communityService.setActiveTab(urlSegment[0].path);
+            }
+        });
+        this.userId = _cookieUtilsService.getValue('userId');
+    }
+
+    ngOnInit() {
+        this.getExperiences();
+        this.getCollections();
+    }
+
+    public getExperiences() {
+        this._collectionService.getOwnedCollections(this.userId, JSON.stringify({'where': {'and': [{'status': 'active'}, {'type': 'experience'}]}}), (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                this.ownedExperiences = res;
             }
         });
     }
 
-    ngOnInit() {
+    public getCollections() {
+        this.loadingExperiences = true;
+        const query = { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }], 'where': { 'type': 'experience' } };
+        this._communityService.getCollections(this.communityId, query, (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                const experiences = [];
+                res.forEach(collection => {
+                    if (collection.status === 'active') {
+                        if (collection.owners && collection.owners[0].reviewsAboutYou) {
+                            collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+                            collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+                        }
+                        let hasActiveCalendar = false;
+                        collection.calendars.forEach(calendar => {
+                            if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                                hasActiveCalendar = true;
+                                return;
+                            }
+                        });
+                        if (collection.price !== undefined) {
+                            experiences.push(collection);
+                        } else {
+                            console.log('price unavailable');
+                        }
+                    }
+                });
+                this.experiences = _.uniqBy(experiences, 'id');
+                this.loadingExperiences = false;
+            }
+        });
+    }
+
+    public toggleBookmark(index: number) {
+        if (!(this.experiences[index].bookmarks && this.experiences[index].bookmarks[0] && this.experiences[index].bookmarks[0].peer && this.experiences[index].bookmarks[0].peer[0] && this.experiences[index].bookmarks[0].peer[0].id === this.userId)) {
+            this._collectionService.saveBookmark(this.experiences[index].id, (err, response) => {
+                this.getCollections();
+            });
+        } else {
+            this._collectionService.removeBookmark(this.experiences[index].bookmarks[0].id, (err, response) => {
+                this.getCollections();
+            });
+        }
+    }
+
+    public addExperience(experienceId) {
+        console.log(experienceId);
+        if (experienceId !== null && experienceId.length > 0) {
+            this._collectionService.linkCommunityToCollection(this.communityId, experienceId, (err: any, response: any) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    this.getCollections();
+                }
+            });
+        }
     }
 
 }
