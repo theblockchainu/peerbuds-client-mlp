@@ -6,6 +6,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { SocketService } from '../../_services/socket/socket.service';
+// import * as io from 'socket.io-client';
 
 import { AppConfig } from '../../app.config';
 
@@ -38,6 +39,7 @@ export class ConsoleInboxComponent implements OnInit {
   public filesMediaContent = [];
 
   public uploadingAttachment = false;
+  // private socket;
 
   constructor(
     public config: AppConfig,
@@ -49,6 +51,8 @@ export class ConsoleInboxComponent implements OnInit {
     private _dialogService: DialogsService,
     private _socketService: SocketService
   ) {
+
+    // this.socket = io(this.config.apiUrl);
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
       consoleComponent.setActiveTab(urlSegment[0].path);
@@ -75,7 +79,26 @@ export class ConsoleInboxComponent implements OnInit {
         this.tempJoinedRooms = this.joinedRooms;
         this.getCollections();
         this.selected = 'all';
+
+        // this._socketService.listenForNewChatMessage().subscribe(newMessages => {
+        //   console.log(newMessages);
+        // });
+
+        // this.socket.on('connection', (socket) => {
+        //   // observer.next(data);
+        //   // tslint:disable-next-line:no-debugger
+        //   debugger;
+        //   console.log(this.socket);
+        //   socket.join('ba7c40fd-1902-4460-8c8b-f8ba1c3bada1');
+        //   socket.on('message', (data) => {
+        //     console.log(data);
+        //   });
+        // });
+
       });
+    // this._socketService.listenForNewChatMessage().subscribe(newMessages => {
+    //   console.log(newMessages);
+    // });
   }
 
   public openChat(room) {
@@ -164,10 +187,10 @@ export class ConsoleInboxComponent implements OnInit {
     };
     this._inboxService.postMessage(roomId, body)
       .subscribe((response) => {
-        console.log('Posted');
-        this._socketService.listenForNewChatMessage().subscribe(newMessages => {
-          console.log(newMessages);
-        });
+        console.log(response);
+        // tslint:disable-next-line:no-debugger
+        debugger;
+        this._socketService.sendMessage(response);
       });
   }
 
@@ -180,8 +203,8 @@ export class ConsoleInboxComponent implements OnInit {
       return o.collection[0].type === 'experience';
     });
 
-    this.workshopCollection = _.filter(this.joinedRooms, function(o) { 
-      return o.collection[0].type === 'workshop'; 
+    this.workshopCollection = _.filter(this.joinedRooms, function(o) {
+      return o.collection[0].type === 'workshop';
     });
   }
 
@@ -200,7 +223,7 @@ export class ConsoleInboxComponent implements OnInit {
   public upload(event, roomId) {
     // Upload file.files to media library and post in chat
     this.uploadingAttachment = true;
-    if(event.files) {
+    if (event.files) {
       for (const file of event.files) {
         this._mediaUploader.upload(file).subscribe((response) => {
           console.log(response);
@@ -218,10 +241,11 @@ export class ConsoleInboxComponent implements OnInit {
     };
     this._inboxService.postMessage(roomId, body)
       .subscribe((response) => {
-        console.log('Posted Attachment');
-        this._socketService.listenForNewChatMessage().subscribe(newMessages => {
-          console.log(newMessages);
-        });
+        console.log(response);
+        // this._socketService.listenForNewChatMessage().subscribe(newMessages => {
+        //   console.log(newMessages);
+        // });
+        this._socketService.sendMessage(response);
       });
   }
 

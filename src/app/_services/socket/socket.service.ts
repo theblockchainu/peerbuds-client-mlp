@@ -65,7 +65,7 @@ export class SocketService {
             this.socket.on('message', (data) => {
                 observer.next(data);
             });
-            return;
+            //return;
         })
     }
 
