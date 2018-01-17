@@ -1,4 +1,4 @@
-import {Component, OnInit, NgModule} from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import {
   Router,
   // import as RouterEvent to avoid confusion with the DOM Event
@@ -10,17 +10,17 @@ import {
 } from '@angular/router';
 
 import { SpinnerService } from './_services/spinner/spinner.service';
-import {SocketService} from './_services/socket/socket.service';
-import {CookieService} from 'ngx-cookie-service';
-import {AuthenticationService} from './_services/authentication/authentication.service';
-import {Title} from '@angular/platform-browser';
+import { SocketService } from './_services/socket/socket.service';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthenticationService } from './_services/authentication/authentication.service';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [ SpinnerService ]
+  providers: [SpinnerService]
 })
 export class AppComponent implements OnInit {
   title = 'app';
@@ -32,11 +32,11 @@ export class AppComponent implements OnInit {
   loading;
 
   constructor(private router: Router,
-              private _spinnerService: SpinnerService,
-              private _socketService: SocketService,
-              private _cookieService: CookieService,
-              private _authService: AuthenticationService,
-              private titleService: Title
+    private _spinnerService: SpinnerService,
+    private _socketService: SocketService,
+    private _cookieService: CookieService,
+    private _authService: AuthenticationService,
+    private titleService: Title
   ) {
     this.loading = this._spinnerService.getSpinnerState();
     router.events.subscribe((event: RouterEvent) => {
@@ -45,22 +45,22 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.router.events.subscribe(event => this.modifyHeader(event));
-      this.router.events.subscribe(event => this.modifyFooter(event));
-      this.setTitle('Peerbuds');
+    this.router.events.subscribe(event => this.modifyHeader(event));
+    this.router.events.subscribe(event => this.modifyFooter(event));
+    this.setTitle('Peerbuds');
 
-    }
+  }
 
   modifyFooter(location) {
-   this.showFooter = !(location.url === '/app-upload-docs' || location.url === '/onboarding' || /^\/workshop\/.*\/edit\/./.test(location.url) || /^\/experience\/.*\/edit\/./.test(location.url));
+    this.showFooter = !(location.url === '/app-upload-docs' || location.url === '/onboarding' || /^\/workshop\/.*\/edit\/./.test(location.url) || /^\/experience\/.*\/edit\/./.test(location.url) || /^\/session\/.*\/edit\/./.test(location.url));
   }
 
-   modifyHeader(location) {
-     this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url) || /^\/experience\/.*\/edit\/./.test(location.url));
+  modifyHeader(location) {
+    this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url) || /^\/experience\/.*\/edit\/./.test(location.url) || /^\/session\/.*\/edit\/./.test(location.url));
   }
 
-  public setTitle( newTitle: string) {
-      this.titleService.setTitle( newTitle );
+  public setTitle(newTitle: string) {
+    this.titleService.setTitle(newTitle);
   }
 
   // Shows and hides the loading spinner during RouterEvent changes

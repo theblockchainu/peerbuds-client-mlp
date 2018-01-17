@@ -8,7 +8,6 @@ import {QuestionService} from '../../../_services/question/question.service';
 import {CommentService} from '../../../_services/comment/comment.service';
 import {MdSnackBar} from '@angular/material';
 import {ProfileService} from '../../../_services/profile/profile.service';
-import * as MetaInspector from 'node-metainspector';
 
 @Component({
   selector: 'app-community-page-links',
@@ -67,10 +66,7 @@ export class CommunityPageLinksComponent implements OnInit {
             if (value) {
                 // Check for valid link and show popup
                 if (this.ValidURL(value)) {
-                    const client = new MetaInspector(value, {timeout: 5000});
-                    client.on('fetch', () => {
-                       console.log(client.image);
-                    });
+
                 }
             }
         });

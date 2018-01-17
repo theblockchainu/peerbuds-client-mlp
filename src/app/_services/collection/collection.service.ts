@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs} from '@angular/http';
+import { Http, Headers, Response, BaseRequestOptions, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 declare var moment: any;
 
 @Injectable()
@@ -185,20 +186,20 @@ export class CollectionService {
    * calculateTotalHours
    */
   public calculateTotalHours(collection) {
-      let totalLength = 0;
-      if (collection.contents) {
-          collection.contents.forEach(content => {
-              if (content.type === 'online') {
-                  const startMoment = moment(content.schedules[0].startTime);
-                  const endMoment = moment(content.schedules[0].endTime);
-                  const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
-                  totalLength += parseInt(contentLength, 10);
-              } else if (content.type === 'video') {
+    let totalLength = 0;
+    if (collection.contents) {
+      collection.contents.forEach(content => {
+        if (content.type === 'online') {
+          const startMoment = moment(content.schedules[0].startTime);
+          const endMoment = moment(content.schedules[0].endTime);
+          const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+          totalLength += parseInt(contentLength, 10);
+        } else if (content.type === 'video') {
 
-              }
-          });
-      }
-      return totalLength.toString();
+        }
+      });
+    }
+    return totalLength.toString();
   }
 
   /**
@@ -829,6 +830,79 @@ collectionID:string,userId:string,calendarId:string   */
     return this.http
       .put(this.config.apiUrl + '/api/peers/' + peerId + '/rsvps/' + rsvpId, body, this.options)
       .map((response: Response) => response.json());
+  }
+
+  public updateProvisions(collectionId: string, body: any) {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + collectionId + '/provisions', this.options).flatMap(res => {
+      return this.http
+        .post(this.config.apiUrl + '/api/collections/' + collectionId + '/provisions', body, this.options)
+        .map((response: Response) => response.json());
+    });
+
+  }
+
+  public postPackages(collectionId: string, body: any) {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + collectionId + '/packages', this.options).flatMap(res => {
+      console.log('deleted');
+      console.log('posting', body);
+      return this.http
+        .post(this.config.apiUrl + '/api/collections/' + collectionId + '/packages', body, this.options)
+        .map((response: Response) => response.json());
+    });
+  }
+
+  public postPreferences(collectionId: string, body: any) {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + collectionId + '/preferences', this.options).flatMap(res => {
+      console.log('deleted');
+      console.log('posting', body);
+      return this.http
+        .post(this.config.apiUrl + '/api/collections/' + collectionId + '/preferences', body, this.options)
+        .map((response: Response) => response.json());
+    });
+  }
+
+  public updateAvailability(collectionId: string, body: any) {
+    return this.http.delete(this.config.apiUrl + '/api/collections/' + collectionId + '/availability').flatMap(
+      res => {
+        return this.http.post(this.config.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.options)
+          .map((response: Response) => response.json());
+      }
+    );
+  }
+
+  public postAvailability(userId: string, collectionId: string, availabilities: Array<any>, approval: boolean) {
+    const contentObjs = [];
+    availabilities.forEach(() => {
+      contentObjs.push({
+        title: 'session',
+        sessionIsApproved: approval
+      });
+    });
+    const availabilityLinkRequestArray = [];
+    const peerLinkRequestArray = [];
+    return this.http.post(this.config.apiUrl + '/api/collections/' + collectionId + '/contents', contentObjs, this.options)
+      .flatMap(res => {
+        const result = res.json();
+        result.forEach((savedContent, index) => {
+          const targetIds = [];
+          availabilities[index].forEach(element => {
+            availabilityLinkRequestArray.push(
+              this.http.put(this.config.apiUrl + '/api/contents/' + savedContent.id + '/availabilities/rel/' + element.id, this.options)
+            );
+          });
+          peerLinkRequestArray.push(
+            this.http.put(this.config.apiUrl + '/api/peers/' + userId + '/contents/rel/' + savedContent.id, this.options)
+          );
+        });
+        return forkJoin(availabilityLinkRequestArray);
+      }).flatMap(res => {
+        return forkJoin(peerLinkRequestArray);
+      });
+  }
+
+  public approveSessionJoinRequest(sessionId) {
+    const body = { 'sessionIsApproved': true };
+    return this.http.patch(this.config.apiUrl + '/api/contents/' + sessionId, body, this.options).map(res => res.json());
   }
 
 }

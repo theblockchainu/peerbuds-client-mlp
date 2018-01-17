@@ -9,137 +9,153 @@ import { ConsoleComponent } from '../console.component';
 
 declare var moment: any;
 @Component({
-  selector: 'app-console-teaching',
-  templateUrl: './console-teaching.component.html',
-  styleUrls: ['./console-teaching.component.scss', '../console.component.scss']
+    selector: 'app-console-teaching',
+    templateUrl: './console-teaching.component.html',
+    styleUrls: ['./console-teaching.component.scss', '../console.component.scss']
 })
 export class ConsoleTeachingComponent implements OnInit {
 
-  public workshops: any;
-  public loaded: boolean;
-  public activeTab: string;
-  public now: Date;
-  private userId;
-  public accountVerified: boolean;
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    public router: Router,
-    public _collectionService: CollectionService,
-    private _cookieUtilsService: CookieUtilsService,
-    public consoleComponent: ConsoleComponent,
-    private dialogsService: DialogsService) {
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
-      console.log(urlSegment[0].path);
-      consoleComponent.setActiveTab(urlSegment[0].path);
-    });
-    this.activeTab = 'all';
-    this.now = new Date();
-    this.userId = _cookieUtilsService.getValue('userId');
-  }
+    public workshops: any;
+    public loaded: boolean;
+    public activeTab: string;
+    public now: Date;
+    private userId;
+    public accountVerified: boolean;
+    public session: any;
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        public router: Router,
+        public _collectionService: CollectionService,
+        private _cookieUtilsService: CookieUtilsService,
+        public consoleComponent: ConsoleComponent,
+        private dialogsService: DialogsService) {
+        activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+            console.log(urlSegment[0].path);
+            consoleComponent.setActiveTab(urlSegment[0].path);
+        });
+        this.activeTab = 'all';
+        this.now = new Date();
+        this.userId = _cookieUtilsService.getValue('userId');
+    }
 
-  ngOnInit() {
-    this.loaded = false;
-    this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true') ? true : false;
-  }
+    ngOnInit() {
+        this.loaded = false;
+        this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true') ? true : false;
+        this.getSessions();
+    }
 
-  /**
-   * createWorkshop
-   */
-  public createWorkshop() {
-    this._collectionService.postCollection(this.userId, 'workshop').subscribe((workshopObject) => {
-      this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
-    });
-  }
+    public getSessions() {
+        const option = {
+            'where': {
+                'type': 'session'
+            }
+        };
+        this._collectionService.getAllCollections(option).subscribe(res => {
+            if (res && res.length > 0) {
+                console.log(res);
+                this.session = res;
+            }
+        });
+    }
 
-  /**
-   * createExperience
-   */
-  public createExperience() {
-    this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject) => {
-      this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
-    });
-  }
+    /**
+     * createWorkshop
+     */
+    public createWorkshop() {
+        this._collectionService.postCollection(this.userId, 'workshop').subscribe((workshopObject) => {
+            this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
+        });
+    }
 
-  /**
-   * createExperience
-   */
-  public enableSessions() {
-    this._collectionService.postCollection(this.userId, 'session').subscribe((sessionObject) => {
-      this.router.navigate(['enableSessions', sessionObject.id, 1]);
-    });
-  }
+    /**
+     * createExperience
+     */
+    public createExperience() {
+        this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject) => {
+            this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
+        });
+    }
 
-  /**
-   * Check if the given tab is active tab
-   * @param tabName
-   * @returns {boolean}
-   */
-  public getActiveTab() {
-    return this.activeTab;
-  }
+    /**
+     * createSessions
+     */
+    public enableSessions() {
+        this._collectionService.postCollection(this.userId, 'session').subscribe((sessionObject) => {
+            this.router.navigate(['session', sessionObject.id, 'edit', 1]);
+        });
+    }
 
-  /**
-   * Set value of activeTab
-   * @param value
-   */
-  public setActiveTab(value) {
-    this.activeTab = value;
-  }
+    /**
+     * Check if the given tab is active tab
+     * @param tabName
+     * @returns {boolean}
+     */
+    public getActiveTab() {
+        return this.activeTab;
+    }
 
-  /**
-   * Show popup to rate students
-   */
-  public showRateStudentsPopup(collection) {
-    // Show popup here
-    const data = collection;
-    this.dialogsService.rateParticipant(data)
-        .subscribe();
-  }
+    /**
+     * Set value of activeTab
+     * @param value
+     */
+    public setActiveTab(value) {
+        this.activeTab = value;
+    }
 
-  imgErrorHandler(event) {
-    event.target.src = '/assets/images/user-placeholder.jpg';
-  }
+    /**
+     * Show popup to rate students
+     */
+    public showRateStudentsPopup(collection) {
+        // Show popup here
+        const data = collection;
+        this.dialogsService.rateParticipant(data)
+            .subscribe();
+    }
 
-  /**
-   * Get the progress bar value of this workshop
-   * @param workshop
-   * @returns {number}
-   */
-  public getProgressValue(collection) {
-      let max = 0;
-      let progress = 0;
-      collection.contents.forEach(content => {
-          max++;
-          const currentCalendar = this._collectionService.getCurrentCalendar(collection.calendars);
-          if (currentCalendar !== undefined) {
-              const contentStartDate = moment(currentCalendar.startDate).add(content.schedules[0].startDay, 'days');
-              const contentEndDate = contentStartDate.add(content.schedules[0].endDay, 'days');
-              switch (content.type) {
-                  case 'online':
-                      if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
-                          progress++;
-                      }
-                      break;
+    imgErrorHandler(event) {
+        event.target.src = '/assets/images/user-placeholder.jpg';
+    }
 
-                  case 'project':
-                      if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
-                          progress++;
-                      }
-                      break;
+    /**
+     * Get the progress bar value of this workshop
+     * @param workshop
+     * @returns {number}
+     */
+    public getProgressValue(collection) {
+        let max = 0;
+        let progress = 0;
+        collection.contents.forEach(content => {
+            max++;
+            const currentCalendar = this._collectionService.getCurrentCalendar(collection.calendars);
+            if (currentCalendar !== undefined) {
+                const contentStartDate = moment(currentCalendar.startDate).add(content.schedules[0].startDay, 'days');
+                const contentEndDate = contentStartDate.add(content.schedules[0].endDay, 'days');
+                switch (content.type) {
+                    case 'online':
+                        if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
+                            progress++;
+                        }
+                        break;
 
-                  case 'in-person':
-                      if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
-                          progress++;
-                      }
-                      break;
+                    case 'project':
+                        if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
+                            progress++;
+                        }
+                        break;
 
-                  default:
-                      break;
-              }
-          }
-      });
-      return (progress / max) * 100;
-  }
+                    case 'in-person':
+                        if (content.schedules && moment().diff(contentEndDate, 'days') >= 0) {
+                            progress++;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
+        return (progress / max) * 100;
+    }
 
     public getCompletedCalendars(calendars) {
         const completedCalendars = [];
@@ -161,5 +177,9 @@ export class ConsoleTeachingComponent implements OnInit {
         return canceledCalendars;
     }
 
+    public editSessions() {
+        console.log(this.session);
+        this.router.navigateByUrl('/session/' + this.session[0].id + '/edit/' + 1);
+    }
 
 }

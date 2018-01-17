@@ -532,6 +532,47 @@
                                 </div>
                             </div>
                         </md-tab>
+                        <md-tab label="Sessions" style="min-width: min-content !important;">
+                            <div class="row" style="padding-left: 5px;">
+                                <div *ngIf="availablePackages.length>0">
+                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+                                        Packages ({{availablePackages.length}})
+                                    </div>
+                                    <div *ngFor="let collectionObj of availablePackages ; let i=index">
+                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
+                                            <a style="color:rgba(0,0,0,0.87)">
+                                                <div class="col-md-3 padding-left-0">
+                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="col-md-12">
+                                                        <b>{{collectionObj.duration}} mins</b>
+                                                    </div>
+                                                    <div class="col-md-12" style="min-height:55px">
+                                                        <p style="text-align: justify">{{collectionObj.price | convertCurrency: collectionObj.currency |async}}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
+                                        <hr>
+                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="bookSession()">Book Session</a>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div *ngIf="upcomingExperiences.length === 0 && availablePackages.length === 0 && pastExperiences.length === 0">
+                                    <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
+                                        <span>{{profileObj.first_name | ucwords}} has not enabled sessions yet</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 margin-top-10  margin-bottom-20 center">
+                                    <hr>
+                                    <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="bookSession()">Book Session</a>
+                                    <hr>
+                                </div>
+                            </div>
+                        </md-tab>
                     </md-tab-group>
                 </div>
             </div>

@@ -121,10 +121,10 @@ export class ProfileService {
         newPassword: newPassword
       };
       return this.http
-          .post(this.config.apiUrl + '/api/peers/changePassword', body, this.options)
-          .map((response: Response) => response.json(), (err) => {
-              console.log('Error: ' + err);
-          });
+        .post(this.config.apiUrl + '/api/peers/changePassword', body, this.options)
+        .map((response: Response) => response.json(), (err) => {
+          console.log('Error: ' + err);
+        });
     }
   }
 
@@ -239,12 +239,20 @@ export class ProfileService {
   }
 
   /* get collections */
-  public getCollections(userId) {
+  public getCollections(userId, filter?: any) {
     if (userId) {
-      return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/ownedCollections', this.options)
-        .map((response: Response) => response.json(), (err) => {
-          console.log('Error: ' + err);
-        });
+      if (filter) {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/ownedCollections?filter=' + JSON.stringify(filter), this.options)
+          .map((response: Response) => response.json(), (err) => {
+            console.log('Error: ' + err);
+          });
+      }
+      else {
+        return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/ownedCollections', this.options)
+          .map((response: Response) => response.json(), (err) => {
+            console.log('Error: ' + err);
+          });
+      }
     }
   }
 
@@ -580,18 +588,19 @@ export class ProfileService {
    * getBookmarks
    */
   public getBookmarks(userId: string, query: any, cb) {
-      const filter = JSON.stringify(query);
-      this.http
-          .get(this.config.apiUrl + '/api/peers/' + userId + '/bookmarks' + '?filter=' + filter, this.options)
-          .map((response) => {
-              cb(null, response.json());
-          }, (err) => {
-              cb(err);
-          }).subscribe();
+    const filter = JSON.stringify(query);
+    this.http
+      .get(this.config.apiUrl + '/api/peers/' + userId + '/bookmarks' + '?filter=' + filter, this.options)
+      .map((response) => {
+        cb(null, response.json());
+      }, (err) => {
+        cb(err);
+      }).subscribe();
   }
 
   public imgErrorHandler(event) {
-      event.target.src = '/assets/images/user-placeholder.jpg';
+    event.target.src = '/assets/images/user-placeholder.jpg';
   }
+
 
 }

@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
-import {CommonModule, NgSwitch, CurrencyPipe, TitleCasePipe} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule, NgSwitch, CurrencyPipe, TitleCasePipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     MdChipsModule,
     MdDialogModule,
@@ -73,6 +73,7 @@ import {QuestionService} from '../_services/question/question.service';
 import {CommunityService} from '../_services/community/community.service';
 import {InboxService} from '../_services/inbox/inbox.service';
 import {SearchService} from '../_services/search/search.service';
+import { TimeToNowPipe } from './timetonow/time-to-now.pipe';
 
 @NgModule({
     imports: [
@@ -102,7 +103,7 @@ import {SearchService} from '../_services/search/search.service';
         }),
         Ng4GeoautocompleteModule.forRoot()
     ],
-    declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TextIconCarouselComponent],
+    declarations: [ExtractTimePipe, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TextIconCarouselComponent, TimeToNowPipe],
     providers: [
         CollectionService,
         CountryPickerService,
@@ -125,7 +126,8 @@ import {SearchService} from '../_services/search/search.service';
         TitleCasePipe,
         QuestionService,
         CommunityService,
-        SearchService
+        SearchService,
+        TimeToNowPipe
     ],
     exports: [
         CommonModule,
@@ -158,7 +160,7 @@ import {SearchService} from '../_services/search/search.service';
         MdNativeDateModule, MdSliderModule, MdAutocompleteModule,
         SliderModule, MdProgressSpinnerModule, MdExpansionModule, MdSnackBarModule, ExtractTimePipe,
         LoadingModule, MdTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TitleCasePipe, CarouselModule
-        , TextIconCarouselComponent, Ng4GeoautocompleteModule, AgmCoreModule
+        , TextIconCarouselComponent, Ng4GeoautocompleteModule, AgmCoreModule, TimeToNowPipe
     ]
 })
 export class SharedModule {
