@@ -763,7 +763,7 @@ export class WorkshopEditComponent implements OnInit {
   }
 
   public submitWorkshop(data, timeline?, step?) {
-    if (this.calendarIsValid()) {
+    if (this.calendarIsValid() && (step !== 13 || this.workshopHasOnlineContent(timeline))) {
       if (this.workshop.controls.status.value === 'active') {
         this.dialogsService.openCollectionCloneDialog({
           type: 'workshop'
@@ -777,11 +777,30 @@ export class WorkshopEditComponent implements OnInit {
         });
       }
       else {
+        console.log(step);
         this.executeSubmitWorkshop(data, timeline, step);
       }
     }
 
   }
+
+  public workshopHasOnlineContent(timeline: any) {
+    console.log(timeline.value);
+    let workshopValid = false;
+    for (const ItennaryObj of timeline.value.contentGroup.itenary) {
+      for (const contentObj of ItennaryObj.contents) {
+        if (contentObj.type.toString() === 'online') {
+          workshopValid = true;
+          return true;
+        }
+      }
+      this.snackBar.open('Workshop should contain atleast 1 online session!', 'close', {
+        duration: 800
+      });
+      return false;
+    }
+  }
+
 
   private calendarIsValid() {
     const calendarGroup = <FormGroup>this.timeline.controls['calendar'];
@@ -806,7 +825,7 @@ export class WorkshopEditComponent implements OnInit {
     const body = data.value;
     delete body.selectedLanguage;
 
-    this._collectionService.patchCollection(this.workshopId, body).map(
+    this._collectionService.patchCollection(this.workshopId, body).subscribe(
       (response) => {
         const result = response.json();
         let collectionId;
@@ -822,16 +841,17 @@ export class WorkshopEditComponent implements OnInit {
         result.owners = this.workshopData.owners;
         this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
 
-        if (step && step > 12) {
+        if (step && step === 13) {
           this.submitTimeline(collectionId, timeline);
         }
         if (!result.isNewInstance) {
           this.step++;
           this.workshopStepUpdate();
         }
-        this.router.navigate(['workshop', collectionId, 'edit', this.step]);
+        console.log(this.step);
+        // this.router.navigate(['workshop', collectionId, 'edit', this.step]);
 
-      }).subscribe();
+      });
   }
 
   /**
@@ -858,8 +878,9 @@ export class WorkshopEditComponent implements OnInit {
       this.http.patch(this.config.apiUrl + '/api/collections/' + collectionId + '/calendar', body)
         .subscribe((response) => {
           this.step++;
-          this.workshopStepUpdate();
-          this.router.navigate(['workshop', collectionId, 'edit', this.step]);
+          console.log(this.step);
+          // this.workshopStepUpdate();
+          // this.router.navigate(['workshop', collectionId, 'edit', this.step]);
         });
     } else {
       console.log('Enter Date!');
