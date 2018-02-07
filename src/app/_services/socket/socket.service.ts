@@ -17,6 +17,9 @@ export class SocketService {
         this.userId = _cookieUtilsService.getValue('userId');
         this.socket = io(this.config.apiUrl);
         this.addUser(this.userId);
+        this.listenForNewMessage().subscribe(message => {
+            console.log(message);
+        });
     }
 
     public addUser(userId) {
@@ -58,6 +61,19 @@ export class SocketService {
             });
             return;
         });
+    }
+
+    public listenForNewMessage() {
+        return new Observable(observer => {
+            this.socket.on('message', (data) => {
+                observer.next(data);
+            });
+            return;
+        });
+    }
+
+    public joinRoom(roomId) {
+        this.socket.emit('joinRoom', roomId);
     }
 
 }

@@ -8,6 +8,7 @@ import { AppConfig } from '../../app.config';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {SocketService} from '../../_services/socket/socket.service';
 
 @Component({
   selector: 'app-console-inbox',
@@ -32,6 +33,7 @@ export class ConsoleInboxComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleComponent: ConsoleComponent,
     public _inboxService: InboxService,
+    public _socketService: SocketService,
     private _cookieUtilsService: CookieUtilsService
   ) {
     activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
@@ -56,6 +58,7 @@ export class ConsoleInboxComponent implements OnInit {
           room = this.formatDateTime(room);
           this.displayNone.push[room.id] = false;
           this.defaultLoadedChat = room;
+          this._socketService.joinRoom(room.id);
         }
         this.tempJoinedRooms = this.joinedRooms;
         this.getCollections();
@@ -67,6 +70,7 @@ export class ConsoleInboxComponent implements OnInit {
     room = this.formatDateTime(room);
     this.defaultLoadedChat = room;
     this.displayNone.push[room.id] = false;
+    this._socketService.joinRoom(room.id);
   }
 
   private formatDateTime(room) {

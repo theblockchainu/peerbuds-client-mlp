@@ -558,6 +558,16 @@ collectionID:string,userId:string,calendarId:string   */
       }).subscribe();
   }
 
+    public linkCommunityToCollection(communityId, collectionId, cb) {
+        this.http
+            .put(this.config.apiUrl + '/api/communities/' + communityId + '/collections/rel/' + collectionId, {}, this.options)
+            .map((response) => {
+                cb(null, response.json());
+            }, (err) => {
+                cb(err);
+            }).subscribe();
+    }
+
 
   /**
    * Approve this collection

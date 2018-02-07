@@ -5,6 +5,8 @@ import {CookieService} from 'ngx-cookie-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {RequestHeaderService} from '../requestHeader/request-header.service';
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class CommunityService {
@@ -12,6 +14,7 @@ export class CommunityService {
     public key = 'userId';
     public options;
     public now: Date;
+    public activeTab = new BehaviorSubject('question');
 
     constructor(private http: Http,
                 private config: AppConfig,
@@ -103,6 +106,40 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(this.config.apiUrl + '/api/communities/' + communityId + '/questions' + '?filter=' + filter, this.options)
+            .map((response) => {
+                cb(null, response.json());
+            }, (err) => {
+                cb(err);
+            }).subscribe();
+    }
+
+    /**
+     * Get links within a community
+     * @param {string} communityId
+     * @param query
+     * @param cb
+     */
+    public getLinks(communityId: string, query: any, cb) {
+        const filter = JSON.stringify(query);
+        this.http
+            .get(this.config.apiUrl + '/api/communities/' + communityId + '/links' + '?filter=' + filter, this.options)
+            .map((response) => {
+                cb(null, response.json());
+            }, (err) => {
+                cb(err);
+            }).subscribe();
+    }
+
+    /**
+     * Get questions within a community
+     * @param {string} communityId
+     * @param query
+     * @param cb
+     */
+    public getCollections(communityId: string, query: any, cb) {
+        const filter = JSON.stringify(query);
+        this.http
+            .get(this.config.apiUrl + '/api/communities/' + communityId + '/collections' + '?filter=' + filter, this.options)
             .map((response) => {
                 cb(null, response.json());
             }, (err) => {
@@ -217,6 +254,30 @@ export class CommunityService {
     public deleteCommunity(communityId: string) {
         return this.http.delete(this.config.apiUrl +
             '/api/communities/' + communityId);
+    }
+
+    public getActiveTab() {
+        return this.activeTab.asObservable();
+    }
+
+    public setActiveTab(value) {
+        this.activeTab.next(value);
+    }
+
+    /**
+     * Add a new link to this community
+     * @param communityId
+     * @param linkBody
+     * @param cb
+     */
+    public addLinkToCommunity(communityId, linkBody, cb) {
+        this.http
+            .post(this.config.apiUrl + '/api/communities/' + communityId + '/links', linkBody, this.options)
+            .map((response) => {
+                cb(null, response.json());
+            }, (err) => {
+                cb(err);
+            }).subscribe();
     }
 
 }
