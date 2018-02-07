@@ -426,7 +426,7 @@ export class WorkshopContentComponent implements OnInit {
             console.log(response);
             if (response !== null) {
               const result = response.json();
-              if (result.isNewInstance) {
+              if (result && result.isNewInstance) {
                 collectionId = result.id;
                 this.reload(collectionId, 13);
               }
