@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CommunityPageComponent} from '../community-page.component';
 import {ActivatedRoute} from '@angular/router';
 import {CommunityService} from '../../../_services/community/community.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
 import {QuestionService} from '../../../_services/question/question.service';
 import {CommentService} from '../../../_services/comment/comment.service';
@@ -62,14 +62,6 @@ export class CommunityPageLinksComponent implements OnInit {
         this.getLoggedInUser();
         this.getLinks();
         this.initializeForms();
-        this.linksForm.controls.text.valueChanges.subscribe(value => {
-            if (value) {
-                // Check for valid link and show popup
-                if (this.ValidURL(value)) {
-
-                }
-            }
-        });
     }
 
     public getLinks() {
@@ -97,7 +89,7 @@ export class CommunityPageLinksComponent implements OnInit {
 
     private initializeForms() {
         this.linksForm = this._fb.group({
-            text: ['', Validators.required]
+            text: ['', this.urlValidator(new RegExp('^(https?:\\/\\/)?((([a-zd]([a-zd-]*[a-zd])*).)+[a-z]{2,}|((d{1,3}.){3}d{1,3}))(:d+)?(\\/[-a-zd%_.~+]*)*(\\?[;&a-zd%_.~+=-]*)?(#[-a-zd_]*)?$', 'i'))]
         });
     }
 
@@ -127,19 +119,11 @@ export class CommunityPageLinksComponent implements OnInit {
         }
     }
 
-    private ValidURL(str) {
-        const pattern = new RegExp('^(https?:\/\/)?' + // protocol
-            '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|' + // domain name
-            '((\d{1,3}\.){3}\d{1,3}))' + // OR ip (v4) address
-            '(\:\d+)?(\/[-a-z\d%_.~+]*)*' + // port and path
-            '(\?[;&a-z\d%_.~+=-]*)?' + // query string
-            '(\#[-a-z\d_]*)?$', 'i'); // fragment locater
-        if (!pattern.test(str)) {
-            alert('Please enter a valid URL.');
-            return false;
-        } else {
-            return true;
-        }
+    private urlValidator(nameRe: RegExp): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const isUrl = nameRe.test(control.value);
+            return isUrl ? null : {'wrongUrl': {value: control.value}};
+        };
     }
 
 }
