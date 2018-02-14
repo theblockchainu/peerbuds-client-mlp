@@ -47,6 +47,33 @@
     border-bottom: 0px;
 }
 
+.mat-tab-nav-bar img {
+    width: 82px;
+}
+.mat-tab-nav-bar h3 {
+padding-left: 10px;
+padding-top: 15px
+}
+
+
+.mat-tab-link{
+    border: 0.5px solid rgba(131, 125, 125, 0.301)
+}
+
+.noJustify a.mat-tab-link {
+    justify-content: left !important;
+    padding-left: 0px !important;
+    padding-right: 5px !important;
+    width: 205px !important;
+    margin-right: 12px  !important;
+    font-size: 1rem  !important;
+    font-weight: 400  !important;
+    margin-left: 10px !important;
+    margin-right: 0px !important ;
+    
+}
+
+
 .mat-tab-group.mat-primary .mat-tab-label:focus, .mat-tab-group.mat-primary .mat-tab-link:focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
     background: none;
 }

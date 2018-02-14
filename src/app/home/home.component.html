@@ -1,19 +1,25 @@
 <div class="main-content">
   <div class="col-md-10 col-md-offset-1" style="margin-top: 2%; margin-bottom: 0%">
-    <nav md-tab-nav-bar disableRipple class="noJustify" >
+    <nav md-tab-nav-bar disableRipple class="noJustify home">
       <a md-tab-link [routerLink]="'/home/homefeed'" routerLinkActive #feedLink="routerLinkActive" [active]="feedLink.isActive">
-        Homefeed </a>
-        <a md-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive">
-            Communities
-        </a>
+        <img src="/assets/images/placeholder-image.jpg" alt="logo">
+        <h3>Homefeed</h3>
+      </a>
+      <a md-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive">
+        <img src="/assets/images/placeholder-image.jpg" alt="logo">
+        <h3>Communities</h3>
+      </a>
       <a md-tab-link [routerLink]="'/home/workshops'" routerLinkActive #workshopLink="routerLinkActive" [active]="workshopLink.isActive">
-        Workshops
+        <img src="/assets/images/placeholder-image.jpg" alt="logo">
+        <h3>Workshops</h3>
       </a>
       <a md-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive">
-        Experiences
+        <img src="/assets/images/map.png" alt="logo">
+        <h3>Experiences</h3>
       </a>
       <a md-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive">
-        Peers
+        <img src="/assets/images/placeholder-image.jpg" alt="logo">
+        <h3>Peers</h3>
       </a>
     </nav>
     <div class="row">

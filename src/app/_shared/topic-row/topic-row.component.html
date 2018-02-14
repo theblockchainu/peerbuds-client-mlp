@@ -1,0 +1,20 @@
+<div class="topics-section">
+  <span class="floating-button-left">
+    <button color="none" (click)="translate(true)" md-mini-fab>
+      <md-icon>keyboard_arrow_left </md-icon>
+    </button>
+  </span>
+  <div class="topic-bar" [ngStyle]="transformStyle">
+    <div class="topic-div" *ngFor="let topicObj of availableTopics;let i =index" id="topic{{i}}">
+      <button md-button class="mat-border-button" #topicButton (click)="topicClicked(i)">
+        <img src="/assets/images/placeholder-image.jpg" alt="logo">
+        <h3>{{topicObj.topic.name}}</h3>
+      </button>
+    </div>
+  </div>
+  <span class="floating-button-right">
+    <button color="none" (click)="translate(false)" md-mini-fab>
+      <md-icon>keyboard_arrow_right </md-icon>
+    </button>
+  </span>
+</div>
