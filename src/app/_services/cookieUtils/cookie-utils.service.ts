@@ -10,4 +10,5 @@ export class CookieUtilsService {
     const cookieValue = this._cookieService.get(key).split(/[ \:.]+/);
     return cookieValue[1];
   }
+
 }

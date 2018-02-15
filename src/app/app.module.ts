@@ -8,7 +8,6 @@ import { DefaultComponent } from './default/default.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
-import { AppFooterComponent } from './app-footer/app-footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdAutocompleteModule, MdInputModule, MdNativeDateModule, MdProgressSpinnerModule, MdProgressBarModule, MdTooltipModule } from '@angular/material';
 import { DialogsModule } from './_services/dialogs/dialogs.module';
@@ -26,14 +25,13 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { DefaultModule } from './default/default.module';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { SessionModule } from './session/session.module';
-
+import { AppFooterModule } from './app-footer/app-footer.module';
 @NgModule({
   declarations: [
     AppComponent,
     DefaultComponent,
     NoContentComponent,
     AppHeaderComponent,
-    AppFooterComponent,
     AccessDeniedComponent,
     LoginComponent,
     SignupComponent,
@@ -49,6 +47,7 @@ import { SessionModule } from './session/session.module';
   imports: [
     BrowserModule,
     CoreModule,
+    AppFooterModule,
     BrowserAnimationsModule,
     MdCardModule,
     MdButtonModule,
@@ -71,7 +70,7 @@ import { SessionModule } from './session/session.module';
       primaryColour: '#33bd9e',
       secondaryColour: '#ff5b5f',
       tertiaryColour: '#ff6d71'
-    }),
+    })
   ],
   bootstrap: [AppComponent],
   providers: [
