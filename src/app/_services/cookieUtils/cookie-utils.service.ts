@@ -19,4 +19,8 @@ export class CookieUtilsService {
         this._cookieService.set(name, value, moment().add(2, 'days').toDate(), '/', 'localhost');
     }
 
+    public deleteValue(key) {
+      this._cookieService.delete(key, '/', 'localhost');
+    }
+
 }

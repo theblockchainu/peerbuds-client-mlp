@@ -38,7 +38,7 @@ export class PeersComponent implements OnInit {
     public config: AppConfig,
     public dialog: MdDialog
   ) {
-    
+
     this.userId = _cookieUtilsService.getValue('userId');
   }
 

@@ -1,34 +1,109 @@
-
-<footer *ngIf="!(isLoggedIn | async)"> <!--style="border-top: 1px solid #cccccc;"-->
-  <div class="layout-row footer" layout="row" color="white">
+<!-- <footer *ngIf="!(isLoggedIn | async)">
+y  <div class="layout-row footer" layout="row" color="white">
     <div layout="row" class="col-sm-8">
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/philosophy"> About Us </a>
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/contact-us">
-            Contact Us
-          </a>
-          <span class="center">
-            <a routerLink="/" class="brand col-sm-2" aria-label="Peerbuds Homepage">
-                  <img src="/assets/images/pb_logo.png" alt="logo">
-            </a>
-          </span>
-          <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/privacy-policy">
-           Privacy Policy
-          </a>
-            <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/terms-of-service">
-                Terms Of Service
-            </a>
+      <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/philosophy"> About Us </a>
+      <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/contact-us">
+        Contact Us
+      </a>
+      <span class="center">
+        <a routerLink="/" class="brand col-sm-2" aria-label="Peerbuds Homepage">
+          <img src="/assets/images/pb_logo.png" alt="logo">
+        </a>
+      </span>
+      <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/privacy-policy">
+        Privacy Policy
+      </a>
+      <a class="footer-btn footerButtons col-sm-2" md-button routerLink="/terms-of-service">
+        Terms Of Service
+      </a>
     </div>
   </div>
-</footer>
+</footer> -->
 
-<footer *ngIf="(isLoggedIn | async)" style="border-top: 1px solid #eeeeee;">
-  <div class="text-center" style="padding: 4px 0;">
+<footer style="border-top: 1px solid #dbdbdb;">
+  <!-- <div class="text-center" style="padding: 4px 0;">
     <a [routerLink]="['/philosophy']">About Us</a>
     <a href="#">Help</a>
     <a href="/privacy-policy">Privacy</a>
     <a href="/terms-of-service">Terms</a>
     <a href="http://www.peerbudsilab.com">Community</a>
-    <!--<a href="#">Invite Friends</a>-->
-  </div>
-</footer>
+  </div> -->
+  <div class="row mat-body-1">
+    <div class="col-md-3 center">
+      <md-select [(value)]="selectedCurrency" (valueChange)="updateCurrencyCookie()">
+        <md-option [value]="'inr'"> INR </md-option>
+        <md-option [value]="'usd'"> USD </md-option>
+      </md-select>
+    </div>
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-12 mat-body-2">
+          Peerbuds
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <ul>
+            <li>About us</li>
+            <li>Careers</li>
+            <li>Press</li>
+            <li>Policies</li>
+            <li>Help</li>
+            <li>Token Sale</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-12 mat-body-2">
+          Discover
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <ul>
+            <li>Trust and Safety</li>
+            <li>Experiences</li>
+            <li>Classes</li>
+            <li>Peers</li>
+            <li>Peer Profiles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-12 mat-body-2">
+          Teach
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <ul>
+            <li>Why Teach</li>
+            <li>Teaching</li>
+            <li>Responsible Teaching</li>
+            <li>Community Center</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
+  </div>
+  <hr style="margin-left: -2%; width: 104%;">
+  <div class="row">
+    <div class="col-md-4">
+      <img style="width: 14%;" src="/assets/images/pb_logo.png" alt="logo">
+    </div>
+    <div class="col-md-4 col-md-offset-4">
+      <a href="/terms-of-service">Terms</a>
+      <a href="/privacy-policy">Privacy</a>
+      <a href="#">Site Map</a>
+      <i class="fa fa-facebook-square"></i>
+      <i class="fa fa-twitter-square"></i>
+      <i class="fa fa-instagram"></i>
+    </div>
+  </div>
+
+</footer>

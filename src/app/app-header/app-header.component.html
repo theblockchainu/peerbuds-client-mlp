@@ -5,10 +5,13 @@
         <img src="/assets/images/pb_logo.png" alt="logo">
       </a>
     </span>
+      <span style="margin-left: 35px;" *ngIf="(isLoggedIn | async)">
+          <md-icon>search</md-icon>
+      </span>
     <span class="search-form">
-      <md-input-container style="color:#767676 !important" floatPlaceholder="never" class="mat-block" *ngIf="(isLoggedIn | async)">
+      <md-input-container style="color:#333333 !important" floatPlaceholder="never" class="mat-block" *ngIf="(isLoggedIn | async)">
         <input name="search" style="color:#767676 !important" class="mat-block search-box" mdInput [formControl]="myControl" [mdAutocomplete]="auto"
-          placeholder="Search people, topic...">
+          placeholder="Try 'Mumbai' ">
       </md-input-container>
       <md-autocomplete #auto="mdAutocomplete">
         <md-option *ngFor="let option of options" [value]="_searchService.getSearchOptionText(option)" (click)="_searchService.onSearchOptionClicked(option)">
@@ -32,6 +35,9 @@
           <span style="margin-left:5px;font-size:10px">{{profileCompletionObject.progress}}%</span>
         </div>
       </span>
+        <button md-button class="headerButtons" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']" *ngIf="(isLoggedIn | async)">
+        Create an Experience
+      </button>
       <button md-button class="headerButtons" [mdMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
         Teach
       </button>
@@ -39,7 +45,8 @@
         Learn
       </button>
       <button md-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async)">
-        Notifications
+        <md-icon *ngIf="!hasNewNotification">notifications_none</md-icon>
+        <md-icon *ngIf="hasNewNotification">notifications</md-icon>
       </button>
       <div style="display: inline-block;" *ngIf="(isLoggedIn | async)">
         <md-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</md-icon>
@@ -52,22 +59,24 @@
       </div>
 
       <span class="example-spacer"></span>
-      <button md-button class="headerButtons" [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
+      <!--<button md-button class="headerButtons" [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
         Philosophy
-      </button>
+      </button>-->
       <!--<button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
       Journey
     </button>
     <button md-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
       About
     </button>-->
-      <button md-button class="headerButtons" [routerLink]="['/white-paper']" *ngIf="!(isLoggedIn | async)">
+      <!--<button md-button class="headerButtons" [routerLink]="['/white-paper']" *ngIf="!(isLoggedIn | async)">
         White Paper
+      </button>-->
+        <button md-button class="headerButtons" [routerLink]="['/home/homefeed']"  *ngIf="!(isLoggedIn | async)">
+        Explore
       </button>
-
-      <a md-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
+      <button md-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
         Sign Up
-      </a>
+      </button>
 
       <button md-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
         Log In
@@ -89,15 +98,15 @@
   <!--<button md-menu-item [routerLink]="['/editSessions']">
       Enable Sessions
     </button>-->
-  <button md-menu-item [routerLink]="['/console/teaching/workshops']">
+  <!--<button md-menu-item [routerLink]="['/console/teaching/workshops']">
     Create a Workshop
-  </button>
+  </button>-->
   <button md-menu-item [routerLink]="['/console/teaching/experiences']">
     Create an Experience
   </button>
-  <button md-menu-item [routerLink]="['/console/teaching/sessions']">
+  <!--<button md-menu-item [routerLink]="['/console/teaching/sessions']">
     Enable Live Session
-  </button>
+  </button>-->
   <!--<button md-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
     Calendar
   </button>-->
@@ -142,20 +151,24 @@
 <md-menu #profileCompletionMenu>
   <span *ngIf="profileCompletionObject">
     <button md-menu-item [routerLink]="['/console/profile/edit']">
-      Personal Details
-      <md-icon class="profile-check" *ngIf="profileCompletionObject['personal']">done</md-icon>
+      <md-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['personal']">done</md-icon>
+        <md-icon class="profile-check" *ngIf="profileCompletionObject['personal']">check_circle</md-icon>
+        Personal Details
     </button>
     <button md-menu-item [routerLink]="['/console/profile/edit']">
-      Additional Details
-      <md-icon class="profile-check" *ngIf="profileCompletionObject['additional']">done</md-icon>
+      <md-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['additional']">done</md-icon>
+        <md-icon class="profile-check" *ngIf="profileCompletionObject['additional']">check_circle</md-icon>
+        Additional Details
     </button>
     <button md-menu-item [routerLink]="['/console/profile/photos']">
-      Photo
-      <md-icon class="profile-check" *ngIf="profileCompletionObject['photos']">done</md-icon>
+      <md-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['photos']">done</md-icon>
+        <md-icon class="profile-check" *ngIf="profileCompletionObject['photos']">check_circle</md-icon>
+        Photo
     </button>
     <button md-menu-item [routerLink]="['/console/profile/edit']">
-      Verification
-      <md-icon class="profile-check" *ngIf="profileCompletionObject['verification']">done</md-icon>
+      <md-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['verification']">done</md-icon>
+        <md-icon class="profile-check" *ngIf="profileCompletionObject['verification']">check_circle</md-icon>
+        Verification
     </button>
   </span>
 </md-menu>

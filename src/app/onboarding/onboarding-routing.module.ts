@@ -6,7 +6,7 @@ import { OnboardingComponent } from './onboarding.component';
 
 const routes: Routes = [
 {
-  path: '', 
+  path: '',
   children: [
     {
       path: ':step',

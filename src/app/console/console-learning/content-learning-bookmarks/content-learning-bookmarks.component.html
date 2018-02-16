@@ -35,7 +35,7 @@
                         </a>
                       </div>
                     </div>
-                    <div class="collectionParticipantImageCarousel">
+                    <div class="collectionParticipantImageCarousel" *ngIf="bookmark.collection !== undefined && bookmark.collection.length > 0">
                       <div class="circle-thumb-big" *ngFor="let owner of bookmark.collection[0].owners">
                         <app-profile-popup [peer]="owner"></app-profile-popup>
                       </div>

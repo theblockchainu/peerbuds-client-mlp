@@ -117,11 +117,6 @@ export class OnboardingComponent implements OnInit {
     this.active = false;
     this.interests = event;
     this.suggestedTopics = _.differenceBy(this.suggestedTopics, this.interests, 'id');
-    // this.suggestedTopics = event;
-    // this.suggestedTopics.map((obj) => {
-    //   obj.checked = 'true';
-    //   return obj;
-    // });
   }
 
   public requestNewTopicEnabled(event) {
@@ -222,7 +217,7 @@ export class OnboardingComponent implements OnInit {
               console.log(this.interests);
               this.interests.forEach(selectedTopic => {
                 temp = _.remove(suggestions, function(entry) {
-                  return selectedTopic.id == entry.id;
+                  return selectedTopic.id === entry.id;
                 });
               });
               console.log(temp);

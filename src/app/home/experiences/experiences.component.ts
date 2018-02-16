@@ -33,6 +33,8 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 })
 export class ExperiencesComponent implements OnInit {
   public availableTopics: Array<any>;
+  public topicsBackup: Array<any>;
+
   public userId;
   public experiences: Array<any>;
   @ViewChild('topicButton') topicButton;
@@ -65,6 +67,7 @@ export class ExperiencesComponent implements OnInit {
       response => {
         this.loading = false;
         this.availableTopics = response;
+        this.topicsBackup = _.cloneDeep(response);
         this.fetchExperiences();
       }, err => {
         this.loading = false;
@@ -108,67 +111,71 @@ export class ExperiencesComponent implements OnInit {
       }
     }
     if (this.selectedTopics.length < 1) {
-      for (const topicObj of this.availableTopics) {
-        this.selectedTopics.push({ 'name': topicObj['topic'].name });
-      }
+      query = {
+        'include': [
+          { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'experience' } } }
+        ]
+      };
+    } else {
+      query = {
+        'include': [
+          { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'experience' } } }
+        ],
+        'where': { or: this.selectedTopics }
+      };
     }
-    query = {
-      'include': [
-        { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'experience' } } }
-      ],
-      'where': { or: this.selectedTopics }
-    };
+
 
     this._topicService.getTopics(query)
       .subscribe(
-      (response) => {
-        const experiences = [];
-        for (const responseObj of response) {
-          responseObj.collections.forEach(collection => {
-            let experienceLocation = 'Unknown location';
-            if (collection.status === 'active') {
-              if (collection.contents) {
-                collection.contents.forEach(content => {
-                  if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
-                    experienceLocation = content.locations[0].city;
+        (response) => {
+          const experiences = [];
+          for (const responseObj of response) {
+            responseObj.collections.forEach(collection => {
+              let experienceLocation = 'Unknown location';
+              if (collection.status === 'active') {
+                if (collection.contents) {
+                  collection.contents.forEach(content => {
+                    if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
+                      experienceLocation = content.locations[0].city;
+                    }
+                  });
+                  collection.location = experienceLocation;
+                }
+                if (collection.owners && collection.owners[0].reviewsAboutYou) {
+                  collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+                  collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+                }
+                let hasActiveCalendar = false;
+                collection.calendars.forEach(calendar => {
+                  if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                    hasActiveCalendar = true;
+                    return;
                   }
                 });
-                collection.location = experienceLocation;
-              }
-              if (collection.owners && collection.owners[0].reviewsAboutYou) {
-                collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-                collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-              }
-              let hasActiveCalendar = false;
-              collection.calendars.forEach(calendar => {
-                if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-                  hasActiveCalendar = true;
-                  return;
-                }
-              });
-              if (collection.price !== undefined && hasActiveCalendar) {
-                if (this.selectedRange) {
-                  if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
+                if (collection.price !== undefined && hasActiveCalendar) {
+                  if (this.selectedRange) {
+                    if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
+                      experiences.push(collection);
+                    }
+                  } else {
                     experiences.push(collection);
                   }
                 } else {
-                  experiences.push(collection);
+                  console.log('price unavailable');
                 }
-              } else {
-                console.log('price unavailable');
               }
-            }
-          });
+            });
+          }
+          this.experiences = _.uniqBy(experiences, 'id');
+          this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
+          if (!this.initialized) {
+            this.setPriceRange();
+            this.initialized = true;
+          }
+        }, (err) => {
+          console.log(err);
         }
-        this.experiences = _.uniqBy(experiences, 'id');
-        this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
-        if (!this.initialized) {
-          this.setPriceRange();
-          this.initialized = true;
-        }
-      }, (err) => {
-        console.log(err);
-      }
       );
   }
 
@@ -226,5 +233,11 @@ export class ExperiencesComponent implements OnInit {
         this.fetchData();
       });
     }
+  }
+
+  public filterClickedTopic(index) {
+    this.availableTopics = _.cloneDeep(this.topicsBackup);
+    this.availableTopics[index]['checked'] = true;
+    this.fetchExperiences();
   }
 }

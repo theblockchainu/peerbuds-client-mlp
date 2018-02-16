@@ -32,6 +32,8 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 })
 export class WorkshopsComponent implements OnInit {
   public availableTopics: Array<any>;
+  public topicsBackup: Array<any>;
+
   public userId;
   public workshops: Array<any>;
   @ViewChild('topicButton') topicButton;
@@ -42,7 +44,6 @@ export class WorkshopsComponent implements OnInit {
   public selectedTopics: Array<any>;
   public loading = false;
   private today = moment();
-
   constructor(
     public _collectionService: CollectionService,
     public _profileService: ProfileService,
@@ -65,6 +66,7 @@ export class WorkshopsComponent implements OnInit {
       response => {
         this.loading = false;
         this.availableTopics = response;
+        this.topicsBackup = _.cloneDeep(response);
         this.fetchWorkshops();
       }, err => {
         this.loading = false;
@@ -108,58 +110,62 @@ export class WorkshopsComponent implements OnInit {
       }
     }
     if (this.selectedTopics.length < 1) {
-      for (const topicObj of this.availableTopics) {
-        this.selectedTopics.push({ 'name': topicObj['topic'].name });
-      }
+      query = {
+        'include': [
+          { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }], 'where': { 'type': 'workshop' } } }
+        ]
+      };
+    } else {
+      query = {
+        'include': [
+          { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }], 'where': { 'type': 'workshop' } } }
+        ],
+        'where': { or: this.selectedTopics }
+      };
     }
-    query = {
-      'include': [
-        { 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }], 'where': { 'type': 'workshop' } } }
-      ],
-      'where': { or: this.selectedTopics }
-    };
+
 
     this._topicService.getTopics(query)
       .subscribe(
-      (response) => {
-        const workshops = [];
-        for (const responseObj of response) {
-          responseObj.collections.forEach(collection => {
-            if (collection.status === 'active') {
-              if (collection.owners && collection.owners[0].reviewsAboutYou) {
-                collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-                collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-              }
-              let hasActiveCalendar = false;
-              collection.calendars.forEach(calendar => {
-                if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-                  hasActiveCalendar = true;
-                  return;
+        (response) => {
+          const workshops = [];
+          for (const responseObj of response) {
+            responseObj.collections.forEach(collection => {
+              if (collection.status === 'active') {
+                if (collection.owners && collection.owners[0].reviewsAboutYou) {
+                  collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+                  collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
                 }
-              });
-              if (collection.price !== undefined && hasActiveCalendar) {
-                if (this.selectedRange) {
-                  if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
+                let hasActiveCalendar = false;
+                collection.calendars.forEach(calendar => {
+                  if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+                    hasActiveCalendar = true;
+                    return;
+                  }
+                });
+                if (collection.price !== undefined && hasActiveCalendar) {
+                  if (this.selectedRange) {
+                    if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
+                      workshops.push(collection);
+                    }
+                  } else {
                     workshops.push(collection);
                   }
                 } else {
-                  workshops.push(collection);
+                  console.log('price unavailable');
                 }
-              } else {
-                console.log('price unavailable');
               }
-            }
-          });
+            });
+          }
+          this.workshops = _.uniqBy(workshops, 'id');
+          this.workshops = _.orderBy(this.workshops, ['createdAt'], ['desc']);
+          if (!this.initialized) {
+            this.setPriceRange();
+            this.initialized = true;
+          }
+        }, (err) => {
+          console.log(err);
         }
-        this.workshops = _.uniqBy(workshops, 'id');
-        this.workshops = _.orderBy(this.workshops, ['createdAt'], ['desc']);
-        if (!this.initialized) {
-          this.setPriceRange();
-          this.initialized = true;
-        }
-      }, (err) => {
-        console.log(err);
-      }
       );
   }
 
@@ -218,4 +224,9 @@ export class WorkshopsComponent implements OnInit {
     }
   }
 
+  public filterClickedTopic(index) {
+    this.availableTopics = _.cloneDeep(this.topicsBackup);
+    this.availableTopics[index]['checked'] = true;
+    this.fetchWorkshops();
+  }
 }

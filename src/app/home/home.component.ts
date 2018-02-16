@@ -11,7 +11,7 @@ import { CollectionService } from '../_services/collection/collection.service';
 })
 export class HomeComponent implements OnInit {
 
-  public activeTab: string;
+  public activeTab = 'homefeed';
   public userId;
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -19,11 +19,21 @@ export class HomeComponent implements OnInit {
     private _collectionService: CollectionService,
     private appConfig: AppConfig,
     private _cookieUtilsService: CookieUtilsService) {
-
     this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
+      this.activatedRoute.firstChild.url.subscribe((urlSegment) => {
+          console.log('activated route is: ' + JSON.stringify(urlSegment));
+          this.activeTab = urlSegment[0].path;
+      });
+      this.router.events.subscribe(event => this.updateActiveLink(event));
+  }
+
+  public updateActiveLink(location) {
+      if (location !== undefined && location.url !== undefined) {
+          this.activeTab = location.url.split('/')[location.url.split('/').length - 1];
+      }
   }
 
 }

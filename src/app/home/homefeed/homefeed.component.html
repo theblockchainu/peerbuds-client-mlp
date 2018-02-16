@@ -64,6 +64,9 @@
                 <ngx-loading [show]="true"></ngx-loading>
             </div>
             <div *ngIf="!loadingWorkshops" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+                <div class="noDataContainer" *ngIf="workshops === undefined || workshops.length === 0">
+                    There are no new active workshops to view right now. Browse from within your signed-up workshops <a class="clickable">here</a>.
+                </div>
                 <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
           <span class="share-panel">
             <button md-icon-button class="bookmark" (click)="toggleWorkshopBookmark(i)">
@@ -138,6 +141,9 @@
                 <ngx-loading [show]="true"></ngx-loading>
             </div>
             <div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+                <div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+                    There are no new active experiences to view right now. Browse from within your signed-up experiences <a class="clickable">here</a>.
+                </div>
                 <div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
           <span class="share-panel">
             <button md-icon-button class="bookmark" (click)="toggleExperienceBookmark(i)">
@@ -234,6 +240,9 @@
                 <ngx-loading [show]="true"></ngx-loading>
             </div>
             <div *ngIf="!loadingCommunities" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+                <div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
+                    There are no new active communities to view right now. Browse from within your signed-up communities <a class="clickable">here</a>.
+                </div>
                 <div class="community-card" *ngFor="let community of communities; let i =index">
                       <span class="share-panel">
                         <button md-icon-button class="bookmark" (click)="toggleCommunityBookmark(i)">
@@ -268,7 +277,7 @@
                         </div>
                         <div *ngIf="community.participants !== undefined && community.participants.length > 0"
                              style="margin-top: 3px;">
-                            <div *ngFor="let participant of community.participants" style="display: inline-block;">
+                            <div *ngFor="let participant of community.participants" style="display: inline-block;" class="communityParticipants">
                                 <app-profile-popup [peer]="participant"></app-profile-popup>
                             </div>
                         </div>

@@ -8,11 +8,11 @@
 <div class="row">
   <div class="col-md-12 margin-top-10" *ngIf="loaded">
     <div #noContentView *ngIf="ongoingArray.length === 0 && upcomingArray.length===0 && drafts.length === 0 && pastArray.length === 0"
-      class="center" style="margin-top: 10%">
+      class="center" style="margin-top: 10%; margin-bottom: 10%">
       <div class="lightText">
         You are not teaching any experience
         <br>
-        <br> Start by hosting an
+        <br> Start by creating an
         <a color="default" (click)="createExperience()">Experience </a>
       </div>
     </div>

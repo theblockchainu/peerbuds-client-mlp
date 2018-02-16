@@ -13,6 +13,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { SocketService } from '../socket/socket.service';
+import * as Raven from 'raven-js';
+import {CookieUtilsService} from '../cookieUtils/cookie-utils.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -26,6 +28,7 @@ export class AuthenticationService {
 
   constructor(private http: Http, private config: AppConfig,
     private _cookieService: CookieService,
+    private _cookieUtilsService: CookieUtilsService,
     private route: ActivatedRoute,
     public router: Router,
     public _requestHeaderService: RequestHeaderService,
@@ -51,7 +54,7 @@ export class AuthenticationService {
   }
 
   public removeCookie(key: string) {
-    this._cookieService.delete(key);
+    this._cookieUtilsService.deleteValue(key);
   }
 
   /**
@@ -68,6 +71,9 @@ export class AuthenticationService {
         // login successful if there's a jwt token in the response
         const user = response.json();
         if (user && user.access_token) {
+            Raven.setUserContext({
+                id: user.userId
+            });
           this.isLoginSubject.next(true);
           this.getLoggedInUser.emit(user.userId);
           this._socketService.addUser(user.userId);
