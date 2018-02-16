@@ -1,25 +1,25 @@
 <div class="row" style="margin-top: 20px;">
   <div class="col-md-3">
     <md-list>
-      <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
+      <!--<md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
         View All
-      </md-list-item>
-      <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
+      </md-list-item>-->
+      <!--<md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
         Workshops
-      </md-list-item>
+      </md-list-item>-->
       <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
         Experiences
       </md-list-item>
-      <md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
+      <!--<md-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
         Sessions
-      </md-list-item>
+      </md-list-item>-->
       <md-list-item *ngIf="getActiveTab() === 'workshops' ">
-        <span mdTooltip="Account Verification Pending!" [mdTooltipDisabled]="accountVerified">
+        <span mdTooltip="Please wait for your account to be verified before creating a new workshop." [mdTooltipDisabled]="accountVerified">
           <button md-raised-button (click)="createWorkshop()" [disabled]="!accountVerified" color="primary">New Workshop</button>
         </span>
       </md-list-item>
       <md-list-item *ngIf="activeTab === 'experiences'">
-        <span mdTooltip="Account Verification Pending!" [mdTooltipDisabled]="accountVerified">
+        <span mdTooltip="Please wait for your account to be verified before creating a new experience." [mdTooltipDisabled]="accountVerified">
           <button md-raised-button (click)="createExperience()" [disabled]="!accountVerified" color="primary">New Experience</button>
         </span>
       </md-list-item>

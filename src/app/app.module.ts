@@ -26,6 +26,19 @@ import { DefaultModule } from './default/default.module';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { SessionModule } from './session/session.module';
 import { AppFooterModule } from './app-footer/app-footer.module';
+import * as Raven from 'raven-js';
+
+Raven
+    .config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434', {release: 'dev_aakash'})
+    .install();
+
+export class RavenErrorHandler implements ErrorHandler {
+    handleError(err: any): void {
+        Raven.captureException(err);
+    }
+}
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +89,7 @@ import { AppFooterModule } from './app-footer/app-footer.module';
   providers: [
     {
       provide: ErrorHandler,
-      useClass: GlobalErrorHandler
+      useClass: RavenErrorHandler
     },
     Title
   ],

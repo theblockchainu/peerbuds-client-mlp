@@ -152,7 +152,7 @@ export class AppHeaderComponent implements OnInit {
       disableClose: false,
       position: {
         top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
-        left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 170 + 'px'
+        left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 220 + 'px'
       }
     });
 

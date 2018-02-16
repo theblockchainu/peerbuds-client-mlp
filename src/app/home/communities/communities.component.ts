@@ -34,6 +34,8 @@ import {CommunityService} from '../../_services/community/community.service';
 export class CommunitiesComponent implements OnInit {
 
     public availableTopics: Array<any>;
+    public topicsBackup: Array<any>;
+
     public userId;
     public communities: Array<any>;
     @ViewChild('topicButton') topicButton;
@@ -67,6 +69,7 @@ export class CommunitiesComponent implements OnInit {
             response => {
                 this.loading = false;
                 this.availableTopics = response;
+                this.topicsBackup = _.cloneDeep(response);
                 this.fetchCommunities();
             }, err => {
                 this.loading = false;
@@ -176,4 +179,11 @@ export class CommunitiesComponent implements OnInit {
             });
         }
     }
+
+    public filterClickedTopic(index) {
+        this.availableTopics = _.cloneDeep(this.topicsBackup);
+        this.availableTopics[index]['checked'] = true;
+        this.fetchCommunities();
+    }
+
 }

@@ -8,15 +8,18 @@
 }
 
 .topic-bar img{
-    width: 82px;
+    width: 96px;
+    height: 100%;
     vertical-align: sub;
+    display: table-cell;
+    vertical-align: top;
 }
 
 .topic-bar h3{
-    display: inline-block;
-    padding-left: 10px;
+    display: table-cell;
+    padding-left: 12px;
     padding-right: 10px;
-    vertical-align: bottom;
+    vertical-align: middle;
 }
 
 .topic-bar .topic-div{
@@ -29,11 +32,17 @@
 .floating-button-left{
     position: absolute;
     z-index: 1;
+  left: 0px;
+  top: 115px;
 }
 
 .floating-button-right{
     position: absolute;
     z-index: 1;
     right: 0px;
-    top: 60px;
+    top: 115px;
+}
+
+.mat-button-focus-overlay {
+  background-color: #fff !important;
 }

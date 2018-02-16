@@ -1122,7 +1122,7 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 /* Landing Page Ends */
 
-.footerButtons .mat-button-focus-overlay, .collectionContent .mat-button-focus-overlay{
+.footerButtons .mat-button-focus-overlay, .collectionContent .mat-button-focus-overlay, .topics-section .mat-button-focus-overlay{
     background: none;
 }
 
@@ -1141,7 +1141,7 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 .search-form {
-    margin: 0 2rem;
+    margin: 0 0.7rem;
     flex-grow: 1; /* <-- THE SECRET SAUCE! */
     min-width: 18rem;
     font-size: 14px;
@@ -1153,10 +1153,6 @@ md-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .search-form .mat-input-underline {
     display: none;
-}
-
-.search-form .mat-input-wrapper {
-    padding-bottom: 0.69688em;
 }
 
 /* Loading */
@@ -1608,8 +1604,43 @@ md-datepicker-toggle.disableMD, md-datepicker-toggle.disableMD button, md-datepi
 }
 
 .topic-bar button{
+    color: rgba(0,0,0,0.8) !important;
+    justify-content: left !important;
     padding-left: 0px !important;
-    padding-right: 0px !important;
-    height: 47px;
-    color: rgba(0,0,0,0.54) !important;
+    padding-right: 5px !important;
+    width: 277px !important;
+    height: 72px !important;
+    font-size: 1rem  !important;
+    font-weight: 600  !important;
+    background-color: transparent !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    border-radius: 3px !important;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06) !important;
+    margin: 15px 0px 4px 0px !important;
+    overflow: hidden !important;
+    text-align: left !important;
+}
+
+.mat-button-table {
+    display: table;
+    height: 100%;
+}
+
+.filterRow {
+    margin-top: -57px;
+    margin-left: -12%;
+    width: 125%;
+    padding-left: 11%;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #dddddd;
+    position: fixed;
+    background: #fff !important;
+    z-index: 2;
+}
+
+.noDataContainer {
+    margin-left: 10px;
+    font-size: 1.2rem;
+    color:#aaaaaa;
 }

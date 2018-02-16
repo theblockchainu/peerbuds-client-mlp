@@ -41,7 +41,7 @@ export class ConsoleAdminComponent implements OnInit {
   private fetchPeers() {
     this.peersLoaded = false;
     const query = {
-      'where': { 'accountVerified': false },
+      'where': { 'accountVerified': 'false' },
       'include': [
         'profiles'
       ]

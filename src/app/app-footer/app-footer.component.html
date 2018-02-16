@@ -20,7 +20,7 @@ y  <div class="layout-row footer" layout="row" color="white">
   </div>
 </footer> -->
 
-<footer style="border-top: 1px solid #eeee ee;">
+<footer style="border-top: 1px solid #dbdbdb;">
   <!-- <div class="text-center" style="padding: 4px 0;">
     <a [routerLink]="['/philosophy']">About Us</a>
     <a href="#">Help</a>
@@ -30,14 +30,14 @@ y  <div class="layout-row footer" layout="row" color="white">
   </div> -->
   <div class="row mat-body-1">
     <div class="col-md-3 center">
-      <md-select [(value)]="selectedCurrency">
+      <md-select [(value)]="selectedCurrency" (valueChange)="updateCurrencyCookie()">
         <md-option [value]="'inr'"> INR </md-option>
         <md-option [value]="'usd'"> USD </md-option>
       </md-select>
     </div>
     <div class="col-md-3">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mat-body-2">
           Peerbuds
         </div>
       </div>
@@ -56,7 +56,7 @@ y  <div class="layout-row footer" layout="row" color="white">
     </div>
     <div class="col-md-3">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mat-body-2">
           Discover
         </div>
       </div>
@@ -74,7 +74,7 @@ y  <div class="layout-row footer" layout="row" color="white">
     </div>
     <div class="col-md-3">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mat-body-2">
           Teach
         </div>
       </div>
@@ -83,7 +83,7 @@ y  <div class="layout-row footer" layout="row" color="white">
           <ul>
             <li>Why Teach</li>
             <li>Teaching</li>
-            <li>Responsible Hosting</li>
+            <li>Responsible Teaching</li>
             <li>Community Center</li>
           </ul>
         </div>
@@ -91,7 +91,7 @@ y  <div class="layout-row footer" layout="row" color="white">
     </div>
 
   </div>
-  <hr>
+  <hr style="margin-left: -2%; width: 104%;">
   <div class="row">
     <div class="col-md-4">
       <img style="width: 14%;" src="/assets/images/pb_logo.png" alt="logo">
