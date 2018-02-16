@@ -24,7 +24,7 @@
       <div class="loading-container" [hidden]="!loading">
         <ngx-loading [show]="true"></ngx-loading>
       </div>
-      <div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
+      <div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;padding-top: 30px;">
         <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
           <span class="share-panel">
             <button md-icon-button class="bookmark" (click)="toggleBookmark(i)">

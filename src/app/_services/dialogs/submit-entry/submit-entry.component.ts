@@ -8,13 +8,13 @@ import { SubmissionViewComponent } from '../submission-view/submission-view.comp
 import { ProjectSubmissionService } from '../../../_services/project-submission/project-submission.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import 'rxjs/add/operator/map';
-import {ContentService} from '../../../_services/content/content.service';
+import { ContentService } from '../../../_services/content/content.service';
 import _ from 'lodash';
 
 @Component({
-  selector: 'app-submit-entry',
-  templateUrl: './submit-entry.component.html',
-  styleUrls: ['./submit-entry.component.scss']
+    selector: 'app-submit-entry',
+    templateUrl: './submit-entry.component.html',
+    styleUrls: ['./submit-entry.component.scss']
 })
 export class SubmitEntryComponent implements OnInit {
 
@@ -38,13 +38,14 @@ export class SubmitEntryComponent implements OnInit {
     public maxTopicMsg = 'Choose max 3 related tags';
 
     constructor(public config: AppConfig,
-                @Inject(MD_DIALOG_DATA) public data: any,
-                public dialog: MdDialog,
-                private _fb: FormBuilder, public http: Http,
-                private mediaUploader: MediaUploaderService,
-                public projectSubmissionService: ProjectSubmissionService,
-                private _cookieUtilsService: CookieUtilsService,
-                private _contentService: ContentService
+        @Inject(MD_DIALOG_DATA) public data: any,
+        public dialog: MdDialog,
+        private _fb: FormBuilder, public http: Http,
+        private mediaUploader: MediaUploaderService,
+        public projectSubmissionService: ProjectSubmissionService,
+        private _cookieUtilsService: CookieUtilsService,
+        private _contentService: ContentService,
+        public dialogRef: MdDialogRef<SubmitEntryComponent>
     ) {
         this.userId = _cookieUtilsService.getValue('userId');
         this.searchTopicURL = config.searchUrl + '/api/search/' + this.config.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
