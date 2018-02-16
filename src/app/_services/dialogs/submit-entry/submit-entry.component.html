@@ -2,7 +2,7 @@
     <form [formGroup]="submitEntryForm" (ngSubmit)="publishView()">
         <div class="row">
             <div class="col-sm-12">
-                <button disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+                <button type="button" disableRipple md-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
                     <md-icon class="mat-icon material-icons mat-icon-small">close</md-icon>
                 </button>
                 <div class="mat-display-1">Submit your entry to this project</div>
@@ -22,7 +22,8 @@
                     <ngx-loading [show]="true"></ngx-loading>
                 </div>
                 <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-                              accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" chooseLabel="Browse" multiple="multiple">
+                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*"
+                    chooseLabel="Browse" multiple="multiple">
                 </p-fileUpload>
                 <div *ngIf="urlForImages.length" class="pic delete">
                     <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
