@@ -525,8 +525,8 @@ export class WorkshopEditComponent implements OnInit {
           }
 
         },
-        err => console.log('error'),
-        () => console.log('Completed!'));
+          err => console.log('error'),
+          () => console.log('Completed!'));
 
     } else {
       console.log('NO COLLECTION');
@@ -843,14 +843,11 @@ export class WorkshopEditComponent implements OnInit {
 
         if (step && step === 13) {
           this.submitTimeline(collectionId, timeline);
-        }
-        if (!result.isNewInstance) {
+        } else {
           this.step++;
           this.workshopStepUpdate();
+          this.router.navigate(['workshop', collectionId, 'edit', this.step]);
         }
-        console.log(this.step);
-        // this.router.navigate(['workshop', collectionId, 'edit', this.step]);
-
       });
   }
 
@@ -878,9 +875,8 @@ export class WorkshopEditComponent implements OnInit {
       this.http.patch(this.config.apiUrl + '/api/collections/' + collectionId + '/calendar', body)
         .subscribe((response) => {
           this.step++;
-          console.log(this.step);
-          // this.workshopStepUpdate();
-          // this.router.navigate(['workshop', collectionId, 'edit', this.step]);
+          this.workshopStepUpdate();
+          this.router.navigate(['workshop', collectionId, 'edit', this.step]);
         });
     } else {
       console.log('Enter Date!');
@@ -1178,11 +1174,11 @@ export class WorkshopEditComponent implements OnInit {
         });
         this.step++;
       },
-      (error) => {
-        this.snackBar.open(error.message, 'close', {
-          duration: 500
+        (error) => {
+          this.snackBar.open(error.message, 'close', {
+            duration: 500
+          });
         });
-      });
   }
 
   takeToPayment() {

@@ -488,8 +488,8 @@ export class ExperienceEditComponent implements OnInit {
           }
 
         },
-        err => console.log('error'),
-        () => console.log('Completed!'));
+          err => console.log('error'),
+          () => console.log('Completed!'));
 
     } else {
       console.log('NO COLLECTION');
@@ -734,15 +734,14 @@ export class ExperienceEditComponent implements OnInit {
     const body = data.value;
     delete body.selectedLanguage;
 
-    this._collectionService.patchCollection(this.experienceId, body).map(
+    this._collectionService.patchCollection(this.experienceId, body).subscribe(
       (response) => {
         const result = response.json();
         let collectionId;
         if (result.isNewInstance) {
           this.experience.controls.status.setValue(result.status);
           collectionId = result.id;
-        }
-        else {
+        } else {
           collectionId = this.experienceId;
         }
         result.topics = this.experienceData.topics;
@@ -750,16 +749,14 @@ export class ExperienceEditComponent implements OnInit {
         result.owners = this.experienceData.owners;
         this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
 
-        if (step && step > 12) {
+        if (step && step === 13) {
           this.submitTimeline(collectionId, timeline);
-        }
-        if (!result.isNewInstance) {
+        } else {
           this.step++;
           this.experienceStepUpdate();
+          this.router.navigate(['experience', collectionId, 'edit', this.step]);
         }
-        this.router.navigate(['experience', collectionId, 'edit', this.step]);
-
-      }).subscribe();
+      });
   }
 
   /**
@@ -784,17 +781,14 @@ export class ExperienceEditComponent implements OnInit {
     const body = data.value.calendar;
     if (body.startDate && body.endDate) {
       this.http.patch(this.config.apiUrl + '/api/collections/' + collectionId + '/calendar', body)
-        .map((response) => {
+        .subscribe((response) => {
           this.step++;
           this.experienceStepUpdate();
           this.router.navigate(['experience', collectionId, 'edit', this.step]);
-        })
-        .subscribe();
+        });
     } else {
       console.log('Enter Date!');
     }
-
-
   }
 
   public submitInterests() {
@@ -1088,11 +1082,11 @@ export class ExperienceEditComponent implements OnInit {
         });
         this.step++;
       },
-      (error) => {
-        this.snackBar.open(error.message, 'close', {
-          duration: 500
+        (error) => {
+          this.snackBar.open(error.message, 'close', {
+            duration: 500
+          });
         });
-      });
   }
 
   takeToPayment() {
