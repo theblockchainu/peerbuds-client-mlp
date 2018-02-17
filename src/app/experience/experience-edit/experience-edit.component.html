@@ -168,7 +168,7 @@
                 <div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
                   <div class="col-sm-12">
                     <md-input-container class="pb-block" style="margin-bottom: 20px">
-                      <textarea mdInput #aboutHost maxlength="500" rows="2" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
+                      <textarea mdInput #aboutHost maxlength="500" rows="4" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
                       <md-hint align="end">{{aboutHost.value.length}} / 500</md-hint>
                     </md-input-container>
                   </div>
@@ -229,7 +229,7 @@
                     <div class="form-group">
                       <h2 class="title">Headline</h2>
                       <p class="subtitle">
-                        Explain your experience in a short and descriptive sentence.
+                        Explain your experience in one short and descriptive sentence.
                         <br/> It should give an insight to learners on what they'll do.
                       </p>
                       <br/>
@@ -243,7 +243,7 @@
                 </div>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(5)>Back</a> -->
-                  <span class="pull-right" mdTooltip="Please fill all details" [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
+                  <span class="pull-right" mdTooltip="Please type in a headline to continue." [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
                     <button md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
                   </span>
                 </div>
@@ -293,7 +293,7 @@
                 <p class="subtitle">Describe the knowledge prerequisites, if there are any, that learners should know of.</p>
                 <div class="col-sm-12 margin-bottom-30 padding-left-0">
                   <md-input-container class="pb-block">
-                    <textarea mdInput #notes maxlength="500" rows="2" formControlName="notes"></textarea>
+                    <textarea mdInput #notes maxlength="500" rows="4" formControlName="notes"></textarea>
                     <md-hint align="end">{{notes.value.length}} / 500</md-hint>
                   </md-input-container>
                 </div>
