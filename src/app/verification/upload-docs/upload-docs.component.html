@@ -62,7 +62,7 @@
               <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
             </button>
             <h2 class="headline">How can we reach you securely?</h2>
-            <p class="description1 margin-bottom-40">Please let us know how we can reach you by email. To help keep your Peerbuds account secure, make sure only you
+            <p class="description1 margin-bottom-40">Please let us know how can we reach you by email. To help keep your Peerbuds account secure, make sure only you
               can log into this email address.</p>
             <md-input-container style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
               <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" placeholder="Email Address" /> -->
@@ -91,10 +91,8 @@
             <button class="md-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
               <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
             </button>
-            <h2 class="headline">Enter the OTP sent to your email</h2>
-            <p class="description1 margin-bottom-40">We have sent to 6 digit code to {{email.value}}. Please enter this code or click the link in your email to verify
-              your email address. Users on Peerbuds need to verify their email IDs to receive notifications and updates from
-              the platform.</p>
+            <h2 class="headline">Enter the code sent to your email</h2>
+            <p class="description1 margin-bottom-40">We have sent a 6 digit code to {{email.value}}. Please enter this code or click the link in your email to verify your email address. Users on Peerbuds need to verify their email IDs to receive notifications and updates from the platform.</p>
             <!-- <div class="margin-bottom-10">
                 <label class="display-block margin-bottom-0"><strong>OTP</strong></label>
                 <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" />
@@ -105,9 +103,9 @@
             <span *ngIf="otpError" style="color:red;margin-left:10px;">{{otpError}}</span>
             <div>
               <p class="description1">
-                <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before
+                <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a>. Please wait at least 5 minutes before
                 <br/> requesting another code or
-                <a style="cursor: pointer;" (click)="continue(2)">Change Email</a>
+                <a style="cursor: pointer;" (click)="continue(2)">change your email</a>
               </p>
             </div>
           </div>
@@ -116,7 +114,7 @@
           <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
             <div class="pull-right">
               <a md-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding/1']">Skip</a>
-              <span mdTooltip="Please recheck the OTP!" [mdTooltipDisabled]="inputOTP.value.length ===6">
+              <span mdTooltip="Please recheck the code you entered." [mdTooltipDisabled]="inputOTP.value.length ===6">
                 <button md-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length !=6">Verify Email</button>
               </span>
             </div>
