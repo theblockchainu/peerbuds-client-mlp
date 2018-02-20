@@ -213,6 +213,7 @@ export class ExperienceContentComponent implements OnInit {
               this.deleteContent(null, i);
               const itenary = <FormArray>this.myForm.controls.itenary;
               itenary.removeAt(i);
+              this.days.emit(itenary);
             }
             else if (result === 'reject') {
               // Do nothing
@@ -224,6 +225,7 @@ export class ExperienceContentComponent implements OnInit {
         this.deleteContent(null, i);
         const itenary = <FormArray>this.myForm.controls.itenary;
         itenary.removeAt(i);
+        this.days.emit(itenary);
       }
     }
     else {
