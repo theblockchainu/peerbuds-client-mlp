@@ -17,7 +17,7 @@ export class AppFooterComponent implements OnInit {
   public activePage = '';
   isLoggedIn: Observable<boolean>;
   loggedIn: boolean;
-  public selectedCurrency: string;
+  public selectedCurrency = 'usd';
   public availableCurrencies: Array<any>;
 
   constructor(
@@ -37,6 +37,10 @@ export class AppFooterComponent implements OnInit {
       this.availableCurrencies = res;
     });
     this.selectedCurrency = this._cookieUtilsService.getValue('currency');
+  }
+
+  public updateCurrencyCookie() {
+      this._cookieUtilsService.setValue('currency', this.selectedCurrency);
   }
 
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {CollectionService} from '../../_services/collection/collection.service';
+import {AppConfig} from '../../app.config';
 
 @Component({
   selector: 'app-topic-row',
@@ -11,22 +13,25 @@ export class TopicRowComponent implements OnInit {
   @Input() availableTopics: Array<any>;
   @Output() onTopicClicked = new EventEmitter<number>();
 
-  constructor() { }
+  constructor(
+      public _collectionService: CollectionService,
+      public config: AppConfig,
+  ) { }
 
   ngOnInit() {
-    this.translateX = 5;
+    this.translateX = 0;
     this.transformStyle = {
-      'transform': 'translateX(5%)'
+      'transform': 'translateX(0%)'
     };
   }
 
   public translate(increment: boolean) {
-    if (increment && this.translateX < 5) {
-      this.translateX += 20;
+    if (increment && this.translateX < 0) {
+      this.translateX += 26;
     } else if (!increment) {
       const el = document.getElementById('topic' + (this.availableTopics.length - 1));
       if (el.getClientRects()[0].left > 1500) {
-        this.translateX -= 20;
+        this.translateX -= 26;
       }
     }
     this.transformStyle = {

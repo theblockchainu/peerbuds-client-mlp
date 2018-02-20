@@ -20,17 +20,17 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 export class UploadDocsComponent implements OnInit {
   public step = 1;
-  private uploadingImage = false;
+  public uploadingImage = false;
   public peer: FormGroup;
   public otp: FormGroup;
-  private email: string;
-  private success;
+  public email: string;
+  public success;
   public otpReceived: string;
-  private verificationIdUrl: string;
-  private fileType;
-  private fileName;
+  public verificationIdUrl: string;
+  public fileType;
+  public fileName;
   public userId;
-  private otpError: string;
+  public otpError: string;
 
   constructor(
     public router: Router,
@@ -109,8 +109,8 @@ export class UploadDocsComponent implements OnInit {
         },
         (err) => {
           console.log(err);
-          if(err.status === 400) {
-            this.otpError = "Wrong or Invalid OTP";
+          if (err.status === 400) {
+            this.otpError = 'The code you entered does not match our records. Did you enter the most recent one?';
             //this.otp.controls['inputOTP'].setValue('');
           }
 

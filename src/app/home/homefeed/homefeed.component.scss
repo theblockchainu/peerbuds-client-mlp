@@ -3,7 +3,7 @@
 }
 
 .homefeed{
-    padding-top: 30px;
+    padding-top: 45px;
 }
 
 .recommendation-thumb{
@@ -125,4 +125,10 @@ agm-map {
 
 .mat-display-1 {
     margin-bottom: 25px !important;
+}
+
+.communityParticipants {
+  &:not(:first-child) {
+    margin-left: -15px !important;
+  }
 }

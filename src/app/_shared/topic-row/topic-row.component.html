@@ -1,4 +1,4 @@
-<div class="topics-section">
+<div class="topics-section" style="overflow: hidden; margin-bottom: 40px;">
   <span class="floating-button-left">
     <button color="none" (click)="translate(true)" md-mini-fab>
       <md-icon>keyboard_arrow_left </md-icon>
@@ -7,8 +7,10 @@
   <div class="topic-bar" [ngStyle]="transformStyle">
     <div class="topic-div" *ngFor="let topicObj of availableTopics;let i =index" id="topic{{i}}">
       <button md-button class="mat-border-button" #topicButton (click)="topicClicked(i)">
-        <img src="/assets/images/placeholder-image.jpg" alt="logo">
-        <h3>{{topicObj.topic.name}}</h3>
+          <div class="mat-button-table">
+              <img src="{{config.apiUrl + topicObj.topic.imageUrl}}" alt="logo" (error)="_collectionService.imgErrorHandler($event)">
+              <h3>{{topicObj.topic.name | titlecase}}</h3>
+          </div>
       </button>
     </div>
   </div>

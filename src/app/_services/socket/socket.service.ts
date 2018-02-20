@@ -20,6 +20,12 @@ export class SocketService {
         this.listenForNewMessage().subscribe(message => {
             console.log(message);
         });
+        this.listenForCookieUpdate().subscribe(message => {
+            console.log('cookie updated: ' + message );
+            if (message.hasOwnProperty('accountApproved')) {
+                _cookieUtilsService.setValue('accountApproved', message['accountApproved']);
+            }
+        });
     }
 
     public addUser(userId) {
@@ -66,6 +72,15 @@ export class SocketService {
     public listenForNewMessage() {
         return new Observable(observer => {
             this.socket.on('message', (data) => {
+                observer.next(data);
+            });
+            return;
+        });
+    }
+
+    public listenForCookieUpdate() {
+        return new Observable(observer => {
+            this.socket.on('cookie', (data) => {
                 observer.next(data);
             });
             return;
