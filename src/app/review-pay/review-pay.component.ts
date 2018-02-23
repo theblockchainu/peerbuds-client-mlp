@@ -59,7 +59,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.stripe = Stripe('pk_test_i9RmJ8HN4UygSzCchZMEGgwn');
+        this.stripe = Stripe(this.config.stripePublishableKey);
         const elements = this.stripe.elements();
         this.card = elements.create('card', {
             iconStyle: 'solid',
