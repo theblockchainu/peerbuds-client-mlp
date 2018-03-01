@@ -12,7 +12,7 @@ import { MdDialog } from '@angular/material';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { AppNotificationDialogComponent } from './dialogs/app-notification-dialog/app-notification-dialog.component';
 import { NotificationService } from '../_services/notification/notification.service';
-import {SearchService} from '../_services/search/search.service';
+import { SearchService } from '../_services/search/search.service';
 
 @Component({
   selector: 'app-header',
@@ -68,6 +68,9 @@ export class AppHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._profileService.profileSubject.subscribe(res => {
+      this.getProfile();
+    });
     this.getProfile();
     this.getNotifications();
     this.myControl.valueChanges.subscribe((value) => {
