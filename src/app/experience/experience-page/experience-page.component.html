@@ -663,7 +663,7 @@
                     <span class="pre-wrapped">{{experience.aboutHost | shorten: maxLength : '...'}}</span>
                     <span *ngIf="experience.aboutHost && experience.aboutHost.length > maxLength" (click)="showAll(experience.aboutHost.length)"
                       style="color:#33bd9e">read more</span>
-                    <span *ngIf=" experience.aboutHost && experience.aboutHost.length <= maxLength" (click)="showAll(experience.aboutHost.length)"
+                    <span *ngIf=" experience.aboutHost && experience.aboutHost.length>140  && experience.aboutHost.length <= maxLength" (click)="showAll(experience.aboutHost.length)"
                       style="color:#33bd9e">show less</span>
                   </p>
                 </div>

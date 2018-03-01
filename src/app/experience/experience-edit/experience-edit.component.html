@@ -37,12 +37,20 @@
         <div class="row">
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <h2 class="title">Peerbuds Experience Guidelines</h2>
-            <p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education, and open-minded in general.  We're pretty sure that each individual who joins our community is a cool, high-caliber person with unique talents and knowledge to share.  That said, we'd like to establish just a few common-sense expectations so our platform can continue to be as high quality as possible.
+            <p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education, and
+              open-minded in general. We're pretty sure that each individual who joins our community is a cool, high-caliber
+              person with unique talents and knowledge to share. That said, we'd like to establish just a few common-sense
+              expectations so our platform can continue to be as high quality as possible.
             </p>
             <ul class="guideline-points text-grey">
-              <li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's actually a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled and as positive as possible.</li>
-              <li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate with all your peers as necessary and always be on time to events.</li>
-              <li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy and friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody wins.</li>
+              <li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's
+                actually a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled
+                and as positive as possible.</li>
+              <li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
+                with all your peers as necessary and always be on time to events.</li>
+              <li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy
+                and friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody
+                wins.</li>
             </ul>
             <div class="margin-top-20">
               <button md-raised-button (click)="goto(2)" color="accent" class="pull-right">
@@ -131,7 +139,8 @@
           <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Which language will you host in?</h2>
-              <p class="subtitle">You will write your descriptions and present your experience in this language.  Guests will be notified of this in your experience description.</p>
+              <p class="subtitle">You will write your descriptions and present your experience in this language. Guests will be notified of this
+                in your experience description.</p>
               <br/>
               <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
                 <div class="row margin-top-60">
@@ -192,7 +201,8 @@
           <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Create the page learners will see</h2>
-              <p class="subtitle">Write in a clear, straightforward and friendly way. We'll prompt you on when to show off your personality and be more descriptive.
+              <p class="subtitle">Write in a clear, straightforward and friendly way. We'll prompt you on when to show off your personality and
+                be more descriptive.
               </p>
               <br/>
               <div style="margin-top:60px;">
@@ -313,8 +323,8 @@
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">How many seats are available in each cohort? </h2>
               <p class="subtitle">
-                  Remember to keep your experience as personal as possible.
-                  <br>The fuller your workshop, the less attention you can give to each individual learner.
+                Remember to keep your experience as personal as possible.
+                <br>The fuller your workshop, the less attention you can give to each individual learner.
               </p>
               <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
                 <div class="col-sm-4 padding-left-0">
@@ -353,6 +363,7 @@
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
                         </ng-template>
                       </p-fileUpload>
+                       <h5>Max File Size               <b>10MB</b>             </h5>
                       <div *ngIf="urlForVideo.length" class="profileVideo delete">
                         <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
                           <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
@@ -376,6 +387,7 @@
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
                         </ng-template>
                       </p-fileUpload>
+                       <h5>Max File Size               <b>10MB</b>             </h5>
                       <div *ngIf="urlForImages.length" class="pic delete">
                         <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
                           <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">

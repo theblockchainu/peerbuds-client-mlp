@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MD_DIALOG_DATA, MdDialogRef, MdSnackBar } from '@angular/material';
-
+import { AppConfig } from '../../../app.config';
 @Component({
   selector: 'app-invite-friends-dialog',
   templateUrl: './invite-friends-dialog.component.html',
@@ -13,9 +13,10 @@ export class InviteFriendsDialogComponent implements OnInit {
   constructor(
     public dialogRef: MdDialogRef<InviteFriendsDialogComponent>,
     @Inject(MD_DIALOG_DATA) public data: any,
-    private snackBar: MdSnackBar
+    private snackBar: MdSnackBar,
+    public _appConfig: AppConfig
   ) {
-    this.url = data.url;
+    this.url = this._appConfig.clientUrl + '/' + data.url;
   }
 
   ngOnInit() {

@@ -123,7 +123,7 @@
                   <ng-template pTemplate="toolbar">
                     <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
                   </ng-template>
-                </p-fileUpload>
+                </p-fileUpload>                  <h5>Max File Size               <b>10MB</b>             </h5>
                 <!-- <div *ngFor="let pp of profile_picture_array"  class="profilePic"> -->
                 <div *ngIf="picture_url" class="profilePic delete">
                   <img class="uploaded_picture" src="{{config.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
@@ -150,7 +150,7 @@
                     <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 videos</div>
                   </ng-template>
 
-                </p-fileUpload>
+                </p-fileUpload>                  <h5>Max File Size               <b>10MB</b>             </h5>
 
                 <div *ngIf="profile_video" class="profileVideo delete">
                   <video width="150" class="uploaded_picture" preload="metadata">

@@ -27,7 +27,7 @@
                 <ng-template pTemplate="toolbar">
                   <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 file</div>
                 </ng-template>
-              </p-fileUpload>
+              </p-fileUpload>                  <h5>Max File Size               <b>10MB</b>             </h5>
               <div *ngIf="verificationIdUrl" class="profilePic icon-remove delete">
                 <img *ngIf="fileType.includes('image')" class="uploaded_picture" src="{{config.apiUrl + verificationIdUrl}}" width="150"
                   style="border: 0.5px solid #ccc">

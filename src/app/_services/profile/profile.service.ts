@@ -4,6 +4,7 @@ import {
   , RequestOptionsArgs
 } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -17,6 +18,7 @@ import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 export class ProfileService {
   public key = 'userId';
   private options;
+  public profileSubject = new Subject<any>();
 
   constructor(private http: Http,
     private config: AppConfig,
@@ -48,7 +50,7 @@ export class ProfileService {
       const filter = '{"include": [ {"peer":[{"reviewsByYou":{"reviewedPeer":"profiles"}},{"reviewsAboutYou":{"peer":"profiles"}},{"collections":["calendars",{"participants":"profiles"},{"contents":"schedules"},"topics"]},{"ownedCollections":["calendars",{"participants":["reviewsAboutYou", "profiles"]},{"contents":"schedules"},"topics"]}, "topicsLearning", "topicsTeaching"]}, "work", "education"]}';
       return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + filter, this.options)
         .map(
-        (response: Response) => response.json()
+          (response: Response) => response.json()
         );
     }
   }
@@ -57,7 +59,7 @@ export class ProfileService {
     if (userId) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
         .map(
-        (response: Response) => response.json()
+          (response: Response) => response.json()
         );
     }
   }
@@ -66,7 +68,7 @@ export class ProfileService {
     if (id) {
       return this.http.get(this.config.apiUrl + '/api/peers/' + id + '/profiles?filter=' + JSON.stringify(filter), this.options)
         .map(
-        (response: Response) => response.json()
+          (response: Response) => response.json()
         );
     }
   }
@@ -79,25 +81,25 @@ export class ProfileService {
       if (userId) {
         return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '?filter=' + JSON.stringify(filter), this.options)
           .map(
-          (response: Response) => response.json()
+            (response: Response) => response.json()
           );
       } else {
         return this.http.get(this.config.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue(this.key) + '?filter=' + JSON.stringify(filter), this.options)
           .map(
-          (response: Response) => response.json()
+            (response: Response) => response.json()
           );
       }
     } else {
       if (userId) {
         return this.http.get(this.config.apiUrl + '/api/peers/' + userId, this.options)
           .map(
-          (response: Response) => response.json()
+            (response: Response) => response.json()
           );
       }
       else {
         return this.http.get(this.config.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue(this.key), this.options)
           .map(
-          (response: Response) => response.json()
+            (response: Response) => response.json()
           );
       }
     }
@@ -108,7 +110,7 @@ export class ProfileService {
       const filter = { 'include': [{ 'peer': 'ownedCollections' }, 'work', 'education', 'phone_numbers', 'emergency_contacts'] };
       return this.http.get(this.config.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
         .map(
-        (response: Response) => response.json()
+          (response: Response) => response.json()
         );
     }
   }
@@ -138,7 +140,10 @@ export class ProfileService {
   public updateProfile(userId, body: any) {
     if (userId) {
       return this.http.patch(this.config.apiUrl + '/api/peers/' + userId + '/profile', body, this.options)
-        .map((response: Response) => response.json());
+        .map((response: Response) => {
+          this.profileSubject.next('updated');
+          return response.json();
+        });
     }
   }
 
@@ -299,10 +304,10 @@ export class ProfileService {
     } else {
       return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.options)
         .flatMap(
-        (response) => {
-          return this.http
-            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.sanitize(work), this.options);
-        }
+          (response) => {
+            return this.http
+              .post(this.config.apiUrl + '/api/profiles/' + profileId + '/work', this.sanitize(work), this.options);
+          }
         ).map((response) => response.json());
     }
   }
@@ -313,10 +318,10 @@ export class ProfileService {
     } else {
       return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.options)
         .flatMap(
-        (response) => {
-          return this.http
-            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.sanitize(emergency_contact), this.options);
-        }
+          (response) => {
+            return this.http
+              .post(this.config.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.sanitize(emergency_contact), this.options);
+          }
         ).map((response) => response.json());
     }
   }
@@ -327,10 +332,10 @@ export class ProfileService {
     } else {
       return this.http.delete(this.config.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this.options)
         .flatMap(
-        (response) => {
-          return this.http
-            .post(this.config.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this.sanitize(phone_numbers), this.options);
-        }
+          (response) => {
+            return this.http
+              .post(this.config.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this.sanitize(phone_numbers), this.options);
+          }
         ).map((response) => response.json());
     }
   }
@@ -601,6 +606,4 @@ export class ProfileService {
   public imgErrorHandler(event) {
     event.target.src = '/assets/images/user-placeholder.jpg';
   }
-
-
 }

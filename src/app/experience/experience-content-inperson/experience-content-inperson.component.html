@@ -51,7 +51,7 @@
                   <ng-template pTemplate="toolbar">
                     <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
                   </ng-template>
-                </p-fileUpload>
+                </p-fileUpload>                  <h5>Max File Size               <b>10MB</b>             </h5>
                 <div *ngIf="image.value" class="col-md-6 padding-left-0 pic delete imageContainer">
                   <img src="{{config.apiUrl + image.value}}" width="150" style="border: 0.5px solid #ccc; position: relative; top: -20px;">
                   <md-icon (click)="deleteFromContainer(image.value, 'image')" class="delete-button">close</md-icon>
@@ -80,7 +80,7 @@
                 <ng-template pTemplate="toolbar">
                   <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
                 </ng-template>
-              </p-fileUpload>
+              </p-fileUpload>                  <h5>Max File Size               <b>10MB</b>             </h5>
               <div *ngIf="attachmentUrls.length" class="pic delete">
                 <div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
                   <img *ngIf="file.type.includes('image')" src="{{config.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc; position: relative;">
