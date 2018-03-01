@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
   public reviewsFromLearners = [];
   public reviewsFromTeachers = [];
   public isTeacher: boolean;
-  public offsetString = 'col-md-offset-1';
+  public offsetString: string;
   private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
   public connectedIdentities = {
     'facebook': false,
@@ -230,6 +230,7 @@ export class ProfileComponent implements OnInit {
         this.calculateCollectionDurations();
         this.computeReviews();
         this.isTeacher = true;
+        this.offsetString = 'col-md-offset-1';
       }
       else {
         this.offsetString = 'custom-margin-left-20pc';

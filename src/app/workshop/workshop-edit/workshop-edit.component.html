@@ -355,7 +355,7 @@
                         <ng-template pTemplate="toolbar">
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
                         </ng-template>
-                      </p-fileUpload>
+                      </p-fileUpload>                  <h5>Max File Size               <b>10MB</b>             </h5>
                       <div *ngIf="urlForVideo.length" class="profileVideo delete">
                         <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
                           <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
@@ -378,7 +378,7 @@
                         <ng-template pTemplate="toolbar">
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
                         </ng-template>
-                      </p-fileUpload>
+                      </p-fileUpload>                  <h5>Max File Size               <b>10MB</b>             </h5>
                       <div *ngIf="urlForImages.length" class="pic delete">
                         <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
                           <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
