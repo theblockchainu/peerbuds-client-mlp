@@ -15,9 +15,9 @@ export class GlobalErrorHandler implements ErrorHandler {
     handleError(error) {
         const router = this.injector.get(Router);
         const message = error.message ? error.message : error.toString();
-        location.reload();
+        // location.reload();
         // TODO: log on the server
-        // router.navigate(['error']);
+        router.navigate(['error']);
         //throw error;
     }
 }

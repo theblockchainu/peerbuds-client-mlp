@@ -115,11 +115,43 @@ export class AddLocationDialogComponent implements OnInit {
     }
 
     autoCompleteCallback(data: any): any {
+        console.log(data);
+        const addressObj = this.filterAddressArray(data.address_components);
+        console.log(addressObj);
         this.locationForm.controls['location_name'].patchValue(data.name);
         this.locationForm.controls['map_lat'].patchValue(data.geometry.location.lat);
         this.locationForm.controls['map_lng'].patchValue(data.geometry.location.lng);
+        this.locationForm.controls['country'].patchValue(addressObj.country);
+        this.locationForm.controls['street_address'].patchValue(addressObj.route + ',' + addressObj.neighborhood + ',' + addressObj.locality);
+        this.locationForm.controls['apt_suite'].patchValue(addressObj.subpremise);
+        this.locationForm.controls['city'].patchValue(addressObj.administrative_area_level_2);
+        this.locationForm.controls['state'].patchValue(addressObj.administrative_area_level_1);
+        this.locationForm.controls['zip'].patchValue(addressObj.postal_code);
         this.lat = data.geometry.location.lat;
         this.lng = data.geometry.location.lng;
+    }
+
+    private filterAddressArray(addressArray: Array<any>) {
+        const addressObj = {
+            postal_code: '',
+            country: '',
+            administrative_area_level_1: '',
+            administrative_area_level_2: '',
+            locality: '',
+            neighborhood: '',
+            route: '',
+            street_number: '',
+            subpremise: ''
+        };
+
+        addressArray.forEach(part => {
+            part.types.forEach(address_type => {
+                if (addressObj.hasOwnProperty(address_type)) {
+                    addressObj[address_type] = part.long_name;
+                }
+            });
+        });
+        return addressObj;
     }
 
     filter(val: string): string[] {
