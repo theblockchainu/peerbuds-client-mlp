@@ -64,7 +64,7 @@ export class ProfileComponent implements OnInit {
   public ongoingExperiences: Array<any>;
   public upcomingExperiences: Array<any>;
   public availablePackages: Array<any>;
-  public maxLength = 100;
+  public maxLength = 140;
   public learningJourneyFilter: string;
 
   constructor(

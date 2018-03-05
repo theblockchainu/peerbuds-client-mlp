@@ -93,7 +93,8 @@
                     <p class="alignJustify" *ngIf="profileObj.description">
                         <span class="pre-wrapped alignJustify">{{profileObj.description | ucfirst | shorten: maxLength : '...'}}</span>
                         <span *ngIf="profileObj.description.length > maxLength" (click)="showAll(profileObj.description.length)" style="color:#33bd9e">read more</span>
-                        <span *ngIf="profileObj.description.length <= maxLength" (click)="showAll(profileObj.description.length)" style="color:#33bd9e">show less</span>
+                        <span *ngIf="profileObj.description.length >140 && profileObj.description.length <= maxLength" (click)="showAll(profileObj.description.length)"
+                            style="color:#33bd9e">show less</span>
                     </p>
                     <p *ngIf="!profileObj.description">No description provided.
                         <a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
