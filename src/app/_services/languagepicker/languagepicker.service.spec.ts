@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { LanguagepickerService } from './languagepicker.service';
+import { LanguagePickerService } from './languagepicker.service';
 
-describe('LanguagepickerService', () => {
+describe('LanguagePickerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LanguagepickerService]
+      providers: [LanguagePickerService]
     });
   });
 
-  it('should be created', inject([LanguagepickerService], (service: LanguagepickerService) => {
+  it('should be created', inject([LanguagePickerService], (service: LanguagePickerService) => {
     expect(service).toBeTruthy();
   }));
 });

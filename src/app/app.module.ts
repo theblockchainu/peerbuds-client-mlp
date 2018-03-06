@@ -1,5 +1,5 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import 'hammerjs';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './_core/_core.module';
@@ -27,6 +27,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { SessionModule } from './session/session.module';
 import { AppFooterModule } from './app-footer/app-footer.module';
 import * as Raven from 'raven-js';
+import { isPlatformBrowser } from '@angular/common';
 
 Raven
   .config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434', { release: 'dev_aakash' })
@@ -58,7 +59,7 @@ export class RavenErrorHandler implements ErrorHandler {
     PrivacyPolicyComponent,
     TermsOfServiceComponent],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'pb' }),
     CoreModule,
     AppFooterModule,
     BrowserAnimationsModule,
@@ -99,4 +100,12 @@ export class RavenErrorHandler implements ErrorHandler {
   ],
   entryComponents: [AppNotificationDialogComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string) {
+    const platform = isPlatformBrowser(platformId) ?
+      'in the browser' : 'on the server';
+    console.log(`Running ${platform} with appId=${appId}`);
+  }
+}
