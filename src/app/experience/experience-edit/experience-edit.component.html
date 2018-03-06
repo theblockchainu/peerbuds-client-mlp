@@ -50,11 +50,12 @@
                 with all your peers as necessary and always be on time to events.</li>
               <li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy
                 and friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody
-                wins.</li>
+                wins.
+              </li>
             </ul>
             <div class="margin-top-20">
               <button md-raised-button (click)="goto(2)" color="accent" class="pull-right">
-                <span *ngIf="!busyBasics">Continue</span>
+                <span *ngIf="!busyBasics">Next</span>
                 <span *ngIf="busyBasics"> </span>
                 <ngx-loading [show]="busyBasics"></ngx-loading>
               </button>
@@ -124,7 +125,7 @@
                   <!-- <a md-button (click)=goto(1)>Back</a> -->
                   <span class="pull-right" mdTooltip="Add at least one interest to continue" [mdTooltipDisabled]="interests.length !== 0">
                     <button md-raised-button color="accent" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
-                      <span *ngIf="!busyInterest">Continue</span>
+                      <span *ngIf="!busyInterest">Next</span>
                       <span *ngIf="busyInterest"> </span>
                       <ngx-loading [show]="busyInterest"></ngx-loading>
                     </button>
@@ -156,7 +157,7 @@
                   <!-- <a md-button (click)=goto(2)>Back</a> -->
                   <span class="pull-right" mdTooltip="Select a language to continue" [mdTooltipDisabled]="selectedLanguages!==undefined">
                     <button md-raised-button color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
-                      <span *ngIf="!busyLanguage">Continue</span>
+                      <span *ngIf="!busyLanguage">Next</span>
                       <span *ngIf="busyLanguage"> </span>
                       <ngx-loading [show]="busyLanguage"></ngx-loading>
                     </button>
@@ -171,7 +172,7 @@
           <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Introduce yourself as a Host</h2>
-              <p class="subtitle">Why are you the best person to host this experience?</p>
+              <p class="subtitle">Describe yourself and tell guests how you came to be passionate about hosting this experience.</p>
 
               <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
                 <div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
@@ -186,7 +187,7 @@
                   <!-- <a md-button (click)=goto(3)>Back</a> -->
                   <span class="pull-right" mdTooltip="A brief description about yourself is mandatory to continue" [mdTooltipDisabled]="aboutHost.value.length !== 0">
                     <button md-raised-button color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
-                      <span *ngIf="!busyHost">Continue</span>
+                      <span *ngIf="!busyHost">Next</span>
                       <span *ngIf="busyHost"> </span>
                       <ngx-loading [show]="busyHost"></ngx-loading>
                     </button>
@@ -207,7 +208,7 @@
               <br/>
               <div style="margin-top:60px;">
                 <a md-raised-button (click)="goto(6)" color="accent" class="pull-right">
-                  <span *ngIf="!busyExperiencePage">Continue</span>
+                  <span *ngIf="!busyExperiencePage">Next</span>
                   <span *ngIf="busyExperiencePage"> </span>
                   <ngx-loading [show]="busyExperiencePage"></ngx-loading>
                 </a>
@@ -254,7 +255,7 @@
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(5)>Back</a> -->
                   <span class="pull-right" mdTooltip="Please type in a headline to continue." [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
-                    <button md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Continue</button>
+                    <button md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Next</button>
                   </span>
                 </div>
               </form>
@@ -279,7 +280,7 @@
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(6)>Back</a> -->
                   <span class="pull-right" mdTooltip="Describe your experience in detail to continue" [mdTooltipDisabled]="description.value.length !== 0">
-                    <button md-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Continue</button>
+                    <button md-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Next</button>
                   </span>
                 </div>
               </form>
@@ -310,7 +311,7 @@
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(7)>Back</a> -->
                   <span class="pull-right" mdTooltip="Please fill all the details" [mdTooltipDisabled]="experience.controls['difficultyLevel'].value && experience.controls['notes'].value">
-                    <button md-raised-button color="accent" type="Submit" [disabled]="!difficultyLevel && notes.value.length == 0">Continue</button>
+                    <button md-raised-button color="accent" type="Submit" [disabled]="!difficultyLevel && notes.value.length == 0">Next</button>
                   </span>
                 </div>
               </form>
@@ -337,7 +338,7 @@
                   <!-- <a md-button (click)=goto(8)>Back</a> -->
                   <span class="pull-right" mdTooltip="Enter the maximum number of participants you can teach in each Cohort of this experience"
                     [mdTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
-                    <button md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Continue</button>
+                    <button md-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Next</button>
                   </span>
                 </div>
               </form>
@@ -363,7 +364,9 @@
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
                         </ng-template>
                       </p-fileUpload>
-                       <h5>Max File Size               <b>10MB</b>             </h5>
+                      <h5>Max File Size
+                        <b>10MB</b>
+                      </h5>
                       <div *ngIf="urlForVideo.length" class="profileVideo delete">
                         <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
                           <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
@@ -387,7 +390,9 @@
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
                         </ng-template>
                       </p-fileUpload>
-                       <h5>Max File Size               <b>10MB</b>             </h5>
+                      <h5>Max File Size
+                        <b>10MB</b>
+                      </h5>
                       <div *ngIf="urlForImages.length" class="pic delete">
                         <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
                           <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
@@ -403,7 +408,7 @@
                   <div class="row">
                     <div class="margin-top-60">
                       <span class="pull-right" mdTooltip="Either a video or an image is mandatory to continue" [mdTooltipDisabled]="urlForImages.length !== 0 || urlForVideo.length !== 0">
-                        <button md-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 && urlForVideo.length === 0">Continue</button>
+                        <button md-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 && urlForVideo.length === 0">Next</button>
                       </span>
                     </div>
                   </div>
@@ -453,7 +458,7 @@
                 <div style="margin-top:100px;">
                   <!-- <a md-button (click)=goto(10)>Back</a> -->
                   <span class="pull-right" mdTooltip="Enter a price you wish to charge for this experience and its cancellation policy" [mdTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value">
-                    <button md-raised-button color="accent" type="Submit" [disabled]="(!experience.controls['price'].value || !experience.controls['cancellationPolicy'].value  || !experience.controls['currency'].value) && !freeExperience">Continue</button>
+                    <button md-raised-button color="accent" type="Submit" [disabled]="(!experience.controls['price'].value || !experience.controls['cancellationPolicy'].value  || !experience.controls['currency'].value) && !freeExperience">Next</button>
                   </span>
                 </div>
               </form>
@@ -470,7 +475,7 @@
                   will see this before they sign up for your experience.</p>
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(11)>Back</a> -->
-                  <button class="pull-right" md-raised-button color="accent" (click)="goto(13)">Continue</button>
+                  <button class="pull-right" md-raised-button color="accent" (click)="goto(13)">Next</button>
                 </div>
               </form>
             </div>
@@ -526,7 +531,7 @@
                   <div style="margin-top:100px;">
                     <!-- <a md-button (click)=goto(12)>Back</a> -->
                     <span class="pull-right" mdTooltip="A minimum of 1 day experience is mandatory to continue" [mdTooltipDisabled]="(timeline.controls['calendar'].value.startDate || timeline.controls['calendar'].value.endDate)">
-                      <button md-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate)">Continue</button>
+                      <button md-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate)">Next</button>
                     </span>
                   </div>
                 </div>
@@ -594,7 +599,7 @@
                 </div>
                 <span class="pull-right" mdTooltip="Please verify your phone number to continue" [mdTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
                   <button md-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
-                    <span *ngIf="!busyPayment">Continue</span>
+                    <span *ngIf="!busyPayment">Next</span>
                     <span *ngIf="busyPayment"> </span>
                     <ngx-loading [show]="busyPayment"></ngx-loading>
                   </button>

@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
   }
 
   modifyHeader(location) {
-    this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url) || /^\/experience\/.*\/edit\/./.test(location.url) || /^\/session\/.*\/edit\/./.test(location.url));
+    this.showHeader = !(/^\/workshop\/.*\/edit\/./.test(location.url) || /^\/experience\/.*\/edit\/./.test(location.url) || /^\/session\/.*\/edit\/./.test(location.url) || /^\/error/.test(location.url));
   }
 
   public setTitle(newTitle: string) {
