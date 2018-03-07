@@ -7,38 +7,29 @@
                 </div>
                 <div class="col-md-2 pull-right" style="text-align: right">
                     <a [routerLink]="'/console/learning/workshops'">
-            <span class="mat-body-1">
-              See all
-              <md-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</md-icon>
-            </span>
+                        <span class="mat-body-1">
+                            See all
+                            <md-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</md-icon>
+                        </span>
                     </a>
                 </div>
             </div>
             <div class="loading-container" [hidden]="!loadingContinueLearning">
                 <ngx-loading [show]="true"></ngx-loading>
             </div>
-            <div *ngIf="!loadingContinueLearning" class="row feed-horizontal margin-bottom-60"
-                 style="padding: 0px 7px;">
+            <div *ngIf="!loadingContinueLearning" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
                 <div class="continueLearning-card" *ngFor="let collection of ongoingArray; let i =index">
-                    <a *ngIf="i<3"
-                       [routerLink]="'/workshop/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
+                    <a *ngIf="i<3" [routerLink]="'/workshop/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
                         <div class="">
-                            <img class="continueLearning-thumb"
-                                 *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined"
-                                 src="{{config.apiUrl+getLearnerUpcomingEvent(collection).imageUrl}}"
-                                 alt="workshpImg">
-                            <img class="continueLearning-thumb"
-                                 *ngIf="getLearnerUpcomingEvent(collection).imageUrl === undefined"
-                                 src="/assets/images/no-image.jpg"
-                                 alt="workshpImg">
+                            <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined" src="{{config.apiUrl+getLearnerUpcomingEvent(collection).imageUrl}}"
+                                alt="workshpImg">
+                            <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl === undefined" src="/assets/images/no-image.jpg"
+                                alt="workshpImg">
                         </div>
-                        <div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} :
-                            {{collection.title | titlecase}}
+                        <div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}
                         </div>
-                        <div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}}
-                            {{getLearnerUpcomingEvent(collection).fillerWord}}:
-                            {{getLearnerUpcomingEvent(collection).title
-                            | shorten: 70 : '...' | titlecase}}
+                        <div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}} {{getLearnerUpcomingEvent(collection).fillerWord}}:
+                            {{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}
                         </div>
                     </a>
                 </div>
@@ -130,10 +121,10 @@
                 </div>
                 <div class="col-md-2 pull-right" style="text-align: right">
                     <a [routerLink]="'/home/experiences'">
-            <span class="mat-body-1">
-              See all
-              <md-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</md-icon>
-            </span>
+                        <span class="mat-body-1">
+                            See all
+                            <md-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</md-icon>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -142,28 +133,25 @@
             </div>
             <div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
                 <div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-                    There are no new active experiences to view right now. Browse from within your signed-up experiences <a class="clickable">here</a>.
+                    There are no new active experiences to view right now. Browse from within your signed-up experiences
+                    <a
+                        class="clickable">here</a>.
                 </div>
                 <div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
-          <span class="share-panel">
-            <button md-icon-button class="bookmark" (click)="toggleExperienceBookmark(i)">
-              <md-icon
-                      *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
-                bookmark</md-icon>
-              <md-icon
-                      *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
-                      color="primary">bookmark</md-icon>
-            </button>
-            <button md-icon-button class="share"
-                    (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)">
-              <md-icon>share</md-icon>
-            </button>
-          </span>
+                    <span class="share-panel">
+                        <button md-icon-button class="bookmark" (click)="toggleExperienceBookmark(i)">
+                            <md-icon *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
+                                bookmark</md-icon>
+                            <md-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
+                                color="primary">bookmark</md-icon>
+                        </button>
+                        <button md-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)">
+                            <md-icon>share</md-icon>
+                        </button>
+                    </span>
                     <a *ngIf="i<5" [routerLink]="'/experience/'+experience.id">
                         <div class="">
-                            <div class="recommendation-thumb"
-                                 *ngIf="experience.imageUrls && experience.imageUrls.length>0"
-                                 [ngStyle]="{'background': 'url(' + config.apiUrl + experience.imageUrls[0] + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
+                            <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + config.apiUrl + experience.imageUrls[0] + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
                                 <div class="recommendation-city" [ngClass]="{'hidden': cardInFocus}">
                                     <md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
                                         place
@@ -171,17 +159,13 @@
                                     <b>{{experience.location | ucwords}}</b>
                                 </div>
                                 <div class="recommendation-map" [ngClass]="{'hidden': !cardInFocus}">
-                                    <agm-map [latitude]="experience.lat" [longitude]="experience.lng"
-                                             [scrollwheel]="false" [streetViewControl]="false" [zoom]="2">
-                                        <agm-circle [latitude]="experience.lat" [longitude]="experience.lng"
-                                                    [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'"
-                                                    [strokeOpacity]="0.9"></agm-circle>
+                                    <agm-map [latitude]="experience.lat" [longitude]="experience.lng" [scrollwheel]="false" [streetViewControl]="false" [zoom]="2">
+                                        <agm-circle [latitude]="experience.lat" [longitude]="experience.lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'"
+                                            [strokeOpacity]="0.9"></agm-circle>
                                     </agm-map>
                                 </div>
                             </div>
-                            <div class="recommendation-thumb"
-                                 *ngIf="!experience.imageUrls || experience.imageUrls.length<=0"
-                                 [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
+                            <div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
                                 <div class="recommendation-city">
                                     <md-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
                                         place
@@ -190,38 +174,34 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="experience.currency !== undefined && experience.currency.length > 0"
-                             style="margin-top: 3px;">
+                        <div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;">
                             <span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span>
                             / person
                         </div>
-                        <div *ngIf="experience.currency === undefined || experience.currency.length == 0"
-                             style="margin-top: 3px;">
-                            <span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> /
-                            person
+                        <div *ngIf="experience.currency === undefined || experience.currency.length == 0" style="margin-top: 3px;">
+                            <span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / person
                         </div>
                         <div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>
                         <!--<div style="margin-top: 0px;">{{experience.headline | shorten: 20 : '...' | titlecase}}</div>-->
-                        <div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' +
-                            experience.owners[0].profiles[0].last_name | ucwords}}
+                        <div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' + experience.owners[0].profiles[0].last_name
+                            | ucwords}}
                         </div>
                         <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="experience.rating"
-                                      readonly="true" stars="5" [cancel]="false">
+                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="experience.rating" readonly="true" stars="5" [cancel]="false">
                             </p-rating>
                             <span class="padding-left-10" *ngIf="experience.ratingCount" style="text-align: left">
-                <label>{{experience.ratingCount}} reviews</label>
-              </span>
+                                <label>{{experience.ratingCount}} reviews</label>
+                            </span>
                             <span class="padding-left-10" *ngIf="!experience.ratingCount" style="text-align: left">
-                <label>0 reviews</label>
-              </span>
+                                <label>0 reviews</label>
+                            </span>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row community-feed">
+    <!-- <div class="row community-feed">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-5">
@@ -339,5 +319,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

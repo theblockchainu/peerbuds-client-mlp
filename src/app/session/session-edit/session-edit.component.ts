@@ -565,8 +565,8 @@ export class SessionEditComponent implements OnInit {
           }
 
         },
-        err => console.log('error'),
-        () => console.log('Completed!'));
+          err => console.log('error'),
+          () => console.log('Completed!'));
 
     } else {
       console.log('NO COLLECTION');
@@ -843,11 +843,15 @@ export class SessionEditComponent implements OnInit {
     const startMoment = moment(calendarGroup.controls['startDate'].value).local();
     const endMoment = moment(calendarGroup.controls['endDate'].value).local();
     if (startMoment.diff(endMoment) > 0) {
-      this.snackBar.open('Start date cannot be after end date!', 'Close');
+      this.snackBar.open('Start date cannot be after end date!', 'Close', {
+        duration: 800
+      });
       return false;
     }
     if (startMoment.diff(moment()) < 0) {
-      this.snackBar.open('Start date cannot be in the past!', 'Close');
+      this.snackBar.open('Start date cannot be in the past!', 'Close', {
+        duration: 800
+      });
       return false;
     }
     return true;
@@ -1139,11 +1143,11 @@ export class SessionEditComponent implements OnInit {
         });
         this.step++;
       },
-      (error) => {
-        this.snackBar.open(error.message, 'close', {
-          duration: 500
+        (error) => {
+          this.snackBar.open(error.message, 'close', {
+            duration: 500
+          });
         });
-      });
   }
 
   takeToPayment() {
@@ -1395,7 +1399,9 @@ export class SessionEditComponent implements OnInit {
     if (topic['experience']) {
       this._profileService.updateTeachingTopic(this.userId, topic.id, { 'experience': topic['experience'] })
         .subscribe(response => {
-          this.snackBar.open('Topic Updated', 'Close');
+          this.snackBar.open('Topic Updated', 'Close', {
+            duration: 800
+          });
         }, err => {
           console.log(err);
           this.snackBar.open('Topic Update Failed', 'Retry').onAction().subscribe(() => {

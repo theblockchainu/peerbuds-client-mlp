@@ -65,23 +65,25 @@ export class ResetPasswordComponent implements OnInit {
     };
     this.authenticationService.resetPassword(body)
       .subscribe(
-      (data) => {
-        if (data.success) {
-          this.snackBar.open(data.message + ', redirecting...', 'Ok', {
-            duration: 800
-          });
-          this.router.navigateByUrl('');
-        } else {
-          this.snackBar.open(data.message);
-        }
-      },
-      (error) => {
-        console.log(error);
-        this.snackBar.open(error.json().error.message, 'Resend Email').onAction().subscribe(res => {
-          this._dialogsService.openForgotPassword(this.email).afterClosed().subscribe(data => {
+        (data) => {
+          if (data.success) {
+            this.snackBar.open(data.message + ', redirecting...', 'Ok', {
+              duration: 800
+            });
             this.router.navigateByUrl('');
+          } else {
+            this.snackBar.open(data.message, 'close', {
+              duration: 800
+            });
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.snackBar.open(error.json().error.message, 'Resend Email').onAction().subscribe(res => {
+            this._dialogsService.openForgotPassword(this.email).afterClosed().subscribe(data => {
+              this.router.navigateByUrl('');
+            });
           });
         });
-      });
   }
 }

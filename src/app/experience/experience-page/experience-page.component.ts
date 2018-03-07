@@ -513,7 +513,9 @@ export class ExperiencePageComponent implements OnInit {
               });
             }
             else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-              const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
+              const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', {
+                duration: 800
+              });
               snackBarRef.onAction().subscribe(() => {
                 this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
                 // this.location.replaceState(this.location.host + '/' + 'experience' + '/' + this.experienceId + '/' + 'calendar' + '/' + this.calendarId);

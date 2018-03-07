@@ -80,7 +80,9 @@ export class VerifyPhoneDialogComponent implements OnInit {
   public resendOTP(message: string, action) {
     this._profileService.sendVerifyEmail(this.userId, this.peer.controls.phone.value)
       .subscribe((response) => {
-        this.snackBar.open('Code Resent', 'OK');
+        this.snackBar.open('Code Resent', 'OK', {
+          duration: 800
+        });
       });
   }
 

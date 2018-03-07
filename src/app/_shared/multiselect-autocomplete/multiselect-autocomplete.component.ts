@@ -1,18 +1,24 @@
-import { Component, Input, forwardRef, ElementRef, Inject, EventEmitter
-        , HostBinding, HostListener, Output} from '@angular/core';
-import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR
-        , NG_VALIDATORS, Validator} from '@angular/forms';
-import { Http, Headers, Response, BaseRequestOptions, RequestOptions
-  , RequestOptionsArgs } from '@angular/http';
-import {Observable} from 'rxjs';
-
+import {
+  Component, Input, forwardRef, ElementRef, Inject, EventEmitter
+  , HostBinding, HostListener, Output
+} from '@angular/core';
+import {
+  FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR
+  , NG_VALIDATORS, Validator
+} from '@angular/forms';
+import {
+  Http, Headers, Response, BaseRequestOptions, RequestOptions
+  , RequestOptionsArgs
+} from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { AppConfig } from '../../app.config';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 
 import _ from 'lodash';
 
 @Component({
-    selector: 'multiselect-autocomplete',
-    providers: [
+  selector: 'multiselect-autocomplete',
+  providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => MultiselectAutocomplete),
@@ -23,8 +29,8 @@ import _ from 'lodash';
       useExisting: forwardRef(() => MultiselectAutocomplete),
       multi: true,
     }],
-    styleUrls: [ './multiselect-autocomplete.component.scss' ],
-    templateUrl: './multiselect-autocomplete.component.html'
+  styleUrls: ['./multiselect-autocomplete.component.scss'],
+  templateUrl: './multiselect-autocomplete.component.html'
 })
 export class MultiselectAutocomplete { //implements ControlValueAccessor
   public query = '';
@@ -56,13 +62,13 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   private canCreate: boolean = false;
 
   @Input('createURL')
-  private postURL:string = '';
+  private postURL: string = '';
 
   @Input('title')
-  public title:string =  '';
+  public title: string = '';
 
   @Input('preSelectedTopics')
-  private preselectedTopics:any = [];
+  private preselectedTopics: any = [];
 
   @Input('minSelection')
   private minSelection: number = -1;
@@ -78,19 +84,20 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
 
   @Output()
   anyItemNotFound = new EventEmitter<any>();
-  
+
   @Output()
-  queries = new EventEmitter<any>(); 
-  
+  queries = new EventEmitter<any>();
+
   @Output()
   active = new EventEmitter<any>();
 
   constructor(myElement: ElementRef,
-              private http: Http,
-              public requestHeaderService: RequestHeaderService) {
-      this.elementRef = myElement;
-      this.options = requestHeaderService.getOptions(); 
-      this.placeholderString = this.title;
+    private http: Http,
+    public requestHeaderService: RequestHeaderService,
+    public _config: AppConfig) {
+    this.elementRef = myElement;
+    this.options = requestHeaderService.getOptions();
+    this.placeholderString = this.title;
   }
 
   @HostListener('document:click', ['$event'])
@@ -98,20 +105,20 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
     let clickedComponent = event.target;
     let inside = false;
     do {
-     if (clickedComponent === this.elementRef.nativeElement) {
-       inside = true;
-     }
-     clickedComponent = clickedComponent.parentNode;
+      if (clickedComponent === this.elementRef.nativeElement) {
+        inside = true;
+      }
+      clickedComponent = clickedComponent.parentNode;
     } while (clickedComponent);
     if (!inside) {
-    this.filteredList = [];
+      this.filteredList = [];
 
     }
   }
 
   ngOnChanges() {
-    if(!!this.preselectedTopics){       
-        console.log(this.preselectedTopics);         
+    if (!!this.preselectedTopics) {
+      console.log(this.preselectedTopics);
     }
     this.selected = _.union(this.preselectedTopics, this.selected);
   }
@@ -132,61 +139,61 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
     }
     if (this.query !== '') {
       this.active.emit(true);
-      let query = _.find(this.selectedQueries, 
-          (entry) => { 
-            return entry == this.query; 
-          });
-      if(!query) {
+      let query = _.find(this.selectedQueries,
+        (entry) => {
+          return entry == this.query;
+        });
+      if (!query) {
         this.selectedQueries.push(this.query);
       }
       if (Object.keys(this.inputCollection).length !== 0 && this.inputCollection.constructor === Object) {
-          this.filteredList = _.filter(this.inputCollection, (item) => {
-                return item.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-          });
-          this.emitRequestTopic();
+        this.filteredList = _.filter(this.inputCollection, (item) => {
+          return item.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+        });
+        this.emitRequestTopic();
       }
       if (this.searchURL) {
-          let finalSearchURL = this.searchURL + this.query;
-          this.http.get(finalSearchURL) 
-                   .map(res => { 
-                    this.loadingSuggestions = false;
-                    this.filteredList = [];
-                    res.json().map(item => { 
-                      this.entryInSelected = _.find(this.selected, function(entry) { return entry.id == item.id; });
-                      if(!this.entryInSelected) {
-                        showItemNotFound = true;
-                      }
-                      else {
-                        showItemNotFound = false;
-                      }
+        let finalSearchURL = this.searchURL + this.query;
+        this.http.get(finalSearchURL)
+          .map(res => {
+            this.loadingSuggestions = false;
+            this.filteredList = [];
+            res.json().map(item => {
+              this.entryInSelected = _.find(this.selected, function (entry) { return entry.id == item.id; });
+              if (!this.entryInSelected) {
+                showItemNotFound = true;
+              }
+              else {
+                showItemNotFound = false;
+              }
 
-                      let obj = {};
-                      obj['id'] = item.id;
-                      obj['name'] = item.name;
-                      obj['type'] = item.type;
-                      obj['createdAt'] = item.createdAt;
-                      obj['updatedAt'] = item.updatedAt;
-                      obj['inSelect'] = !!this.entryInSelected;
-                      this.filteredList.push(obj);
-                    });
-                    if(showItemNotFound) {
-                      this.emitRequestTopic();
-                    }
-                    // if(this.filteredList.length === 0 && this.canCreate)
-                    // {
-                    //   //Post the new item into the respective collection
-                    //   const body = {
-                    //     'name' : this.query,
-                    //     'type': 'user'
-                    //   };
-                    //   this.http.post(this.postURL, body, this.options)
-                    //             .map((res: Response) => {
-                    //               this.select(res.json());
-                    //             })
-                    //             .subscribe();
-                    // }
-                  })
-                  .subscribe();
+              let obj = {};
+              obj['id'] = item.id;
+              obj['name'] = item.name;
+              obj['type'] = item.type;
+              obj['createdAt'] = item.createdAt;
+              obj['updatedAt'] = item.updatedAt;
+              obj['inSelect'] = !!this.entryInSelected;
+              this.filteredList.push(obj);
+            });
+            if (showItemNotFound) {
+              this.emitRequestTopic();
+            }
+            // if(this.filteredList.length === 0 && this.canCreate)
+            // {
+            //   //Post the new item into the respective collection
+            //   const body = {
+            //     'name' : this.query,
+            //     'type': 'user'
+            //   };
+            //   this.http.post(this.postURL, body, this.options)
+            //             .map((res: Response) => {
+            //               this.select(res.json());
+            //             })
+            //             .subscribe();
+            // }
+          })
+          .subscribe();
       }
     } else {
       this.active.emit(false);
@@ -197,8 +204,8 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   }
 
   private emitRequestTopic() {
-    if(this.filteredList.length == 0) {
-        this.anyItemNotFound.emit(this.query);
+    if (this.filteredList.length == 0) {
+      this.anyItemNotFound.emit(this.query);
     }
     else {
       this.anyItemNotFound.emit('');
@@ -206,20 +213,19 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   }
 
   private select(item) {
-    let itemPresent = _.find(this.selected, function(entry) { return item.id == entry.id; });
+    let itemPresent = _.find(this.selected, function (entry) { return item.id == entry.id; });
     if (itemPresent) {
-      this.selected = _.remove(this.selected, function(entry) {return item.id != entry.id;});
+      this.selected = _.remove(this.selected, function (entry) { return item.id != entry.id; });
       this.removedOutput.emit(this.removed);
     }
     else {
-      if (this.selected.length >= this.maxSelection && this.maxSelection != -1)
-      {
+      if (this.selected.length >= this.maxSelection && this.maxSelection != -1) {
         this.query = '';
         this.filteredList = [];
         this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
         return;
       }
-      if (this.preselectedTopics.length != 0){
+      if (this.preselectedTopics.length != 0) {
         this.selected = _.union(this.preselectedTopics, this.selected);
       }
       this.selected.push(item);
@@ -231,7 +237,7 @@ export class MultiselectAutocomplete { //implements ControlValueAccessor
   }
 
   private remove(item) {
-    this.selected.splice( this.selected.indexOf(item), 1);
+    this.selected.splice(this.selected.indexOf(item), 1);
     this.removed.push(item);
     this.selectedOutput.emit(this.selected);
     this.removedOutput.emit(this.removed);

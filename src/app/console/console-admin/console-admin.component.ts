@@ -4,7 +4,7 @@ import { ConsoleComponent } from '../console.component';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { MdSnackBar } from '@angular/material';
-import {AppConfig} from '../../app.config';
+import { AppConfig } from '../../app.config';
 
 declare var moment: any;
 
@@ -84,7 +84,9 @@ export class ConsoleAdminComponent implements OnInit {
       result => {
         if (result) {
           this.fetchCollections();
-          this.snackBar.open(result.result, 'Close').onAction().subscribe();
+          this.snackBar.open(result.result, 'Close', {
+            duration: 800
+          }).onAction().subscribe();
         }
       }, err => {
         console.log(err);
@@ -99,7 +101,9 @@ export class ConsoleAdminComponent implements OnInit {
     this._profileService.approvePeer(peer).subscribe(result => {
       if (result) {
         this.fetchPeers();
-        this.snackBar.open(result.result, 'Close').onAction().subscribe();
+        this.snackBar.open(result.result, 'Close', {
+          duration: 800
+        }).onAction().subscribe();
       }
 
     }, err => {

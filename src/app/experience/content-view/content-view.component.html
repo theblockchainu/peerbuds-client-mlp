@@ -53,13 +53,14 @@
               <div *ngIf="Content.value.type === 'online' || Content.value.type === 'in-person'" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
               <div *ngIf="Content.value.type === 'project'" class="content-subtitle">Deadline: {{getDeadline(Content)}}</div>
               <div *ngIf="Content.value.type === 'in-person'" class="content-subtitle">#{{Content.controls.location.controls.apt_suite.value}} {{Content.controls.location.controls.street_address.value}},
-                {{Content.controls.location.controls.city.value}}</div>
+                {{Content.controls.location.controls.city.value}}
+              </div>
               <span></span>
               <div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase }}</div>
             </div>
             <div class="col-md-2">
-              <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="removeContent(i)" style="font-size: 16px; color: #777777;">close</md-icon>
-              <md-icon class="pull-right" *ngIf="itenaryForm.controls.contents.controls.length > 0" (click)="findAndOpenDialog(i)" style="font-size: 16px; color: #777777;">mode_edit</md-icon>
+              <md-icon class="pull-right" *ngIf="itenaryForm.controls['contents'].controls.length > 0" (click)="removeContent(i)" style="font-size: 16px; color: #777777;">close</md-icon>
+              <md-icon class="pull-right" *ngIf="itenaryForm.controls['contents'].controls.length > 0" (click)="findAndOpenDialog(i)" style="font-size: 16px; color: #777777;">mode_edit</md-icon>
             </div>
           </md-list-item>
         </md-list>
@@ -72,13 +73,13 @@
         </span>
         &emsp;
         <span class="activity-subtitle">
-          (Must have at least one in-person session)
+          (Must have at least one Activity)
         </span>
         <br>
         <br>
         <button md-button type="button" (click)="addContent('in-person'); findAndOpenDialog(-1);" style="padding-left: 0px">
           <md-icon color="primary" style="font-size: 20px">add_circle</md-icon>
-          In-person Session
+          Activity
         </button>&emsp;
 
         <button md-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">

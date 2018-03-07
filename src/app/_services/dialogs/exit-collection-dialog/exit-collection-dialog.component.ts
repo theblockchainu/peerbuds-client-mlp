@@ -22,7 +22,9 @@ export class ExitCollectionDialogComponent implements OnInit {
       if (response)
         this.dialogRef.close(true);
     }, err => {
-      this.snackBar.open('Couldn&#39;t Drop out', 'Retry').onAction().subscribe(res => {
+      this.snackBar.open('Couldn&#39;t Drop out', 'Retry', {
+        duration: 800
+      }).onAction().subscribe(res => {
         this.dropOut();
       });
     });

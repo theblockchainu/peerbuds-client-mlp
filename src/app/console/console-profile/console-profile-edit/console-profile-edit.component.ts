@@ -419,11 +419,15 @@ export class ConsoleProfileEditComponent implements OnInit {
         return this._profileService.updatePeer(this.userId, { 'phone': profileData.phone_numbers });
       }).subscribe((response) => {
         this.busyUpdate = false;
-        this.snackBar.open('Profile Updated', 'Close');
+        this.snackBar.open('Profile Updated', 'Close', {
+          duration: 800
+        });
       }, (err) => {
         console.log('Error updating Peer: ');
         console.log(err);
-        this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response) => {
+        this.snackBar.open('Profile Update Failed', 'Retry', {
+          duration: 800
+        }).onAction().subscribe((response) => {
           this.busyUpdate = false;
           this.saveProfile();
         });

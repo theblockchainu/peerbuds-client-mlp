@@ -2,19 +2,19 @@ import {
     Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, AfterViewChecked,
     ChangeDetectorRef
 } from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router, ActivatedRoute, Params, NavigationStart} from '@angular/router';
-import {MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED} from '@angular/material';
-import {ICarouselConfig, AnimationConfig} from 'angular4-carousel';
-import {CookieUtilsService} from '../../_services/cookieUtils/cookie-utils.service';
-import {CollectionService} from '../../_services/collection/collection.service';
-import {CommentService} from '../../_services/comment/comment.service';
-import {AppConfig} from '../../app.config';
-import {ViewParticipantsComponent} from './view-participants/view-participants.component';
-import {CommunityService} from '../../_services/community/community.service';
-import {QuestionService} from '../../_services/question/question.service';
-import {Http} from '@angular/http';
-import {SearchService} from '../../_services/search/search.service';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
+import { MdDialog, MdDialogConfig, MdDialogRef, MdSnackBar, SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
+import { ICarouselConfig, AnimationConfig } from 'angular4-carousel';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { CommentService } from '../../_services/comment/comment.service';
+import { AppConfig } from '../../app.config';
+import { ViewParticipantsComponent } from './view-participants/view-participants.component';
+import { CommunityService } from '../../_services/community/community.service';
+import { QuestionService } from '../../_services/question/question.service';
+import { Http } from '@angular/http';
+import { SearchService } from '../../_services/search/search.service';
 import {
     startOfDay,
     endOfDay,
@@ -28,12 +28,12 @@ import {
     subWeeks,
     addWeeks
 } from 'date-fns';
-import {Subject} from 'rxjs/Subject';
-import {CalendarEvent, CalendarDateFormatter, CalendarUtils} from 'angular-calendar';
-import {CustomDateFormatter} from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
-import {DialogsService} from '../../_services/dialogs/dialog.service';
-import {TopicService} from '../../_services/topic/topic.service';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { Subject } from 'rxjs/Subject';
+import { CalendarEvent, CalendarDateFormatter, CalendarUtils } from 'angular-calendar';
+import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
+import { TopicService } from '../../_services/topic/topic.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import * as moment from 'moment';
 import _ from 'lodash';
 
@@ -120,21 +120,21 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
     public searchResults: any[];
 
     constructor(public router: Router,
-                private activatedRoute: ActivatedRoute,
-                private _cookieUtilsService: CookieUtilsService,
-                public _collectionService: CollectionService,
-                public _topicService: TopicService,
-                private _commentService: CommentService,
-                private _questionService: QuestionService,
-                private _communityService: CommunityService,
-                public _searchService: SearchService,
-                public config: AppConfig,
-                private _fb: FormBuilder,
-                private dialog: MdDialog,
-                private http: Http,
-                private _cdRef: ChangeDetectorRef,
-                private dialogsService: DialogsService,
-                private snackBar: MdSnackBar) {
+        private activatedRoute: ActivatedRoute,
+        private _cookieUtilsService: CookieUtilsService,
+        public _collectionService: CollectionService,
+        public _topicService: TopicService,
+        private _commentService: CommentService,
+        private _questionService: QuestionService,
+        private _communityService: CommunityService,
+        public _searchService: SearchService,
+        public config: AppConfig,
+        private _fb: FormBuilder,
+        private dialog: MdDialog,
+        private http: Http,
+        private _cdRef: ChangeDetectorRef,
+        private dialogsService: DialogsService,
+        private snackBar: MdSnackBar) {
         this.activatedRoute.params.subscribe(params => {
             if (this.initialised && this.communityId !== params['communityId']) {
                 location.reload();
@@ -200,19 +200,19 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
                 'views',
                 'invites',
                 'rooms',
-                {'collections': ['owners']},
+                { 'collections': ['owners'] },
                 'links',
-                {'participants': [{'profiles': ['work']}]},
-                {'owners': [{'profiles': ['work']}]}
+                { 'participants': [{ 'profiles': ['work'] }] },
+                { 'owners': [{ 'profiles': ['work'] }] }
             ]
         };
 
         if (this.communityId) {
             this._communityService.getCommunityDetail(this.communityId, query)
                 .subscribe(res => {
-                        console.log(res);
-                        this.community = res;
-                    },
+                    console.log(res);
+                    this.community = res;
+                },
                     err => console.log('error'),
                     () => {
                         this.initializeUserType();
@@ -240,7 +240,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
             'include': [
                 {
                     'peer': [
-                        {'profiles': ['work']}
+                        { 'profiles': ['work'] }
                     ]
                 }
             ],
@@ -326,7 +326,9 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
                 console.log(err);
             } else {
                 this.router.navigate(['community', this.communityId]);
-                this.snackBar.open('Thanks for joining the community. Ask questions or share your find partners for your learning journey.', 'Close', { duration: 5000});
+                this.snackBar.open('Thanks for joining the community. Ask questions or share your find partners for your learning journey.', 'Close', {
+                    duration: 800
+                });
             }
         });
     }
