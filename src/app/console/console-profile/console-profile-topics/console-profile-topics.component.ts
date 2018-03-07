@@ -10,7 +10,7 @@ import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 import _ from 'lodash';
-import {AppConfig} from '../../../app.config';
+import { AppConfig } from '../../../app.config';
 @Component({
   selector: 'app-console-profile-topics',
   templateUrl: './console-profile-topics.component.html',
@@ -150,10 +150,14 @@ topic:any   */
       this._profileService.updateTeachingTopic(this.userId, topic.id, { 'experience': topic['experience'] })
         .subscribe(response => {
           console.log(response);
-          this.snackBar.open('Topic Updated', 'Close');
+          this.snackBar.open('Topic Updated', 'Close', {
+            duration: 800
+          });
         }, err => {
           console.log(err);
-          this.snackBar.open('Topic Update Failed', 'Retry').onAction().subscribe(() => {
+          this.snackBar.open('Topic Update Failed', 'Retry', {
+            duration: 800
+          }).onAction().subscribe(() => {
             this.updateChanges(type, topic);
           });
         });
@@ -162,31 +166,31 @@ topic:any   */
 
   public openFollowTopicDialog(type) {
     this._dialogService
-    .openFollowTopicDialog(type, this.searchTopicURL)
-    .subscribe(res => {
-      const topicArray = [];
-      if(res.selected) {
-        if(type === 'learning') {
-          this.selectedTopicsLearning = res.selected;
+      .openFollowTopicDialog(type, this.searchTopicURL)
+      .subscribe(res => {
+        const topicArray = [];
+        if (res.selected) {
+          if (type === 'learning') {
+            this.selectedTopicsLearning = res.selected;
 
-          this.selectedTopicsLearning.forEach((topic) => {
-            topicArray.push(topic.id);
-            this.topicsLearning.push(topic);
+            this.selectedTopicsLearning.forEach((topic) => {
+              topicArray.push(topic.id);
+              this.topicsLearning.push(topic);
+            });
+          }
+          else {
+            this.selectedTopicsTeaching = res.selected;
+            this.selectedTopicsTeaching.forEach((topic) => {
+              topicArray.push(topic.id);
+              this.topicsTeaching.push(topic);
+            });
+          }
+          topicArray.forEach(topicId => {
+            this._profileService.followTopic(this.userId, type, topicId, {})
+              .subscribe((response) => { console.log(response); });
           });
         }
-        else {
-          this.selectedTopicsTeaching = res.selected;
-          this.selectedTopicsTeaching.forEach((topic) => {
-            topicArray.push(topic.id);
-            this.topicsTeaching.push(topic);
-          });
-        }
-        topicArray.forEach(topicId => {
-          this._profileService.followTopic(this.userId, type, topicId, {})
-          .subscribe((response) => { console.log(response); });
-        });
-      }
-    });
+      });
   }
 
 }

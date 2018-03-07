@@ -411,9 +411,13 @@ export class ProfileComponent implements OnInit {
           'is_active': true
         }).subscribe((respone) => {
           console.log(respone);
-          this.snackBar.open('Profile Reported', 'Close');
+          this.snackBar.open('Profile Reported', 'Close', {
+            duration: 800
+          });
         }, (err) => {
-          this.snackBar.open('Profile Reported Failed', 'Retry').onAction().subscribe(() => {
+          this.snackBar.open('Profile Reported Failed', 'Retry', {
+            duration: 800
+          }).onAction().subscribe(() => {
             this.reportProfile();
           });
         });

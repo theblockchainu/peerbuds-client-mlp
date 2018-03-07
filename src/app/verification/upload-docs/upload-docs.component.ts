@@ -44,17 +44,17 @@ export class UploadDocsComponent implements OnInit {
     private dialog: MdDialog,
     private dialogsService: DialogsService,
     private _cookieUtilsService: CookieUtilsService) {
-      this.activatedRoute.params.subscribe(params => {
-        this.step = params['step'];
-      });
-      this.userId = _cookieUtilsService.getValue('userId');
+    this.activatedRoute.params.subscribe(params => {
+      this.step = params['step'];
+    });
+    this.userId = _cookieUtilsService.getValue('userId');
   }
 
   ngOnInit() {
     this.peer = this._fb.group({
       email: ['',
-      [Validators.required,
-      Validators.pattern(EMAIL_REGEX)]],
+        [Validators.required,
+        Validators.pattern(EMAIL_REGEX)]],
       verificationIdUrl: ['', Validators.required]
     });
 
@@ -70,13 +70,13 @@ export class UploadDocsComponent implements OnInit {
   continue(p) {
     if (p === 2) {
       this._profileService
-      .updatePeer(this.userId, { 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value, 'email': this.peer.controls['email'].value })
-      .subscribe((response) => {
-        console.log('File Saved Successfully');
-      }, (err) => {
-        console.log('Error updating Peer: ');
-        console.log(err);
-      });
+        .updatePeer(this.userId, { 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value, 'email': this.peer.controls['email'].value })
+        .subscribe((response) => {
+          console.log('File Saved Successfully');
+        }, (err) => {
+          console.log('Error updating Peer: ');
+          console.log(err);
+        });
     }
     if (p === 3) {
       //this.peer.controls['email'].setValue(this.email);
@@ -89,24 +89,27 @@ export class UploadDocsComponent implements OnInit {
   public sendOTP() {
     this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
       .subscribe();
-      console.log('mail sent');
+    console.log('mail sent');
   }
 
 
   public resendOTP(message: string, action) {
     this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
       .subscribe((response) => {
-        this.snackBar.open('Code Resent', 'OK'); });
-    }
+        this.snackBar.open('Code Resent', 'OK', {
+          duration: 800
+        });
+      });
+  }
 
   verifyEmail() {
     this._profileService.confirmEmail(this.userId, this.otp.controls['inputOTP'].value)
       .subscribe((res) => {
-          console.log(res);
-          console.log('verified email');
-          this.success = res;
-          this.router.navigate(['/onboarding/1']);
-        },
+        console.log(res);
+        console.log('verified email');
+        this.success = res;
+        this.router.navigate(['/onboarding/1']);
+      },
         (err) => {
           console.log(err);
           if (err.status === 400) {
@@ -115,7 +118,7 @@ export class UploadDocsComponent implements OnInit {
           }
 
         }
-    );
+      );
   }
 
   redirectToOnboarding() {

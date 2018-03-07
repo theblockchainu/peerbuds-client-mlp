@@ -456,34 +456,36 @@ export class WorkshopPageComponent implements OnInit {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });
         },
-        err => console.log('error'),
-        () => {
-          this.initializeUserType();
-          this.calculateTotalHours();
-          this.fixTopics();
-          this.getReviews();
-          this.getRecommendations();
-          this.getParticipants();
-          this.getDiscussions();
-          this.getBookmarks();
-          this.setUpCarousel();
-          if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
-            this.itenaryArray.forEach(itinerary => {
-              itinerary.contents.forEach(content => {
-                if (content.id === this.toOpenDialogName) {
-                  this.openDialog(content, itinerary.startDate, itinerary.endDate);
-                }
+          err => console.log('error'),
+          () => {
+            this.initializeUserType();
+            this.calculateTotalHours();
+            this.fixTopics();
+            this.getReviews();
+            this.getRecommendations();
+            this.getParticipants();
+            this.getDiscussions();
+            this.getBookmarks();
+            this.setUpCarousel();
+            if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
+              this.itenaryArray.forEach(itinerary => {
+                itinerary.contents.forEach(content => {
+                  if (content.id === this.toOpenDialogName) {
+                    this.openDialog(content, itinerary.startDate, itinerary.endDate);
+                  }
+                });
               });
-            });
-          }
-          else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-            const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
-            snackBarRef.onAction().subscribe(() => {
-              this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
-              // this.location.replaceState(this.location.host + '/' + 'workshop' + '/' + this.workshopId + '/' + 'calendar' + '/' + this.calendarId);
-            });
-          }
-        });
+            }
+            else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+              const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', {
+                duration: 800
+              });
+              snackBarRef.onAction().subscribe(() => {
+                this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);
+                // this.location.replaceState(this.location.host + '/' + 'workshop' + '/' + this.workshopId + '/' + 'calendar' + '/' + this.calendarId);
+              });
+            }
+          });
     } else {
       console.log('NO COLLECTION');
     }

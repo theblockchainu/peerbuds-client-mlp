@@ -716,12 +716,16 @@ export class ExperienceEditComponent implements OnInit {
     const startMoment = moment(calendarGroup.controls['startDate'].value).local();
     const endMoment = moment(calendarGroup.controls['endDate'].value).local();
     if (startMoment.diff(endMoment) > 0) {
-      this.snackBar.open('Start date cannot be after end date!', 'Close');
+      this.snackBar.open('Start date cannot be after end date!', 'Close', {
+        duration: 800
+      });
       return false;
     }
     console.log(startMoment.diff(moment()));
     if (startMoment.diff(moment()) < 0) {
-      this.snackBar.open('Start date cannot be in the past!', 'Close');
+      this.snackBar.open('Start date cannot be in the past!', 'Close', {
+        duration: 800
+      });
       return false;
     }
     return true;

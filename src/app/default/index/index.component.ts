@@ -65,8 +65,10 @@ export class IndexComponent implements OnInit {
     this.email = this.notifyForm.controls['email'].value;
     this.authenticationService.sendEmailSubscriptions(this.email)
       .subscribe(
-      //(response) => {this.snackBar.open('Email Subscribed', 'OK'); });
+        //(response) => {this.snackBar.open('Email Subscribed', 'OK'); });
       );
-    this.snackBar.open('Email Subscribed', 'OK');
+    this.snackBar.open('Email Subscribed', 'OK', {
+      duration: 800
+    });
   }
 }

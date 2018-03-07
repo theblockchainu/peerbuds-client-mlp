@@ -224,7 +224,7 @@
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <div class="form-group">
-                      <h2 class="title">Title your experience</h2>
+                      <h2 class="title">Cover</h2>
                       <p class="subtitle">
                         Make it short and sweet
                       </p>
@@ -252,10 +252,36 @@
                     </div>
                   </div>
                 </div>
+                <div class="row margin-left-0">
+                  <div class="col-md-8">
+                    <div class="stepHeader margin-top-20">Upload Images for your cover</div>
+                    <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
+                      maxFileSize="10000000" chooseLabel="Browse" multiple="multiple" (onRemove)="deleteFromContainerArr($event, 'image')">
+                      <ng-template pTemplate="toolbar">
+                        <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
+                      </ng-template>
+                    </p-fileUpload>
+                    <h5>Max File Size
+                      <b>10MB</b>
+                    </h5>
+                    <div *ngIf="urlForImages.length" class="pic delete">
+                      <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
+                        <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+                        <md-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</md-icon>
+                      </div>
+                    </div>
+                    <div class="loading-container" [hidden]="!uploadingImage">
+                      <ngx-loading [show]="true"></ngx-loading>
+                    </div>
+                  </div>
+                </div>
+
                 <div style="margin-top:60px;">
                   <!-- <a md-button (click)=goto(5)>Back</a> -->
                   <span class="pull-right" mdTooltip="Please type in a headline to continue." [mdTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
-                    <button md-raised-button color="accent" type="Submit" [disabled]="title.value.length == 0 && headline.value.length == 0">Next</button>
+                    <span mdTooltip="An image is mandatory to continue" [mdTooltipDisabled]="urlForImages.length !== 0">
+                      <button md-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 && title.value.length == 0 && headline.value.length == 0">Next</button>
+                    </span>
                   </span>
                 </div>
               </form>
@@ -378,37 +404,12 @@
                       <div class="loading-container" [hidden]="!uploadingVideo">
                         <ngx-loading [show]="true"></ngx-loading>
                       </div>
-
                     </div>
                   </div>
-                  <div class="row margin-left-0">
-                    <div class="col-md-8">
-                      <div class="stepHeader margin-top-20">Upload Images</div>
-                      <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
-                        maxFileSize="10000000" chooseLabel="Browse" multiple="multiple" (onRemove)="deleteFromContainerArr($event, 'image')">
-                        <ng-template pTemplate="toolbar">
-                          <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
-                        </ng-template>
-                      </p-fileUpload>
-                      <h5>Max File Size
-                        <b>10MB</b>
-                      </h5>
-                      <div *ngIf="urlForImages.length" class="pic delete">
-                        <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
-                          <img src="{{config.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
-                          <md-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</md-icon>
-                        </div>
-                      </div>
-                      <div class="loading-container" [hidden]="!uploadingImage">
-                        <ngx-loading [show]="true"></ngx-loading>
-                      </div>
-                    </div>
-                  </div>
-
                   <div class="row">
                     <div class="margin-top-60">
-                      <span class="pull-right" mdTooltip="Either a video or an image is mandatory to continue" [mdTooltipDisabled]="urlForImages.length !== 0 || urlForVideo.length !== 0">
-                        <button md-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 && urlForVideo.length === 0">Next</button>
+                      <span class="pull-right">
+                        <button md-raised-button color="accent" type="Submit">Next</button>
                       </span>
                     </div>
                   </div>
